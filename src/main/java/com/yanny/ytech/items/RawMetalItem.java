@@ -1,6 +1,6 @@
 package com.yanny.ytech.items;
 
-import com.yanny.ytech.model.YTechConfigLoader;
+import com.yanny.ytech.configuration.YTechConfigLoader;
 import net.minecraft.world.item.Item;
 
 public class RawMetalItem extends Item {

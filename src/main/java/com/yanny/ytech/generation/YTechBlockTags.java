@@ -2,7 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.blocks.MaterialBlock;
-import com.yanny.ytech.model.YTechConfigLoader;
+import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

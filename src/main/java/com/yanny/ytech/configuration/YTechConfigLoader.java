@@ -1,4 +1,4 @@
-package com.yanny.ytech.model;
+package com.yanny.ytech.configuration;
 
 import com.google.gson.Gson;
 import com.yanny.ytech.registration.Registration;

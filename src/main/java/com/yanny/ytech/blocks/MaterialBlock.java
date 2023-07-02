@@ -1,6 +1,6 @@
 package com.yanny.ytech.blocks;
 
-import com.yanny.ytech.model.YTechConfigLoader;
+import com.yanny.ytech.configuration.YTechConfigLoader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 

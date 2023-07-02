@@ -1,8 +1,8 @@
 package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.generation.DataGeneration;
-import com.yanny.ytech.model.YTechConfigLoader;
 import com.yanny.ytech.registration.Registration;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
