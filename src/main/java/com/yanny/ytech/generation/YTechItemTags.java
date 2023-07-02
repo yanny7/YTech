@@ -5,6 +5,7 @@ import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
@@ -20,17 +21,18 @@ class YTechItemTags extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        Registration.REGISTERED_ORE_ITEMS.forEach((material, stoneMap) -> stoneMap.forEach((item, registry) -> {
+        Registration.REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> {
+            Item item = registry.get().asItem();
             tag(Tags.Items.ORES).add(item);
             tag(Registration.ORE_BLOCK_ITEM_TAGS.get(material)).add(item);
 
-            if (item.equals(Items.STONE)) {
+            if (stone.asItem().equals(Items.STONE)) {
                 tag(Tags.Items.ORES_IN_GROUND_STONE).add(item);
             }
-            if (item.equals(Items.DEEPSLATE)) {
+            if (stone.asItem().equals(Items.DEEPSLATE)) {
                 tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(item);
             }
-            if (item.equals(Items.NETHERRACK)) {
+            if (stone.asItem().equals(Items.NETHERRACK)) {
                 tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(item);
             }
         }));

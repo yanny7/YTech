@@ -19,7 +19,7 @@ class YTechItemModels extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        Registration.REGISTERED_RAW_METAL_ITEMS.forEach((material, registry) -> registerTintedItem(registry, RAW_METAL));
+        Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> registerTintedItem(registry, RAW_METAL));
     }
 
     void registerTintedItem(RegistryObject<Item> registry, ResourceLocation texture) {

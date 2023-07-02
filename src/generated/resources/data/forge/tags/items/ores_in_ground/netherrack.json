@@ -1,8 +1,8 @@
 {
   "values": [
-    "minecraft:netherrack",
-    "minecraft:netherrack",
-    "minecraft:netherrack",
-    "minecraft:netherrack"
+    "ytech:netherrack_tin_ore",
+    "ytech:netherrack_copper_ore",
+    "ytech:netherrack_iron_ore",
+    "ytech:netherrack_gold_ore"
   ]
 }

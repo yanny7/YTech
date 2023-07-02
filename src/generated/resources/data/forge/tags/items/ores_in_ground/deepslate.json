@@ -1,8 +1,8 @@
 {
   "values": [
-    "minecraft:deepslate",
-    "minecraft:deepslate",
-    "minecraft:deepslate",
-    "minecraft:deepslate"
+    "ytech:deepslate_tin_ore",
+    "ytech:deepslate_copper_ore",
+    "ytech:deepslate_iron_ore",
+    "ytech:deepslate_gold_ore"
   ]
 }

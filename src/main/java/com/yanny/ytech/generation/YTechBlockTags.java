@@ -1,11 +1,11 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.blocks.MaterialBlock;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
@@ -22,31 +22,28 @@ class YTechBlockTags extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        Registration.REGISTERED_ORE_BLOCKS.forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> {
-            tag(Tags.Blocks.ORES).add(registry.get());
-            tag(Registration.ORE_BLOCK_TAGS.get(material)).add(registry.get());
+        Registration.REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> {
+            Block block = registry.get();
+            tag(Tags.Blocks.ORES).add(block);
+            tag(Registration.ORE_BLOCK_TAGS.get(material)).add(block);
 
-            if (block.equals(Blocks.STONE)) {
-                tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(registry.get());
+            if (stone.equals(Blocks.STONE)) {
+                tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(block);
             }
-            if (block.equals(Blocks.DEEPSLATE)) {
-                tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(registry.get());
+            if (stone.equals(Blocks.DEEPSLATE)) {
+                tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(block);
             }
-            if (block.equals(Blocks.NETHERRACK)) {
-                tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(registry.get());
+            if (stone.equals(Blocks.NETHERRACK)) {
+                tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(block);
             }
         }));
-        Registration.REGISTERED_RAW_STORAGE_BLOCKS.forEach((material, registry) -> {
-            MaterialBlock block = (MaterialBlock) registry.get();
-
-            tag(Tags.Blocks.STORAGE_BLOCKS).add(block);
-            tag(Registration.STORAGE_BLOCK_TAGS.get(material)).add(block);
+        Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> {
+            tag(Tags.Blocks.STORAGE_BLOCKS).add(registry.get());
+            tag(Registration.STORAGE_BLOCK_TAGS.get(material)).add(registry.get());
         });
-        Registration.REGISTERED_STORAGE_BLOCKS.forEach((material, registry) -> {
-            MaterialBlock block = (MaterialBlock) registry.get();
-
-            tag(Tags.Blocks.STORAGE_BLOCKS).add(block);
-            tag(Registration.STORAGE_BLOCK_TAGS.get(material)).add(block);
+        Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> {
+            tag(Tags.Blocks.STORAGE_BLOCKS).add(registry.get());
+            tag(Registration.STORAGE_BLOCK_TAGS.get(material)).add(registry.get());
         });
         for (YTechConfigLoader.Material material : YTechMod.CONFIGURATION.getElements()) {
             if (Objects.equals(material.id(), "copper")) {

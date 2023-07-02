@@ -1,8 +1,8 @@
 {
   "values": [
-    "minecraft:stone",
-    "minecraft:stone",
-    "minecraft:stone",
-    "minecraft:stone"
+    "ytech:stone_tin_ore",
+    "ytech:stone_copper_ore",
+    "ytech:stone_iron_ore",
+    "ytech:stone_gold_ore"
   ]
 }

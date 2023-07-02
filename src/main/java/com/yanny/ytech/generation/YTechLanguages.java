@@ -13,10 +13,10 @@ class YTechLanguages extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        Registration.REGISTERED_ORE_BLOCKS.forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> add(registry.get(), I18n.get(block.getDescriptionId()) + " " + material.name() + " Ore")));
-        Registration.REGISTERED_RAW_STORAGE_BLOCKS.forEach((material, registry) -> add(registry.get(), "Raw " + material.name() + " Block"));
-        Registration.REGISTERED_STORAGE_BLOCKS.forEach((material, registry) -> add(registry.get(), "Block of " + material.name()));
+        Registration.REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> add(registry.get(), I18n.get(stone.getDescriptionId()) + " " + material.name() + " Ore")));
+        Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> add(registry.get(), "Raw " + material.name() + " Block"));
+        Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> add(registry.get(), "Block of " + material.name()));
 
-        Registration.REGISTERED_RAW_METAL_ITEMS.forEach((material, registry) -> add(registry.get(), "Raw " + material.name()));
+        Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> add(registry.get(), "Raw " + material.name()));
     }
 }

@@ -16,8 +16,8 @@ public class YTechRecipes extends RecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> recipeConsumer) {
-        Registration.REGISTERED_RAW_STORAGE_BLOCK_ITEMS.forEach((material, registry) -> {
-            RegistryObject<Item> input = Registration.REGISTERED_RAW_METAL_ITEMS.get(material);
+        Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> {
+            RegistryObject<Item> input = Registration.REGISTRATION_HOLDER.rawMaterial().get(material);
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, registry.get())
                     .define('#', input.get()).pattern("###").pattern("###").pattern("###")
                     .unlockedBy("has_" + getItemName(input.get()), has(MinMaxBounds.Ints.atLeast(9), input.get()))

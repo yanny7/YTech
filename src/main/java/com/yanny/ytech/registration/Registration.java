@@ -1,10 +1,7 @@
 package com.yanny.ytech.registration;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.blocks.MaterialBlock;
-import com.yanny.ytech.blocks.OreBlock;
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.items.RawMetalItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -14,6 +11,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,32 +28,30 @@ public class Registration {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
 
-    public static final Map<YTechConfigLoader.Material, Map<Block, RegistryObject<Block>>> REGISTERED_ORE_BLOCKS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, RegistryObject<Block>> REGISTERED_RAW_STORAGE_BLOCKS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, RegistryObject<Block>> REGISTERED_STORAGE_BLOCKS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, Map<Item, RegistryObject<Item>>> REGISTERED_ORE_ITEMS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, RegistryObject<Item>> REGISTERED_RAW_METAL_ITEMS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, RegistryObject<Item>> REGISTERED_RAW_STORAGE_BLOCK_ITEMS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, RegistryObject<Item>> REGISTERED_STORAGE_BLOCK_ITEMS = new HashMap<>();
+    public static final RegistrationHolder REGISTRATION_HOLDER = new RegistrationHolder();
+
     public static final Map<YTechConfigLoader.Material, TagKey<Block>> ORE_BLOCK_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Block>> STORAGE_BLOCK_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Item>> ORE_BLOCK_ITEM_TAGS = new HashMap<>();
+    public static final Map<YTechConfigLoader.Material, TagKey<Item>> STORAGE_BLOCK_ITEM_TAGS = new HashMap<>();
 
     static {
         for (YTechConfigLoader.Material element : YTechMod.CONFIGURATION.getElements()) {
             if (YTechMod.CONFIGURATION.isOre(element)) {
-                REGISTERED_ORE_BLOCKS.put(element, new HashMap<>());
-                REGISTERED_ORE_ITEMS.put(element, new HashMap<>());
-                registerOre(element, Blocks.STONE);
-                registerOre(element, Blocks.DEEPSLATE);
-                registerOre(element, Blocks.NETHERRACK);
-                registerRawMetal(element);
+                REGISTRATION_HOLDER.ore().put(element, new HashMap<>(Map.of(
+                        Blocks.STONE, registerBlockItem(element, Blocks.STONE, getPathOf(Blocks.STONE) + "_" + element.id() + "_ore"),
+                        Blocks.DEEPSLATE, registerBlockItem(element, Blocks.DEEPSLATE, getPathOf(Blocks.DEEPSLATE) + "_" + element.id() + "_ore"),
+                        Blocks.NETHERRACK, registerBlockItem(element, Blocks.NETHERRACK, getPathOf(Blocks.NETHERRACK) + "_" + element.id() + "_ore")
+                )));
+                REGISTRATION_HOLDER.rawStorageBlock().put(element, registerBlockItem(element, Blocks.RAW_IRON_BLOCK, "raw_" + element.id() + "_block"));
+                REGISTRATION_HOLDER.rawMaterial().put(element, registerItem("raw_" + element.id() + "_item"));
                 ORE_BLOCK_TAGS.put(element, Objects.requireNonNull(BlockTags.create(new ResourceLocation(YTechMod.MOD_ID, "ores/" + element.id()))));
                 ORE_BLOCK_ITEM_TAGS.put(element, Objects.requireNonNull(ItemTags.create(new ResourceLocation(YTechMod.MOD_ID, "ores/" + element.id()))));
             }
             if (YTechMod.CONFIGURATION.isMetal(element)) {
-                registerStorageBlock(element);
+                REGISTRATION_HOLDER.storageBlock().put(element, registerBlockItem(element, Blocks.IRON_BLOCK, element.id() + "_block"));
                 STORAGE_BLOCK_TAGS.put(element, Objects.requireNonNull(BlockTags.create(new ResourceLocation(YTechMod.MOD_ID, "storage_blocks/" + element.id()))));
+                STORAGE_BLOCK_ITEM_TAGS.put(element, Objects.requireNonNull(ItemTags.create(new ResourceLocation(YTechMod.MOD_ID, "storage_blocks/" + element.id()))));
             }
         }
     }
@@ -65,59 +61,45 @@ public class Registration {
         ITEMS.register(eventBus);
     }
 
-    private static void registerOre(YTechConfigLoader.Material material, Block baseStone) {
-        String oreName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(baseStone)).getPath() + "_" + material.id() + "_ore";
-        RegistryObject<Block> block = BLOCKS.register(oreName, () -> new OreBlock(material, baseStone));
-        RegistryObject<Item> blockItem = ITEMS.register(oreName, () -> new BlockItem(block.get(), new Item.Properties()));
-
-        REGISTERED_ORE_BLOCKS.get(material).put(baseStone, block);
-        REGISTERED_ORE_ITEMS.get(material).put(baseStone.asItem(), blockItem);
+    private static RegistryObject<Block> registerBlockItem(YTechConfigLoader.Material material, Block base, String name) {
+        Float hardness = material.hardness();
+        assert hardness != null;
+        RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.copy(base).strength(hardness)));
+        ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return block;
     }
 
-    private static void registerRawMetal(YTechConfigLoader.Material material) {
-        String rawMetalBlock = "raw_" + material.id() + "_block";
-        String rawMetalItem = "raw_" + material.id() + "_item";
-        RegistryObject<Block> block = BLOCKS.register(rawMetalBlock, () -> new MaterialBlock(material));
-        RegistryObject<Item> blockItem = ITEMS.register(rawMetalBlock, () -> new BlockItem(block.get(), new Item.Properties()));
-        RegistryObject<Item> item = ITEMS.register(rawMetalItem, () -> new RawMetalItem(material));
-
-        REGISTERED_RAW_STORAGE_BLOCKS.put(material, block);
-        REGISTERED_RAW_STORAGE_BLOCK_ITEMS.put(material, blockItem);
-        REGISTERED_RAW_METAL_ITEMS.put(material, item);
-    }
-
-    private static void registerStorageBlock(YTechConfigLoader.Material material) {
-        String oreName = material.id() + "_block";
-        RegistryObject<Block> block = BLOCKS.register(oreName, () -> new MaterialBlock(material));
-        RegistryObject<Item> blockItem = ITEMS.register(oreName, () -> new BlockItem(block.get(), new Item.Properties()));
-
-        REGISTERED_STORAGE_BLOCKS.put(material, block);
-        REGISTERED_STORAGE_BLOCK_ITEMS.put(material, blockItem);
+    private static RegistryObject<Item> registerItem(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-            REGISTERED_ORE_BLOCKS.forEach(((material, stoneMap) -> stoneMap.forEach((block, registry) -> event.accept(registry.get()))));
+            REGISTRATION_HOLDER.ore().forEach(((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.accept(registry.get()))));
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            REGISTERED_RAW_STORAGE_BLOCKS.forEach((material, registry) -> event.accept(registry.get()));
-            REGISTERED_STORAGE_BLOCKS.forEach((material, registry) -> event.accept(registry.get()));
+            REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.accept(registry.get()));
+            REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.accept(registry.get()));
         }
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            REGISTERED_RAW_METAL_ITEMS.forEach((material, registry) -> event.accept(registry.get()));
+            REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.accept(registry.get()));
         }
     }
 
     public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
-        REGISTERED_ORE_BLOCKS.forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get())));
-        REGISTERED_RAW_STORAGE_BLOCKS.forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
-        REGISTERED_STORAGE_BLOCKS.forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
+        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get())));
+        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
+        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
-        REGISTERED_ORE_BLOCKS.forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get())));
-        REGISTERED_RAW_METAL_ITEMS.forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
-        REGISTERED_RAW_STORAGE_BLOCKS.forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
-        REGISTERED_STORAGE_BLOCKS.forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
+        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get())));
+        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
+        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
+        REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
+    }
+
+    private static String getPathOf(Block block) {
+        return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
     }
 }

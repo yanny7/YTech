@@ -1,7 +1,7 @@
 {
   "values": [
-    "minecraft:stone",
-    "minecraft:deepslate",
-    "minecraft:netherrack"
+    "ytech:deepslate_tin_ore",
+    "ytech:netherrack_tin_ore",
+    "ytech:stone_tin_ore"
   ]
 }
