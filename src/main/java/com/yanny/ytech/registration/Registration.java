@@ -30,10 +30,10 @@ public class Registration {
 
     public static final RegistrationHolder REGISTRATION_HOLDER = new RegistrationHolder();
 
-    public static final Map<YTechConfigLoader.Material, TagKey<Block>> ORE_BLOCK_TAGS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, TagKey<Block>> STORAGE_BLOCK_TAGS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, TagKey<Item>> ORE_BLOCK_ITEM_TAGS = new HashMap<>();
-    public static final Map<YTechConfigLoader.Material, TagKey<Item>> STORAGE_BLOCK_ITEM_TAGS = new HashMap<>();
+    public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_ORE_TAGS = new HashMap<>();
+    public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_STORAGE_BLOCK_TAGS = new HashMap<>();
+    public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_RAW_STORAGE_BLOCK_TAGS = new HashMap<>();
+    public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_RAW_MATERIAL_TAGS = new HashMap<>();
 
     static {
         for (YTechConfigLoader.Material element : YTechMod.CONFIGURATION.getElements()) {
@@ -45,13 +45,13 @@ public class Registration {
                 )));
                 REGISTRATION_HOLDER.rawStorageBlock().put(element, registerBlockItem(element, Blocks.RAW_IRON_BLOCK, "raw_" + element.id() + "_block"));
                 REGISTRATION_HOLDER.rawMaterial().put(element, registerItem("raw_" + element.id() + "_item"));
-                ORE_BLOCK_TAGS.put(element, Objects.requireNonNull(BlockTags.create(new ResourceLocation(YTechMod.MOD_ID, "ores/" + element.id()))));
-                ORE_BLOCK_ITEM_TAGS.put(element, Objects.requireNonNull(ItemTags.create(new ResourceLocation(YTechMod.MOD_ID, "ores/" + element.id()))));
+                FORGE_ORE_TAGS.put(element, registerBlockItemTag("forge", "ores", element.id()));
+                FORGE_RAW_MATERIAL_TAGS.put(element, registerItemTag("forge", "raw_materials", element.id()));
             }
             if (YTechMod.CONFIGURATION.isMetal(element)) {
                 REGISTRATION_HOLDER.storageBlock().put(element, registerBlockItem(element, Blocks.IRON_BLOCK, element.id() + "_block"));
-                STORAGE_BLOCK_TAGS.put(element, Objects.requireNonNull(BlockTags.create(new ResourceLocation(YTechMod.MOD_ID, "storage_blocks/" + element.id()))));
-                STORAGE_BLOCK_ITEM_TAGS.put(element, Objects.requireNonNull(ItemTags.create(new ResourceLocation(YTechMod.MOD_ID, "storage_blocks/" + element.id()))));
+                FORGE_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", element.id()));
+                FORGE_RAW_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", "raw_" + element.id()));
             }
         }
     }
@@ -71,6 +71,15 @@ public class Registration {
 
     private static RegistryObject<Item> registerItem(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
+    }
+
+    private static BlockItemHolder<TagKey<Block>, TagKey<Item>> registerBlockItemTag(String modId, String group, String name) {
+        ResourceLocation resourceLocation = new ResourceLocation(modId, group + "/" + name);
+        return new BlockItemHolder<>(BlockTags.create(resourceLocation), ItemTags.create(resourceLocation));
+    }
+
+    private static TagKey<Item> registerItemTag(String modId, String group, String name) {
+        return ItemTags.create(new ResourceLocation(modId, group + "/" + name));
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
