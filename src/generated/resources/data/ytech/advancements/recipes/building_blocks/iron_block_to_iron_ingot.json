@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_raw_copper_block": {
+    "has_iron_ingot": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "ytech:raw_copper_block"
-            ]
+            "tag": "forge:ingots/iron"
           }
         ]
       },
@@ -15,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:raw_copper_block"
+        "recipe": "ytech:iron_block_to_iron_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_raw_copper_block",
+      "has_iron_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "ytech:raw_copper_block"
+      "ytech:iron_block_to_iron_ingot"
     ]
   },
   "sends_telemetry_event": false

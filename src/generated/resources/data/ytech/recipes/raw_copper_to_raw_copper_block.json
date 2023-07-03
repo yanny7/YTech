@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "building",
+  "category": "misc",
+  "group": "raw_copper",
   "ingredients": [
     {
       "tag": "forge:storage_blocks/raw_copper"
@@ -8,6 +9,6 @@
   ],
   "result": {
     "count": 9,
-    "item": "ytech:raw_copper_item"
+    "item": "ytech:raw_copper"
   }
 }

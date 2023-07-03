@@ -74,5 +74,11 @@ class YTechItemTags extends ItemTagsProvider {
             tag(Tags.Items.RAW_MATERIALS).addTag(rawMaterial);
             tag(rawMaterial).add(registry.get());
         });
+        Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> {
+            TagKey<Item> ingot = Registration.FORGE_INGOT_TAGS.get(material);
+
+            tag(Tags.Items.INGOTS).addTag(ingot);
+            tag(ingot).add(registry.get());
+        });
     }
 }

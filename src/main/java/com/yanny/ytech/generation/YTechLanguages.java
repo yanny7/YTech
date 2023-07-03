@@ -18,5 +18,6 @@ class YTechLanguages extends LanguageProvider {
         Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> add(registry.get(), "Block of " + material.name()));
 
         Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> add(registry.get(), "Raw " + material.name()));
+        Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> add(registry.get(), material.name() + " Ingot"));
     }
 }

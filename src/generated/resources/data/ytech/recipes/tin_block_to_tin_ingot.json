@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "tin_block",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/tin"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "ytech:tin_block"
+  },
+  "show_notification": true
+}

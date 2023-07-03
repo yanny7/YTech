@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "building",
+  "category": "misc",
+  "group": "raw_tin",
   "ingredients": [
     {
       "tag": "forge:storage_blocks/raw_tin"
@@ -8,6 +9,6 @@
   ],
   "result": {
     "count": 9,
-    "item": "ytech:raw_tin_item"
+    "item": "ytech:raw_tin"
   }
 }

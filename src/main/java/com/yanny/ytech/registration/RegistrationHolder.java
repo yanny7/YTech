@@ -11,9 +11,10 @@ public record RegistrationHolder(
         HashMap<YTechConfigLoader.Material, HashMap<Block, RegistryObject<Block>>> ore,
         HashMap<YTechConfigLoader.Material, RegistryObject<Block>> storageBlock,
         HashMap<YTechConfigLoader.Material, RegistryObject<Block>> rawStorageBlock,
-        HashMap<YTechConfigLoader.Material, RegistryObject<Item>> rawMaterial
+        HashMap<YTechConfigLoader.Material, RegistryObject<Item>> rawMaterial,
+        HashMap<YTechConfigLoader.Material, RegistryObject<Item>> ingot
 ) {
     public RegistrationHolder() {
-        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 }

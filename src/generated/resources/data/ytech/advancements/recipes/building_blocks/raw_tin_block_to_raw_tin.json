@@ -1,16 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_raw_tin_item": {
+    "has_raw_tin": {
       "conditions": {
         "items": [
           {
-            "count": {
-              "min": 9
-            },
-            "items": [
-              "ytech:raw_tin_item"
-            ]
+            "tag": "forge:raw_materials/tin"
           }
         ]
       },
@@ -18,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:raw_tin_item"
+        "recipe": "ytech:raw_tin_block_to_raw_tin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_raw_tin_item",
+      "has_raw_tin",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "ytech:raw_tin_item"
+      "ytech:raw_tin_block_to_raw_tin"
     ]
   },
   "sends_telemetry_event": false

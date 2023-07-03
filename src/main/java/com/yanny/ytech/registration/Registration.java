@@ -35,6 +35,7 @@ public class Registration {
     public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_STORAGE_BLOCK_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_RAW_STORAGE_BLOCK_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_RAW_MATERIAL_TAGS = new HashMap<>();
+    public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_INGOT_TAGS = new HashMap<>();
 
     static {
         for (YTechConfigLoader.Material element : YTechMod.CONFIGURATION.getElements()) {
@@ -45,14 +46,18 @@ public class Registration {
                         .put(Blocks.NETHERRACK, registerBlockItem(element, Blocks.NETHERRACK, getPathOf(Blocks.NETHERRACK) + "_" + element.id() + "_ore"))
                         .build()));
                 REGISTRATION_HOLDER.rawStorageBlock().put(element, registerBlockItem(element, Blocks.RAW_IRON_BLOCK, "raw_" + element.id() + "_block"));
-                REGISTRATION_HOLDER.rawMaterial().put(element, registerItem("raw_" + element.id() + "_item"));
+                REGISTRATION_HOLDER.rawMaterial().put(element, registerItem("raw_" + element.id()));
+
                 FORGE_ORE_TAGS.put(element, registerBlockItemTag("forge", "ores", element.id()));
+                FORGE_RAW_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", "raw_" + element.id()));
                 FORGE_RAW_MATERIAL_TAGS.put(element, registerItemTag("forge", "raw_materials", element.id()));
             }
             if (YTechMod.CONFIGURATION.isMetal(element)) {
                 REGISTRATION_HOLDER.storageBlock().put(element, registerBlockItem(element, Blocks.IRON_BLOCK, element.id() + "_block"));
+                REGISTRATION_HOLDER.ingot().put(element, registerItem(element.id() + "_ingot"));
+
                 FORGE_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", element.id()));
-                FORGE_RAW_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", "raw_" + element.id()));
+                FORGE_INGOT_TAGS.put(element, registerItemTag("forge", "ingots", element.id()));
             }
         }
     }
@@ -93,6 +98,7 @@ public class Registration {
         }
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.accept(registry.get()));
+            REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.accept(registry.get()));
         }
     }
 
@@ -107,6 +113,7 @@ public class Registration {
         REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
         REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
         REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
+        REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.register((itemStack, tint) -> YTechMod.CONFIGURATION.getElement(material.id()).getColor(), registry.get()));
     }
 
     private static String getPathOf(Block block) {

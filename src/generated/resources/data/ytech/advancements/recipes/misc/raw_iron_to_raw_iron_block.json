@@ -1,16 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_raw_copper_item": {
+    "has_raw_iron_block": {
       "conditions": {
         "items": [
           {
-            "count": {
-              "min": 9
-            },
-            "items": [
-              "ytech:raw_copper_item"
-            ]
+            "tag": "forge:storage_blocks/raw_iron"
           }
         ]
       },
@@ -18,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:raw_copper_item"
+        "recipe": "ytech:raw_iron_to_raw_iron_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_raw_copper_item",
+      "has_raw_iron_block",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "ytech:raw_copper_item"
+      "ytech:raw_iron_to_raw_iron_block"
     ]
   },
   "sends_telemetry_event": false

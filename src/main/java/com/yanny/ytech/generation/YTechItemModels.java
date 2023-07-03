@@ -12,6 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 class YTechItemModels extends ItemModelProvider {
     private static final ResourceLocation RAW_METAL = Utils.getItemTexture("raw_metal");
+    private static final ResourceLocation INGOT = Utils.getItemTexture("ingot");
 
     public YTechItemModels(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, YTechMod.MOD_ID, existingFileHelper);
@@ -20,6 +21,7 @@ class YTechItemModels extends ItemModelProvider {
     @Override
     protected void registerModels() {
         Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> registerTintedItem(registry, RAW_METAL));
+        Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> registerTintedItem(registry, INGOT));
     }
 
     void registerTintedItem(RegistryObject<Item> registry, ResourceLocation texture) {

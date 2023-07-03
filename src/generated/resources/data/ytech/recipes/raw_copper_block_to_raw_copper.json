@@ -1,9 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "building",
+  "group": "raw_copper_block",
   "key": {
     "#": {
-      "tag": "forge:raw_materials/tin"
+      "tag": "forge:raw_materials/copper"
     }
   },
   "pattern": [
@@ -12,7 +13,7 @@
     "###"
   ],
   "result": {
-    "item": "ytech:raw_tin_block"
+    "item": "ytech:raw_copper_block"
   },
   "show_notification": true
 }
