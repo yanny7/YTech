@@ -62,15 +62,39 @@ class YTechBlockTags extends BlockTagsProvider {
         });
         Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> {
             TagKey<Block> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).block();
+            Block block = registry.get();
+
+            if (material.equals(iron)) {
+                tag(BlockTags.NEEDS_STONE_TOOL).add(block);
+            } else if (material.equals(copper)) {
+                tag(BlockTags.NEEDS_STONE_TOOL).add(block);
+            } else if (material.equals(gold)) {
+                tag(BlockTags.NEEDS_IRON_TOOL).add(block);
+            } else {
+                tag(BlockTags.NEEDS_IRON_TOOL).add(block);
+            }
 
             tag(Tags.Blocks.STORAGE_BLOCKS).addTag(storageBlockTag);
-            tag(storageBlockTag).add(registry.get());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
+            tag(storageBlockTag).add(block);
         });
         Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach(((material, registry) -> {
             TagKey<Block> storageBlockTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).block();
+            Block block = registry.get();
+
+            if (material.equals(iron)) {
+                tag(BlockTags.NEEDS_STONE_TOOL).add(block);
+            } else if (material.equals(copper)) {
+                tag(BlockTags.NEEDS_STONE_TOOL).add(block);
+            } else if (material.equals(gold)) {
+                tag(BlockTags.NEEDS_IRON_TOOL).add(block);
+            } else {
+                tag(BlockTags.NEEDS_IRON_TOOL).add(block);
+            }
 
             tag(Tags.Blocks.STORAGE_BLOCKS).addTag(storageBlockTag);
-            tag(storageBlockTag).add(registry.get());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
+            tag(storageBlockTag).add(block);
         }));
     }
 }

@@ -11,6 +11,14 @@
     "ytech:netherrack_iron_ore",
     "ytech:stone_gold_ore",
     "ytech:deepslate_gold_ore",
-    "ytech:netherrack_gold_ore"
+    "ytech:netherrack_gold_ore",
+    "ytech:tin_block",
+    "ytech:copper_block",
+    "ytech:iron_block",
+    "ytech:gold_block",
+    "ytech:raw_tin_block",
+    "ytech:raw_copper_block",
+    "ytech:raw_iron_block",
+    "ytech:raw_gold_block"
   ]
 }

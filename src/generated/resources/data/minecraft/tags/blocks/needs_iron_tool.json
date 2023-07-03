@@ -5,6 +5,10 @@
     "ytech:netherrack_tin_ore",
     "ytech:stone_gold_ore",
     "ytech:deepslate_gold_ore",
-    "ytech:netherrack_gold_ore"
+    "ytech:netherrack_gold_ore",
+    "ytech:tin_block",
+    "ytech:gold_block",
+    "ytech:raw_tin_block",
+    "ytech:raw_gold_block"
   ]
 }
