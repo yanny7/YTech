@@ -1,5 +1,6 @@
 package com.yanny.ytech.registration;
 
+import com.google.common.collect.ImmutableMap;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import net.minecraft.resources.ResourceLocation;
@@ -38,11 +39,11 @@ public class Registration {
     static {
         for (YTechConfigLoader.Material element : YTechMod.CONFIGURATION.getElements()) {
             if (YTechMod.CONFIGURATION.isOre(element)) {
-                REGISTRATION_HOLDER.ore().put(element, new HashMap<>(Map.of(
-                        Blocks.STONE, registerBlockItem(element, Blocks.STONE, getPathOf(Blocks.STONE) + "_" + element.id() + "_ore"),
-                        Blocks.DEEPSLATE, registerBlockItem(element, Blocks.DEEPSLATE, getPathOf(Blocks.DEEPSLATE) + "_" + element.id() + "_ore"),
-                        Blocks.NETHERRACK, registerBlockItem(element, Blocks.NETHERRACK, getPathOf(Blocks.NETHERRACK) + "_" + element.id() + "_ore")
-                )));
+                REGISTRATION_HOLDER.ore().put(element, new HashMap<>(ImmutableMap.<Block, RegistryObject<Block>>builder()
+                        .put(Blocks.STONE, registerBlockItem(element, Blocks.STONE, getPathOf(Blocks.STONE) + "_" + element.id() + "_ore"))
+                        .put(Blocks.DEEPSLATE, registerBlockItem(element, Blocks.DEEPSLATE, getPathOf(Blocks.DEEPSLATE) + "_" + element.id() + "_ore"))
+                        .put(Blocks.NETHERRACK, registerBlockItem(element, Blocks.NETHERRACK, getPathOf(Blocks.NETHERRACK) + "_" + element.id() + "_ore"))
+                        .build()));
                 REGISTRATION_HOLDER.rawStorageBlock().put(element, registerBlockItem(element, Blocks.RAW_IRON_BLOCK, "raw_" + element.id() + "_block"));
                 REGISTRATION_HOLDER.rawMaterial().put(element, registerItem("raw_" + element.id() + "_item"));
                 FORGE_ORE_TAGS.put(element, registerBlockItemTag("forge", "ores", element.id()));
