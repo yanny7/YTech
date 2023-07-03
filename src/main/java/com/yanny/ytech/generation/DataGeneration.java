@@ -17,5 +17,6 @@ public class DataGeneration {
         generator.addProvider(event.includeServer(), blockTags);
         generator.addProvider(event.includeServer(), new YTechItemTags(packOutput, event.getLookupProvider(), blockTags.contentsGetter(), event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new YTechRecipes(packOutput));
+        generator.addProvider(event.includeServer(), new YTechLootTables(packOutput));
     }
 }
