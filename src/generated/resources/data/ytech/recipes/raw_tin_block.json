@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "ytech:raw_tin_block"
+      "tag": "forge:storage_blocks/raw_tin"
     }
   ],
   "result": {

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "item": "ytech:raw_copper_item"
+      "tag": "forge:raw_materials/copper"
     }
   },
   "pattern": [

@@ -4,6 +4,7 @@ import com.yanny.ytech.registration.Registration;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
@@ -19,18 +20,21 @@ public class YTechRecipes extends RecipeProvider {
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
         Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> {
-            storageBlockRecipe(recipeConsumer, Registration.REGISTRATION_HOLDER.rawMaterial().get(material), registry);
+            RegistryObject<Item> unpacked = Registration.REGISTRATION_HOLDER.rawMaterial().get(material);
+            TagKey<Item> unpackedTag = Registration.FORGE_RAW_MATERIAL_TAGS.get(material);
+            TagKey<Item> packedTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).item();
+            nineBlockStorageRecipes(recipeConsumer, unpacked, unpackedTag, registry, packedTag);
         });
     }
 
-    private void storageBlockRecipe(Consumer<FinishedRecipe> recipeConsumer, RegistryObject<Item> item, RegistryObject<Block> compressed) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, compressed.get())
-                .define('#', item.get()).pattern("###").pattern("###").pattern("###")
-                .unlockedBy("has_" + getItemName(item.get()), has(MinMaxBounds.Ints.atLeast(9), item.get()))
-                .save(recipeConsumer, item.getId());
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, item.get(), 9)
-                .requires(compressed.get())
-                .unlockedBy("has_" + getItemName(compressed.get()), has(compressed.get()))
-                .save(recipeConsumer, compressed.getId());
+    private void nineBlockStorageRecipes(Consumer<FinishedRecipe> recipeConsumer, RegistryObject<Item> unpacked, TagKey<Item> unpackedTag, RegistryObject<Block> packed, TagKey<Item> packedTag) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, packed.get())
+                .define('#', unpackedTag).pattern("###").pattern("###").pattern("###")
+                .unlockedBy("has_" + getItemName(unpacked.get()), has(MinMaxBounds.Ints.atLeast(9), unpacked.get()))
+                .save(recipeConsumer, unpacked.getId());
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, unpacked.get(), 9)
+                .requires(packedTag)
+                .unlockedBy("has_" + getItemName(packed.get()), has(packed.get()))
+                .save(recipeConsumer, packed.getId());
     }
 }

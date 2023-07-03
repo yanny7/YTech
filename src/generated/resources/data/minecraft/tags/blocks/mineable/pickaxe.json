@@ -1,16 +1,16 @@
 {
   "values": [
+    "ytech:stone_tin_ore",
     "ytech:deepslate_tin_ore",
     "ytech:netherrack_tin_ore",
-    "ytech:stone_tin_ore",
+    "ytech:stone_copper_ore",
     "ytech:deepslate_copper_ore",
     "ytech:netherrack_copper_ore",
-    "ytech:stone_copper_ore",
+    "ytech:stone_iron_ore",
     "ytech:deepslate_iron_ore",
     "ytech:netherrack_iron_ore",
-    "ytech:stone_iron_ore",
+    "ytech:stone_gold_ore",
     "ytech:deepslate_gold_ore",
-    "ytech:netherrack_gold_ore",
-    "ytech:stone_gold_ore"
+    "ytech:netherrack_gold_ore"
   ]
 }

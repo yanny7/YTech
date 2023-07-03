@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "item": "ytech:raw_gold_item"
+      "tag": "forge:raw_materials/gold"
     }
   },
   "pattern": [

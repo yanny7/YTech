@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "item": "ytech:raw_tin_item"
+      "tag": "forge:raw_materials/tin"
     }
   },
   "pattern": [
