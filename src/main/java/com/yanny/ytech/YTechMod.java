@@ -6,7 +6,6 @@ import com.yanny.ytech.generation.DataGeneration;
 import com.yanny.ytech.registration.Registration;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
@@ -20,13 +19,9 @@ public class YTechMod {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registration.init(modEventBus);
 
-        modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(Registration::addBlockColors);
         modEventBus.addListener(Registration::addItemColors);
         modEventBus.addListener(DataGeneration::generate);
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
     }
 }

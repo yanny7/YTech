@@ -12,9 +12,10 @@ public record RegistrationHolder(
         HashMap<YTechConfigLoader.Material, RegistryObject<Block>> storageBlock,
         HashMap<YTechConfigLoader.Material, RegistryObject<Block>> rawStorageBlock,
         HashMap<YTechConfigLoader.Material, RegistryObject<Item>> rawMaterial,
-        HashMap<YTechConfigLoader.Material, RegistryObject<Item>> ingot
+        HashMap<YTechConfigLoader.Material, RegistryObject<Item>> ingot,
+        HashMap<YTechConfigLoader.Material, FluidHolder> fluid
 ) {
     public RegistrationHolder() {
-        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 }

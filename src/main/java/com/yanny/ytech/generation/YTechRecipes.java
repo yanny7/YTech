@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public class YTechRecipes extends RecipeProvider {
+class YTechRecipes extends RecipeProvider {
     public YTechRecipes(PackOutput output) {
         super(output);
     }

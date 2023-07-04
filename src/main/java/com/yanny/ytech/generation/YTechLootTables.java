@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class YTechLootTables extends LootTableProvider {
+class YTechLootTables extends LootTableProvider {
     public YTechLootTables(PackOutput packOutput) {
         super(packOutput, Collections.emptySet(), getSubProviders());
     }
