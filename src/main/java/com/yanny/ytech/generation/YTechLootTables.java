@@ -26,7 +26,7 @@ class YTechLootTables extends LootTableProvider {
         );
     }
 
-    static class YTechBlockLootSub extends BlockLootSubProvider {
+    private static class YTechBlockLootSub extends BlockLootSubProvider {
         protected YTechBlockLootSub() {
             super(new HashSet<>(), FeatureFlags.REGISTRY.allFlags());
         }

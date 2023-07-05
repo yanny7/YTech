@@ -28,7 +28,7 @@ class YTechBlockStates extends BlockStateProvider {
         Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> registerTintedCube(registry, STORAGE_BLOCK));
     }
 
-    void registerOre(Block stone, @NotNull RegistryObject<Block> registry) {
+    private void registerOre(Block stone, @NotNull RegistryObject<Block> registry) {
         String path = registry.getId().getPath();
         BlockModelBuilder model = models().cubeAll(path, Utils.getBaseBlockTexture(stone));
 
@@ -41,7 +41,7 @@ class YTechBlockStates extends BlockStateProvider {
         itemModels().getBuilder(path).parent(model);
     }
 
-    void registerTintedCube(@NotNull RegistryObject<Block> registry, @NotNull ResourceLocation texture) {
+    private void registerTintedCube(@NotNull RegistryObject<Block> registry, @NotNull ResourceLocation texture) {
         String path = registry.getId().getPath();
         BlockModelBuilder model = models().cubeAll(path, texture);
 

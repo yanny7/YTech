@@ -28,12 +28,12 @@ class YTechItemModels extends ItemModelProvider {
         Registration.REGISTRATION_HOLDER.fluid().forEach(((material, fluidHolder) -> registerBucketItem(fluidHolder.bucket())));
     }
 
-    void registerTintedItem(RegistryObject<Item> registry, ResourceLocation texture) {
+    private void registerTintedItem(RegistryObject<Item> registry, ResourceLocation texture) {
         String path = registry.getId().getPath();
         getBuilder(path).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", texture);
     }
 
-    void registerBucketItem(RegistryObject<Item> registry) {
+    private void registerBucketItem(RegistryObject<Item> registry) {
         String path = registry.getId().getPath();
         getBuilder(path).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", BUCKET).texture("layer1", BUCKET_OVERLAY);
     }

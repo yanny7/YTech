@@ -32,12 +32,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Registration {
-
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
-    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, YTechMod.MOD_ID);
-    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, YTechMod.MOD_ID);
-
     public static final RegistrationHolder REGISTRATION_HOLDER = new RegistrationHolder();
 
     public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_ORE_TAGS = new HashMap<>();
@@ -46,6 +40,11 @@ public class Registration {
     public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_RAW_MATERIAL_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_INGOT_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Fluid>> FORGE_FLUID_TAGS = new HashMap<>();
+
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
+    private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, YTechMod.MOD_ID);
+    private static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, YTechMod.MOD_ID);
 
     static {
         for (YTechConfigLoader.Material element : YTechMod.CONFIGURATION.getElements()) {
@@ -81,6 +80,35 @@ public class Registration {
         ITEMS.register(eventBus);
         FLUIDS.register(eventBus);
         FLUID_TYPES.register(eventBus);
+    }
+
+    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
+            REGISTRATION_HOLDER.ore().forEach(((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.accept(registry.get()))));
+        }
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.accept(registry.get()));
+            REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.accept(registry.get()));
+        }
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.accept(registry.get()));
+            REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.accept(registry.get()));
+        }
+    }
+
+    public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
+        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get())));
+        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get()));
+        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get()));
+    }
+
+    public static void addItemColors(RegisterColorHandlersEvent.Item event) {
+        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get())));
+        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
+        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
+        REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
+        REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
+        REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> event.register((itemStack, tint) -> tint == 1 ? material.getColor() : 0xFFFFFF, holder.bucket().get())));
     }
 
     private static RegistryObject<Block> registerBlockItem(YTechConfigLoader.Material material, Block base, String name) {
@@ -127,35 +155,6 @@ public class Registration {
 
     private static TagKey<Fluid> registerFluidTag(String modId, String name) {
         return FluidTags.create(new ResourceLocation(modId, name));
-    }
-
-    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-            REGISTRATION_HOLDER.ore().forEach(((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.accept(registry.get()))));
-        }
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.accept(registry.get()));
-            REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.accept(registry.get()));
-        }
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.accept(registry.get()));
-            REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.accept(registry.get()));
-        }
-    }
-
-    public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
-        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get())));
-        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get()));
-    }
-
-    public static void addItemColors(RegisterColorHandlersEvent.Item event) {
-        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get())));
-        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> event.register((itemStack, tint) -> tint == 1 ? material.getColor() : 0xFFFFFF, holder.bucket().get())));
     }
 
     private static String getPathOf(Block block) {

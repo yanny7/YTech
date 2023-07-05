@@ -2,9 +2,6 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.registration.Registration;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -57,9 +54,5 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("###").pattern("###").pattern("###")
                 .group(packedGroup).unlockedBy(getHasName(unpacked), has(unpackedTag))
                 .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, packedName));
-    }
-
-    protected static InventoryChangeTrigger.TriggerInstance has(MinMaxBounds.Ints minMaxBounds, TagKey<Item> tagKey) {
-        return inventoryTrigger(ItemPredicate.Builder.item().of(tagKey).withCount(minMaxBounds).build());
     }
 }
