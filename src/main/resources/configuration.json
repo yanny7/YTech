@@ -3,7 +3,7 @@
     "ore": ["iron", "copper", "tin", "gold"],
     "metal": ["iron", "copper", "tin", "gold"],
     "mineral": ["boron"],
-    "dust": [],
+    "dust": ["copper", "tin"],
     "fluid": ["mercury"],
     "gas": ["hydrogen", "helium"]
   },

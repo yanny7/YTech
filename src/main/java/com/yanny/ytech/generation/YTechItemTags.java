@@ -80,5 +80,11 @@ class YTechItemTags extends ItemTagsProvider {
             tag(Tags.Items.INGOTS).addTag(ingot);
             tag(ingot).add(registry.get());
         });
+        Registration.REGISTRATION_HOLDER.dust().forEach((material, registry) -> {
+            TagKey<Item> ingot = Registration.FORGE_DUST_TAGS.get(material);
+
+            tag(Tags.Items.DUSTS).addTag(ingot);
+            tag(ingot).add(registry.get());
+        });
     }
 }

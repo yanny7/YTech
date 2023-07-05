@@ -14,6 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 class YTechItemModels extends ItemModelProvider {
     private static final ResourceLocation RAW_METAL = Utils.getItemTexture("raw_metal");
     private static final ResourceLocation INGOT = Utils.getItemTexture("ingot");
+    private static final ResourceLocation DUST = Utils.getItemTexture("dust");
     private static final ResourceLocation BUCKET = Utils.getBaseItemTexture(Items.BUCKET);
     private static final ResourceLocation BUCKET_OVERLAY = Utils.getItemTexture("bucket_overlay");
 
@@ -25,7 +26,8 @@ class YTechItemModels extends ItemModelProvider {
     protected void registerModels() {
         Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> registerTintedItem(registry, RAW_METAL));
         Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> registerTintedItem(registry, INGOT));
-        Registration.REGISTRATION_HOLDER.fluid().forEach(((material, fluidHolder) -> registerBucketItem(fluidHolder.bucket())));
+        Registration.REGISTRATION_HOLDER.dust().forEach((material, registry) -> registerTintedItem(registry, DUST));
+        Registration.REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> registerBucketItem(holder.bucket())));
     }
 
     private void registerTintedItem(RegistryObject<Item> registry, ResourceLocation texture) {

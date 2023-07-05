@@ -19,6 +19,7 @@
   "block.ytech.stone_iron_ore": "Stone Iron Ore",
   "block.ytech.stone_tin_ore": "Stone Tin Ore",
   "block.ytech.tin_block": "Block of Tin",
+  "item.ytech.copper_dust": "Copper Dust",
   "item.ytech.copper_ingot": "Copper Ingot",
   "item.ytech.gold_ingot": "Gold Ingot",
   "item.ytech.iron_ingot": "Iron Ingot",
@@ -27,5 +28,6 @@
   "item.ytech.raw_gold": "Raw Gold",
   "item.ytech.raw_iron": "Raw Iron",
   "item.ytech.raw_tin": "Raw Tin",
+  "item.ytech.tin_dust": "Tin Dust",
   "item.ytech.tin_ingot": "Tin Ingot"
 }

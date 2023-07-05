@@ -39,6 +39,7 @@ public class Registration {
     public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_RAW_STORAGE_BLOCK_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_RAW_MATERIAL_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_INGOT_TAGS = new HashMap<>();
+    public static final Map<YTechConfigLoader.Material, TagKey<Item>> FORGE_DUST_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, TagKey<Fluid>> FORGE_FLUID_TAGS = new HashMap<>();
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
@@ -68,6 +69,10 @@ public class Registration {
                 FORGE_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", element.id()));
                 FORGE_INGOT_TAGS.put(element, registerItemTag("forge", "ingots", element.id()));
             }
+            if (YTechMod.CONFIGURATION.isDust(element)) {
+                REGISTRATION_HOLDER.dust().put(element, registerItem(element.id() + "_dust"));
+                FORGE_DUST_TAGS.put(element, registerItemTag("forge", "dusts", element.id()));
+            }
             if (YTechMod.CONFIGURATION.isFluid(element)) {
                 REGISTRATION_HOLDER.fluid().put(element, registerFluid(element));
                 FORGE_FLUID_TAGS.put(element, registerFluidTag("forge", element.id()));
@@ -93,6 +98,10 @@ public class Registration {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.accept(registry.get()));
             REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.accept(registry.get()));
+            REGISTRATION_HOLDER.dust().forEach((material, registry) -> event.accept(registry.get()));
+        }
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            REGISTRATION_HOLDER.fluid().forEach((material, holder) -> event.accept(holder.bucket().get()));
         }
     }
 
@@ -108,6 +117,7 @@ public class Registration {
         REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
         REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
         REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
+        REGISTRATION_HOLDER.dust().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
         REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> event.register((itemStack, tint) -> tint == 1 ? material.getColor() : 0xFFFFFF, holder.bucket().get())));
     }
 
