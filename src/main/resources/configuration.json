@@ -1212,6 +1212,16 @@
         "melting": 178.1,
         "boiling": 329.2,
         "hardness": null
+      },
+      {
+        "id": "steam",
+        "name": "Steam",
+        "color": null,
+        "symbol": "H₂O",
+        "density": 0.59,
+        "melting": 373,
+        "boiling": 373,
+        "hardness": null
       }
     ],
     "isotopes": [
