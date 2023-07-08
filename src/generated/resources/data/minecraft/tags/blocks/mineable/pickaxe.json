@@ -1,24 +1,24 @@
 {
   "values": [
-    "ytech:stone_tin_ore",
-    "ytech:deepslate_tin_ore",
-    "ytech:netherrack_tin_ore",
-    "ytech:stone_copper_ore",
     "ytech:deepslate_copper_ore",
     "ytech:netherrack_copper_ore",
-    "ytech:stone_iron_ore",
-    "ytech:deepslate_iron_ore",
-    "ytech:netherrack_iron_ore",
-    "ytech:stone_gold_ore",
+    "ytech:stone_copper_ore",
     "ytech:deepslate_gold_ore",
     "ytech:netherrack_gold_ore",
-    "ytech:tin_block",
+    "ytech:stone_gold_ore",
+    "ytech:deepslate_iron_ore",
+    "ytech:netherrack_iron_ore",
+    "ytech:stone_iron_ore",
+    "ytech:deepslate_tin_ore",
+    "ytech:netherrack_tin_ore",
+    "ytech:stone_tin_ore",
     "ytech:copper_block",
-    "ytech:iron_block",
     "ytech:gold_block",
-    "ytech:raw_tin_block",
+    "ytech:iron_block",
+    "ytech:tin_block",
     "ytech:raw_copper_block",
+    "ytech:raw_gold_block",
     "ytech:raw_iron_block",
-    "ytech:raw_gold_block"
+    "ytech:raw_tin_block"
   ]
 }

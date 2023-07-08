@@ -13,9 +13,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 class YTechItemTags extends ItemTagsProvider {
@@ -29,12 +31,16 @@ class YTechItemTags extends ItemTagsProvider {
         YTechConfigLoader.Material copper = YTechMod.CONFIGURATION.getElement("copper");
         YTechConfigLoader.Material gold = YTechMod.CONFIGURATION.getElement("gold");
 
-        Registration.REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.ore().entrySet()).forEach((oreEntry) -> {
+            YTechConfigLoader.Material material = oreEntry.getKey();
+            HashMap<Block, RegistryObject<Block>> stoneMap = oreEntry.getValue();
             TagKey<Item> oreTag = Registration.FORGE_ORE_TAGS.get(material).item();
 
             tag(Tags.Items.ORES).addTag(oreTag);
 
-            stoneMap.forEach((stone, registry) -> {
+            Utils.sortedByBlock(stoneMap.entrySet()).forEach((stoneEntry) -> {
+                Block stone = stoneEntry.getKey();
+                RegistryObject<Block> registry = stoneEntry.getValue();
                 Item item = registry.get().asItem();
 
                 if (material.equals(iron)) {
@@ -56,31 +62,41 @@ class YTechItemTags extends ItemTagsProvider {
                 tag(oreTag).add(item);
             });
         });
-        Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.storageBlock().entrySet()).forEach((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            RegistryObject<Block> registry = entry.getValue();
             TagKey<Item> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).item();
 
             tag(Tags.Items.STORAGE_BLOCKS).addTag(storageBlockTag);
             tag(storageBlockTag).add(registry.get().asItem());
         });
-        Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.rawStorageBlock().entrySet()).forEach((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            RegistryObject<Block> registry = entry.getValue();
             TagKey<Item> storageBlockTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).item();
 
             tag(Tags.Items.STORAGE_BLOCKS).addTag(storageBlockTag);
             tag(storageBlockTag).add(registry.get().asItem());
         });
-        Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.rawMaterial().entrySet()).forEach((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            RegistryObject<Item> registry = entry.getValue();
             TagKey<Item> rawMaterial = Registration.FORGE_RAW_MATERIAL_TAGS.get(material);
 
             tag(Tags.Items.RAW_MATERIALS).addTag(rawMaterial);
             tag(rawMaterial).add(registry.get());
         });
-        Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.ingot().entrySet()).forEach((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            RegistryObject<Item> registry = entry.getValue();
             TagKey<Item> ingot = Registration.FORGE_INGOT_TAGS.get(material);
 
             tag(Tags.Items.INGOTS).addTag(ingot);
             tag(ingot).add(registry.get());
         });
-        Registration.REGISTRATION_HOLDER.dust().forEach((material, registry) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.dust().entrySet()).forEach((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            RegistryObject<Item> registry = entry.getValue();
             TagKey<Item> ingot = Registration.FORGE_DUST_TAGS.get(material);
 
             tag(Tags.Items.DUSTS).addTag(ingot);

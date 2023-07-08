@@ -1,6 +1,8 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.registration.FluidHolder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -18,6 +20,10 @@ class YTechFluidTags extends FluidTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        Registration.REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> tag(Registration.FORGE_FLUID_TAGS.get(material)).add(holder.source().get()).add(holder.flowing().get())));
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.fluid().entrySet()).forEach(((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            FluidHolder holder = entry.getValue();
+            tag(Registration.FORGE_FLUID_TAGS.get(material)).add(holder.source().get()).add(holder.flowing().get());
+        }));
     }
 }

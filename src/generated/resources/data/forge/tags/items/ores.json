@@ -1,8 +1,8 @@
 {
   "values": [
-    "#forge:ores/tin",
     "#forge:ores/copper",
+    "#forge:ores/gold",
     "#forge:ores/iron",
-    "#forge:ores/gold"
+    "#forge:ores/tin"
   ]
 }

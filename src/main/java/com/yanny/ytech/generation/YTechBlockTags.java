@@ -12,8 +12,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 class YTechBlockTags extends BlockTagsProvider {
@@ -27,12 +29,16 @@ class YTechBlockTags extends BlockTagsProvider {
         YTechConfigLoader.Material copper = YTechMod.CONFIGURATION.getElement("copper");
         YTechConfigLoader.Material gold = YTechMod.CONFIGURATION.getElement("gold");
 
-        Registration.REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.ore().entrySet()).forEach((oreEntry) -> {
+            YTechConfigLoader.Material material = oreEntry.getKey();
+            HashMap<Block, RegistryObject<Block>> stoneMap = oreEntry.getValue();
             TagKey<Block> oreTag = Registration.FORGE_ORE_TAGS.get(material).block();
 
             tag(Tags.Blocks.ORES).addTag(oreTag);
 
-            stoneMap.forEach((stone, registry) -> {
+            Utils.sortedByBlock(stoneMap.entrySet()).forEach((stoneEntry) -> {
+                Block stone = stoneEntry.getKey();
+                RegistryObject<Block> registry = stoneEntry.getValue();
                 Block block = registry.get();
 
                 if (material.equals(iron)) {
@@ -60,7 +66,9 @@ class YTechBlockTags extends BlockTagsProvider {
                 tag(oreTag).add(block);
             });
         });
-        Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.storageBlock().entrySet()).forEach((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            RegistryObject<Block> registry = entry.getValue();
             TagKey<Block> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).block();
             Block block = registry.get();
 
@@ -78,7 +86,9 @@ class YTechBlockTags extends BlockTagsProvider {
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
             tag(storageBlockTag).add(block);
         });
-        Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach(((material, registry) -> {
+        Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.rawStorageBlock().entrySet()).forEach((entry) -> {
+            YTechConfigLoader.Material material = entry.getKey();
+            RegistryObject<Block> registry = entry.getValue();
             TagKey<Block> storageBlockTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).block();
             Block block = registry.get();
 
@@ -95,6 +105,6 @@ class YTechBlockTags extends BlockTagsProvider {
             tag(Tags.Blocks.STORAGE_BLOCKS).addTag(storageBlockTag);
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
             tag(storageBlockTag).add(block);
-        }));
+        });
     }
 }
