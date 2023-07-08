@@ -59,7 +59,7 @@ public abstract class YTechBlock extends Block implements EntityBlock {
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
         return defaultBlockState()
                 .setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
-                .setValue(BlockStateProperties.POWERED, true);
+                .setValue(BlockStateProperties.POWERED, false);
     }
 
     @NotNull

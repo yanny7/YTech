@@ -1251,7 +1251,7 @@
     {
       "id": "crusher",
       "name": "Crusher",
-      "fromTier": "steam"
+      "fromTier": "stone"
     },
     {
       "id": "furnace",
