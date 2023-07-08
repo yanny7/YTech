@@ -36,6 +36,7 @@ class YTechLootTables extends LootTableProvider {
             Registration.REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> add(registry.get(), (block) -> createOreDrop(block, Registration.REGISTRATION_HOLDER.rawMaterial().get(material).get()))));
             Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach(((material, registry) -> dropSelf(registry.get())));
             Registration.REGISTRATION_HOLDER.storageBlock().forEach(((material, registry) -> dropSelf(registry.get())));
+            Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> dropSelf(holder.block().get())));
         }
 
         @NotNull
@@ -44,7 +45,8 @@ class YTechLootTables extends LootTableProvider {
             Stream<Block> stream = Stream.of(
                     Registration.REGISTRATION_HOLDER.ore().values().stream().flatMap((map) -> map.values().stream().flatMap(RegistryObject::stream)),
                     Registration.REGISTRATION_HOLDER.rawStorageBlock().values().stream().flatMap(RegistryObject::stream),
-                    Registration.REGISTRATION_HOLDER.storageBlock().values().stream().flatMap(RegistryObject::stream)
+                    Registration.REGISTRATION_HOLDER.storageBlock().values().stream().flatMap(RegistryObject::stream),
+                    Registration.REGISTRATION_HOLDER.machine().values().stream().flatMap((map) -> map.values().stream().flatMap((f) -> f.block().stream()))
             ).flatMap(i -> i);
             return stream.toList();
         }

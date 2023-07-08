@@ -21,5 +21,7 @@ class YTechLanguages extends LanguageProvider {
         Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> add(registry.get(), material.name() + " Ingot"));
         Registration.REGISTRATION_HOLDER.dust().forEach((material, registry) -> add(registry.get(), material.name() + " Dust"));
         Registration.REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> add(holder.bucket().get(), material.name() + " Bucket")));
+
+        Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> add(holder.item().get(), tier.name() + " " + machine.name())));
     }
 }

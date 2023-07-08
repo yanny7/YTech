@@ -15,6 +15,8 @@ import java.util.*;
 public class YTechConfigLoader {
     private final YTechRec model;
     private final Map<String, Material> elementMap = new HashMap<>();
+    private final Map<String, Machine> machineMap = new HashMap<>();
+    private final Map<String, Tier> tierMap = new HashMap<>();
     private final Set<String> oreSet = new HashSet<>();
     private final Set<String> metalSet = new HashSet<>();
     private final Set<String> mineralSet = new HashSet<>();
@@ -41,6 +43,14 @@ public class YTechConfigLoader {
             elementMap.put(element.id, element);
         }
 
+        for (Tier tier : model.tiers) {
+            tierMap.put(tier.id, tier);
+        }
+
+        for (Machine machine : model.machines) {
+            machineMap.put(machine.id, machine);
+        }
+
         oreSet.addAll(Arrays.asList(model.properties.ore));
         metalSet.addAll(Arrays.asList(model.properties.metal));
         mineralSet.addAll(Arrays.asList(model.properties.mineral));
@@ -54,6 +64,22 @@ public class YTechConfigLoader {
 
     public Material getElement(String id) {
         return elementMap.get(id);
+    }
+
+    public Machine[] getMachines() {
+        return model.machines;
+    }
+
+    public Machine getMachine(String id) {
+        return machineMap.get(id);
+    }
+
+    public Tier[] getTiers() {
+        return model.tiers;
+    }
+
+    public Tier getTier(String id) {
+        return tierMap.get(id);
     }
 
     public boolean isOre(Material material) {
@@ -82,7 +108,9 @@ public class YTechConfigLoader {
 
     private record YTechRec(
             @NotNull Materials materials,
-            @NotNull Properties properties
+            @NotNull Properties properties,
+            @NotNull Machine[] machines,
+            @NotNull Tier[] tiers
     ) {}
 
     public record Materials(
@@ -119,4 +147,15 @@ public class YTechConfigLoader {
             }
         }
     }
+
+    public record Machine(
+        @NotNull String id,
+        @NotNull String name,
+        @NotNull String fromTier
+    ) {}
+
+    public record Tier(
+            @NotNull String id,
+            @NotNull String name
+    ) {}
 }

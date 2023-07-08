@@ -1246,5 +1246,27 @@
         "hardness": null
       }
     ]
-  }
+  },
+  "machines": [
+    {
+      "id": "crusher",
+      "name": "Crusher",
+      "fromTier": "steam"
+    },
+    {
+      "id": "furnace",
+      "name": "Furnace",
+      "fromTier": "stone"
+    }
+  ],
+  "tiers": [
+    {
+      "id": "stone",
+      "name": "Stone"
+    },
+    {
+      "id": "steam",
+      "name": "Steam"
+    }
+  ]
 }

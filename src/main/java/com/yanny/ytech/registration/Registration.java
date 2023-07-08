@@ -3,22 +3,27 @@ package com.yanny.ytech.registration;
 import com.google.common.collect.ImmutableMap;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.machine.block.BlockFactory;
+import com.yanny.ytech.machine.block.YTechBlock;
+import com.yanny.ytech.machine.container.ContainerMenuFactory;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
@@ -27,9 +32,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Registration {
     public static final RegistrationHolder REGISTRATION_HOLDER = new RegistrationHolder();
@@ -46,6 +53,11 @@ public class Registration {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
     private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, YTechMod.MOD_ID);
     private static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, YTechMod.MOD_ID);
+    private static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, YTechMod.MOD_ID);
+    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, YTechMod.MOD_ID);
+    private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, YTechMod.MOD_ID);
+
+    private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
     static {
         for (YTechConfigLoader.Material element : YTechMod.CONFIGURATION.getElements()) {
@@ -78,6 +90,13 @@ public class Registration {
                 FORGE_FLUID_TAGS.put(element, registerFluidTag("forge", element.id()));
             }
         }
+
+        for (YTechConfigLoader.Machine machine : YTechMod.CONFIGURATION.getMachines()) {
+            REGISTRATION_HOLDER.machine().put(machine, Arrays.stream(YTechMod.CONFIGURATION.getTiers())
+                    .filter((tier) -> Arrays.asList(YTechMod.CONFIGURATION.getTiers()).indexOf(tier) >= Arrays.asList(YTechMod.CONFIGURATION.getTiers()).indexOf(YTechMod.CONFIGURATION.getTier(machine.fromTier())))
+                    .map((tier) -> registerMachine(machine, tier))
+                    .collect(Collectors.toMap(MachineHolder::tier, (t) -> t, (a, b) -> a, HashMap::new)));
+        }
     }
 
     public static void init(IEventBus eventBus) {
@@ -85,6 +104,9 @@ public class Registration {
         ITEMS.register(eventBus);
         FLUIDS.register(eventBus);
         FLUID_TYPES.register(eventBus);
+        CREATIVE_TABS.register(eventBus);
+        BLOCK_ENTITY_TYPES.register(eventBus);
+        MENU_TYPES.register(eventBus);
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -102,6 +124,10 @@ public class Registration {
         }
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             REGISTRATION_HOLDER.fluid().forEach((material, holder) -> event.accept(holder.bucket().get()));
+        }
+
+        if (event.getTabKey() == TAB.getKey()) {
+            REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> event.accept(holder.block().get())));
         }
     }
 
@@ -127,6 +153,17 @@ public class Registration {
         RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.copy(base).strength(hardness)));
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
+    }
+
+    private static MachineHolder registerMachine(YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+        String key = tier.id() + "_" + machine.id();
+        RegistryObject<Block> block = BLOCKS.register(key, () -> BlockFactory.create(machine, tier));
+        RegistryObject<Item> item = ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties()));
+        BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntity = (pos, blockState) -> ((YTechBlock) block.get()).newBlockEntity(pos, blockState);
+        RegistryObject<BlockEntityType<?>> blockEntityType = BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of(blockEntity, block.get()).build(null));
+        RegistryObject<MenuType<?>> menuType = MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))));
+
+        return new MachineHolder(tier, block, item, blockEntityType, menuType);
     }
 
     private static RegistryObject<Item> registerItem(String name) {
@@ -165,6 +202,10 @@ public class Registration {
 
     private static TagKey<Fluid> registerFluidTag(String modId, String name) {
         return FluidTags.create(new ResourceLocation(modId, name));
+    }
+
+    private static RegistryObject<CreativeModeTab> registerCreativeTab() {
+        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(() -> new ItemStack(REGISTRATION_HOLDER.ingot().get(YTechMod.CONFIGURATION.getElement("copper")).get())).build());
     }
 
     private static String getPathOf(Block block) {
