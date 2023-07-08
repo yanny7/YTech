@@ -12,6 +12,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -60,8 +61,8 @@ public class Registration {
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
     static {
-        for (YTechConfigLoader.Material element : YTechMod.CONFIGURATION.getElements()) {
-            if (YTechMod.CONFIGURATION.isOre(element)) {
+        for (YTechConfigLoader.Material element : YTechConfigLoader.getElements()) {
+            if (YTechConfigLoader.isOre(element)) {
                 REGISTRATION_HOLDER.ore().put(element, new HashMap<>(ImmutableMap.<Block, RegistryObject<Block>>builder()
                         .put(Blocks.STONE, registerBlockItem(element, Blocks.STONE, getPathOf(Blocks.STONE) + "_" + element.id() + "_ore"))
                         .put(Blocks.DEEPSLATE, registerBlockItem(element, Blocks.DEEPSLATE, getPathOf(Blocks.DEEPSLATE) + "_" + element.id() + "_ore"))
@@ -74,28 +75,28 @@ public class Registration {
                 FORGE_RAW_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", "raw_" + element.id()));
                 FORGE_RAW_MATERIAL_TAGS.put(element, registerItemTag("forge", "raw_materials", element.id()));
             }
-            if (YTechMod.CONFIGURATION.isMetal(element)) {
+            if (YTechConfigLoader.isMetal(element)) {
                 REGISTRATION_HOLDER.storageBlock().put(element, registerBlockItem(element, Blocks.IRON_BLOCK, element.id() + "_block"));
                 REGISTRATION_HOLDER.ingot().put(element, registerItem(element.id() + "_ingot"));
 
                 FORGE_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", element.id()));
                 FORGE_INGOT_TAGS.put(element, registerItemTag("forge", "ingots", element.id()));
             }
-            if (YTechMod.CONFIGURATION.isDust(element)) {
+            if (YTechConfigLoader.isDust(element)) {
                 REGISTRATION_HOLDER.dust().put(element, registerItem(element.id() + "_dust"));
                 FORGE_DUST_TAGS.put(element, registerItemTag("forge", "dusts", element.id()));
             }
-            if (YTechMod.CONFIGURATION.isFluid(element)) {
+            if (YTechConfigLoader.isFluid(element)) {
                 REGISTRATION_HOLDER.fluid().put(element, registerFluid(element));
                 FORGE_FLUID_TAGS.put(element, registerFluidTag("forge", element.id()));
             }
         }
 
-        for (YTechConfigLoader.Machine machine : YTechMod.CONFIGURATION.getMachines()) {
-            REGISTRATION_HOLDER.machine().put(machine, Arrays.stream(YTechMod.CONFIGURATION.getTiers())
-                    .filter((tier) -> Arrays.asList(YTechMod.CONFIGURATION.getTiers()).indexOf(tier) >= Arrays.asList(YTechMod.CONFIGURATION.getTiers()).indexOf(YTechMod.CONFIGURATION.getTier(machine.fromTier())))
-                    .map((tier) -> registerMachine(machine, tier))
-                    .collect(Collectors.toMap(MachineHolder::tier, (t) -> t, (a, b) -> a, HashMap::new)));
+        for (YTechConfigLoader.Machine machine : YTechConfigLoader.getMachines()) {
+            REGISTRATION_HOLDER.machine().put(machine, Arrays.stream(YTechConfigLoader.getTiers())
+                    .filter((tier) -> YTechConfigLoader.getTierIndex(tier) >= YTechConfigLoader.getTierIndex(YTechConfigLoader.getTier(machine.fromTier())))
+                    .map((tier) -> new Tuple<>(tier, registerMachine(machine, tier)))
+                    .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
         }
     }
 
@@ -163,7 +164,7 @@ public class Registration {
         RegistryObject<BlockEntityType<?>> blockEntityType = BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of(blockEntity, block.get()).build(null));
         RegistryObject<MenuType<?>> menuType = MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))));
 
-        return new MachineHolder(tier, block, item, blockEntityType, menuType);
+        return new MachineHolder(block, item, blockEntityType, menuType);
     }
 
     private static RegistryObject<Item> registerItem(String name) {
@@ -205,7 +206,7 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(() -> new ItemStack(REGISTRATION_HOLDER.ingot().get(YTechMod.CONFIGURATION.getElement("copper")).get())).build());
+        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(() -> new ItemStack(REGISTRATION_HOLDER.ingot().get(YTechConfigLoader.getElement("copper")).get())).build());
     }
 
     private static String getPathOf(Block block) {

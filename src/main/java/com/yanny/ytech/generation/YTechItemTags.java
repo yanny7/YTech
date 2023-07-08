@@ -27,9 +27,9 @@ class YTechItemTags extends ItemTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        YTechConfigLoader.Material iron = YTechMod.CONFIGURATION.getElement("iron");
-        YTechConfigLoader.Material copper = YTechMod.CONFIGURATION.getElement("copper");
-        YTechConfigLoader.Material gold = YTechMod.CONFIGURATION.getElement("gold");
+        YTechConfigLoader.Material iron = YTechConfigLoader.getElement("iron");
+        YTechConfigLoader.Material copper = YTechConfigLoader.getElement("copper");
+        YTechConfigLoader.Material gold = YTechConfigLoader.getElement("gold");
 
         Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.ore().entrySet()).forEach((oreEntry) -> {
             YTechConfigLoader.Material material = oreEntry.getKey();

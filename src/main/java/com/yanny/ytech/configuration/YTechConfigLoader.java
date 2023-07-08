@@ -13,25 +13,25 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class YTechConfigLoader {
-    private final YTechRec model;
-    private final Map<String, Material> elementMap = new HashMap<>();
-    private final Map<String, Machine> machineMap = new HashMap<>();
-    private final Map<String, Tier> tierMap = new HashMap<>();
-    private final Set<String> oreSet = new HashSet<>();
-    private final Set<String> metalSet = new HashSet<>();
-    private final Set<String> mineralSet = new HashSet<>();
-    private final Set<String> dustSet = new HashSet<>();
-    private final Set<String> fluidSet = new HashSet<>();
-    private final Set<String> gasSet = new HashSet<>();
+    private static final YTechRec MODEL;
+    private static final Map<String, Material> ELEMENT_MAP = new HashMap<>();
+    private static final Map<String, Machine> MACHINE_MAP = new HashMap<>();
+    private static final Map<String, Tier> TIER_MAP = new HashMap<>();
+    private static final Set<String> ORE_SET = new HashSet<>();
+    private static final Set<String> METAL_SET = new HashSet<>();
+    private static final Set<String> MINERAL_SET = new HashSet<>();
+    private static final Set<String> DUST_SET = new HashSet<>();
+    private static final Set<String> FLUID_SET = new HashSet<>();
+    private static final Set<String> GAS_SET = new HashSet<>();
 
-    public YTechConfigLoader() {
+    static {
         try (InputStream inputStream = Registration.class.getResourceAsStream("/configuration.json")) {
 
             if (inputStream != null) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 Gson gson = new Gson();
 
-                model = gson.fromJson(bufferedReader, YTechRec.class);
+                MODEL = gson.fromJson(bufferedReader, YTechRec.class);
             } else {
                 throw new IllegalArgumentException("Missing resource configuration.json!");
             }
@@ -39,71 +39,78 @@ public class YTechConfigLoader {
             throw new RuntimeException(e);
         }
 
-        for (Material element : model.materials.elements) {
-            elementMap.put(element.id, element);
+        for (Material element : MODEL.materials.elements) {
+            ELEMENT_MAP.put(element.id, element);
         }
 
-        for (Tier tier : model.tiers) {
-            tierMap.put(tier.id, tier);
+        for (Tier tier : MODEL.tiers) {
+            TIER_MAP.put(tier.id, tier);
         }
 
-        for (Machine machine : model.machines) {
-            machineMap.put(machine.id, machine);
+        for (Machine machine : MODEL.machines) {
+            MACHINE_MAP.put(machine.id, machine);
         }
 
-        oreSet.addAll(Arrays.asList(model.properties.ore));
-        metalSet.addAll(Arrays.asList(model.properties.metal));
-        mineralSet.addAll(Arrays.asList(model.properties.mineral));
-        dustSet.addAll(Arrays.asList(model.properties.dust));
-        fluidSet.addAll(Arrays.asList(model.properties.fluid));
-        gasSet.addAll(Arrays.asList(model.properties.gas));
-    }
-    public Material[] getElements() {
-        return model.materials.elements;
+        ORE_SET.addAll(Arrays.asList(MODEL.properties.ore));
+        METAL_SET.addAll(Arrays.asList(MODEL.properties.metal));
+        MINERAL_SET.addAll(Arrays.asList(MODEL.properties.mineral));
+        DUST_SET.addAll(Arrays.asList(MODEL.properties.dust));
+        FLUID_SET.addAll(Arrays.asList(MODEL.properties.fluid));
+        GAS_SET.addAll(Arrays.asList(MODEL.properties.gas));
     }
 
-    public Material getElement(String id) {
-        return elementMap.get(id);
+    private YTechConfigLoader() {}
+
+    public static Material[] getElements() {
+        return MODEL.materials.elements;
     }
 
-    public Machine[] getMachines() {
-        return model.machines;
+    public static Material getElement(String id) {
+        return ELEMENT_MAP.get(id);
     }
 
-    public Machine getMachine(String id) {
-        return machineMap.get(id);
+    public static Machine[] getMachines() {
+        return MODEL.machines;
     }
 
-    public Tier[] getTiers() {
-        return model.tiers;
+    public static Machine getMachine(String id) {
+        return MACHINE_MAP.get(id);
     }
 
-    public Tier getTier(String id) {
-        return tierMap.get(id);
+    public static Tier[] getTiers() {
+        return MODEL.tiers;
     }
 
-    public boolean isOre(Material material) {
-        return oreSet.contains(material.id);
+    public static Tier getTier(String id) {
+        return TIER_MAP.get(id);
     }
 
-    public boolean isMetal(Material material) {
-        return metalSet.contains(material.id);
+    public static int getTierIndex(Tier tier) {
+        return Arrays.asList(MODEL.tiers).indexOf(tier);
     }
 
-    public boolean isMineral(Material material) {
-        return mineralSet.contains(material.id);
+    public static boolean isOre(Material material) {
+        return ORE_SET.contains(material.id);
     }
 
-    public boolean isDust(Material material) {
-        return dustSet.contains(material.id);
+    public static boolean isMetal(Material material) {
+        return METAL_SET.contains(material.id);
     }
 
-    public boolean isFluid(Material material) {
-        return fluidSet.contains(material.id);
+    public static boolean isMineral(Material material) {
+        return MINERAL_SET.contains(material.id);
     }
 
-    public boolean isGas(Material material) {
-        return gasSet.contains(material.id);
+    public static boolean isDust(Material material) {
+        return DUST_SET.contains(material.id);
+    }
+
+    public static boolean isFluid(Material material) {
+        return FLUID_SET.contains(material.id);
+    }
+
+    public static boolean isGas(Material material) {
+        return GAS_SET.contains(material.id);
     }
 
     private record YTechRec(

@@ -19,15 +19,16 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 class YTechBlockTags extends BlockTagsProvider {
+    private final YTechConfigLoader.Material iron = YTechConfigLoader.getElement("iron");
+    private final YTechConfigLoader.Material copper = YTechConfigLoader.getElement("copper");
+    private final YTechConfigLoader.Material gold = YTechConfigLoader.getElement("gold");
+
     public YTechBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, YTechMod.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        YTechConfigLoader.Material iron = YTechMod.CONFIGURATION.getElement("iron");
-        YTechConfigLoader.Material copper = YTechMod.CONFIGURATION.getElement("copper");
-        YTechConfigLoader.Material gold = YTechMod.CONFIGURATION.getElement("gold");
 
         Utils.sortedByMaterial(Registration.REGISTRATION_HOLDER.ore().entrySet()).forEach((oreEntry) -> {
             YTechConfigLoader.Material material = oreEntry.getKey();
