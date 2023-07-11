@@ -1,6 +1,7 @@
 package com.yanny.ytech.machine.block;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.machine.block_entity.BlockEntityFactory;
 import com.yanny.ytech.machine.block_entity.YTechBlockEntity;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.registration.Registration;
@@ -47,7 +48,9 @@ public abstract class YTechBlock extends Block implements EntityBlock {
 
     @NotNull
     @Override
-    public abstract BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState);
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
+        return BlockEntityFactory.create(Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).blockEntityType().get(), pos, blockState, machine, tier);
+    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
@@ -62,6 +65,7 @@ public abstract class YTechBlock extends Block implements EntityBlock {
                 .setValue(BlockStateProperties.POWERED, false);
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult trace) {

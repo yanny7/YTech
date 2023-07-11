@@ -1,6 +1,8 @@
 package com.yanny.ytech.configuration;
 
 import com.google.gson.Gson;
+import com.yanny.ytech.machine.MachineType;
+import com.yanny.ytech.machine.TierType;
 import com.yanny.ytech.registration.Registration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -158,11 +160,26 @@ public class YTechConfigLoader {
     public record Machine(
         @NotNull String id,
         @NotNull String name,
-        @NotNull String fromTier
-    ) {}
+        @NotNull String fromTier,
+        @NotNull MachineType machineType
+    ) {
+        public Machine(String id, String name, String fromTier, MachineType machineType) {
+            this.id = id;
+            this.name = name;
+            this.fromTier = fromTier;
+            this.machineType = MachineType.fromConfiguration(id);
+        }
+    }
 
     public record Tier(
             @NotNull String id,
-            @NotNull String name
-    ) {}
+            @NotNull String name,
+            @NotNull TierType tierType
+            ) {
+        public Tier(String id, String name, TierType tierType) {
+            this.id = id;
+            this.name = name;
+            this.tierType = TierType.fromConfiguration(id);
+        }
+    }
 }
