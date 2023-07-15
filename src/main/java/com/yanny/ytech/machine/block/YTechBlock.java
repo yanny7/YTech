@@ -30,12 +30,16 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Supplier;
+
 public abstract class YTechBlock extends Block implements EntityBlock {
+    protected final Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier;
     protected final YTechConfigLoader.Machine machine;
     protected final YTechConfigLoader.Tier tier;
 
-    public YTechBlock(YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public YTechBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         super(BlockBehaviour.Properties.of());
+        this.entityTypeSupplier = entityTypeSupplier;
         this.machine = machine;
         this.tier = tier;
     }
@@ -49,7 +53,7 @@ public abstract class YTechBlock extends Block implements EntityBlock {
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        return BlockEntityFactory.create(Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).blockEntityType().get(), pos, blockState, machine, tier);
+        return BlockEntityFactory.create(entityTypeSupplier.get(), pos, blockState, machine, tier);
     }
 
     @Override

@@ -6,6 +6,8 @@ import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.block.YTechBlock;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
+import com.yanny.ytech.network.kinetic.KineticBlockType;
+import com.yanny.ytech.network.kinetic.block.ShaftBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -98,6 +100,8 @@ public class Registration {
                     .map((tier) -> new Tuple<>(tier, registerMachine(machine, tier)))
                     .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
         }
+
+        REGISTRATION_HOLDER.kineticNetwork().put(KineticBlockType.SHAFT, registerKineticBlock("shaft"));
     }
 
     public static void init(IEventBus eventBus) {
@@ -158,13 +162,25 @@ public class Registration {
 
     private static MachineHolder registerMachine(YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         String key = tier.id() + "_" + machine.id();
-        RegistryObject<Block> block = BLOCKS.register(key, () -> BlockFactory.create(machine, tier));
-        RegistryObject<Item> item = ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties()));
-        BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntity = (pos, blockState) -> ((YTechBlock) block.get()).newBlockEntity(pos, blockState);
-        RegistryObject<BlockEntityType<?>> blockEntityType = BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of(blockEntity, block.get()).build(null));
-        RegistryObject<MenuType<?>> menuType = MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))));
+        RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
+        RegistryObject<BlockEntityType<? extends BlockEntity>> machineBlockEntity = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCK_ENTITY_TYPES);
 
-        return new MachineHolder(block, item, blockEntityType, menuType);
+        return new MachineHolder(
+                BLOCKS.register(key, () -> BlockFactory.create(machineBlockEntity, machine, tier)),
+                ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
+                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> ((YTechBlock) block.get()).newBlockEntity(pos, blockState), block.get()).build(null)),
+                MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))))
+        );
+    }
+
+    private static KineticNetworkHolder registerKineticBlock(String key) {
+        RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
+
+        return new KineticNetworkHolder(
+                BLOCKS.register(key, () -> new ShaftBlock()),
+                ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
+                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> ((ShaftBlock) block.get()).newBlockEntity(pos, blockState), block.get()).build(null))
+        );
     }
 
     private static RegistryObject<Item> registerItem(String name) {

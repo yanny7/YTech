@@ -1,8 +1,7 @@
-package com.yanny.ytech.network;
+package com.yanny.ytech.network.kinetic;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.machine.block_entity.KineticBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +18,7 @@ public class KineticPropagator {
 
     private final HashMap<LevelAccessor, KineticLevel> levelMap = new HashMap<>();
 
-    public void onLevelLoad(LevelAccessor levelAccessor) {
+    public void onLevelLoad(@NotNull LevelAccessor levelAccessor) {
         if (levelAccessor instanceof ServerLevel level) {
             LOGGER.debug("Preparing rotary propagator for {}", getLevelId(levelAccessor));
             levelMap.put(level, level.getDataStorage().computeIfAbsent(this::load, this::create, YTechMod.MOD_ID + "_rotary"));
@@ -27,7 +26,7 @@ public class KineticPropagator {
         }
     }
 
-    public void onLevelUnload(LevelAccessor levelAccessor) {
+    public void onLevelUnload(@NotNull LevelAccessor levelAccessor) {
         if (levelAccessor instanceof ServerLevel) {
             LOGGER.debug("Removing rotary propagator for {}", getLevelId(levelAccessor));
             levelMap.remove(levelAccessor);
@@ -35,18 +34,21 @@ public class KineticPropagator {
         }
     }
 
-    @NotNull
-    public KineticNetwork getOrCreateNetwork(KineticBlockEntity blockEntity) {
-        return levelMap.get(blockEntity.getLevel()).getOrCreateNetwork(blockEntity);
+    public void add(@NotNull IKineticBlockEntity blockEntity) {
+        levelMap.get(blockEntity.getLevel()).add(blockEntity);
+    }
+
+    public void remove(@NotNull IKineticBlockEntity blockEntity) {
+        levelMap.get(blockEntity.getLevel()).remove(blockEntity);
     }
 
     @Nullable
-    public KineticNetwork getNetwork(KineticBlockEntity blockEntity) {
+    public KineticNetwork getNetwork(@NotNull IKineticBlockEntity blockEntity) {
         return levelMap.get(blockEntity.getLevel()).getNetwork(blockEntity);
     }
 
     @Nullable
-    private static ResourceLocation getLevelId(LevelAccessor levelAccessor) {
+    private static ResourceLocation getLevelId(@NotNull LevelAccessor levelAccessor) {
         return levelAccessor.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getKey(levelAccessor.dimensionType());
     }
 

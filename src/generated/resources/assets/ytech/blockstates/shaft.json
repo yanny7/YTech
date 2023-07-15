@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=east,powered=false": {
+      "model": "ytech:block/shaft"
+    },
+    "facing=east,powered=true": {
+      "model": "ytech:block/shaft"
+    },
+    "facing=north,powered=false": {
+      "model": "ytech:block/shaft"
+    },
+    "facing=north,powered=true": {
+      "model": "ytech:block/shaft"
+    },
+    "facing=south,powered=false": {
+      "model": "ytech:block/shaft"
+    },
+    "facing=south,powered=true": {
+      "model": "ytech:block/shaft"
+    },
+    "facing=west,powered=false": {
+      "model": "ytech:block/shaft"
+    },
+    "facing=west,powered=true": {
+      "model": "ytech:block/shaft"
+    }
+  }
+}

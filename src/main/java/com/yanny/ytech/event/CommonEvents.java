@@ -9,11 +9,11 @@ import net.minecraftforge.fml.common.Mod;
 public class CommonEvents {
     @SubscribeEvent
     public static void onLevelLoad(LevelEvent.Load event) {
-        YTechMod.ROTARY_PROPAGATOR.onLevelLoad(event.getLevel());
+        YTechMod.KINETIC_PROPAGATOR.onLevelLoad(event.getLevel());
     }
 
     @SubscribeEvent
     public static void onLevelUnload(LevelEvent.Unload event) {
-        YTechMod.ROTARY_PROPAGATOR.onLevelUnload(event.getLevel());
+        YTechMod.KINETIC_PROPAGATOR.onLevelUnload(event.getLevel());
     }
 }
