@@ -1,12 +1,17 @@
 package com.yanny.ytech.network.kinetic.block_entity;
 
+import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticType;
 import com.yanny.ytech.network.kinetic.KineticUtils;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,6 +49,10 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
     public void setNetworkId(int networkId) {
         this.networkId = networkId;
         setChanged();
+
+        if (level != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+        }
     }
 
     @Override
@@ -58,7 +67,7 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
 
     @Override
     public void onRemove() {
-        YTechMod.KINETIC_PROPAGATOR.remove(this);
+        YTechMod.KINETIC_PROPAGATOR.server().remove(this);
         setChanged();
     }
 
@@ -73,6 +82,7 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
 
         if (tag.contains(NETWORK_ID)) {
             networkId = tag.getInt(NETWORK_ID);
+            LogUtils.getLogger().info("Updated BlockEntity at {} ID: {}", worldPosition, networkId);
         }
     }
 
@@ -82,10 +92,32 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
 
         if (level != null && !level.isClientSide) {
             if (networkId < 0) {
-                YTechMod.KINETIC_PROPAGATOR.add(this);
+                YTechMod.KINETIC_PROPAGATOR.server().add(this);
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
                 setChanged();
             }
         }
+    }
+
+    @NotNull
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        tag.putInt(NETWORK_ID, networkId);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        super.handleUpdateTag(tag);
+        networkId = tag.getInt(NETWORK_ID);
+        LogUtils.getLogger().info("Updated BlockEntity at {} ID: {}", worldPosition, networkId);
+    }
+
+    @NotNull
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

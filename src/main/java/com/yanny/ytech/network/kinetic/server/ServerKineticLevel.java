@@ -1,34 +1,36 @@
-package com.yanny.ytech.network.kinetic;
+package com.yanny.ytech.network.kinetic.server;
 
-import com.mojang.logging.LogUtils;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticLevel;
+import com.yanny.ytech.network.kinetic.common.KineticNetwork;
+import com.yanny.ytech.network.kinetic.message.NetworkAddedOrUpdatedMessage;
+import com.yanny.ytech.network.kinetic.message.NetworkRemovedMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class KineticLevel extends SavedData {
-    private static final String TAG_NETWORKS = "networks";
-    private static final String TAG_NETWORK = "network";
-    private static final String TAG_NETWORK_ID = "networkId";
-    private static final Logger LOGGER = LogUtils.getLogger();
+public class ServerKineticLevel extends KineticLevel {
+    private final SimpleChannel channel;
 
-    private final ConcurrentHashMap<Integer, KineticNetwork> networkMap = new ConcurrentHashMap<>();
-
-    KineticLevel(CompoundTag tag) {
+    ServerKineticLevel(CompoundTag tag, SimpleChannel channel) {
         load(tag);
+        this.channel = channel;
     }
 
-    KineticLevel() {}
+    ServerKineticLevel(SimpleChannel channel) {
+        super();
+        this.channel = channel;
+    }
 
     void add(IKineticBlockEntity blockEntity) {
         final int networkId = blockEntity.getNetworkId();
@@ -41,7 +43,7 @@ public class KineticLevel extends SavedData {
             List<KineticNetwork> networks = networkMap.values().stream().filter((n) -> n.canConnect(blockEntity)).toList();
 
             if (networks.size() == 0) {
-                KineticNetwork network = new KineticNetwork(getUniqueId(), networkMap::remove);
+                KineticNetwork network = new KineticNetwork(getUniqueId(), this::onRemove);
                 networkMap.put(network.getNetworkId(), network);
                 resultNetwork = network;
             } else if (networks.size() == 1) {
@@ -58,6 +60,7 @@ public class KineticLevel extends SavedData {
                         KineticNetwork toRemove = distinctNetworks.remove(0);
                         network.addAll(toRemove, blockEntity.getLevel());
                         networkMap.remove(toRemove.getNetworkId());
+                        channel.send(PacketDistributor.ALL.noArg(), new NetworkRemovedMessage(toRemove.getNetworkId()));
                     } while (distinctNetworks.size() > 0);
 
                     resultNetwork = network;
@@ -67,55 +70,29 @@ public class KineticLevel extends SavedData {
 
         blockEntity.getKineticType().addEntity.accept(resultNetwork, blockEntity);
         setDirty();
+        channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(resultNetwork));
     }
 
     void remove(IKineticBlockEntity blockEntity) {
         KineticNetwork network = getNetwork(blockEntity);
 
         if (network != null) {
-            List<KineticNetwork> networks = network.remove(this::getUniqueIds, networkMap::remove, blockEntity);
+            List<KineticNetwork> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
             networkMap.putAll(networks.stream().collect(Collectors.toMap(KineticNetwork::getNetworkId, n -> n)));
+            channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
             setDirty();
         } else {
             LOGGER.warn("Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
         }
     }
 
-    @Nullable
-    KineticNetwork getNetwork(IKineticBlockEntity blockEntity) {
-        return networkMap.get(blockEntity.getNetworkId());
+    Map<Integer, KineticNetwork> getNetworks() {
+        return networkMap;
     }
 
-    @NotNull
-    @Override
-    public CompoundTag save(@NotNull CompoundTag tag) {
-        ListTag list = new ListTag();
-        AtomicInteger index = new AtomicInteger();
-
-        networkMap.forEach((networkId, network) -> {
-            CompoundTag itemHolder = new CompoundTag();
-            itemHolder.putInt(TAG_NETWORK_ID, networkId);
-            itemHolder.put(TAG_NETWORK, network.save());
-            list.add(index.getAndIncrement(), itemHolder);
-        });
-        tag.put(TAG_NETWORKS, list);
-        return tag;
-    }
-
-    void load(@NotNull CompoundTag tag) {
-        if (tag.contains(TAG_NETWORKS)) {
-            ListTag list = tag.getList(TAG_NETWORKS, CompoundTag.TAG_COMPOUND);
-
-            list.forEach((listItem) -> {
-                CompoundTag itemHolder = (CompoundTag) listItem;
-                int networkId = itemHolder.getInt(TAG_NETWORK_ID);
-                networkMap.put(networkId, new KineticNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, networkMap::remove));
-            });
-
-            LOGGER.info("Loaded {} rotary networks", networkMap.size());
-        } else {
-            LOGGER.info("No rotary network loaded");
-        }
+    private void onRemove(int networkId) {
+        networkMap.remove(networkId);
+        channel.send(PacketDistributor.ALL.noArg(), new NetworkRemovedMessage(networkId));
     }
 
     private int getUniqueId() {
@@ -146,14 +123,23 @@ public class KineticLevel extends SavedData {
         throw new IllegalStateException("Can't generate new ID for network!");
     }
 
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        return t -> ConcurrentHashMap.newKeySet().add(keyExtractor.apply(t));
+    private void load(@NotNull CompoundTag tag) {
+        if (tag.contains(TAG_NETWORKS)) {
+            ListTag list = tag.getList(TAG_NETWORKS, CompoundTag.TAG_COMPOUND);
+
+            list.forEach((listItem) -> {
+                CompoundTag itemHolder = (CompoundTag) listItem;
+                int networkId = itemHolder.getInt(TAG_NETWORK_ID);
+                networkMap.put(networkId, new KineticNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, this::onRemove));
+            });
+
+            LOGGER.info("Loaded {} rotary networks", networkMap.size());
+        } else {
+            LOGGER.info("No rotary network loaded");
+        }
     }
 
-    @Override
-    public void setDirty() {
-        super.setDirty();
-        LOGGER.warn("Updated network. Total: {}", networkMap.size());
-        networkMap.forEach((i, n) -> LOGGER.info(n.toString()));
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        return t -> ConcurrentHashMap.newKeySet().add(keyExtractor.apply(t));
     }
 }

@@ -2,8 +2,8 @@ package com.yanny.ytech.machine.block_entity;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.IMachineBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticType;
 import com.yanny.ytech.network.kinetic.block_entity.KineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;

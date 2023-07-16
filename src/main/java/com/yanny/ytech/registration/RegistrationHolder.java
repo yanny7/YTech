@@ -1,7 +1,7 @@
 package com.yanny.ytech.registration;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.network.kinetic.KineticBlockType;
+import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;

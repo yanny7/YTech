@@ -1,7 +1,7 @@
 package com.yanny.ytech.network.kinetic.block_entity;
 
-import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticType;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;

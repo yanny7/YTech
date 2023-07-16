@@ -1,4 +1,4 @@
-package com.yanny.ytech.network.kinetic;
+package com.yanny.ytech.network.kinetic.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

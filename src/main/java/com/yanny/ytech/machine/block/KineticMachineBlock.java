@@ -1,7 +1,7 @@
 package com.yanny.ytech.machine.block;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

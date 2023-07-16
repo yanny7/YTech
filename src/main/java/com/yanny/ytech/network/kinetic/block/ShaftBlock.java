@@ -1,7 +1,7 @@
 package com.yanny.ytech.network.kinetic.block;
 
-import com.yanny.ytech.network.kinetic.KineticBlockType;
 import com.yanny.ytech.network.kinetic.block_entity.ShaftBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,11 +1,15 @@
-package com.yanny.ytech.network.kinetic;
+package com.yanny.ytech.network.kinetic.common;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.network.kinetic.message.NetworkAddedOrUpdatedMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -34,13 +38,13 @@ public class KineticNetwork {
     private int stressCapacity;
     private int stress;
 
-    KineticNetwork(CompoundTag tag, int networkId, Consumer<Integer> onRemove) {
+    public KineticNetwork(CompoundTag tag, int networkId, Consumer<Integer> onRemove) {
         load(tag);
         this.networkId = networkId;
         this.onRemove = onRemove;
     }
 
-    KineticNetwork(int networkId, Consumer<Integer> onRemove) {
+    public KineticNetwork(int networkId, Consumer<Integer> onRemove) {
         this.networkId = networkId;
         this.onRemove = onRemove;
     }
@@ -48,6 +52,10 @@ public class KineticNetwork {
     @Override
     public String toString() {
         return MessageFormat.format("Id:{0,number}, C:{1,number}, P:{2,number}, {3,number}/{4,number}", networkId, consumers.size(), providers.size(), stress, stressCapacity);
+    }
+
+    public int getStress() {
+        return stress;
     }
 
     void addProvider(@NotNull IKineticBlockEntity entity) {
@@ -82,7 +90,7 @@ public class KineticNetwork {
         }
     }
 
-    boolean canConnect(@NotNull IKineticBlockEntity blockEntity) {
+    public boolean canConnect(@NotNull IKineticBlockEntity blockEntity) {
         return blockEntity.getValidNeighbors().stream().anyMatch(pos -> isValidPosition(blockEntity, pos));
     }
 
@@ -117,21 +125,26 @@ public class KineticNetwork {
         return tag;
     }
 
-    int getNetworkId() {
+    public int getNetworkId() {
         return networkId;
     }
 
-    void addAll(KineticNetwork network, Level level) {
+    public void addAll(KineticNetwork network, Level level) {
         Stream.concat(network.providers.stream(), network.consumers.stream()).forEach((pos) -> addBlockEntity(pos, level));
     }
 
-    List<KineticNetwork> remove(Function<Integer, List<Integer>> idsGetter, Consumer<Integer> onRemove, IKineticBlockEntity blockEntity) {
+    public List<KineticNetwork> remove(Function<Integer, List<Integer>> idsGetter, Consumer<Integer> onRemove, IKineticBlockEntity blockEntity, SimpleChannel channel) {
         Set<BlockPos> blocks = Stream.concat(providers.stream(), consumers.stream()).collect(Collectors.toSet());
 
         blocks.remove(blockEntity.getBlockPos()); // remove splitting block
 
         if ((blockEntity.getValidNeighbors().stream().filter(blocks::contains).toList().size() == 1) || (blocks.size() == 0)) { // if we are not splitting
             blockEntity.getKineticType().removeEntity.accept(this, blockEntity);
+
+            if (blocks.size() != 0) {
+                channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(this));
+            }
+
             return List.of();
         }
 
@@ -149,8 +162,27 @@ public class KineticNetwork {
 
             KineticNetwork network = new KineticNetwork(ids.remove(0), onRemove);
             insertConnectedPositions(network, blocks, pos, blockEntity.getLevel());
+            channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
             return network;
         }).filter(Objects::nonNull).toList();
+    }
+
+    public static void encode(FriendlyByteBuf buffer, KineticNetwork level) {
+        buffer.writeInt(level.networkId);
+        buffer.writeInt(level.stressCapacity);
+        buffer.writeInt(level.stress);
+    }
+
+    @NotNull
+    public static KineticNetwork decode(FriendlyByteBuf buffer) {
+        int networkId = buffer.readInt();
+        int stressCapacity = buffer.readInt();
+        int stress = buffer.readInt();
+        KineticNetwork network = new KineticNetwork(networkId, (i) -> {});
+
+        network.stressCapacity = stressCapacity;
+        network.stress = stress;
+        return network;
     }
 
     private void insertConnectedPositions(KineticNetwork network, Set<BlockPos> blocks, BlockPos from, Level level) {

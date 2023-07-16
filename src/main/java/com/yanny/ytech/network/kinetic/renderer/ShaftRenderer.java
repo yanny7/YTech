@@ -1,6 +1,9 @@
 package com.yanny.ytech.network.kinetic.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticNetwork;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -38,7 +41,13 @@ public class ShaftRenderer implements BlockEntityRenderer<BlockEntity> {
         poseStack.rotateAround(facing.getRotation(), 0.5f, 0.5f, 0.5f);
 
         if (level != null) {
-            poseStack.rotateAround(facing.getRotation().rotationX((level.getGameTime() + partialTick) / 20.0f), 0.5f, 0.5f, 0.5f);
+            if (blockEntity instanceof IKineticBlockEntity kineticBlock) {
+                KineticNetwork network = YTechMod.KINETIC_PROPAGATOR.client().getNetwork(kineticBlock);
+
+                if (network != null) {
+                    poseStack.rotateAround(facing.getRotation().rotationX((level.getGameTime() + partialTick) / (float) network.getStress()), 0.5f, 0.5f, 0.5f);
+                }
+            }
         }
 
         for (net.minecraft.client.renderer.RenderType rt : bakedmodel.getRenderTypes(blockState, randomSource, blockEntity.getModelData())) {
