@@ -111,7 +111,7 @@ public class KineticNetwork {
         LOGGER.debug("Network {}: Loaded {} providers and {} consumers", networkId, providers.size(), consumers.size());
     }
 
-    CompoundTag save() {
+    public CompoundTag save() {
         CompoundTag tag = new CompoundTag();
         ListTag providersTag = new ListTag();
         ListTag consumersTag = new ListTag();
@@ -139,7 +139,7 @@ public class KineticNetwork {
         blocks.remove(blockEntity.getBlockPos()); // remove splitting block
 
         if ((blockEntity.getValidNeighbors().stream().filter(blocks::contains).toList().size() == 1) || (blocks.size() == 0)) { // if we are not splitting
-            blockEntity.getKineticType().removeEntity.accept(this, blockEntity);
+            blockEntity.getKineticNetworkType().removeEntity.accept(this, blockEntity);
 
             if (blocks.size() != 0) {
                 channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(this));
@@ -189,7 +189,7 @@ public class KineticNetwork {
         BlockEntity blockEntity = level.getBlockEntity(from);
 
         if (blockEntity instanceof IKineticBlockEntity block) {
-            block.getKineticType().addEntity.accept(network, block); // insert from to new network
+            block.getKineticNetworkType().addEntity.accept(network, block); // insert from to new network
             blocks.remove(from);
             block.getValidNeighbors().forEach((pos) -> {
                 if (blocks.contains(pos)) {
@@ -227,7 +227,7 @@ public class KineticNetwork {
 
     private void addBlockEntity(BlockPos pos, Level level) {
         if (/*level.isLoaded(pos) && */level.getBlockEntity(pos) instanceof IKineticBlockEntity blockEntity) {
-            blockEntity.getKineticType().addEntity.accept(this, blockEntity);
+            blockEntity.getKineticNetworkType().addEntity.accept(this, blockEntity);
         } else {
             LOGGER.warn("Can't add BlockEntity for pos {} ({})", pos, level.getBlockEntity(pos));
         }

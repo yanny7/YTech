@@ -36,9 +36,4 @@ public class ForgeBusSubscriber {
     public static void onPlayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
         YTechMod.KINETIC_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
     }
-
-    @SubscribeEvent
-    public static void onPlayerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        YTechMod.KINETIC_PROPAGATOR.server().onPlayerLogOut(event.getEntity());
-    }
 }

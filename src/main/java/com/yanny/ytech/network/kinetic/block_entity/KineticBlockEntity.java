@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticType;
+import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,14 +24,14 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
 
     protected int networkId = -1;
     private final List<BlockPos> validNeighbors;
-    private final KineticType kineticType;
+    private final KineticNetworkType kineticNetworkType;
     private final int stress;
 
     public KineticBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, Direction currentDirection,
-                              List<Direction> validConnections, KineticType kineticType, int stress) {
+                              List<Direction> validConnections, KineticNetworkType kineticNetworkType, int stress) {
         super(entityType, pos, blockState);
         validNeighbors = KineticUtils.getDirections(validConnections, pos, currentDirection);
-        this.kineticType = kineticType;
+        this.kineticNetworkType = kineticNetworkType;
         this.stress = stress;
     }
 
@@ -56,8 +56,8 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
     }
 
     @Override
-    public KineticType getKineticType() {
-        return kineticType;
+    public KineticNetworkType getKineticNetworkType() {
+        return kineticNetworkType;
     }
 
     @Override

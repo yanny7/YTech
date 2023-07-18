@@ -8,8 +8,13 @@ import com.yanny.ytech.network.kinetic.message.NetworkRemovedMessage;
 import com.yanny.ytech.network.kinetic.server.ServerKineticPropagator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +33,11 @@ public class KineticUtils {
 
     public static YTechMod.DistHolder<ClientKineticPropagator, ServerKineticPropagator> registerKineticPropagator(SimpleChannel channel) {
         return DistExecutor.unsafeRunForDist(() -> () -> registerClientKineticPropagator(channel), () -> () -> registerServerKineticPropagator(channel));
+    }
+
+    @Nullable
+    public static ResourceLocation getLevelId(@NotNull LevelAccessor level) {
+        return level.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getKey(level.dimensionType());
     }
 
     private static YTechMod.DistHolder<ClientKineticPropagator, ServerKineticPropagator> registerClientKineticPropagator(SimpleChannel channel) {

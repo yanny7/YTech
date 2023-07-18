@@ -3,7 +3,7 @@ package com.yanny.ytech.machine.block_entity;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.IMachineBlockEntity;
 import com.yanny.ytech.network.kinetic.block_entity.KineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticType;
+import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,7 +18,7 @@ public class KineticMachineBlockEntity extends KineticBlockEntity implements IMa
 
     public KineticMachineBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState,
                                      YTechConfigLoader.Tier tier, List<Direction> validConnections, int stress) {
-        super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), validConnections, KineticType.CONSUMER, stress);
+        super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), validConnections, KineticNetworkType.CONSUMER, stress);
         this.tier = tier;
     }
 

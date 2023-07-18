@@ -1,11 +1,15 @@
 package com.yanny.ytech.network.kinetic.client;
 
-import com.yanny.ytech.network.kinetic.common.KineticLevel;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticNetwork;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class ClientKineticLevel extends KineticLevel {
+public class ClientKineticLevel {
+    protected final ConcurrentHashMap<Integer, KineticNetwork> networkMap = new ConcurrentHashMap<>();
+
     public ClientKineticLevel(Map<Integer, KineticNetwork> networkMap) {
         super();
         this.networkMap.putAll(networkMap);
@@ -21,5 +25,10 @@ public class ClientKineticLevel extends KineticLevel {
 
     void onNetworkRemoved(int networkId) {
         networkMap.remove(networkId);
+    }
+
+    @Nullable
+    KineticNetwork getNetwork(IKineticBlockEntity blockEntity) {
+        return networkMap.get(blockEntity.getNetworkId());
     }
 }

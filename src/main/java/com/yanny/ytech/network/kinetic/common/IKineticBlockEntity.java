@@ -14,6 +14,6 @@ public interface IKineticBlockEntity {
     void setNetworkId(int id);
     void onRemove();
     void onChangedState(BlockState oldBlockState, BlockState newBlockState);
-    KineticType getKineticType();
+    KineticNetworkType getKineticNetworkType();
     int getStress();
 }

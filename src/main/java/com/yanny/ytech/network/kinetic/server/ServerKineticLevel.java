@@ -1,25 +1,35 @@
 package com.yanny.ytech.network.kinetic.server;
 
+import com.mojang.logging.LogUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticLevel;
 import com.yanny.ytech.network.kinetic.common.KineticNetwork;
 import com.yanny.ytech.network.kinetic.message.NetworkAddedOrUpdatedMessage;
 import com.yanny.ytech.network.kinetic.message.NetworkRemovedMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class ServerKineticLevel extends KineticLevel {
+public class ServerKineticLevel extends SavedData {
+    protected static final String TAG_NETWORKS = "networks";
+    protected static final String TAG_NETWORK = "network";
+    protected static final String TAG_NETWORK_ID = "networkId";
+    protected static final Logger LOGGER = LogUtils.getLogger();
+
+    private final ConcurrentHashMap<Integer, KineticNetwork> networkMap = new ConcurrentHashMap<>();
     private final SimpleChannel channel;
 
     ServerKineticLevel(CompoundTag tag, SimpleChannel channel) {
@@ -30,6 +40,22 @@ public class ServerKineticLevel extends KineticLevel {
     ServerKineticLevel(SimpleChannel channel) {
         super();
         this.channel = channel;
+    }
+
+    @NotNull
+    @Override
+    public CompoundTag save(@NotNull CompoundTag tag) {
+        ListTag list = new ListTag();
+        AtomicInteger index = new AtomicInteger();
+
+        networkMap.forEach((networkId, network) -> {
+            CompoundTag itemHolder = new CompoundTag();
+            itemHolder.putInt(TAG_NETWORK_ID, networkId);
+            itemHolder.put(TAG_NETWORK, network.save());
+            list.add(index.getAndIncrement(), itemHolder);
+        });
+        tag.put(TAG_NETWORKS, list);
+        return tag;
     }
 
     void add(IKineticBlockEntity blockEntity) {
@@ -68,7 +94,7 @@ public class ServerKineticLevel extends KineticLevel {
             }
         }
 
-        blockEntity.getKineticType().addEntity.accept(resultNetwork, blockEntity);
+        blockEntity.getKineticNetworkType().addEntity.accept(resultNetwork, blockEntity);
         setDirty();
         channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(resultNetwork));
     }
@@ -139,7 +165,22 @@ public class ServerKineticLevel extends KineticLevel {
         }
     }
 
+    @Nullable
+    public KineticNetwork getNetwork(IKineticBlockEntity blockEntity) {
+        return networkMap.get(blockEntity.getNetworkId());
+    }
+
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         return t -> ConcurrentHashMap.newKeySet().add(keyExtractor.apply(t));
+    }
+
+    /**
+     * FIXME REMOVE - Testing
+     */
+    @Override
+    public void setDirty() {
+        super.setDirty();
+        LOGGER.warn("Updated network. Total: {}", networkMap.size());
+        networkMap.forEach((i, n) -> LOGGER.info(n.toString()));
     }
 }
