@@ -1,0 +1,27 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ytech:block/water_wheel"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/water_wheel",
+        "x": 90
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/water_wheel",
+        "x": 180
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/water_wheel",
+        "x": 270
+      }
+    }
+  ]
+}

@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.block.BlockFactory;
-import com.yanny.ytech.machine.block.YTechBlock;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.network.kinetic.block.ShaftBlock;
+import com.yanny.ytech.network.kinetic.block.WaterWheelBlock;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +19,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -39,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Registration {
@@ -101,7 +103,8 @@ public class Registration {
                     .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
         }
 
-        REGISTRATION_HOLDER.kineticNetwork().put(KineticBlockType.SHAFT, registerKineticBlock("shaft"));
+        REGISTRATION_HOLDER.kineticNetwork().put(KineticBlockType.SHAFT, registerKineticBlock(KineticBlockType.SHAFT, ShaftBlock::new));
+        REGISTRATION_HOLDER.kineticNetwork().put(KineticBlockType.WATER_WHEEL, registerKineticBlock(KineticBlockType.WATER_WHEEL, WaterWheelBlock::new));
     }
 
     public static void init(IEventBus eventBus) {
@@ -133,6 +136,8 @@ public class Registration {
 
         if (event.getTabKey() == TAB.getKey()) {
             REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> event.accept(holder.block().get())));
+
+            Arrays.stream(KineticBlockType.values()).forEach((blockType) -> event.accept(REGISTRATION_HOLDER.kineticNetwork().get(blockType).block().get()));
         }
     }
 
@@ -168,18 +173,19 @@ public class Registration {
         return new MachineHolder(
                 BLOCKS.register(key, () -> BlockFactory.create(machineBlockEntity, machine, tier)),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
-                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> ((YTechBlock) block.get()).newBlockEntity(pos, blockState), block.get()).build(null)),
+                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null)),
                 MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))))
         );
     }
 
-    private static KineticNetworkHolder registerKineticBlock(String key) {
+    private static KineticNetworkHolder registerKineticBlock(KineticBlockType blockType, Supplier<Block> blockSupplier) {
+        String key = blockType.id;
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
 
         return new KineticNetworkHolder(
-                BLOCKS.register(key, () -> new ShaftBlock()),
+                BLOCKS.register(key, blockSupplier),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
-                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> ((ShaftBlock) block.get()).newBlockEntity(pos, blockState), block.get()).build(null))
+                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null))
         );
     }
 

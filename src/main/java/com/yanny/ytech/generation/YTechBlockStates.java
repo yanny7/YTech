@@ -2,6 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.registration.KineticNetworkHolder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.Direction;
@@ -9,10 +10,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +31,8 @@ class YTechBlockStates extends BlockStateProvider {
         Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> registerTintedCube(registry, STORAGE_BLOCK));
         Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> registerMachine(holder.block(), machine, tier)));
 
-        Registration.REGISTRATION_HOLDER.kineticNetwork().forEach((type, holder) -> registerShaft(holder));
+        registerShaft(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT));
+        registerWaterWheel(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL));
     }
 
     private void registerOre(Block stone, @NotNull RegistryObject<Block> registry) {
@@ -98,12 +97,29 @@ class YTechBlockStates extends BlockStateProvider {
     }
 
     private void registerShaft(KineticNetworkHolder holder) {
-        String name = "shaft";
+        String name = KineticBlockType.SHAFT.id;
         ModelFile modelFile = models().getBuilder(name).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all")
                 .cullface(direction)).from(0, 6, 6).to(16, 10, 10).end()
                 .texture("particle", STORAGE_BLOCK)
                 .texture("all", STORAGE_BLOCK);
         getVariantBuilder(holder.block().get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(modelFile).build());
+        itemModels().getBuilder(name).parent(modelFile);
+    }
+
+    private void registerWaterWheel(KineticNetworkHolder holder) {
+        String name = KineticBlockType.WATER_WHEEL.id;
+        ModelFile modelFile = models().getBuilder(name)
+                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 7, -6).to(16, 9, 8).end()
+                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 4.27208f, -1).to(16, 11.72792f, 0).end()
+                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 7, -6).to(16, 9, 8).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
+                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 4.27208f, -1).to(16, 11.72792f, 0).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
+                .texture("particle", STORAGE_BLOCK).texture("all", STORAGE_BLOCK);
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(holder.block().get());
+
+        builder.part().modelFile(modelFile).uvLock(false).addModel();
+        builder.part().modelFile(modelFile).rotationX(90).uvLock(false).addModel();
+        builder.part().modelFile(modelFile).rotationX(180).uvLock(false).addModel();
+        builder.part().modelFile(modelFile).rotationX(270).uvLock(false).addModel();
         itemModels().getBuilder(name).parent(modelFile);
     }
 

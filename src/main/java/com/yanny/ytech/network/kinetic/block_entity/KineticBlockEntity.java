@@ -1,6 +1,5 @@
 package com.yanny.ytech.network.kinetic.block_entity;
 
-import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
@@ -82,7 +81,6 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
 
         if (tag.contains(NETWORK_ID)) {
             networkId = tag.getInt(NETWORK_ID);
-            LogUtils.getLogger().info("Updated BlockEntity at {} ID: {}", worldPosition, networkId);
         }
     }
 
@@ -111,7 +109,6 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
     public void handleUpdateTag(CompoundTag tag) {
         super.handleUpdateTag(tag);
         networkId = tag.getInt(NETWORK_ID);
-        LogUtils.getLogger().info("Updated BlockEntity at {} ID: {}", worldPosition, networkId);
     }
 
     @NotNull
