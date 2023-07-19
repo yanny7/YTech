@@ -1,6 +1,6 @@
 package com.yanny.ytech;
 
-import com.yanny.ytech.machine.container.YTechContainerMenu;
+import com.yanny.ytech.machine.container.MachineContainerMenu;
 import com.yanny.ytech.machine.screen.ScreenFactory;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.network.kinetic.renderer.ShaftRenderer;
@@ -19,7 +19,7 @@ public class ModBusSubscriber {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) ->
-                    MenuScreens.register((MenuType<YTechContainerMenu>) holder.menuType().get(), ScreenFactory::create)));
+                    MenuScreens.register((MenuType<MachineContainerMenu>) holder.menuType().get(), ScreenFactory::create)));
         });
     }
 

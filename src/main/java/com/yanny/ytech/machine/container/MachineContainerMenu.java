@@ -1,7 +1,7 @@
 package com.yanny.ytech.machine.container;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.machine.block_entity.YTechBlockEntity;
+import com.yanny.ytech.machine.block_entity.MachineBlockEntity;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
-public class YTechContainerMenu extends AbstractContainerMenu {
+public class MachineContainerMenu extends AbstractContainerMenu {
     //FIXME move to blockEntity
     public static final int SLOT_INPUT = 0;
     public static final int SLOT_INPUT_COUNT = 1;
@@ -29,14 +29,14 @@ public class YTechContainerMenu extends AbstractContainerMenu {
     protected final Block block;
     protected final BlockPos pos;
 
-    public YTechContainerMenu(int windowId, Player player, BlockPos pos, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public MachineContainerMenu(int windowId, Player player, BlockPos pos, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         super(Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).menuType().get(), windowId);
         this.block = Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).block().get();
         this.machine = machine;
         this.tier = tier;
         this.pos = pos;
 
-        if (player.level().getBlockEntity(pos) instanceof YTechBlockEntity blockEntity) {
+        if (player.level().getBlockEntity(pos) instanceof MachineBlockEntity blockEntity) {
             /*addSlot(new SlotItemHandler(blockEntity.getInputItems(), SLOT_INPUT, 64, 24));
             addSlot(new SlotItemHandler(blockEntity.getOutputItems(), ProcessorBlockEntity.SLOT_OUTPUT+0, 108, 24));
             addSlot(new SlotItemHandler(blockEntity.getOutputItems(), ProcessorBlockEntity.SLOT_OUTPUT+1, 126, 24));

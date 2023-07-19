@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.function.Supplier;
 
 public class BlockFactory {
-    public static YTechBlock create(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public static MachineBlock create(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         return switch (machine.machineType()) {
             case FURNACE -> new FurnaceBlock(entityTypeSupplier, machine, tier);
             case CRUSHER -> switch (tier.tierType()) {

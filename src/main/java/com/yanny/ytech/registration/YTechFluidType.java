@@ -17,11 +17,11 @@ import org.joml.Vector3f;
 
 import java.util.function.Consumer;
 
-public class YTechModFluidType extends FluidType {
+public class YTechFluidType extends FluidType {
     private final YTechConfigLoader.Material material;
     private final int boiling;
 
-    public YTechModFluidType(YTechConfigLoader.Material material) {
+    public YTechFluidType(YTechConfigLoader.Material material) {
         super(getProperties(material));
         assert material.boiling() != null;
         this.material = material;

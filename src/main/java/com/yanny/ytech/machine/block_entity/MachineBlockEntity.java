@@ -7,10 +7,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class YTechBlockEntity extends BlockEntity implements IMachineBlockEntity {
+public class MachineBlockEntity extends BlockEntity implements IMachineBlockEntity {
     protected final YTechConfigLoader.Tier tier;
 
-    public YTechBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, YTechConfigLoader.Tier tier) {
+    public MachineBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, YTechConfigLoader.Tier tier) {
         super(blockEntityType, pos, blockState);
         this.tier = tier;
     }

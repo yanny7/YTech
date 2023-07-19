@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;
 
-class FurnaceBlock extends YTechBlock {
+class FurnaceBlock extends MachineBlock {
     public FurnaceBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityType, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         super(entityType, machine, tier);
     }

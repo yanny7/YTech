@@ -2,7 +2,7 @@ package com.yanny.ytech.machine.block;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.block_entity.BlockEntityFactory;
-import com.yanny.ytech.machine.block_entity.YTechBlockEntity;
+import com.yanny.ytech.machine.block_entity.MachineBlockEntity;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
@@ -32,12 +32,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public abstract class YTechBlock extends Block implements EntityBlock {
+public abstract class MachineBlock extends Block implements EntityBlock {
     protected final Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier;
     protected final YTechConfigLoader.Machine machine;
     protected final YTechConfigLoader.Tier tier;
 
-    public YTechBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public MachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         super(BlockBehaviour.Properties.of());
         this.entityTypeSupplier = entityTypeSupplier;
         this.machine = machine;
@@ -76,7 +76,7 @@ public abstract class YTechBlock extends Block implements EntityBlock {
         if (!level.isClientSide) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
 
-            if (blockEntity instanceof YTechBlockEntity) {
+            if (blockEntity instanceof MachineBlockEntity) {
                 MenuProvider containerProvider = new MenuProvider() {
                     @NotNull
                     @Override

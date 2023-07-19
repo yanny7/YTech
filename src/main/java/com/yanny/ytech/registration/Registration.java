@@ -202,7 +202,7 @@ public class Registration {
         RegistryObject<Fluid> flowingFluid = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, flowingName), ForgeRegistries.FLUIDS);
         RegistryObject<Item> bucket = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, bucketName), ForgeRegistries.ITEMS);
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, blockName), ForgeRegistries.BLOCKS);
-        FluidType fluidType = new YTechModFluidType(material);
+        FluidType fluidType = new YTechFluidType(material);
         ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(() -> fluidType, sourceFluid, flowingFluid).bucket(bucket).tickRate(20).block(() -> (LiquidBlock) block.get());
 
         return new FluidHolder(

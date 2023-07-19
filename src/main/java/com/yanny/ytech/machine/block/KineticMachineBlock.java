@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-class KineticMachineBlock extends YTechBlock {
+class KineticMachineBlock extends MachineBlock {
     public KineticMachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityType, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         super(entityType, machine, tier);
     }

@@ -4,7 +4,7 @@ import com.yanny.ytech.configuration.YTechConfigLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 
-class FurnaceContainerMenu extends YTechContainerMenu {
+class FurnaceContainerMenu extends MachineContainerMenu {
     public FurnaceContainerMenu(int windowId, Player player, BlockPos pos, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         super(windowId, player, pos, machine, tier);
     }
