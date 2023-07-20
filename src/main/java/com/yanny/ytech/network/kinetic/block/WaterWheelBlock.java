@@ -1,12 +1,14 @@
 package com.yanny.ytech.network.kinetic.block;
 
 import com.yanny.ytech.network.kinetic.block_entity.WaterWheelBlockEntity;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -40,8 +42,7 @@ public class WaterWheelBlock extends KineticBlock {
     @NotNull
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
-        return defaultBlockState()
-                .setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
+        return defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -62,5 +63,16 @@ public class WaterWheelBlock extends KineticBlock {
         Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         return (direction == Direction.EAST || direction == Direction.WEST) ? SHAPE_NORTH_SOUTH : SHAPE_EAST_WEST;
+    }
+
+    @Override
+    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
+        super.onNeighborChange(state, level, pos, neighbor);
+
+        if (!level.isClientSide()) {
+            if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
+                kineticBlockEntity.onChangedState(state, state);
+            }
+        }
     }
 }

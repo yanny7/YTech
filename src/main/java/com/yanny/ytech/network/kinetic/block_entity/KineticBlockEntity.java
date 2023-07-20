@@ -18,13 +18,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class KineticBlockEntity extends BlockEntity implements IKineticBlockEntity {
+public abstract class KineticBlockEntity extends BlockEntity implements IKineticBlockEntity {
     private static final String NETWORK_ID = "networkId";
 
     protected int networkId = -1;
-    private final List<BlockPos> validNeighbors;
-    private final KineticNetworkType kineticNetworkType;
-    private final int stress;
+    protected final List<BlockPos> validNeighbors;
+    protected final KineticNetworkType kineticNetworkType;
+    protected int stress;
 
     public KineticBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, Direction currentDirection,
                               List<Direction> validConnections, KineticNetworkType kineticNetworkType, int stress) {
@@ -66,13 +66,17 @@ public class KineticBlockEntity extends BlockEntity implements IKineticBlockEnti
 
     @Override
     public void onRemove() {
-        YTechMod.KINETIC_PROPAGATOR.server().remove(this);
-        setChanged();
+        if (level != null && !level.isClientSide) {
+            YTechMod.KINETIC_PROPAGATOR.server().remove(this);
+            setChanged();
+        }
     }
 
     @Override
     public void onChangedState(BlockState oldBlockState, BlockState newBlockState) {
-        //TODO handle rotation etc (or not handle power change)
+        if (!oldBlockState.equals(newBlockState)) {
+            setChanged();
+        }
     }
 
     @Override

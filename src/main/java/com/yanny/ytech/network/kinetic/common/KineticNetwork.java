@@ -37,6 +37,7 @@ public class KineticNetwork {
     private final int networkId;
     private int stressCapacity;
     private int stress;
+    private RotationDirection rotationDirection = RotationDirection.CW;
 
     public KineticNetwork(CompoundTag tag, int networkId, Consumer<Integer> onRemove) {
         load(tag);
@@ -58,16 +59,34 @@ public class KineticNetwork {
         return stress;
     }
 
+    public RotationDirection getRotationDirection() {
+        return rotationDirection;
+    }
+
+    public boolean canAttach(@NotNull IKineticBlockEntity entity) {
+        RotationDirection entityRotationDirection = entity.getRotationDirection();
+
+        return !(entityRotationDirection != RotationDirection.NONE && entityRotationDirection != rotationDirection);
+    }
+
+    public boolean canAttach(@NotNull KineticNetwork network) {
+        return rotationDirection == RotationDirection.NONE || network.rotationDirection == RotationDirection.NONE || rotationDirection == network.rotationDirection;
+    }
+
     void addProvider(@NotNull IKineticBlockEntity entity) {
+        RotationDirection entityRotationDirection = entity.getRotationDirection();
         providers.add(entity.getBlockPos());
         entity.setNetworkId(networkId);
         stressCapacity += entity.getStress();
+        rotationDirection = entityRotationDirection;
     }
 
     void addConsumer(@NotNull IKineticBlockEntity entity) {
+        RotationDirection entityRotationDirection = entity.getRotationDirection();
         consumers.add(entity.getBlockPos());
         entity.setNetworkId(networkId);
         stress += entity.getStress();
+        rotationDirection = entityRotationDirection;
     }
 
     void removeProvider(@NotNull IKineticBlockEntity entity) {
@@ -131,6 +150,10 @@ public class KineticNetwork {
 
     public void addAll(KineticNetwork network, Level level) {
         Stream.concat(network.providers.stream(), network.consumers.stream()).forEach((pos) -> addBlockEntity(pos, level));
+    }
+
+    public void change(IKineticBlockEntity blockEntity) {
+        // TODO blockEntityChanged
     }
 
     public List<KineticNetwork> remove(Function<Integer, List<Integer>> idsGetter, Consumer<Integer> onRemove, IKineticBlockEntity blockEntity, SimpleChannel channel) {

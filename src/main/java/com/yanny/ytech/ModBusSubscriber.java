@@ -3,8 +3,7 @@ package com.yanny.ytech;
 import com.yanny.ytech.machine.container.MachineContainerMenu;
 import com.yanny.ytech.machine.screen.ScreenFactory;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
-import com.yanny.ytech.network.kinetic.renderer.ShaftRenderer;
-import com.yanny.ytech.network.kinetic.renderer.WaterWheelRenderer;
+import com.yanny.ytech.network.kinetic.renderer.KineticRenderer;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
@@ -25,7 +24,7 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT).entityType().get(), ShaftRenderer::new);
-        event.registerBlockEntityRenderer(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).entityType().get(), WaterWheelRenderer::new);
+        event.registerBlockEntityRenderer(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT).entityType().get(), KineticRenderer::new);
+        event.registerBlockEntityRenderer(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).entityType().get(), KineticRenderer::new);
     }
 }

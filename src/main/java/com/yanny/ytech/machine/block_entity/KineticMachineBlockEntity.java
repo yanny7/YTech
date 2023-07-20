@@ -4,12 +4,14 @@ import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.IMachineBlockEntity;
 import com.yanny.ytech.network.kinetic.block_entity.KineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
+import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -25,5 +27,11 @@ public class KineticMachineBlockEntity extends KineticBlockEntity implements IMa
     @Override
     public YTechConfigLoader.Tier getTier() {
         return tier;
+    }
+
+    @NotNull
+    @Override
+    public RotationDirection getRotationDirection() {
+        return RotationDirection.NONE;
     }
 }

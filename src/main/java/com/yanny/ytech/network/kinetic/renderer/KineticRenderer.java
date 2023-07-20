@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticNetwork;
+import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -21,11 +22,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class WaterWheelRenderer implements BlockEntityRenderer<BlockEntity> {
+public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
     private final BlockRenderDispatcher blockRenderDispatcher;
     private final RandomSource randomSource = RandomSource.create(42);
 
-    public WaterWheelRenderer(BlockEntityRendererProvider.Context context) {
+    public KineticRenderer(BlockEntityRendererProvider.Context context) {
         super();
         blockRenderDispatcher = context.getBlockRenderDispatcher();
     }
@@ -44,18 +45,32 @@ public class WaterWheelRenderer implements BlockEntityRenderer<BlockEntity> {
             if (blockEntity instanceof IKineticBlockEntity kineticBlock) {
                 KineticNetwork network = YTechMod.KINETIC_PROPAGATOR.client().getNetwork(kineticBlock);
 
-                if (network != null && network.getStress() > 0) {
-                    poseStack.rotateAround(facing.getRotation().rotationX((level.getGameTime() + partialTick) / (float) network.getStress()), 0.5f, 0.5f, 0.5f);
+                if (network != null) {
+                    int stress = network.getStress(); //TODO change based on free capacity
+
+                    if (stress > 0) {
+                        int multiplier = getRotationMultiplier(network.getRotationDirection(), facing);
+                        poseStack.rotateAround(facing.getRotation().rotationX(((level.getGameTime() + partialTick) / (float) stress) * multiplier), 0.5f, 0.5f, 0.5f);
+                    }
                 }
             }
         }
 
-        for (RenderType rt : bakedmodel.getRenderTypes(blockState, randomSource, blockEntity.getModelData())) {
+        for (net.minecraft.client.renderer.RenderType rt : bakedmodel.getRenderTypes(blockState, randomSource, blockEntity.getModelData())) {
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), multiBufferSource.getBuffer(RenderType.solid()), blockState,
                     bakedmodel, 0, 0, 0, combinedLight, combinedOverlay, blockEntity.getModelData(), rt);
         }
 
 
         poseStack.popPose();
+    }
+
+    private int getRotationMultiplier(RotationDirection direction, Direction facing) {
+        int ourMultiplier = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
+        return switch (direction) {
+            case NONE -> 0;
+            case CCW -> -1;
+            case CW -> 1;
+        } * ourMultiplier;
     }
 }

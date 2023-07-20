@@ -64,6 +64,12 @@ public class ServerKineticLevel extends SavedData {
 
         if (networkId >= 0) {
             resultNetwork = networkMap.get(networkId);
+
+            if (!resultNetwork.canAttach(blockEntity)) {
+                LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
+                blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                return;
+            }
         } else {
             //TODO possible performance improvement: first check network area intersection
             List<KineticNetwork> networks = networkMap.values().stream().filter((n) -> n.canConnect(blockEntity)).toList();
@@ -74,13 +80,31 @@ public class ServerKineticLevel extends SavedData {
                 resultNetwork = network;
             } else if (networks.size() == 1) {
                 resultNetwork = networks.get(0);
+
+                if (!resultNetwork.canAttach(blockEntity)) {
+                    LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
+                    blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                    return;
+                }
             } else {
                 ArrayList<KineticNetwork> distinctNetworks = networks.stream().filter(distinctByKey(KineticNetwork::getNetworkId)).collect(Collectors.toCollection(ArrayList::new));
 
                 if (distinctNetworks.size() == 1) {
                     resultNetwork = distinctNetworks.get(0);
+
+                    if (!resultNetwork.canAttach(blockEntity)) {
+                        LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
+                        blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                        return;
+                    }
                 } else {
                     KineticNetwork network = distinctNetworks.remove(0);
+
+                    if (!network.canAttach(blockEntity) || !distinctNetworks.stream().allMatch((n) -> n.canAttach(blockEntity) && n.canAttach(network))) {
+                        LOGGER.warn("Can't attach block {} to network at {}", blockEntity, blockEntity.getBlockPos());
+                        blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                        return;
+                    }
 
                     do {
                         KineticNetwork toRemove = distinctNetworks.remove(0);
@@ -99,6 +123,17 @@ public class ServerKineticLevel extends SavedData {
         channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(resultNetwork));
     }
 
+    public void changed(IKineticBlockEntity blockEntity) {
+        KineticNetwork network = getNetwork(blockEntity);
+
+        if (network != null) {
+            network.change(blockEntity);
+            setDirty();
+        } else {
+            LOGGER.warn("UPDATE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
+        }
+    }
+
     void remove(IKineticBlockEntity blockEntity) {
         KineticNetwork network = getNetwork(blockEntity);
 
@@ -108,7 +143,7 @@ public class ServerKineticLevel extends SavedData {
             channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
             setDirty();
         } else {
-            LOGGER.warn("Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
+            LOGGER.warn("REMOVE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
         }
     }
 
