@@ -127,8 +127,10 @@ public class ServerKineticLevel extends SavedData {
         KineticNetwork network = getNetwork(blockEntity);
 
         if (network != null) {
-            network.change(blockEntity);
-            setDirty();
+            if (network.changed(blockEntity)) {
+                setDirty();
+                channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
+            }
         } else {
             LOGGER.warn("UPDATE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
         }

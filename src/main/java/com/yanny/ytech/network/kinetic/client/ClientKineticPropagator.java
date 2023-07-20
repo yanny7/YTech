@@ -52,7 +52,7 @@ public class ClientKineticPropagator {
 
             if (level != null) {
                 level.onNetworkAddedOrUpdated(msg.network());
-                LOGGER.info("Added or updated network {}" , msg.network().getNetworkId());
+                LOGGER.info("Added or updated network {}" , msg.network());
             } else {
                 LOGGER.warn("No level stored for {}", minecraft.level);
             }
