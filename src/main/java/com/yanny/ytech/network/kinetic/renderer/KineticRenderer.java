@@ -45,11 +45,11 @@ public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
                 KineticNetwork network = YTechMod.KINETIC_PROPAGATOR.client().getNetwork(kineticBlock);
 
                 if (network != null && network.getStressCapacity() > 0) {
-                    float speed = (float) (network.getStressCapacity() - Math.min(network.getStress(), network.getStressCapacity())) / network.getStressCapacity();
-                    int dirMultiplier = getRotationMultiplier(network.getRotationDirection(), facing);
+                    boolean isRunning = network.getStressCapacity() > 0 && network.getStressCapacity() >= network.getStress();
+                    int direction = getRotationDirection(network.getRotationDirection(), facing);
 
-                    if (speed > 0 && dirMultiplier != 0) {
-                        poseStack.rotateAround(facing.getRotation().rotationX(((level.getGameTime() + partialTick) / 20f) * dirMultiplier * speed), 0.5f, 0.5f, 0.5f);
+                    if (isRunning && direction != 0) {
+                        poseStack.rotateAround(facing.getRotation().rotationX(((level.getGameTime() + partialTick) / 20f) * direction), 0.5f, 0.5f, 0.5f);
                     }
                 }
             }
@@ -64,12 +64,12 @@ public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
         poseStack.popPose();
     }
 
-    private int getRotationMultiplier(RotationDirection direction, Direction facing) {
-        int ourMultiplier = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
+    private int getRotationDirection(RotationDirection direction, Direction facing) {
+        int axisDirection = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1;
         return switch (direction) {
             case NONE -> 0;
             case CCW -> -1;
             case CW -> 1;
-        } * ourMultiplier;
+        } * axisDirection;
     }
 }
