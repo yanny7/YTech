@@ -5,9 +5,9 @@ import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
@@ -45,17 +45,6 @@ public class WaterWheelBlock extends KineticBlock {
         return new WaterWheelBlockEntity(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).entityType().get(), pos, blockState);
     }
 
-    @Override
-    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-        super.onNeighborChange(state, level, pos, neighbor);
-
-        if (!level.isClientSide()) {
-            if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
-                kineticBlockEntity.onChangedState(state, state);
-            }
-        }
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Block oldBlock, @NotNull BlockPos neighbour, boolean b) {
@@ -63,7 +52,11 @@ public class WaterWheelBlock extends KineticBlock {
 
         if (!level.isClientSide) {
             if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
-                kineticBlockEntity.onChangedState(state, state);
+                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+                if (pos.above().equals(neighbour) || pos.below().equals(neighbour) || pos.relative(direction).equals(neighbour) || pos.relative(direction.getOpposite()).equals(neighbour)) {
+                    kineticBlockEntity.onChangedState(state, state);
+                }
             }
         }
     }

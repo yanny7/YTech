@@ -67,7 +67,7 @@ public class ServerKineticLevel extends SavedData {
 
             if (!resultNetwork.canAttach(blockEntity)) {
                 LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
-                blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
                 return;
             }
         } else {
@@ -83,7 +83,7 @@ public class ServerKineticLevel extends SavedData {
 
                 if (!resultNetwork.canAttach(blockEntity)) {
                     LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
-                    blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                    blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
                     return;
                 }
             } else {
@@ -94,7 +94,7 @@ public class ServerKineticLevel extends SavedData {
 
                     if (!resultNetwork.canAttach(blockEntity)) {
                         LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
-                        blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                        blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
                         return;
                     }
                 } else {
@@ -102,13 +102,13 @@ public class ServerKineticLevel extends SavedData {
 
                     if (!network.canAttach(blockEntity) || !distinctNetworks.stream().allMatch((n) -> n.canAttach(blockEntity) && n.canAttach(network))) {
                         LOGGER.warn("Can't attach block {} to network at {}", blockEntity, blockEntity.getBlockPos());
-                        blockEntity.getLevel().removeBlock(blockEntity.getBlockPos(), false);
+                        blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
                         return;
                     }
 
                     do {
                         KineticNetwork toRemove = distinctNetworks.remove(0);
-                        network.addAll(toRemove, blockEntity.getLevel());
+                        network.addAll(toRemove);
                         networkMap.remove(toRemove.getNetworkId());
                         channel.send(PacketDistributor.ALL.noArg(), new NetworkRemovedMessage(toRemove.getNetworkId()));
                     } while (distinctNetworks.size() > 0);
@@ -127,9 +127,13 @@ public class ServerKineticLevel extends SavedData {
         KineticNetwork network = getNetwork(blockEntity);
 
         if (network != null) {
-            if (network.changed(blockEntity)) {
-                setDirty();
-                channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
+            if (network.canAttach(blockEntity)) {
+                if (network.changed(blockEntity)) {
+                    setDirty();
+                    channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
+                }
+            } else {
+                blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
             }
         } else {
             LOGGER.warn("UPDATE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
@@ -142,8 +146,11 @@ public class ServerKineticLevel extends SavedData {
         if (network != null) {
             List<KineticNetwork> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
             networkMap.putAll(networks.stream().collect(Collectors.toMap(KineticNetwork::getNetworkId, n -> n)));
-            channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
             setDirty();
+
+            if (!network.isEmpty()) {
+                channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
+            }
         } else {
             LOGGER.warn("REMOVE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
         }

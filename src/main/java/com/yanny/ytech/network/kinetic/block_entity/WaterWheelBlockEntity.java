@@ -7,6 +7,7 @@ import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,16 +35,18 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
     public void onChangedState(BlockState oldBlockState, BlockState newBlockState) {
         //FIXME debounce
         if (level != null && !level.isClientSide) {
+            RotationDirection oldRotationDirection = rotationDirection;
             int oldStress = stress;
             stress = getProducedStress(newBlockState, worldPosition, level);
 
             if (stress == 0) {
                 rotationDirection = RotationDirection.NONE;
             } else {
-                rotationDirection = RotationDirection.CW; //TODO calculate
+                rotationDirection = stress > 0 ? RotationDirection.CW : RotationDirection.CCW;
+                stress = Math.abs(stress);
             }
 
-            if (oldStress != stress) {
+            if (oldStress != stress || oldRotationDirection != rotationDirection) {
                 YTechMod.KINETIC_PROPAGATOR.server().changed(this);
                 setChanged();
             }
@@ -53,26 +56,49 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
     private static int getProducedStress(BlockState blockState, BlockPos pos, Level level) {
         if (!level.isClientSide) {
             Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            return getFlowRate(pos.above(),level) + getFlowRate(pos.below(), level) + getFlowRate(pos.relative(direction), level) + getFlowRate(pos.relative(direction.getOpposite()), level);
+            int up = getFlowRate(pos.above(),level, direction);
+            int down = -getFlowRate(pos.below(),level, direction);
+            int front = getFlowRate(pos.relative(direction),level, direction);
+            int back = -getFlowRate(pos.relative(direction.getOpposite()),level, direction);
+            return up + down + front + back;
         } else {
             return 0;
         }
     }
 
-    private static int getFlowRate(BlockPos pos, Level level) {
+    private static int getFlowRate(BlockPos pos, Level level, Direction direction) {
         FluidState fluidState = level.getBlockState(pos).getFluidState();
+        int strength = 0;
 
         if (!fluidState.is(Fluids.EMPTY)) {
-            Vec3 vec3 = fluidState.getFlow(level, pos);
-            int strength = fluidState.isSource() ? 8 : 0;
+            if (fluidState.isSource()) {
+                BlockState blockState = level.getBlockState(pos);
 
-            if (fluidState.hasProperty(BlockStateProperties.LEVEL_FLOWING)) {
-                strength = fluidState.getValue(BlockStateProperties.LEVEL_FLOWING);
+                if (blockState.is(Blocks.BUBBLE_COLUMN)) {
+                    strength = blockState.getValue(BlockStateProperties.DRAG) ? 8 : -8;
+                } else {
+                    strength = 8;
+                }
+            } else {
+                if (fluidState.hasProperty(BlockStateProperties.LEVEL_FLOWING)) {
+                    double flowStrength = getFlow(fluidState.getFlow(level, pos), direction);
+                    strength = (int) Math.round(flowStrength * fluidState.getValue(BlockStateProperties.LEVEL_FLOWING));
+                } else if (fluidState.hasProperty(BlockStateProperties.FALLING)) {
+                    strength = fluidState.getValue(BlockStateProperties.FALLING) ? 8 : 0;
+                }
             }
 
-            return (int) Math.round(vec3.x * strength);
+            strength *= 1000.0 / Math.max(1, fluidState.getFluidType().getViscosity());
         }
 
-        return 0;
+        return strength;
+    }
+
+    private static double getFlow(Vec3 v, Direction direction) {
+        return switch (direction.getAxis()) {
+            case X -> v.x;
+            case Y -> v.y;
+            case Z -> v.z;
+        };
     }
 }

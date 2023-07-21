@@ -46,9 +46,9 @@ public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
 
                 if (network != null && network.getStressCapacity() > 0) {
                     float speed = (float) (network.getStressCapacity() - Math.min(network.getStress(), network.getStressCapacity())) / network.getStressCapacity();
+                    int dirMultiplier = getRotationMultiplier(network.getRotationDirection(), facing);
 
-                    if (speed > 0) {
-                        int dirMultiplier = getRotationMultiplier(network.getRotationDirection(), facing);
+                    if (speed > 0 && dirMultiplier != 0) {
                         poseStack.rotateAround(facing.getRotation().rotationX(((level.getGameTime() + partialTick) / 20f) * dirMultiplier * speed), 0.5f, 0.5f, 0.5f);
                     }
                 }
