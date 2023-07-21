@@ -30,7 +30,7 @@ public class ServerKineticPropagator {
     }
 
     public void changed(IKineticBlockEntity blockEntity) {
-        levelMap.get(blockEntity.getLevel()).changed(blockEntity);
+        levelMap.get(blockEntity.getLevel()).update(blockEntity);
     }
 
     public void remove(@NotNull IKineticBlockEntity blockEntity) {

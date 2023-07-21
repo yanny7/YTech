@@ -123,17 +123,25 @@ public class ServerKineticLevel extends SavedData {
         channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(resultNetwork));
     }
 
-    public void changed(IKineticBlockEntity blockEntity) {
+    public void update(IKineticBlockEntity blockEntity) {
         KineticNetwork network = getNetwork(blockEntity);
 
         if (network != null) {
             if (network.canAttach(blockEntity)) {
-                if (network.changed(blockEntity)) {
+                if (network.update(blockEntity)) {
                     setDirty();
                     channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
                 }
             } else {
+                List<KineticNetwork> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
+                networkMap.putAll(networks.stream().collect(Collectors.toMap(KineticNetwork::getNetworkId, n -> n)));
                 blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
+                LOGGER.warn("Removed block {} from network at {} because started rotating to wrong direction", blockEntity, blockEntity.getBlockPos());
+                setDirty();
+
+                if (!network.isEmpty()) {
+                    channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
+                }
             }
         } else {
             LOGGER.warn("UPDATE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());

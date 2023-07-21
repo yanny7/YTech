@@ -17,7 +17,7 @@ public abstract class KineticBlock extends BaseEntityBlock {
     public void onRemove(@NotNull BlockState oldBlockState, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newBlockState, boolean b) {
         if (!level.isClientSide) {
             if (oldBlockState.hasBlockEntity() && (!oldBlockState.is(newBlockState.getBlock()) || !newBlockState.hasBlockEntity())) {
-                if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
+                if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity && kineticBlockEntity.getNetworkId() >= 0) {
                     kineticBlockEntity.onRemove();
                 }
             } else if (oldBlockState.hasBlockEntity() && oldBlockState.is(newBlockState.getBlock())) {

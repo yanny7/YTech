@@ -117,10 +117,10 @@ public class KineticNetwork {
 
     void removeProvider(@NotNull IKineticBlockEntity entity) {
         BlockPos blockPos = entity.getBlockPos();
+        int value = providers.remove(blockPos);
 
-        providers.remove(blockPos);
         entity.setNetworkId(-1);
-        stressCapacity -= entity.getStress();
+        stressCapacity -= value;
 
         if (directionProviders.remove(blockPos) && directionProviders.isEmpty()) {
             rotationDirection = RotationDirection.NONE;
@@ -133,10 +133,10 @@ public class KineticNetwork {
 
     void removeConsumer(@NotNull IKineticBlockEntity entity) {
         BlockPos blockPos = entity.getBlockPos();
+        int value = consumers.remove(blockPos);
 
-        consumers.remove(blockPos);
         entity.setNetworkId(-1);
-        stress -= entity.getStress();
+        stress -= value;
 
         if (directionProviders.remove(blockPos) && directionProviders.isEmpty()) {
             rotationDirection = RotationDirection.NONE;
@@ -234,7 +234,7 @@ public class KineticNetwork {
         rotationDirection = network.rotationDirection;
     }
 
-    public boolean changed(IKineticBlockEntity entity) {
+    public boolean update(IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
         BlockPos blockPos = entity.getBlockPos();
         boolean wasChange = false;
@@ -292,9 +292,9 @@ public class KineticNetwork {
         // remove splitting block
         providerBlocks.remove(blockPos);
         consumerBlocks.remove(blockPos);
+        blockEntity.getKineticNetworkType().removeEntity.accept(this, blockEntity);
 
         if ((blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos)).toList().size() == 1) || (providerBlocks.isEmpty() && consumerBlocks.isEmpty())) { // if we are not splitting
-            blockEntity.getKineticNetworkType().removeEntity.accept(this, blockEntity);
             return List.of();
         }
 
