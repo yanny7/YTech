@@ -208,7 +208,7 @@ public class KineticNetwork {
         return networkId;
     }
 
-    public void addAll(KineticNetwork network) {
+    public void addAll(KineticNetwork network, Level level) {
         if (network.rotationDirection != RotationDirection.NONE && rotationDirection != RotationDirection.NONE && rotationDirection != network.rotationDirection) {
             throw new IllegalStateException("Invalid rotation direction provided!");
         }
@@ -216,10 +216,18 @@ public class KineticNetwork {
         network.providers.forEach((pos, value) -> {
             providers.put(pos, value);
             stressCapacity += value;
+
+            if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
+                kineticBlockEntity.setNetworkId(networkId);
+            }
         });
         network.consumers.forEach((pos, value) -> {
             consumers.put(pos, value);
             stress += value;
+
+            if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
+                kineticBlockEntity.setNetworkId(networkId);
+            }
         });
 
         directionProviders.addAll(network.directionProviders);
@@ -378,5 +386,6 @@ public class KineticNetwork {
         directionProviders.clear();
         stressCapacity = 0;
         stress = 0;
+        rotationDirection = RotationDirection.NONE;
     }
 }

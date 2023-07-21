@@ -53,6 +53,22 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
         }
     }
 
+    @Override
+    public void onLoad() {
+        if (level != null && !level.isClientSide) {
+            stress = getProducedStress(getBlockState(), worldPosition, level);
+
+            if (stress == 0) {
+                rotationDirection = RotationDirection.NONE;
+            } else {
+                rotationDirection = stress > 0 ? RotationDirection.CW : RotationDirection.CCW;
+                stress = Math.abs(stress);
+            }
+        }
+
+        super.onLoad();
+    }
+
     private static int getProducedStress(BlockState blockState, BlockPos pos, Level level) {
         if (!level.isClientSide) {
             Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);

@@ -108,7 +108,7 @@ public class ServerKineticLevel extends SavedData {
 
                     do {
                         KineticNetwork toRemove = distinctNetworks.remove(0);
-                        network.addAll(toRemove);
+                        network.addAll(toRemove, blockEntity.getLevel());
                         networkMap.remove(toRemove.getNetworkId());
                         channel.send(PacketDistributor.ALL.noArg(), new NetworkRemovedMessage(toRemove.getNetworkId()));
                     } while (distinctNetworks.size() > 0);
