@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -31,8 +32,8 @@ class YTechBlockStates extends BlockStateProvider {
         Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> registerTintedCube(registry, STORAGE_BLOCK));
         Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> registerMachine(holder.block(), machine, tier)));
 
-        registerShaft(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT));
-        registerWaterWheel(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL));
+        registerShaft(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT), Utils.getBaseBlockTexture(Blocks.OAK_PLANKS));
+        registerWaterWheel(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL), Utils.getBaseBlockTexture(Blocks.OAK_PLANKS));
     }
 
     private void registerOre(Block stone, @NotNull RegistryObject<Block> registry) {
@@ -96,24 +97,25 @@ class YTechBlockStates extends BlockStateProvider {
         itemModels().getBuilder(path).parent(model);
     }
 
-    private void registerShaft(KineticNetworkHolder holder) {
+    private void registerShaft(KineticNetworkHolder holder, ResourceLocation texture) {
         String name = KineticBlockType.SHAFT.id;
         ModelFile modelFile = models().getBuilder(name).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all")
                 .cullface(direction)).from(0, 6, 6).to(16, 10, 10).end()
-                .texture("particle", STORAGE_BLOCK)
-                .texture("all", STORAGE_BLOCK);
+                .texture("particle", texture)
+                .texture("all", texture);
         getVariantBuilder(holder.block().get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(modelFile).build());
         itemModels().getBuilder(name).parent(modelFile);
     }
 
-    private void registerWaterWheel(KineticNetworkHolder holder) {
+    private void registerWaterWheel(KineticNetworkHolder holder, ResourceLocation texture) {
         String name = KineticBlockType.WATER_WHEEL.id;
         ModelFile modelFile = models().getBuilder(name)
-                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 7, -6).to(16, 9, 8).end()
-                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 4.27208f, -1).to(16, 11.72792f, 0).end()
-                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 7, -6).to(16, 9, 8).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
-                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").uvs(0, 0, 16, 16).cullface(direction)).from(0, 4.27208f, -1).to(16, 11.72792f, 0).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
-                .texture("particle", STORAGE_BLOCK).texture("all", STORAGE_BLOCK);
+                .element().allFaces(this::buildHorizontalPlank).from(0, 8, -8).to(16, 9, 8).end()
+                .element().allFaces(this::buildVerticalPlank).from(1, 3.85786f, -2).to(15, 12.14214f, -1).end()
+                .element().allFaces(this::buildHorizontalPlank).from(0, 8, -8).to(16, 9, 8).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
+                .element().allFaces(this::buildVerticalPlank).from(1, 3.85786f, -2).to(15, 12.14214f, -1).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
+                .texture("particle", texture)
+                .texture("all", texture);
         MultiPartBlockStateBuilder builder = getMultipartBuilder(holder.block().get());
 
         builder.part().modelFile(modelFile).uvLock(false).addModel();
@@ -121,6 +123,25 @@ class YTechBlockStates extends BlockStateProvider {
         builder.part().modelFile(modelFile).rotationX(180).uvLock(false).addModel();
         builder.part().modelFile(modelFile).rotationX(270).uvLock(false).addModel();
         itemModels().getBuilder(name).parent(modelFile);
+    }
+
+    private void buildHorizontalPlank(Direction direction, BlockModelBuilder.ElementBuilder.FaceBuilder faceBuilder) {
+        (switch (direction) {
+            case UP -> faceBuilder.uvs(16, 16, 0, 0);
+            case DOWN -> faceBuilder.uvs(16, 0, 0, 16);
+            case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90);
+            case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+            case NORTH -> faceBuilder.uvs(0, 7, 16, 8);
+            case SOUTH -> faceBuilder.uvs(0, 8, 16, 9);
+        }).cullface(direction).texture("#all");
+    }
+
+    private void buildVerticalPlank(Direction direction, BlockModelBuilder.ElementBuilder.FaceBuilder faceBuilder) {
+        (switch (direction) {
+            case UP, DOWN -> faceBuilder.uvs(0, 0, 14, 1);
+            case EAST, WEST -> faceBuilder.uvs(3, 0, 4, 7);
+            case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 14, 7);
+        }).cullface(direction).texture("#all");
     }
 
     private void registerEmpty(String name, Block block, ResourceLocation texture) {

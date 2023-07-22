@@ -40,7 +40,7 @@
     }
   ],
   "textures": {
-    "all": "ytech:block/storage_block",
-    "particle": "ytech:block/storage_block"
+    "all": "minecraft:block/oak_planks",
+    "particle": "minecraft:block/oak_planks"
   }
 }

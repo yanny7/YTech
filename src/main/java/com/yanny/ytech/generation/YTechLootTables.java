@@ -37,6 +37,7 @@ class YTechLootTables extends LootTableProvider {
             Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach(((material, registry) -> dropSelf(registry.get())));
             Registration.REGISTRATION_HOLDER.storageBlock().forEach(((material, registry) -> dropSelf(registry.get())));
             Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> dropSelf(holder.block().get())));
+            Registration.REGISTRATION_HOLDER.kineticNetwork().forEach((type, holder) -> dropSelf(holder.block().get()));
         }
 
         @NotNull
@@ -46,7 +47,8 @@ class YTechLootTables extends LootTableProvider {
                     Registration.REGISTRATION_HOLDER.ore().values().stream().flatMap((map) -> map.values().stream().flatMap(RegistryObject::stream)),
                     Registration.REGISTRATION_HOLDER.rawStorageBlock().values().stream().flatMap(RegistryObject::stream),
                     Registration.REGISTRATION_HOLDER.storageBlock().values().stream().flatMap(RegistryObject::stream),
-                    Registration.REGISTRATION_HOLDER.machine().values().stream().flatMap((map) -> map.values().stream().flatMap((f) -> f.block().stream()))
+                    Registration.REGISTRATION_HOLDER.machine().values().stream().flatMap((map) -> map.values().stream().flatMap((f) -> f.block().stream())),
+                    Registration.REGISTRATION_HOLDER.kineticNetwork().values().stream().flatMap((map) -> map.block().stream())
             ).flatMap(i -> i);
             return stream.toList();
         }
