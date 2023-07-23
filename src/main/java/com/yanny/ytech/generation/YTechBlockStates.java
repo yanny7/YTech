@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
+
 class YTechBlockStates extends BlockStateProvider {
     private static final ResourceLocation ORE_OVERLAY = Utils.getBlockTexture("ore_overlay");
     private static final ResourceLocation RAW_STORAGE_BLOCK = Utils.getBlockTexture("raw_storage_block");
@@ -106,7 +108,9 @@ class YTechBlockStates extends BlockStateProvider {
 
     private void registerShaft(KineticNetworkHolder holder, ResourceLocation texture) {
         String name = holder.block().getId().getPath();
-        ModelFile modelFile = models().getBuilder(name).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all")
+        ModelFile modelFile = models().getBuilder(name)
+                .parent(models().getExistingFile(mcLoc(BLOCK_FOLDER + "/block")))
+                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all")
                 .cullface(direction)).from(0, 6, 6).to(16, 10, 10).end()
                 .texture("particle", texture)
                 .texture("all", texture);
@@ -117,6 +121,7 @@ class YTechBlockStates extends BlockStateProvider {
     private void registerWaterWheel(KineticNetworkHolder holder, ResourceLocation texture) {
         String name = holder.block().getId().getPath();
         ModelFile modelFile = models().getBuilder(name)
+                .parent(models().getExistingFile(mcLoc(BLOCK_FOLDER + "/block")))
                 .element().allFaces(this::buildHorizontalPlank).from(0, 8, -8).to(16, 9, 8).end()
                 .element().allFaces(this::buildVerticalPlank).from(1, 3.85786f, -2).to(15, 12.14214f, -1).end()
                 .element().allFaces(this::buildHorizontalPlank).from(0, 8, -8).to(16, 9, 8).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()

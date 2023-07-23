@@ -29,6 +29,7 @@ public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
         super();
         blockRenderDispatcher = context.getBlockRenderDispatcher();
     }
+
     @Override
     public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
                        @NotNull MultiBufferSource multiBufferSource, int combinedLight, int combinedOverlay) {
@@ -59,7 +60,6 @@ public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), multiBufferSource.getBuffer(rt), blockState,
                     bakedmodel, 0, 0, 0, combinedLight, combinedOverlay, blockEntity.getModelData(), rt);
         }
-
 
         poseStack.popPose();
     }
