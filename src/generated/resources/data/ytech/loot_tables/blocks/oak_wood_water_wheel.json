@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ytech:shaft"
+          "name": "ytech:oak_wood_water_wheel"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ytech:blocks/shaft"
+  "random_sequence": "ytech:blocks/oak_wood_water_wheel"
 }

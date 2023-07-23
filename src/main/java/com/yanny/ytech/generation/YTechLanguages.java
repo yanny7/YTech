@@ -24,6 +24,6 @@ class YTechLanguages extends LanguageProvider {
 
         Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> add(holder.item().get(), tier.name() + " " + machine.name())));
 
-        Registration.REGISTRATION_HOLDER.kineticNetwork().forEach((type, holder) -> add(holder.block().get(), type.lang));
+        Registration.REGISTRATION_HOLDER.kineticNetwork().forEach((type, materialMap) -> materialMap.forEach((material, holder) -> add(holder.block().get(), material.name() + " " + type.lang)));
     }
 }

@@ -17,7 +17,7 @@ public record RegistrationHolder(
         HashMap<YTechConfigLoader.Material, RegistryObject<Item>> dust,
         HashMap<YTechConfigLoader.Material, FluidHolder> fluid,
         HashMap<YTechConfigLoader.Machine, HashMap<YTechConfigLoader.Tier, MachineHolder>> machine,
-        HashMap<KineticBlockType, KineticNetworkHolder> kineticNetwork
+        HashMap<KineticBlockType, HashMap<YTechConfigLoader.Material, KineticNetworkHolder>> kineticNetwork
 ) {
     public RegistrationHolder() {
         this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());

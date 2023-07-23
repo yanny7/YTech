@@ -1245,6 +1245,48 @@
         "boiling": 25.04,
         "hardness": null
       }
+    ],
+    "minecraft": [
+      {
+        "id": "oak_wood",
+        "name": "Oak",
+        "block": "minecraft:stripped_oak_log"
+      },
+      {
+        "id": "spruce_wood",
+        "name": "Spruce",
+        "block": "minecraft:stripped_spruce_log"
+      },
+      {
+        "id": "dark_oak_wood",
+        "name": "Dark Oak",
+        "block": "minecraft:stripped_dark_oak_log"
+      },
+      {
+        "id": "acacia_wood",
+        "name": "Acacia",
+        "block": "minecraft:stripped_acacia_log"
+      },
+      {
+        "id": "jungle_wood",
+        "name": "Jungle",
+        "block": "minecraft:stripped_jungle_log"
+      },
+      {
+        "id": "birch_wood",
+        "name": "Birch",
+        "block": "minecraft:stripped_birch_log"
+      },
+      {
+        "id": "cherry_wood",
+        "name": "Cherry",
+        "block": "minecraft:stripped_cherry_log"
+      },
+      {
+        "id": "mangrove_wood",
+        "name": "Mangrove",
+        "block": "minecraft:stripped_mangrove_log"
+      }
     ]
   },
   "machines": [
@@ -1268,5 +1310,29 @@
       "id": "steam",
       "name": "Steam"
     }
-  ]
+  ],
+  "generators": {
+    "kinetic": [
+      {
+        "id": "shaft",
+        "name": "Shaft",
+        "materials": [
+          {
+            "id": "oak_wood",
+            "stress_multiplier": 2
+          }
+        ]
+      },
+      {
+        "id": "water_wheel",
+        "name": "Water Wheel",
+        "materials": [
+          {
+            "id": "oak_wood",
+            "stress_multiplier": 0.2
+          }
+        ]
+      }
+    ]
+  }
 }

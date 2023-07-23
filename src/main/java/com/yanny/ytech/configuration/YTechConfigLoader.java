@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration;
 import com.google.gson.Gson;
 import com.yanny.ytech.machine.MachineType;
 import com.yanny.ytech.machine.TierType;
+import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.registration.Registration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,12 +14,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class YTechConfigLoader {
     private static final YTechRec MODEL;
-    private static final Map<String, Material> ELEMENT_MAP = new HashMap<>();
+    private static final Map<String, Material> MATERIAL_MAP = new HashMap<>();
     private static final Map<String, Machine> MACHINE_MAP = new HashMap<>();
     private static final Map<String, Tier> TIER_MAP = new HashMap<>();
+    private static final Map<String, Kinetic> KINETIC_MAP = new HashMap<>();
     private static final Set<String> ORE_SET = new HashSet<>();
     private static final Set<String> METAL_SET = new HashSet<>();
     private static final Set<String> MINERAL_SET = new HashSet<>();
@@ -41,9 +45,8 @@ public class YTechConfigLoader {
             throw new RuntimeException(e);
         }
 
-        for (Material element : MODEL.materials.elements) {
-            ELEMENT_MAP.put(element.id, element);
-        }
+        MATERIAL_MAP.putAll(Stream.of(MODEL.materials.elements, MODEL.materials.alloys, MODEL.materials.compounds, MODEL.materials.isotopes, MODEL.materials.minecraft)
+                .flatMap(Stream::of).collect(Collectors.toMap(m -> m.id, m -> m)));
 
         for (Tier tier : MODEL.tiers) {
             TIER_MAP.put(tier.id, tier);
@@ -51,6 +54,10 @@ public class YTechConfigLoader {
 
         for (Machine machine : MODEL.machines) {
             MACHINE_MAP.put(machine.id, machine);
+        }
+
+        for (Kinetic kinetic : MODEL.generators.kinetic) {
+            KINETIC_MAP.put(kinetic.id, kinetic);
         }
 
         ORE_SET.addAll(Arrays.asList(MODEL.properties.ore));
@@ -63,12 +70,12 @@ public class YTechConfigLoader {
 
     private YTechConfigLoader() {}
 
-    public static Material[] getElements() {
-        return MODEL.materials.elements;
+    public static Material getMaterial(String id) {
+        return MATERIAL_MAP.get(id);
     }
 
-    public static Material getElement(String id) {
-        return ELEMENT_MAP.get(id);
+    public static Material[] getElements() {
+        return MODEL.materials.elements;
     }
 
     public static Machine[] getMachines() {
@@ -89,6 +96,10 @@ public class YTechConfigLoader {
 
     public static int getTierIndex(Tier tier) {
         return Arrays.asList(MODEL.tiers).indexOf(tier);
+    }
+
+    public static Kinetic[] getKinetic() {
+        return MODEL.generators.kinetic;
     }
 
     public static boolean isOre(Material material) {
@@ -119,14 +130,16 @@ public class YTechConfigLoader {
             @NotNull Materials materials,
             @NotNull Properties properties,
             @NotNull Machine[] machines,
-            @NotNull Tier[] tiers
+            @NotNull Tier[] tiers,
+            @NotNull Generator generators
     ) {}
 
     public record Materials(
             @NotNull Material[] elements,
             @NotNull Material[] alloys,
             @NotNull Material[] compounds,
-            @NotNull Material[] isotopes
+            @NotNull Material[] isotopes,
+            @NotNull Material[] minecraft
     ) {}
 
     public record Properties(
@@ -142,11 +155,12 @@ public class YTechConfigLoader {
             @NotNull String id,
             @NotNull String name,
             @Nullable String color,
-            @NotNull String symbol,
+            @Nullable String symbol,
             @Nullable Float density,
             @Nullable Float melting,
             @Nullable Float boiling,
-            @Nullable Float hardness
+            @Nullable Float hardness,
+            @Nullable String block
     ) {
         public int getColor() {
             if (color != null) {
@@ -158,16 +172,16 @@ public class YTechConfigLoader {
     }
 
     public record Machine(
-        @NotNull String id,
-        @NotNull String name,
-        @NotNull String fromTier,
-        @NotNull MachineType machineType
+            @NotNull String id,
+            @NotNull String name,
+            @NotNull String fromTier,
+            @NotNull MachineType machineType
     ) {
         public Machine(String id, String name, String fromTier, MachineType machineType) {
             this.id = id;
             this.name = name;
             this.fromTier = fromTier;
-            this.machineType = MachineType.fromConfiguration(id);
+            this.machineType = Objects.requireNonNull(MachineType.fromConfiguration(id));
         }
     }
 
@@ -175,11 +189,34 @@ public class YTechConfigLoader {
             @NotNull String id,
             @NotNull String name,
             @NotNull TierType tierType
-            ) {
+    ) {
         public Tier(String id, String name, TierType tierType) {
             this.id = id;
             this.name = name;
-            this.tierType = TierType.fromConfiguration(id);
+            this.tierType = Objects.requireNonNull(TierType.fromConfiguration(id));
         }
     }
+
+    public record Generator(
+            @NotNull Kinetic[] kinetic
+    ) {}
+
+    public record Kinetic (
+            @NotNull String id,
+            @NotNull String name,
+            @NotNull KineticMaterial[] materials,
+            @NotNull KineticBlockType kineticBlockType
+    ) {
+        public Kinetic(String id, String name, KineticMaterial[] materials, KineticBlockType kineticBlockType) {
+            this.id = id;
+            this.name = name;
+            this.materials = materials;
+            this.kineticBlockType = Objects.requireNonNull(KineticBlockType.fromConfiguration(id));
+        }
+    }
+
+    public record KineticMaterial(
+            @NotNull String id,
+            float stress_multiplier
+    ) {}
 }

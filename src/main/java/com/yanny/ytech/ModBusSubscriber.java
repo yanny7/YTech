@@ -2,7 +2,6 @@ package com.yanny.ytech;
 
 import com.yanny.ytech.machine.container.MachineContainerMenu;
 import com.yanny.ytech.machine.screen.ScreenFactory;
-import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.network.kinetic.renderer.KineticRenderer;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -24,7 +23,6 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT).entityType().get(), KineticRenderer::new);
-        event.registerBlockEntityRenderer(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).entityType().get(), KineticRenderer::new);
+        Registration.REGISTRATION_HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.registerBlockEntityRenderer(holder.entityType().get(), KineticRenderer::new)));
     }
 }

@@ -9,12 +9,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 class YTechBlockStates extends BlockStateProvider {
     private static final ResourceLocation ORE_OVERLAY = Utils.getBlockTexture("ore_overlay");
@@ -31,9 +33,7 @@ class YTechBlockStates extends BlockStateProvider {
         Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> registerTintedCube(registry, RAW_STORAGE_BLOCK));
         Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> registerTintedCube(registry, STORAGE_BLOCK));
         Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> registerMachine(holder.block(), machine, tier)));
-
-        registerShaft(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT), Utils.getBaseBlockTexture(Blocks.OAK_PLANKS));
-        registerWaterWheel(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL), Utils.getBaseBlockTexture(Blocks.OAK_PLANKS));
+        Registration.REGISTRATION_HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> registerKinetic(blockType, holder, material)));
     }
 
     private void registerOre(Block stone, @NotNull RegistryObject<Block> registry) {
@@ -97,8 +97,15 @@ class YTechBlockStates extends BlockStateProvider {
         itemModels().getBuilder(path).parent(model);
     }
 
+    private void registerKinetic(KineticBlockType blockType, KineticNetworkHolder holder, YTechConfigLoader.Material material) {
+        switch (blockType) {
+            case SHAFT -> registerShaft(holder, Utils.getBaseBlockTexture(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(material.block())))));
+            case WATER_WHEEL -> registerWaterWheel(holder, Utils.getBaseBlockTexture(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(material.block())))));
+        }
+    }
+
     private void registerShaft(KineticNetworkHolder holder, ResourceLocation texture) {
-        String name = KineticBlockType.SHAFT.id;
+        String name = holder.block().getId().getPath();
         ModelFile modelFile = models().getBuilder(name).element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all")
                 .cullface(direction)).from(0, 6, 6).to(16, 10, 10).end()
                 .texture("particle", texture)
@@ -108,7 +115,7 @@ class YTechBlockStates extends BlockStateProvider {
     }
 
     private void registerWaterWheel(KineticNetworkHolder holder, ResourceLocation texture) {
-        String name = KineticBlockType.WATER_WHEEL.id;
+        String name = holder.block().getId().getPath();
         ModelFile modelFile = models().getBuilder(name)
                 .element().allFaces(this::buildHorizontalPlank).from(0, 8, -8).to(16, 9, 8).end()
                 .element().allFaces(this::buildVerticalPlank).from(1, 3.85786f, -2).to(15, 12.14214f, -1).end()

@@ -1,5 +1,6 @@
 package com.yanny.ytech.network.kinetic.block;
 
+import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -8,8 +9,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class KineticBlock extends BaseEntityBlock {
-    protected KineticBlock(Properties properties) {
+    protected final YTechConfigLoader.KineticMaterial material;
+
+    protected KineticBlock(Properties properties, YTechConfigLoader.KineticMaterial material) {
         super(properties);
+        this.material = material;
     }
 
     @SuppressWarnings("deprecation")

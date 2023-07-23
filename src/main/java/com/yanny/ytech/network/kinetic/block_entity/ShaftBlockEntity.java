@@ -14,8 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ShaftBlockEntity extends KineticBlockEntity implements IKineticBlockEntity {
-    public ShaftBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState) {
-        super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), List.of(Direction.EAST, Direction.WEST), KineticNetworkType.CONSUMER, 1);
+    private static final float BASE_STRESS = 1f;
+
+    public ShaftBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, float stressMultiplier) {
+        super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), List.of(Direction.EAST, Direction.WEST), KineticNetworkType.CONSUMER, Math.round(BASE_STRESS * stressMultiplier));
     }
 
     @NotNull

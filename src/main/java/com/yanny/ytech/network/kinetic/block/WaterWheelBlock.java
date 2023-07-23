@@ -1,5 +1,6 @@
 package com.yanny.ytech.network.kinetic.block;
 
+import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.network.kinetic.block_entity.WaterWheelBlockEntity;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
@@ -12,16 +13,18 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 public class WaterWheelBlock extends KineticBlock {
-    public WaterWheelBlock() {
-        super(Properties.copy(Blocks.STONE).noOcclusion());
+    public WaterWheelBlock(YTechConfigLoader.KineticMaterial material) {
+        super(Properties.copy(Blocks.STONE).noOcclusion(), material);
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
@@ -42,7 +45,9 @@ public class WaterWheelBlock extends KineticBlock {
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        return new WaterWheelBlockEntity(Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).entityType().get(), pos, blockState);
+        YTechConfigLoader.Material blockMaterial = YTechConfigLoader.getMaterial(material.id());
+        BlockEntityType<? extends BlockEntity> blockEntityType = Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).get(blockMaterial).entityType().get();
+        return new WaterWheelBlockEntity(blockEntityType, pos, blockState, material.stress_multiplier());
     }
 
     @SuppressWarnings("deprecation")

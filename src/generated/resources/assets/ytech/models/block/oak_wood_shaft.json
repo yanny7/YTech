@@ -40,7 +40,7 @@
     }
   ],
   "textures": {
-    "all": "minecraft:block/oak_planks",
-    "particle": "minecraft:block/oak_planks"
+    "all": "minecraft:block/stripped_oak_log",
+    "particle": "minecraft:block/stripped_oak_log"
   }
 }

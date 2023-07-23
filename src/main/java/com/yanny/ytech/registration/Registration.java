@@ -5,8 +5,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
-import com.yanny.ytech.network.kinetic.block.ShaftBlock;
-import com.yanny.ytech.network.kinetic.block.WaterWheelBlock;
+import com.yanny.ytech.network.kinetic.block.KineticBlockFactory;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -40,7 +39,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Registration {
@@ -103,8 +101,16 @@ public class Registration {
                     .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
         }
 
-        REGISTRATION_HOLDER.kineticNetwork().put(KineticBlockType.SHAFT, registerKineticBlock(KineticBlockType.SHAFT, ShaftBlock::new));
-        REGISTRATION_HOLDER.kineticNetwork().put(KineticBlockType.WATER_WHEEL, registerKineticBlock(KineticBlockType.WATER_WHEEL, WaterWheelBlock::new));
+        for (YTechConfigLoader.Kinetic kinetic : YTechConfigLoader.getKinetic()) {
+            HashMap<YTechConfigLoader.Material, KineticNetworkHolder> holderMap = new HashMap<>();
+            KineticBlockType blockType = kinetic.kineticBlockType();
+
+            REGISTRATION_HOLDER.kineticNetwork().put(blockType, holderMap);
+
+            for (YTechConfigLoader.KineticMaterial kineticMaterial : kinetic.materials()) {
+                holderMap.put(Objects.requireNonNull(YTechConfigLoader.getMaterial(kineticMaterial.id())), registerKineticBlock(blockType, kineticMaterial));
+            }
+        }
     }
 
     public static void init(IEventBus eventBus) {
@@ -136,8 +142,7 @@ public class Registration {
 
         if (event.getTabKey() == TAB.getKey()) {
             REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> event.accept(holder.block().get())));
-
-            Arrays.stream(KineticBlockType.values()).forEach((blockType) -> event.accept(REGISTRATION_HOLDER.kineticNetwork().get(blockType).block().get()));
+            REGISTRATION_HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.accept(holder.block().get())));
         }
     }
 
@@ -178,12 +183,12 @@ public class Registration {
         );
     }
 
-    private static KineticNetworkHolder registerKineticBlock(KineticBlockType blockType, Supplier<Block> blockSupplier) {
-        String key = blockType.id;
+    private static KineticNetworkHolder registerKineticBlock(KineticBlockType blockType, YTechConfigLoader.KineticMaterial kineticMaterial) {
+        String key = kineticMaterial.id() + "_" + blockType.id;
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
 
         return new KineticNetworkHolder(
-                BLOCKS.register(key, blockSupplier),
+                BLOCKS.register(key, () -> KineticBlockFactory.create(blockType, kineticMaterial)),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
                 BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null))
         );
@@ -228,7 +233,7 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(() -> new ItemStack(REGISTRATION_HOLDER.ingot().get(YTechConfigLoader.getElement("copper")).get())).build());
+        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(() -> new ItemStack(REGISTRATION_HOLDER.ingot().get(YTechConfigLoader.getMaterial("copper")).get())).build());
     }
 
     private static String getPathOf(Block block) {

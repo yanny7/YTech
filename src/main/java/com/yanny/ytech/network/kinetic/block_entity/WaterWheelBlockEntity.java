@@ -20,10 +20,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineticBlockEntity {
+    private final float stressMultiplier;
     private RotationDirection rotationDirection = RotationDirection.NONE;
 
-    public WaterWheelBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState) {
+    public WaterWheelBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, float stressMultiplier) {
         super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), List.of(Direction.EAST, Direction.WEST), KineticNetworkType.PROVIDER, 0);
+        this.stressMultiplier = stressMultiplier;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
     @Override
     public void onLoad() {
         if (level != null && !level.isClientSide) {
-            stress = getProducedStress(getBlockState(), worldPosition, level);
+            stress = Math.round(getProducedStress(getBlockState(), worldPosition, level) * stressMultiplier);
 
             if (stress == 0) {
                 rotationDirection = RotationDirection.NONE;
