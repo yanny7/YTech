@@ -70,6 +70,11 @@ public class KineticNetwork {
     public boolean canAttach(@NotNull IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
 
+        // if there is no rotation provider, or changed rotation for only our only provider
+        if (directionProviders.isEmpty() || (directionProviders.size() == 1 && directionProviders.contains(entity.getBlockPos()))) {
+            return true;
+        }
+
         return entityRotationDirection == RotationDirection.NONE || rotationDirection == RotationDirection.NONE || entityRotationDirection == rotationDirection;
     }
 

@@ -39,7 +39,7 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
         if (level != null && !level.isClientSide) {
             RotationDirection oldRotationDirection = rotationDirection;
             int oldStress = stress;
-            stress = getProducedStress(newBlockState, worldPosition, level);
+            stress = Math.round(getProducedStress(newBlockState, worldPosition, level) * stressMultiplier);
 
             if (stress == 0) {
                 rotationDirection = RotationDirection.NONE;
@@ -95,11 +95,11 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
                 if (blockState.is(Blocks.BUBBLE_COLUMN)) {
                     strength = blockState.getValue(BlockStateProperties.DRAG) ? 8 : -8;
                 } else {
-                    strength = 8;
+                    strength = (int) Math.round(8 * getFlowInDirection(fluidState.getFlow(level, pos), direction));
                 }
             } else {
                 if (fluidState.hasProperty(BlockStateProperties.LEVEL_FLOWING)) {
-                    double flowStrength = getFlow(fluidState.getFlow(level, pos), direction);
+                    double flowStrength = getFlowInDirection(fluidState.getFlow(level, pos), direction);
                     strength = (int) Math.round(flowStrength * fluidState.getValue(BlockStateProperties.LEVEL_FLOWING));
                 } else if (fluidState.hasProperty(BlockStateProperties.FALLING)) {
                     strength = fluidState.getValue(BlockStateProperties.FALLING) ? 8 : 0;
@@ -112,7 +112,7 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
         return strength;
     }
 
-    private static double getFlow(Vec3 v, Direction direction) {
+    private static double getFlowInDirection(Vec3 v, Direction direction) {
         return switch (direction.getAxis()) {
             case X -> v.x;
             case Y -> v.y;
