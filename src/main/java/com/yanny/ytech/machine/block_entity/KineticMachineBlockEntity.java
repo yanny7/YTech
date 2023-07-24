@@ -2,12 +2,8 @@ package com.yanny.ytech.machine.block_entity;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
-import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -18,37 +14,22 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class KineticMachineBlockEntity extends MachineBlockEntity implements IKineticBlockEntity {
+public abstract class KineticMachineBlockEntity extends MachineBlockEntity implements IKineticBlockEntity {
     private static final String NETWORK_ID = "networkId";
 
     protected int networkId = -1;
-    protected final List<BlockPos> validNeighbors;
-    protected final KineticNetworkType kineticNetworkType;
-    protected int stress;
     protected final YTechConfigLoader.Machine machine;
     protected final YTechConfigLoader.Tier tier;
 
-    public KineticMachineBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState,
-                                     YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier, Direction currentDirection,
-                                     List<Direction> validConnections, KineticNetworkType kineticNetworkType, int stress) {
+    public KineticMachineBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
         super(entityType, pos, blockState, machine, tier);
         this.machine = machine;
         this.tier = tier;
-        validNeighbors = KineticUtils.getDirections(validConnections, pos, currentDirection);
-        this.kineticNetworkType = kineticNetworkType;
-        this.stress = stress;
     }
 
     /***********************
      * IKineticBlockEntity *
      ***********************/
-
-    @Override
-    public List<BlockPos> getValidNeighbors() {
-        return validNeighbors;
-    }
 
     @Override
     public int getNetworkId() {
@@ -78,22 +59,6 @@ public class KineticMachineBlockEntity extends MachineBlockEntity implements IKi
         if (!oldBlockState.equals(newBlockState)) {
             setChanged();
         }
-    }
-
-    @Override
-    public KineticNetworkType getKineticNetworkType() {
-        return kineticNetworkType;
-    }
-
-    @Override
-    public int getStress() {
-        return stress;
-    }
-
-    @NotNull
-    @Override
-    public RotationDirection getRotationDirection() {
-        return RotationDirection.NONE;
     }
 
     /**********************************

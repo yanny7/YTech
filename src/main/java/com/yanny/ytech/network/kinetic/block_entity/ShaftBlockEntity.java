@@ -1,5 +1,6 @@
 package com.yanny.ytech.network.kinetic.block_entity;
 
+import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
 import com.yanny.ytech.network.kinetic.common.RotationDirection;
@@ -16,8 +17,30 @@ import java.util.List;
 public class ShaftBlockEntity extends KineticBlockEntity implements IKineticBlockEntity {
     private static final float BASE_STRESS = 1f;
 
+    private final float stressMultiplier;
+    private final List<BlockPos> validNeighbors;
+
     public ShaftBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, float stressMultiplier) {
-        super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), List.of(Direction.EAST, Direction.WEST), KineticNetworkType.CONSUMER, Math.round(BASE_STRESS * stressMultiplier));
+        super(entityType, pos, blockState);
+        this.stressMultiplier = stressMultiplier;
+        validNeighbors = KineticUtils.getDirections(List.of(Direction.EAST, Direction.WEST), pos, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    @NotNull
+    @Override
+    public List<BlockPos> getValidNeighbors() {
+        return validNeighbors;
+    }
+
+    @NotNull
+    @Override
+    public KineticNetworkType getKineticNetworkType() {
+        return KineticNetworkType.CONSUMER;
+    }
+
+    @Override
+    public int getStress() {
+        return Math.round(BASE_STRESS * stressMultiplier);
     }
 
     @NotNull

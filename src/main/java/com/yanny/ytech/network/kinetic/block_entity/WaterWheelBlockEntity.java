@@ -1,6 +1,7 @@
 package com.yanny.ytech.network.kinetic.block_entity;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
 import com.yanny.ytech.network.kinetic.common.RotationDirection;
@@ -21,16 +22,38 @@ import java.util.List;
 
 public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineticBlockEntity {
     private final float stressMultiplier;
+    private int producedStress;
+    private final List<BlockPos> validNeighbors;
     private RotationDirection rotationDirection = RotationDirection.NONE;
 
     public WaterWheelBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, float stressMultiplier) {
-        super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), List.of(Direction.EAST, Direction.WEST), KineticNetworkType.PROVIDER, 0);
+        super(entityType, pos, blockState);
         this.stressMultiplier = stressMultiplier;
+        producedStress = 0;
+        validNeighbors = KineticUtils.getDirections(List.of(Direction.EAST, Direction.WEST), pos, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    @NotNull
+    @Override
+    public RotationDirection getRotationDirection() {
+        return rotationDirection;
+    }
+
+    @NotNull
+    @Override
+    public List<BlockPos> getValidNeighbors() {
+        return validNeighbors;
+    }
+
+    @NotNull
+    @Override
+    public KineticNetworkType getKineticNetworkType() {
+        return KineticNetworkType.PROVIDER;
     }
 
     @Override
-    public @NotNull RotationDirection getRotationDirection() {
-        return rotationDirection;
+    public int getStress() {
+        return producedStress;
     }
 
     @Override
@@ -38,17 +61,17 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
         //FIXME debounce
         if (level != null && !level.isClientSide) {
             RotationDirection oldRotationDirection = rotationDirection;
-            int oldStress = stress;
-            stress = Math.round(getProducedStress(newBlockState, worldPosition, level) * stressMultiplier);
+            int oldStress = producedStress;
+            producedStress = Math.round(getProducedStress(newBlockState, worldPosition, level) * stressMultiplier);
 
-            if (stress == 0) {
+            if (producedStress == 0) {
                 rotationDirection = RotationDirection.NONE;
             } else {
-                rotationDirection = stress > 0 ? RotationDirection.CW : RotationDirection.CCW;
-                stress = Math.abs(stress);
+                rotationDirection = producedStress > 0 ? RotationDirection.CW : RotationDirection.CCW;
+                producedStress = Math.abs(producedStress);
             }
 
-            if (oldStress != stress || oldRotationDirection != rotationDirection) {
+            if (oldStress != producedStress || oldRotationDirection != rotationDirection) {
                 YTechMod.KINETIC_PROPAGATOR.server().changed(this);
                 setChanged();
             }
@@ -58,13 +81,13 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
     @Override
     public void onLoad() {
         if (level != null && !level.isClientSide) {
-            stress = Math.round(getProducedStress(getBlockState(), worldPosition, level) * stressMultiplier);
+            producedStress = Math.round(getProducedStress(getBlockState(), worldPosition, level) * stressMultiplier);
 
-            if (stress == 0) {
+            if (producedStress == 0) {
                 rotationDirection = RotationDirection.NONE;
             } else {
-                rotationDirection = stress > 0 ? RotationDirection.CW : RotationDirection.CCW;
-                stress = Math.abs(stress);
+                rotationDirection = producedStress > 0 ? RotationDirection.CW : RotationDirection.CCW;
+                producedStress = Math.abs(producedStress);
             }
         }
 
