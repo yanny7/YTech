@@ -1,44 +1,93 @@
 package com.yanny.ytech.machine.block_entity;
 
+import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.machine.IMachineBlockEntity;
-import com.yanny.ytech.machine.container.ContainerMenuFactory;
-import com.yanny.ytech.network.kinetic.block_entity.KineticBlockEntity;
+import com.yanny.ytech.network.kinetic.KineticUtils;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
 import com.yanny.ytech.network.kinetic.common.RotationDirection;
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class KineticMachineBlockEntity extends KineticBlockEntity implements IMachineBlockEntity, BlockEntityTicker<KineticMachineBlockEntity>, MenuProvider {
+public class KineticMachineBlockEntity extends MachineBlockEntity implements IKineticBlockEntity {
+    private static final String NETWORK_ID = "networkId";
+
+    protected int networkId = -1;
+    protected final List<BlockPos> validNeighbors;
+    protected final KineticNetworkType kineticNetworkType;
+    protected int stress;
     protected final YTechConfigLoader.Machine machine;
     protected final YTechConfigLoader.Tier tier;
 
     public KineticMachineBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState,
-                                     YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier, List<Direction> validConnections, int stress) {
-        super(entityType, pos, blockState, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING), validConnections, KineticNetworkType.CONSUMER, stress);
+                                     YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier, Direction currentDirection,
+                                     List<Direction> validConnections, KineticNetworkType kineticNetworkType, int stress) {
+        super(entityType, pos, blockState, machine, tier);
         this.machine = machine;
         this.tier = tier;
+        validNeighbors = KineticUtils.getDirections(validConnections, pos, currentDirection);
+        this.kineticNetworkType = kineticNetworkType;
+        this.stress = stress;
+    }
+
+    /***********************
+     * IKineticBlockEntity *
+     ***********************/
+
+    @Override
+    public List<BlockPos> getValidNeighbors() {
+        return validNeighbors;
     }
 
     @Override
-    public YTechConfigLoader.Tier getTier() {
-        return tier;
+    public int getNetworkId() {
+        return networkId;
+    }
+
+    @Override
+    public void setNetworkId(int networkId) {
+        this.networkId = networkId;
+        setChanged();
+
+        if (level != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+        }
+    }
+
+    @Override
+    public void onRemove() {
+        if (level != null && !level.isClientSide) {
+            YTechMod.KINETIC_PROPAGATOR.server().remove(this);
+            setChanged();
+        }
+    }
+
+    @Override
+    public void onChangedState(BlockState oldBlockState, BlockState newBlockState) {
+        if (!oldBlockState.equals(newBlockState)) {
+            setChanged();
+        }
+    }
+
+    @Override
+    public KineticNetworkType getKineticNetworkType() {
+        return kineticNetworkType;
+    }
+
+    @Override
+    public int getStress() {
+        return stress;
     }
 
     @NotNull
@@ -47,20 +96,56 @@ public class KineticMachineBlockEntity extends KineticBlockEntity implements IMa
         return RotationDirection.NONE;
     }
 
-    @Override
-    public void tick(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @NotNull KineticMachineBlockEntity pBlockEntity) {
+    /**********************************
+     * Copied from KineticBlockEntity *
+     * Used for storing data          *
+     **********************************/
 
+    @Override
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+
+        if (tag.contains(NETWORK_ID)) {
+            networkId = tag.getInt(NETWORK_ID);
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+
+        if (level != null && !level.isClientSide) {
+            if (networkId < 0) {
+                YTechMod.KINETIC_PROPAGATOR.server().add(this);
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+                setChanged();
+            }
+        }
     }
 
     @NotNull
     @Override
-    public Component getDisplayName() {
-        return Component.translatable(Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).block().getId().toLanguageKey("block"));
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        tag.putInt(NETWORK_ID, networkId);
+        return tag;
     }
 
-    @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pPlayerInventory, @NotNull Player pPlayer) {
-        return ContainerMenuFactory.create(pContainerId, pPlayer, getBlockPos(), machine, tier);
+    public void handleUpdateTag(CompoundTag tag) {
+        super.handleUpdateTag(tag);
+        networkId = tag.getInt(NETWORK_ID);
+    }
+
+    @NotNull
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt(NETWORK_ID, networkId);
     }
 }
