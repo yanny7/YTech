@@ -1,7 +1,7 @@
 package com.yanny.ytech.machine.block_entity;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.machine.container.handler.MachineContainerHandler;
+import com.yanny.ytech.machine.handler.MachineItemStackHandler;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
 import com.yanny.ytech.network.kinetic.common.RotationDirection;
@@ -46,8 +46,8 @@ public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
 
     @NotNull
     @Override
-    protected MachineContainerHandler getContainerHandler() {
-        return new MachineContainerHandler.Builder()
+    protected MachineItemStackHandler getContainerHandler() {
+        return new MachineItemStackHandler.Builder()
                 .addInputSlot(32, 32, (itemStack) -> true)
                 .addOutputSlot(64, 32)
                 .setOnChangeListener(this::setChanged)

@@ -3,7 +3,7 @@ package com.yanny.ytech.machine.screen;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.machine.block_entity.MachineBlockEntity;
 import com.yanny.ytech.machine.container.MachineContainerMenu;
-import com.yanny.ytech.machine.container.handler.MachineItemStackHandler;
+import com.yanny.ytech.machine.handler.MachineItemStackHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -21,7 +21,7 @@ public class MachineScreen extends AbstractContainerScreen<MachineContainerMenu>
         super(container, inventory, title);
         this.containerMenu = container;
         blockEntity = container.getBlockEntity();
-        itemStackHandler = blockEntity.getPlayerItemStackHandler();
+        itemStackHandler = blockEntity.getItems();
     }
 
     @Override

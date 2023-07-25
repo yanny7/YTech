@@ -1,7 +1,7 @@
 package com.yanny.ytech.machine.block_entity;
 
 import com.yanny.ytech.configuration.YTechConfigLoader;
-import com.yanny.ytech.machine.container.handler.MachineContainerHandler;
+import com.yanny.ytech.machine.handler.MachineItemStackHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,8 +16,8 @@ public class FurnaceBlockEntity extends MachineBlockEntity {
 
     @NotNull
     @Override
-    protected MachineContainerHandler getContainerHandler() {
-        return new MachineContainerHandler.Builder()
+    protected MachineItemStackHandler getContainerHandler() {
+        return new MachineItemStackHandler.Builder()
                 .addInputSlot(32, 32, (itemStack) -> true)
                 .addInputSlot(32, 32 + 18, (AbstractFurnaceBlockEntity::isFuel))
                 .addOutputSlot(64, 32)
