@@ -38,14 +38,12 @@ public class YTechMod {
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);
 
-        DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () -> YTechMod.clientStuff(modEventBus));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> YTechMod.clientStuff(modEventBus));
     }
 
-    public static DistExecutor.SafeRunnable clientStuff(final IEventBus modEventBus) {
-        return () -> {
-            modEventBus.addListener(Registration::addBlockColors);
-            modEventBus.addListener(Registration::addItemColors);
-        };
+    public static void clientStuff(final IEventBus modEventBus) {
+        modEventBus.addListener(Registration::addBlockColors);
+        modEventBus.addListener(Registration::addItemColors);
     }
 
     public record DistHolder<Client, Server>(
