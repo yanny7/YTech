@@ -1,5 +1,6 @@
 package com.yanny.ytech;
 
+import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.machine.container.MachineContainerMenu;
 import com.yanny.ytech.machine.screen.ScreenFactory;
 import com.yanny.ytech.network.kinetic.renderer.KineticRenderer;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ModBusSubscriber {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
+        TopCompatibility.register();
         event.enqueueWork(() -> {
             Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) ->
                     MenuScreens.register((MenuType<MachineContainerMenu>) holder.menuType().get(), ScreenFactory::create)));

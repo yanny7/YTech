@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticNetwork;
 import com.yanny.ytech.network.kinetic.message.LevelSyncMessage;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -53,6 +55,18 @@ public class ServerKineticPropagator {
     public void onPlayerLogIn(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new LevelSyncMessage(levelMap.get(serverPlayer.level()).getNetworks()));
+        }
+    }
+
+    @Nullable
+    public KineticNetwork getNetwork(@NotNull IKineticBlockEntity blockEntity) {
+        ServerKineticLevel level = levelMap.get(blockEntity.getLevel());
+
+        if (level != null) {
+            return level.getNetwork(blockEntity);
+        } else {
+            LOGGER.warn("No kinetic network for level {}", blockEntity.getLevel());
+            return null;
         }
     }
 }

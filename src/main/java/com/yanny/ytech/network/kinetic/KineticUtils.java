@@ -2,10 +2,13 @@ package com.yanny.ytech.network.kinetic;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.client.ClientKineticPropagator;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticNetwork;
 import com.yanny.ytech.network.kinetic.message.LevelSyncMessage;
 import com.yanny.ytech.network.kinetic.message.NetworkAddedOrUpdatedMessage;
 import com.yanny.ytech.network.kinetic.message.NetworkRemovedMessage;
 import com.yanny.ytech.network.kinetic.server.ServerKineticPropagator;
+import mcjty.theoneprobe.api.IProbeInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -38,6 +41,19 @@ public class KineticUtils {
     @Nullable
     public static ResourceLocation getLevelId(@NotNull LevelAccessor level) {
         return level.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getKey(level.dimensionType());
+    }
+
+    public static void addKineticInfo(IProbeInfo probeInfo, IKineticBlockEntity blockEntity) {
+        switch (blockEntity.getKineticNetworkType()) {
+            case PROVIDER -> probeInfo.horizontal().text("Producing: ").text(Integer.toString(blockEntity.getStress())).text(" units");
+            case CONSUMER -> probeInfo.horizontal().text("Consuming: ").text(Integer.toString(blockEntity.getStress())).text(" units");
+        }
+
+        KineticNetwork network = YTechMod.KINETIC_PROPAGATOR.server().getNetwork(blockEntity);
+
+        if (network != null) {
+            probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getStress())).text("/").text(Integer.toString(network.getStressCapacity()));
+        }
     }
 
     private static YTechMod.DistHolder<ClientKineticPropagator, ServerKineticPropagator> registerClientKineticPropagator(SimpleChannel channel) {
