@@ -1328,6 +1328,21 @@
       "material": ["iron", "copper", "tin", "gold"]
     },
     {
+      "id": "plate",
+      "type": "item",
+      "name": {
+        "localizedSuffix": "Plate",
+        "suffix": "plate"
+      },
+      "model": {
+        "base": {
+          "texture": "ytech:item/plate",
+          "tint": 0
+        }
+      },
+      "material": ["iron", "copper"]
+    },
+    {
       "id": "stone_ore",
       "type": "block",
       "name": {

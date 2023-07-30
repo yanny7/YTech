@@ -6,6 +6,7 @@ public enum ProductType {
     @SerializedName("ingot") INGOT,
     @SerializedName("dust") DUST,
     @SerializedName("raw_material") RAW_MATERIAL,
+    @SerializedName("plate") PLATE,
     @SerializedName("stone_ore") STONE_ORE,
     @SerializedName("netherrack_ore") NETHERRACK_ORE,
     @SerializedName("deepslate_ore") DEEPSLATE_ORE,
