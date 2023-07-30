@@ -128,15 +128,15 @@ public class Registration {
 
     public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
         GeneralUtils.filteredStream(HOLDER.products(), (h) -> h.objectType == ObjectType.BLOCK, Holder.BlockHolder.class)
-                .forEach(h -> event.register((b, g, p, t) -> h.material.getColor(), h.block.get()));
+                .forEach(h -> event.register((b, g, p, t) -> getTintColor(h, t), h.block.get()));
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
         GeneralUtils.mapToStream(HOLDER.products()).forEach(h -> {
             switch (h.objectType) {
-                case ITEM -> event.register((i, t) -> h.material.getColor(), ((Holder.ItemHolder) h).item.get());
-                case BLOCK -> event.register((i, t) -> h.material.getColor(), ((Holder.BlockHolder) h).block.get());
-                case FLUID -> event.register((i, t) -> t == 1 ? h.material.getColor() : 0xFFFFFF, ((Holder.FluidHolder) h).bucket.get());
+                case ITEM -> event.register((i, t) -> getTintColor(h, t), ((Holder.ItemHolder) h).item.get());
+                case BLOCK -> event.register((i, t) -> getTintColor(h, t), ((Holder.BlockHolder) h).block.get());
+                case FLUID -> event.register((i, t) -> getTintColor(h, t), ((Holder.FluidHolder) h).bucket.get());
             }
         });
     }
@@ -235,6 +235,15 @@ public class Registration {
             return registerBlockItem(product, material);
         } else {
             throw new IllegalStateException("Material already exists");
+        }
+    }
+
+    private static int getTintColor(Holder h, int t) {
+        YTechConfigLoader.Model model = h.product.model();
+        if ((model.base().tint() != null && model.base().tint() == t) || (model.overlay() != null && model.overlay().tint() != null && model.overlay().tint() == t)) {
+            return h.material.getColor();
+        } else {
+            return 0xFFFFFFFF;
         }
     }
 }
