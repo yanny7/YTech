@@ -2,7 +2,6 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.ObjectType;
 import com.yanny.ytech.configuration.ProductType;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.registration.Holder;
@@ -32,44 +31,7 @@ class YTechBlockTags extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        /*Utils.sortedByMaterial(HOLDER.ore().entrySet()).forEach((oreEntry) -> {
-            YTechConfigLoader.Material material = oreEntry.getKey();
-            HashMap<Block, RegistryObject<Block>> stoneMap = oreEntry.getValue();
-            TagKey<Block> oreTag = Registration.FORGE_ORE_TAGS.get(material).block();
-
-            tag(Tags.Blocks.ORES).addTag(oreTag);
-
-            Utils.sortedByBlock(stoneMap.entrySet()).forEach((stoneEntry) -> {
-                Block stone = stoneEntry.getKey();
-                RegistryObject<Block> registry = stoneEntry.getValue();
-                Block block = registry.get();
-
-                if (material.equals(iron)) {
-                    tag(BlockTags.IRON_ORES).add(block);
-                    tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                } else if (material.equals(copper)) {
-                    tag(BlockTags.COPPER_ORES).add(block);
-                    tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                } else if (material.equals(gold)) {
-                    tag(BlockTags.GOLD_ORES).add(block);
-                    tag(BlockTags.NEEDS_IRON_TOOL).add(block);
-                } else {
-                    tag(BlockTags.NEEDS_IRON_TOOL).add(block);
-                }
-
-                if (stone.equals(Blocks.STONE)) {
-                    tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(block);
-                } else if (stone.equals(Blocks.DEEPSLATE)) {
-                    tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(block);
-                } else if (stone.equals(Blocks.NETHERRACK)) {
-                    tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(block);
-                }
-
-                tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
-                tag(oreTag).add(block);
-            });
-        });*/
-        GeneralUtils.filteredSortedStream(HOLDER.products(), ObjectType.BLOCK, Holder.BlockHolder.class).forEach((holder) -> {
+        GeneralUtils.filteredSortedStream(HOLDER.products(), Utils::onlyBlocks, Utils.sortMapByProductMaterial(), Holder.BlockHolder.class).forEach((holder) -> {
                     switch (holder.productType) {
                         case STORAGE_BLOCK -> {
                             TagKey<Block> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(holder.material).block();

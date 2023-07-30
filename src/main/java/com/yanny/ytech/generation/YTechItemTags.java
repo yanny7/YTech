@@ -33,7 +33,7 @@ class YTechItemTags extends ItemTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        GeneralUtils.sortedStreamMap(HOLDER.products()).forEach(entry -> {
+        GeneralUtils.sortedStreamMap(HOLDER.products(), Utils.sortMapByProductMaterial()).forEach(entry -> {
             YTechConfigLoader.Material material = entry.getKey();
             Holder holder = entry.getValue();
 

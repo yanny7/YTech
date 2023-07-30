@@ -27,13 +27,13 @@ class YTechRecipes extends RecipeProvider {
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
         HOLDER.products().get(ProductType.RAW_STORAGE_BLOCK).forEach(((material, holder) -> {
-            RegistryObject<Item> unpacked = GeneralUtils.get(HOLDER.products(), ProductType.RAW_MATERIAL, material, Holder.ItemHolder.class).item;
+            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.products(), ProductType.RAW_MATERIAL, material, Holder.ItemHolder.class).item;
             TagKey<Item> unpackedTag = Registration.FORGE_RAW_MATERIAL_TAGS.get(material);
             TagKey<Item> packedTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).item();
             nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, ((Holder.BlockHolder) holder).block, packedTag);
         }));
         HOLDER.products().get(ProductType.STORAGE_BLOCK).forEach(((material, holder) -> {
-            RegistryObject<Item> unpacked = GeneralUtils.get(HOLDER.products(), ProductType.INGOT, material, Holder.ItemHolder.class).item;
+            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.products(), ProductType.INGOT, material, Holder.ItemHolder.class).item;
             TagKey<Item> unpackedTag = Registration.FORGE_INGOT_TAGS.get(material);
             TagKey<Item> packedTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).item();
             nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, ((Holder.BlockHolder) holder).block, packedTag);

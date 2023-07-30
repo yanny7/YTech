@@ -20,12 +20,12 @@ public class ModBusSubscriber {
         TopCompatibility.register();
         event.enqueueWork(() -> {
             HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) ->
-                    MenuScreens.register((MenuType<MachineContainerMenu>) holder.menuType().get(), ScreenFactory::create)));
+                    MenuScreens.register((MenuType<MachineContainerMenu>) holder.menuType.get(), ScreenFactory::create)));
         });
     }
 
     @SubscribeEvent
     public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.registerBlockEntityRenderer(holder.entityType().get(), KineticRenderer::new)));
+        HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.registerBlockEntityRenderer(holder.entityType.get(), KineticRenderer::new)));
     }
 }

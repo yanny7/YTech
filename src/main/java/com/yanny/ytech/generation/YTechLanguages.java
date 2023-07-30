@@ -15,10 +15,9 @@ class YTechLanguages extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> add(holder.item().get(), tier.name() + " " + machine.name())));
-        HOLDER.kineticNetwork().forEach((type, materialMap) -> materialMap.forEach((material, holder) -> add(holder.block().get(), material.name() + " " + type.lang)));
-
-        GeneralUtils.flatStream(HOLDER.products()).forEach(h -> {
+        GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> add(h.item.get(), h.name));
+        GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> add(h.block.get(), h.name));
+        GeneralUtils.mapToStream(HOLDER.products()).forEach(h -> {
             switch (h.objectType) {
                 case ITEM -> add(((Holder.ItemHolder) h).item.get(), h.name);
                 case BLOCK -> add(((Holder.BlockHolder) h).block.get(), h.name);

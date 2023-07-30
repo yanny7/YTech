@@ -46,7 +46,7 @@ public class WaterWheelBlock extends KineticBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
         YTechConfigLoader.Material blockMaterial = YTechConfigLoader.getMaterial(material.id());
-        BlockEntityType<? extends BlockEntity> blockEntityType = Registration.HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).get(blockMaterial).entityType().get();
+        BlockEntityType<? extends BlockEntity> blockEntityType = Registration.HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).get(blockMaterial).entityType.get();
         return new WaterWheelBlockEntity(blockEntityType, pos, blockState, material.stress_multiplier());
     }
 

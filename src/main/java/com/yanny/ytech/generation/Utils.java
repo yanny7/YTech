@@ -1,9 +1,10 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.ObjectType;
 import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.registration.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -11,8 +12,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Stream;
 
 class Utils {
     static ResourceLocation getBaseBlockTexture(Block base) {
@@ -23,19 +22,19 @@ class Utils {
         return new ResourceLocation(YTechMod.MOD_ID, ModelProvider.BLOCK_FOLDER + "/" + base);
     }
 
-    static ResourceLocation getBaseItemTexture(Item base) {
-        return new ResourceLocation(ModelProvider.ITEM_FOLDER + "/" + Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(base)).getPath());
+    static boolean onlyFluids(Map.Entry<YTechConfigLoader.Material, Holder> h) {
+        return h.getValue().objectType == ObjectType.FLUID;
     }
 
-    static ResourceLocation getItemTexture(String base) {
-        return new ResourceLocation(YTechMod.MOD_ID, ModelProvider.ITEM_FOLDER + "/" + base);
+    static boolean onlyBlocks(Map.Entry<YTechConfigLoader.Material, Holder> h) {
+        return h.getValue().objectType == ObjectType.BLOCK;
     }
 
-    static <K extends YTechConfigLoader.Material, V> Stream<Map.Entry<K, V>> sortedByMaterial(Set<Map.Entry<K, V>> entrySet) {
-        return entrySet.stream().sorted(Comparator.comparing(a -> a.getKey().id()));
+    static boolean onlyBlocks(Holder h) {
+        return h.objectType == ObjectType.BLOCK;
     }
 
-    static <K extends Block, V> Stream<Map.Entry<K, V>> sortedByBlock(Set<Map.Entry<K, V>> entrySet) {
-        return entrySet.stream().sorted(Comparator.comparing(a -> a.getKey().getName().toString()));
+    static Comparator<Map.Entry<YTechConfigLoader.Material, Holder>> sortMapByProductMaterial() {
+        return Comparator.comparing(h -> h.getValue().productType.name() + h.getKey().id());
     }
 }

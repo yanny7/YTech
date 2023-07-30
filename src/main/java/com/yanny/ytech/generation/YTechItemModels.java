@@ -20,7 +20,7 @@ class YTechItemModels extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        GeneralUtils.flatStream(HOLDER.products()).filter(h -> h.objectType == ObjectType.ITEM || h.objectType == ObjectType.FLUID).forEach(this::registerItem);
+        GeneralUtils.filteredStream(HOLDER.products(), h -> h.objectType == ObjectType.ITEM || h.objectType == ObjectType.FLUID).forEach(this::registerItem);
     }
 
     private void registerItem(Holder holder) {

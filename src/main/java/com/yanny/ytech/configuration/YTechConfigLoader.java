@@ -23,7 +23,7 @@ import java.util.Objects;
 public class YTechConfigLoader {
     private static final YTechRec MODEL;
     private static final Map<String, Material> MATERIAL_MAP = new HashMap<>();
-    private static final Map<String, Tier> TIER_MAP = new HashMap<>();
+    private static final Map<TierType, Tier> TIER_MAP = new HashMap<>();
     private static final Map<ProductType, Product> PRODUCT_MAP = new HashMap<>();
 
     static {
@@ -77,7 +77,7 @@ public class YTechConfigLoader {
         return MODEL.tiers;
     }
 
-    public static Tier getTier(String id) {
+    public static Tier getTier(TierType id) {
         return TIER_MAP.get(id);
     }
 
@@ -134,48 +134,25 @@ public class YTechConfigLoader {
     }
 
     public record Machine(
-            @NotNull String id,
+            @NotNull MachineType id,
             @NotNull String name,
-            @NotNull String fromTier,
-            @NotNull MachineType machineType
-    ) {
-        public Machine(String id, String name, String fromTier, MachineType machineType) {
-            this.id = id;
-            this.name = name;
-            this.fromTier = fromTier;
-            this.machineType = Objects.requireNonNull(MachineType.fromConfiguration(id));
-        }
-    }
+            @NotNull TierType fromTier
+    ) {}
 
     public record Tier(
-            @NotNull String id,
-            @NotNull String name,
-            @NotNull TierType tierType
-    ) {
-        public Tier(String id, String name, TierType tierType) {
-            this.id = id;
-            this.name = name;
-            this.tierType = Objects.requireNonNull(TierType.fromConfiguration(id));
-        }
-    }
+            @NotNull TierType id,
+            @NotNull String name
+    ) {}
 
     public record Generator(
             @NotNull Kinetic[] kinetic
     ) {}
 
     public record Kinetic (
-            @NotNull String id,
+            @NotNull KineticBlockType id,
             @NotNull String name,
-            @NotNull KineticMaterial[] materials,
-            @NotNull KineticBlockType kineticBlockType
-    ) {
-        public Kinetic(String id, String name, KineticMaterial[] materials, KineticBlockType kineticBlockType) {
-            this.id = id;
-            this.name = name;
-            this.materials = materials;
-            this.kineticBlockType = Objects.requireNonNull(KineticBlockType.fromConfiguration(id));
-        }
-    }
+            @NotNull KineticMaterial[] materials
+    ) {}
 
     public record KineticMaterial(
             @NotNull String id,

@@ -37,12 +37,12 @@ class YTechLootTables extends LootTableProvider {
 
         @Override
         protected void generate() {
-            HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> dropSelf(holder.block().get())));
-            HOLDER.kineticNetwork().forEach((type, materialMap) -> materialMap.forEach((material, holder) -> dropSelf(holder.block().get())));
-            GeneralUtils.filteredStream(HOLDER.products(), ObjectType.BLOCK, Holder.BlockHolder.class).forEach(h -> {
+            GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> dropSelf(h.block.get()));
+            GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> dropSelf(h.block.get()));
+            GeneralUtils.filteredStream(HOLDER.products(), (h) -> h.objectType == ObjectType.BLOCK, Holder.BlockHolder.class).forEach(h -> {
                 switch (h.productType) {
                     case STONE_ORE, DEEPSLATE_ORE, NETHERRACK_ORE ->
-                            add(h.block.get(), (block) -> createOreDrop(block, GeneralUtils.get(HOLDER.products(),
+                            add(h.block.get(), (block) -> createOreDrop(block, GeneralUtils.getFromMap(HOLDER.products(),
                                     ProductType.RAW_MATERIAL, h.material, Holder.ItemHolder.class).item.get()));
                     default -> dropSelf(h.block.get());
                 }
@@ -53,9 +53,9 @@ class YTechLootTables extends LootTableProvider {
         @Override
         protected Iterable<Block> getKnownBlocks() {
             Stream<Block> stream = Stream.of(
-                    GeneralUtils.filteredStream(HOLDER.products(), ObjectType.BLOCK, Holder.BlockHolder.class).flatMap(e -> e.block.stream()),
-                    HOLDER.machine().values().stream().flatMap((map) -> map.values().stream().flatMap((f) -> f.block().stream())),
-                    HOLDER.kineticNetwork().values().stream().flatMap((map) -> map.values().stream().flatMap((holder) -> holder.block().stream()))
+                    GeneralUtils.filteredStream(HOLDER.products(), Utils::onlyBlocks, Holder.BlockHolder.class).flatMap(e -> e.block.stream()),
+                    GeneralUtils.mapToStream(HOLDER.machine()).flatMap(h -> h.block.stream()),
+                    GeneralUtils.mapToStream(HOLDER.kineticNetwork()).flatMap(h -> h.block.stream())
             ).flatMap(i -> i);
             return stream.toList();
         }

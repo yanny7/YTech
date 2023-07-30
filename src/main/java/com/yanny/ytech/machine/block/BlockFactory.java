@@ -8,9 +8,9 @@ import java.util.function.Supplier;
 
 public class BlockFactory {
     public static MachineBlock create(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
-        return switch (machine.machineType()) {
+        return switch (machine.id()) {
             case FURNACE -> new FurnaceBlock(entityTypeSupplier, machine, tier);
-            case CRUSHER -> switch (tier.tierType()) {
+            case CRUSHER -> switch (tier.id()) {
                 case STONE -> new KineticMachineBlock(entityTypeSupplier, machine, tier);
                 case STEAM -> new CrusherBlock(entityTypeSupplier, machine, tier);
             };

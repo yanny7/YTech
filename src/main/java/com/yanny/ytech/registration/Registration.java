@@ -93,12 +93,11 @@ public class Registration {
 
         for (YTechConfigLoader.Kinetic kinetic : YTechConfigLoader.getKinetic()) {
             HashMap<YTechConfigLoader.Material, KineticNetworkHolder> holderMap = new HashMap<>();
-            KineticBlockType blockType = kinetic.kineticBlockType();
 
-            HOLDER.kineticNetwork().put(blockType, holderMap);
+            HOLDER.kineticNetwork().put(kinetic.id(), holderMap);
 
             for (YTechConfigLoader.KineticMaterial kineticMaterial : kinetic.materials()) {
-                holderMap.put(Objects.requireNonNull(YTechConfigLoader.getMaterial(kineticMaterial.id())), registerKineticBlock(blockType, kineticMaterial));
+                holderMap.put(Objects.requireNonNull(YTechConfigLoader.getMaterial(kineticMaterial.id())), registerKineticBlock(kinetic.id(), kineticMaterial));
             }
         }
     }
@@ -115,24 +114,25 @@ public class Registration {
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == TAB.getKey()) {
-            GeneralUtils.flatStream(HOLDER.products()).forEach(holder -> {
+            GeneralUtils.mapToStream(HOLDER.products()).forEach(holder -> {
                 switch (holder.objectType) {
                     case ITEM -> event.accept(((Holder.ItemHolder) holder).item);
                     case BLOCK -> event.accept(((Holder.BlockHolder) holder).block);
                     case FLUID -> event.accept(((Holder.FluidHolder) holder).bucket);
                 }
             });
-            HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> event.accept(holder.block().get())));
-            HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.accept(holder.block().get())));
+            GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
+            GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
         }
     }
 
     public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
-        GeneralUtils.filteredStream(HOLDER.products(), ObjectType.BLOCK, Holder.BlockHolder.class).forEach(h -> event.register((b, g, p, t) -> h.material.getColor(), h.block.get()));
+        GeneralUtils.filteredStream(HOLDER.products(), (h) -> h.objectType == ObjectType.BLOCK, Holder.BlockHolder.class)
+                .forEach(h -> event.register((b, g, p, t) -> h.material.getColor(), h.block.get()));
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
-        GeneralUtils.flatStream(HOLDER.products()).forEach(h -> {
+        GeneralUtils.mapToStream(HOLDER.products()).forEach(h -> {
             switch (h.objectType) {
                 case ITEM -> event.register((i, t) -> h.material.getColor(), ((Holder.ItemHolder) h).item.get());
                 case BLOCK -> event.register((i, t) -> h.material.getColor(), ((Holder.BlockHolder) h).block.get());
@@ -150,11 +150,13 @@ public class Registration {
     }
 
     private static MachineHolder registerMachine(YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
-        String key = tier.id() + "_" + machine.id();
+        String key = tier.id().id + "_" + machine.id().id;
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
         RegistryObject<BlockEntityType<? extends BlockEntity>> machineBlockEntity = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCK_ENTITY_TYPES);
 
         return new MachineHolder(
+                machine,
+                tier,
                 BLOCKS.register(key, () -> BlockFactory.create(machineBlockEntity, machine, tier)),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
                 BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
@@ -168,6 +170,8 @@ public class Registration {
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
 
         return new KineticNetworkHolder(
+                blockType,
+                YTechConfigLoader.getMaterial(kineticMaterial.id()),
                 BLOCKS.register(key, () -> KineticBlockFactory.create(blockType, kineticMaterial)),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
                 BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
@@ -213,7 +217,7 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.get(HOLDER.products(), ProductType.INGOT,
+        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.getFromMap(HOLDER.products(), ProductType.INGOT,
                 YTechConfigLoader.getMaterial("gold"), Holder.ItemHolder.class).item.get());
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }

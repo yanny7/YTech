@@ -28,8 +28,8 @@ public class MachineContainerMenu extends AbstractContainerMenu {
     private final int inputSlots;
 
     public MachineContainerMenu(int windowId, Player player, BlockPos pos, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
-        super(HOLDER.machine().get(machine).get(tier).menuType().get(), windowId);
-        block = HOLDER.machine().get(machine).get(tier).block().get();
+        super(HOLDER.machine().get(machine).get(tier).menuType.get(), windowId);
+        block = HOLDER.machine().get(machine).get(tier).block.get();
         this.machine = machine;
         this.tier = tier;
         this.pos = pos;

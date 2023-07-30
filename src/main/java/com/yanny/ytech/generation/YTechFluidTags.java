@@ -2,7 +2,6 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.ObjectType;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
@@ -23,7 +22,7 @@ class YTechFluidTags extends FluidTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        GeneralUtils.filteredSortedStream(HOLDER.products(), ObjectType.FLUID, Holder.FluidHolder.class)
+        GeneralUtils.filteredSortedStream(HOLDER.products(), Utils::onlyFluids, Utils.sortMapByProductMaterial(), Holder.FluidHolder.class)
                 .forEach((holder) -> tag(Registration.FORGE_FLUID_TAGS.get(holder.material)).add(holder.source.get()).add(holder.flowing.get()));
     }
 }

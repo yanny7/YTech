@@ -1,30 +1,17 @@
 package com.yanny.ytech.network.kinetic.common;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.annotations.SerializedName;
 
 public enum KineticBlockType {
-    SHAFT("shaft", "Shaft"),
-    WATER_WHEEL("water_wheel", "Water Wheel")
+    @SerializedName("shaft") SHAFT("Shaft"),
+    @SerializedName("water_wheel") WATER_WHEEL("Water Wheel")
     ;
 
-    private static final Map<String, KineticBlockType> KINETIC_TYPE_MAP = new HashMap<>();
-
-    public final String id;
     public final String lang;
+    public final String id;
 
-    static {
-        for(final KineticBlockType kineticBlockType : KineticBlockType.values()) {
-            KINETIC_TYPE_MAP.put(kineticBlockType.id, kineticBlockType);
-        }
-    }
-
-    KineticBlockType(String id, String lang) {
-        this.id = id;
+    KineticBlockType(String lang) {
         this.lang = lang;
-    }
-
-    public static KineticBlockType fromConfiguration(String id) {
-        return KINETIC_TYPE_MAP.get(id);
+        id = name().toLowerCase();
     }
 }

@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenFactory {
     public static MachineScreen create(MachineContainerMenu container, Inventory inventory, Component title) {
-        return switch (container.machine.machineType()) {
+        return switch (container.machine.id()) {
             case FURNACE -> new FurnaceScreen(container, inventory, title);
             case CRUSHER -> new CrusherScreen(container, inventory, title);
         };

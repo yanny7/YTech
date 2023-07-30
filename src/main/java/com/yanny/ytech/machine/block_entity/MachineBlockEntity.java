@@ -48,7 +48,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements IMachine
     @NotNull
     @Override
     public Component getDisplayName() {
-        return Component.translatable(HOLDER.machine().get(machine).get(tier).block().getId().toLanguageKey("block"));
+        return Component.translatable(HOLDER.machine().get(machine).get(tier).block.getId().toLanguageKey("block"));
     }
 
     @Nullable
