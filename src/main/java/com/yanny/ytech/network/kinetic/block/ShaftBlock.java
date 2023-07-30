@@ -56,7 +56,7 @@ public class ShaftBlock extends KineticBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
         YTechConfigLoader.Material blockMaterial = YTechConfigLoader.getMaterial(material.id());
-        BlockEntityType<? extends BlockEntity> blockEntityType = Registration.REGISTRATION_HOLDER.kineticNetwork().get(KineticBlockType.SHAFT).get(blockMaterial).entityType().get();
+        BlockEntityType<? extends BlockEntity> blockEntityType = Registration.HOLDER.kineticNetwork().get(KineticBlockType.SHAFT).get(blockMaterial).entityType().get();
         return new ShaftBlockEntity(blockEntityType, pos, blockState, material.stress_multiplier());
     }
 

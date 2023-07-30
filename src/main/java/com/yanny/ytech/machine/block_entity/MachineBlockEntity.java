@@ -4,7 +4,6 @@ import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.IMachineBlockEntity;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.machine.handler.MachineItemStackHandler;
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,6 +18,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public abstract class MachineBlockEntity extends BlockEntity implements IMachineBlockEntity, BlockEntityTicker<MachineBlockEntity>, MenuProvider {
     private static final String TAG_ITEMS = "items";
@@ -47,7 +48,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements IMachine
     @NotNull
     @Override
     public Component getDisplayName() {
-        return Component.translatable(Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).block().getId().toLanguageKey("block"));
+        return Component.translatable(HOLDER.machine().get(machine).get(tier).block().getId().toLanguageKey("block"));
     }
 
     @Nullable

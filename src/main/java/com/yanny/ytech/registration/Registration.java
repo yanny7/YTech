@@ -1,7 +1,9 @@
 package com.yanny.ytech.registration;
 
-import com.google.common.collect.ImmutableMap;
+import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.ObjectType;
+import com.yanny.ytech.configuration.ProductType;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
@@ -39,10 +41,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Registration {
-    public static final RegistrationHolder REGISTRATION_HOLDER = new RegistrationHolder();
+    public static final RegistrationHolder HOLDER = new RegistrationHolder();
 
     public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_ORE_TAGS = new HashMap<>();
     public static final Map<YTechConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_STORAGE_BLOCK_TAGS = new HashMap<>();
@@ -63,39 +66,26 @@ public class Registration {
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
     static {
-        for (YTechConfigLoader.Material element : YTechConfigLoader.getElements()) {
-            if (YTechConfigLoader.isOre(element)) {
-                REGISTRATION_HOLDER.ore().put(element, new HashMap<>(ImmutableMap.<Block, RegistryObject<Block>>builder()
-                        .put(Blocks.STONE, registerBlockItem(element, Blocks.STONE, getPathOf(Blocks.STONE) + "_" + element.id() + "_ore"))
-                        .put(Blocks.DEEPSLATE, registerBlockItem(element, Blocks.DEEPSLATE, getPathOf(Blocks.DEEPSLATE) + "_" + element.id() + "_ore"))
-                        .put(Blocks.NETHERRACK, registerBlockItem(element, Blocks.NETHERRACK, getPathOf(Blocks.NETHERRACK) + "_" + element.id() + "_ore"))
-                        .build()));
-                REGISTRATION_HOLDER.rawStorageBlock().put(element, registerBlockItem(element, Blocks.RAW_IRON_BLOCK, "raw_" + element.id() + "_block"));
-                REGISTRATION_HOLDER.rawMaterial().put(element, registerItem("raw_" + element.id()));
+        for (YTechConfigLoader.Product product : YTechConfigLoader.getProducts()) {
+            for (YTechConfigLoader.Material material : product.material()) {
+                switch (product.id()) {
+                    case INGOT -> FORGE_INGOT_TAGS.put(material, registerItemTag("forge", "ingots", material.id()));
+                    case DUST -> FORGE_DUST_TAGS.put(material, registerItemTag("forge", "dusts", material.id()));
+                    case RAW_MATERIAL -> FORGE_RAW_MATERIAL_TAGS.put(material, registerItemTag("forge", "raw_materials", material.id()));
+                    case STORAGE_BLOCK -> FORGE_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", material.id()));
+                    case RAW_STORAGE_BLOCK -> FORGE_RAW_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", "raw_" + material.id()));
+                    case STONE_ORE, NETHERRACK_ORE, DEEPSLATE_ORE -> FORGE_ORE_TAGS.computeIfAbsent(material, (m) -> registerBlockItemTag("forge", "ores", m.id()));
+                    case FLUID -> FORGE_FLUID_TAGS.put(material, registerFluidTag("forge", material.id()));
+                }
 
-                FORGE_ORE_TAGS.put(element, registerBlockItemTag("forge", "ores", element.id()));
-                FORGE_RAW_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", "raw_" + element.id()));
-                FORGE_RAW_MATERIAL_TAGS.put(element, registerItemTag("forge", "raw_materials", element.id()));
-            }
-            if (YTechConfigLoader.isMetal(element)) {
-                REGISTRATION_HOLDER.storageBlock().put(element, registerBlockItem(element, Blocks.IRON_BLOCK, element.id() + "_block"));
-                REGISTRATION_HOLDER.ingot().put(element, registerItem(element.id() + "_ingot"));
-
-                FORGE_STORAGE_BLOCK_TAGS.put(element, registerBlockItemTag("forge", "storage_blocks", element.id()));
-                FORGE_INGOT_TAGS.put(element, registerItemTag("forge", "ingots", element.id()));
-            }
-            if (YTechConfigLoader.isDust(element)) {
-                REGISTRATION_HOLDER.dust().put(element, registerItem(element.id() + "_dust"));
-                FORGE_DUST_TAGS.put(element, registerItemTag("forge", "dusts", element.id()));
-            }
-            if (YTechConfigLoader.isFluid(element)) {
-                REGISTRATION_HOLDER.fluid().put(element, registerFluid(element));
-                FORGE_FLUID_TAGS.put(element, registerFluidTag("forge", element.id()));
-            }
+                HOLDER.products()
+                        .computeIfAbsent(product.id(), (p) -> new HashMap<>())
+                        .compute(material, (k, v) -> uniqueKey(v, product, Objects.requireNonNull(material, "Material must be non null")));
+            };
         }
 
         for (YTechConfigLoader.Machine machine : YTechConfigLoader.getMachines()) {
-            REGISTRATION_HOLDER.machine().put(machine, Arrays.stream(YTechConfigLoader.getTiers())
+            HOLDER.machine().put(machine, Arrays.stream(YTechConfigLoader.getTiers())
                     .filter((tier) -> YTechConfigLoader.getTierIndex(tier) >= YTechConfigLoader.getTierIndex(YTechConfigLoader.getTier(machine.fromTier())))
                     .map((tier) -> new Tuple<>(tier, registerMachine(machine, tier)))
                     .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
@@ -105,7 +95,7 @@ public class Registration {
             HashMap<YTechConfigLoader.Material, KineticNetworkHolder> holderMap = new HashMap<>();
             KineticBlockType blockType = kinetic.kineticBlockType();
 
-            REGISTRATION_HOLDER.kineticNetwork().put(blockType, holderMap);
+            HOLDER.kineticNetwork().put(blockType, holderMap);
 
             for (YTechConfigLoader.KineticMaterial kineticMaterial : kinetic.materials()) {
                 holderMap.put(Objects.requireNonNull(YTechConfigLoader.getMaterial(kineticMaterial.id())), registerKineticBlock(blockType, kineticMaterial));
@@ -124,48 +114,37 @@ public class Registration {
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-            REGISTRATION_HOLDER.ore().forEach(((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.accept(registry.get()))));
-        }
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.accept(registry.get()));
-            REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.accept(registry.get()));
-        }
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.accept(registry.get()));
-            REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.accept(registry.get()));
-            REGISTRATION_HOLDER.dust().forEach((material, registry) -> event.accept(registry.get()));
-        }
-        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            REGISTRATION_HOLDER.fluid().forEach((material, holder) -> event.accept(holder.bucket().get()));
-        }
-
         if (event.getTabKey() == TAB.getKey()) {
-            REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> event.accept(holder.block().get())));
-            REGISTRATION_HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.accept(holder.block().get())));
+            GeneralUtils.flatStream(HOLDER.products()).forEach(holder -> {
+                switch (holder.objectType) {
+                    case ITEM -> event.accept(((Holder.ItemHolder) holder).item);
+                    case BLOCK -> event.accept(((Holder.BlockHolder) holder).block);
+                    case FLUID -> event.accept(((Holder.FluidHolder) holder).bucket);
+                }
+            });
+            HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> event.accept(holder.block().get())));
+            HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.accept(holder.block().get())));
         }
     }
 
     public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
-        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get())));
-        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((blockState, blockAndTintGetter, blockPos, tint) -> material.getColor(), registry.get()));
+        GeneralUtils.filteredStream(HOLDER.products(), ObjectType.BLOCK, Holder.BlockHolder.class).forEach(h -> event.register((b, g, p, t) -> h.material.getColor(), h.block.get()));
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
-        REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((block, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get())));
-        REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.ingot().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.dust().forEach((material, registry) -> event.register((itemStack, tint) -> material.getColor(), registry.get()));
-        REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> event.register((itemStack, tint) -> tint == 1 ? material.getColor() : 0xFFFFFF, holder.bucket().get())));
+        GeneralUtils.flatStream(HOLDER.products()).forEach(h -> {
+            switch (h.objectType) {
+                case ITEM -> event.register((i, t) -> h.material.getColor(), ((Holder.ItemHolder) h).item.get());
+                case BLOCK -> event.register((i, t) -> h.material.getColor(), ((Holder.BlockHolder) h).block.get());
+                case FLUID -> event.register((i, t) -> t == 1 ? h.material.getColor() : 0xFFFFFF, ((Holder.FluidHolder) h).bucket.get());
+            }
+        });
     }
 
-    private static RegistryObject<Block> registerBlockItem(YTechConfigLoader.Material material, Block base, String name) {
+    private static RegistryObject<Block> registerBlockItem(YTechConfigLoader.Material material, String name) {
         Float hardness = material.hardness();
         assert hardness != null;
-        RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.copy(base).strength(hardness)));
+        RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(hardness)));
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
     }
@@ -178,7 +157,8 @@ public class Registration {
         return new MachineHolder(
                 BLOCKS.register(key, () -> BlockFactory.create(machineBlockEntity, machine, tier)),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
-                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null)),
+                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
+                        Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null)),
                 MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))))
         );
     }
@@ -190,15 +170,12 @@ public class Registration {
         return new KineticNetworkHolder(
                 BLOCKS.register(key, () -> KineticBlockFactory.create(blockType, kineticMaterial)),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
-                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) -> Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null))
+                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
+                        Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null))
         );
     }
 
-    private static RegistryObject<Item> registerItem(String name) {
-        return ITEMS.register(name, () -> new Item(new Item.Properties()));
-    }
-
-    private static FluidHolder registerFluid(YTechConfigLoader.Material material) {
+    private static Holder.FluidHolder registerFluid(YTechConfigLoader.Product product, YTechConfigLoader.Material material) {
         String name = material.id();
         String flowingName = "flowing_" + name;
         String bucketName = name + "_bucket";
@@ -208,14 +185,17 @@ public class Registration {
         RegistryObject<Item> bucket = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, bucketName), ForgeRegistries.ITEMS);
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, blockName), ForgeRegistries.BLOCKS);
         FluidType fluidType = new YTechFluidType(material);
-        ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(() -> fluidType, sourceFluid, flowingFluid).bucket(bucket).tickRate(20).block(() -> (LiquidBlock) block.get());
+        ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(() ->
+                fluidType, sourceFluid, flowingFluid).bucket(bucket).tickRate(20).block(() -> (LiquidBlock) block.get());
 
-        return new FluidHolder(
+        return new Holder.FluidHolder(
+                product,
+                material,
+                BLOCKS.register(blockName, () -> new LiquidBlock(() -> (FlowingFluid)flowingFluid.get(), BlockBehaviour.Properties.of())),
                 FLUID_TYPES.register(name, () -> fluidType),
                 FLUIDS.register(name, () -> new ForgeFlowingFluid.Source(properties)),
                 FLUIDS.register(flowingName, () -> new ForgeFlowingFluid.Flowing(properties)),
-                ITEMS.register(bucketName, () -> new BucketItem(sourceFluid, new Item.Properties())),
-                BLOCKS.register(blockName, () -> new LiquidBlock(() -> (FlowingFluid)flowingFluid.get(), BlockBehaviour.Properties.of()))
+                ITEMS.register(bucketName, () -> new BucketItem(sourceFluid, new Item.Properties()))
         );
     }
 
@@ -233,10 +213,24 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(() -> new ItemStack(REGISTRATION_HOLDER.ingot().get(YTechConfigLoader.getMaterial("copper")).get())).build());
+        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.get(HOLDER.products(), ProductType.INGOT,
+                YTechConfigLoader.getMaterial("gold"), Holder.ItemHolder.class).item.get());
+        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }
 
-    private static String getPathOf(Block block) {
-        return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
+    private static Holder registerBlockItem(YTechConfigLoader.Product product, YTechConfigLoader.Material material) {
+        return switch (product.type()) {
+            case ITEM -> new Holder.ItemHolder(product, material, ITEMS.register(product.name().getKey(material), () -> new Item(new Item.Properties())));
+            case BLOCK -> new Holder.BlockHolder(product, material, registerBlockItem(material, product.name().getKey(material)));
+            case FLUID -> registerFluid(product, material);
+        };
+    }
+
+    private static Holder uniqueKey(Holder v, YTechConfigLoader.Product product, YTechConfigLoader.Material material) {
+        if (v == null) {
+            return registerBlockItem(product, material);
+        } else {
+            throw new IllegalStateException("Material already exists");
+        }
     }
 }

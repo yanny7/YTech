@@ -1,10 +1,11 @@
 package com.yanny.ytech.configuration;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.yanny.ytech.machine.MachineType;
 import com.yanny.ytech.machine.TierType;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.registration.Registration;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,29 +14,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class YTechConfigLoader {
     private static final YTechRec MODEL;
     private static final Map<String, Material> MATERIAL_MAP = new HashMap<>();
-    private static final Map<String, Machine> MACHINE_MAP = new HashMap<>();
     private static final Map<String, Tier> TIER_MAP = new HashMap<>();
-    private static final Map<String, Kinetic> KINETIC_MAP = new HashMap<>();
-    private static final Set<String> ORE_SET = new HashSet<>();
-    private static final Set<String> METAL_SET = new HashSet<>();
-    private static final Set<String> MINERAL_SET = new HashSet<>();
-    private static final Set<String> DUST_SET = new HashSet<>();
-    private static final Set<String> FLUID_SET = new HashSet<>();
-    private static final Set<String> GAS_SET = new HashSet<>();
+    private static final Map<ProductType, Product> PRODUCT_MAP = new HashMap<>();
 
     static {
         try (InputStream inputStream = Registration.class.getResourceAsStream("/configuration.json")) {
 
             if (inputStream != null) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(Product.class, new ProductDeserializer())
+                        .registerTypeAdapter(Material.class, new MaterialDeserializer())
+                        .registerTypeAdapter(Model.class, new ModelDeserializer())
+                        .registerTypeAdapter(Element.class, new ElementDeserializer())
+                        .create();
 
                 MODEL = gson.fromJson(bufferedReader, YTechRec.class);
             } else {
@@ -45,27 +46,9 @@ public class YTechConfigLoader {
             throw new RuntimeException(e);
         }
 
-        MATERIAL_MAP.putAll(Stream.of(MODEL.materials.elements, MODEL.materials.alloys, MODEL.materials.compounds, MODEL.materials.isotopes, MODEL.materials.minecraft)
-                .flatMap(Stream::of).collect(Collectors.toMap(m -> m.id, m -> m)));
-
         for (Tier tier : MODEL.tiers) {
             TIER_MAP.put(tier.id, tier);
         }
-
-        for (Machine machine : MODEL.machines) {
-            MACHINE_MAP.put(machine.id, machine);
-        }
-
-        for (Kinetic kinetic : MODEL.generators.kinetic) {
-            KINETIC_MAP.put(kinetic.id, kinetic);
-        }
-
-        ORE_SET.addAll(Arrays.asList(MODEL.properties.ore));
-        METAL_SET.addAll(Arrays.asList(MODEL.properties.metal));
-        MINERAL_SET.addAll(Arrays.asList(MODEL.properties.mineral));
-        DUST_SET.addAll(Arrays.asList(MODEL.properties.dust));
-        FLUID_SET.addAll(Arrays.asList(MODEL.properties.fluid));
-        GAS_SET.addAll(Arrays.asList(MODEL.properties.gas));
     }
 
     private YTechConfigLoader() {}
@@ -78,12 +61,16 @@ public class YTechConfigLoader {
         return MODEL.materials.elements;
     }
 
-    public static Machine[] getMachines() {
-        return MODEL.machines;
+    public static Product[] getProducts() {
+        return MODEL.products();
     }
 
-    public static Machine getMachine(String id) {
-        return MACHINE_MAP.get(id);
+    public static Product getProduct(ProductType id) {
+        return PRODUCT_MAP.get(id);
+    }
+
+    public static Machine[] getMachines() {
+        return MODEL.machines;
     }
 
     public static Tier[] getTiers() {
@@ -102,33 +89,9 @@ public class YTechConfigLoader {
         return MODEL.generators.kinetic;
     }
 
-    public static boolean isOre(Material material) {
-        return ORE_SET.contains(material.id);
-    }
-
-    public static boolean isMetal(Material material) {
-        return METAL_SET.contains(material.id);
-    }
-
-    public static boolean isMineral(Material material) {
-        return MINERAL_SET.contains(material.id);
-    }
-
-    public static boolean isDust(Material material) {
-        return DUST_SET.contains(material.id);
-    }
-
-    public static boolean isFluid(Material material) {
-        return FLUID_SET.contains(material.id);
-    }
-
-    public static boolean isGas(Material material) {
-        return GAS_SET.contains(material.id);
-    }
-
     private record YTechRec(
             @NotNull Materials materials,
-            @NotNull Properties properties,
+            @NotNull Product[] products,
             @NotNull Machine[] machines,
             @NotNull Tier[] tiers,
             @NotNull Generator generators
@@ -142,13 +105,12 @@ public class YTechConfigLoader {
             @NotNull Material[] minecraft
     ) {}
 
-    public record Properties(
-            @NotNull String[] ore,
-            @NotNull String[] metal,
-            @NotNull String[] mineral,
-            @NotNull String[] dust,
-            @NotNull String[] fluid,
-            @NotNull String[] gas
+    public record Product(
+            @NotNull ProductType id,
+            @NotNull NameHolder name,
+            @NotNull ObjectType type,
+            @NotNull Model model,
+            @NotNull Material[] material
     ) {}
 
     public record Material(
@@ -219,4 +181,112 @@ public class YTechConfigLoader {
             @NotNull String id,
             float stress_multiplier
     ) {}
+
+    public static class NameHolder {
+        public final String prefix;
+        public final String localizedPrefix;
+        public final String suffix;
+        public final String localizedSuffix;
+
+        public String getKey(Material material) {
+            return (prefix == null ? "" : (prefix + "_")) + material.id + (suffix == null ? "" : ("_" + suffix));
+        }
+
+        public String getLocalized(Material material) {
+            return (localizedPrefix == null ? "" : (localizedPrefix + " ")) + material.name + (localizedSuffix == null ? "" : (" " + localizedSuffix));
+        }
+
+        private NameHolder() {
+            prefix = null;
+            localizedPrefix = null;
+            suffix = null;
+            localizedSuffix = null;
+        }
+    }
+
+    public record Model(
+            @NotNull Element base,
+            @Nullable Element overlay
+    ) {}
+
+    public record Element(
+            @NotNull ResourceLocation texture,
+            @Nullable Integer tint
+    ) {}
+
+    private static class MaterialDeserializer implements JsonDeserializer<Material> {
+        @Override
+        public Material deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonObject()) {
+                JsonObject object = json.getAsJsonObject();
+                String id = object.get("id").getAsString();
+                String name = object.get("name").getAsString();
+                String color = context.deserialize(object.get("color"), String.class);
+                String symbol = context.deserialize(object.get("symbol"), String.class);
+                Float density = context.deserialize(object.get("density"), Float.class);
+                Float melting = context.deserialize(object.get("melting"), Float.class);
+                Float boiling = context.deserialize(object.get("boiling"), Float.class);
+                Float hardness = context.deserialize(object.get("hardness"), Float.class);
+                String block = context.deserialize(object.get("block"), String.class);
+                Material material = new Material(id, name, color, symbol, density, melting, boiling, hardness, block);
+
+                MATERIAL_MAP.put(id, material);
+                return material;
+            } else {
+                throw new JsonParseException("Expecting object");
+            }
+        }
+    }
+
+    private static class ProductDeserializer implements JsonDeserializer<Product> {
+        @Override
+        public Product deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonObject()) {
+                JsonObject object = json.getAsJsonObject();
+                ProductType id = Objects.requireNonNull(context.deserialize(object.get("id"), ProductType.class), "Invalid or missing product ID");
+                ObjectType type = Objects.requireNonNull(context.deserialize(object.get("type"), ObjectType.class), "Missing object type for " + id);
+                NameHolder name = Objects.requireNonNull(context.deserialize(object.get("name"), NameHolder.class), "Missing product name for " + id);
+                Model model = Objects.requireNonNull(context.deserialize(object.get("model"), Model.class), "Missing texture model for " + id);
+                Material[] materials = Objects.requireNonNull(Arrays.stream((String[])context.deserialize(object.get("material"), String[].class))
+                        .map((materialId) -> Objects.requireNonNull(getMaterial(materialId), "No material with id " + materialId))
+                        .toArray(Material[]::new), "Missing product materials for " + id);
+                Product product = new Product(id, name, type, model, materials);
+
+                PRODUCT_MAP.put(id, product);
+                return product;
+            } else {
+                throw new JsonParseException("Expecting object");
+            }
+        }
+    }
+
+    private static class ModelDeserializer implements JsonDeserializer<Model> {
+        @Override
+        public Model deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonObject()) {
+                JsonObject object = json.getAsJsonObject();
+                Element base = Objects.requireNonNull(context.deserialize(object.get("base"), Element.class), "Base element must be provided");
+                Element overlay = context.deserialize(object.get("overlay"), Element.class);
+
+                return new Model(base, overlay);
+            } else {
+                throw new JsonParseException("Expecting object");
+            }
+        }
+    }
+
+    private static class ElementDeserializer implements JsonDeserializer<Element> {
+        @Override
+        public Element deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonObject()) {
+                JsonObject object = json.getAsJsonObject();
+                String texture = Objects.requireNonNull(context.deserialize(object.get("texture"), String.class), "texture must be provided");
+                Integer tint = context.deserialize(object.get("tint"), Integer.class);
+
+                return new Element(new ResourceLocation(texture), tint);
+            } else {
+                throw new JsonParseException("Expecting object");
+            }
+        }
+    }
 }

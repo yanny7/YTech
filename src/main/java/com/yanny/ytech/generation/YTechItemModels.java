@@ -1,22 +1,18 @@
 package com.yanny.ytech.generation;
 
+import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.configuration.ObjectType;
+import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+
+import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechItemModels extends ItemModelProvider {
-    private static final ResourceLocation RAW_METAL = Utils.getItemTexture("raw_metal");
-    private static final ResourceLocation INGOT = Utils.getItemTexture("ingot");
-    private static final ResourceLocation DUST = Utils.getItemTexture("dust");
-    private static final ResourceLocation BUCKET = Utils.getBaseItemTexture(Items.BUCKET);
-    private static final ResourceLocation BUCKET_OVERLAY = Utils.getItemTexture("bucket_overlay");
 
     public YTechItemModels(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, YTechMod.MOD_ID, existingFileHelper);
@@ -24,19 +20,16 @@ class YTechItemModels extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> registerTintedItem(registry, RAW_METAL));
-        Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> registerTintedItem(registry, INGOT));
-        Registration.REGISTRATION_HOLDER.dust().forEach((material, registry) -> registerTintedItem(registry, DUST));
-        Registration.REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> registerBucketItem(holder.bucket())));
+        GeneralUtils.flatStream(HOLDER.products()).filter(h -> h.objectType == ObjectType.ITEM || h.objectType == ObjectType.FLUID).forEach(this::registerItem);
     }
 
-    private void registerTintedItem(RegistryObject<Item> registry, ResourceLocation texture) {
-        String path = registry.getId().getPath();
-        getBuilder(path).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", texture);
-    }
+    private void registerItem(Holder holder) {
+        ItemModelBuilder builder = getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
 
-    private void registerBucketItem(RegistryObject<Item> registry) {
-        String path = registry.getId().getPath();
-        getBuilder(path).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", BUCKET).texture("layer1", BUCKET_OVERLAY);
+        builder.texture("layer0", holder.product.model().base().texture());
+
+        if (holder.product.model().overlay() != null) {
+            builder.texture("layer1", holder.product.model().overlay().texture());
+        }
     }
 }

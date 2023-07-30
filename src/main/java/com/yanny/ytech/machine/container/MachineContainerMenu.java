@@ -3,7 +3,6 @@ package com.yanny.ytech.machine.container;
 import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.machine.block_entity.MachineBlockEntity;
 import com.yanny.ytech.machine.handler.MachineItemStackHandler;
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +16,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
+import static com.yanny.ytech.registration.Registration.HOLDER;
+
 public class MachineContainerMenu extends AbstractContainerMenu {
     public final YTechConfigLoader.Machine machine;
     protected final YTechConfigLoader.Tier tier;
@@ -27,8 +28,8 @@ public class MachineContainerMenu extends AbstractContainerMenu {
     private final int inputSlots;
 
     public MachineContainerMenu(int windowId, Player player, BlockPos pos, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
-        super(Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).menuType().get(), windowId);
-        block = Registration.REGISTRATION_HOLDER.machine().get(machine).get(tier).block().get();
+        super(HOLDER.machine().get(machine).get(tier).menuType().get(), windowId);
+        block = HOLDER.machine().get(machine).get(tier).block().get();
         this.machine = machine;
         this.tier = tier;
         this.pos = pos;

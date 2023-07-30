@@ -1,10 +1,12 @@
 package com.yanny.ytech.generation;
 
+import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.registration.Registration;
-import net.minecraft.client.resources.language.I18n;
+import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
+
+import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechLanguages extends LanguageProvider {
     public YTechLanguages(PackOutput output, String locale) {
@@ -13,17 +15,15 @@ class YTechLanguages extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        Registration.REGISTRATION_HOLDER.ore().forEach((material, stoneMap) -> stoneMap.forEach((stone, registry) -> add(registry.get(), I18n.get(stone.getDescriptionId()) + " " + material.name() + " Ore")));
-        Registration.REGISTRATION_HOLDER.rawStorageBlock().forEach((material, registry) -> add(registry.get(), "Raw " + material.name() + " Block"));
-        Registration.REGISTRATION_HOLDER.storageBlock().forEach((material, registry) -> add(registry.get(), "Block of " + material.name()));
+        HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> add(holder.item().get(), tier.name() + " " + machine.name())));
+        HOLDER.kineticNetwork().forEach((type, materialMap) -> materialMap.forEach((material, holder) -> add(holder.block().get(), material.name() + " " + type.lang)));
 
-        Registration.REGISTRATION_HOLDER.rawMaterial().forEach((material, registry) -> add(registry.get(), "Raw " + material.name()));
-        Registration.REGISTRATION_HOLDER.ingot().forEach((material, registry) -> add(registry.get(), material.name() + " Ingot"));
-        Registration.REGISTRATION_HOLDER.dust().forEach((material, registry) -> add(registry.get(), material.name() + " Dust"));
-        Registration.REGISTRATION_HOLDER.fluid().forEach(((material, holder) -> add(holder.bucket().get(), material.name() + " Bucket")));
-
-        Registration.REGISTRATION_HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) -> add(holder.item().get(), tier.name() + " " + machine.name())));
-
-        Registration.REGISTRATION_HOLDER.kineticNetwork().forEach((type, materialMap) -> materialMap.forEach((material, holder) -> add(holder.block().get(), material.name() + " " + type.lang)));
+        GeneralUtils.flatStream(HOLDER.products()).forEach(h -> {
+            switch (h.objectType) {
+                case ITEM -> add(((Holder.ItemHolder) h).item.get(), h.name);
+                case BLOCK -> add(((Holder.BlockHolder) h).block.get(), h.name);
+                case FLUID -> add(((Holder.FluidHolder) h).bucket.get(), h.name);
+            }
+        });
     }
 }
