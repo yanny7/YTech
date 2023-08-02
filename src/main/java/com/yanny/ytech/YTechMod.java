@@ -1,5 +1,6 @@
 package com.yanny.ytech;
 
+import com.yanny.ytech.configuration.YTechConfigSpec;
 import com.yanny.ytech.generation.DataGeneration;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.client.ClientKineticPropagator;
@@ -7,20 +8,28 @@ import com.yanny.ytech.network.kinetic.server.ServerKineticPropagator;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.apache.commons.lang3.tuple.Pair;
 
 @Mod(YTechMod.MOD_ID)
 public class YTechMod {
     public static final String MOD_ID = "ytech";
-    private static final String PROTOCOL_VERSION = "1";
     public static final DistHolder<ClientKineticPropagator, ServerKineticPropagator> KINETIC_PROPAGATOR;
+    public static final YTechConfigSpec CONFIGURATION;
+
+    private static final String PROTOCOL_VERSION = "1";
+    private static final ForgeConfigSpec CONFIGURATION_SPEC;
 
     static {
+        Pair<YTechConfigSpec, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(YTechConfigSpec::new);
         SimpleChannel channel = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(YTechMod.MOD_ID, YTechMod.MOD_ID),
                 () -> PROTOCOL_VERSION,
@@ -28,6 +37,8 @@ public class YTechMod {
                 PROTOCOL_VERSION::equals
         );
 
+        CONFIGURATION = pair.getKey();
+        CONFIGURATION_SPEC = pair.getValue();
         KINETIC_PROPAGATOR = KineticUtils.registerKineticPropagator(channel);
     }
 
@@ -37,6 +48,8 @@ public class YTechMod {
 
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIGURATION_SPEC);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> YTechMod.clientStuff(modEventBus));
     }
