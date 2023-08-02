@@ -43,7 +43,7 @@ class YTechLootTables extends LootTableProvider {
                 switch (h.productType) {
                     case STONE_ORE, DEEPSLATE_ORE, NETHERRACK_ORE ->
                             add(h.block.get(), (block) -> createOreDrop(block, GeneralUtils.getFromMap(HOLDER.products(),
-                                    ProductType.RAW_MATERIAL, h.material, Holder.ItemHolder.class).item.get()));
+                                    ProductType.RAW_MATERIAL, h.materialHolder.material(), Holder.ItemHolder.class).item.get()));
                     default -> dropSelf(h.block.get());
                 }
             });

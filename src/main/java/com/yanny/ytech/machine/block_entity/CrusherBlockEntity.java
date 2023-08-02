@@ -1,6 +1,6 @@
 package com.yanny.ytech.machine.block_entity;
 
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.machine.handler.MachineItemStackHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class CrusherBlockEntity extends MachineBlockEntity {
-    public CrusherBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public CrusherBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
         super(blockEntityType, pos, blockState, machine, tier);
     }
 

@@ -1,8 +1,8 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.configuration.ObjectType;
-import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -22,11 +22,11 @@ class Utils {
         return new ResourceLocation(YTechMod.MOD_ID, ModelProvider.BLOCK_FOLDER + "/" + base);
     }
 
-    static boolean onlyFluids(Map.Entry<YTechConfigLoader.Material, Holder> h) {
+    static boolean onlyFluids(Map.Entry<ConfigLoader.Material, Holder> h) {
         return h.getValue().objectType == ObjectType.FLUID;
     }
 
-    static boolean onlyBlocks(Map.Entry<YTechConfigLoader.Material, Holder> h) {
+    static boolean onlyBlocks(Map.Entry<ConfigLoader.Material, Holder> h) {
         return h.getValue().objectType == ObjectType.BLOCK;
     }
 
@@ -34,7 +34,7 @@ class Utils {
         return h.objectType == ObjectType.BLOCK;
     }
 
-    static Comparator<Map.Entry<YTechConfigLoader.Material, Holder>> sortMapByProductMaterial() {
+    static Comparator<Map.Entry<ConfigLoader.Material, Holder>> sortMapByProductMaterial() {
         return Comparator.comparing(h -> h.getValue().productType.name() + h.getKey().id());
     }
 }

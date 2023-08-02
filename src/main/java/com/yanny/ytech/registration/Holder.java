@@ -1,8 +1,8 @@
 package com.yanny.ytech.registration;
 
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.configuration.ObjectType;
 import com.yanny.ytech.configuration.ProductType;
-import com.yanny.ytech.configuration.YTechConfigLoader;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -14,14 +14,14 @@ public class Holder {
     public final String name;
     public final ObjectType objectType;
     public final ProductType productType;
-    public final YTechConfigLoader.Product product;
-    public final YTechConfigLoader.Material material;
+    public final ConfigLoader.Product product;
+    public final ConfigLoader.MaterialHolder materialHolder;
 
-    Holder(YTechConfigLoader.Product product, YTechConfigLoader.Material material) {
+    Holder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder) {
         this.product = product;
-        this.material = material;
-        key = product.name().getKey(material);
-        name = product.name().getLocalized(material);
+        this.materialHolder = materialHolder;
+        key = product.name().getKey(materialHolder.material());
+        name = product.name().getLocalized(materialHolder.material());
         objectType = product.type();
         productType = product.id();
     }
@@ -29,8 +29,8 @@ public class Holder {
     public static class ItemHolder extends Holder {
         public final RegistryObject<Item> item;
 
-        public ItemHolder(YTechConfigLoader.Product product, YTechConfigLoader.Material material, RegistryObject<Item> item) {
-            super(product, material);
+        public ItemHolder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder, RegistryObject<Item> item) {
+            super(product, materialHolder);
             this.item = item;
         }
     }
@@ -38,8 +38,8 @@ public class Holder {
     public static class BlockHolder extends Holder {
         public final RegistryObject<Block> block;
 
-        public BlockHolder(YTechConfigLoader.Product product, YTechConfigLoader.Material material, RegistryObject<Block> block) {
-            super(product, material);
+        public BlockHolder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder, RegistryObject<Block> block) {
+            super(product, materialHolder);
             this.block = block;
         }
     }
@@ -50,9 +50,9 @@ public class Holder {
         public final RegistryObject<Fluid> flowing;
         public final RegistryObject<Item> bucket;
 
-        public FluidHolder(YTechConfigLoader.Product product, YTechConfigLoader.Material material, RegistryObject<Block> block,
+        public FluidHolder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder, RegistryObject<Block> block,
                            RegistryObject<FluidType> type, RegistryObject<Fluid> source, RegistryObject<Fluid> flowing, RegistryObject<Item> bucket) {
-            super(product, material, block);
+            super(product, materialHolder, block);
             this.type = type;
             this.source = source;
             this.flowing = flowing;

@@ -1278,6 +1278,11 @@
         "id": "mangrove_wood",
         "name": "Mangrove",
         "block": "minecraft:stripped_mangrove_log"
+      },
+      {
+        "id": "flint",
+        "name": "Flint",
+        "item": "minecraft:flint"
       }
     ]
   },
@@ -1451,6 +1456,8 @@
       },
       "material": ["mercury"]
     }
+  ],
+  "tools": [
   ],
   "machines": [
     {

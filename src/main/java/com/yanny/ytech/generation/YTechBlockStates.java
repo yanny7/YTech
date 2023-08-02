@@ -2,7 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.KineticNetworkHolder;
 import com.yanny.ytech.registration.MachineHolder;
@@ -33,9 +33,9 @@ class YTechBlockStates extends BlockStateProvider {
     }
 
     private void registerBlock(Holder.BlockHolder holder) {
-        YTechConfigLoader.Model textureModel = holder.product.model();
-        YTechConfigLoader.Element base = textureModel.base();
-        YTechConfigLoader.Element overlay = textureModel.overlay();
+        ConfigLoader.Model textureModel = Objects.requireNonNull(holder.materialHolder.model(), "Base model texture required");
+        ConfigLoader.Element base = textureModel.base();
+        ConfigLoader.Element overlay = textureModel.overlay();
         BlockModelBuilder model = models().cubeAll(holder.key, base.texture());
 
         model.element().allFaces((direction, faceBuilder) -> {

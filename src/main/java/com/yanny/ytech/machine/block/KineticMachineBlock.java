@@ -1,7 +1,7 @@
 package com.yanny.ytech.machine.block;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 class KineticMachineBlock extends MachineBlock implements IProbeInfoProvider {
-    public KineticMachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityType, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public KineticMachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityType, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
         super(entityType, machine, tier);
     }
 

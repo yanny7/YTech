@@ -5,10 +5,13 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.ObjectType;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+
+import java.util.Objects;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
@@ -25,11 +28,12 @@ class YTechItemModels extends ItemModelProvider {
 
     private void registerItem(Holder holder) {
         ItemModelBuilder builder = getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        ResourceLocation baseTexture = Objects.requireNonNull(holder.materialHolder.model(), "Base model texture required").base().texture();
 
-        builder.texture("layer0", holder.product.model().base().texture());
+        builder.texture("layer0", baseTexture);
 
-        if (holder.product.model().overlay() != null) {
-            builder.texture("layer1", holder.product.model().overlay().texture());
+        if (holder.materialHolder.model().overlay() != null) {
+            builder.texture("layer1", holder.materialHolder.model().overlay().texture());
         }
     }
 }

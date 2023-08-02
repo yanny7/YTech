@@ -2,7 +2,7 @@ package com.yanny.ytech.registration;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
@@ -18,10 +18,10 @@ import org.joml.Vector3f;
 import java.util.function.Consumer;
 
 public class YTechFluidType extends FluidType {
-    private final YTechConfigLoader.Material material;
+    private final ConfigLoader.Material material;
     private final int boiling;
 
-    public YTechFluidType(YTechConfigLoader.Material material) {
+    public YTechFluidType(ConfigLoader.Material material) {
         super(getProperties(material));
         assert material.boiling() != null;
         this.material = material;
@@ -67,7 +67,7 @@ public class YTechFluidType extends FluidType {
         return boiling < 300;
     }
 
-    private static Properties getProperties(YTechConfigLoader.Material material) {
+    private static Properties getProperties(ConfigLoader.Material material) {
         assert material.melting() != null;
         assert material.density() != null;
         return FluidType.Properties.create().density(Math.round(material.density() * 1000)).temperature(material.melting().intValue());

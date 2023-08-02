@@ -1,7 +1,7 @@
 package com.yanny.ytech.machine;
 
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 
 public interface IMachineBlockEntity {
-    YTechConfigLoader.Tier getTier();
+    ConfigLoader.Tier getTier();
 }

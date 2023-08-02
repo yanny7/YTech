@@ -1,6 +1,6 @@
 package com.yanny.ytech.machine.block_entity;
 
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.machine.IMachineBlockEntity;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.machine.handler.MachineItemStackHandler;
@@ -24,11 +24,11 @@ import static com.yanny.ytech.registration.Registration.HOLDER;
 public abstract class MachineBlockEntity extends BlockEntity implements IMachineBlockEntity, BlockEntityTicker<MachineBlockEntity>, MenuProvider {
     private static final String TAG_ITEMS = "items";
 
-    protected final YTechConfigLoader.Machine machine;
-    protected final YTechConfigLoader.Tier tier;
+    protected final ConfigLoader.Machine machine;
+    protected final ConfigLoader.Tier tier;
     protected final MachineItemStackHandler items;
 
-    public MachineBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public MachineBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
         super(blockEntityType, pos, blockState);
         this.machine = machine;
         this.tier = tier;
@@ -36,7 +36,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements IMachine
     }
 
     @Override
-    public YTechConfigLoader.Tier getTier() {
+    public ConfigLoader.Tier getTier() {
         return tier;
     }
 

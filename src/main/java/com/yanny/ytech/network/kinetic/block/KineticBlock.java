@@ -1,7 +1,7 @@
 package com.yanny.ytech.network.kinetic.block;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -17,9 +17,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class KineticBlock extends BaseEntityBlock implements IProbeInfoProvider {
-    protected final YTechConfigLoader.KineticMaterial material;
+    protected final ConfigLoader.KineticMaterial material;
 
-    protected KineticBlock(Properties properties, YTechConfigLoader.KineticMaterial material) {
+    protected KineticBlock(Properties properties, ConfigLoader.KineticMaterial material) {
         super(properties);
         this.material = material;
     }

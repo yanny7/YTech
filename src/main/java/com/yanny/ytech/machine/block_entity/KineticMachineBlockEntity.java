@@ -1,7 +1,7 @@
 package com.yanny.ytech.machine.block_entity;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,10 +18,10 @@ public abstract class KineticMachineBlockEntity extends MachineBlockEntity imple
     private static final String NETWORK_ID = "networkId";
 
     protected int networkId = -1;
-    protected final YTechConfigLoader.Machine machine;
-    protected final YTechConfigLoader.Tier tier;
+    protected final ConfigLoader.Machine machine;
+    protected final ConfigLoader.Tier tier;
 
-    public KineticMachineBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public KineticMachineBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
         super(entityType, pos, blockState, machine, tier);
         this.machine = machine;
         this.tier = tier;

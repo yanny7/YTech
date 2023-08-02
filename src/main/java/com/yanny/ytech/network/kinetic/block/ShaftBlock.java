@@ -1,6 +1,6 @@
 package com.yanny.ytech.network.kinetic.block;
 
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.network.kinetic.block_entity.ShaftBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import com.yanny.ytech.registration.Registration;
@@ -25,7 +25,7 @@ public class ShaftBlock extends KineticBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 6/16.0, 6/16.0, 1, 10/16.0, 10/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(6/16.0, 6/16.0, 0, 10/16.0, 10/16.0, 1);
 
-    public ShaftBlock(YTechConfigLoader.KineticMaterial material) {
+    public ShaftBlock(ConfigLoader.KineticMaterial material) {
         super(Properties.copy(Blocks.STONE), material);
     }
 
@@ -55,7 +55,7 @@ public class ShaftBlock extends KineticBlock {
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        YTechConfigLoader.Material blockMaterial = YTechConfigLoader.getMaterial(material.id());
+        ConfigLoader.Material blockMaterial = ConfigLoader.getMaterial(material.id());
         BlockEntityType<? extends BlockEntity> blockEntityType = Registration.HOLDER.kineticNetwork().get(KineticBlockType.SHAFT).get(blockMaterial).entityType.get();
         return new ShaftBlockEntity(blockEntityType, pos, blockState, material.stress_multiplier());
     }

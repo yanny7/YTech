@@ -1,6 +1,6 @@
 package com.yanny.ytech.machine.block_entity;
 
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.machine.handler.MachineItemStackHandler;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
@@ -18,7 +18,7 @@ import java.util.List;
 public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
     private final List<BlockPos> validNeighbors;
 
-    public StoneCrusherBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public StoneCrusherBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
         super(blockEntityType, pos, blockState, machine, tier);
         validNeighbors = KineticUtils.getDirections(List.of(Direction.EAST, Direction.WEST, Direction.NORTH), pos, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
     }

@@ -20,11 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class YTechConfigLoader {
+public class ConfigLoader {
     private static final YTechRec MODEL;
     private static final Map<String, Material> MATERIAL_MAP = new HashMap<>();
     private static final Map<TierType, Tier> TIER_MAP = new HashMap<>();
-    private static final Map<ProductType, Product> PRODUCT_MAP = new HashMap<>();
 
     static {
         try (InputStream inputStream = Registration.class.getResourceAsStream("/configuration.json")) {
@@ -51,7 +50,7 @@ public class YTechConfigLoader {
         }
     }
 
-    private YTechConfigLoader() {}
+    private ConfigLoader() {}
 
     public static Material getMaterial(String id) {
         return MATERIAL_MAP.get(id);
@@ -63,10 +62,6 @@ public class YTechConfigLoader {
 
     public static Product[] getProducts() {
         return MODEL.products();
-    }
-
-    public static Product getProduct(ProductType id) {
-        return PRODUCT_MAP.get(id);
     }
 
     public static Machine[] getMachines() {
@@ -109,8 +104,7 @@ public class YTechConfigLoader {
             @NotNull ProductType id,
             @NotNull NameHolder name,
             @NotNull ObjectType type,
-            @NotNull Model model,
-            @NotNull Material[] material
+            @NotNull MaterialHolder[] material
     ) {}
 
     public record Material(
@@ -122,7 +116,8 @@ public class YTechConfigLoader {
             @Nullable Float melting,
             @Nullable Float boiling,
             @Nullable Float hardness,
-            @Nullable String block
+            @Nullable String block,
+            @Nullable String item
     ) {
         public int getColor() {
             if (color != null) {
@@ -181,6 +176,11 @@ public class YTechConfigLoader {
         }
     }
 
+    public record MaterialHolder (
+            @NotNull Material material,
+            @Nullable Model model
+    ) {}
+
     public record Model(
             @NotNull Element base,
             @Nullable Element overlay
@@ -196,8 +196,8 @@ public class YTechConfigLoader {
         public Material deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             if (json.isJsonObject()) {
                 JsonObject object = json.getAsJsonObject();
-                String id = object.get("id").getAsString();
-                String name = object.get("name").getAsString();
+                String id = Objects.requireNonNull(object.get("id").getAsString(), "Invalid or missing material ID");
+                String name = Objects.requireNonNull(object.get("name").getAsString(), "Missing material name for " + id);
                 String color = context.deserialize(object.get("color"), String.class);
                 String symbol = context.deserialize(object.get("symbol"), String.class);
                 Float density = context.deserialize(object.get("density"), Float.class);
@@ -205,7 +205,8 @@ public class YTechConfigLoader {
                 Float boiling = context.deserialize(object.get("boiling"), Float.class);
                 Float hardness = context.deserialize(object.get("hardness"), Float.class);
                 String block = context.deserialize(object.get("block"), String.class);
-                Material material = new Material(id, name, color, symbol, density, melting, boiling, hardness, block);
+                String item = context.deserialize(object.get("item"), String.class);
+                Material material = new Material(id, name, color, symbol, density, melting, boiling, hardness, block, item);
 
                 MATERIAL_MAP.put(id, material);
                 return material;
@@ -223,14 +224,32 @@ public class YTechConfigLoader {
                 ProductType id = Objects.requireNonNull(context.deserialize(object.get("id"), ProductType.class), "Invalid or missing product ID");
                 ObjectType type = Objects.requireNonNull(context.deserialize(object.get("type"), ObjectType.class), "Missing object type for " + id);
                 NameHolder name = Objects.requireNonNull(context.deserialize(object.get("name"), NameHolder.class), "Missing product name for " + id);
-                Model model = Objects.requireNonNull(context.deserialize(object.get("model"), Model.class), "Missing texture model for " + id);
-                Material[] materials = Objects.requireNonNull(Arrays.stream((String[])context.deserialize(object.get("material"), String[].class))
-                        .map((materialId) -> Objects.requireNonNull(getMaterial(materialId), "No material with id " + materialId))
-                        .toArray(Material[]::new), "Missing product materials for " + id);
-                Product product = new Product(id, name, type, model, materials);
+                Model model = context.deserialize(object.get("model"), Model.class);
 
-                PRODUCT_MAP.put(id, product);
-                return product;
+                if (!object.has("material") || !object.get("material").isJsonArray()) {
+                    throw new JsonParseException("Missing or invalid material array");
+                }
+
+                MaterialHolder[] materials = object.get("material").getAsJsonArray().asList().stream().map(m -> {
+                    if (m.isJsonPrimitive() && m.getAsJsonPrimitive().isString()) {
+                        return new MaterialHolder(Objects.requireNonNull(getMaterial(context.deserialize(m, String.class)),
+                                "Invalid material id " + m.getAsString()), model);
+                    } else if (m.isJsonObject()) {
+                        MaterialHolder holder = context.deserialize(m, MaterialHolder.class);
+
+                        if (holder.model == null && model != null) {
+                            return new MaterialHolder(holder.material, model);
+                        } else if (holder.model != null) {
+                            return holder;
+                        } else {
+                            throw new JsonParseException("Missing model definition");
+                        }
+                    } else {
+                        throw new JsonParseException("Invalid array entry, expecting String or Object");
+                    }
+                }).toArray(MaterialHolder[]::new);
+
+                return new Product(id, name, type, materials);
             } else {
                 throw new JsonParseException("Expecting object");
             }

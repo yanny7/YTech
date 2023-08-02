@@ -2,8 +2,8 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.configuration.ProductType;
-import com.yanny.ytech.configuration.YTechConfigLoader;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
@@ -23,9 +23,9 @@ import java.util.concurrent.CompletableFuture;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechItemTags extends ItemTagsProvider {
-    private final YTechConfigLoader.Material iron = YTechConfigLoader.getMaterial("iron");
-    private final YTechConfigLoader.Material copper = YTechConfigLoader.getMaterial("copper");
-    private final YTechConfigLoader.Material gold = YTechConfigLoader.getMaterial("gold");
+    private final ConfigLoader.Material iron = ConfigLoader.getMaterial("iron");
+    private final ConfigLoader.Material copper = ConfigLoader.getMaterial("copper");
+    private final ConfigLoader.Material gold = ConfigLoader.getMaterial("gold");
 
     public YTechItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tagLookup, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, provider, tagLookup, YTechMod.MOD_ID, existingFileHelper);
@@ -34,7 +34,7 @@ class YTechItemTags extends ItemTagsProvider {
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         GeneralUtils.sortedStreamMap(HOLDER.products(), Utils.sortMapByProductMaterial()).forEach(entry -> {
-            YTechConfigLoader.Material material = entry.getKey();
+            ConfigLoader.Material material = entry.getKey();
             Holder holder = entry.getValue();
 
             switch (holder.productType) {
@@ -72,7 +72,7 @@ class YTechItemTags extends ItemTagsProvider {
                     Item item = ((Holder.BlockHolder) holder).block.get().asItem();
                     TagKey<Item> oreTag = Registration.FORGE_ORE_TAGS.get(material).item();
 
-                    if (holder.material.equals(iron)) {
+                    if (holder.materialHolder.material().equals(iron)) {
                         tag(ItemTags.IRON_ORES).add(item);
                     } else if (material.equals(copper)) {
                         tag(ItemTags.COPPER_ORES).add(item);

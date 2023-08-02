@@ -1,6 +1,6 @@
 package com.yanny.ytech.machine.block;
 
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.machine.block_entity.BlockEntityFactory;
 import com.yanny.ytech.machine.block_entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -29,10 +29,10 @@ import java.util.function.Supplier;
 
 public abstract class MachineBlock extends BaseEntityBlock {
     protected final Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier;
-    protected final YTechConfigLoader.Machine machine;
-    protected final YTechConfigLoader.Tier tier;
+    protected final ConfigLoader.Machine machine;
+    protected final ConfigLoader.Tier tier;
 
-    public MachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, YTechConfigLoader.Machine machine, YTechConfigLoader.Tier tier) {
+    public MachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
         super(BlockBehaviour.Properties.of());
         this.entityTypeSupplier = entityTypeSupplier;
         this.machine = machine;

@@ -1,6 +1,6 @@
 package com.yanny.ytech.network.kinetic.block;
 
-import com.yanny.ytech.configuration.YTechConfigLoader;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.network.kinetic.block_entity.WaterWheelBlockEntity;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.common.KineticBlockType;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 public class WaterWheelBlock extends KineticBlock {
-    public WaterWheelBlock(YTechConfigLoader.KineticMaterial material) {
+    public WaterWheelBlock(ConfigLoader.KineticMaterial material) {
         super(Properties.copy(Blocks.STONE).noOcclusion(), material);
     }
 
@@ -45,7 +45,7 @@ public class WaterWheelBlock extends KineticBlock {
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        YTechConfigLoader.Material blockMaterial = YTechConfigLoader.getMaterial(material.id());
+        ConfigLoader.Material blockMaterial = ConfigLoader.getMaterial(material.id());
         BlockEntityType<? extends BlockEntity> blockEntityType = Registration.HOLDER.kineticNetwork().get(KineticBlockType.WATER_WHEEL).get(blockMaterial).entityType.get();
         return new WaterWheelBlockEntity(blockEntityType, pos, blockState, material.stress_multiplier());
     }
