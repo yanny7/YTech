@@ -69,7 +69,7 @@ public class Registration {
     static {
         for (ConfigLoader.ItemObject itemObject : ConfigLoader.getItemObjects()) {
             for (ConfigLoader.MaterialHolder materialHolder : itemObject.materials) {
-                ConfigLoader.Material material = materialHolder.material();
+                ConfigLoader.Material material = materialHolder.material;
 
                 switch (itemObject.id) {
                     case INGOT -> FORGE_INGOT_TAGS.put(material, registerItemTag("forge", "ingots", material.id()));
@@ -83,7 +83,7 @@ public class Registration {
         }
         for (ConfigLoader.BlockObject blockObject : ConfigLoader.getBlockObjects()) {
             for (ConfigLoader.MaterialHolder materialHolder : blockObject.materials) {
-                ConfigLoader.Material material = materialHolder.material();
+                ConfigLoader.Material material = materialHolder.material;
 
                 switch (blockObject.id) {
                     case STORAGE_BLOCK -> FORGE_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", material.id()));
@@ -97,7 +97,7 @@ public class Registration {
         }
         for (ConfigLoader.FluidObject fluidObject : ConfigLoader.getFluidObjects()) {
             for (ConfigLoader.MaterialHolder materialHolder : fluidObject.materials) {
-                ConfigLoader.Material material = materialHolder.material();
+                ConfigLoader.Material material = materialHolder.material;
 
                 if (Objects.requireNonNull(fluidObject.id) == FluidObjectType.FLUID) {
                     FORGE_FLUID_TAGS.put(material, registerFluidTag("forge", material.id()));
@@ -195,7 +195,7 @@ public class Registration {
     }
 
     private static Holder.FluidHolder registerFluid(ConfigLoader.FluidObject fluidObject, ConfigLoader.MaterialHolder materialHolder) {
-        ConfigLoader.Material material = materialHolder.material();
+        ConfigLoader.Material material = materialHolder.material;
         String name = material.id();
         String flowingName = "flowing_" + name;
         String bucketName = name + "_bucket";
@@ -246,10 +246,10 @@ public class Registration {
     }
 
     private static <T, U extends ConfigLoader.BaseObject<T>> int getTintColor(Holder<T, U> h, int t) {
-        ConfigLoader.Model model = Objects.requireNonNull(h.materialHolder.model(), "Model must be non null");
+        ConfigLoader.Model model = Objects.requireNonNull(h.materialHolder.model, "Model must be non null");
 
         if ((model.base().tint() != null && model.base().tint() == t) || (model.overlay() != null && model.overlay().tint() != null && model.overlay().tint() == t)) {
-            return h.materialHolder.material().getColor();
+            return h.materialHolder.material.getColor();
         } else {
             return 0xFFFFFFFF;
         }

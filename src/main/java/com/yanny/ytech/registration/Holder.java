@@ -1,9 +1,6 @@
 package com.yanny.ytech.registration;
 
-import com.yanny.ytech.configuration.BlockObjectType;
-import com.yanny.ytech.configuration.ConfigLoader;
-import com.yanny.ytech.configuration.FluidObjectType;
-import com.yanny.ytech.configuration.ItemObjectType;
+import com.yanny.ytech.configuration.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -22,8 +19,8 @@ public class Holder<T, U extends ConfigLoader.BaseObject<T>> {
     Holder(@NotNull U object, @NotNull ConfigLoader.MaterialHolder materialHolder) {
         this.object = Objects.requireNonNull(object, "Product must be non null");
         this.materialHolder = Objects.requireNonNull(materialHolder, "Material must be non null");
-        key = Objects.requireNonNull(object.name.getKey(materialHolder.material()), "Key must be non null");
-        name = Objects.requireNonNull(object.name.getLocalized(materialHolder.material()), "Name must be non null");
+        key = Objects.requireNonNull(object.name.getKey(materialHolder.material), "Key must be non null");
+        name = Objects.requireNonNull(object.name.getLocalized(materialHolder.material), "Name must be non null");
     }
 
     public static class ItemHolder extends Holder<ItemObjectType, ConfigLoader.ItemObject> {
@@ -60,6 +57,13 @@ public class Holder<T, U extends ConfigLoader.BaseObject<T>> {
             this.source = source;
             this.flowing = flowing;
             this.bucket = bucket;
+        }
+    }
+
+    public static class ToolHolder extends Holder<ToolObjectType, ConfigLoader.ToolObject> {
+
+        ToolHolder(@NotNull ConfigLoader.ToolObject object, @NotNull ConfigLoader.MaterialHolder materialHolder) {
+            super(object, materialHolder);
         }
     }
 }

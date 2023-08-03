@@ -79,7 +79,7 @@ class YTechItemTags extends ItemTagsProvider {
                     Item item = holder.block.get().asItem();
                     TagKey<Item> oreTag = Registration.FORGE_ORE_TAGS.get(material).item();
 
-                    if (holder.materialHolder.material().equals(iron)) {
+                    if (holder.materialHolder.material.equals(iron)) {
                         tag(ItemTags.IRON_ORES).add(item);
                     } else if (material.equals(copper)) {
                         tag(ItemTags.COPPER_ORES).add(item);

@@ -35,9 +35,11 @@ public class ConfigLoader {
                         .registerTypeAdapter(ItemObject.class, new ItemObjectDeserializer())
                         .registerTypeAdapter(BlockObject.class, new BlockObjectDeserializer())
                         .registerTypeAdapter(FluidObject.class, new FluidObjectDeserializer())
+                        .registerTypeAdapter(ToolObject.class, new ToolObjectDeserializer())
                         .registerTypeAdapter(Material.class, new MaterialDeserializer())
                         .registerTypeAdapter(Model.class, new ModelDeserializer())
                         .registerTypeAdapter(Element.class, new ElementDeserializer())
+                        .registerTypeAdapter(MaterialHolder.class, new MaterialHolderDeserializer())
                         .create();
 
                 MODEL = gson.fromJson(bufferedReader, YTechRec.class);
@@ -114,7 +116,8 @@ public class ConfigLoader {
     public record GameObjects(
             @NotNull ItemObject[] items,
             @NotNull BlockObject[] blocks,
-            @NotNull FluidObject[] fluids
+            @NotNull FluidObject[] fluids,
+            @NotNull ToolObject[] tools
     ) {}
 
     public static class BaseObject<T> {
@@ -149,6 +152,12 @@ public class ConfigLoader {
 
     public static class FluidObject extends BaseObject<FluidObjectType> {
         FluidObject(@NotNull BaseObject<FluidObjectType> obj) {
+            super(obj);
+        }
+    }
+
+    public static class ToolObject extends BaseObject<ToolObjectType> {
+        ToolObject(@NotNull BaseObject<ToolObjectType> obj) {
             super(obj);
         }
     }
@@ -222,10 +231,15 @@ public class ConfigLoader {
         }
     }
 
-    public record MaterialHolder (
-            @NotNull Material material,
-            @Nullable Model model
-    ) {}
+    public static class MaterialHolder {
+        @NotNull public final Material material;
+        @Nullable public final Model model;
+
+        MaterialHolder(@NotNull Material material, @Nullable Model model) {
+            this.material = material;
+            this.model = model;
+        }
+    }
 
     public record Model(
             @NotNull Element base,
@@ -270,7 +284,8 @@ public class ConfigLoader {
                 ItemObject[] items = context.deserialize(object.get("items"), ItemObject[].class);
                 BlockObject[] blocks = context.deserialize(object.get("blocks"), BlockObject[].class);
                 FluidObject[] fluids = context.deserialize(object.get("fluids"), FluidObject[].class);
-                return new GameObjects(items, blocks, fluids);
+                ToolObject[] tools = context.deserialize(object.get("tools"), ToolObject[].class);
+                return new GameObjects(items, blocks, fluids, tools);
             } else {
                 throw new JsonParseException("Expecting object");
             }
@@ -324,6 +339,28 @@ public class ConfigLoader {
         }
     }
 
+    private static class MaterialHolderDeserializer implements JsonDeserializer<MaterialHolder> {
+        @Override
+        public MaterialHolder deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
+                return new MaterialHolder(Objects.requireNonNull(getMaterial(context.deserialize(json, String.class)),
+                        "Invalid material id " + json.getAsString()), null);
+            } else if (json.isJsonObject()) {
+                JsonObject object = json.getAsJsonObject();
+                Material material = Objects.requireNonNull(getMaterial(context.deserialize(object.get("material"), String.class)));
+                Model model = null;
+
+                if (object.has("model")) {
+                    model = context.deserialize(object.get("model"), Model.class);
+                }
+
+                return new MaterialHolder(material, model);
+            } else {
+                throw new JsonParseException("Expecting String or Object");
+            }
+        }
+    }
+
     private static class ItemObjectDeserializer extends BaseObjectDeserializer<ItemObjectType, ItemObject> {
         ItemObjectDeserializer() {
             super((base, object, context) -> new ItemObject(base), ItemObjectType.class);
@@ -339,6 +376,12 @@ public class ConfigLoader {
     private static class FluidObjectDeserializer extends BaseObjectDeserializer<FluidObjectType, FluidObject> {
         FluidObjectDeserializer() {
             super((base, object, context) -> new FluidObject(base), FluidObjectType.class);
+        }
+    }
+
+    private static class ToolObjectDeserializer extends BaseObjectDeserializer<ToolObjectType, ToolObject> {
+        ToolObjectDeserializer() {
+            super((base, object, context) -> new ToolObject(base), ToolObjectType.class);
         }
     }
 

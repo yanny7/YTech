@@ -33,7 +33,7 @@ class YTechBlockTags extends BlockTagsProvider {
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         GeneralUtils.sortedStreamMap(HOLDER.blocks(), Utils.blockComparator()).forEach((entry) -> {
             Holder.BlockHolder holder = entry.getValue();
-            ConfigLoader.Material material = holder.materialHolder.material();
+            ConfigLoader.Material material = holder.materialHolder.material;
 
             switch (holder.object.id) {
                 case STORAGE_BLOCK -> {

@@ -33,7 +33,7 @@ class YTechBlockStates extends BlockStateProvider {
     }
 
     private void registerBlock(Holder.BlockHolder holder) {
-        ConfigLoader.Model textureModel = Objects.requireNonNull(holder.materialHolder.model(), "Base model texture required");
+        ConfigLoader.Model textureModel = Objects.requireNonNull(holder.materialHolder.model, "Base model texture required");
         ConfigLoader.Element base = textureModel.base();
         ConfigLoader.Element overlay = textureModel.overlay();
         BlockModelBuilder model = models().cubeAll(holder.key, base.texture());

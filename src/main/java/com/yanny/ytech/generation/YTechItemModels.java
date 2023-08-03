@@ -29,12 +29,12 @@ class YTechItemModels extends ItemModelProvider {
 
     private <T, U extends ConfigLoader.BaseObject<T>> void registerItem(Holder<T, U> holder) {
         ItemModelBuilder builder = getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
-        ResourceLocation baseTexture = Objects.requireNonNull(holder.materialHolder.model(), "Base model texture required").base().texture();
+        ResourceLocation baseTexture = Objects.requireNonNull(holder.materialHolder.model, "Base model texture required").base().texture();
 
         builder.texture("layer0", baseTexture);
 
-        if (holder.materialHolder.model().overlay() != null) {
-            builder.texture("layer1", holder.materialHolder.model().overlay().texture());
+        if (holder.materialHolder.model.overlay() != null) {
+            builder.texture("layer1", holder.materialHolder.model.overlay().texture());
         }
     }
 }
