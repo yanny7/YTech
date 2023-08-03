@@ -61,9 +61,11 @@ public class Holder<T, U extends ConfigLoader.BaseObject<T>> {
     }
 
     public static class ToolHolder extends Holder<ToolObjectType, ConfigLoader.ToolObject> {
+        @NotNull public final RegistryObject<Item> tool;
 
-        ToolHolder(@NotNull ConfigLoader.ToolObject object, @NotNull ConfigLoader.MaterialHolder materialHolder) {
+        ToolHolder(@NotNull ConfigLoader.ToolObject object, @NotNull ConfigLoader.MaterialHolder materialHolder, @NotNull RegistryObject<Item> tool) {
             super(object, materialHolder);
+            this.tool = tool;
         }
     }
 }

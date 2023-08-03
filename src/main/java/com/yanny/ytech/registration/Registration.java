@@ -107,6 +107,13 @@ public class Registration {
                         (object) -> registerFluid(object, materialHolder)));
             }
         }
+        for (ConfigLoader.ToolObject toolObject : ConfigLoader.getToolObjects()) {
+            for (ConfigLoader.MaterialHolder materialHolder : toolObject.materials) {
+                ConfigLoader.Material material = materialHolder.material;
+                HOLDER.tools().computeIfAbsent(toolObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, toolObject,
+                        (object) -> registerTool(object, materialHolder)));
+            }
+        }
 
         for (ConfigLoader.Machine machine : ConfigLoader.getMachines()) {
             HOLDER.machine().put(machine, Arrays.stream(ConfigLoader.getTiers())
@@ -141,6 +148,7 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> event.accept(holder.item));
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
+            GeneralUtils.mapToStream(HOLDER.tools()).forEach((holder) -> event.accept(holder.tool));
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
         }
@@ -154,6 +162,7 @@ public class Registration {
         GeneralUtils.mapToStream(HOLDER.items()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
+        GeneralUtils.mapToStream(HOLDER.tools()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.tool.get()));
     }
 
     private static RegistryObject<Block> registerBlockItem(ConfigLoader.Material material, String name) {
@@ -217,6 +226,21 @@ public class Registration {
                 FLUIDS.register(flowingName, () -> new ForgeFlowingFluid.Flowing(properties)),
                 ITEMS.register(bucketName, () -> new BucketItem(sourceFluid, new Item.Properties()))
         );
+    }
+
+    private static Holder.ToolHolder registerTool(ConfigLoader.ToolObject toolObject, ConfigLoader.MaterialHolder materialHolder) {
+        return switch (toolObject.id) {
+            case AXE -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
+                    () -> new AxeItem(Tiers.WOOD, 6.0f, -3.2f, new Item.Properties())));
+            case PICKAXE -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
+                    () -> new PickaxeItem(Tiers.WOOD, 1, -2.8f, new Item.Properties())));
+            case SHOVEL -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
+                    () -> new ShovelItem(Tiers.WOOD, 1.5f, -3.0f, new Item.Properties())));
+            case HOE -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
+                    () -> new HoeItem(Tiers.WOOD, 0, -3.0f, new Item.Properties())));
+            case SWORD -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
+                    () -> new SwordItem(Tiers.WOOD, 3, -2.4f, new Item.Properties())));
+        };
     }
 
     private static BlockItemHolder<TagKey<Block>, TagKey<Item>> registerBlockItemTag(String modId, String group, String name) {

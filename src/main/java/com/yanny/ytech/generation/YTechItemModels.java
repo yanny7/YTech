@@ -25,6 +25,7 @@ class YTechItemModels extends ItemModelProvider {
     protected void registerModels() {
         GeneralUtils.mapToStream(HOLDER.items()).forEach(this::registerItem);
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(this::registerItem);
+        GeneralUtils.mapToStream(HOLDER.tools()).forEach(this::registerItem);
     }
 
     private <T, U extends ConfigLoader.BaseObject<T>> void registerItem(Holder<T, U> holder) {

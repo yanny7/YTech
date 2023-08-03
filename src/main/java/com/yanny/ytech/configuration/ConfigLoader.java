@@ -40,6 +40,7 @@ public class ConfigLoader {
                         .registerTypeAdapter(Model.class, new ModelDeserializer())
                         .registerTypeAdapter(Element.class, new ElementDeserializer())
                         .registerTypeAdapter(MaterialHolder.class, new MaterialHolderDeserializer())
+                        .registerTypeAdapter(ToolProperty.class, new ToolPropertyDeserializer())
                         .create();
 
                 MODEL = gson.fromJson(bufferedReader, YTechRec.class);
@@ -75,6 +76,10 @@ public class ConfigLoader {
 
     public static FluidObject[] getFluidObjects() {
         return MODEL.objects.fluids;
+    }
+
+    public static ToolObject[] getToolObjects() {
+        return MODEL.objects.tools;
     }
 
     public static Machine[] getMachines() {
@@ -172,7 +177,8 @@ public class ConfigLoader {
             @Nullable Float boiling,
             @Nullable Float hardness,
             @Nullable String block,
-            @Nullable String item
+            @Nullable String item,
+            @Nullable ToolProperty tool
     ) {
         public int getColor() {
             if (color != null) {
@@ -251,6 +257,10 @@ public class ConfigLoader {
             @Nullable Integer tint
     ) {}
 
+    public record ToolProperty(
+            @NotNull net.minecraft.world.item.Tier tier
+    ) {}
+
     private static class MaterialDeserializer implements JsonDeserializer<Material> {
         @Override
         public Material deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -266,7 +276,8 @@ public class ConfigLoader {
                 Float hardness = context.deserialize(object.get("hardness"), Float.class);
                 String block = context.deserialize(object.get("block"), String.class);
                 String item = context.deserialize(object.get("item"), String.class);
-                Material material = new Material(id, name, color, symbol, density, melting, boiling, hardness, block, item);
+                ToolProperty toolProperty = context.deserialize(object.get("tool"), ToolProperty.class);
+                Material material = new Material(id, name, color, symbol, density, melting, boiling, hardness, block, item, toolProperty);
 
                 MATERIAL_MAP.put(id, material);
                 return material;
@@ -409,6 +420,21 @@ public class ConfigLoader {
                 Integer tint = context.deserialize(object.get("tint"), Integer.class);
 
                 return new Element(new ResourceLocation(texture), tint);
+            } else {
+                throw new JsonParseException("Expecting object");
+            }
+        }
+    }
+
+    private static class ToolPropertyDeserializer implements JsonDeserializer<ToolProperty> {
+        @Override
+        public ToolProperty deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonObject()) {
+                JsonObject object = json.getAsJsonObject();
+                net.minecraft.world.item.Tier tier = Objects.requireNonNull(net.minecraft.world.item.Tiers.valueOf(
+                        Objects.requireNonNull(context.deserialize(object.get("tier"), String.class), "Required string")),
+                        "Invalid tier value " + object.get("tier"));
+                return new ToolProperty(tier);
             } else {
                 throw new JsonParseException("Expecting object");
             }

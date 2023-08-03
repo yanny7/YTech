@@ -1282,7 +1282,11 @@
       {
         "id": "flint",
         "name": "Flint",
-        "item": "minecraft:flint"
+        "color": "#666666",
+        "item": "minecraft:flint",
+        "tool": {
+          "tier": "WOOD"
+        }
       }
     ]
   },
@@ -1453,6 +1457,91 @@
       }
     ],
     "tools": [
+      {
+        "id": "axe",
+        "name": {
+          "localizedSuffix": "Axe",
+          "suffix": "axe"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:item/wooden_axe"
+          },
+          "overlay": {
+            "texture": "ytech:item/axe_overlay",
+            "tint": 1
+          }
+        },
+        "material": ["flint"]
+      },
+      {
+        "id": "pickaxe",
+        "name": {
+          "localizedSuffix": "Pickaxe",
+          "suffix": "pickaxe"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:item/wooden_pickaxe"
+          },
+          "overlay": {
+            "texture": "ytech:item/pickaxe_overlay",
+            "tint": 1
+          }
+        },
+        "material": ["flint"]
+      },
+      {
+        "id": "shovel",
+        "name": {
+          "localizedSuffix": "Shovel",
+          "suffix": "shovel"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:item/wooden_shovel"
+          },
+          "overlay": {
+            "texture": "ytech:item/shovel_overlay",
+            "tint": 1
+          }
+        },
+        "material": ["flint"]
+      },
+      {
+        "id": "hoe",
+        "name": {
+          "localizedSuffix": "Hoe",
+          "suffix": "hoe"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:item/wooden_hoe"
+          },
+          "overlay": {
+            "texture": "ytech:item/hoe_overlay",
+            "tint": 1
+          }
+        },
+        "material": ["flint"]
+      },
+      {
+        "id": "sword",
+        "name": {
+          "localizedSuffix": "Sword",
+          "suffix": "sword"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:item/wooden_sword"
+          },
+          "overlay": {
+            "texture": "ytech:item/sword_overlay",
+            "tint": 1
+          }
+        },
+        "material": ["flint"]
+      }
     ]
   },
   "machines": [

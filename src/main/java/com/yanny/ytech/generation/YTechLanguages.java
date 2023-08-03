@@ -17,6 +17,7 @@ class YTechLanguages extends LanguageProvider {
         GeneralUtils.mapToStream(HOLDER.items()).forEach(h -> add(h.item.get(), h.name));
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> add(h.block.get(), h.name));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> add(h.bucket.get(), h.name));
+        GeneralUtils.mapToStream(HOLDER.tools()).forEach(h -> add(h.tool.get(), h.name));
         GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> add(h.item.get(), h.name));
         GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> add(h.block.get(), h.name));
     }

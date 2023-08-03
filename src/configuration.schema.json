@@ -373,6 +373,30 @@
             ],
             "default": null,
             "pattern": "^[a-z]*:[a-z_/]*$"
+          },
+          "tool": {
+            "title": "Tool Properties",
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "tier"
+            ],
+            "properties": {
+              "tier": {
+                "title": "Tier",
+                "type": "string",
+                "enum": [
+                  "WOOD",
+                  "STONE",
+                  "IRON",
+                  "DIAMOND",
+                  "GOLD",
+                  "NETHERITE"
+                ]
+              }
+            }
           }
         }
       }
