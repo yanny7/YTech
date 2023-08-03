@@ -1,7 +1,6 @@
 {
   "definitions": {},
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://example.com/object1690997956.json",
   "title": "Root",
   "type": "object",
   "required": [
@@ -15,7 +14,6 @@
   "additionalProperties": false,
   "properties": {
     "materials": {
-      "$id": "#root/materials",
       "title": "Materials",
       "type": "object",
       "required": [
@@ -28,299 +26,137 @@
       "additionalProperties": false,
       "properties": {
         "elements": {
-          "$id": "#root/materials/elements",
-          "title": "Elements",
-          "type": "array",
-          "default": [],
-          "items": {
-            "$id": "#root/materials/elements/items",
-            "title": "Items",
-            "type": "object",
-            "required": [
-              "id",
-              "name"
-            ],
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$id": "#root/materials/elements/items/id",
-                "title": "Id",
-                "type": "string",
-                "default": "",
-                "pattern": "^[a-z][a-z_]*$"
-              },
-              "name": {
-                "$id": "#root/materials/elements/items/name",
-                "title": "Name",
-                "type": "string"
-              },
-              "color": {
-                "$id": "#root/materials/elements/items/color",
-                "title": "Color",
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "default": null,
-                "pattern": "^#[0-9A-F]{6}$"
-              },
-              "symbol": {
-                "$id": "#root/materials/elements/items/symbol",
-                "title": "Symbol",
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "default": null
-              },
-              "density": {
-                "$id": "#root/materials/elements/items/density",
-                "title": "Density",
-                "type": [
-                  "number",
-                  "null"
-                ],
-                "default": null
-              },
-              "melting": {
-                "$id": "#root/materials/elements/items/melting",
-                "title": "Melting",
-                "type": [
-                  "number",
-                  "null"
-                ],
-                "default": null
-              },
-              "boiling": {
-                "$id": "#root/materials/elements/items/boiling",
-                "title": "Boiling",
-                "type": [
-                  "number",
-                  "null"
-                ],
-                "default": null
-              },
-              "hardness": {
-                "$id": "#root/materials/elements/items/hardness",
-                "title": "Hardness",
-                "type": [
-                  "number",
-                  "null"
-                ],
-                "default": null
-              },
-              "block": {
-                "$id": "#root/materials/elements/items/block",
-                "title": "Block",
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "default": null,
-                "pattern": "^[a-z]*:[a-z_/]*$"
-              },
-              "item": {
-                "$id": "#root/materials/elements/items/item",
-                "title": "Block",
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "default": null,
-                "pattern": "^[a-z]*:[a-z_/]*$"
-              }
-            }
-          }
+          "$ref": "#/$defs/materials"
         },
         "alloys": {
-          "$ref": "#root/materials/elements"
+          "$ref": "#/$defs/materials"
         },
         "compounds": {
-          "$ref": "#root/materials/elements"
+          "$ref": "#/$defs/materials"
         },
         "isotopes": {
-          "$ref": "#root/materials/elements"
+          "$ref": "#/$defs/materials"
         },
         "minecraft": {
-          "$ref": "#root/materials/elements"
+          "$ref": "#/$defs/materials"
         }
       }
     },
     "objects": {
-      "$id": "#root/objects",
       "title": "Objects",
       "type": "object",
       "required": [
         "items",
         "blocks",
-        "fluids"
+        "fluids",
+        "tools"
       ],
       "additionalProperties": false,
       "properties": {
         "items": {
-          "$id": "#root/objects/items",
           "title": "Items",
           "type": "array",
           "items": {
-            "$id": "#root/objects/items/items",
             "title": "Item",
             "type": "object",
             "required": [
               "id",
-              "model",
               "material"
             ],
             "additionalProperties": false,
             "properties": {
               "id": {
-                "$id": "#root/objects/items/items/id",
-                "title": "Id",
-                "type": "string",
-                "default": "",
-                "pattern": "^[a-z][a-z_]*$"
+                "$ref": "#/$defs/id"
               },
               "name": {
-                "$id": "#root/objects/items/items/name",
-                "title": "Name",
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "localizedPrefix": {
-                    "$id": "#root/objects/items/items/name/localizedSuffix",
-                    "title": "Localizedsuffix",
-                    "type": "string"
-                  },
-                  "prefix": {
-                    "$id": "#root/objects/items/items/name/suffix",
-                    "title": "Suffix",
-                    "type": "string",
-                    "pattern": "^[a-z][a-z_]*$"
-                  },
-                  "localizedSuffix": {
-                    "$id": "#root/objects/items/items/name/localizedSuffix",
-                    "title": "Localizedsuffix",
-                    "type": "string"
-                  },
-                  "suffix": {
-                    "$id": "#root/objects/items/items/name/suffix",
-                    "title": "Suffix",
-                    "type": "string",
-                    "pattern": "^[a-z][a-z_]*$"
-                  }
-                }
+                "$ref": "#/$defs/nameHolder"
               },
               "model": {
-                "$id": "#root/objects/items/items/model",
-                "title": "Model",
-                "type": "object",
-                "required": [
-                  "base"
-                ],
-                "additionalProperties": false,
-                "properties": {
-                  "base": {
-                    "$id": "#root/objects/items/items/model/base",
-                    "title": "Base",
-                    "type": "object",
-                    "required": [
-                      "texture"
-                    ],
-                    "additionalProperties": false,
-                    "properties": {
-                      "texture": {
-                        "$id": "#root/objects/items/items/model/base/texture",
-                        "title": "Texture",
-                        "type": "string",
-                        "default": "",
-                        "pattern": "^[a-z]*:[a-z_/]*$"
-                      },
-                      "tint": {
-                        "$id": "#root/objects/items/items/model/base/tint",
-                        "title": "Tint",
-                        "type": [
-                          "integer",
-                          "null"
-                        ],
-                        "default": null
-                      }
-                    }
-                  },
-                  "overlay": {
-                    "$ref": "#root/objects/items/items/model/base"
-                  }
-                }
+                "$ref": "#/$defs/model"
               },
               "material": {
-                "$id": "#root/objects/items/items/material",
-                "title": "Material",
-                "type": "array",
-                "default": [],
-                "items": {
-                  "$id": "#root/objects/items/items/material/items",
-                  "title": "Items",
-                  "type": "string",
-                  "pattern": "^[a-z][a-z_]*$"
-                }
+                "$ref": "#/$defs/materialHolder"
               }
             }
           }
         },
         "blocks": {
-          "$id": "#root/objects/blocks",
           "title": "Blocks",
           "type": "array",
           "items": {
-            "$id": "#root/objects/blocks/items",
             "title": "Block",
             "type": "object",
             "required": [
               "id",
-              "model",
               "material"
             ],
             "additionalProperties": false,
             "properties": {
               "id": {
-                "$ref": "#root/objects/items/items/id"
+                "$ref": "#/$defs/id"
               },
               "name": {
-                "$ref": "#root/objects/items/items/name"
+                "$ref": "#/$defs/nameHolder"
               },
               "model": {
-                "$ref": "#root/objects/items/items/model"
+                "$ref": "#/$defs/model"
               },
               "material": {
-                "$ref": "#root/objects/items/items/material"
+                "$ref": "#/$defs/materialHolder"
               }
             }
           }
         },
         "fluids": {
-          "$id": "#root/objects/fluids",
           "title": "Fluids",
           "type": "array",
           "items": {
-            "$id": "#root/objects/fluids/items",
             "title": "Fluid",
             "type": "object",
             "required": [
               "id",
-              "model",
               "material"
             ],
             "additionalProperties": false,
             "properties": {
               "id": {
-                "$ref": "#root/objects/items/items/id"
+                "$ref": "#/$defs/id"
               },
               "name": {
-                "$ref": "#root/objects/items/items/name"
+                "$ref": "#/$defs/nameHolder"
               },
               "model": {
-                "$ref": "#root/objects/items/items/model"
+                "$ref": "#/$defs/model"
               },
               "material": {
-                "$ref": "#root/objects/items/items/material"
+                "$ref": "#/$defs/materialHolder"
+              }
+            }
+          }
+        },
+        "tools": {
+          "title": "Tools",
+          "type": "array",
+          "items": {
+            "title": "Tool",
+            "type": "object",
+            "required": [
+              "id",
+              "material"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "name": {
+                "$ref": "#/$defs/nameHolder"
+              },
+              "model": {
+                "$ref": "#/$defs/model"
+              },
+              "material": {
+                "$ref": "#/$defs/materialHolder"
               }
             }
           }
@@ -328,12 +164,10 @@
       }
     },
     "machines": {
-      "$id": "#root/machines",
       "title": "Machines",
       "type": "array",
       "default": [],
       "items": {
-        "$id": "#root/machines/items",
         "title": "Items",
         "type": "object",
         "required": [
@@ -344,32 +178,24 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "$id": "#root/machines/items/id",
-            "title": "Id",
-            "type": "string",
-            "pattern": "^[a-z][a-z_]*$"
+            "$ref": "#/$defs/id"
           },
           "name": {
-            "$id": "#root/machines/items/name",
             "title": "Name",
             "type": "string"
           },
           "fromTier": {
-            "$id": "#root/machines/items/fromTier",
-            "title": "Fromtier",
-            "type": "string",
-            "pattern": "^[a-z][a-z_]*$"
+            "title": "From Tier",
+            "$ref": "#/$defs/id"
           }
         }
       }
     },
     "tiers": {
-      "$id": "#root/tiers",
       "title": "Tiers",
       "type": "array",
       "default": [],
       "items": {
-        "$id": "#root/tiers/items",
         "title": "Items",
         "type": "object",
         "required": [
@@ -379,13 +205,9 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "$id": "#root/tiers/items/id",
-            "title": "Id",
-            "type": "string",
-            "pattern": "^[a-z][a-z_]*$"
+            "$ref": "#/$defs/id"
           },
           "name": {
-            "$id": "#root/tiers/items/name",
             "title": "Name",
             "type": "string"
           }
@@ -393,7 +215,6 @@
       }
     },
     "generators": {
-      "$id": "#root/generators",
       "title": "Generators",
       "type": "object",
       "required": [
@@ -402,12 +223,10 @@
       "additionalProperties": false,
       "properties": {
         "kinetic": {
-          "$id": "#root/generators/kinetic",
           "title": "Kinetic",
           "type": "array",
           "default": [],
           "items": {
-            "$id": "#root/generators/kinetic/items",
             "title": "Items",
             "type": "object",
             "required": [
@@ -418,23 +237,17 @@
             "additionalProperties": false,
             "properties": {
               "id": {
-                "$id": "#root/generators/kinetic/items/id",
-                "title": "Id",
-                "type": "string",
-                "pattern": "^[a-z][a-z_]*$"
+                "$ref": "#/$defs/id"
               },
               "name": {
-                "$id": "#root/generators/kinetic/items/name",
                 "title": "Name",
                 "type": "string"
               },
               "materials": {
-                "$id": "#root/generators/kinetic/items/materials",
                 "title": "Materials",
                 "type": "array",
                 "default": [],
                 "items": {
-                  "$id": "#root/generators/kinetic/items/materials/items",
                   "title": "Items",
                   "type": "object",
                   "required": [
@@ -444,13 +257,9 @@
                   "additionalProperties": false,
                   "properties": {
                     "id": {
-                      "$id": "#root/generators/kinetic/items/materials/items/id",
-                      "title": "Id",
-                      "type": "string",
-                      "pattern": "^[a-z][a-z_]*$"
+                      "$ref": "#/$defs/id"
                     },
                     "stress_multiplier": {
-                      "$id": "#root/generators/kinetic/items/materials/items/stress_multiplier",
                       "title": "Stress Multiplier",
                       "type": "number"
                     }
@@ -469,6 +278,192 @@
       "default": [],
       "items": {
         "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "title": "Id",
+      "type": "string",
+      "pattern": "^[a-z][a-z_]*$"
+    },
+    "materials": {
+      "title": "Materials",
+      "type": "array",
+      "default": [],
+      "items": {
+        "title": "Material",
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null,
+            "pattern": "^#[0-9A-F]{6}$"
+          },
+          "symbol": {
+            "title": "Symbol",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "density": {
+            "title": "Density",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null
+          },
+          "melting": {
+            "title": "Melting",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null
+          },
+          "boiling": {
+            "title": "Boiling",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null
+          },
+          "hardness": {
+            "title": "Hardness",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null
+          },
+          "block": {
+            "title": "Block",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null,
+            "pattern": "^[a-z]*:[a-z_/]*$"
+          },
+          "item": {
+            "title": "Item",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null,
+            "pattern": "^[a-z]*:[a-z_/]*$"
+          }
+        }
+      }
+    },
+    "nameHolder": {
+      "title": "Name Holder",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "localizedPrefix": {
+          "title": "Localized Prefix",
+          "type": "string"
+        },
+        "prefix": {
+          "title": "Prefix",
+          "$ref": "#/$defs/id"
+        },
+        "localizedSuffix": {
+          "title": "Localized Suffix",
+          "type": "string"
+        },
+        "suffix": {
+          "title": "Suffix",
+          "type": "string",
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "textureHolder": {
+      "title": "Texture Holder",
+      "type": "object",
+      "required": [
+        "texture"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "texture": {
+          "title": "Texture",
+          "type": "string",
+          "default": "",
+          "pattern": "^[a-z]*:[a-z_/]*$"
+        },
+        "tint": {
+          "title": "Tint",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null
+        }
+      }
+    },
+    "model": {
+      "title": "Model",
+      "type": "object",
+      "required": [
+        "base"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "base": {
+          "$ref": "#/$defs/textureHolder"
+        },
+        "overlay": {
+          "$ref": "#/$defs/textureHolder"
+        }
+      }
+    },
+    "materialHolder": {
+      "title": "Object Materials",
+      "type": "array",
+      "default": [],
+      "items": {
+        "title": "Items",
+        "type": [
+          "object",
+          "string"
+        ],
+        "required": [
+          "material"
+        ],
+        "pattern": "^[a-z][a-z_]*$",
+        "properties": {
+          "model": {
+            "$ref": "#/$defs/model"
+          },
+          "material": {
+            "title": "Material",
+            "$ref": "#/$defs/id"
+          }
+        }
       }
     }
   }
