@@ -27,8 +27,8 @@ import java.util.function.Predicate;
  * SlotItemHandler and then e.g. I can use a no-insert SlotItemHandler for the output slots of the machine.
  */
 public class MachineItemStackHandler extends ItemStackHandler {
-    List<SlotHolder> inputSlotHolder;
-    List<SlotHolder> outputSlotHolder;
+    final List<SlotHolder> inputSlotHolder;
+    final List<SlotHolder> outputSlotHolder;
 
     MachineItemStackHandler(List<SlotHolder> inputSlotHolder, List<SlotHolder> outputSlotHolder, NonNullList<ItemStack> stacks) {
         super(stacks);
@@ -68,8 +68,8 @@ public class MachineItemStackHandler extends ItemStackHandler {
     }
 
     public static class Builder {
-        List<SlotHolder> inputSlotHolder = new ArrayList<>();
-        List<SlotHolder> outputSlotHolder = new ArrayList<>();
+        final List<SlotHolder> inputSlotHolder = new ArrayList<>();
+        final List<SlotHolder> outputSlotHolder = new ArrayList<>();
         @Nullable Runnable onChangeListener;
 
         public Builder() {

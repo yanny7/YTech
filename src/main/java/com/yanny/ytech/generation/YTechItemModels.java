@@ -2,7 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.ObjectType;
+import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -23,10 +23,11 @@ class YTechItemModels extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        GeneralUtils.filteredStream(HOLDER.products(), h -> h.objectType == ObjectType.ITEM || h.objectType == ObjectType.FLUID).forEach(this::registerItem);
+        GeneralUtils.mapToStream(HOLDER.items()).forEach(this::registerItem);
+        GeneralUtils.mapToStream(HOLDER.fluids()).forEach(this::registerItem);
     }
 
-    private void registerItem(Holder holder) {
+    private <T, U extends ConfigLoader.BaseObject<T>> void registerItem(Holder<T, U> holder) {
         ItemModelBuilder builder = getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
         ResourceLocation baseTexture = Objects.requireNonNull(holder.materialHolder.model(), "Base model texture required").base().texture();
 

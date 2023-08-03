@@ -1,58 +1,61 @@
 package com.yanny.ytech.registration;
 
+import com.yanny.ytech.configuration.BlockObjectType;
 import com.yanny.ytech.configuration.ConfigLoader;
-import com.yanny.ytech.configuration.ObjectType;
-import com.yanny.ytech.configuration.ProductType;
+import com.yanny.ytech.configuration.FluidObjectType;
+import com.yanny.ytech.configuration.ItemObjectType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
-public class Holder {
-    public final String key;
-    public final String name;
-    public final ObjectType objectType;
-    public final ProductType productType;
-    public final ConfigLoader.Product product;
-    public final ConfigLoader.MaterialHolder materialHolder;
+import java.util.Objects;
 
-    Holder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder) {
-        this.product = product;
-        this.materialHolder = materialHolder;
-        key = product.name().getKey(materialHolder.material());
-        name = product.name().getLocalized(materialHolder.material());
-        objectType = product.type();
-        productType = product.id();
+public class Holder<T, U extends ConfigLoader.BaseObject<T>> {
+    @NotNull public final String key;
+    @NotNull public final String name;
+    @NotNull public final U object;
+    @NotNull public final ConfigLoader.MaterialHolder materialHolder;
+
+    Holder(@NotNull U object, @NotNull ConfigLoader.MaterialHolder materialHolder) {
+        this.object = Objects.requireNonNull(object, "Product must be non null");
+        this.materialHolder = Objects.requireNonNull(materialHolder, "Material must be non null");
+        key = Objects.requireNonNull(object.name.getKey(materialHolder.material()), "Key must be non null");
+        name = Objects.requireNonNull(object.name.getLocalized(materialHolder.material()), "Name must be non null");
     }
 
-    public static class ItemHolder extends Holder {
-        public final RegistryObject<Item> item;
+    public static class ItemHolder extends Holder<ItemObjectType, ConfigLoader.ItemObject> {
+        @NotNull public final RegistryObject<Item> item;
 
-        public ItemHolder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder, RegistryObject<Item> item) {
+        public ItemHolder(@NotNull ConfigLoader.ItemObject product, @NotNull ConfigLoader.MaterialHolder materialHolder, @NotNull RegistryObject<Item> item) {
             super(product, materialHolder);
             this.item = item;
         }
     }
 
-    public static class BlockHolder extends Holder {
-        public final RegistryObject<Block> block;
+    public static class BlockHolder extends Holder<BlockObjectType, ConfigLoader.BlockObject> {
+        @NotNull public final RegistryObject<Block> block;
 
-        public BlockHolder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder, RegistryObject<Block> block) {
+        public BlockHolder(@NotNull ConfigLoader.BlockObject product, @NotNull ConfigLoader.MaterialHolder materialHolder, @NotNull RegistryObject<Block> block) {
             super(product, materialHolder);
             this.block = block;
         }
     }
 
-    public static class FluidHolder extends BlockHolder {
-        public final RegistryObject<FluidType> type;
-        public final RegistryObject<Fluid> source;
-        public final RegistryObject<Fluid> flowing;
-        public final RegistryObject<Item> bucket;
+    public static class FluidHolder extends Holder<FluidObjectType, ConfigLoader.FluidObject> {
+        @NotNull public final RegistryObject<Block> block;
+        @NotNull public final RegistryObject<FluidType> type;
+        @NotNull public final RegistryObject<Fluid> source;
+        @NotNull public final RegistryObject<Fluid> flowing;
+        @NotNull public final RegistryObject<Item> bucket;
 
-        public FluidHolder(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder, RegistryObject<Block> block,
-                           RegistryObject<FluidType> type, RegistryObject<Fluid> source, RegistryObject<Fluid> flowing, RegistryObject<Item> bucket) {
-            super(product, materialHolder, block);
+        public FluidHolder(@NotNull ConfigLoader.FluidObject product, @NotNull ConfigLoader.MaterialHolder materialHolder,
+                           @NotNull RegistryObject<Block> block, @NotNull RegistryObject<FluidType> type, @NotNull RegistryObject<Fluid> source,
+                           @NotNull RegistryObject<Fluid> flowing, @NotNull RegistryObject<Item> bucket) {
+            super(product, materialHolder);
+            this.block = block;
             this.type = type;
             this.source = source;
             this.flowing = flowing;

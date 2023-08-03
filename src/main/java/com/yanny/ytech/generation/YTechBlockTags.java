@@ -2,8 +2,8 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.BlockObjectType;
 import com.yanny.ytech.configuration.ConfigLoader;
-import com.yanny.ytech.configuration.ProductType;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
@@ -31,10 +31,11 @@ class YTechBlockTags extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        GeneralUtils.filteredSortedStream(HOLDER.products(), Utils::onlyBlocks, Utils.sortMapByProductMaterial(), Holder.BlockHolder.class).forEach((holder) -> {
+        GeneralUtils.sortedStreamMap(HOLDER.blocks(), Utils.blockComparator()).forEach((entry) -> {
+            Holder.BlockHolder holder = entry.getValue();
             ConfigLoader.Material material = holder.materialHolder.material();
 
-            switch (holder.productType) {
+            switch (holder.object.id) {
                 case STORAGE_BLOCK -> {
                     TagKey<Block> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).block();
                     Block block = holder.block.get();
@@ -88,11 +89,11 @@ class YTechBlockTags extends BlockTagsProvider {
                         tag(BlockTags.NEEDS_IRON_TOOL).add(block);
                     }
 
-                    if (holder.productType == ProductType.STONE_ORE) {
+                    if (holder.object.id == BlockObjectType.STONE_ORE) {
                         tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(block);
-                    } else if (holder.productType == ProductType.DEEPSLATE_ORE) {
+                    } else if (holder.object.id == BlockObjectType.DEEPSLATE_ORE) {
                         tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(block);
-                    } else if (holder.productType == ProductType.NETHERRACK_ORE) {
+                    } else if (holder.object.id == BlockObjectType.NETHERRACK_ORE) {
                         tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(block);
                     }
 

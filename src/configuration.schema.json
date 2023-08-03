@@ -6,8 +6,7 @@
   "type": "object",
   "required": [
     "materials",
-    "products",
-    "tools",
+    "objects",
     "machines",
     "tiers",
     "generators",
@@ -147,117 +146,182 @@
         }
       }
     },
-    "products": {
-      "$id": "#root/products",
-      "title": "Products",
-      "type": "array",
-      "default": [],
-      "items": {
-        "$id": "#root/products/items",
-        "title": "Items",
-        "type": "object",
-        "required": [
-          "id",
-          "type",
-          "model",
-          "material"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$id": "#root/products/items/id",
-            "title": "Id",
-            "type": "string",
-            "default": "",
-            "pattern": "^[a-z][a-z_]*$"
-          },
-          "type": {
-            "$id": "#root/products/items/type",
-            "title": "Type",
-            "type": "string",
-            "enum": ["item", "block", "fluid"]
-          },
-          "name": {
-            "$id": "#root/products/items/name",
-            "title": "Name",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "localizedPrefix": {
-                "$id": "#root/products/items/name/localizedSuffix",
-                "title": "Localizedsuffix",
-                "type": "string"
-              },
-              "prefix": {
-                "$id": "#root/products/items/name/suffix",
-                "title": "Suffix",
-                "type": "string",
-                "pattern": "^[a-z][a-z_]*$"
-              },
-              "localizedSuffix": {
-                "$id": "#root/products/items/name/localizedSuffix",
-                "title": "Localizedsuffix",
-                "type": "string"
-              },
-              "suffix": {
-                "$id": "#root/products/items/name/suffix",
-                "title": "Suffix",
-                "type": "string",
-                "pattern": "^[a-z][a-z_]*$"
-              }
-            }
-          },
-          "model": {
-            "$id": "#root/products/items/model",
-            "title": "Model",
+    "objects": {
+      "$id": "#root/objects",
+      "title": "Objects",
+      "type": "object",
+      "required": [
+        "items",
+        "blocks",
+        "fluids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "$id": "#root/objects/items",
+          "title": "Items",
+          "type": "array",
+          "items": {
+            "$id": "#root/objects/items/items",
+            "title": "Item",
             "type": "object",
             "required": [
-              "base"
+              "id",
+              "model",
+              "material"
             ],
             "additionalProperties": false,
             "properties": {
-              "base": {
-                "$id": "#root/products/items/model/base",
-                "title": "Base",
+              "id": {
+                "$id": "#root/objects/items/items/id",
+                "title": "Id",
+                "type": "string",
+                "default": "",
+                "pattern": "^[a-z][a-z_]*$"
+              },
+              "name": {
+                "$id": "#root/objects/items/items/name",
+                "title": "Name",
                 "type": "object",
-                "required": [
-                  "texture"
-                ],
                 "additionalProperties": false,
                 "properties": {
-                  "texture": {
-                    "$id": "#root/products/items/model/base/texture",
-                    "title": "Texture",
-                    "type": "string",
-                    "default": "",
-                    "pattern": "^[a-z]*:[a-z_/]*$"
+                  "localizedPrefix": {
+                    "$id": "#root/objects/items/items/name/localizedSuffix",
+                    "title": "Localizedsuffix",
+                    "type": "string"
                   },
-                  "tint": {
-                    "$id": "#root/products/items/model/base/tint",
-                    "title": "Tint",
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
-                    "default": null
+                  "prefix": {
+                    "$id": "#root/objects/items/items/name/suffix",
+                    "title": "Suffix",
+                    "type": "string",
+                    "pattern": "^[a-z][a-z_]*$"
+                  },
+                  "localizedSuffix": {
+                    "$id": "#root/objects/items/items/name/localizedSuffix",
+                    "title": "Localizedsuffix",
+                    "type": "string"
+                  },
+                  "suffix": {
+                    "$id": "#root/objects/items/items/name/suffix",
+                    "title": "Suffix",
+                    "type": "string",
+                    "pattern": "^[a-z][a-z_]*$"
                   }
                 }
               },
-              "overlay": {
-                "$ref": "#root/products/items/model/base"
+              "model": {
+                "$id": "#root/objects/items/items/model",
+                "title": "Model",
+                "type": "object",
+                "required": [
+                  "base"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "base": {
+                    "$id": "#root/objects/items/items/model/base",
+                    "title": "Base",
+                    "type": "object",
+                    "required": [
+                      "texture"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "texture": {
+                        "$id": "#root/objects/items/items/model/base/texture",
+                        "title": "Texture",
+                        "type": "string",
+                        "default": "",
+                        "pattern": "^[a-z]*:[a-z_/]*$"
+                      },
+                      "tint": {
+                        "$id": "#root/objects/items/items/model/base/tint",
+                        "title": "Tint",
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "default": null
+                      }
+                    }
+                  },
+                  "overlay": {
+                    "$ref": "#root/objects/items/items/model/base"
+                  }
+                }
+              },
+              "material": {
+                "$id": "#root/objects/items/items/material",
+                "title": "Material",
+                "type": "array",
+                "default": [],
+                "items": {
+                  "$id": "#root/objects/items/items/material/items",
+                  "title": "Items",
+                  "type": "string",
+                  "pattern": "^[a-z][a-z_]*$"
+                }
               }
             }
-          },
-          "material": {
-            "$id": "#root/products/items/material",
-            "title": "Material",
-            "type": "array",
-            "default": [],
-            "items": {
-              "$id": "#root/products/items/material/items",
-              "title": "Items",
-              "type": "string",
-              "pattern": "^[a-z][a-z_]*$"
+          }
+        },
+        "blocks": {
+          "$id": "#root/objects/blocks",
+          "title": "Blocks",
+          "type": "array",
+          "items": {
+            "$id": "#root/objects/blocks/items",
+            "title": "Block",
+            "type": "object",
+            "required": [
+              "id",
+              "model",
+              "material"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#root/objects/items/items/id"
+              },
+              "name": {
+                "$ref": "#root/objects/items/items/name"
+              },
+              "model": {
+                "$ref": "#root/objects/items/items/model"
+              },
+              "material": {
+                "$ref": "#root/objects/items/items/material"
+              }
+            }
+          }
+        },
+        "fluids": {
+          "$id": "#root/objects/fluids",
+          "title": "Fluids",
+          "type": "array",
+          "items": {
+            "$id": "#root/objects/fluids/items",
+            "title": "Fluid",
+            "type": "object",
+            "required": [
+              "id",
+              "model",
+              "material"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#root/objects/items/items/id"
+              },
+              "name": {
+                "$ref": "#root/objects/items/items/name"
+              },
+              "model": {
+                "$ref": "#root/objects/items/items/model"
+              },
+              "material": {
+                "$ref": "#root/objects/items/items/material"
+              }
             }
           }
         }
@@ -401,15 +465,6 @@
     "recipes": {
       "$id": "#root/recipes",
       "title": "Recipes",
-      "type": "array",
-      "default": [],
-      "items": {
-        "additionalProperties": false
-      }
-    },
-    "tools": {
-      "$id": "#root/tools",
-      "title": "Tools",
       "type": "array",
       "default": [],
       "items": {

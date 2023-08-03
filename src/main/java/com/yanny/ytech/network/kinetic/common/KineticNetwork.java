@@ -322,8 +322,8 @@ public class KineticNetwork {
         }).filter(Objects::nonNull).toList();
     }
 
-    public boolean isEmpty() {
-        return providers.isEmpty() && consumers.isEmpty();
+    public boolean isNotEmpty() {
+        return !providers.isEmpty() || !consumers.isEmpty();
     }
 
     public static void encode(FriendlyByteBuf buffer, KineticNetwork level) {

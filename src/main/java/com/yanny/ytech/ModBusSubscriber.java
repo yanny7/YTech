@@ -18,10 +18,8 @@ public class ModBusSubscriber {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         TopCompatibility.register();
-        event.enqueueWork(() -> {
-            HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) ->
-                    MenuScreens.register((MenuType<MachineContainerMenu>) holder.menuType.get(), ScreenFactory::create)));
-        });
+        event.enqueueWork(() -> HOLDER.machine().forEach((machine, tierMap) -> tierMap.forEach((tier, holder) ->
+                MenuScreens.register((MenuType<MachineContainerMenu>) holder.menuType.get(), ScreenFactory::create))));
     }
 
     @SubscribeEvent

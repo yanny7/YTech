@@ -3,8 +3,8 @@ package com.yanny.ytech.registration;
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.ConfigLoader;
-import com.yanny.ytech.configuration.ObjectType;
-import com.yanny.ytech.configuration.ProductType;
+import com.yanny.ytech.configuration.FluidObjectType;
+import com.yanny.ytech.configuration.ItemObjectType;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.network.kinetic.block.KineticBlockFactory;
@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -66,24 +67,45 @@ public class Registration {
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
     static {
-        for (ConfigLoader.Product product : ConfigLoader.getProducts()) {
-            for (ConfigLoader.MaterialHolder materialHolder : product.material()) {
+        for (ConfigLoader.ItemObject itemObject : ConfigLoader.getItemObjects()) {
+            for (ConfigLoader.MaterialHolder materialHolder : itemObject.materials) {
                 ConfigLoader.Material material = materialHolder.material();
 
-                switch (product.id()) {
+                switch (itemObject.id) {
                     case INGOT -> FORGE_INGOT_TAGS.put(material, registerItemTag("forge", "ingots", material.id()));
                     case DUST -> FORGE_DUST_TAGS.put(material, registerItemTag("forge", "dusts", material.id()));
                     case RAW_MATERIAL -> FORGE_RAW_MATERIAL_TAGS.put(material, registerItemTag("forge", "raw_materials", material.id()));
+                }
+
+                HOLDER.items().computeIfAbsent(itemObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, itemObject,
+                        (object) -> new Holder.ItemHolder(object, materialHolder, ITEMS.register(object.name.getKey(material), () -> new Item(new Item.Properties())))));
+            }
+        }
+        for (ConfigLoader.BlockObject blockObject : ConfigLoader.getBlockObjects()) {
+            for (ConfigLoader.MaterialHolder materialHolder : blockObject.materials) {
+                ConfigLoader.Material material = materialHolder.material();
+
+                switch (blockObject.id) {
                     case STORAGE_BLOCK -> FORGE_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", material.id()));
                     case RAW_STORAGE_BLOCK -> FORGE_RAW_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", "raw_" + material.id()));
                     case STONE_ORE, NETHERRACK_ORE, DEEPSLATE_ORE -> FORGE_ORE_TAGS.computeIfAbsent(material, (m) -> registerBlockItemTag("forge", "ores", m.id()));
-                    case FLUID -> FORGE_FLUID_TAGS.put(material, registerFluidTag("forge", material.id()));
                 }
 
-                HOLDER.products()
-                        .computeIfAbsent(product.id(), (p) -> new HashMap<>())
-                        .compute(material, (k, v) -> uniqueKey(v, product, Objects.requireNonNull(materialHolder, "Material must be non null")));
-            };
+                HOLDER.blocks().computeIfAbsent(blockObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, blockObject,
+                        (object) -> new Holder.BlockHolder(object, materialHolder, registerBlockItem(material, object.name.getKey(material)))));
+            }
+        }
+        for (ConfigLoader.FluidObject fluidObject : ConfigLoader.getFluidObjects()) {
+            for (ConfigLoader.MaterialHolder materialHolder : fluidObject.materials) {
+                ConfigLoader.Material material = materialHolder.material();
+
+                if (Objects.requireNonNull(fluidObject.id) == FluidObjectType.FLUID) {
+                    FORGE_FLUID_TAGS.put(material, registerFluidTag("forge", material.id()));
+                }
+
+                HOLDER.fluids().computeIfAbsent(fluidObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, fluidObject,
+                        (object) -> registerFluid(object, materialHolder)));
+            }
         }
 
         for (ConfigLoader.Machine machine : ConfigLoader.getMachines()) {
@@ -116,31 +138,22 @@ public class Registration {
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == TAB.getKey()) {
-            GeneralUtils.mapToStream(HOLDER.products()).forEach(holder -> {
-                switch (holder.objectType) {
-                    case ITEM -> event.accept(((Holder.ItemHolder) holder).item);
-                    case BLOCK -> event.accept(((Holder.BlockHolder) holder).block);
-                    case FLUID -> event.accept(((Holder.FluidHolder) holder).bucket);
-                }
-            });
+            GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> event.accept(holder.item));
+            GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
+            GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
         }
     }
 
     public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
-        GeneralUtils.filteredStream(HOLDER.products(), (h) -> h.objectType == ObjectType.BLOCK, Holder.BlockHolder.class)
-                .forEach(h -> event.register((b, g, p, t) -> getTintColor(h, t), h.block.get()));
+        GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((b, g, p, t) -> getTintColor(h, t), h.block.get()));
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
-        GeneralUtils.mapToStream(HOLDER.products()).forEach(h -> {
-            switch (h.objectType) {
-                case ITEM -> event.register((i, t) -> getTintColor(h, t), ((Holder.ItemHolder) h).item.get());
-                case BLOCK -> event.register((i, t) -> getTintColor(h, t), ((Holder.BlockHolder) h).block.get());
-                case FLUID -> event.register((i, t) -> getTintColor(h, t), ((Holder.FluidHolder) h).bucket.get());
-            }
-        });
+        GeneralUtils.mapToStream(HOLDER.items()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
+        GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
+        GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
     }
 
     private static RegistryObject<Block> registerBlockItem(ConfigLoader.Material material, String name) {
@@ -181,7 +194,7 @@ public class Registration {
         );
     }
 
-    private static Holder.FluidHolder registerFluid(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder) {
+    private static Holder.FluidHolder registerFluid(ConfigLoader.FluidObject fluidObject, ConfigLoader.MaterialHolder materialHolder) {
         ConfigLoader.Material material = materialHolder.material();
         String name = material.id();
         String flowingName = "flowing_" + name;
@@ -196,7 +209,7 @@ public class Registration {
                 fluidType, sourceFluid, flowingFluid).bucket(bucket).tickRate(20).block(() -> (LiquidBlock) block.get());
 
         return new Holder.FluidHolder(
-                product,
+                fluidObject,
                 materialHolder,
                 BLOCKS.register(blockName, () -> new LiquidBlock(() -> (FlowingFluid)flowingFluid.get(), BlockBehaviour.Properties.of())),
                 FLUID_TYPES.register(name, () -> fluidType),
@@ -220,31 +233,20 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.getFromMap(HOLDER.products(), ProductType.INGOT,
-                ConfigLoader.getMaterial("gold"), Holder.ItemHolder.class).item.get());
+        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.getFromMap(HOLDER.items(), ItemObjectType.INGOT, ConfigLoader.getMaterial("gold")).item.get());
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }
 
-    private static Holder registerBlockItem(ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder) {
-        ConfigLoader.Material material = materialHolder.material();
-
-        return switch (product.type()) {
-            case ITEM -> new Holder.ItemHolder(product, materialHolder, ITEMS.register(product.name().getKey(material), () -> new Item(new Item.Properties())));
-            case BLOCK -> new Holder.BlockHolder(product, materialHolder, registerBlockItem(material, product.name().getKey(material)));
-            case FLUID -> registerFluid(product, materialHolder);
-        };
-    }
-
-    private static Holder uniqueKey(Holder v, ConfigLoader.Product product, ConfigLoader.MaterialHolder materialHolder) {
+    private static <T, U extends ConfigLoader.BaseObject<T>, V extends Holder<T, U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
         if (v == null) {
-            return registerBlockItem(product, materialHolder);
+            return consumer.apply(object);
         } else {
             throw new IllegalStateException("Material already exists");
         }
     }
 
-    private static int getTintColor(Holder h, int t) {
-        ConfigLoader.Model model = h.materialHolder.model();
+    private static <T, U extends ConfigLoader.BaseObject<T>> int getTintColor(Holder<T, U> h, int t) {
+        ConfigLoader.Model model = Objects.requireNonNull(h.materialHolder.model(), "Model must be non null");
 
         if ((model.base().tint() != null && model.base().tint() == t) || (model.overlay() != null && model.overlay().tint() != null && model.overlay().tint() == t)) {
             return h.materialHolder.material().getColor();

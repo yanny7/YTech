@@ -1286,179 +1286,173 @@
       }
     ]
   },
-  "products": [
-    {
-      "id": "ingot",
-      "type": "item",
-      "name": {
-        "localizedSuffix": "Ingot",
-        "suffix": "ingot"
-      },
-      "model": {
-        "base": {
-          "texture": "ytech:item/ingot",
-          "tint": 0
-        }
-      },
-      "material": ["iron", "copper", "tin", "gold"]
-    },
-    {
-      "id": "dust",
-      "type": "item",
-      "name": {
-        "localizedSuffix": "Dust",
-        "suffix": "dust"
-      },
-      "model": {
-        "base": {
-          "texture": "ytech:item/dust",
-          "tint": 0
-        }
-      },
-      "material": ["copper", "tin"]
-    },
-    {
-      "id": "raw_material",
-      "type": "item",
-      "name": {
-        "localizedPrefix": "Raw",
-        "prefix": "raw"
-      },
-      "model": {
-        "base": {
-          "texture": "ytech:item/raw_material",
-          "tint": 0
-        }
-      },
-      "material": ["iron", "copper", "tin", "gold"]
-    },
-    {
-      "id": "plate",
-      "type": "item",
-      "name": {
-        "localizedSuffix": "Plate",
-        "suffix": "plate"
-      },
-      "model": {
-        "base": {
-          "texture": "ytech:item/plate",
-          "tint": 0
-        }
-      },
-      "material": ["iron", "copper"]
-    },
-    {
-      "id": "stone_ore",
-      "type": "block",
-      "name": {
-        "localizedSuffix": "Ore",
-        "prefix": "stone",
-        "suffix": "ore"
-      },
-      "model": {
-        "base": {
-          "texture": "minecraft:block/stone"
+  "objects": {
+    "items": [
+      {
+        "id": "ingot",
+        "name": {
+          "localizedSuffix": "Ingot",
+          "suffix": "ingot"
         },
-        "overlay": {
-          "texture": "ytech:block/ore_overlay",
-          "tint": 0
-        }
-      },
-      "material": ["iron", "copper", "tin", "gold"]
-    },
-    {
-      "id": "netherrack_ore",
-      "type": "block",
-      "name": {
-        "localizedPrefix": "Netherrack",
-        "localizedSuffix": "Ore",
-        "prefix": "netherrack",
-        "suffix": "ore"
-      },
-      "model": {
-        "base": {
-          "texture": "minecraft:block/netherrack"
+        "model": {
+          "base": {
+            "texture": "ytech:item/ingot",
+            "tint": 0
+          }
         },
-        "overlay": {
-          "texture": "ytech:block/ore_overlay",
-          "tint": 0
-        }
+        "material": ["iron", "copper", "tin", "gold"]
       },
-      "material": ["iron", "copper", "tin", "gold"]
-    },
-    {
-      "id": "deepslate_ore",
-      "type": "block",
-      "name": {
-        "localizedPrefix": "Deepslate",
-        "localizedSuffix": "Ore",
-        "prefix": "deepslate",
-        "suffix": "ore"
-      },
-      "model": {
-        "base": {
-          "texture": "minecraft:block/deepslate"
+      {
+        "id": "dust",
+        "name": {
+          "localizedSuffix": "Dust",
+          "suffix": "dust"
         },
-        "overlay": {
-          "texture": "ytech:block/ore_overlay",
-          "tint": 0
-        }
-      },
-      "material": ["iron", "copper", "tin", "gold"]
-    },
-    {
-      "id": "storage_block",
-      "type": "block",
-      "name": {
-        "localizedPrefix": "Block of",
-        "suffix": "block"
-      },
-      "model": {
-        "base": {
-          "texture": "ytech:block/storage_block",
-          "tint": 0
-        }
-      },
-      "material": ["iron", "copper", "tin", "gold"]
-    },
-    {
-      "id": "raw_storage_block",
-      "type": "block",
-      "name": {
-        "localizedPrefix": "Raw",
-        "localizedSuffix": "Block",
-        "prefix": "raw",
-        "suffix": "block"
-      },
-      "model": {
-        "base": {
-          "texture": "ytech:block/raw_storage_block",
-          "tint": 0
-        }
-      },
-      "material": ["iron", "copper", "tin", "gold"]
-    },
-    {
-      "id": "fluid",
-      "type": "fluid",
-      "name": {
-        "localizedPrefix": "Bucket of",
-        "suffix": "bucket"
-      },
-      "model": {
-        "base": {
-          "texture": "minecraft:item/bucket"
+        "model": {
+          "base": {
+            "texture": "ytech:item/dust",
+            "tint": 0
+          }
         },
-        "overlay": {
-          "texture": "ytech:item/bucket_overlay",
-          "tint": 1
-        }
+        "material": ["copper", "tin"]
       },
-      "material": ["mercury"]
-    }
-  ],
-  "tools": [
-  ],
+      {
+        "id": "raw_material",
+        "name": {
+          "localizedPrefix": "Raw",
+          "prefix": "raw"
+        },
+        "model": {
+          "base": {
+            "texture": "ytech:item/raw_material",
+            "tint": 0
+          }
+        },
+        "material": ["iron", "copper", "tin", "gold"]
+      },
+      {
+        "id": "plate",
+        "name": {
+          "localizedSuffix": "Plate",
+          "suffix": "plate"
+        },
+        "model": {
+          "base": {
+            "texture": "ytech:item/plate",
+            "tint": 0
+          }
+        },
+        "material": ["iron", "copper"]
+      }
+    ],
+    "blocks": [
+      {
+        "id": "stone_ore",
+        "name": {
+          "localizedSuffix": "Ore",
+          "prefix": "stone",
+          "suffix": "ore"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:block/stone"
+          },
+          "overlay": {
+            "texture": "ytech:block/ore_overlay",
+            "tint": 0
+          }
+        },
+        "material": ["iron", "copper", "tin", "gold"]
+      },
+      {
+        "id": "netherrack_ore",
+        "name": {
+          "localizedPrefix": "Netherrack",
+          "localizedSuffix": "Ore",
+          "prefix": "netherrack",
+          "suffix": "ore"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:block/netherrack"
+          },
+          "overlay": {
+            "texture": "ytech:block/ore_overlay",
+            "tint": 0
+          }
+        },
+        "material": ["iron", "copper", "tin", "gold"]
+      },
+      {
+        "id": "deepslate_ore",
+        "name": {
+          "localizedPrefix": "Deepslate",
+          "localizedSuffix": "Ore",
+          "prefix": "deepslate",
+          "suffix": "ore"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:block/deepslate"
+          },
+          "overlay": {
+            "texture": "ytech:block/ore_overlay",
+            "tint": 0
+          }
+        },
+        "material": ["iron", "copper", "tin", "gold"]
+      },
+      {
+        "id": "storage_block",
+        "name": {
+          "localizedPrefix": "Block of",
+          "suffix": "block"
+        },
+        "model": {
+          "base": {
+            "texture": "ytech:block/storage_block",
+            "tint": 0
+          }
+        },
+        "material": ["iron", "copper", "tin", "gold"]
+      },
+      {
+        "id": "raw_storage_block",
+        "name": {
+          "localizedPrefix": "Raw",
+          "localizedSuffix": "Block",
+          "prefix": "raw",
+          "suffix": "block"
+        },
+        "model": {
+          "base": {
+            "texture": "ytech:block/raw_storage_block",
+            "tint": 0
+          }
+        },
+        "material": ["iron", "copper", "tin", "gold"]
+      }
+    ],
+    "fluids": [
+      {
+        "id": "fluid",
+        "name": {
+          "localizedPrefix": "Bucket of",
+          "suffix": "bucket"
+        },
+        "model": {
+          "base": {
+            "texture": "minecraft:item/bucket"
+          },
+          "overlay": {
+            "texture": "ytech:item/bucket_overlay",
+            "tint": 1
+          }
+        },
+        "material": ["mercury"]
+      }
+    ]
+  },
   "machines": [
     {
       "id": "crusher",

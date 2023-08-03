@@ -31,7 +31,10 @@ public class ConfigLoader {
             if (inputStream != null) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(Product.class, new ProductDeserializer())
+                        .registerTypeAdapter(GameObjects.class, new GameObjectDeserializer())
+                        .registerTypeAdapter(ItemObject.class, new ItemObjectDeserializer())
+                        .registerTypeAdapter(BlockObject.class, new BlockObjectDeserializer())
+                        .registerTypeAdapter(FluidObject.class, new FluidObjectDeserializer())
                         .registerTypeAdapter(Material.class, new MaterialDeserializer())
                         .registerTypeAdapter(Model.class, new ModelDeserializer())
                         .registerTypeAdapter(Element.class, new ElementDeserializer())
@@ -60,8 +63,16 @@ public class ConfigLoader {
         return MODEL.materials.elements;
     }
 
-    public static Product[] getProducts() {
-        return MODEL.products();
+    public static ItemObject[] getItemObjects() {
+        return MODEL.objects.items;
+    }
+
+    public static BlockObject[] getBlockObjects() {
+        return MODEL.objects.blocks;
+    }
+
+    public static FluidObject[] getFluidObjects() {
+        return MODEL.objects.fluids;
     }
 
     public static Machine[] getMachines() {
@@ -86,7 +97,7 @@ public class ConfigLoader {
 
     private record YTechRec(
             @NotNull Materials materials,
-            @NotNull Product[] products,
+            @NotNull GameObjects objects,
             @NotNull Machine[] machines,
             @NotNull Tier[] tiers,
             @NotNull Generator generators
@@ -100,12 +111,47 @@ public class ConfigLoader {
             @NotNull Material[] minecraft
     ) {}
 
-    public record Product(
-            @NotNull ProductType id,
-            @NotNull NameHolder name,
-            @NotNull ObjectType type,
-            @NotNull MaterialHolder[] material
+    public record GameObjects(
+            @NotNull ItemObject[] items,
+            @NotNull BlockObject[] blocks,
+            @NotNull FluidObject[] fluids
     ) {}
+
+    public static class BaseObject<T> {
+        @NotNull public final T id;
+        @NotNull public final NameHolder name;
+        @NotNull public final MaterialHolder[] materials;
+
+        BaseObject(@NotNull T id, @NotNull NameHolder name, @NotNull MaterialHolder[] materials) {
+            this.id = id;
+            this.name = name;
+            this.materials = materials;
+        }
+
+        BaseObject(@NotNull ConfigLoader.BaseObject<T> self) {
+            id = self.id;
+            name = self.name;
+            materials = self.materials;
+        }
+    }
+
+    public static class ItemObject extends BaseObject<ItemObjectType> {
+        ItemObject(@NotNull BaseObject<ItemObjectType> obj) {
+            super(obj);
+        }
+    }
+
+    public static class BlockObject extends BaseObject<BlockObjectType> {
+        BlockObject(@NotNull BaseObject<BlockObjectType> obj) {
+            super(obj);
+        }
+    }
+
+    public static class FluidObject extends BaseObject<FluidObjectType> {
+        FluidObject(@NotNull BaseObject<FluidObjectType> obj) {
+            super(obj);
+        }
+    }
 
     public record Material(
             @NotNull String id,
@@ -216,13 +262,35 @@ public class ConfigLoader {
         }
     }
 
-    private static class ProductDeserializer implements JsonDeserializer<Product> {
+    private static class GameObjectDeserializer implements JsonDeserializer<GameObjects> {
         @Override
-        public Product deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public GameObjects deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             if (json.isJsonObject()) {
                 JsonObject object = json.getAsJsonObject();
-                ProductType id = Objects.requireNonNull(context.deserialize(object.get("id"), ProductType.class), "Invalid or missing product ID");
-                ObjectType type = Objects.requireNonNull(context.deserialize(object.get("type"), ObjectType.class), "Missing object type for " + id);
+                ItemObject[] items = context.deserialize(object.get("items"), ItemObject[].class);
+                BlockObject[] blocks = context.deserialize(object.get("blocks"), BlockObject[].class);
+                FluidObject[] fluids = context.deserialize(object.get("fluids"), FluidObject[].class);
+                return new GameObjects(items, blocks, fluids);
+            } else {
+                throw new JsonParseException("Expecting object");
+            }
+        }
+    }
+
+    private static class BaseObjectDeserializer<T, V extends BaseObject<T>> implements JsonDeserializer<V> {
+        private final ParentObjectFunction<T, V> consumer;
+        private final Class<T> objectTypeClass;
+
+        BaseObjectDeserializer(ParentObjectFunction<T, V> consumer, Class<T> objectTypeClass) {
+            this.consumer = consumer;
+            this.objectTypeClass = objectTypeClass;
+        }
+
+        @Override
+        public V deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonObject()) {
+                JsonObject object = json.getAsJsonObject();
+                T id = Objects.requireNonNull(context.deserialize(object.get("id"), objectTypeClass), "Invalid or missing product ID");
                 NameHolder name = Objects.requireNonNull(context.deserialize(object.get("name"), NameHolder.class), "Missing product name for " + id);
                 Model model = context.deserialize(object.get("model"), Model.class);
 
@@ -249,10 +317,28 @@ public class ConfigLoader {
                     }
                 }).toArray(MaterialHolder[]::new);
 
-                return new Product(id, name, type, materials);
+                return consumer.factory(new BaseObject<>(id, name, materials), object, context);
             } else {
                 throw new JsonParseException("Expecting object");
             }
+        }
+    }
+
+    private static class ItemObjectDeserializer extends BaseObjectDeserializer<ItemObjectType, ItemObject> {
+        ItemObjectDeserializer() {
+            super((base, object, context) -> new ItemObject(base), ItemObjectType.class);
+        }
+    }
+
+    private static class BlockObjectDeserializer extends BaseObjectDeserializer<BlockObjectType, BlockObject> {
+        BlockObjectDeserializer() {
+            super((base, object, context) -> new BlockObject(base), BlockObjectType.class);
+        }
+    }
+
+    private static class FluidObjectDeserializer extends BaseObjectDeserializer<FluidObjectType, FluidObject> {
+        FluidObjectDeserializer() {
+            super((base, object, context) -> new FluidObject(base), FluidObjectType.class);
         }
     }
 
@@ -284,5 +370,9 @@ public class ConfigLoader {
                 throw new JsonParseException("Expecting object");
             }
         }
+    }
+
+    private interface ParentObjectFunction<U, T extends BaseObject<U>> {
+        T factory(BaseObject<U> baseObject, JsonObject object, JsonDeserializationContext context);
     }
 }

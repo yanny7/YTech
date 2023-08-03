@@ -139,7 +139,7 @@ public class ServerKineticLevel extends SavedData {
                 LOGGER.warn("Removed block {} from network at {} because started rotating to wrong direction", blockEntity, blockEntity.getBlockPos());
                 setDirty();
 
-                if (!network.isEmpty()) {
+                if (network.isNotEmpty()) {
                     channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
                 }
             }
@@ -156,7 +156,7 @@ public class ServerKineticLevel extends SavedData {
             networkMap.putAll(networks.stream().collect(Collectors.toMap(KineticNetwork::getNetworkId, n -> n)));
             setDirty();
 
-            if (!network.isEmpty()) {
+            if (network.isNotEmpty()) {
                 channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
             }
         } else {

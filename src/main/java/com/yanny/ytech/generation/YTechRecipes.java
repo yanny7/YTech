@@ -2,8 +2,8 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.ProductType;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.configuration.BlockObjectType;
+import com.yanny.ytech.configuration.ItemObjectType;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -26,17 +26,17 @@ class YTechRecipes extends RecipeProvider {
 
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        HOLDER.products().get(ProductType.RAW_STORAGE_BLOCK).forEach(((material, holder) -> {
-            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.products(), ProductType.RAW_MATERIAL, material, Holder.ItemHolder.class).item;
+        HOLDER.blocks().get(BlockObjectType.RAW_STORAGE_BLOCK).forEach(((material, holder) -> {
+            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), ItemObjectType.RAW_MATERIAL, material).item;
             TagKey<Item> unpackedTag = Registration.FORGE_RAW_MATERIAL_TAGS.get(material);
             TagKey<Item> packedTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).item();
-            nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, ((Holder.BlockHolder) holder).block, packedTag);
+            nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, holder.block, packedTag);
         }));
-        HOLDER.products().get(ProductType.STORAGE_BLOCK).forEach(((material, holder) -> {
-            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.products(), ProductType.INGOT, material, Holder.ItemHolder.class).item;
+        HOLDER.blocks().get(BlockObjectType.STORAGE_BLOCK).forEach(((material, holder) -> {
+            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), ItemObjectType.INGOT, material).item;
             TagKey<Item> unpackedTag = Registration.FORGE_INGOT_TAGS.get(material);
             TagKey<Item> packedTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).item();
-            nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, ((Holder.BlockHolder) holder).block, packedTag);
+            nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, holder.block, packedTag);
         }));
     }
 

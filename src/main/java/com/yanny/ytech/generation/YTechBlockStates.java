@@ -27,9 +27,9 @@ class YTechBlockStates extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        GeneralUtils.mapToStream(HOLDER.blocks()).forEach(this::registerBlock);
         GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(this::registerKinetic);
         GeneralUtils.mapToStream(HOLDER.machine()).forEach(this::registerMachine);
-        GeneralUtils.filteredStream(HOLDER.products(), Utils::onlyBlocks, Holder.BlockHolder.class).forEach(this::registerBlock);
     }
 
     private void registerBlock(Holder.BlockHolder holder) {
@@ -102,8 +102,8 @@ class YTechBlockStates extends BlockStateProvider {
 
     private void registerKinetic(KineticNetworkHolder holder) {
         switch (holder.blockType) {
-            case SHAFT -> registerShaft(holder, Utils.getBaseBlockTexture(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(holder.material.block())))));
-            case WATER_WHEEL -> registerWaterWheel(holder, Utils.getBaseBlockTexture(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(holder.material.block())))));
+            case SHAFT -> registerShaft(holder, Utils.getBaseBlockTexture(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(holder.material.block()))))));
+            case WATER_WHEEL -> registerWaterWheel(holder, Utils.getBaseBlockTexture(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(holder.material.block()))))));
         }
     }
 

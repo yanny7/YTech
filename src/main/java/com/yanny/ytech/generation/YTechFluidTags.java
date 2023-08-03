@@ -22,7 +22,9 @@ class YTechFluidTags extends FluidTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        GeneralUtils.filteredSortedStream(HOLDER.products(), Utils::onlyFluids, Utils.sortMapByProductMaterial(), Holder.FluidHolder.class)
-                .forEach((holder) -> tag(Registration.FORGE_FLUID_TAGS.get(holder.materialHolder.material())).add(holder.source.get()).add(holder.flowing.get()));
+        GeneralUtils.sortedStreamMap(HOLDER.fluids(), Utils.fluidComparator()).forEach((entry) -> {
+            Holder.FluidHolder holder = entry.getValue();
+            tag(Registration.FORGE_FLUID_TAGS.get(holder.materialHolder.material())).add(holder.source.get()).add(holder.flowing.get());
+        });
     }
 }

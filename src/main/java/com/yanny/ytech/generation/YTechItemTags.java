@@ -2,8 +2,8 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.BlockObjectType;
 import com.yanny.ytech.configuration.ConfigLoader;
-import com.yanny.ytech.configuration.ProductType;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
@@ -33,43 +33,50 @@ class YTechItemTags extends ItemTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        GeneralUtils.sortedStreamMap(HOLDER.products(), Utils.sortMapByProductMaterial()).forEach(entry -> {
+        GeneralUtils.sortedStreamMap(HOLDER.items(), Utils.itemComparator()).forEach(entry -> {
             ConfigLoader.Material material = entry.getKey();
-            Holder holder = entry.getValue();
+            Holder.ItemHolder holder = entry.getValue();
 
-            switch (holder.productType) {
+            switch (holder.object.id) {
                 case INGOT -> {
                     TagKey<Item> ingot = Registration.FORGE_INGOT_TAGS.get(material);
 
                     tag(Tags.Items.INGOTS).addTag(ingot);
-                    tag(ingot).add(((Holder.ItemHolder) holder).item.get());
+                    tag(ingot).add(holder.item.get());
                 }
                 case DUST -> {
                     TagKey<Item> ingot = Registration.FORGE_DUST_TAGS.get(material);
 
                     tag(Tags.Items.DUSTS).addTag(ingot);
-                    tag(ingot).add(((Holder.ItemHolder) holder).item.get());
+                    tag(ingot).add(holder.item.get());
                 }
                 case RAW_MATERIAL -> {
                     TagKey<Item> rawMaterial = Registration.FORGE_RAW_MATERIAL_TAGS.get(material);
 
                     tag(Tags.Items.RAW_MATERIALS).addTag(rawMaterial);
-                    tag(rawMaterial).add(((Holder.ItemHolder) holder).item.get());
+                    tag(rawMaterial).add(holder.item.get());
                 }
+            }
+        });
+        GeneralUtils.sortedStreamMap(HOLDER.blocks(), Utils.blockComparator()).forEach(entry -> {
+            ConfigLoader.Material material = entry.getKey();
+            Holder.BlockHolder holder = entry.getValue();
+
+            switch (holder.object.id) {
                 case STORAGE_BLOCK -> {
                     TagKey<Item> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).item();
 
                     tag(Tags.Items.STORAGE_BLOCKS).addTag(storageBlockTag);
-                    tag(storageBlockTag).add(((Holder.BlockHolder) holder).block.get().asItem());
+                    tag(storageBlockTag).add(holder.block.get().asItem());
                 }
                 case RAW_STORAGE_BLOCK -> {
                     TagKey<Item> storageBlockTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).item();
 
                     tag(Tags.Items.STORAGE_BLOCKS).addTag(storageBlockTag);
-                    tag(storageBlockTag).add(((Holder.BlockHolder) holder).block.get().asItem());
+                    tag(storageBlockTag).add(holder.block.get().asItem());
                 }
                 case STONE_ORE, DEEPSLATE_ORE, NETHERRACK_ORE -> {
-                    Item item = ((Holder.BlockHolder) holder).block.get().asItem();
+                    Item item = holder.block.get().asItem();
                     TagKey<Item> oreTag = Registration.FORGE_ORE_TAGS.get(material).item();
 
                     if (holder.materialHolder.material().equals(iron)) {
@@ -80,11 +87,11 @@ class YTechItemTags extends ItemTagsProvider {
                         tag(ItemTags.GOLD_ORES).add(item);
                     }
 
-                    if (holder.productType == ProductType.STONE_ORE) {
+                    if (holder.object.id == BlockObjectType.STONE_ORE) {
                         tag(Tags.Items.ORES_IN_GROUND_STONE).add(item);
-                    } else if (holder.productType == ProductType.DEEPSLATE_ORE) {
+                    } else if (holder.object.id == BlockObjectType.DEEPSLATE_ORE) {
                         tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(item);
-                    } else if (holder.productType == ProductType.NETHERRACK_ORE) {
+                    } else if (holder.object.id == BlockObjectType.NETHERRACK_ORE) {
                         tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(item);
                     }
                     tag(Tags.Items.ORES).add(item);
