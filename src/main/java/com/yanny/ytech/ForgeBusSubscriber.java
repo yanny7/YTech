@@ -10,15 +10,22 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,6 +52,14 @@ public class ForgeBusSubscriber {
             YTechMod.KINETIC_PROPAGATOR.server().onLevelUnload(level);
         } else if (levelAccessor instanceof ClientLevel level) {
             YTechMod.KINETIC_PROPAGATOR.client().onLevelUnload(level);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onServerStarting(ServerStartingEvent event) {
+        if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
+            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((block) ->
+                    setBlockRequireValidTool(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(block))));
         }
     }
 
@@ -78,6 +93,20 @@ public class ForgeBusSubscriber {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private static void setBlockRequireValidTool(Block block) {
+        try {
+            BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "defaultBlockState");
+
+            if (blockState != null) {
+                ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "requiresCorrectToolForDrops");
+            }
+
+            LOGGER.info("Set requiresCorrectToolForDrops on {}", block.getName());
+        } catch (Exception e) {
+            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block " + block.getName().getString() + ": " + e.getMessage());
         }
     }
 }
