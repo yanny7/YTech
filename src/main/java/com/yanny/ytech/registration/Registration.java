@@ -1,10 +1,12 @@
 package com.yanny.ytech.registration;
 
+import com.mojang.serialization.Codec;
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.configuration.FluidObjectType;
 import com.yanny.ytech.configuration.ItemObjectType;
+import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.network.kinetic.block.KineticBlockFactory;
@@ -29,6 +31,7 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
@@ -63,6 +66,7 @@ public class Registration {
     private static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, YTechMod.MOD_ID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, YTechMod.MOD_ID);
     private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, YTechMod.MOD_ID);
+    private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> GLM_CODECS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, YTechMod.MOD_ID);
 
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
@@ -131,6 +135,8 @@ public class Registration {
                 holderMap.put(Objects.requireNonNull(ConfigLoader.getMaterial(kineticMaterial.id())), registerKineticBlock(kinetic.id(), kineticMaterial));
             }
         }
+
+        GLM_CODECS.register("add_item", AddItemModifier.CODEC);
     }
 
     public static void init(IEventBus eventBus) {
@@ -141,6 +147,7 @@ public class Registration {
         CREATIVE_TABS.register(eventBus);
         BLOCK_ENTITY_TYPES.register(eventBus);
         MENU_TYPES.register(eventBus);
+        GLM_CODECS.register(eventBus);
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
