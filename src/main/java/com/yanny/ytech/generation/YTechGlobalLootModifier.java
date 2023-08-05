@@ -1,14 +1,16 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
+
+import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
     public YTechGlobalLootModifier(PackOutput output) {
@@ -19,9 +21,9 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
     protected void start() {
         add("grass_drops_string", new AddItemModifier(
                 new LootItemCondition[] {
-                        LootItemRandomChanceCondition.randomChance(0.2f).build(),
+                        LootItemRandomChanceCondition.randomChance(0.1f).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRASS).build()
-                }, Items.STRING)
+                }, HOLDER.simpleItems().get(SimpleItemType.GRASS_FIBERS).item.get())
         );
     }
 }

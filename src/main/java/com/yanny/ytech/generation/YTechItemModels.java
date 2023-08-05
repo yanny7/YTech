@@ -26,9 +26,10 @@ class YTechItemModels extends ItemModelProvider {
         GeneralUtils.mapToStream(HOLDER.items()).forEach(this::registerItem);
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(this::registerItem);
         GeneralUtils.mapToStream(HOLDER.tools()).forEach(this::registerItem);
+        HOLDER.simpleItems().values().forEach(this::registerItem);
     }
 
-    private <T, U extends ConfigLoader.BaseObject<T>> void registerItem(Holder<T, U> holder) {
+    private <T, U extends ConfigLoader.BaseObject<T>> void registerItem(Holder.MaterialHolder<T, U> holder) {
         ItemModelBuilder builder = getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
         ResourceLocation baseTexture = Objects.requireNonNull(holder.materialHolder.model, "Base model texture required").base().texture();
 
@@ -37,5 +38,10 @@ class YTechItemModels extends ItemModelProvider {
         if (holder.materialHolder.model.overlay() != null) {
             builder.texture("layer1", holder.materialHolder.model.overlay().texture());
         }
+    }
+
+    private void registerItem(Holder.SimpleItemHolder holder) {
+        ItemModelBuilder builder = getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        builder.texture("layer0", new ResourceLocation(YTechMod.MOD_ID, ItemModelProvider.ITEM_FOLDER + "/" + holder.key));
     }
 }

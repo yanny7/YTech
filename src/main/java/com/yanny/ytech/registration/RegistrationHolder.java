@@ -11,9 +11,10 @@ public record RegistrationHolder(
         HashMap<FluidObjectType, HashMap<ConfigLoader.Material, Holder.FluidHolder>> fluids,
         HashMap<ToolObjectType, HashMap<ConfigLoader.Material, Holder.ToolHolder>> tools,
         HashMap<ConfigLoader.Machine, HashMap<ConfigLoader.Tier, MachineHolder>> machine,
-        HashMap<KineticBlockType, HashMap<ConfigLoader.Material, KineticNetworkHolder>> kineticNetwork
+        HashMap<KineticBlockType, HashMap<ConfigLoader.Material, KineticNetworkHolder>> kineticNetwork,
+        HashMap<SimpleItemType, Holder.SimpleItemHolder> simpleItems
 ) {
     public RegistrationHolder() {
-        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 }

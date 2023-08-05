@@ -6,6 +6,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.ConfigLoader;
 import com.yanny.ytech.configuration.FluidObjectType;
 import com.yanny.ytech.configuration.ItemObjectType;
+import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
@@ -136,6 +137,11 @@ public class Registration {
             }
         }
 
+        for (SimpleItemType simpleItemType : SimpleItemType.values()) {
+            HOLDER.simpleItems().put(simpleItemType, new Holder.SimpleItemHolder(simpleItemType.key, simpleItemType.name, ITEMS.register(simpleItemType.key,
+                    () -> new Item(new Item.Properties()))));
+        }
+
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
     }
 
@@ -158,6 +164,7 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.tools()).forEach((holder) -> event.accept(holder.tool));
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
+            HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
         }
     }
 
@@ -268,7 +275,7 @@ public class Registration {
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }
 
-    private static <T, U extends ConfigLoader.BaseObject<T>, V extends Holder<T, U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
+    private static <T, U extends ConfigLoader.BaseObject<T>, V extends Holder.MaterialHolder<T, U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
         if (v == null) {
             return consumer.apply(object);
         } else {
@@ -276,7 +283,7 @@ public class Registration {
         }
     }
 
-    private static <T, U extends ConfigLoader.BaseObject<T>> int getTintColor(Holder<T, U> h, int t) {
+    private static <T, U extends ConfigLoader.BaseObject<T>> int getTintColor(Holder.MaterialHolder<T, U> h, int t) {
         ConfigLoader.Model model = Objects.requireNonNull(h.materialHolder.model, "Model must be non null");
 
         if ((model.base().tint() != null && model.base().tint() == t) || (model.overlay() != null && model.overlay().tint() != null && model.overlay().tint() == t)) {
