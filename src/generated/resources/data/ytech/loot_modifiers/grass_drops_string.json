@@ -6,6 +6,14 @@
       "condition": "minecraft:random_chance"
     },
     {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "items": [
+          "ytech:sharp_flint"
+        ]
+      }
+    },
+    {
       "block": "minecraft:grass",
       "condition": "minecraft:block_state_property"
     }

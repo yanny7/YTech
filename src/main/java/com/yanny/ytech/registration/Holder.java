@@ -20,10 +20,23 @@ public class Holder {
     }
 
     public static class SimpleItemHolder extends Holder {
+        @NotNull public final SimpleItemType object;
         @NotNull public final RegistryObject<Item> item;
 
-        SimpleItemHolder(@NotNull String key, @NotNull String name, @NotNull RegistryObject<Item> item) {
-            super(key, name);
+        SimpleItemHolder(@NotNull SimpleItemType object, @NotNull RegistryObject<Item> item) {
+            super(object.key, object.name);
+            this.object = object;
+            this.item = item;
+        }
+    }
+
+    public static class SimpleToolHolder extends Holder {
+        @NotNull public final SimpleToolType object;
+        @NotNull public final RegistryObject<Item> item;
+
+        SimpleToolHolder(@NotNull SimpleToolType object, @NotNull RegistryObject<Item> item) {
+            super(object.key, object.name);
+            this.object = object;
             this.item = item;
         }
     }

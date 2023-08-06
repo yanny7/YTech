@@ -3,10 +3,7 @@ package com.yanny.ytech.registration;
 import com.mojang.serialization.Codec;
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.ConfigLoader;
-import com.yanny.ytech.configuration.FluidObjectType;
-import com.yanny.ytech.configuration.ItemObjectType;
-import com.yanny.ytech.configuration.SimpleItemType;
+import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
@@ -137,9 +134,11 @@ public class Registration {
             }
         }
 
-        for (SimpleItemType simpleItemType : SimpleItemType.values()) {
-            HOLDER.simpleItems().put(simpleItemType, new Holder.SimpleItemHolder(simpleItemType.key, simpleItemType.name, ITEMS.register(simpleItemType.key,
-                    () -> new Item(new Item.Properties()))));
+        for (SimpleItemType type : SimpleItemType.values()) {
+            HOLDER.simpleItems().put(type, new Holder.SimpleItemHolder(type, ITEMS.register(type.key, () -> new Item(new Item.Properties()))));
+        }
+        for (SimpleToolType simpleToolType : SimpleToolType.values()) {
+            HOLDER.simpleTools().put(simpleToolType, new Holder.SimpleToolHolder(simpleToolType, ITEMS.register(simpleToolType.key, simpleToolType.itemSupplier)));
         }
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
@@ -165,6 +164,7 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
+            HOLDER.simpleTools().values().forEach(h -> event.accept(h.item.get()));
         }
     }
 

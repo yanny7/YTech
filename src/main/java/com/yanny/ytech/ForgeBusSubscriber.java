@@ -1,20 +1,28 @@
 package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.configuration.SimpleToolType;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,6 +36,8 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.yanny.ytech.registration.Registration.HOLDER;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeBusSubscriber {
@@ -85,6 +95,20 @@ public class ForgeBusSubscriber {
                 }
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        Player player = event.getEntity();
+        Level level = event.getLevel();
+        ItemStack heldItem = player.getMainHandItem();
+        BlockState blockState = level.getBlockState(event.getPos());
+        Direction direction = event.getFace();
+
+        if (!level.isClientSide && direction != null && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE)) {
+            Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).item.get()));
+            heldItem.shrink(1);
+        }
     }
 
     private static boolean shouldNotRemove(Recipe<?> recipe, Set<ResourceLocation> toRemove) {
