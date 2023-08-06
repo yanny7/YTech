@@ -109,7 +109,7 @@ public class ForgeBusSubscriber {
 
             // Action.ABORT is bugged - getFace returns always DOWN direction
             if (!level.isClientSide && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE) && event.getHand() == InteractionHand.MAIN_HAND) {
-                Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).item.get()));
+                Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get()));
                 heldItem.shrink(1);
             }
         }

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "ytech:sharp_flint"
+    },
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "item": "ytech:grass_twine"
+    }
+  },
+  "pattern": [
+    "#F",
+    " T",
+    " S"
+  ],
+  "result": {
+    "item": "ytech:flint_sword"
+  },
+  "show_notification": true
+}

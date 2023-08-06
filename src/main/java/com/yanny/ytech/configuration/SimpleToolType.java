@@ -1,26 +1,13 @@
 package com.yanny.ytech.configuration;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import com.yanny.ytech.configuration.item.SharpFlintItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public enum SimpleToolType {
-    SHARP_FLINT("sharp_flint", "Sharp Flint", () -> new SwordItem(Tiers.WOOD, 0, 0, new Item.Properties()) {
-        @Override
-        public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
-            stack.hurtAndBreak(1, entity, (livingEntity) -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-            return true;
-        }
-    }),
+    SHARP_FLINT("sharp_flint", "Sharp Flint", SharpFlintItem::new),
     ;
 
     @NotNull public final String key;

@@ -164,7 +164,7 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
-            HOLDER.simpleTools().values().forEach(h -> event.accept(h.item.get()));
+            HOLDER.simpleTools().values().forEach(h -> event.accept(h.tool.get()));
         }
     }
 

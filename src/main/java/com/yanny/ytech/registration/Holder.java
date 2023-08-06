@@ -32,12 +32,12 @@ public class Holder {
 
     public static class SimpleToolHolder extends Holder {
         @NotNull public final SimpleToolType object;
-        @NotNull public final RegistryObject<Item> item;
+        @NotNull public final RegistryObject<Item> tool;
 
-        SimpleToolHolder(@NotNull SimpleToolType object, @NotNull RegistryObject<Item> item) {
+        SimpleToolHolder(@NotNull SimpleToolType object, @NotNull RegistryObject<Item> tool) {
             super(object.key, object.name);
             this.object = object;
-            this.item = item;
+            this.tool = tool;
         }
     }
 

@@ -25,7 +25,7 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
         add("grass_drops_string", new AddItemModifier(
                 new LootItemCondition[] {
                         LootItemRandomChanceCondition.randomChance(0.1f).build(),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).item.get())).build(),
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRASS).build()
                 }, HOLDER.simpleItems().get(SimpleItemType.GRASS_FIBERS).item.get())
         );

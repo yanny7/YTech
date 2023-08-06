@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_grass_fibers": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ytech:grass_fibers"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ytech:grass_twine"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_grass_fibers",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ytech:grass_twine"
+    ]
+  },
+  "sends_telemetry_event": false
+}
