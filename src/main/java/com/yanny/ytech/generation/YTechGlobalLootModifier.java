@@ -22,7 +22,7 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
 
     @Override
     protected void start() {
-        add("grass_drops_string", new AddItemModifier(
+        add("grass_drops_fibers", new AddItemModifier(
                 new LootItemCondition[] {
                         LootItemRandomChanceCondition.randomChance(0.1f).build(),
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())).build(),
