@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -98,14 +99,14 @@ public class ForgeBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onPlayerRightClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
         ItemStack heldItem = player.getMainHandItem();
         BlockState blockState = level.getBlockState(event.getPos());
         Direction direction = event.getFace();
 
-        if (!level.isClientSide && direction != null && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE)) {
+        if (!level.isClientSide && direction != null && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE) && event.getHand() == InteractionHand.MAIN_HAND) {
             Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).item.get()));
             heldItem.shrink(1);
         }
