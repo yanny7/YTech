@@ -100,15 +100,17 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        Player player = event.getEntity();
-        Level level = event.getLevel();
-        ItemStack heldItem = player.getMainHandItem();
-        BlockState blockState = level.getBlockState(event.getPos());
-        Direction direction = event.getFace();
+        if (YTechMod.CONFIGURATION.enableCraftingSharpFlint()) {
+            Player player = event.getEntity();
+            Level level = event.getLevel();
+            ItemStack heldItem = player.getMainHandItem();
+            BlockState blockState = level.getBlockState(event.getPos());
+            Direction direction = event.getFace();
 
-        if (!level.isClientSide && direction != null && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE) && event.getHand() == InteractionHand.MAIN_HAND) {
-            Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).item.get()));
-            heldItem.shrink(1);
+            if (!level.isClientSide && direction != null && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE) && event.getHand() == InteractionHand.MAIN_HAND) {
+                Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).item.get()));
+                heldItem.shrink(1);
+            }
         }
     }
 

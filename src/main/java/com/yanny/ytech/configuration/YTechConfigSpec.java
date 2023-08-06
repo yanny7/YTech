@@ -17,6 +17,7 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.ConfigValue<List<? extends String>> removeMinecraftRecipesList;
     private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
     private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolList;
+    private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
 
     public YTechConfigSpec(ForgeConfigSpec.Builder builder) {
         removeMinecraftRecipes = builder.comment("If mod can remove default minecraft recipes")
@@ -27,6 +28,8 @@ public class YTechConfigSpec {
                 .worldRestart().define("makeBlocksRequireValidTool", true);
         makeBlocksRequireValidToolList = builder.comment("List of blocks that will require valid tool for harvesting")
                 .worldRestart().defineListAllowEmpty("makeBlocksRequireValidToolList", YTechConfigSpec::getMinecraftBlocksRequiringValidTool, YTechConfigSpec::validateMinecraftRecipe);
+        craftSharpFlintByRightClickingOnStone = builder.comment("Enables crafting Sharp Flint by right-clicking on stone")
+                .worldRestart().define("craftSharpFlintByRightClickingOnStone", true);
     }
 
     public boolean shouldRemoveMinecraftRecipes() {
@@ -43,6 +46,10 @@ public class YTechConfigSpec {
 
     public Set<ResourceLocation> getBlocksRequiringValidTool() {
         return makeBlocksRequireValidToolList.get().stream().map(ResourceLocation::new).collect(Collectors.toSet());
+    }
+
+    public boolean enableCraftingSharpFlint() {
+        return craftSharpFlintByRightClickingOnStone.get();
     }
 
     private static List<String> getMinecraftRecipes() {
