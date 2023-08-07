@@ -12,11 +12,11 @@ public enum SimpleToolType {
 
     @NotNull public final String key;
     @NotNull public final String name;
-    @NotNull public final Supplier<Item> itemSupplier;
+    @NotNull public final Supplier<Item> toolSupplier;
 
-    SimpleToolType(@NotNull String key, @NotNull String name, @NotNull Supplier<Item> itemSupplier) {
+    SimpleToolType(@NotNull String key, @NotNull String name, @NotNull Supplier<Item> toolSupplier) {
         this.key = key;
         this.name = name;
-        this.itemSupplier = itemSupplier;
+        this.toolSupplier = toolSupplier;
     }
 }

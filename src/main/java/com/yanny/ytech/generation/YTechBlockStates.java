@@ -30,6 +30,7 @@ class YTechBlockStates extends BlockStateProvider {
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(this::registerBlock);
         GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(this::registerKinetic);
         GeneralUtils.mapToStream(HOLDER.machine()).forEach(this::registerMachine);
+        HOLDER.simpleBlocks().values().forEach((h) -> h.object.modelConsumer.accept(this, h));
     }
 
     private void registerBlock(Holder.BlockHolder holder) {

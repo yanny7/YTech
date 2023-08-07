@@ -137,8 +137,13 @@ public class Registration {
         for (SimpleItemType type : SimpleItemType.values()) {
             HOLDER.simpleItems().put(type, new Holder.SimpleItemHolder(type, ITEMS.register(type.key, () -> new Item(new Item.Properties()))));
         }
-        for (SimpleToolType simpleToolType : SimpleToolType.values()) {
-            HOLDER.simpleTools().put(simpleToolType, new Holder.SimpleToolHolder(simpleToolType, ITEMS.register(simpleToolType.key, simpleToolType.itemSupplier)));
+        for (SimpleBlockType type : SimpleBlockType.values()) {
+            RegistryObject<Block> block = BLOCKS.register(type.key, type.blockSupplier);
+            ITEMS.register(type.key, () -> new BlockItem(block.get(), new Item.Properties()));
+            HOLDER.simpleBlocks().put(type, new Holder.SimpleBlockHolder(type, block));
+        }
+        for (SimpleToolType type : SimpleToolType.values()) {
+            HOLDER.simpleTools().put(type, new Holder.SimpleToolHolder(type, ITEMS.register(type.key, type.toolSupplier)));
         }
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
@@ -164,6 +169,7 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
+            HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
             HOLDER.simpleTools().values().forEach(h -> event.accept(h.tool.get()));
         }
     }

@@ -30,6 +30,17 @@ public class Holder {
         }
     }
 
+    public static class SimpleBlockHolder extends Holder {
+        @NotNull public final SimpleBlockType object;
+        @NotNull public final RegistryObject<Block> block;
+
+        SimpleBlockHolder(@NotNull SimpleBlockType object, @NotNull RegistryObject<Block> block) {
+            super(object.key, object.name);
+            this.object = object;
+            this.block = block;
+        }
+    }
+
     public static class SimpleToolHolder extends Holder {
         @NotNull public final SimpleToolType object;
         @NotNull public final RegistryObject<Item> tool;

@@ -13,9 +13,10 @@ public record RegistrationHolder(
         HashMap<ConfigLoader.Machine, HashMap<ConfigLoader.Tier, MachineHolder>> machine,
         HashMap<KineticBlockType, HashMap<ConfigLoader.Material, KineticNetworkHolder>> kineticNetwork,
         HashMap<SimpleItemType, Holder.SimpleItemHolder> simpleItems,
+        HashMap<SimpleBlockType, Holder.SimpleBlockHolder> simpleBlocks,
         HashMap<SimpleToolType, Holder.SimpleToolHolder> simpleTools
 ) {
     public RegistrationHolder() {
-        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 }
