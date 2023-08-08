@@ -3,6 +3,8 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block.DryingRack;
+import com.yanny.ytech.configuration.block.ShaftBlock;
+import com.yanny.ytech.configuration.block.WaterWheelBlock;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -30,50 +32,65 @@ import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockHolder, BlockStateProvider>,
         ILootable<Holder.BlockHolder, BlockLootSubProvider>, IRecipe<Holder.BlockHolder> {
-    STONE_ORE("stone_ore", INameable.both("stone", "ore"), INameable.suffix("Ore"),
+    STONE_ORE(HolderType.BLOCK, "stone_ore", INameable.both("stone", "ore"), INameable.suffix("Ore"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)),
             (material) -> oreTexture(IModel.mcBlockLoc("stone")),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    NETHERRACK_ORE("netherrack_ore", INameable.both("netherrack", "ore"), INameable.both("Netherrack", "Ore"),
+    NETHERRACK_ORE(HolderType.BLOCK, "netherrack_ore", INameable.both("netherrack", "ore"), INameable.both("Netherrack", "Ore"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)),
             (material) -> oreTexture(IModel.mcBlockLoc("netherrack")),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    DEEPSLATE_ORE("deepslate_ore", INameable.both("deepslate", "ore"), INameable.both("Deepslate", "Ore"),
+    DEEPSLATE_ORE(HolderType.BLOCK, "deepslate_ore", INameable.both("deepslate", "ore"), INameable.both("Deepslate", "Ore"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)),
             (material) -> oreTexture(IModel.mcBlockLoc("deepslate")),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    STORAGE_BLOCK("storage_block", INameable.suffix("block"), INameable.prefix("Block of"),
+    STORAGE_BLOCK(HolderType.BLOCK, "storage_block", INameable.suffix("block"), INameable.prefix("Block of"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)),
             (material) -> basicTexture(IModel.modBlockLoc("storage_block")),
             MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::dropsSelfProvider,
             MaterialBlockType::storageBlockRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    RAW_STORAGE_BLOCK("raw_storage_block", INameable.both("raw", "block"), INameable.both("Raw", "Block"),
+    RAW_STORAGE_BLOCK(HolderType.BLOCK, "raw_storage_block", INameable.both("raw", "block"), INameable.both("Raw", "Block"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)),
             (material) -> basicTexture(IModel.modBlockLoc("raw_storage_block")),
             MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::dropsSelfProvider,
             MaterialBlockType::rawStorageBlockRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    DRYING_RACK("drying_rack", INameable.suffix("drying_rack"), INameable.suffix("Drying Rack"),
+    DRYING_RACK(HolderType.BLOCK, "drying_rack", INameable.suffix("drying_rack"), INameable.suffix("Drying Rack"),
             (holder) -> new DryingRack(),
             DryingRack::getTexture,
             DryingRack::registerModel,
             MaterialBlockType::dropsSelfProvider,
             DryingRack::registerRecipe,
             EnumSet.of(MaterialType.ACACIA_WOOD, MaterialType.OAK_WOOD)),
+    SHAFT(HolderType.ENTITY_BLOCK, "shaft", INameable.suffix("shaft"), INameable.suffix("Shaft"),
+            (holder) -> new ShaftBlock(holder.material, 2f),
+            ShaftBlock::getTexture,
+            ShaftBlock::registerModel,
+            MaterialBlockType::dropsSelfProvider,
+            ShaftBlock::registerRecipe,
+            EnumSet.of(MaterialType.OAK_WOOD)),
+    WATER_WHEEL(HolderType.ENTITY_BLOCK, "water_wheel", INameable.suffix("water_wheel"), INameable.suffix("Water Wheel"),
+            (holder) -> new WaterWheelBlock(holder.material, 0.2f),
+            WaterWheelBlock::getTexture,
+            WaterWheelBlock::registerModel,
+            MaterialBlockType::dropsSelfProvider,
+            WaterWheelBlock::registerRecipe,
+            EnumSet.of(MaterialType.OAK_WOOD))
     ;
 
+    @NotNull public final HolderType type;
     @NotNull public final String id;
     @NotNull private final NameHolder keyHolder;
     @NotNull private final NameHolder nameHolder;
@@ -85,14 +102,17 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     @NotNull private final BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter;
     @NotNull public final EnumSet<MaterialType> materials;
 
-    MaterialBlockType(@NotNull String id, @NotNull NameHolder keyHolder, @NotNull NameHolder nameHolder, @NotNull Function<Holder.BlockHolder, Block> blockGetter,
-                      @NotNull Function<MaterialType, TextureHolder[]> textureGetter, @NotNull BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter,
-                      @NotNull BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter, @NotNull BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter,
+    MaterialBlockType(@NotNull HolderType type, @NotNull String id, @NotNull NameHolder keyHolder, @NotNull NameHolder nameHolder,
+                      @NotNull Function<Holder.BlockHolder, Block> blockGetter, @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
+                      @NotNull BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter,
+                      @NotNull BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter,
+                      @NotNull BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter,
                       @NotNull EnumSet<MaterialType> materials) {
         this.id = id;
         this.keyHolder = keyHolder;
         this.nameHolder = nameHolder;
         this.blockGetter = blockGetter;
+        this.type = type;
         this.modelGetter = modelGetter;
         this.lootGetter = lootGetter;
         this.recipeGetter = recipeGetter;
@@ -113,6 +133,11 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
             this.textures.computeIfAbsent(material, (m) -> resources.toArray(ResourceLocation[]::new));
         }
+    }
+
+    public enum HolderType {
+        BLOCK,
+        ENTITY_BLOCK,
     }
 
     @NotNull
@@ -159,12 +184,12 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     }
 
     private static void basicBlockStateProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures(holder.material);
-        BlockModelBuilder model = provider.models().cubeAll(holder.key, textures[0]);
+            ResourceLocation[] textures = holder.object.getTextures(holder.material);
+            BlockModelBuilder model = provider.models().cubeAll(holder.key, textures[0]);
 
-        model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").cullface(direction).tintindex(0));
-        provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-        provider.itemModels().getBuilder(holder.key).parent(model);
+            model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").cullface(direction).tintindex(0));
+            provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
+            provider.itemModels().getBuilder(holder.key).parent(model);
     }
 
     private static void oreBlockStateProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {

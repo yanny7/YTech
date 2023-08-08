@@ -4,6 +4,7 @@ import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.machine.container.MachineContainerMenu;
 import com.yanny.ytech.machine.screen.ScreenFactory;
 import com.yanny.ytech.network.kinetic.renderer.KineticRenderer;
+import com.yanny.ytech.registration.Holder;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -24,6 +25,12 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        HOLDER.kineticNetwork().forEach((blockType, materialMap) -> materialMap.forEach((material, holder) -> event.registerBlockEntityRenderer(holder.entityType.get(), KineticRenderer::new)));
+        HOLDER.blocks().forEach((blockType, map) -> map.forEach((material, blockHolder) -> {
+            if (blockHolder instanceof Holder.EntityBlockHolder holder) {
+                switch (blockType) {
+                    case SHAFT, WATER_WHEEL -> event.registerBlockEntityRenderer(holder.entityType.get(), KineticRenderer::new);
+                }
+            }
+        }));
     }
 }

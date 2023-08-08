@@ -9,8 +9,6 @@ import com.yanny.ytech.machine.MachineType;
 import com.yanny.ytech.machine.TierType;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
-import com.yanny.ytech.network.kinetic.block.KineticBlockFactory;
-import com.yanny.ytech.network.kinetic.common.KineticBlockType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -91,7 +89,7 @@ public class Registration {
                 }
 
                 HOLDER.blocks().computeIfAbsent(blockObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, blockObject,
-                        (object) -> new Holder.BlockHolder(object, material, Registration::registerBlockItem)));
+                        (blockType) -> registerBlock(blockType, material)));
             }
         }
         for (MaterialFluidType fluidObject : MaterialFluidType.values()) {
@@ -111,16 +109,6 @@ public class Registration {
                     .filter((tier) -> tier.ordinal() >= machine.fromTier.ordinal())
                     .map((tier) -> new Tuple<>(tier, registerMachine(machine, tier)))
                     .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
-        }
-
-        for (KineticBlockType kinetic : KineticBlockType.values()) {
-            HashMap<MaterialType, KineticNetworkHolder> holderMap = new HashMap<>();
-
-            HOLDER.kineticNetwork().put(kinetic, holderMap);
-
-            for (KineticBlockType.KineticMaterial kineticMaterial : kinetic.materials) {
-                holderMap.put(kineticMaterial.material(), registerKineticBlock(kinetic, kineticMaterial));
-            }
         }
 
         for (SimpleItemType type : SimpleItemType.values()) {
@@ -152,7 +140,6 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
-            GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
             HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
         }
@@ -168,10 +155,22 @@ public class Registration {
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
     }
 
+    private static Holder.BlockHolder registerBlock(MaterialBlockType blockType, MaterialType material) {
+        return switch (blockType.type) {
+            case BLOCK -> new Holder.BlockHolder(blockType, material, Registration::registerBlockItem);
+            case ENTITY_BLOCK -> new Holder.EntityBlockHolder(blockType, material, Registration::registerBlockItem, Registration::registerBlockEntity);
+        };
+    }
+
     private static RegistryObject<Block> registerBlockItem(Holder.BlockHolder holder) {
         RegistryObject<Block> block = BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
         ITEMS.register(holder.key, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
+    }
+
+    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder, RegistryObject<Block> block) {
+        return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
+                Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null));
     }
 
     private static MachineHolder registerMachine(MachineType machine, TierType tier) {
@@ -187,20 +186,6 @@ public class Registration {
                 BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
                         Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null)),
                 MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))))
-        );
-    }
-
-    private static KineticNetworkHolder registerKineticBlock(KineticBlockType blockType, KineticBlockType.KineticMaterial kineticMaterial) {
-        String key = kineticMaterial.material().key + "_" + blockType.key;
-        RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
-
-        return new KineticNetworkHolder(
-                blockType,
-                kineticMaterial.material(),
-                BLOCKS.register(key, () -> KineticBlockFactory.create(blockType, kineticMaterial)),
-                ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
-                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
-                        Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null))
         );
     }
 
@@ -246,7 +231,7 @@ public class Registration {
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }
 
-    private static <U extends INameable & IModel<?, ?>, V extends Holder.MaterialHolder<U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
+    private static <U extends INameable & IMaterialModel<?, ?>, V extends Holder.MaterialHolder<U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
         if (v == null) {
             return consumer.apply(object);
         } else {

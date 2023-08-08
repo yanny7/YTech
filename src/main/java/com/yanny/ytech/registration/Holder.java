@@ -3,11 +3,14 @@ package com.yanny.ytech.registration;
 import com.yanny.ytech.configuration.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Holder {
@@ -41,7 +44,7 @@ public class Holder {
         }
     }
 
-    public static class MaterialHolder<U extends INameable & IModel<?, ?>> extends Holder {
+    public static class MaterialHolder<U extends INameable & IMaterialModel<?, ?>> extends Holder {
         @NotNull public final U object;
         @NotNull public final MaterialType material;
 
@@ -70,6 +73,17 @@ public class Holder {
         public BlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder, @NotNull Function<BlockHolder, RegistryObject<Block>> block) {
             super(product, materialHolder);
             this.block = block.apply(this);
+        }
+    }
+
+    public static class EntityBlockHolder extends BlockHolder {
+        public final RegistryObject<BlockEntityType<? extends BlockEntity>> entityType;
+
+
+        public EntityBlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder, @NotNull Function<BlockHolder, RegistryObject<Block>> blockSupplier,
+                                 BiFunction<EntityBlockHolder, RegistryObject<Block>, RegistryObject<BlockEntityType<? extends BlockEntity>>> entityType) {
+            super(product, materialHolder, blockSupplier);
+            this.entityType = entityType.apply(this, block);
         }
     }
 

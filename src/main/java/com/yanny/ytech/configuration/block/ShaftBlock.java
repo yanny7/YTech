@@ -1,11 +1,17 @@
-package com.yanny.ytech.network.kinetic.block;
+package com.yanny.ytech.configuration.block;
 
+import com.yanny.ytech.configuration.IModel;
+import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.network.kinetic.block.KineticBlock;
 import com.yanny.ytech.network.kinetic.block_entity.ShaftBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticBlockType;
+import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -19,14 +25,25 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 public class ShaftBlock extends KineticBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 6/16.0, 6/16.0, 1, 10/16.0, 10/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(6/16.0, 6/16.0, 0, 10/16.0, 10/16.0, 1);
 
-    public ShaftBlock(KineticBlockType.KineticMaterial material) {
-        super(Properties.copy(Blocks.STONE), material);
+    @NotNull private final MaterialType material;
+    private final float stressMultiplier;
+
+    public ShaftBlock(@NotNull MaterialType material, float stressMultiplier) {
+        super(Properties.copy(Blocks.STONE));
+        this.material = material;
+        this.stressMultiplier = stressMultiplier;
     }
 
     @NotNull
@@ -54,9 +71,14 @@ public class ShaftBlock extends KineticBlock {
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        MaterialType blockMaterial = material.material();
-        BlockEntityType<? extends BlockEntity> blockEntityType = Registration.HOLDER.kineticNetwork().get(KineticBlockType.SHAFT).get(blockMaterial).entityType.get();
-        return new ShaftBlockEntity(blockEntityType, pos, blockState, material.stressMultiplier());
+        Holder.BlockHolder blockHolder = Registration.HOLDER.blocks().get(MaterialBlockType.SHAFT).get(material);
+
+        if (blockHolder instanceof Holder.EntityBlockHolder holder) {
+            BlockEntityType<? extends BlockEntity> blockEntityType = holder.entityType.get();
+            return new ShaftBlockEntity(blockEntityType, pos, blockState, stressMultiplier);
+        } else {
+            throw new IllegalStateException("Invalid holder type!");
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -66,5 +88,25 @@ public class ShaftBlock extends KineticBlock {
         Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         return (direction == Direction.EAST || direction == Direction.WEST) ? SHAPE_NORTH_SOUTH : SHAPE_EAST_WEST;
+    }
+
+    public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures(holder.material);
+        ModelFile modelFile = provider.models().getBuilder(holder.key)
+                .parent(provider.models().getExistingFile(IModel.mcBlockLoc("block")))
+                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all")
+                        .cullface(direction)).from(0, 6, 6).to(16, 10, 10).end()
+                .texture("particle", textures[0])
+                .texture("all", textures[0]);
+        provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(modelFile).build());
+        provider.itemModels().getBuilder(holder.key).parent(modelFile);
+    }
+
+    public static void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        //TODO
+    }
+
+    public static TextureHolder[] getTexture(MaterialType material) {
+        return List.of(new TextureHolder(-1, IModel.mcBlockLoc("stripped_" + material.key + "_log"))).toArray(TextureHolder[]::new);
     }
 }
