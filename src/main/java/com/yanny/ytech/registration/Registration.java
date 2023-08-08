@@ -79,7 +79,7 @@ public class Registration {
                 }
 
                 HOLDER.items().computeIfAbsent(itemObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, itemObject,
-                        (object) -> new Holder.ItemHolder(object, material, (holder) -> ITEMS.register(holder.key, holder.object.itemGetter))));
+                        (object) -> new Holder.ItemHolder(object, material, (holder) -> ITEMS.register(holder.key, () -> holder.object.getItem(holder)))));
             }
         }
         for (MaterialBlockType blockObject : MaterialBlockType.values()) {
@@ -169,7 +169,7 @@ public class Registration {
     }
 
     private static RegistryObject<Block> registerBlockItem(Holder.BlockHolder holder) {
-        RegistryObject<Block> block = BLOCKS.register(holder.key, holder.object.blockGetter);
+        RegistryObject<Block> block = BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
         ITEMS.register(holder.key, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
     }

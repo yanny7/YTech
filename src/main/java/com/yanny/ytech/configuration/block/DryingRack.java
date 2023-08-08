@@ -1,12 +1,17 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.IModel;
-import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -18,9 +23,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+
+import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public class DryingRack extends Block {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
@@ -82,6 +92,20 @@ public class DryingRack extends Block {
                 .texture("stick", textures[1]);
         provider.horizontalBlock(holder.block.get(), model);
         provider.itemModels().getBuilder(holder.key).parent(model);
+    }
+
+    public static void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+                    .define('W', Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(holder.material.key + "_log"))))
+                    .define('S', Items.STICK)
+                    .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
+                    .define('F', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
+                    .pattern("TST")
+                    .pattern("WFW")
+                    .pattern("W W")
+                    .group(MaterialBlockType.DRYING_RACK.id + "_" + holder.material.group)
+                    .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
+                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {

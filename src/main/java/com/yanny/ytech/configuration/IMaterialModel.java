@@ -9,5 +9,5 @@ import java.util.Set;
 
 public interface IMaterialModel<T extends Holder, U extends DataProvider> extends IModel<T, U> {
     @NotNull Set<Integer> getTintIndices();
-    @NotNull ResourceLocation[] getTextures(MaterialType material);
+    @NotNull ResourceLocation[] getTextures(@NotNull MaterialType material);
 }

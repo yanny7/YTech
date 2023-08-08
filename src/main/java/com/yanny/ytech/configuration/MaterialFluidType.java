@@ -71,7 +71,7 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
 
     @NotNull
     @Override
-    public ResourceLocation[] getTextures(MaterialType material) {
+    public ResourceLocation[] getTextures(@NotNull MaterialType material) {
         return textures.get(material);
     }
 
