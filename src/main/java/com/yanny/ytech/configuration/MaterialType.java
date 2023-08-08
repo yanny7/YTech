@@ -9,6 +9,7 @@ public enum MaterialType {
     MERCURY("mercury", "Mercury", hex2rgb("#DBCECA")),
     TIN("tin", "Tin", hex2rgb("#808080")),
 
+    ACACIA_WOOD("acacia_wood", "Acacia", -1, "wooden"),
     OAK_WOOD("oak_wood", "Oak", -1, "wooden"),
     FLINT("flint", "Flint", hex2rgb("#666666")),
     ;
@@ -39,7 +40,7 @@ public enum MaterialType {
         this.group = group;
     }
 
-    private static int hex2rgb(String colorStr) {
+    private static int hex2rgb(@NotNull String colorStr) {
         return Integer.valueOf( colorStr.substring( 1, 3 ), 16 ) << 16 |
                 Integer.valueOf( colorStr.substring( 3, 5 ), 16 ) << 8 |
                 Integer.valueOf( colorStr.substring( 5, 7 ), 16 );

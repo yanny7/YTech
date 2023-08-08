@@ -11,8 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class SharpFlintItem extends SwordItem {
-    public SharpFlintItem() {
+public class SharpFlint extends SwordItem {
+    public SharpFlint() {
         super(Tiers.WOOD, 0, 0, new Item.Properties());
     }
 
@@ -23,12 +23,12 @@ public class SharpFlintItem extends SwordItem {
     }
 
     @Override
-    public boolean hasCraftingRemainingItem(ItemStack stack) {
+    public boolean hasCraftingRemainingItem(@NotNull ItemStack stack) {
         return stack.getMaxDamage() - stack.getDamageValue() > 1;
     }
 
     @Override
-    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
+    public ItemStack getCraftingRemainingItem(@NotNull ItemStack itemStack) {
         ItemStack result = itemStack.copy();
         result.setDamageValue(itemStack.getDamageValue() + 1);
         return result;

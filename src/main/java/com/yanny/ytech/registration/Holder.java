@@ -41,7 +41,7 @@ public class Holder {
         }
     }
 
-    public static class MaterialHolder<U extends MaterialEnumHolder> extends Holder {
+    public static class MaterialHolder<U extends INameable & IModel<?, ?>> extends Holder {
         @NotNull public final U object;
         @NotNull public final MaterialType material;
 

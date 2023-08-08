@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-public enum SimpleBlockType {
+public enum SimpleBlockType implements IModel<Holder.SimpleBlockHolder, BlockStateProvider>, ILootable<Holder.SimpleBlockHolder, BlockLootSubProvider> {
     ;
 
     @NotNull public final String key;
@@ -28,11 +28,17 @@ public enum SimpleBlockType {
         this.lootGetter = lootGetter;
     }
 
-    public void registerModel(Holder.SimpleBlockHolder holder, BlockStateProvider provider) {
+    @Override
+    public void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
         modelGetter.accept(holder, provider);
     }
 
-    public void registerLoot(Holder.SimpleBlockHolder holder, BlockLootSubProvider provider) {
+    @Override
+    public void registerLoot(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockLootSubProvider provider) {
         lootGetter.accept(holder, provider);
+    }
+
+    private static void dropsSelfProvider(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockLootSubProvider provider) {
+        provider.dropSelf(holder.block.get());
     }
 }

@@ -246,7 +246,7 @@ public class Registration {
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }
 
-    private static <U extends MaterialEnumHolder, V extends Holder.MaterialHolder<U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
+    private static <U extends INameable & IModel<?, ?>, V extends Holder.MaterialHolder<U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
         if (v == null) {
             return consumer.apply(object);
         } else {
@@ -254,7 +254,7 @@ public class Registration {
         }
     }
 
-    private static <U extends MaterialEnumHolder> int getTintColor(Holder.MaterialHolder<U> h, int t) {
+    private static <U extends INameable & IMaterialModel<?, ?>> int getTintColor(Holder.MaterialHolder<U> h, int t) {
         if (h.object.getTintIndices().contains(t)) {
             return h.material.color;
         } else {
