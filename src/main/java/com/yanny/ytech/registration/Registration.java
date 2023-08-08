@@ -5,6 +5,8 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
+import com.yanny.ytech.machine.MachineType;
+import com.yanny.ytech.machine.TierType;
 import com.yanny.ytech.machine.block.BlockFactory;
 import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import com.yanny.ytech.network.kinetic.block.KineticBlockFactory;
@@ -19,7 +21,6 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -49,13 +50,13 @@ import java.util.stream.Collectors;
 public class Registration {
     public static final RegistrationHolder HOLDER = new RegistrationHolder();
 
-    public static final Map<ConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_ORE_TAGS = new HashMap<>();
-    public static final Map<ConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_STORAGE_BLOCK_TAGS = new HashMap<>();
-    public static final Map<ConfigLoader.Material, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_RAW_STORAGE_BLOCK_TAGS = new HashMap<>();
-    public static final Map<ConfigLoader.Material, TagKey<Item>> FORGE_RAW_MATERIAL_TAGS = new HashMap<>();
-    public static final Map<ConfigLoader.Material, TagKey<Item>> FORGE_INGOT_TAGS = new HashMap<>();
-    public static final Map<ConfigLoader.Material, TagKey<Item>> FORGE_DUST_TAGS = new HashMap<>();
-    public static final Map<ConfigLoader.Material, TagKey<Fluid>> FORGE_FLUID_TAGS = new HashMap<>();
+    public static final Map<MaterialType, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_ORE_TAGS = new HashMap<>();
+    public static final Map<MaterialType, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_STORAGE_BLOCK_TAGS = new HashMap<>();
+    public static final Map<MaterialType, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_RAW_STORAGE_BLOCK_TAGS = new HashMap<>();
+    public static final Map<MaterialType, TagKey<Item>> FORGE_RAW_MATERIAL_TAGS = new HashMap<>();
+    public static final Map<MaterialType, TagKey<Item>> FORGE_INGOT_TAGS = new HashMap<>();
+    public static final Map<MaterialType, TagKey<Item>> FORGE_DUST_TAGS = new HashMap<>();
+    public static final Map<MaterialType, TagKey<Fluid>> FORGE_FLUID_TAGS = new HashMap<>();
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
@@ -69,81 +70,66 @@ public class Registration {
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
     static {
-        for (ConfigLoader.ItemObject itemObject : ConfigLoader.getItemObjects()) {
-            for (ConfigLoader.MaterialHolder materialHolder : itemObject.materials) {
-                ConfigLoader.Material material = materialHolder.material;
-
-                switch (itemObject.id) {
-                    case INGOT -> FORGE_INGOT_TAGS.put(material, registerItemTag("forge", "ingots", material.id()));
-                    case DUST -> FORGE_DUST_TAGS.put(material, registerItemTag("forge", "dusts", material.id()));
-                    case RAW_MATERIAL -> FORGE_RAW_MATERIAL_TAGS.put(material, registerItemTag("forge", "raw_materials", material.id()));
+        for (MaterialItemType itemObject : MaterialItemType.values()) {
+            for (MaterialType material : itemObject.materials) {
+                switch (itemObject) {
+                    case INGOT -> FORGE_INGOT_TAGS.put(material, registerItemTag("forge", "ingots", material.key));
+                    case DUST -> FORGE_DUST_TAGS.put(material, registerItemTag("forge", "dusts", material.key));
+                    case RAW_MATERIAL -> FORGE_RAW_MATERIAL_TAGS.put(material, registerItemTag("forge", "raw_materials", material.key));
                 }
 
-                HOLDER.items().computeIfAbsent(itemObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, itemObject,
-                        (object) -> new Holder.ItemHolder(object, materialHolder, ITEMS.register(object.name.getKey(material), () -> new Item(new Item.Properties())))));
+                HOLDER.items().computeIfAbsent(itemObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, itemObject,
+                        (object) -> new Holder.ItemHolder(object, material, (holder) -> ITEMS.register(holder.key, holder.object.itemGetter))));
             }
         }
-        for (ConfigLoader.BlockObject blockObject : ConfigLoader.getBlockObjects()) {
-            for (ConfigLoader.MaterialHolder materialHolder : blockObject.materials) {
-                ConfigLoader.Material material = materialHolder.material;
-
-                switch (blockObject.id) {
-                    case STORAGE_BLOCK -> FORGE_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", material.id()));
-                    case RAW_STORAGE_BLOCK -> FORGE_RAW_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", "raw_" + material.id()));
-                    case STONE_ORE, NETHERRACK_ORE, DEEPSLATE_ORE -> FORGE_ORE_TAGS.computeIfAbsent(material, (m) -> registerBlockItemTag("forge", "ores", m.id()));
+        for (MaterialBlockType blockObject : MaterialBlockType.values()) {
+            for (MaterialType material : blockObject.materials) {
+                switch (blockObject) {
+                    case STORAGE_BLOCK -> FORGE_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", material.key));
+                    case RAW_STORAGE_BLOCK -> FORGE_RAW_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", "raw_" + material.key));
+                    case STONE_ORE, NETHERRACK_ORE, DEEPSLATE_ORE -> FORGE_ORE_TAGS.computeIfAbsent(material, (m) -> registerBlockItemTag("forge", "ores", m.key));
                 }
 
-                HOLDER.blocks().computeIfAbsent(blockObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, blockObject,
-                        (object) -> new Holder.BlockHolder(object, materialHolder, registerBlockItem(material, object.name.getKey(material)))));
+                HOLDER.blocks().computeIfAbsent(blockObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, blockObject,
+                        (object) -> new Holder.BlockHolder(object, material, Registration::registerBlockItem)));
             }
         }
-        for (ConfigLoader.FluidObject fluidObject : ConfigLoader.getFluidObjects()) {
-            for (ConfigLoader.MaterialHolder materialHolder : fluidObject.materials) {
-                ConfigLoader.Material material = materialHolder.material;
+        for (MaterialFluidType fluidObject : MaterialFluidType.values()) {
+            for (MaterialType material : fluidObject.materials) {
 
-                if (Objects.requireNonNull(fluidObject.id) == FluidObjectType.FLUID) {
-                    FORGE_FLUID_TAGS.put(material, registerFluidTag("forge", material.id()));
+                if (fluidObject == MaterialFluidType.FLUID) {
+                    FORGE_FLUID_TAGS.put(material, registerFluidTag("forge", material.key));
                 }
 
-                HOLDER.fluids().computeIfAbsent(fluidObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, fluidObject,
-                        (object) -> registerFluid(object, materialHolder)));
-            }
-        }
-        for (ConfigLoader.ToolObject toolObject : ConfigLoader.getToolObjects()) {
-            for (ConfigLoader.MaterialHolder materialHolder : toolObject.materials) {
-                ConfigLoader.Material material = materialHolder.material;
-                HOLDER.tools().computeIfAbsent(toolObject.id, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, toolObject,
-                        (object) -> registerTool(object, materialHolder)));
+                HOLDER.fluids().computeIfAbsent(fluidObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, fluidObject,
+                        (object) -> registerFluid(object, material)));
             }
         }
 
-        for (ConfigLoader.Machine machine : ConfigLoader.getMachines()) {
-            HOLDER.machine().put(machine, Arrays.stream(ConfigLoader.getTiers())
-                    .filter((tier) -> ConfigLoader.getTierIndex(tier) >= ConfigLoader.getTierIndex(ConfigLoader.getTier(machine.fromTier())))
+        for (MachineType machine : MachineType.values()) {
+            HOLDER.machine().put(machine, Arrays.stream(TierType.values())
+                    .filter((tier) -> tier.ordinal() >= machine.fromTier.ordinal())
                     .map((tier) -> new Tuple<>(tier, registerMachine(machine, tier)))
                     .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
         }
 
-        for (ConfigLoader.Kinetic kinetic : ConfigLoader.getKinetic()) {
-            HashMap<ConfigLoader.Material, KineticNetworkHolder> holderMap = new HashMap<>();
+        for (KineticBlockType kinetic : KineticBlockType.values()) {
+            HashMap<MaterialType, KineticNetworkHolder> holderMap = new HashMap<>();
 
-            HOLDER.kineticNetwork().put(kinetic.id(), holderMap);
+            HOLDER.kineticNetwork().put(kinetic, holderMap);
 
-            for (ConfigLoader.KineticMaterial kineticMaterial : kinetic.materials()) {
-                holderMap.put(Objects.requireNonNull(ConfigLoader.getMaterial(kineticMaterial.id())), registerKineticBlock(kinetic.id(), kineticMaterial));
+            for (KineticBlockType.KineticMaterial kineticMaterial : kinetic.materials) {
+                holderMap.put(kineticMaterial.material(), registerKineticBlock(kinetic, kineticMaterial));
             }
         }
 
         for (SimpleItemType type : SimpleItemType.values()) {
-            HOLDER.simpleItems().put(type, new Holder.SimpleItemHolder(type, ITEMS.register(type.key, () -> new Item(new Item.Properties()))));
+            HOLDER.simpleItems().put(type, new Holder.SimpleItemHolder(type, ITEMS.register(type.key, type.itemGetter)));
         }
         for (SimpleBlockType type : SimpleBlockType.values()) {
             RegistryObject<Block> block = BLOCKS.register(type.key, type.blockSupplier);
             ITEMS.register(type.key, () -> new BlockItem(block.get(), new Item.Properties()));
             HOLDER.simpleBlocks().put(type, new Holder.SimpleBlockHolder(type, block));
-        }
-        for (SimpleToolType type : SimpleToolType.values()) {
-            HOLDER.simpleTools().put(type, new Holder.SimpleToolHolder(type, ITEMS.register(type.key, type.toolSupplier)));
         }
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
@@ -165,12 +151,10 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> event.accept(holder.item));
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
-            GeneralUtils.mapToStream(HOLDER.tools()).forEach((holder) -> event.accept(holder.tool));
             GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(h -> event.accept(h.block.get()));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
             HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
-            HOLDER.simpleTools().values().forEach(h -> event.accept(h.tool.get()));
         }
     }
 
@@ -182,19 +166,16 @@ public class Registration {
         GeneralUtils.mapToStream(HOLDER.items()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
-        GeneralUtils.mapToStream(HOLDER.tools()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.tool.get()));
     }
 
-    private static RegistryObject<Block> registerBlockItem(ConfigLoader.Material material, String name) {
-        Float hardness = material.hardness();
-        assert hardness != null;
-        RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(hardness)));
-        ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    private static RegistryObject<Block> registerBlockItem(Holder.BlockHolder holder) {
+        RegistryObject<Block> block = BLOCKS.register(holder.key, holder.object.blockGetter);
+        ITEMS.register(holder.key, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
     }
 
-    private static MachineHolder registerMachine(ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
-        String key = tier.id().id + "_" + machine.id().id;
+    private static MachineHolder registerMachine(MachineType machine, TierType tier) {
+        String key = tier.key + "_" + machine.key;
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
         RegistryObject<BlockEntityType<? extends BlockEntity>> machineBlockEntity = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCK_ENTITY_TYPES);
 
@@ -209,13 +190,13 @@ public class Registration {
         );
     }
 
-    private static KineticNetworkHolder registerKineticBlock(KineticBlockType blockType, ConfigLoader.KineticMaterial kineticMaterial) {
-        String key = kineticMaterial.id() + "_" + blockType.id;
+    private static KineticNetworkHolder registerKineticBlock(KineticBlockType blockType, KineticBlockType.KineticMaterial kineticMaterial) {
+        String key = kineticMaterial.material().key + "_" + blockType.key;
         RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
 
         return new KineticNetworkHolder(
                 blockType,
-                ConfigLoader.getMaterial(kineticMaterial.id()),
+                kineticMaterial.material(),
                 BLOCKS.register(key, () -> KineticBlockFactory.create(blockType, kineticMaterial)),
                 ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
                 BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
@@ -223,9 +204,8 @@ public class Registration {
         );
     }
 
-    private static Holder.FluidHolder registerFluid(ConfigLoader.FluidObject fluidObject, ConfigLoader.MaterialHolder materialHolder) {
-        ConfigLoader.Material material = materialHolder.material;
-        String name = material.id();
+    private static Holder.FluidHolder registerFluid(MaterialFluidType fluidObject, MaterialType material) {
+        String name = material.key;
         String flowingName = "flowing_" + name;
         String bucketName = name + "_bucket";
         String blockName = name + "_fluid";
@@ -239,28 +219,13 @@ public class Registration {
 
         return new Holder.FluidHolder(
                 fluidObject,
-                materialHolder,
+                material,
                 BLOCKS.register(blockName, () -> new LiquidBlock(() -> (FlowingFluid)flowingFluid.get(), BlockBehaviour.Properties.of())),
                 FLUID_TYPES.register(name, () -> fluidType),
                 FLUIDS.register(name, () -> new ForgeFlowingFluid.Source(properties)),
                 FLUIDS.register(flowingName, () -> new ForgeFlowingFluid.Flowing(properties)),
                 ITEMS.register(bucketName, () -> new BucketItem(sourceFluid, new Item.Properties()))
         );
-    }
-
-    private static Holder.ToolHolder registerTool(ConfigLoader.ToolObject toolObject, ConfigLoader.MaterialHolder materialHolder) {
-        return switch (toolObject.id) {
-            case AXE -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
-                    () -> new AxeItem(Tiers.WOOD, 6.0f, -3.2f, new Item.Properties())));
-            case PICKAXE -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
-                    () -> new PickaxeItem(Tiers.WOOD, 1, -2.8f, new Item.Properties())));
-            case SHOVEL -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
-                    () -> new ShovelItem(Tiers.WOOD, 1.5f, -3.0f, new Item.Properties())));
-            case HOE -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
-                    () -> new HoeItem(Tiers.WOOD, 0, -3.0f, new Item.Properties())));
-            case SWORD -> new Holder.ToolHolder(toolObject, materialHolder, ITEMS.register(toolObject.name.getKey(materialHolder.material),
-                    () -> new SwordItem(Tiers.WOOD, 3, -2.4f, new Item.Properties())));
-        };
     }
 
     private static BlockItemHolder<TagKey<Block>, TagKey<Item>> registerBlockItemTag(String modId, String group, String name) {
@@ -277,11 +242,11 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.getFromMap(HOLDER.items(), ItemObjectType.INGOT, ConfigLoader.getMaterial("gold")).item.get());
+        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.getFromMap(HOLDER.items(), MaterialItemType.INGOT, MaterialType.GOLD).item.get());
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }
 
-    private static <T, U extends ConfigLoader.BaseObject<T>, V extends Holder.MaterialHolder<T, U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
+    private static <U extends MaterialEnumHolder, V extends Holder.MaterialHolder<U>> V uniqueKey(V v, U object, Function<U, V> consumer) {
         if (v == null) {
             return consumer.apply(object);
         } else {
@@ -289,11 +254,9 @@ public class Registration {
         }
     }
 
-    private static <T, U extends ConfigLoader.BaseObject<T>> int getTintColor(Holder.MaterialHolder<T, U> h, int t) {
-        ConfigLoader.Model model = Objects.requireNonNull(h.materialHolder.model, "Model must be non null");
-
-        if ((model.base().tint() != null && model.base().tint() == t) || (model.overlay() != null && model.overlay().tint() != null && model.overlay().tint() == t)) {
-            return h.materialHolder.material.getColor();
+    private static <U extends MaterialEnumHolder> int getTintColor(Holder.MaterialHolder<U> h, int t) {
+        if (h.object.getTintIndices().contains(t)) {
+            return h.material.color;
         } else {
             return 0xFFFFFFFF;
         }

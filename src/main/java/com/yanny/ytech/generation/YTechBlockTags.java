@@ -2,8 +2,8 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.BlockObjectType;
-import com.yanny.ytech.configuration.ConfigLoader;
+import com.yanny.ytech.configuration.MaterialBlockType;
+import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
@@ -21,10 +21,6 @@ import java.util.concurrent.CompletableFuture;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechBlockTags extends BlockTagsProvider {
-    private final ConfigLoader.Material iron = ConfigLoader.getMaterial("iron");
-    private final ConfigLoader.Material copper = ConfigLoader.getMaterial("copper");
-    private final ConfigLoader.Material gold = ConfigLoader.getMaterial("gold");
-
     public YTechBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, YTechMod.MOD_ID, existingFileHelper);
     }
@@ -33,18 +29,18 @@ class YTechBlockTags extends BlockTagsProvider {
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         GeneralUtils.sortedStreamMap(HOLDER.blocks(), Utils.blockComparator()).forEach((entry) -> {
             Holder.BlockHolder holder = entry.getValue();
-            ConfigLoader.Material material = holder.materialHolder.material;
+            MaterialType material = holder.material;
 
-            switch (holder.object.id) {
+            switch (holder.object) {
                 case STORAGE_BLOCK -> {
                     TagKey<Block> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).block();
                     Block block = holder.block.get();
 
-                    if (material.equals(iron)) {
+                    if (material.equals(MaterialType.IRON)) {
                         tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                    } else if (material.equals(copper)) {
+                    } else if (material.equals(MaterialType.COPPER)) {
                         tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                    } else if (material.equals(gold)) {
+                    } else if (material.equals(MaterialType.GOLD)) {
                         tag(BlockTags.NEEDS_IRON_TOOL).add(block);
                     } else {
                         tag(BlockTags.NEEDS_IRON_TOOL).add(block);
@@ -58,11 +54,11 @@ class YTechBlockTags extends BlockTagsProvider {
                     TagKey<Block> storageBlockTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).block();
                     Block block = holder.block.get();
 
-                    if (material.equals(iron)) {
+                    if (material.equals(MaterialType.IRON)) {
                         tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                    } else if (material.equals(copper)) {
+                    } else if (material.equals(MaterialType.COPPER)) {
                         tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                    } else if (material.equals(gold)) {
+                    } else if (material.equals(MaterialType.GOLD)) {
                         tag(BlockTags.NEEDS_IRON_TOOL).add(block);
                     } else {
                         tag(BlockTags.NEEDS_IRON_TOOL).add(block);
@@ -76,24 +72,24 @@ class YTechBlockTags extends BlockTagsProvider {
                     Block block = holder.block.get();
                     TagKey<Block> oreTag = Registration.FORGE_ORE_TAGS.get(material).block();
 
-                    if (material.equals(iron)) {
+                    if (material.equals(MaterialType.IRON)) {
                         tag(BlockTags.IRON_ORES).add(block);
                         tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                    } else if (material.equals(copper)) {
+                    } else if (material.equals(MaterialType.COPPER)) {
                         tag(BlockTags.COPPER_ORES).add(block);
                         tag(BlockTags.NEEDS_STONE_TOOL).add(block);
-                    } else if (material.equals(gold)) {
+                    } else if (material.equals(MaterialType.GOLD)) {
                         tag(BlockTags.GOLD_ORES).add(block);
                         tag(BlockTags.NEEDS_IRON_TOOL).add(block);
                     } else {
                         tag(BlockTags.NEEDS_IRON_TOOL).add(block);
                     }
 
-                    if (holder.object.id == BlockObjectType.STONE_ORE) {
+                    if (holder.object == MaterialBlockType.STONE_ORE) {
                         tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(block);
-                    } else if (holder.object.id == BlockObjectType.DEEPSLATE_ORE) {
+                    } else if (holder.object == MaterialBlockType.DEEPSLATE_ORE) {
                         tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(block);
-                    } else if (holder.object.id == BlockObjectType.NETHERRACK_ORE) {
+                    } else {
                         tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(block);
                     }
 

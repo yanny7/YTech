@@ -1,6 +1,7 @@
 package com.yanny.ytech.machine.container;
 
-import com.yanny.ytech.configuration.ConfigLoader;
+import com.yanny.ytech.machine.MachineType;
+import com.yanny.ytech.machine.TierType;
 import com.yanny.ytech.machine.block_entity.MachineBlockEntity;
 import com.yanny.ytech.machine.handler.MachineItemStackHandler;
 import net.minecraft.core.BlockPos;
@@ -19,15 +20,15 @@ import org.jetbrains.annotations.NotNull;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public class MachineContainerMenu extends AbstractContainerMenu {
-    public final ConfigLoader.Machine machine;
-    protected final ConfigLoader.Tier tier;
+    public final MachineType machine;
+    protected final TierType tier;
     protected final Block block;
     protected final BlockPos pos;
     @NotNull protected final ItemStackHandler itemStackHandler;
     @NotNull protected final MachineBlockEntity blockEntity;
     private final int inputSlots;
 
-    public MachineContainerMenu(int windowId, Player player, BlockPos pos, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
+    public MachineContainerMenu(int windowId, Player player, BlockPos pos, MachineType machine, TierType tier) {
         super(HOLDER.machine().get(machine).get(tier).menuType.get(), windowId);
         block = HOLDER.machine().get(machine).get(tier).block.get();
         this.machine = machine;

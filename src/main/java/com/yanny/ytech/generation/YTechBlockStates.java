@@ -2,8 +2,6 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.ConfigLoader;
-import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.KineticNetworkHolder;
 import com.yanny.ytech.registration.MachineHolder;
 import net.minecraft.core.Direction;
@@ -11,9 +9,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.Objects;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
@@ -27,45 +22,14 @@ class YTechBlockStates extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        GeneralUtils.mapToStream(HOLDER.blocks()).forEach(this::registerBlock);
+        GeneralUtils.mapToStream(HOLDER.blocks()).forEach((m) -> m.object.registerModel(m, this));
         GeneralUtils.mapToStream(HOLDER.kineticNetwork()).forEach(this::registerKinetic);
         GeneralUtils.mapToStream(HOLDER.machine()).forEach(this::registerMachine);
-        HOLDER.simpleBlocks().values().forEach((h) -> h.object.modelConsumer.accept(this, h));
-    }
-
-    private void registerBlock(Holder.BlockHolder holder) {
-        ConfigLoader.Model textureModel = Objects.requireNonNull(holder.materialHolder.model, "Base model texture required");
-        ConfigLoader.Element base = textureModel.base();
-        ConfigLoader.Element overlay = textureModel.overlay();
-        BlockModelBuilder model = models().cubeAll(holder.key, base.texture());
-
-        model.element().allFaces((direction, faceBuilder) -> {
-            faceBuilder.texture("#all").cullface(direction);
-
-            if (base.tint() != null) {
-                faceBuilder.tintindex(base.tint());
-            }
-        });
-
-        if (overlay != null) {
-            model.renderType(mcLoc("cutout"));
-            model.texture("overlay", overlay.texture());
-            model.element().allFaces((direction, faceBuilder) -> {
-                faceBuilder.texture("#overlay").cullface(direction);
-
-                if (overlay.tint() != null) {
-                    faceBuilder.tintindex(overlay.tint());
-                }
-            });
-        }
-
-        getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-        // create item model from block
-        itemModels().getBuilder(holder.key).parent(model);
+        HOLDER.simpleBlocks().values().forEach((h) -> h.object.registerModel(h, this));
     }
 
     private void registerMachine(MachineHolder holder) {
-        ResourceLocation casing = Utils.getBlockTexture("casing/" + holder.tier.id().id);
+        ResourceLocation casing = Utils.getBlockTexture("casing/" + holder.tier.key);
         ResourceLocation face = Utils.getBlockTexture("machine/" + holder.key);
         ResourceLocation facePowered = Utils.getBlockTexture("machine/" + holder.key + "_powered");
         BlockModelBuilder model = models().orientableWithBottom(holder.key, casing, face, casing, casing);
@@ -103,8 +67,8 @@ class YTechBlockStates extends BlockStateProvider {
 
     private void registerKinetic(KineticNetworkHolder holder) {
         switch (holder.blockType) {
-            case SHAFT -> registerShaft(holder, Utils.getBaseBlockTexture(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(holder.material.block()))))));
-            case WATER_WHEEL -> registerWaterWheel(holder, Utils.getBaseBlockTexture(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Objects.requireNonNull(holder.material.block()))))));
+            case SHAFT -> registerShaft(holder, mcLoc("block/stripped_oak_log"));
+            case WATER_WHEEL -> registerWaterWheel(holder, mcLoc("block/stripped_oak_log"));
         }
     }
 

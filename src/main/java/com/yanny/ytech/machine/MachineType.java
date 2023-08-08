@@ -1,15 +1,19 @@
 package com.yanny.ytech.machine;
 
-import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
 
 public enum MachineType {
-    @SerializedName("furnace") FURNACE,
-    @SerializedName("crusher") CRUSHER,
+    FURNACE("furnace", "Furnace", TierType.STONE),
+    CRUSHER("crusher", "Crusher", TierType.STONE),
     ;
 
-    public final String id;
+    @NotNull public final String key;
+    @NotNull public final String name;
+    @NotNull public final TierType fromTier;
 
-    MachineType() {
-        id = name().toLowerCase();
+    MachineType(@NotNull String key, @NotNull String name, @NotNull TierType fromTier) {
+        this.key = key;
+        this.name = name;
+        this.fromTier = fromTier;
     }
 }

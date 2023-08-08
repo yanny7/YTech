@@ -1,6 +1,7 @@
 package com.yanny.ytech.machine.block_entity;
 
-import com.yanny.ytech.configuration.ConfigLoader;
+import com.yanny.ytech.machine.MachineType;
+import com.yanny.ytech.machine.TierType;
 import com.yanny.ytech.machine.handler.MachineItemStackHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class FurnaceBlockEntity extends MachineBlockEntity {
-    public FurnaceBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
+    public FurnaceBlockEntity(BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState, MachineType machine, TierType tier) {
         super(blockEntityType, pos, blockState, machine, tier);
     }
 

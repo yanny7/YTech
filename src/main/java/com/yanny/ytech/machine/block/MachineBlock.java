@@ -1,6 +1,7 @@
 package com.yanny.ytech.machine.block;
 
-import com.yanny.ytech.configuration.ConfigLoader;
+import com.yanny.ytech.machine.MachineType;
+import com.yanny.ytech.machine.TierType;
 import com.yanny.ytech.machine.block_entity.BlockEntityFactory;
 import com.yanny.ytech.machine.block_entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -29,17 +30,16 @@ import java.util.function.Supplier;
 
 public abstract class MachineBlock extends BaseEntityBlock {
     protected final Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier;
-    protected final ConfigLoader.Machine machine;
-    protected final ConfigLoader.Tier tier;
+    protected final MachineType machine;
+    protected final TierType tier;
 
-    public MachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, ConfigLoader.Machine machine, ConfigLoader.Tier tier) {
+    public MachineBlock(Supplier<BlockEntityType<? extends BlockEntity>> entityTypeSupplier, MachineType machine, TierType tier) {
         super(BlockBehaviour.Properties.of());
         this.entityTypeSupplier = entityTypeSupplier;
         this.machine = machine;
         this.tier = tier;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     public RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;

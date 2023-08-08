@@ -1,17 +1,28 @@
 package com.yanny.ytech.network.kinetic.common;
 
-import com.google.gson.annotations.SerializedName;
+import com.yanny.ytech.configuration.MaterialType;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public enum KineticBlockType {
-    @SerializedName("shaft") SHAFT("Shaft"),
-    @SerializedName("water_wheel") WATER_WHEEL("Water Wheel")
+    SHAFT("shaft", "Shaft", List.of(new KineticMaterial(MaterialType.OAK_WOOD, 2f)).toArray(KineticMaterial[]::new)),
+    WATER_WHEEL("water_wheel", "Water Wheel", List.of(new KineticMaterial(MaterialType.OAK_WOOD, 0.2f)).toArray(KineticMaterial[]::new)),
     ;
 
-    public final String lang;
-    public final String id;
+    @NotNull public final String key;
+    @NotNull public final String name;
+    @NotNull public final KineticMaterial[] materials;
 
-    KineticBlockType(String lang) {
-        this.lang = lang;
-        id = name().toLowerCase();
+    KineticBlockType(@NotNull String key, @NotNull String name, @NotNull KineticMaterial[] materials) {
+
+        this.key = key;
+        this.name = name;
+        this.materials = materials;
     }
+
+    public record KineticMaterial(
+            @NotNull MaterialType material,
+            float stressMultiplier
+    ) {}
 }

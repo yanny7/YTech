@@ -2,7 +2,10 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.MaterialBlockType;
+import com.yanny.ytech.configuration.MaterialItemType;
+import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.PackOutput;
@@ -27,14 +30,14 @@ class YTechRecipes extends RecipeProvider {
 
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        HOLDER.blocks().get(BlockObjectType.RAW_STORAGE_BLOCK).forEach(((material, holder) -> {
-            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), ItemObjectType.RAW_MATERIAL, material).item;
+        HOLDER.blocks().get(MaterialBlockType.RAW_STORAGE_BLOCK).forEach(((material, holder) -> {
+            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), MaterialItemType.RAW_MATERIAL, material).item;
             TagKey<Item> unpackedTag = Registration.FORGE_RAW_MATERIAL_TAGS.get(material);
             TagKey<Item> packedTag = Registration.FORGE_RAW_STORAGE_BLOCK_TAGS.get(material).item();
             nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, holder.block, packedTag);
         }));
-        HOLDER.blocks().get(BlockObjectType.STORAGE_BLOCK).forEach(((material, holder) -> {
-            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), ItemObjectType.INGOT, material).item;
+        HOLDER.blocks().get(MaterialBlockType.STORAGE_BLOCK).forEach(((material, holder) -> {
+            RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), MaterialItemType.INGOT, material).item;
             TagKey<Item> unpackedTag = Registration.FORGE_INGOT_TAGS.get(material);
             TagKey<Item> packedTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).item();
             nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, holder.block, packedTag);
@@ -53,12 +56,12 @@ class YTechRecipes extends RecipeProvider {
         }
 
         {// flint_pickaxe
-            Holder.ToolHolder resultHolder = HOLDER.tools().get(ToolObjectType.PICKAXE).get(ConfigLoader.getMaterial("flint"));
-            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.tool.get())
+            Holder.ItemHolder resultHolder = HOLDER.items().get(MaterialItemType.PICKAXE).get(MaterialType.FLINT);
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
                     .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('#', HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())
+                    .define('#', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
                     .pattern("FTF")
                     .pattern("#S ")
                     .pattern(" S ")
@@ -67,12 +70,12 @@ class YTechRecipes extends RecipeProvider {
         }
 
         {// flint_axe
-            Holder.ToolHolder resultHolder = HOLDER.tools().get(ToolObjectType.AXE).get(ConfigLoader.getMaterial("flint"));
-            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.tool.get())
+            Holder.ItemHolder resultHolder = HOLDER.items().get(MaterialItemType.AXE).get(MaterialType.FLINT);
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
                     .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('#', HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())
+                    .define('#', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
                     .pattern("FT#")
                     .pattern("FS ")
                     .pattern(" S ")
@@ -81,12 +84,12 @@ class YTechRecipes extends RecipeProvider {
         }
 
         {// flint_shovel
-            Holder.ToolHolder resultHolder = HOLDER.tools().get(ToolObjectType.SHOVEL).get(ConfigLoader.getMaterial("flint"));
-            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.tool.get())
+            Holder.ItemHolder resultHolder = HOLDER.items().get(MaterialItemType.SHOVEL).get(MaterialType.FLINT);
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
                     .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('#', HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())
+                    .define('#', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
                     .pattern("FT#")
                     .pattern(" S ")
                     .pattern(" S ")
@@ -95,12 +98,12 @@ class YTechRecipes extends RecipeProvider {
         }
 
         {// flint_hoe
-            Holder.ToolHolder resultHolder = HOLDER.tools().get(ToolObjectType.HOE).get(ConfigLoader.getMaterial("flint"));
-            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.tool.get())
+            Holder.ItemHolder resultHolder = HOLDER.items().get(MaterialItemType.HOE).get(MaterialType.FLINT);
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
                     .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('#', HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())
+                    .define('#', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
                     .pattern("#TF")
                     .pattern(" S ")
                     .pattern(" S ")
@@ -109,12 +112,12 @@ class YTechRecipes extends RecipeProvider {
         }
 
         {// flint_sword
-            Holder.ToolHolder resultHolder = HOLDER.tools().get(ToolObjectType.SWORD).get(ConfigLoader.getMaterial("flint"));
-            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.tool.get())
+            Holder.ItemHolder resultHolder = HOLDER.items().get(MaterialItemType.SWORD).get(MaterialType.FLINT);
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, resultHolder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
                     .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('#', HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())
+                    .define('#', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
                     .pattern("#F")
                     .pattern(" T")
                     .pattern(" S")

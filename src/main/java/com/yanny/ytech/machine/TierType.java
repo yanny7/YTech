@@ -1,15 +1,18 @@
 package com.yanny.ytech.machine;
 
-import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
 
 public enum TierType {
-    @SerializedName("stone") STONE,
-    @SerializedName("steam") STEAM,
+    STONE("stone", "Stone"),
+    STEAM("steam", "Steam"),
     ;
 
-    public final String id;
+    @NotNull public final String key;
+    @NotNull public final String name;
 
-    TierType() {
-        id = name().toLowerCase();
+    TierType(@NotNull String key, @NotNull String name) {
+        this.key = key;
+        this.name = name;
+        ;
     }
 }

@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import java.util.function.Function;
 
 public class Holder {
     @NotNull public final String key;
@@ -41,57 +41,46 @@ public class Holder {
         }
     }
 
-    public static class SimpleToolHolder extends Holder {
-        @NotNull public final SimpleToolType object;
-        @NotNull public final RegistryObject<Item> tool;
-
-        SimpleToolHolder(@NotNull SimpleToolType object, @NotNull RegistryObject<Item> tool) {
-            super(object.key, object.name);
-            this.object = object;
-            this.tool = tool;
-        }
-    }
-
-    public static class MaterialHolder<T, U extends ConfigLoader.BaseObject<T>> extends Holder {
+    public static class MaterialHolder<U extends MaterialEnumHolder> extends Holder {
         @NotNull public final U object;
-        @NotNull public final ConfigLoader.MaterialHolder materialHolder;
+        @NotNull public final MaterialType material;
 
-        MaterialHolder(@NotNull U object, @NotNull ConfigLoader.MaterialHolder materialHolder) {
+        MaterialHolder(@NotNull U object, @NotNull MaterialType material) {
             super(
-                    Objects.requireNonNull(object.name.getKey(materialHolder.material), "Key must be non null"),
-                    Objects.requireNonNull(object.name.getLocalized(materialHolder.material), "Name must be non null")
+                    Holder.stringify(object.getKeyHolder(), material.key, "_"),
+                    Holder.stringify(object.getNameHolder(), material.name, " ")
             );
-            this.object = Objects.requireNonNull(object, "Product must be non null");
-            this.materialHolder = Objects.requireNonNull(materialHolder, "Material must be non null");
+            this.object = object;
+            this.material = material;
         }
     }
 
-    public static class ItemHolder extends MaterialHolder<ItemObjectType, ConfigLoader.ItemObject> {
+    public static class ItemHolder extends MaterialHolder<MaterialItemType> {
         @NotNull public final RegistryObject<Item> item;
 
-        public ItemHolder(@NotNull ConfigLoader.ItemObject product, @NotNull ConfigLoader.MaterialHolder materialHolder, @NotNull RegistryObject<Item> item) {
+        public ItemHolder(@NotNull MaterialItemType product, @NotNull MaterialType materialHolder, @NotNull Function<ItemHolder, RegistryObject<Item>> item) {
             super(product, materialHolder);
-            this.item = item;
+            this.item = item.apply(this);
         }
     }
 
-    public static class BlockHolder extends MaterialHolder<BlockObjectType, ConfigLoader.BlockObject> {
+    public static class BlockHolder extends MaterialHolder<MaterialBlockType> {
         @NotNull public final RegistryObject<Block> block;
 
-        public BlockHolder(@NotNull ConfigLoader.BlockObject product, @NotNull ConfigLoader.MaterialHolder materialHolder, @NotNull RegistryObject<Block> block) {
+        public BlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder, @NotNull Function<BlockHolder, RegistryObject<Block>> block) {
             super(product, materialHolder);
-            this.block = block;
+            this.block = block.apply(this);
         }
     }
 
-    public static class FluidHolder extends MaterialHolder<FluidObjectType, ConfigLoader.FluidObject> {
+    public static class FluidHolder extends MaterialHolder<MaterialFluidType> {
         @NotNull public final RegistryObject<Block> block;
         @NotNull public final RegistryObject<FluidType> type;
         @NotNull public final RegistryObject<Fluid> source;
         @NotNull public final RegistryObject<Fluid> flowing;
         @NotNull public final RegistryObject<Item> bucket;
 
-        public FluidHolder(@NotNull ConfigLoader.FluidObject product, @NotNull ConfigLoader.MaterialHolder materialHolder,
+        public FluidHolder(@NotNull MaterialFluidType product, @NotNull MaterialType materialHolder,
                            @NotNull RegistryObject<Block> block, @NotNull RegistryObject<FluidType> type, @NotNull RegistryObject<Fluid> source,
                            @NotNull RegistryObject<Fluid> flowing, @NotNull RegistryObject<Item> bucket) {
             super(product, materialHolder);
@@ -103,12 +92,7 @@ public class Holder {
         }
     }
 
-    public static class ToolHolder extends MaterialHolder<ToolObjectType, ConfigLoader.ToolObject> {
-        @NotNull public final RegistryObject<Item> tool;
-
-        ToolHolder(@NotNull ConfigLoader.ToolObject object, @NotNull ConfigLoader.MaterialHolder materialHolder, @NotNull RegistryObject<Item> tool) {
-            super(object, materialHolder);
-            this.tool = tool;
-        }
+    private static String stringify(NameHolder holder, String material, String separator) {
+        return (holder.prefix() != null ? holder.prefix() + separator : "") + material + (holder.suffix() != null ? separator + holder.suffix() : "");
     }
 }

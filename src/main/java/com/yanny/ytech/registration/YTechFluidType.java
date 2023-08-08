@@ -2,7 +2,7 @@ package com.yanny.ytech.registration;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.yanny.ytech.configuration.ConfigLoader;
+import com.yanny.ytech.configuration.MaterialType;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
@@ -18,14 +18,11 @@ import org.joml.Vector3f;
 import java.util.function.Consumer;
 
 public class YTechFluidType extends FluidType {
-    private final ConfigLoader.Material material;
-    private final int boiling;
+    private final MaterialType material;
 
-    public YTechFluidType(ConfigLoader.Material material) {
+    public YTechFluidType(MaterialType material) {
         super(getProperties(material));
-        assert material.boiling() != null;
         this.material = material;
-        this.boiling = material.boiling().intValue();
     }
 
     @Override
@@ -43,14 +40,14 @@ public class YTechFluidType extends FluidType {
 
             @Override
             public int getTintColor() {
-                return material.getColor();
+                return material.color;
             }
 
             @Override
             public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-                float r = ((material.getColor() >> 16) & 0xff) / 255f;
-                float g = ((material.getColor() >> 8) & 0xff) / 255f;
-                float b = (material.getColor() & 0xff) / 255f;
+                float r = ((material.color >> 16) & 0xff) / 255f;
+                float g = ((material.color >> 8) & 0xff) / 255f;
+                float b = (material.color & 0xff) / 255f;
                 return new Vector3f(r, g, b);
             }
 
@@ -64,12 +61,10 @@ public class YTechFluidType extends FluidType {
 
     @Override
     public boolean isVaporizedOnPlacement(Level level, BlockPos pos, FluidStack stack) {
-        return boiling < 300;
+        return false;
     }
 
-    private static Properties getProperties(ConfigLoader.Material material) {
-        assert material.melting() != null;
-        assert material.density() != null;
-        return FluidType.Properties.create().density(Math.round(material.density() * 1000)).temperature(material.melting().intValue());
+    private static Properties getProperties(MaterialType material) {
+        return FluidType.Properties.create();
     }
 }

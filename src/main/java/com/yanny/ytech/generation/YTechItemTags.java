@@ -2,8 +2,8 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.BlockObjectType;
-import com.yanny.ytech.configuration.ConfigLoader;
+import com.yanny.ytech.configuration.MaterialBlockType;
+import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.HolderLookup;
@@ -23,10 +23,6 @@ import java.util.concurrent.CompletableFuture;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechItemTags extends ItemTagsProvider {
-    private final ConfigLoader.Material iron = ConfigLoader.getMaterial("iron");
-    private final ConfigLoader.Material copper = ConfigLoader.getMaterial("copper");
-    private final ConfigLoader.Material gold = ConfigLoader.getMaterial("gold");
-
     public YTechItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tagLookup, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, provider, tagLookup, YTechMod.MOD_ID, existingFileHelper);
     }
@@ -34,10 +30,10 @@ class YTechItemTags extends ItemTagsProvider {
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         GeneralUtils.sortedStreamMap(HOLDER.items(), Utils.itemComparator()).forEach(entry -> {
-            ConfigLoader.Material material = entry.getKey();
+            MaterialType material = entry.getKey();
             Holder.ItemHolder holder = entry.getValue();
 
-            switch (holder.object.id) {
+            switch (holder.object) {
                 case INGOT -> {
                     TagKey<Item> ingot = Registration.FORGE_INGOT_TAGS.get(material);
 
@@ -59,10 +55,10 @@ class YTechItemTags extends ItemTagsProvider {
             }
         });
         GeneralUtils.sortedStreamMap(HOLDER.blocks(), Utils.blockComparator()).forEach(entry -> {
-            ConfigLoader.Material material = entry.getKey();
+            MaterialType material = entry.getKey();
             Holder.BlockHolder holder = entry.getValue();
 
-            switch (holder.object.id) {
+            switch (holder.object) {
                 case STORAGE_BLOCK -> {
                     TagKey<Item> storageBlockTag = Registration.FORGE_STORAGE_BLOCK_TAGS.get(material).item();
 
@@ -79,19 +75,19 @@ class YTechItemTags extends ItemTagsProvider {
                     Item item = holder.block.get().asItem();
                     TagKey<Item> oreTag = Registration.FORGE_ORE_TAGS.get(material).item();
 
-                    if (holder.materialHolder.material.equals(iron)) {
+                    if (holder.material.equals(MaterialType.IRON)) {
                         tag(ItemTags.IRON_ORES).add(item);
-                    } else if (material.equals(copper)) {
+                    } else if (material.equals(MaterialType.COPPER)) {
                         tag(ItemTags.COPPER_ORES).add(item);
-                    } else if (material.equals(gold)) {
+                    } else if (material.equals(MaterialType.GOLD)) {
                         tag(ItemTags.GOLD_ORES).add(item);
                     }
 
-                    if (holder.object.id == BlockObjectType.STONE_ORE) {
+                    if (holder.object == MaterialBlockType.STONE_ORE) {
                         tag(Tags.Items.ORES_IN_GROUND_STONE).add(item);
-                    } else if (holder.object.id == BlockObjectType.DEEPSLATE_ORE) {
+                    } else if (holder.object == MaterialBlockType.DEEPSLATE_ORE) {
                         tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(item);
-                    } else if (holder.object.id == BlockObjectType.NETHERRACK_ORE) {
+                    } else {
                         tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(item);
                     }
                     tag(Tags.Items.ORES).add(item);

@@ -2,7 +2,6 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleItemType;
-import com.yanny.ytech.configuration.SimpleToolType;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
@@ -25,7 +24,7 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
         add("grass_drops_fibers", new AddItemModifier(
                 new LootItemCondition[] {
                         LootItemRandomChanceCondition.randomChance(0.1f).build(),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(HOLDER.simpleTools().get(SimpleToolType.SHARP_FLINT).tool.get())).build(),
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRASS).build()
                 }, HOLDER.simpleItems().get(SimpleItemType.GRASS_FIBERS).item.get())
         );
