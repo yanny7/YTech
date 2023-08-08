@@ -9,8 +9,8 @@ public enum MaterialType {
     MERCURY("mercury", "Mercury", hex2rgb("#DBCECA")),
     TIN("tin", "Tin", hex2rgb("#808080")),
 
-    ACACIA_WOOD("acacia_wood", "Acacia", -1, "wooden"),
-    OAK_WOOD("oak_wood", "Oak", -1, "wooden"),
+    ACACIA_WOOD("acacia", "Acacia", -1, "wooden"),
+    OAK_WOOD("oak", "Oak", -1, "wooden"),
     FLINT("flint", "Flint", hex2rgb("#666666")),
     ;
 

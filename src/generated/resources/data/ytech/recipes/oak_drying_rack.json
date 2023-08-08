@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "drying_rack_wooden",
+  "key": {
+    "F": {
+      "item": "ytech:sharp_flint"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "item": "ytech:grass_twine"
+    },
+    "W": {
+      "item": "minecraft:oak_log"
+    }
+  },
+  "pattern": [
+    "TST",
+    "WFW",
+    "W W"
+  ],
+  "result": {
+    "item": "ytech:oak_drying_rack"
+  },
+  "show_notification": true
+}

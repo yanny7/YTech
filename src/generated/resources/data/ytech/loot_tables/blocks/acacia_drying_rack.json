@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ytech:acacia_wood_drying_rack"
+          "name": "ytech:acacia_drying_rack"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ytech:blocks/acacia_wood_drying_rack"
+  "random_sequence": "ytech:blocks/acacia_drying_rack"
 }

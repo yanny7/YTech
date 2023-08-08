@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ytech:oak_wood_shaft"
+          "name": "ytech:oak_drying_rack"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ytech:blocks/oak_wood_shaft"
+  "random_sequence": "ytech:blocks/oak_drying_rack"
 }

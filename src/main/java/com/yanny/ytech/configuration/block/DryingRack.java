@@ -62,21 +62,21 @@ public class DryingRack extends Block {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch (direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 4, 4).texture("#all");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 4, 4).cullface(direction).texture("#all");
                     }
                 }).from(0, 0, 7).to(2, 16, 9).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch (direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 4, 4).texture("#all");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 4, 4).cullface(direction).texture("#all");
                     }
                 }).from(14, 0, 7).to(16, 16, 9).end()
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch (direction) {
-                        case NORTH, SOUTH, UP, DOWN -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
-                        case EAST, WEST -> faceBuilder.uvs(0, 0, 1, 1).texture("#stick");
-                    }
-                }).from(2, 14, 7.5f).to(14, 15, 8.5f).end()
+                .element()
+                .face(Direction.NORTH).uvs(0, 1, 16, 3).texture("#stick").end()
+                .face(Direction.SOUTH).uvs(0, 1, 16, 3).texture("#stick").end()
+                .face(Direction.UP).uvs(0, 1, 16, 3).texture("#stick").end()
+                .face(Direction.DOWN).uvs(0, 1, 16, 3).texture("#stick").end()
+                .from(2, 14, 7.5f).to(14, 15, 8.5f).end()
                 .texture("particle", textures[0])
                 .texture("all", textures[0])
                 .texture("stick", textures[1]);
@@ -85,8 +85,7 @@ public class DryingRack extends Block {
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        String woodName = material.key.substring(0, material.key.length() - 5);
-        return List.of(new TextureHolder(-1, IModel.mcBlockLoc(woodName + "_log")),
-                new TextureHolder(-1, IModel.mcBlockLoc(woodName + "_planks"))).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, IModel.mcBlockLoc(material.key + "_log")),
+                new TextureHolder(-1, IModel.mcBlockLoc(material.key + "_planks"))).toArray(TextureHolder[]::new);
     }
 }

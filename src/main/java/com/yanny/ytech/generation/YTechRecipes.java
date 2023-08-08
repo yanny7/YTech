@@ -11,14 +11,17 @@ import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
@@ -53,6 +56,23 @@ class YTechRecipes extends RecipeProvider {
                     .pattern("###")
                     .unlockedBy(getHasName(input), has(input))
                     .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, resultHolder.key));
+        }
+
+        {// drying rack
+            for (MaterialType material : MaterialBlockType.DRYING_RACK.materials) {
+                Holder.BlockHolder resultHolder = HOLDER.blocks().get(MaterialBlockType.DRYING_RACK).get(material);
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, resultHolder.block.get())
+                        .define('W', Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(material.key + "_log"))))
+                        .define('S', Items.STICK)
+                        .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
+                        .define('F', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
+                        .pattern("TST")
+                        .pattern("WFW")
+                        .pattern("W W")
+                        .group(MaterialBlockType.DRYING_RACK.id + "_" + material.group)
+                        .unlockedBy("has_logs", has(ItemTags.LOGS))
+                        .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, resultHolder.key));
+            }
         }
 
         {// flint_pickaxe

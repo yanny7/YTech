@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ytech:block/oak_shaft"
+    },
+    "facing=north": {
+      "model": "ytech:block/oak_shaft"
+    },
+    "facing=south": {
+      "model": "ytech:block/oak_shaft"
+    },
+    "facing=west": {
+      "model": "ytech:block/oak_shaft"
+    }
+  }
+}
