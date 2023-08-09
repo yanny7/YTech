@@ -5,12 +5,17 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block.DryingRack;
 import com.yanny.ytech.configuration.block.ShaftBlock;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
+import com.yanny.ytech.configuration.screen.BaseScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -31,63 +36,63 @@ import java.util.function.Function;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockHolder, BlockStateProvider>,
-        ILootable<Holder.BlockHolder, BlockLootSubProvider>, IRecipe<Holder.BlockHolder> {
-    STONE_ORE(HolderType.BLOCK, "stone_ore", INameable.both("stone", "ore"), INameable.suffix("Ore"),
+        ILootable<Holder.BlockHolder, BlockLootSubProvider>, IRecipe<Holder.BlockHolder>, IMenu {
+    STONE_ORE(com.yanny.ytech.configuration.HolderType.BLOCK, "stone_ore", INameable.both("stone", "ore"), INameable.suffix("Ore"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)),
             (material) -> oreTexture(IModel.mcBlockLoc("stone")),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    NETHERRACK_ORE(HolderType.BLOCK, "netherrack_ore", INameable.both("netherrack", "ore"), INameable.both("Netherrack", "Ore"),
+    NETHERRACK_ORE(com.yanny.ytech.configuration.HolderType.BLOCK, "netherrack_ore", INameable.both("netherrack", "ore"), INameable.both("Netherrack", "Ore"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)),
             (material) -> oreTexture(IModel.mcBlockLoc("netherrack")),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    DEEPSLATE_ORE(HolderType.BLOCK, "deepslate_ore", INameable.both("deepslate", "ore"), INameable.both("Deepslate", "Ore"),
+    DEEPSLATE_ORE(com.yanny.ytech.configuration.HolderType.BLOCK, "deepslate_ore", INameable.both("deepslate", "ore"), INameable.both("Deepslate", "Ore"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)),
             (material) -> oreTexture(IModel.mcBlockLoc("deepslate")),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    STORAGE_BLOCK(HolderType.BLOCK, "storage_block", INameable.suffix("block"), INameable.prefix("Block of"),
+    STORAGE_BLOCK(com.yanny.ytech.configuration.HolderType.BLOCK, "storage_block", INameable.suffix("block"), INameable.prefix("Block of"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)),
             (material) -> basicTexture(IModel.modBlockLoc("storage_block")),
             MaterialBlockType::basicBlockStateProvider,
-            MaterialBlockType::dropsSelfProvider,
+            ILootable::dropsSelfProvider,
             MaterialBlockType::storageBlockRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    RAW_STORAGE_BLOCK(HolderType.BLOCK, "raw_storage_block", INameable.both("raw", "block"), INameable.both("Raw", "Block"),
+    RAW_STORAGE_BLOCK(com.yanny.ytech.configuration.HolderType.BLOCK, "raw_storage_block", INameable.both("raw", "block"), INameable.both("Raw", "Block"),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)),
             (material) -> basicTexture(IModel.modBlockLoc("raw_storage_block")),
             MaterialBlockType::basicBlockStateProvider,
-            MaterialBlockType::dropsSelfProvider,
+            ILootable::dropsSelfProvider,
             MaterialBlockType::rawStorageBlockRecipe,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
-    DRYING_RACK(HolderType.BLOCK, "drying_rack", INameable.suffix("drying_rack"), INameable.suffix("Drying Rack"),
+    DRYING_RACK(com.yanny.ytech.configuration.HolderType.BLOCK, "drying_rack", INameable.suffix("drying_rack"), INameable.suffix("Drying Rack"),
             (holder) -> new DryingRack(),
             DryingRack::getTexture,
             DryingRack::registerModel,
-            MaterialBlockType::dropsSelfProvider,
+            ILootable::dropsSelfProvider,
             DryingRack::registerRecipe,
             EnumSet.of(MaterialType.ACACIA_WOOD, MaterialType.OAK_WOOD)),
-    SHAFT(HolderType.ENTITY_BLOCK, "shaft", INameable.suffix("shaft"), INameable.suffix("Shaft"),
+    SHAFT(com.yanny.ytech.configuration.HolderType.ENTITY_BLOCK, "shaft", INameable.suffix("shaft"), INameable.suffix("Shaft"),
             (holder) -> new ShaftBlock(holder.material, 2f),
             ShaftBlock::getTexture,
             ShaftBlock::registerModel,
-            MaterialBlockType::dropsSelfProvider,
+            ILootable::dropsSelfProvider,
             ShaftBlock::registerRecipe,
             EnumSet.of(MaterialType.OAK_WOOD)),
-    WATER_WHEEL(HolderType.ENTITY_BLOCK, "water_wheel", INameable.suffix("water_wheel"), INameable.suffix("Water Wheel"),
+    WATER_WHEEL(com.yanny.ytech.configuration.HolderType.ENTITY_BLOCK, "water_wheel", INameable.suffix("water_wheel"), INameable.suffix("Water Wheel"),
             (holder) -> new WaterWheelBlock(holder.material, 0.2f),
             WaterWheelBlock::getTexture,
             WaterWheelBlock::registerModel,
-            MaterialBlockType::dropsSelfProvider,
+            ILootable::dropsSelfProvider,
             WaterWheelBlock::registerRecipe,
-            EnumSet.of(MaterialType.OAK_WOOD))
+            EnumSet.of(MaterialType.OAK_WOOD)),
     ;
 
     @NotNull public final HolderType type;
@@ -100,6 +105,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter;
+    @Nullable private final IAbstractMenuGetter menuGetter;
+    @Nullable private final IScreenGetter screenGetter;
     @NotNull public final EnumSet<MaterialType> materials;
 
     MaterialBlockType(@NotNull HolderType type, @NotNull String id, @NotNull NameHolder keyHolder, @NotNull NameHolder nameHolder,
@@ -107,7 +114,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                       @NotNull BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter,
-                      @NotNull EnumSet<MaterialType> materials) {
+                      @NotNull IAbstractMenuGetter menuGetter, @NotNull IScreenGetter screenGetter, @NotNull EnumSet<MaterialType> materials) {
         this.id = id;
         this.keyHolder = keyHolder;
         this.nameHolder = nameHolder;
@@ -116,6 +123,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         this.modelGetter = modelGetter;
         this.lootGetter = lootGetter;
         this.recipeGetter = recipeGetter;
+        this.menuGetter = menuGetter;
+        this.screenGetter = screenGetter;
         this.materials = materials;
         this.tintIndices = new HashSet<>();
         this.textures = new HashMap<>();
@@ -135,9 +144,38 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         }
     }
 
-    public enum HolderType {
-        BLOCK,
-        ENTITY_BLOCK,
+    MaterialBlockType(@NotNull HolderType type, @NotNull String id, @NotNull NameHolder keyHolder, @NotNull NameHolder nameHolder,
+                      @NotNull Function<Holder.BlockHolder, Block> blockGetter, @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
+                      @NotNull BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter,
+                      @NotNull BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter,
+                      @NotNull BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter, @NotNull EnumSet<MaterialType> materials) {
+        this.id = id;
+        this.keyHolder = keyHolder;
+        this.nameHolder = nameHolder;
+        this.blockGetter = blockGetter;
+        this.type = type;
+        this.modelGetter = modelGetter;
+        this.lootGetter = lootGetter;
+        this.recipeGetter = recipeGetter;
+        this.menuGetter = null;
+        this.screenGetter = null;
+        this.materials = materials;
+        this.tintIndices = new HashSet<>();
+        this.textures = new HashMap<>();
+
+        for (MaterialType material : materials) {
+            TextureHolder[] holders = textureGetter.apply(material);
+            ArrayList<ResourceLocation> resources = new ArrayList<>();
+
+            for (TextureHolder holder : holders) {
+                if (holder.tintIndex() >= 0) {
+                    this.tintIndices.add(holder.tintIndex());
+                }
+                resources.add(holder.texture());
+            }
+
+            this.textures.computeIfAbsent(material, (m) -> resources.toArray(ResourceLocation[]::new));
+        }
     }
 
     @NotNull
@@ -179,6 +217,26 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         recipeGetter.accept(holder, recipeConsumer);
     }
 
+    @Override
+    @Nullable
+    public AbstractContainerMenu getContainerMenu(Holder holder, int windowId, Inventory inv, BlockPos data) {
+        if (menuGetter != null) {
+            return menuGetter.getMenu(holder, windowId, inv, data);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    @NotNull
+    public BaseScreen getScreen(AbstractContainerMenu container, Inventory inventory, Component title) {
+        if (screenGetter != null) {
+            return screenGetter.getScreen(container, inventory, title);
+        } else {
+            throw new IllegalStateException("Missing screen getter");
+        }
+    }
+
     public Block getBlock(@NotNull Holder.BlockHolder holder) {
         return blockGetter.apply(holder);
     }
@@ -202,10 +260,6 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#overlay").cullface(direction).tintindex(0));
         provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
         provider.itemModels().getBuilder(holder.key).parent(model);
-    }
-
-    private static void dropsSelfProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider) {
-        provider.dropSelf(holder.block.get());
     }
 
     private static void oreLootProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider) {
@@ -261,5 +315,4 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                 .group(packedGroup).unlockedBy(RecipeProvider.getHasName(unpacked), RecipeProvider.has(unpackedTag))
                 .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, packedName));
     }
-
 }

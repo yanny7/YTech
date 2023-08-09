@@ -5,23 +5,17 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
-import com.yanny.ytech.machine.MachineType;
-import com.yanny.ytech.machine.TierType;
-import com.yanny.ytech.machine.block.BlockFactory;
-import com.yanny.ytech.machine.container.ContainerMenuFactory;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -37,13 +31,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class Registration {
     public static final RegistrationHolder HOLDER = new RegistrationHolder();
@@ -104,20 +96,11 @@ public class Registration {
             }
         }
 
-        for (MachineType machine : MachineType.values()) {
-            HOLDER.machine().put(machine, Arrays.stream(TierType.values())
-                    .filter((tier) -> tier.ordinal() >= machine.fromTier.ordinal())
-                    .map((tier) -> new Tuple<>(tier, registerMachine(machine, tier)))
-                    .collect(Collectors.toMap(Tuple::getA, Tuple::getB, (a, b) -> a, HashMap::new)));
-        }
-
         for (SimpleItemType type : SimpleItemType.values()) {
             HOLDER.simpleItems().put(type, new Holder.SimpleItemHolder(type, ITEMS.register(type.key, type.itemGetter)));
         }
         for (SimpleBlockType type : SimpleBlockType.values()) {
-            RegistryObject<Block> block = BLOCKS.register(type.key, type.blockSupplier);
-            ITEMS.register(type.key, () -> new BlockItem(block.get(), new Item.Properties()));
-            HOLDER.simpleBlocks().put(type, new Holder.SimpleBlockHolder(type, block));
+            HOLDER.simpleBlocks().put(type, registerBlock(type));
         }
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
@@ -139,7 +122,6 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> event.accept(holder.item));
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
-            GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> event.accept(h.block.get()));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
             HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
         }
@@ -159,6 +141,15 @@ public class Registration {
         return switch (blockType.type) {
             case BLOCK -> new Holder.BlockHolder(blockType, material, Registration::registerBlockItem);
             case ENTITY_BLOCK -> new Holder.EntityBlockHolder(blockType, material, Registration::registerBlockItem, Registration::registerBlockEntity);
+            case MENU_BLOCK -> new Holder.MenuEntityBlockHolder(blockType, material, Registration::registerBlockItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
+        };
+    }
+
+    private static Holder.SimpleBlockHolder registerBlock(SimpleBlockType blockType) {
+        return switch (blockType.type) {
+            case BLOCK -> new Holder.SimpleBlockHolder(blockType, Registration::registerBlockItem);
+            case ENTITY_BLOCK -> new Holder.EntitySimpleBlockHolder(blockType, Registration::registerBlockItem, Registration::registerBlockEntity);
+            case MENU_BLOCK -> new Holder.MenuEntitySimpleBlockHolder(blockType, Registration::registerBlockItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
         };
     }
 
@@ -168,25 +159,28 @@ public class Registration {
         return block;
     }
 
-    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder, RegistryObject<Block> block) {
-        return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
-                Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null));
+    private static RegistryObject<Block> registerBlockItem(Holder.SimpleBlockHolder holder) {
+        RegistryObject<Block> block = BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
+        ITEMS.register(holder.key, () -> new BlockItem(block.get(), new Item.Properties()));
+        return block;
     }
 
-    private static MachineHolder registerMachine(MachineType machine, TierType tier) {
-        String key = tier.key + "_" + machine.key;
-        RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCKS);
-        RegistryObject<BlockEntityType<? extends BlockEntity>> machineBlockEntity = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, key), ForgeRegistries.BLOCK_ENTITY_TYPES);
+    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder) {
+        return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
+                Objects.requireNonNull(((EntityBlock) holder.block.get()).newBlockEntity(pos, blockState)), holder.block.get()).build(null));
+    }
 
-        return new MachineHolder(
-                machine,
-                tier,
-                BLOCKS.register(key, () -> BlockFactory.create(machineBlockEntity, machine, tier)),
-                ITEMS.register(key, () -> new BlockItem(block.get(), new Item.Properties())),
-                BLOCK_ENTITY_TYPES.register(key, () -> BlockEntityType.Builder.of((pos, blockState) ->
-                        Objects.requireNonNull(((EntityBlock) block.get()).newBlockEntity(pos, blockState)), block.get()).build(null)),
-                MENU_TYPES.register(key, () -> IForgeMenuType.create(((windowId, inv, data) -> ContainerMenuFactory.create(windowId, inv.player, data.readBlockPos(), machine, tier))))
-        );
+    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.SimpleBlockHolder holder) {
+        return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
+                Objects.requireNonNull(((EntityBlock) holder.block.get()).newBlockEntity(pos, blockState)), holder.block.get()).build(null));
+    }
+
+    private static RegistryObject<MenuType<?>> registerMenuBlockEntity(Holder.BlockHolder holder) {
+        return MENU_TYPES.register(holder.key, () -> IForgeMenuType.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
+    }
+
+    private static RegistryObject<MenuType<?>> registerMenuBlockEntity(Holder.SimpleBlockHolder holder) {
+        return MENU_TYPES.register(holder.key, () -> IForgeMenuType.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
     }
 
     private static Holder.FluidHolder registerFluid(MaterialFluidType fluidObject, MaterialType material) {

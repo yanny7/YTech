@@ -35,7 +35,6 @@ class YTechLootTables extends LootTableProvider {
         @Override
         protected void generate() {
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> h.object.registerLoot(h, this));
-            GeneralUtils.mapToStream(HOLDER.machine()).forEach(h -> dropSelf(h.block.get()));
             HOLDER.simpleBlocks().values().forEach(h -> h.object.registerLoot(h, this));
         }
 
@@ -44,7 +43,7 @@ class YTechLootTables extends LootTableProvider {
         protected Iterable<Block> getKnownBlocks() {
             return Stream.of(
                     GeneralUtils.mapToStream(HOLDER.blocks()).flatMap(e -> e.block.stream()),
-                    GeneralUtils.mapToStream(HOLDER.machine()).flatMap(h -> h.block.stream())
+                    HOLDER.simpleBlocks().values().stream().flatMap(e -> e.block.stream())
             ).flatMap(i -> i).toList();
         }
     }
