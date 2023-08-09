@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ytech:block/spruce_shaft"
+    },
+    "facing=north": {
+      "model": "ytech:block/spruce_shaft"
+    },
+    "facing=south": {
+      "model": "ytech:block/spruce_shaft"
+    },
+    "facing=west": {
+      "model": "ytech:block/spruce_shaft"
+    }
+  }
+}

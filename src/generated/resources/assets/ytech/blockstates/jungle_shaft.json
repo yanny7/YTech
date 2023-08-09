@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ytech:block/jungle_shaft"
+    },
+    "facing=north": {
+      "model": "ytech:block/jungle_shaft"
+    },
+    "facing=south": {
+      "model": "ytech:block/jungle_shaft"
+    },
+    "facing=west": {
+      "model": "ytech:block/jungle_shaft"
+    }
+  }
+}

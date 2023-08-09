@@ -1,0 +1,200 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            4.0
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        7
+      ],
+      "to": [
+        2,
+        16,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            4.0
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        14,
+        0,
+        7
+      ],
+      "to": [
+        16,
+        16,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#stick",
+          "uv": [
+            0.0,
+            1.0,
+            16.0,
+            3.0
+          ]
+        },
+        "north": {
+          "texture": "#stick",
+          "uv": [
+            0.0,
+            1.0,
+            16.0,
+            3.0
+          ]
+        },
+        "south": {
+          "texture": "#stick",
+          "uv": [
+            0.0,
+            1.0,
+            16.0,
+            3.0
+          ]
+        },
+        "up": {
+          "texture": "#stick",
+          "uv": [
+            0.0,
+            1.0,
+            16.0,
+            3.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        14,
+        7.5
+      ],
+      "to": [
+        14,
+        15,
+        8.5
+      ]
+    }
+  ],
+  "textures": {
+    "all": "minecraft:block/dark_oak_log",
+    "particle": "minecraft:block/dark_oak_log",
+    "stick": "minecraft:block/dark_oak_planks"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ytech:block/acacia_shaft"
+    },
+    "facing=north": {
+      "model": "ytech:block/acacia_shaft"
+    },
+    "facing=south": {
+      "model": "ytech:block/acacia_shaft"
+    },
+    "facing=west": {
+      "model": "ytech:block/acacia_shaft"
+    }
+  }
+}
