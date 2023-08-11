@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -93,8 +94,20 @@ public class ShaftBlock extends KineticBlock {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ModelFile modelFile = provider.models().getBuilder(holder.key)
                 .parent(provider.models().getExistingFile(IModel.mcBlockLoc("block")))
-                .element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all")
-                        .cullface(direction)).from(0, 6, 6).to(16, 10, 10).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch (direction) {
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 4, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#all");
+                        case EAST, WEST -> faceBuilder.uvs(1, 0, 3, 4).cullface(direction).texture("#all");
+                        case UP, DOWN -> faceBuilder.uvs(1, 0, 3, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#all");
+                    }
+                }).from(0, 6, 7).to(16, 10, 9).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch (direction) {
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#all");
+                        case EAST, WEST -> faceBuilder.uvs(0, 1, 4, 3).cullface(direction).texture("#all");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 4, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#all");
+                    }
+                }).from(0, 7, 6).to(16, 9, 10).end()
                 .texture("particle", textures[0])
                 .texture("all", textures[0]);
         provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(modelFile).build());
@@ -106,6 +119,6 @@ public class ShaftBlock extends KineticBlock {
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, IModel.mcBlockLoc("stripped_" + material.key + "_log"))).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, IModel.mcBlockLoc(material.key + "_log"))).toArray(TextureHolder[]::new);
     }
 }

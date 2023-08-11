@@ -4,44 +4,154 @@
     {
       "faces": {
         "down": {
-          "cullface": "down",
-          "texture": "#all"
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            1.0,
+            0.0,
+            3.0,
+            16.0
+          ]
         },
         "east": {
           "cullface": "east",
-          "texture": "#all"
+          "texture": "#all",
+          "uv": [
+            1.0,
+            0.0,
+            3.0,
+            4.0
+          ]
         },
         "north": {
-          "cullface": "north",
-          "texture": "#all"
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
         },
         "south": {
-          "cullface": "south",
-          "texture": "#all"
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
         },
         "up": {
-          "cullface": "up",
-          "texture": "#all"
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            1.0,
+            0.0,
+            3.0,
+            16.0
+          ]
         },
         "west": {
           "cullface": "west",
-          "texture": "#all"
+          "texture": "#all",
+          "uv": [
+            1.0,
+            0.0,
+            3.0,
+            4.0
+          ]
         }
       },
       "from": [
         0,
         6,
-        6
+        7
       ],
       "to": [
         16,
         10,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#all",
+          "uv": [
+            0.0,
+            1.0,
+            4.0,
+            3.0
+          ]
+        },
+        "north": {
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            3.0,
+            16.0
+          ]
+        },
+        "south": {
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            3.0,
+            16.0
+          ]
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            16.0
+          ]
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#all",
+          "uv": [
+            0.0,
+            1.0,
+            4.0,
+            3.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        7,
+        6
+      ],
+      "to": [
+        16,
+        9,
         10
       ]
     }
   ],
   "textures": {
-    "all": "minecraft:block/stripped_cherry_log",
-    "particle": "minecraft:block/stripped_cherry_log"
+    "all": "minecraft:block/cherry_log",
+    "particle": "minecraft:block/cherry_log"
   }
 }

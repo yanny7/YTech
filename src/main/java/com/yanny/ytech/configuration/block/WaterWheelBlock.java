@@ -22,7 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.*;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelBuilder;
+import net.minecraftforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -88,18 +91,702 @@ public class WaterWheelBlock extends KineticBlock {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ModelFile modelFile = provider.models().getBuilder(holder.key)
                 .parent(provider.models().getExistingFile(IModel.mcBlockLoc("block")))
-                .element().allFaces(WaterWheelBlock::buildHorizontalPlank).from(0, 8, -8).to(16, 9, 8).end()
-                .element().allFaces(WaterWheelBlock::buildVerticalPlank).from(1, 3.85786f, -2).to(15, 12.14214f, -1).end()
-                .element().allFaces(WaterWheelBlock::buildHorizontalPlank).from(0, 8, -8).to(16, 9, 8).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
-                .element().allFaces(WaterWheelBlock::buildVerticalPlank).from(1, 3.85786f, -2).to(15, 12.14214f, -1).rotation().axis(Direction.Axis.X).origin(8, 8, 8).angle(45).end().end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 4, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(1, 0, 3, 4).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 4, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(1, 0, 3, 4).texture("#1");
+                        case UP -> faceBuilder.uvs(1, 0, 3, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(1, 0, 3, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0, 6, 7).to(16, 10, 9).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(1, 0, 3, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(0, 1, 4, 3).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(1, 0, 3, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(0, 1, 4, 3).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 4, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 4, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0, 7, 6).to(16, 9, 10).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 7, 16, 8).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 8, 16, 9).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(16, 16, 0, 0).texture("#3");
+                        case DOWN -> faceBuilder.uvs(16, 0, 0, 16).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, -8).to(15, 8.5f, -1).rotation().angle(0).axis(Direction.Axis.Y).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                    }
+                })
+                .from(1, 4, -1.5f).to(15, 12, -0.5f).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, 7, -2.5f).to(15.5f, 9, -0.5f).rotation().angle(0).axis(Direction.Axis.Y).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                    }
+                })
+                .from(0.75f, 4, -1.6f).to(1.75f, 12, -0.4f).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                    }
+                })
+                .from(14.25f, 4, -1.6f).to(15.25f, 12, -0.4f).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, -0.5f).to(2, 8.5f, 7).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(14, 7.5f, -0.5f).to(15, 8.5f, 7).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 7, 16, 8).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 8, 16, 9).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(16, 16, 0, 0).texture("#3");
+                        case DOWN -> faceBuilder.uvs(16, 0, 0, 16).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, -8).to(15, 8.5f, -1).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                    }
+                })
+                .from(1, 16.5f, 4).to(15, 17.5f, 12).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, 7, -2.5f).to(15.5f, 9, -0.5f).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 2.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                    }
+                })
+                .from(0.75f, 16.4f, 4).to(1.75f, 17.6f, 12).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 8.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                    }
+                })
+                .from(14.25f, 16.4f, 4).to(15.25f, 17.6f, 12).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, -0.5f).to(2, 8.5f, 7).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(14, 7.5f, -0.5f).to(15, 8.5f, 7).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(16, 0, 0, 16).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(16, 16, 0, 0).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 7, 16, 8).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 8, 16, 9).texture("#3");
+                    }
+                })
+                .from(1, 17, 7.5f).to(15, 24, 8.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                    }
+                })
+                .from(1, 16.5f, 4).to(15, 17.5f, 12).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, 16.5f, 7).to(15.5f, 18.5f, 9).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 2.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                    }
+                })
+                .from(0.75f, 16.4f, 4).to(1.75f, 17.6f, 12).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 8.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                    }
+                })
+                .from(14.25f, 16.4f, 4).to(15.25f, 17.6f, 12).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                    }
+                })
+                .from(1, 9, 7.5f).to(2, 16.5f, 8.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                    }
+                })
+                .from(14, 9, 7.5f).to(15, 16.5f, 8.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 8, 16, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 7, 16, 8).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(16, 0, 0, 16).texture("#3");
+                        case DOWN -> faceBuilder.uvs(16, 16, 0, 0).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, 17).to(15, 8.5f, 24).rotation().angle(-45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                    }
+                })
+                .from(1, 4, 16.5f).to(15, 12, 17.5f).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, 7, 16.5f).to(15.5f, 9, 18.5f).rotation().angle(-45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                    }
+                })
+                .from(0.75f, 4, 16.4f).to(1.75f, 12, 17.6f).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                    }
+                })
+                .from(14.25f, 4, 16.4f).to(15.25f, 12, 17.6f).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, 9).to(2, 8.5f, 16.5f).rotation().angle(-45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(14, 7.5f, 9).to(15, 8.5f, 16.5f).rotation().angle(-45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 8, 16, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 7, 16, 8).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(16, 0, 0, 16).texture("#3");
+                        case DOWN -> faceBuilder.uvs(16, 16, 0, 0).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, 17).to(15, 8.5f, 24).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                    }
+                })
+                .from(1, 4, 16.5f).to(15, 12, 17.5f).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, 7, 16.5f).to(15.5f, 9, 18.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                    }
+                })
+                .from(0.75f, 4, 16.4f).to(1.75f, 12, 17.6f).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                    }
+                })
+                .from(14.25f, 4, 16.4f).to(15.25f, 12, 17.6f).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, 9).to(2, 8.5f, 16.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(14, 7.5f, 9).to(15, 8.5f, 16.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 8, 16, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 7, 16, 8).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(16, 0, 0, 16).texture("#3");
+                        case DOWN -> faceBuilder.uvs(16, 16, 0, 0).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, 17).to(15, 8.5f, 24).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                    }
+                })
+                .from(1, -1.5f, 4).to(15, -0.5f, 12).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, 7, 16.5f).to(15.5f, 9, 18.5f).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 2.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                    }
+                })
+                .from(0.75f, -1.6f, 4).to(1.75f, -0.4f, 12).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 8.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                    }
+                })
+                .from(14.25f, -1.6f, 4).to(15.25f, -0.4f, 12).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(1, 7.5f, 9).to(2, 8.5f, 16.5f).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                    }
+                })
+                .from(14, 7.5f, 9).to(15, 8.5f, 16.5f).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(16, 16, 0, 0).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(16, 0, 0, 16).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 8, 16, 9).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 7, 16, 8).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                    }
+                })
+                .from(1, -8, 7.5f).to(15, -1, 8.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 7).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                    }
+                })
+                .from(1, -1.5f, 4).to(15, -0.5f, 12).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, -2.5f, 7).to(15.5f, -0.5f, 9).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 2.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 9).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                    }
+                })
+                .from(0.75f, -1.6f, 4).to(1.75f, -0.4f, 12).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 8.2f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 15).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#1");
+                    }
+                })
+                .from(14.25f, -1.6f, 4).to(15.25f, -0.4f, 12).rotation().angle(22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                    }
+                })
+                .from(1, -0.5f, 7.5f).to(2, 7, 8.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                    }
+                })
+                .from(14, -0.5f, 7.5f).to(15, 7, 8.5f).rotation().angle(0).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(16, 16, 0, 0).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 11, 16).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(16, 0, 0, 16).texture("#3");
+                        case WEST -> faceBuilder.uvs(10, 0, 11, 16).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 8, 16, 9).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 7, 16, 8).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                    }
+                })
+                .from(1, -8, 7.5f).to(15, -1, 8.5f).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                        case EAST -> faceBuilder.uvs(3, 0, 4, 7).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 14, 7).texture("#3");
+                        case WEST -> faceBuilder.uvs(3, 0, 4, 7).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 0, 14, 1).texture("#3");
+                    }
+                })
+                .from(1, 4, -1.5f).to(15, 12, -0.5f).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 12, 8, 14).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 15).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#1");
+                    }
+                })
+                .from(0.5f, -2.5f, 7).to(15.5f, -0.5f, 9).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                        case EAST -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(11, 1, 12, 9).texture("#1");
+                        case WEST -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case UP -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(11, 1, 12, 2.2f).texture("#1");
+                    }
+                })
+                .from(0.75f, 4, -1.6f).to(1.75f, 12, -0.4f).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case EAST -> faceBuilder.uvs(11, 1, 12.2f, 9).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(6, 7, 7, 15).texture("#1");
+                        case WEST -> faceBuilder.uvs(11, 1, 12.2f, 9).texture("#1");
+                        case UP -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                        case DOWN -> faceBuilder.uvs(6, 7, 7, 8.2f).texture("#1");
+                    }
+                })
+                .from(14.25f, 4, -1.6f).to(15.25f, 12, -0.4f).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                    }
+                })
+                .from(1, -0.5f, 7.5f).to(2, 7, 8.5f).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 6.5f).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 6.5f).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#missing");
+                        case DOWN -> faceBuilder.uvs(0, 0, 1, 1).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#missing");
+                    }
+                })
+                .from(14, -0.5f, 7.5f).to(15, 7, 8.5f).rotation().angle(45).axis(Direction.Axis.X).origin(8, 8, 8).end()
+                .end()
                 .texture("particle", textures[0])
-                .texture("all", textures[0]);
-        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(holder.block.get());
-
-        builder.part().modelFile(modelFile).uvLock(false).addModel();
-        builder.part().modelFile(modelFile).rotationX(90).uvLock(false).addModel();
-        builder.part().modelFile(modelFile).rotationX(180).uvLock(false).addModel();
-        builder.part().modelFile(modelFile).rotationX(270).uvLock(false).addModel();
+                .texture("1", textures[0])
+                .texture("3", textures[1]);
+        provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(modelFile).build());
         provider.itemModels().getBuilder(holder.key).parent(modelFile);
     }
 
@@ -108,25 +795,7 @@ public class WaterWheelBlock extends KineticBlock {
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, IModel.mcBlockLoc("stripped_" + material.key + "_log"))).toArray(TextureHolder[]::new);
-    }
-
-    private static void buildHorizontalPlank(Direction direction, BlockModelBuilder.ElementBuilder.FaceBuilder faceBuilder) {
-        (switch (direction) {
-            case UP -> faceBuilder.uvs(16, 16, 0, 0);
-            case DOWN -> faceBuilder.uvs(16, 0, 0, 16);
-            case EAST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90);
-            case WEST -> faceBuilder.uvs(10, 0, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
-            case NORTH -> faceBuilder.uvs(0, 7, 16, 8);
-            case SOUTH -> faceBuilder.uvs(0, 8, 16, 9);
-        }).cullface(direction).texture("#all");
-    }
-
-    private static void buildVerticalPlank(Direction direction, BlockModelBuilder.ElementBuilder.FaceBuilder faceBuilder) {
-        (switch (direction) {
-            case UP, DOWN -> faceBuilder.uvs(0, 0, 14, 1);
-            case EAST, WEST -> faceBuilder.uvs(3, 0, 4, 7);
-            case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 14, 7);
-        }).cullface(direction).texture("#all");
+        return List.of(new TextureHolder(-1, IModel.mcBlockLoc(material.key + "_log")),
+                new TextureHolder(-1, IModel.mcBlockLoc("stripped_" + material.key + "_log"))).toArray(TextureHolder[]::new);
     }
 }

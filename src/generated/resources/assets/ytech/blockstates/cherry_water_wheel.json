@@ -1,27 +1,16 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "ytech:block/cherry_water_wheel"
-      }
+  "variants": {
+    "facing=east": {
+      "model": "ytech:block/cherry_water_wheel"
     },
-    {
-      "apply": {
-        "model": "ytech:block/cherry_water_wheel",
-        "x": 90
-      }
+    "facing=north": {
+      "model": "ytech:block/cherry_water_wheel"
     },
-    {
-      "apply": {
-        "model": "ytech:block/cherry_water_wheel",
-        "x": 180
-      }
+    "facing=south": {
+      "model": "ytech:block/cherry_water_wheel"
     },
-    {
-      "apply": {
-        "model": "ytech:block/cherry_water_wheel",
-        "x": 270
-      }
+    "facing=west": {
+      "model": "ytech:block/cherry_water_wheel"
     }
-  ]
+  }
 }
