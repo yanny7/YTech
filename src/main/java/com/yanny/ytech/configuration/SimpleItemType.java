@@ -1,14 +1,17 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.item.SharpFlint;
+import com.yanny.ytech.configuration.item.CraftUsableDiggerItem;
+import com.yanny.ytech.configuration.item.CraftUsableSwordItem;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -45,10 +48,15 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                         .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
             })),
     SHARP_FLINT("sharp_flint", "Sharp Flint",
-            SharpFlint::new,
+            () -> new CraftUsableSwordItem(Tiers.WOOD, 0, 0, new Item.Properties()),
             () -> basicTexture(IModel.modItemLoc("sharp_flint")),
             SimpleItemType::basicItemModelProvider,
             IRecipe::noRecipe),
+    FLINT_SAW("flint_saw", "Flint Saw",
+            () -> new CraftUsableDiggerItem(0, 1, Tiers.WOOD, BlockTags.LOGS, new Item.Properties()),
+            () -> basicTexture(IModel.modItemLoc("flint_saw")),
+            SimpleItemType::basicItemModelProvider,
+            IRecipe::noRecipe)
     ;
 
     @NotNull public final String key;

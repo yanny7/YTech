@@ -1,19 +1,21 @@
 package com.yanny.ytech.configuration.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class SharpFlint extends SwordItem {
-    public SharpFlint() {
-        super(Tiers.WOOD, 0, 0, new Item.Properties());
+public class CraftUsableDiggerItem extends DiggerItem {
+    public CraftUsableDiggerItem(float attackDamageModifier, float attackSpeedModifier, Tier tier, TagKey<Block> blocks, Item.Properties properties) {
+        super(attackDamageModifier, attackSpeedModifier, tier, blocks, properties);
     }
 
     @Override

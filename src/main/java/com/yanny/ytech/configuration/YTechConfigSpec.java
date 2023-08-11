@@ -62,7 +62,31 @@ public class YTechConfigSpec {
                 Items.WOODEN_PICKAXE,
                 Items.WOODEN_HOE,
                 Items.WOODEN_SHOVEL,
-                Items.WOODEN_SWORD
+                Items.WOODEN_SWORD,
+
+                Items.STONE_AXE,
+                Items.STONE_PICKAXE,
+                Items.STONE_HOE,
+                Items.STONE_SHOVEL,
+                Items.STONE_SWORD,
+
+                Items.ACACIA_SLAB,
+                Items.BIRCH_SLAB,
+                Items.CHERRY_SLAB,
+                Items.JUNGLE_SLAB,
+                Items.OAK_SLAB,
+                Items.DARK_OAK_SLAB,
+                Items.MANGROVE_SLAB,
+                Items.SPRUCE_SLAB,
+
+                Items.ACACIA_PLANKS,
+                Items.BIRCH_PLANKS,
+                Items.CHERRY_PLANKS,
+                Items.JUNGLE_PLANKS,
+                Items.OAK_PLANKS,
+                Items.DARK_OAK_PLANKS,
+                Items.MANGROVE_PLANKS,
+                Items.SPRUCE_PLANKS
         ).map(value -> Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(value)).toString()).collect(Collectors.toList());
     }
 

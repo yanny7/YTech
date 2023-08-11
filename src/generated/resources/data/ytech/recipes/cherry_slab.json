@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:cherry_planks"
+    },
+    {
+      "item": "ytech:flint_saw"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:cherry_slab"
+  }
+}
