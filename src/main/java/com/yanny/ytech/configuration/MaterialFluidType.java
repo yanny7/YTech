@@ -1,39 +1,53 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.registration.Holder;
+import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidHolder, ItemModelProvider> {
+public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidHolder, ItemModelProvider>, IFluidTag<Holder.FluidHolder> {
     FLUID("fluid", INameable.suffix("bucket"), INameable.prefix("Bucket of"),
-            (material) -> bucketTexture(IModel.modItemLoc("bucket_overlay")),
+            (material) -> FluidTags.create(Utils.forgeLoc(material.key)),
+            (material) -> bucketTexture(Utils.modItemLoc("bucket_overlay")),
             MaterialFluidType::bucketItemModelProvider,
+            (holder, provider) -> provider.tag(holder.object.fluidTag.get(holder.material)).add(holder.source.get()).add(holder.flowing.get()),
             EnumSet.of(MaterialType.MERCURY)),
     ;
 
     @NotNull public final String id;
     @NotNull private final NameHolder key;
     @NotNull private final NameHolder name;
+    @NotNull public final Map<MaterialType, TagKey<Fluid>> fluidTag;
     @NotNull private final Set<Integer> tintIndices;
     @NotNull private final HashMap<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.FluidHolder, ItemModelProvider> model;
+    @NotNull private final BiConsumer<Holder.FluidHolder, FluidTagsProvider> fluidTagsGetter;
     @NotNull public final EnumSet<MaterialType> materials;
 
-    MaterialFluidType(@NotNull String id, @NotNull NameHolder key, @NotNull NameHolder name, @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
-                      @NotNull BiConsumer<Holder.FluidHolder, ItemModelProvider> model, @NotNull EnumSet<MaterialType> materials) {
+    MaterialFluidType(@NotNull String id, @NotNull NameHolder key, @NotNull NameHolder name, @NotNull Function<MaterialType, TagKey<Fluid>> fluidTag,
+                      @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
+                      @NotNull BiConsumer<Holder.FluidHolder, ItemModelProvider> model,
+                      @NotNull BiConsumer<Holder.FluidHolder, FluidTagsProvider> fluidTagsGetter, @NotNull EnumSet<MaterialType> materials) {
         this.id = id;
         this.key = key;
         this.name = name;
+        this.fluidTag = materials.stream().map((material) -> Pair.of(material, fluidTag.apply(material))).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
         this.tintIndices = new HashSet<>();
         this.textures = new HashMap<>();
         this.model = model;
+        this.fluidTagsGetter = fluidTagsGetter;
         this.materials = materials;
 
         for (MaterialType material : materials) {
@@ -80,6 +94,11 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
         model.accept(holder, provider);
     }
 
+    @Override
+    public void registerTag(@NotNull Holder.FluidHolder holder, @NotNull FluidTagsProvider provider) {
+        fluidTagsGetter.accept(holder, provider);
+    }
+
     private static void bucketItemModelProvider(@NotNull Holder.FluidHolder holder, @NotNull ItemModelProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
@@ -87,7 +106,8 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
         builder.texture("layer1", textures[1]);
     }
 
-    private static TextureHolder[] bucketTexture(ResourceLocation overlay) {
-        return List.of(new TextureHolder(-1, IModel.mcItemLoc("bucket")), new TextureHolder(1, overlay)).toArray(TextureHolder[]::new);
+    @NotNull
+    private static TextureHolder[] bucketTexture(@NotNull ResourceLocation overlay) {
+        return List.of(new TextureHolder(-1, Utils.mcItemLoc("bucket")), new TextureHolder(1, overlay)).toArray(TextureHolder[]::new);
     }
 }

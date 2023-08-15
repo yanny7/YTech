@@ -3,94 +3,135 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHolder, ItemModelProvider>, IRecipe<Holder.ItemHolder> {
+public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHolder, ItemModelProvider>, IRecipe<Holder.ItemHolder>,
+        IItemTag<Holder.ItemHolder> {
     INGOT("ingot", INameable.suffix("ingot"), INameable.suffix("Ingot"),
+            (material) -> ItemTags.create(Utils.forgeLoc("ingots/" + material.key)),
+            Tags.Items.INGOTS,
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(IModel.modItemLoc("ingot")),
+            (material) -> basicTexture(Utils.modItemLoc("ingot")),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
     DUST("dust", INameable.suffix("dust"), INameable.suffix("Dust"),
+            (material) -> ItemTags.create(Utils.forgeLoc("dusts/" + material.key)),
+            Tags.Items.DUSTS,
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(IModel.modItemLoc("dust")),
+            (material) -> basicTexture(Utils.modItemLoc("dust")),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.COPPER, MaterialType.TIN)),
     RAW_MATERIAL("raw_material", INameable.prefix("raw"), INameable.prefix("Raw"),
+            (material) -> ItemTags.create(Utils.forgeLoc("raw_materials/" + material.key)),
+            Tags.Items.RAW_MATERIALS,
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(IModel.modItemLoc("raw_material")),
+            (material) -> basicTexture(Utils.modItemLoc("raw_material")),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe, // handled in block
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON, MaterialType.TIN)),
     PLATE("plate", INameable.suffix("plate"), INameable.suffix("Plate"),
+            (material) -> ItemTags.create(Utils.modLoc("plates/" + material.key)),
+            ItemTags.create(Utils.modLoc("plates")),
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(IModel.modItemLoc("plate")),
+            (material) -> basicTexture(Utils.modItemLoc("plate")),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.COPPER, MaterialType.IRON)),
 
     AXE("axe", INameable.suffix("axe"), INameable.suffix("Axe"),
+            (material) -> ItemTags.create(Utils.modLoc("axes/" + material.key)),
+            ItemTags.AXES,
             (holder) -> new MaterialAxeItem(holder.material.tier),
-            (material) -> toolTexture(IModel.mcItemLoc("wooden_axe"), IModel.modItemLoc("axe_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_axe"), Utils.modItemLoc("axe_overlay")),
             MaterialItemType::toolItemModelProvider,
             MaterialAxeItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.FLINT)),
     PICKAXE("pickaxe", INameable.suffix("pickaxe"), INameable.suffix("Pickaxe"),
+            (material) -> ItemTags.create(Utils.modLoc("pickaxes/" + material.key)),
+            ItemTags.PICKAXES,
             (holder) -> new MaterialPickaxeItem(holder.material.tier),
-            (material) -> toolTexture(IModel.mcItemLoc("wooden_pickaxe"), IModel.modItemLoc("pickaxe_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_pickaxe"), Utils.modItemLoc("pickaxe_overlay")),
             MaterialItemType::toolItemModelProvider,
             MaterialPickaxeItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.FLINT)),
     SHOVEL("shovel", INameable.suffix("shovel"), INameable.suffix("Shovel"),
+            (material) -> ItemTags.create(Utils.modLoc("shovels/" + material.key)),
+            ItemTags.SHOVELS,
             (holder) -> new MaterialShovelItem(holder.material.tier),
-            (material) -> toolTexture(IModel.mcItemLoc("wooden_shovel"), IModel.modItemLoc("shovel_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_shovel"), Utils.modItemLoc("shovel_overlay")),
             MaterialItemType::toolItemModelProvider,
             MaterialShovelItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.FLINT)),
     HOE("hoe", INameable.suffix("hoe"), INameable.suffix("Hoe"),
+            (material) -> ItemTags.create(Utils.modLoc("hoes/" + material.key)),
+            ItemTags.HOES,
             (holder) -> new MaterialHoeItem(holder.material.tier),
-            (material) -> toolTexture(IModel.mcItemLoc("wooden_hoe"), IModel.modItemLoc("hoe_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_hoe"), Utils.modItemLoc("hoe_overlay")),
             MaterialItemType::toolItemModelProvider,
             MaterialHoeItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.FLINT)),
     SWORD("sword", INameable.suffix("sword"), INameable.suffix("Sword"),
+            (material) -> ItemTags.create(Utils.modLoc("swords/" + material.key)),
+            ItemTags.SWORDS,
             (holder) -> new MaterialSwordItem(holder.material.tier),
-            (material) -> toolTexture(IModel.mcItemLoc("wooden_sword"), IModel.modItemLoc("sword_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_sword"), Utils.modItemLoc("sword_overlay")),
             MaterialItemType::toolItemModelProvider,
             MaterialSwordItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.FLINT)),
     ;
 
     @NotNull public final String id;
     @NotNull private final NameHolder key;
     @NotNull private final NameHolder name;
+    @NotNull public final Map<MaterialType, TagKey<Item>> itemTag;
+    @NotNull public final TagKey<Item> groupTag;
     @NotNull private final Function<Holder.ItemHolder, Item> itemGetter;
     @NotNull private final Set<Integer> tintIndices;
     @NotNull private final HashMap<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.ItemHolder, ItemModelProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.ItemHolder, Consumer<FinishedRecipe>> recipeGetter;
+    @NotNull private final BiConsumer<Holder.ItemHolder, ItemTagsProvider> itemTagsGetter;
     @NotNull public final EnumSet<MaterialType> materials;
 
-    MaterialItemType(@NotNull String id, @NotNull NameHolder key, @NotNull NameHolder name, @NotNull Function<Holder.ItemHolder, Item> itemGetter,
-                     @NotNull Function<MaterialType, TextureHolder[]> textureGetter, @NotNull BiConsumer<Holder.ItemHolder, ItemModelProvider> modelGetter,
-                     @NotNull BiConsumer<Holder.ItemHolder, Consumer<FinishedRecipe>> recipeGetter, @NotNull EnumSet<MaterialType> materials) {
+    MaterialItemType(@NotNull String id, @NotNull NameHolder key, @NotNull NameHolder name, @NotNull Function<MaterialType, TagKey<Item>> itemTag, @NotNull TagKey<Item> groupTag,
+                     @NotNull Function<Holder.ItemHolder, Item> itemGetter, @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
+                     @NotNull BiConsumer<Holder.ItemHolder, ItemModelProvider> modelGetter, @NotNull BiConsumer<Holder.ItemHolder, Consumer<FinishedRecipe>> recipeGetter,
+                     @NotNull BiConsumer<Holder.ItemHolder, ItemTagsProvider> itemTagsGetter, @NotNull EnumSet<MaterialType> materials) {
         this.id = id;
         this.key = key;
         this.name = name;
+        this.itemTag = materials.stream().map((material) -> Pair.of(material, itemTag.apply(material))).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+        this.groupTag = groupTag;
         this.itemGetter = itemGetter;
         this.recipeGetter = recipeGetter;
+        this.itemTagsGetter = itemTagsGetter;
         this.tintIndices = new HashSet<>();
         this.textures = new HashMap<>();
         this.modelGetter = modelGetter;
@@ -145,11 +186,16 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         recipeGetter.accept(holder, recipeConsumer);
     }
 
+    @Override
+    public void registerTag(@NotNull Holder.ItemHolder holder, @NotNull ItemTagsProvider provider) {
+        itemTagsGetter.accept(holder, provider);
+    }
+
     public Item getItem(@NotNull Holder.ItemHolder holder) {
         return itemGetter.apply(holder);
     }
 
-    private static Item simpleItem(Holder.ItemHolder holder) {
+    private static Item simpleItem(@NotNull Holder.ItemHolder holder) {
         return new Item(new Item.Properties());
     }
 
@@ -166,11 +212,18 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         builder.texture("layer1", textures[1]);
     }
 
-    private static TextureHolder[] basicTexture(ResourceLocation overlay) {
+    @NotNull
+    private static TextureHolder[] basicTexture(@NotNull ResourceLocation overlay) {
         return List.of(new TextureHolder(0, overlay)).toArray(TextureHolder[]::new);
     }
 
-    private static TextureHolder[] toolTexture(ResourceLocation base, ResourceLocation overlay) {
+    @NotNull
+    private static TextureHolder[] toolTexture(@NotNull ResourceLocation base, @NotNull ResourceLocation overlay) {
         return List.of(new TextureHolder(-1, base), new TextureHolder(1, overlay)).toArray(TextureHolder[]::new);
+    }
+
+    private static void registerMaterialTag(@NotNull Holder.ItemHolder holder, @NotNull ItemTagsProvider provider) {
+        provider.tag(holder.object.itemTag.get(holder.material)).add(holder.item.get());
+        provider.tag(holder.object.groupTag).addTag(holder.object.itemTag.get(holder.material));
     }
 }

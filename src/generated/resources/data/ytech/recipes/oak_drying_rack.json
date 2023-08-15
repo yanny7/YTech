@@ -4,13 +4,13 @@
   "group": "drying_rack_wooden",
   "key": {
     "F": {
-      "item": "ytech:sharp_flint"
+      "tag": "ytech:sharp_flints"
     },
     "S": {
       "item": "minecraft:stick"
     },
     "T": {
-      "item": "ytech:grass_twine"
+      "tag": "ytech:grass_twines"
     },
     "W": {
       "item": "minecraft:oak_log"

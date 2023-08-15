@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "ytech:grass_fibers"
-            ]
+            "tag": "ytech:grass_fibers"
           }
         ]
       },

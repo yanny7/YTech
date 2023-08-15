@@ -8,9 +8,7 @@
     {
       "condition": "minecraft:match_tool",
       "predicate": {
-        "items": [
-          "ytech:sharp_flint"
-        ]
+        "tag": "ytech:sharp_flints"
       }
     },
     {

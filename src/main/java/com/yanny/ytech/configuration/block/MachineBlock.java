@@ -1,7 +1,7 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.IModel;
 import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MachineBlockEntity;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
@@ -122,9 +122,9 @@ public abstract class MachineBlock extends BaseEntityBlock {
 
     public static TextureHolder[] getTexture(String tierName, String machine) {
         return List.of(
-                new TextureHolder(-1, IModel.modBlockLoc("casing/" + tierName)),
-                new TextureHolder(-1, IModel.modBlockLoc("machine/" + tierName + "_" + machine)),
-                new TextureHolder(-1, IModel.modBlockLoc("machine/" + tierName + "_" + machine + "_powered"))
+                new TextureHolder(-1, Utils.modBlockLoc("casing/" + tierName)),
+                new TextureHolder(-1, Utils.modBlockLoc("machine/" + tierName + "_" + machine)),
+                new TextureHolder(-1, Utils.modBlockLoc("machine/" + tierName + "_" + machine + "_powered"))
         ).toArray(TextureHolder[]::new);
     }
 }

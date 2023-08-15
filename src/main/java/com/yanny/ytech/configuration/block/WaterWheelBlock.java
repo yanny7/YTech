@@ -1,9 +1,9 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.IModel;
 import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.WaterWheelBlockEntity;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
 import com.yanny.ytech.registration.Holder;
@@ -90,7 +90,7 @@ public class WaterWheelBlock extends KineticBlock {
     public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ModelFile modelFile = provider.models().getBuilder(holder.key)
-                .parent(provider.models().getExistingFile(IModel.mcBlockLoc("block")))
+                .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 0, 4, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
@@ -795,7 +795,7 @@ public class WaterWheelBlock extends KineticBlock {
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, IModel.mcBlockLoc(material.key + "_log")),
-                new TextureHolder(-1, IModel.mcBlockLoc("stripped_" + material.key + "_log"))).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, Utils.mcBlockLoc(material.key + "_log")),
+                new TextureHolder(-1, Utils.mcBlockLoc("stripped_" + material.key + "_log"))).toArray(TextureHolder[]::new);
     }
 }

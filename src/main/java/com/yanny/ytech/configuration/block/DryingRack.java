@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
-
 public class DryingRack extends Block {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(7/16.0, 0, 0, 9/16.0, 1, 1);
@@ -68,7 +66,7 @@ public class DryingRack extends Block {
     public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ModelFile model = provider.models().getBuilder(holder.key)
-                .parent(provider.models().getExistingFile(IModel.mcLoc("block/block")))
+                .parent(provider.models().getExistingFile(Utils.mcLoc("block/block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch (direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
@@ -98,8 +96,8 @@ public class DryingRack extends Block {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                     .define('W', Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(holder.material.key + "_log"))))
                     .define('S', Items.STICK)
-                    .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('F', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
+                    .define('T', SimpleItemType.GRASS_TWINE.itemTag)
+                    .define('F', SimpleItemType.SHARP_FLINT.itemTag)
                     .pattern("TST")
                     .pattern("WFW")
                     .pattern("W W")
@@ -109,7 +107,7 @@ public class DryingRack extends Block {
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, IModel.mcBlockLoc(material.key + "_log")),
-                new TextureHolder(-1, IModel.mcBlockLoc(material.key + "_planks"))).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, Utils.mcBlockLoc(material.key + "_log")),
+                new TextureHolder(-1, Utils.mcBlockLoc(material.key + "_planks"))).toArray(TextureHolder[]::new);
     }
 }

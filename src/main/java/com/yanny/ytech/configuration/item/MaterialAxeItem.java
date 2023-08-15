@@ -16,8 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
-
 public class MaterialAxeItem extends AxeItem {
     public MaterialAxeItem(Tier pTier) {
         super(pTier, 6.0f, -3.2f, new Item.Properties());
@@ -28,8 +26,8 @@ public class MaterialAxeItem extends AxeItem {
             case FLINT -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
-                    .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('#', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
+                    .define('T', SimpleItemType.GRASS_TWINE.itemTag)
+                    .define('#', SimpleItemType.SHARP_FLINT.itemTag)
                     .pattern("FT#")
                     .pattern("FS ")
                     .pattern(" S ")

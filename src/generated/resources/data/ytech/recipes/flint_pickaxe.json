@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "item": "ytech:sharp_flint"
+      "tag": "ytech:sharp_flints"
     },
     "F": {
       "item": "minecraft:flint"
@@ -12,7 +12,7 @@
       "item": "minecraft:stick"
     },
     "T": {
-      "item": "ytech:grass_twine"
+      "tag": "ytech:grass_twines"
     }
   },
   "pattern": [

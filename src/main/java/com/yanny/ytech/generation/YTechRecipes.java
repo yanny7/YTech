@@ -53,7 +53,7 @@ class YTechRecipes extends RecipeProvider {
     private void splitBySawRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result, int count) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, count)
                 .requires(input)
-                .requires(HOLDER.simpleItems().get(SimpleItemType.FLINT_SAW).item.get())
+                .requires(SimpleItemType.FLINT_SAW.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
     }

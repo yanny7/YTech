@@ -6,7 +6,7 @@
       "item": "minecraft:acacia_log"
     },
     {
-      "item": "ytech:flint_saw"
+      "tag": "ytech:flint_saws"
     }
   ],
   "result": {

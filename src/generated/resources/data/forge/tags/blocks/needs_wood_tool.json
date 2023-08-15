@@ -1,0 +1,28 @@
+{
+  "values": [
+    "ytech:acacia_drying_rack",
+    "ytech:birch_drying_rack",
+    "ytech:cherry_drying_rack",
+    "ytech:dark_oak_drying_rack",
+    "ytech:jungle_drying_rack",
+    "ytech:mangrove_drying_rack",
+    "ytech:oak_drying_rack",
+    "ytech:spruce_drying_rack",
+    "ytech:acacia_shaft",
+    "ytech:birch_shaft",
+    "ytech:cherry_shaft",
+    "ytech:dark_oak_shaft",
+    "ytech:jungle_shaft",
+    "ytech:mangrove_shaft",
+    "ytech:oak_shaft",
+    "ytech:spruce_shaft",
+    "ytech:acacia_water_wheel",
+    "ytech:birch_water_wheel",
+    "ytech:cherry_water_wheel",
+    "ytech:dark_oak_water_wheel",
+    "ytech:jungle_water_wheel",
+    "ytech:mangrove_water_wheel",
+    "ytech:oak_water_wheel",
+    "ytech:spruce_water_wheel"
+  ]
+}

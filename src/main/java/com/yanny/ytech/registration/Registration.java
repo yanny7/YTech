@@ -32,21 +32,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Registration {
     public static final RegistrationHolder HOLDER = new RegistrationHolder();
-
-    public static final Map<MaterialType, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_ORE_TAGS = new HashMap<>();
-    public static final Map<MaterialType, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_STORAGE_BLOCK_TAGS = new HashMap<>();
-    public static final Map<MaterialType, BlockItemHolder<TagKey<Block>, TagKey<Item>>> FORGE_RAW_STORAGE_BLOCK_TAGS = new HashMap<>();
-    public static final Map<MaterialType, TagKey<Item>> FORGE_RAW_MATERIAL_TAGS = new HashMap<>();
-    public static final Map<MaterialType, TagKey<Item>> FORGE_INGOT_TAGS = new HashMap<>();
-    public static final Map<MaterialType, TagKey<Item>> FORGE_DUST_TAGS = new HashMap<>();
-    public static final Map<MaterialType, TagKey<Fluid>> FORGE_FLUID_TAGS = new HashMap<>();
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
@@ -62,35 +53,18 @@ public class Registration {
     static {
         for (MaterialItemType itemObject : MaterialItemType.values()) {
             for (MaterialType material : itemObject.materials) {
-                switch (itemObject) {
-                    case INGOT -> FORGE_INGOT_TAGS.put(material, registerItemTag("forge", "ingots", material.key));
-                    case DUST -> FORGE_DUST_TAGS.put(material, registerItemTag("forge", "dusts", material.key));
-                    case RAW_MATERIAL -> FORGE_RAW_MATERIAL_TAGS.put(material, registerItemTag("forge", "raw_materials", material.key));
-                }
-
                 HOLDER.items().computeIfAbsent(itemObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, itemObject,
                         (object) -> new Holder.ItemHolder(object, material, (holder) -> ITEMS.register(holder.key, () -> holder.object.getItem(holder)))));
             }
         }
         for (MaterialBlockType blockObject : MaterialBlockType.values()) {
             for (MaterialType material : blockObject.materials) {
-                switch (blockObject) {
-                    case STORAGE_BLOCK -> FORGE_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", material.key));
-                    case RAW_STORAGE_BLOCK -> FORGE_RAW_STORAGE_BLOCK_TAGS.put(material, registerBlockItemTag("forge", "storage_blocks", "raw_" + material.key));
-                    case STONE_ORE, NETHERRACK_ORE, DEEPSLATE_ORE -> FORGE_ORE_TAGS.computeIfAbsent(material, (m) -> registerBlockItemTag("forge", "ores", m.key));
-                }
-
                 HOLDER.blocks().computeIfAbsent(blockObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, blockObject,
                         (blockType) -> registerBlock(blockType, material)));
             }
         }
         for (MaterialFluidType fluidObject : MaterialFluidType.values()) {
             for (MaterialType material : fluidObject.materials) {
-
-                if (fluidObject == MaterialFluidType.FLUID) {
-                    FORGE_FLUID_TAGS.put(material, registerFluidTag("forge", material.key));
-                }
-
                 HOLDER.fluids().computeIfAbsent(fluidObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, fluidObject,
                         (object) -> registerFluid(object, material)));
             }

@@ -15,8 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
-
 public class MaterialPickaxeItem extends PickaxeItem {
     public MaterialPickaxeItem(Tier pTier) {
         super(pTier, 1, -2.8f, new Properties());
@@ -27,8 +25,8 @@ public class MaterialPickaxeItem extends PickaxeItem {
             case FLINT -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
-                    .define('T', HOLDER.simpleItems().get(SimpleItemType.GRASS_TWINE).item.get())
-                    .define('#', HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get())
+                    .define('T', SimpleItemType.GRASS_TWINE.itemTag)
+                    .define('#', SimpleItemType.SHARP_FLINT.itemTag)
                     .pattern("FTF")
                     .pattern("#S ")
                     .pattern(" S ")
