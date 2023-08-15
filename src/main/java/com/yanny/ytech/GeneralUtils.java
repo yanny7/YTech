@@ -22,10 +22,15 @@ public class GeneralUtils {
     }
 
     @NotNull
-    public static <T, U, V> Stream<Map.Entry<U, V>> sortedStreamMap(@NotNull HashMap<T, HashMap<U, V>> map, @NotNull Comparator<Map.Entry<U, V>> comparator) {
+    public static <T, U, V> Stream<Map.Entry<U, V>> sortedStreamMapOfMap(@NotNull HashMap<T, HashMap<U, V>> map, @NotNull Comparator<Map.Entry<U, V>> comparator) {
         return map.entrySet()
                 .stream()
                 .flatMap(e -> e.getValue().entrySet().stream())
                 .sorted(comparator);
+    }
+
+    @NotNull
+    public static <T, U> Stream<Map.Entry<T, U>> sortedStreamMap(@NotNull HashMap<T, U> map, @NotNull Comparator<Map.Entry<T, U>> comparator) {
+        return map.entrySet().stream().sorted(comparator);
     }
 }

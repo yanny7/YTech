@@ -20,6 +20,6 @@ class YTechFluidTags extends FluidTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        GeneralUtils.sortedStreamMap(HOLDER.fluids(), Utils.fluidComparator()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
+        GeneralUtils.sortedStreamMapOfMap(HOLDER.fluids(), Utils.fluidComparator()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
     }
 }

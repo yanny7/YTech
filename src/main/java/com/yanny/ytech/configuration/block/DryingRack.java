@@ -23,11 +23,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class DryingRack extends Block {
@@ -94,7 +92,7 @@ public class DryingRack extends Block {
 
     public static void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
-                    .define('W', Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(holder.material.key + "_log"))))
+                    .define('W', Utils.getLogFromMaterial(holder.material))
                     .define('S', Items.STICK)
                     .define('T', SimpleItemType.GRASS_TWINE.itemTag)
                     .define('F', SimpleItemType.SHARP_FLINT.itemTag)
