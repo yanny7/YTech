@@ -43,7 +43,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerGrassTwineRecipe,
             SimpleItemType::registerSimpleTag),
-    BOLT("wooden_bolt", "Wooden Bolt",
+    WOODEN_BOLT("wooden_bolt", "Wooden Bolt",
             ItemTags.create(Utils.modLoc("bolts/wooden")),
             SimpleItemType::simpleItem,
             () -> List.of(new TextureHolder(0, MaterialType.OAK_WOOD.color, Utils.modItemLoc("bolt"))).toArray(TextureHolder[]::new),

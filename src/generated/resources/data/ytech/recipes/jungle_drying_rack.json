@@ -3,6 +3,9 @@
   "category": "misc",
   "group": "drying_rack_wooden",
   "key": {
+    "B": {
+      "tag": "ytech:bolts/wooden"
+    },
     "F": {
       "tag": "ytech:sharp_flints"
     },
@@ -18,7 +21,7 @@
   },
   "pattern": [
     "TST",
-    "WFW",
+    "BFB",
     "W W"
   ],
   "result": {
