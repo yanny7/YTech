@@ -29,8 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -94,7 +94,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     @NotNull public final TagKey<Item> itemTag;
     @NotNull public final TagKey<Block> blockTag;
     @NotNull private final Function<Holder.SimpleBlockHolder, Block> blockGetter;
-    @NotNull private final HashSet<Integer> tintIndices;
+    @NotNull private final HashMap<Integer, Integer> tintColors;
     @NotNull private final ResourceLocation[] textures;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockLootSubProvider> lootGetter;
@@ -124,14 +124,14 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         this.blockTagsGetter = blockTagsGetter;
         this.menuGetter = null;
         this.screenGetter = null;
-        this.tintIndices = new HashSet<>();
+        this.tintColors = new HashMap<>();
 
         TextureHolder[] holders = textureGetter.get();
         ArrayList<ResourceLocation> resources = new ArrayList<>();
 
         for (TextureHolder holder : holders) {
             if (holder.tintIndex() >= 0) {
-                this.tintIndices.add(holder.tintIndex());
+                this.tintColors.put(holder.tintIndex(), holder.color());
             }
             resources.add(holder.texture());
         }
@@ -160,14 +160,14 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         this.blockTagsGetter = blockTagsGetter;
         this.menuGetter = menuGetter;
         this.screenGetter = screenGetter;
-        this.tintIndices = new HashSet<>();
+        this.tintColors = new HashMap<>();
 
         TextureHolder[] holders = textureGetter.get();
         ArrayList<ResourceLocation> resources = new ArrayList<>();
 
         for (TextureHolder holder : holders) {
             if (holder.tintIndex() >= 0) {
-                this.tintIndices.add(holder.tintIndex());
+                this.tintColors.put(holder.tintIndex(), holder.color());
             }
             resources.add(holder.texture());
         }
@@ -202,8 +202,8 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
 
     @NotNull
     @Override
-    public Set<Integer> getTintIndices() {
-        return tintIndices;
+    public Map<Integer, Integer> getTintColors() {
+        return tintColors;
     }
 
     @NotNull

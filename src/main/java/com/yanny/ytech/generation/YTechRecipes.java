@@ -2,7 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.SimpleItemType;
+import com.yanny.ytech.configuration.MaterialItemType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -53,7 +53,7 @@ class YTechRecipes extends RecipeProvider {
     private void splitBySawRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result, int count) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, count)
                 .requires(input)
-                .requires(SimpleItemType.FLINT_SAW.itemTag)
+                .requires(MaterialItemType.SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
     }

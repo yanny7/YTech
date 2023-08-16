@@ -119,6 +119,6 @@ public class ShaftBlock extends KineticBlock {
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, Utils.mcBlockLoc(material.key + "_log"))).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, -1, Utils.mcBlockLoc(material.key + "_log"))).toArray(TextureHolder[]::new);
     }
 }

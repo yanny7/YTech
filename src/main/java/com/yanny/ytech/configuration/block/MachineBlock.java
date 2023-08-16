@@ -122,9 +122,9 @@ public abstract class MachineBlock extends BaseEntityBlock {
 
     public static TextureHolder[] getTexture(String tierName, String machine) {
         return List.of(
-                new TextureHolder(-1, Utils.modBlockLoc("casing/" + tierName)),
-                new TextureHolder(-1, Utils.modBlockLoc("machine/" + tierName + "_" + machine)),
-                new TextureHolder(-1, Utils.modBlockLoc("machine/" + tierName + "_" + machine + "_powered"))
+                new TextureHolder(-1, -1, Utils.modBlockLoc("casing/" + tierName)),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/" + tierName + "_" + machine)),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/" + tierName + "_" + machine + "_powered"))
         ).toArray(TextureHolder[]::new);
     }
 }

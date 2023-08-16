@@ -19,7 +19,7 @@ public enum MaterialType {
     DARK_OAK_WOOD("dark_oak", "Dark Oak", -1, "wooden", Tiers.WOOD, ToolType.AXE),
     JUNGLE_WOOD("jungle", "Jungle", -1, "wooden", Tiers.WOOD, ToolType.AXE),
     MANGROVE_WOOD("mangrove", "Mangrove", -1, "wooden", Tiers.WOOD, ToolType.AXE),
-    OAK_WOOD("oak", "Oak", -1, "wooden", Tiers.WOOD, ToolType.AXE),
+    OAK_WOOD("oak", "Oak", hex2rgb("#684E1E"), "wooden", Tiers.WOOD, ToolType.AXE),
     SPRUCE_WOOD("spruce", "Spruce", -1, "wooden", Tiers.WOOD, ToolType.AXE),
 
     FLINT("flint", "Flint", hex2rgb("#666666"), Tiers.WOOD, ToolType.PICKAXE),

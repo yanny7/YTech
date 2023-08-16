@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:oak_planks"
+      "item": "minecraft:stick"
     },
     {
       "tag": "ytech:saws"
@@ -11,6 +11,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "minecraft:oak_slab"
+    "item": "ytech:wooden_bolt"
   }
 }

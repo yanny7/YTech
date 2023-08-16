@@ -27,7 +27,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.forgeLoc("ingots/" + material.key)),
             Tags.Items.INGOTS,
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(Utils.modItemLoc("ingot")),
+            (material) -> basicTexture(Utils.modItemLoc("ingot"), material),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe,
             MaterialItemType::registerMaterialTag,
@@ -36,7 +36,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.forgeLoc("dusts/" + material.key)),
             Tags.Items.DUSTS,
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(Utils.modItemLoc("dust")),
+            (material) -> basicTexture(Utils.modItemLoc("dust"), material),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe,
             MaterialItemType::registerMaterialTag,
@@ -45,7 +45,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.forgeLoc("raw_materials/" + material.key)),
             Tags.Items.RAW_MATERIALS,
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(Utils.modItemLoc("raw_material")),
+            (material) -> basicTexture(Utils.modItemLoc("raw_material"), material),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe, // handled in block
             MaterialItemType::registerMaterialTag,
@@ -54,17 +54,26 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.modLoc("plates/" + material.key)),
             ItemTags.create(Utils.modLoc("plates")),
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(Utils.modItemLoc("plate")),
+            (material) -> basicTexture(Utils.modItemLoc("plate"), material),
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.COPPER, MaterialType.IRON)),
+    BOLT("bolt", INameable.suffix("bolt"), INameable.suffix("Bolt"),
+            (material) -> ItemTags.create(Utils.modLoc("bolts/" + material.key)),
+            ItemTags.create(Utils.modLoc("bolts")),
+            MaterialItemType::simpleItem,
+            (material) -> basicTexture(Utils.modItemLoc("bolt"), material),
+            MaterialItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.of(MaterialType.COPPER)),
 
     AXE("axe", INameable.suffix("axe"), INameable.suffix("Axe"),
             (material) -> ItemTags.create(Utils.modLoc("axes/" + material.key)),
             ItemTags.AXES,
             (holder) -> new MaterialAxeItem(holder.material.tier),
-            (material) -> toolTexture(Utils.mcItemLoc("wooden_axe"), Utils.modItemLoc("axe_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_axe"), Utils.modItemLoc("axe_overlay"), material),
             MaterialItemType::toolItemModelProvider,
             MaterialAxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
@@ -73,7 +82,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.modLoc("pickaxes/" + material.key)),
             ItemTags.PICKAXES,
             (holder) -> new MaterialPickaxeItem(holder.material.tier),
-            (material) -> toolTexture(Utils.mcItemLoc("wooden_pickaxe"), Utils.modItemLoc("pickaxe_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_pickaxe"), Utils.modItemLoc("pickaxe_overlay"), material),
             MaterialItemType::toolItemModelProvider,
             MaterialPickaxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
@@ -82,7 +91,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.modLoc("shovels/" + material.key)),
             ItemTags.SHOVELS,
             (holder) -> new MaterialShovelItem(holder.material.tier),
-            (material) -> toolTexture(Utils.mcItemLoc("wooden_shovel"), Utils.modItemLoc("shovel_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_shovel"), Utils.modItemLoc("shovel_overlay"), material),
             MaterialItemType::toolItemModelProvider,
             MaterialShovelItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
@@ -91,7 +100,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.modLoc("hoes/" + material.key)),
             ItemTags.HOES,
             (holder) -> new MaterialHoeItem(holder.material.tier),
-            (material) -> toolTexture(Utils.mcItemLoc("wooden_hoe"), Utils.modItemLoc("hoe_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_hoe"), Utils.modItemLoc("hoe_overlay"), material),
             MaterialItemType::toolItemModelProvider,
             MaterialHoeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
@@ -100,11 +109,20 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.modLoc("swords/" + material.key)),
             ItemTags.SWORDS,
             (holder) -> new MaterialSwordItem(holder.material.tier),
-            (material) -> toolTexture(Utils.mcItemLoc("wooden_sword"), Utils.modItemLoc("sword_overlay")),
+            (material) -> toolTexture(Utils.mcItemLoc("wooden_sword"), Utils.modItemLoc("sword_overlay"), material),
             MaterialItemType::toolItemModelProvider,
             MaterialSwordItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.FLINT)),
+    SAW("saw", INameable.suffix("saw"), INameable.suffix("Saw"), //FIXME missing item texture
+            (material) -> ItemTags.create(Utils.modLoc("saws/" + material.key)),
+            ItemTags.create(Utils.modLoc("saws")),
+            (holder) -> new MaterialSwordItem(holder.material.tier),
+            (material) -> basicTexture(Utils.modItemLoc("saw"), material),
+            MaterialItemType::basicItemModelProvider,
+            MaterialSwordItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.noneOf(MaterialType.class)),
     ;
 
     @NotNull public final String id;
@@ -113,7 +131,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     @NotNull public final Map<MaterialType, TagKey<Item>> itemTag;
     @NotNull public final TagKey<Item> groupTag;
     @NotNull private final Function<Holder.ItemHolder, Item> itemGetter;
-    @NotNull private final Set<Integer> tintIndices;
+    @NotNull private final Map<Integer, Integer> tintColors;
     @NotNull private final HashMap<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.ItemHolder, ItemModelProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.ItemHolder, Consumer<FinishedRecipe>> recipeGetter;
@@ -132,7 +150,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         this.itemGetter = itemGetter;
         this.recipeGetter = recipeGetter;
         this.itemTagsGetter = itemTagsGetter;
-        this.tintIndices = new HashSet<>();
+        this.tintColors = new HashMap<>();
         this.textures = new HashMap<>();
         this.modelGetter = modelGetter;
         this.materials = materials;
@@ -143,7 +161,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
             for (TextureHolder holder : holders) {
                 if (holder.tintIndex() >= 0) {
-                    this.tintIndices.add(holder.tintIndex());
+                    this.tintColors.put(holder.tintIndex(), holder.color());
                 }
                 resources.add(holder.texture());
             }
@@ -166,8 +184,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
     @NotNull
     @Override
-    public Set<Integer> getTintIndices() {
-        return tintIndices;
+    public Map<Integer, Integer> getTintColors() {
+        return tintColors;
     }
 
     @NotNull
@@ -213,13 +231,13 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     @NotNull
-    private static TextureHolder[] basicTexture(@NotNull ResourceLocation overlay) {
-        return List.of(new TextureHolder(0, overlay)).toArray(TextureHolder[]::new);
+    private static TextureHolder[] basicTexture(@NotNull ResourceLocation overlay, MaterialType material) {
+        return List.of(new TextureHolder(0, material.color, overlay)).toArray(TextureHolder[]::new);
     }
 
     @NotNull
-    private static TextureHolder[] toolTexture(@NotNull ResourceLocation base, @NotNull ResourceLocation overlay) {
-        return List.of(new TextureHolder(-1, base), new TextureHolder(1, overlay)).toArray(TextureHolder[]::new);
+    private static TextureHolder[] toolTexture(@NotNull ResourceLocation base, @NotNull ResourceLocation overlay, MaterialType material) {
+        return List.of(new TextureHolder(-1, -1, base), new TextureHolder(1, material.color, overlay)).toArray(TextureHolder[]::new);
     }
 
     private static void registerMaterialTag(@NotNull Holder.ItemHolder holder, @NotNull ItemTagsProvider provider) {

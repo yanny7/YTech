@@ -49,7 +49,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)),
-            (material) -> oreTexture(Utils.mcBlockLoc("stone")),
+            (material) -> oreTexture(Utils.mcBlockLoc("stone"), material),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
@@ -62,7 +62,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)),
-            (material) -> oreTexture(Utils.mcBlockLoc("netherrack")),
+            (material) -> oreTexture(Utils.mcBlockLoc("netherrack"), material),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
@@ -75,7 +75,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)),
-            (material) -> oreTexture(Utils.mcBlockLoc("deepslate")),
+            (material) -> oreTexture(Utils.mcBlockLoc("deepslate"), material),
             MaterialBlockType::oreBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
@@ -88,7 +88,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.STORAGE_BLOCKS,
             Tags.Blocks.STORAGE_BLOCKS,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)),
-            (material) -> basicTexture(Utils.modBlockLoc("storage_block")),
+            (material) -> basicTexture(Utils.modBlockLoc("storage_block"), material),
             MaterialBlockType::basicBlockStateProvider,
             ILootable::dropsSelfProvider,
             MaterialBlockType::storageBlockRecipe,
@@ -101,7 +101,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.STORAGE_BLOCKS,
             Tags.Blocks.STORAGE_BLOCKS,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)),
-            (material) -> basicTexture(Utils.modBlockLoc("raw_storage_block")),
+            (material) -> basicTexture(Utils.modBlockLoc("raw_storage_block"), material),
             MaterialBlockType::basicBlockStateProvider,
             ILootable::dropsSelfProvider,
             MaterialBlockType::rawStorageBlockRecipe,
@@ -158,7 +158,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     @NotNull public final TagKey<Item> groupItemTag;
     @NotNull public final TagKey<Block> groupBlockTag;
     @NotNull private final Function<Holder.BlockHolder, Block> blockGetter;
-    @NotNull private final HashSet<Integer> tintIndices;
+    @NotNull private final HashMap<Integer, Integer> tintColors;
     @NotNull private final HashMap<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter;
@@ -195,7 +195,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         this.screenGetter = screenGetter;
         this.itemTagsGetter = itemTagsGetter;
         this.materials = materials;
-        this.tintIndices = new HashSet<>();
+        this.tintColors = new HashMap<>();
         this.textures = new HashMap<>();
 
         for (MaterialType material : materials) {
@@ -204,7 +204,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
             for (TextureHolder holder : holders) {
                 if (holder.tintIndex() >= 0) {
-                    this.tintIndices.add(holder.tintIndex());
+                    this.tintColors.put(holder.tintIndex(), holder.color());
                 }
                 resources.add(holder.texture());
             }
@@ -239,7 +239,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         this.menuGetter = null;
         this.screenGetter = null;
         this.materials = materials;
-        this.tintIndices = new HashSet<>();
+        this.tintColors = new HashMap<>();
         this.textures = new HashMap<>();
 
         for (MaterialType material : materials) {
@@ -248,7 +248,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
             for (TextureHolder holder : holders) {
                 if (holder.tintIndex() >= 0) {
-                    this.tintIndices.add(holder.tintIndex());
+                    this.tintColors.put(holder.tintIndex(), holder.color());
                 }
                 resources.add(holder.texture());
             }
@@ -271,8 +271,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     @NotNull
     @Override
-    public Set<Integer> getTintIndices() {
-        return tintIndices;
+    public Map<Integer, Integer> getTintColors() {
+        return tintColors;
     }
 
     @NotNull
@@ -356,12 +356,13 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                 MaterialItemType.RAW_MATERIAL, holder.material).item.get())));
     }
 
-    private static TextureHolder[] basicTexture(ResourceLocation base) {
-        return List.of(new TextureHolder(0, base)).toArray(TextureHolder[]::new);
+    private static TextureHolder[] basicTexture(ResourceLocation base, MaterialType material) {
+        return List.of(new TextureHolder(0, material.color, base)).toArray(TextureHolder[]::new);
     }
 
-    private static TextureHolder[] oreTexture(ResourceLocation base) {
-        return List.of(new TextureHolder(-1, base), new TextureHolder(0, Utils.modBlockLoc("ore_overlay"))).toArray(TextureHolder[]::new);
+    private static TextureHolder[] oreTexture(ResourceLocation base, MaterialType material) {
+        return List.of(new TextureHolder(-1, -1, base),
+                new TextureHolder(0, material.color, Utils.modBlockLoc("ore_overlay"))).toArray(TextureHolder[]::new);
     }
 
     private static void rawStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {

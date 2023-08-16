@@ -4,16 +4,14 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.item.CraftUsableDiggerItem;
 import com.yanny.ytech.configuration.item.CraftUsableSwordItem;
 import com.yanny.ytech.registration.Holder;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -21,9 +19,9 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -37,44 +35,48 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             () -> basicTexture(Utils.modItemLoc("grass_fibers")),
             SimpleItemType::basicItemModelProvider,
             IRecipe::noRecipe,
-            (holder, provider) -> provider.tag(holder.object.itemTag).add(holder.item.get())),
+            SimpleItemType::registerSimpleTag),
     GRASS_TWINE("grass_twine", "Grass Twine",
             ItemTags.create(Utils.modLoc("grass_twines")),
             SimpleItemType::simpleItem,
             () -> basicTexture(Utils.modItemLoc("grass_twine")),
             SimpleItemType::basicItemModelProvider,
-            ((holder, recipeConsumer) -> {
-                Holder input = HOLDER.simpleItems().get(SimpleItemType.GRASS_FIBERS);
-                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
-                        .define('#', GRASS_FIBERS.itemTag)
-                        .pattern("###")
-                        .pattern("###")
-                        .pattern("###")
-                        .unlockedBy(Utils.getHasName(input), RecipeProvider.has(GRASS_FIBERS.itemTag))
-                        .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+            SimpleItemType::registerGrassTwineRecipe,
+            SimpleItemType::registerSimpleTag),
+    BOLT("wooden_bolt", "Wooden Bolt",
+            ItemTags.create(Utils.modLoc("bolts/wooden")),
+            SimpleItemType::simpleItem,
+            () -> List.of(new TextureHolder(0, MaterialType.OAK_WOOD.color, Utils.modItemLoc("bolt"))).toArray(TextureHolder[]::new),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerBoltRecipe,
+            (holder, provider) -> {
+                provider.tag(holder.object.itemTag).add(holder.item.get());
+                provider.tag(MaterialItemType.BOLT.groupTag).addTag(holder.object.itemTag);
             }),
-            (holder, provider) -> provider.tag(holder.object.itemTag).add(holder.item.get())),
     SHARP_FLINT("sharp_flint", "Sharp Flint",
             ItemTags.create(Utils.modLoc("sharp_flints")),
             () -> new CraftUsableSwordItem(Tiers.WOOD, 0, 0, new Item.Properties()),
             () -> basicTexture(Utils.modItemLoc("sharp_flint")),
             SimpleItemType::basicItemModelProvider,
             IRecipe::noRecipe,
-            (holder, provider) -> provider.tag(holder.object.itemTag).add(holder.item.get())),
+            SimpleItemType::registerSimpleTag),
     FLINT_SAW("flint_saw", "Flint Saw",
-            ItemTags.create(Utils.modLoc("flint_saws")),
+            ItemTags.create(Utils.modLoc("saws/flint")),
             () -> new CraftUsableDiggerItem(0, 1, Tiers.WOOD, BlockTags.LOGS, new Item.Properties()),
             () -> basicTexture(Utils.modItemLoc("flint_saw")),
             SimpleItemType::basicItemModelProvider,
             IRecipe::noRecipe,
-            (holder, provider) -> provider.tag(holder.object.itemTag).add(holder.item.get()))
+            (holder, provider) -> {
+                provider.tag(holder.object.itemTag).add(holder.item.get());
+                provider.tag(MaterialItemType.SAW.groupTag).addTag(holder.object.itemTag);
+            }),
     ;
 
     @NotNull public final String key;
     @NotNull public final String name;
     @NotNull public final TagKey<Item> itemTag;
     @NotNull public final Supplier<Item> itemGetter;
-    @NotNull private final HashSet<Integer> tintIndices;
+    @NotNull private final HashMap<Integer, Integer> tintColors;
     @NotNull private final ResourceLocation[] textures;
     @NotNull private final BiConsumer<Holder.SimpleItemHolder, ItemModelProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.SimpleItemHolder, Consumer<FinishedRecipe>> recipeGetter;
@@ -90,14 +92,14 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         this.modelGetter = modelGetter;
         this.recipeGetter = recipeGetter;
         this.itemTagsGetter = itemTagsGetter;
-        this.tintIndices = new HashSet<>();
+        this.tintColors = new HashMap<>();
 
         TextureHolder[] holders = textureGetter.get();
         ArrayList<ResourceLocation> resources = new ArrayList<>();
 
         for (TextureHolder holder : holders) {
             if (holder.tintIndex() >= 0) {
-                this.tintIndices.add(holder.tintIndex());
+                this.tintColors.put(holder.tintIndex(), holder.color());
             }
             resources.add(holder.texture());
         }
@@ -116,13 +118,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     @Override
-    public void registerTag(Holder.@NotNull SimpleItemHolder holder, @NotNull ItemTagsProvider provider) {
+    public void registerTag(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemTagsProvider provider) {
         itemTagsGetter.accept(holder, provider);
     }
 
     @Override
-    public @NotNull Set<Integer> getTintIndices() {
-        return tintIndices;
+    public @NotNull Map<Integer, Integer> getTintColors() {
+        return tintColors;
     }
 
     @Override
@@ -141,6 +143,29 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static TextureHolder[] basicTexture(ResourceLocation base) {
-        return List.of(new TextureHolder(-1, base)).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, -1, base)).toArray(TextureHolder[]::new);
+    }
+
+    private static void registerSimpleTag(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemTagsProvider provider) {
+        provider.tag(holder.object.itemTag).add(holder.item.get());
+    }
+
+    private static void registerGrassTwineRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        Holder input = HOLDER.simpleItems().get(SimpleItemType.GRASS_FIBERS);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('#', GRASS_FIBERS.itemTag)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .unlockedBy(Utils.getHasName(input), RecipeProvider.has(GRASS_FIBERS.itemTag))
+                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+    }
+
+    private static void registerBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
+                .requires(Items.STICK)
+                .requires(MaterialItemType.SAW.groupTag)
+                .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
+                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
     }
 }

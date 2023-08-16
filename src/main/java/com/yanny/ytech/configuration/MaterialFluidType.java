@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidHolder, ItemModelProvider>, IFluidTag<Holder.FluidHolder> {
     FLUID("fluid", INameable.suffix("bucket"), INameable.prefix("Bucket of"),
             (material) -> FluidTags.create(Utils.forgeLoc(material.key)),
-            (material) -> bucketTexture(Utils.modItemLoc("bucket_overlay")),
+            (material) -> bucketTexture(Utils.modItemLoc("bucket_overlay"), material),
             MaterialFluidType::bucketItemModelProvider,
             (holder, provider) -> provider.tag(holder.object.fluidTag.get(holder.material)).add(holder.source.get()).add(holder.flowing.get()),
             EnumSet.of(MaterialType.MERCURY)),
@@ -30,7 +30,7 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
     @NotNull private final NameHolder key;
     @NotNull private final NameHolder name;
     @NotNull public final Map<MaterialType, TagKey<Fluid>> fluidTag;
-    @NotNull private final Set<Integer> tintIndices;
+    @NotNull private final Map<Integer, Integer> tintColors;
     @NotNull private final HashMap<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.FluidHolder, ItemModelProvider> model;
     @NotNull private final BiConsumer<Holder.FluidHolder, FluidTagsProvider> fluidTagsGetter;
@@ -44,7 +44,7 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
         this.key = key;
         this.name = name;
         this.fluidTag = materials.stream().map((material) -> Pair.of(material, fluidTag.apply(material))).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
-        this.tintIndices = new HashSet<>();
+        this.tintColors = new HashMap<>();
         this.textures = new HashMap<>();
         this.model = model;
         this.fluidTagsGetter = fluidTagsGetter;
@@ -56,7 +56,7 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
 
             for (TextureHolder holder : holders) {
                 if (holder.tintIndex() >= 0) {
-                    this.tintIndices.add(holder.tintIndex());
+                    this.tintColors.put(holder.tintIndex(), holder.color());
                 }
                 resources.add(holder.texture());
             }
@@ -79,8 +79,8 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
 
     @NotNull
     @Override
-    public Set<Integer> getTintIndices() {
-        return tintIndices;
+    public Map<Integer, Integer> getTintColors() {
+        return tintColors;
     }
 
     @NotNull
@@ -107,7 +107,8 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
     }
 
     @NotNull
-    private static TextureHolder[] bucketTexture(@NotNull ResourceLocation overlay) {
-        return List.of(new TextureHolder(-1, Utils.mcItemLoc("bucket")), new TextureHolder(1, overlay)).toArray(TextureHolder[]::new);
+    private static TextureHolder[] bucketTexture(@NotNull ResourceLocation overlay, MaterialType material) {
+        return List.of(new TextureHolder(-1, -1, Utils.mcItemLoc("bucket")),
+                new TextureHolder(1, material.color, overlay)).toArray(TextureHolder[]::new);
     }
 }

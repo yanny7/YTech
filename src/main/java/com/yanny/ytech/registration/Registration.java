@@ -7,10 +7,6 @@ import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -106,6 +102,8 @@ public class Registration {
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
+        HOLDER.simpleItems().values().forEach((h) -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
+        HOLDER.simpleBlocks().values().forEach((h) -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.items()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
@@ -181,19 +179,6 @@ public class Registration {
         );
     }
 
-    private static BlockItemHolder<TagKey<Block>, TagKey<Item>> registerBlockItemTag(String modId, String group, String name) {
-        ResourceLocation resourceLocation = new ResourceLocation(modId, group + "/" + name);
-        return new BlockItemHolder<>(BlockTags.create(resourceLocation), ItemTags.create(resourceLocation));
-    }
-
-    private static TagKey<Item> registerItemTag(String modId, String group, String name) {
-        return ItemTags.create(new ResourceLocation(modId, group + "/" + name));
-    }
-
-    private static TagKey<Fluid> registerFluidTag(String modId, String name) {
-        return FluidTags.create(new ResourceLocation(modId, name));
-    }
-
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
         Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.getFromMap(HOLDER.items(), MaterialItemType.INGOT, MaterialType.GOLD).item.get());
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
@@ -208,10 +193,14 @@ public class Registration {
     }
 
     private static <U extends INameable & IMaterialModel<?, ?>> int getTintColor(Holder.MaterialHolder<U> h, int t) {
-        if (h.object.getTintIndices().contains(t)) {
-            return h.material.color;
-        } else {
-            return 0xFFFFFFFF;
-        }
+        return h.object.getTintColors().getOrDefault(t, 0xFFFFFFFF);
+    }
+
+    private static int getTintColor(Holder.SimpleItemHolder h, int t) {
+        return h.object.getTintColors().getOrDefault(t, 0xFFFFFFFF);
+    }
+
+    private static int getTintColor(Holder.SimpleBlockHolder h, int t) {
+        return h.object.getTintColors().getOrDefault(t, 0xFFFFFFFF);
     }
 }

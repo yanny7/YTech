@@ -47,6 +47,7 @@
   "block.ytech.stone_iron_ore": "Iron Ore",
   "block.ytech.stone_tin_ore": "Tin Ore",
   "block.ytech.tin_block": "Block of Tin",
+  "item.ytech.copper_bolt": "Copper Bolt",
   "item.ytech.copper_dust": "Copper Dust",
   "item.ytech.copper_ingot": "Copper Ingot",
   "item.ytech.copper_plate": "Copper Plate",
@@ -68,5 +69,6 @@
   "item.ytech.raw_tin": "Raw Tin",
   "item.ytech.sharp_flint": "Sharp Flint",
   "item.ytech.tin_dust": "Tin Dust",
-  "item.ytech.tin_ingot": "Tin Ingot"
+  "item.ytech.tin_ingot": "Tin Ingot",
+  "item.ytech.wooden_bolt": "Wooden Bolt"
 }
