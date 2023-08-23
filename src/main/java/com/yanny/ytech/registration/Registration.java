@@ -4,11 +4,14 @@ import com.mojang.serialization.Codec;
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -43,6 +46,8 @@ public class Registration {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, YTechMod.MOD_ID);
     private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, YTechMod.MOD_ID);
     private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> GLM_CODECS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, YTechMod.MOD_ID);
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, YTechMod.MOD_ID);
+    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, YTechMod.MOD_ID);
 
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
@@ -73,6 +78,10 @@ public class Registration {
             HOLDER.simpleBlocks().put(type, registerBlock(type));
         }
 
+        RECIPE_TYPES.register("drying", () -> DryingRecipe.RECIPE_TYPE);
+
+        RECIPE_SERIALIZERS.register("drying", () -> DryingRecipe.SERIALIZER);
+
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
     }
 
@@ -85,6 +94,8 @@ public class Registration {
         BLOCK_ENTITY_TYPES.register(eventBus);
         MENU_TYPES.register(eventBus);
         GLM_CODECS.register(eventBus);
+        RECIPE_TYPES.register(eventBus);
+        RECIPE_SERIALIZERS.register(eventBus);
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {

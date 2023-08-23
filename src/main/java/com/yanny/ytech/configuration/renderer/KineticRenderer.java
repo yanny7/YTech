@@ -1,4 +1,4 @@
-package com.yanny.ytech.network.kinetic.renderer;
+package com.yanny.ytech.configuration.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yanny.ytech.YTechMod;
@@ -26,7 +26,6 @@ public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
     private final RandomSource randomSource = RandomSource.create(42);
 
     public KineticRenderer(BlockEntityRendererProvider.Context context) {
-        super();
         blockRenderDispatcher = context.getBlockRenderDispatcher();
     }
 

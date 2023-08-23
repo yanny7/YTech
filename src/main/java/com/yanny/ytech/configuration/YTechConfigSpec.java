@@ -1,9 +1,13 @@
 package com.yanny.ytech.configuration;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,8 +23,12 @@ public class YTechConfigSpec {
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
     @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolList;
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
+    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
+    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
+    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
+        builder.push("general");
         removeMinecraftRecipes = builder.comment("If mod can remove default minecraft recipes")
                 .worldRestart().define("removeMinecraftRecipes", true);
         removeMinecraftRecipesList = builder.comment("List of recipes that will be removed")
@@ -31,6 +39,15 @@ public class YTechConfigSpec {
                 .worldRestart().defineListAllowEmpty("makeBlocksRequireValidToolList", YTechConfigSpec::getMinecraftBlocksRequiringValidTool, YTechConfigSpec::validateResourceLocation);
         craftSharpFlintByRightClickingOnStone = builder.comment("Enables crafting Sharp Flint by right-clicking on stone")
                 .worldRestart().define("craftSharpFlintByRightClickingOnStone", true);
+        builder.pop();
+        builder.push("dryingRack");
+        noDryingDuringRain = builder.comment("If Drying Rack should stop working during rain")
+                .worldRestart().define("noDryingDuringRain", true);
+        slowDryingBiomeTags = builder.comment("List of biome tags, where will be drying 2x slower")
+                .worldRestart().defineListAllowEmpty("slowDryingBiomeTags", YTechConfigSpec::getSlowDryingBiomeTags, YTechConfigSpec::validateResourceLocation);
+        fastDryingBiomeTags = builder.comment("List of biome tags, where will be drying 2x faster")
+                .worldRestart().defineListAllowEmpty("fastDryingBiomeTags", YTechConfigSpec::getFastDryingBiomeTags, YTechConfigSpec::validateResourceLocation);
+        builder.pop();
     }
 
     public boolean shouldRemoveMinecraftRecipes() {
@@ -53,6 +70,18 @@ public class YTechConfigSpec {
 
     public boolean enableCraftingSharpFlint() {
         return craftSharpFlintByRightClickingOnStone.get();
+    }
+
+    public boolean noDryingDuringRain() {
+        return noDryingDuringRain.get();
+    }
+
+    public Set<TagKey<Biome>> getSlowDryingBiomes() {
+        return slowDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
+    }
+
+    public Set<TagKey<Biome>> getFastDryingBiomes() {
+        return fastDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
     }
 
     @NotNull
@@ -137,6 +166,20 @@ public class YTechConfigSpec {
                 Blocks.COARSE_DIRT,
                 Blocks.ROOTED_DIRT
         ).map(value -> Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(value)).toString()).collect(Collectors.toList());
+    }
+
+    @NotNull
+    private static List<String> getFastDryingBiomeTags() {
+        return Stream.of(
+                Tags.Biomes.IS_DRY
+        ).map(value -> Objects.requireNonNull(value.location()).toString()).collect(Collectors.toList());
+    }
+
+    @NotNull
+    private static List<String> getSlowDryingBiomeTags() {
+        return Stream.of(
+                Tags.Biomes.IS_WET
+        ).map(value -> Objects.requireNonNull(value.location()).toString()).collect(Collectors.toList());
     }
 
     private static boolean validateResourceLocation(@NotNull Object recipe) {

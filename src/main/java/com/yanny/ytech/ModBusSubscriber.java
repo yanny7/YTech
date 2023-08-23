@@ -2,7 +2,8 @@ package com.yanny.ytech;
 
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.HolderType;
-import com.yanny.ytech.network.kinetic.renderer.KineticRenderer;
+import com.yanny.ytech.configuration.renderer.DryingRackRenderer;
+import com.yanny.ytech.configuration.renderer.KineticRenderer;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -37,6 +38,7 @@ public class ModBusSubscriber {
             if (blockHolder instanceof Holder.EntityBlockHolder holder) {
                 switch (blockType) {
                     case SHAFT, WATER_WHEEL -> event.registerBlockEntityRenderer(holder.entityType.get(), KineticRenderer::new);
+                    case DRYING_RACK -> event.registerBlockEntityRenderer(holder.entityType.get(), DryingRackRenderer::new);
                 }
             }
         }));
