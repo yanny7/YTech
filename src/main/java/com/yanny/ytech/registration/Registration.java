@@ -7,6 +7,7 @@ import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
+import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
@@ -86,6 +87,7 @@ public class Registration {
         RECIPE_SERIALIZERS.register("tanning", () -> TanningRecipe.SERIALIZER);
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
+        GLM_CODECS.register("remove_item", ReplaceItemModifier.CODEC);
     }
 
     public static void init(IEventBus eventBus) {

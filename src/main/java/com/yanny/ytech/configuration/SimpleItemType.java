@@ -1,8 +1,8 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.item.CraftUsableDiggerItem;
 import com.yanny.ytech.configuration.item.CraftUsableSwordItem;
+import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -13,6 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -53,6 +54,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 provider.tag(holder.object.itemTag).add(holder.item.get());
                 provider.tag(MaterialItemType.BOLT.groupTag).addTag(holder.object.itemTag);
             }),
+    RAW_HIDE("raw_hide", "Raw Hide",
+            ItemTags.create(Utils.modLoc("raw_hides")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("raw_hide")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerRawHideRecipe,
+            SimpleItemType::registerSimpleTag),
     SHARP_FLINT("sharp_flint", "Sharp Flint",
             ItemTags.create(Utils.modLoc("sharp_flints")),
             () -> new CraftUsableSwordItem(Tiers.WOOD, 0, 0, new Item.Properties()),
@@ -151,14 +159,14 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerGrassTwineRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        Holder input = HOLDER.simpleItems().get(SimpleItemType.GRASS_FIBERS);
+        Holder input = HOLDER.simpleItems().get(GRASS_FIBERS);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', GRASS_FIBERS.itemTag)
                 .pattern("###")
                 .pattern("###")
                 .pattern("###")
                 .unlockedBy(Utils.getHasName(input), RecipeProvider.has(GRASS_FIBERS.itemTag))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
@@ -166,6 +174,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .requires(Items.STICK)
                 .requires(MaterialItemType.SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerRawHideRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        TanningRecipe.Builder.tanning(holder.object.itemTag, 5, Items.LEATHER)
+                .tool(Ingredient.of(SHARP_FLINT.itemTag))
+                .unlockedBy(Utils.getHasName(holder), RecipeProvider.has(RAW_HIDE.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

@@ -1,0 +1,13 @@
+{
+  "type": "ytech:tanning",
+  "hitCount": 5,
+  "ingredient": {
+    "tag": "ytech:raw_hides"
+  },
+  "result": {
+    "item": "minecraft:leather"
+  },
+  "tool": {
+    "tag": "ytech:sharp_flints"
+  }
+}

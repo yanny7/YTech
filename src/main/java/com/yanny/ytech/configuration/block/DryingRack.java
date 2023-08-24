@@ -10,12 +10,14 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -124,6 +126,18 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (!level.isClientSide && level.getBlockEntity(pos) instanceof DryingRackBlockEntity dryingRack) {
+                Containers.dropContents(level, pos, NonNullList.withSize(1, dryingRack.getItem()));
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override

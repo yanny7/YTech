@@ -1,6 +1,7 @@
 {
   "entries": [
-    "ytech:grass_drops_fibers"
+    "ytech:grass_drops_fibers",
+    "ytech:replace_leather_by_raw_hide"
   ],
   "replace": false
 }
