@@ -1,7 +1,7 @@
 package com.yanny.ytech.configuration.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yanny.ytech.configuration.block_entity.DryingRackBlockEntity;
+import com.yanny.ytech.configuration.block_entity.TanningRackBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -19,10 +19,10 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
 @OnlyIn(Dist.CLIENT)
-public class DryingRackRenderer implements BlockEntityRenderer<BlockEntity> {
+public class TanningRackRenderer implements BlockEntityRenderer<BlockEntity> {
     private final ItemRenderer itemRenderer;
 
-    public DryingRackRenderer(BlockEntityRendererProvider.Context context) {
+    public TanningRackRenderer(BlockEntityRendererProvider.Context context) {
         itemRenderer = context.getItemRenderer();
     }
 
@@ -39,14 +39,13 @@ public class DryingRackRenderer implements BlockEntityRenderer<BlockEntity> {
         }
 
         poseStack.translate(0.5f, 0.5f, 0.5f);
-        poseStack.scale(0.5f, 0.5f, 0.5f);
-        poseStack.translate(0, 0.44f, 0);
+        poseStack.scale(0.9f, 0.9f, 0.9f);
 
         if (level != null) {
-            if (blockEntity instanceof DryingRackBlockEntity dryingRack) {
-                if (!dryingRack.getItem().isEmpty()) {
-                    BakedModel bakedmodel = itemRenderer.getModel(dryingRack.getItem(), level, null, 0);
-                    itemRenderer.render(dryingRack.getItem(), ItemDisplayContext.FIXED, false, poseStack, buffer, packedLight, packedOverlay, bakedmodel);
+            if (blockEntity instanceof TanningRackBlockEntity tanningRack) {
+                if (!tanningRack.getItem().isEmpty()) {
+                    BakedModel bakedmodel = itemRenderer.getModel(tanningRack.getItem(), level, null, 0);
+                    itemRenderer.render(tanningRack.getItem(), ItemDisplayContext.FIXED, false, poseStack, buffer, packedLight, packedOverlay, bakedmodel);
                 }
             }
         }

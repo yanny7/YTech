@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "tanning_rack_wooden",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/wooden"
+    },
+    "F": {
+      "tag": "ytech:sharp_flints"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "tag": "ytech:grass_twines"
+    },
+    "W": {
+      "item": "minecraft:oak_log"
+    }
+  },
+  "pattern": [
+    "TST",
+    "BFB",
+    "WSW"
+  ],
+  "result": {
+    "item": "ytech:oak_tanning_rack"
+  },
+  "show_notification": true
+}

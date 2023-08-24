@@ -27,12 +27,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryingTime, ItemStack result) implements Recipe<Container> {
+public record TanningRecipe(ResourceLocation id, Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<DryingRecipe> RECIPE_TYPE = new RecipeType<>() {
+    public static final RecipeType<TanningRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
         public String toString() {
-            return Utils.modLoc("drying").toString();
+            return Utils.modLoc("tanning").toString();
         }
     };
 
@@ -76,43 +76,47 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
         return RECIPE_TYPE;
     }
 
-    public static class Serializer implements RecipeSerializer<DryingRecipe> {
+    public static class Serializer implements RecipeSerializer<TanningRecipe> {
         @NotNull
         @Override
-        public DryingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
+        public TanningRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
             Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
+            Ingredient tool = Ingredient.fromJson(serializedRecipe.get("tool"), true);
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            int dryingTime = GsonHelper.getAsInt(serializedRecipe, "clickCount");
-            return new DryingRecipe(recipeId, ingredient, dryingTime, result);
+            int hitCount = GsonHelper.getAsInt(serializedRecipe, "hitCount");
+            return new TanningRecipe(recipeId, ingredient, tool, hitCount, result);
         }
 
         @Override
-        public @Nullable DryingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        public @Nullable TanningRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            Ingredient tool = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            int dryingTime = buffer.readInt();
-            return new DryingRecipe(recipeId, ingredient, dryingTime, result);
+            int hitCount = buffer.readInt();
+            return new TanningRecipe(recipeId, ingredient, tool, hitCount, result);
         }
 
         @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull DryingRecipe recipe) {
+        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull TanningRecipe recipe) {
             recipe.ingredient.toNetwork(buffer);
+            recipe.tool.toNetwork(buffer);
             buffer.writeItem(recipe.result);
-            buffer.writeInt(recipe.dryingTime);
+            buffer.writeInt(recipe.hitCount);
         }
     }
 
-    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int dryingTime, @NotNull Item result,
+    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, @NotNull Ingredient tool, int hitCount, @NotNull Item result,
                          @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
             json.add("ingredient", ingredient.toJson());
+            json.add("tool", tool.toJson());
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).toString());
             json.add("result", resultItemStack);
 
-            json.addProperty("clickCount", dryingTime);
+            json.addProperty("hitCount", hitCount);
         }
 
         @NotNull
@@ -142,34 +146,40 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
-        private final int dryingTime;
+        private Ingredient tool = Ingredient.EMPTY;
+        private final int hitCount;
         private final Item result;
         private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
-        Builder(@NotNull Ingredient ingredient, int dryingTime, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, int hitCount, @NotNull Item result) {
             this.ingredient = ingredient;
-            this.dryingTime = dryingTime;
+            this.hitCount = hitCount;
             this.result = result;
         }
 
-        public static Builder drying(@NotNull TagKey<Item> input, int dryingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), dryingTime, result);
+        public static Builder tanning(@NotNull TagKey<Item> input, int hitCount, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), hitCount, result);
         }
 
-        public static Builder drying(@NotNull ItemLike input, int dryingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), dryingTime, result);
+        public static Builder tanning(@NotNull ItemLike input, int hitCount, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), hitCount, result);
+        }
+
+        public Builder tool(@NotNull Ingredient tool) {
+            this.tool = tool;
+            return this;
         }
 
         @NotNull
         @Override
-        public RecipeBuilder unlockedBy(@NotNull String criterionName, @NotNull CriterionTriggerInstance criterionTrigger) {
+        public Builder unlockedBy(@NotNull String criterionName, @NotNull CriterionTriggerInstance criterionTrigger) {
             this.advancement.addCriterion(criterionName, criterionTrigger);
             return this;
         }
 
         @NotNull
         @Override
-        public RecipeBuilder group(@Nullable String groupName) {
+        public Builder group(@Nullable String groupName) {
             return this;
         }
 
@@ -184,7 +194,7 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
             ensureValid(recipeId);
             advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new DryingRecipe.Result(recipeId, ingredient, dryingTime, result, advancement, recipeId.withPrefix("recipes/drying/")));
+            finishedRecipeConsumer.accept(new TanningRecipe.Result(recipeId, ingredient, tool, hitCount, result, advancement, recipeId.withPrefix("recipes/tanning/")));
         }
 
         //Makes sure that this recipe is valid and obtainable.

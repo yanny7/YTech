@@ -4,6 +4,7 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block.DryingRack;
 import com.yanny.ytech.configuration.block.ShaftBlock;
+import com.yanny.ytech.configuration.block.TanningRack;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
 import com.yanny.ytech.configuration.screen.BaseScreen;
 import com.yanny.ytech.registration.Holder;
@@ -118,6 +119,19 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             DryingRack::registerModel,
             ILootable::dropsSelfProvider,
             DryingRack::registerRecipe,
+            MaterialBlockType::registerItemTag,
+            MaterialBlockType::registerMineableBlockTag,
+            MaterialType.ALL_WOOD),
+    TANNING_RACK(HolderType.ENTITY_BLOCK, "tanning_rack", INameable.suffix("tanning_rack"), INameable.suffix("Tanning Rack"),
+            (material) -> ItemTags.create(Utils.modLoc("tanning_racks/" + material.key)),
+            (material) -> BlockTags.create(Utils.modLoc("tanning_racks/" + material.key)),
+            ItemTags.create(Utils.modLoc("tanning_racks")),
+            BlockTags.create(Utils.modLoc("tanning_racks")),
+            TanningRack::new,
+            TanningRack::getTexture,
+            TanningRack::registerModel,
+            ILootable::dropsSelfProvider,
+            TanningRack::registerRecipe,
             MaterialBlockType::registerItemTag,
             MaterialBlockType::registerMineableBlockTag,
             MaterialType.ALL_WOOD),

@@ -1,9 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
-import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.recipe.DryingRecipe;
+import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -15,11 +13,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -29,17 +25,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTicker<DryingRackBlockEntity> {
+public class TanningRackBlockEntity extends BlockEntity {
     private static final String TAG_ITEMS = "items";
     private static final String TAG_RESULT = "result";
-    private static final String TAG_DRYING_LEFT = "dryingLeft";
+    private static final String TAG_HIT_LEFT = "hitLeft";
 
     private final ItemStackHandler items;
 
     @Nullable private ItemStack result = null;
-    private int dryingLeft = -1;
+    private int hitLeft = -1;
 
-    public DryingRackBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
+    public TanningRackBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
         super(blockEntityType, pos, blockState);
         this.items = new ItemStackHandler(1) {
             @Override
@@ -53,55 +49,49 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
                                    @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
-            ItemStack dryingItem = items.getStackInSlot(0);
+            ItemStack tanningItem = items.getStackInSlot(0);
 
-            if (dryingItem.isEmpty()) {
-                Optional<DryingRecipe> dryingRecipe = level.getRecipeManager().getRecipeFor(DryingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+            if (tanningItem.isEmpty()) {
+                Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
 
-                dryingRecipe.ifPresent((r) -> {
+                tanningRecipe.ifPresent((recipe) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-                    result = r.result().copy();
-                    dryingLeft = r.dryingTime();
+
+                    result = recipe.result().copy();
+                    hitLeft = recipe.hitCount();
                     player.setItemSlot(slot, items.insertItem(0, holdingItemStack, false));
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                 });
             } else {
-                Block.popResourceFromFace(level, pos, hitResult.getDirection(), items.extractItem(0, dryingItem.getMaxStackSize(), false));
-                result = null;
-                dryingLeft = -1;
-                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+                if (result != null) {
+                    Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(items.getStackInSlot(0)), level);
+
+                    tanningRecipe.ifPresent((recipe) -> {
+                        if (recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack)) {
+                            player.getItemInHand(hand).hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
+                            hitLeft--;
+
+                            if (hitLeft == 0) {
+                                items.setStackInSlot(0, result);
+                                result = null;
+                                hitLeft = -1;
+                                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                                setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+                            }
+                        }
+                    });
+                } else {
+                    Block.popResourceFromFace(level, pos, hitResult.getDirection(), items.extractItem(0, tanningItem.getMaxStackSize(), false));
+                    result = null;
+                    hitLeft = -1;
+                    level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                    setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+                }
             }
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    @Override
-    public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull DryingRackBlockEntity blockEntity) {
-        if (result != null) {
-            if (dryingLeft > 0) {
-                if (!(level.isRaining() && YTechMod.CONFIGURATION.noDryingDuringRain())) {
-                    Holder<Biome> biome = level.getBiome(pos);
-
-                    if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getSlowDryingBiomes().contains(t)) && level.getGameTime() % 2 == 0) {
-                        dryingLeft--;
-                    } else if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getFastDryingBiomes().contains(t))) {
-                        dryingLeft -= 2;
-                    } else {
-                        dryingLeft--;
-                    }
-                }
-            } else {
-                items.setStackInSlot(0, result);
-                result = null;
-                dryingLeft = -1;
-
-                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
-            }
-        }
     }
 
     @Override
@@ -118,7 +108,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             result = null;
         }
 
-        dryingLeft = tag.getInt(TAG_DRYING_LEFT);
+        hitLeft = tag.getInt(TAG_HIT_LEFT);
     }
 
     @NotNull
@@ -135,8 +125,8 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public int getDryingLeft() {
-        return dryingLeft;
+    public int getHitLeft() {
+        return hitLeft;
     }
 
     public ItemStack getItem() {
@@ -147,7 +137,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put(TAG_ITEMS, items.serializeNBT());
-        tag.putInt(TAG_DRYING_LEFT, dryingLeft);
+        tag.putInt(TAG_HIT_LEFT, hitLeft);
 
         if (result != null) {
             CompoundTag itemStack = new CompoundTag();
