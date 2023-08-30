@@ -87,36 +87,36 @@ public class YTechConfigSpec {
     @NotNull
     private static List<String> getToRemoveMinecraftRecipes() {
         return Stream.of(
-                Items.WOODEN_AXE,
-                Items.WOODEN_PICKAXE,
-                Items.WOODEN_HOE,
-                Items.WOODEN_SHOVEL,
-                Items.WOODEN_SWORD,
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_AXE)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_PICKAXE)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_HOE)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_SHOVEL)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_SWORD)).toString(),
 
-                Items.STONE_AXE,
-                Items.STONE_PICKAXE,
-                Items.STONE_HOE,
-                Items.STONE_SHOVEL,
-                Items.STONE_SWORD,
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_AXE)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_PICKAXE)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_HOE)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_SHOVEL)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_SWORD)).toString(),
 
-                Items.ACACIA_SLAB,
-                Items.BIRCH_SLAB,
-                Items.CHERRY_SLAB,
-                Items.JUNGLE_SLAB,
-                Items.OAK_SLAB,
-                Items.DARK_OAK_SLAB,
-                Items.MANGROVE_SLAB,
-                Items.SPRUCE_SLAB,
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.ACACIA_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BIRCH_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.CHERRY_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.JUNGLE_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.OAK_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DARK_OAK_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.MANGROVE_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SPRUCE_SLAB)).toString(),
 
-                Items.ACACIA_PLANKS,
-                Items.BIRCH_PLANKS,
-                Items.CHERRY_PLANKS,
-                Items.JUNGLE_PLANKS,
-                Items.OAK_PLANKS,
-                Items.DARK_OAK_PLANKS,
-                Items.MANGROVE_PLANKS,
-                Items.SPRUCE_PLANKS
-        ).map(value -> Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(value)).toString()).collect(Collectors.toList());
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.ACACIA_PLANKS)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BIRCH_PLANKS)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.CHERRY_PLANKS)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.JUNGLE_PLANKS)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.OAK_PLANKS)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DARK_OAK_PLANKS)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.MANGROVE_PLANKS)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SPRUCE_PLANKS)).toString()
+        ).collect(Collectors.toList());
     }
 
     @NotNull

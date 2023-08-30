@@ -1,14 +1,14 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialItemType;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -48,6 +48,10 @@ class YTechRecipes extends RecipeProvider {
         splitBySawRecipes(recipeConsumer, Items.DARK_OAK_LOG, Items.DARK_OAK_PLANKS);
         splitBySawRecipes(recipeConsumer, Items.MANGROVE_LOG, Items.MANGROVE_PLANKS);
         splitBySawRecipes(recipeConsumer, Items.SPRUCE_LOG, Items.SPRUCE_PLANKS);
+
+        DryingRecipe.Builder.drying(Items.KELP, 20 * 60, Items.DRIED_KELP)
+                .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.DRIED_KELP))
+                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DRIED_KELP)).getPath()));
     }
 
     private void splitBySawRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
@@ -55,6 +59,6 @@ class YTechRecipes extends RecipeProvider {
                 .requires(input)
                 .requires(MaterialItemType.SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
     }
 }
