@@ -1,0 +1,10 @@
+{
+  "type": "ytech:drying",
+  "clickCount": 1200,
+  "ingredient": {
+    "item": "minecraft:mutton"
+  },
+  "result": {
+    "item": "ytech:dried_mutton"
+  }
+}

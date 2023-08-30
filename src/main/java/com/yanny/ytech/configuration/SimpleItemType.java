@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.item.CraftUsableDiggerItem;
 import com.yanny.ytech.configuration.item.CraftUsableSwordItem;
+import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.*;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
@@ -67,6 +69,55 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             () -> basicTexture(Utils.modItemLoc("leather_strips")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerLeatherStripsRecipe,
+            SimpleItemType::registerSimpleTag),
+    DRIED_BEEF("dried_beef", "Dried Beef",
+            ItemTags.create(Utils.modLoc("dried_beef")),
+            () -> simpleFood(6, 0.7f),
+            () -> basicTexture(Utils.modItemLoc("dried_beef")),
+            SimpleItemType::basicItemModelProvider,
+            (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.BEEF),
+            SimpleItemType::registerSimpleTag),
+    DRIED_CHICKEN("dried_chicken", "Dried Chicken",
+            ItemTags.create(Utils.modLoc("dried_chicken")),
+            () -> simpleFood(4, 0.5f),
+            () -> basicTexture(Utils.modItemLoc("dried_chicken")),
+            SimpleItemType::basicItemModelProvider,
+            (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.CHICKEN),
+            SimpleItemType::registerSimpleTag),
+    DRIED_COD("dried_cod", "Dried Cod",
+            ItemTags.create(Utils.modLoc("dried_cod")),
+            () -> simpleFood(4, 0.5f),
+            () -> basicTexture(Utils.modItemLoc("dried_cod")),
+            SimpleItemType::basicItemModelProvider,
+            (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.COD),
+            SimpleItemType::registerSimpleTag),
+    DRIED_MUTTON("dried_mutton", "Dried Mutton",
+            ItemTags.create(Utils.modLoc("dried_mutton")),
+            () -> simpleFood(4, 0.5f),
+            () -> basicTexture(Utils.modItemLoc("dried_mutton")),
+            SimpleItemType::basicItemModelProvider,
+            (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.MUTTON),
+            SimpleItemType::registerSimpleTag),
+    DRIED_PORKCHOP("dried_porkchop", "Dried Porkchop",
+            ItemTags.create(Utils.modLoc("dried_porkchop")),
+            () -> simpleFood(6, 0.7f),
+            () -> basicTexture(Utils.modItemLoc("dried_porkchop")),
+            SimpleItemType::basicItemModelProvider,
+            (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.PORKCHOP),
+            SimpleItemType::registerSimpleTag),
+    DRIED_RABBIT("dried_rabbit", "Dried Rabbit",
+            ItemTags.create(Utils.modLoc("dried_rabbit")),
+            () -> simpleFood(4, 0.5f),
+            () -> basicTexture(Utils.modItemLoc("dried_rabbit")),
+            SimpleItemType::basicItemModelProvider,
+            (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.RABBIT),
+            SimpleItemType::registerSimpleTag),
+    DRIED_SALMON("dried_salmon", "Dried Salmon",
+            ItemTags.create(Utils.modLoc("dried_salmon")),
+            () -> simpleFood(4, 0.5f),
+            () -> basicTexture(Utils.modItemLoc("dried_salmon")),
+            SimpleItemType::basicItemModelProvider,
+            (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.SALMON),
             SimpleItemType::registerSimpleTag),
     SHARP_FLINT("sharp_flint", "Sharp Flint",
             ItemTags.create(Utils.modLoc("sharp_flints")),
@@ -151,6 +202,10 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         return new Item(new Item.Properties());
     }
 
+    private static Item simpleFood(int nutrition, float saturation) {
+        return new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(nutrition).saturationMod(saturation).build()));
+    }
+
     private static void basicItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures();
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
@@ -205,6 +260,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .requires(Items.FLINT)
                 .requires(SimpleItemType.SHARP_FLINT.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerDryingRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer, Item rawMeat) {
+        DryingRecipe.Builder.drying(rawMeat, 20 * 60, holder.item.get())
+                .unlockedBy(RecipeProvider.getHasName(rawMeat), RecipeProvider.has(rawMeat))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }
