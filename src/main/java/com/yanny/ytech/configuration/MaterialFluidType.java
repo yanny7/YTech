@@ -30,8 +30,8 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
     @NotNull private final NameHolder key;
     @NotNull private final NameHolder name;
     @NotNull public final Map<MaterialType, TagKey<Fluid>> fluidTag;
-    @NotNull private final Map<Integer, Integer> tintColors;
-    @NotNull private final HashMap<MaterialType, ResourceLocation[]> textures;
+    @NotNull private final Map<MaterialType, Map<Integer, Integer>> tintColors;
+    @NotNull private final Map<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.FluidHolder, ItemModelProvider> model;
     @NotNull private final BiConsumer<Holder.FluidHolder, FluidTagsProvider> fluidTagsGetter;
     @NotNull public final EnumSet<MaterialType> materials;
@@ -53,14 +53,17 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
         for (MaterialType material : materials) {
             TextureHolder[] holders = textureGetter.apply(material);
             ArrayList<ResourceLocation> resources = new ArrayList<>();
+            Map<Integer, Integer> tintMap = new HashMap<>();
 
             for (TextureHolder holder : holders) {
                 if (holder.tintIndex() >= 0) {
-                    this.tintColors.put(holder.tintIndex(), holder.color());
+                    tintMap.put(holder.tintIndex(), holder.color());
                 }
+
                 resources.add(holder.texture());
             }
 
+            this.tintColors.put(material, tintMap);
             this.textures.computeIfAbsent(material, (m) -> resources.toArray(ResourceLocation[]::new));
         }
     }
@@ -79,8 +82,8 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
 
     @NotNull
     @Override
-    public Map<Integer, Integer> getTintColors() {
-        return tintColors;
+    public Map<Integer, Integer> getTintColors(@NotNull MaterialType material) {
+        return tintColors.get(material);
     }
 
     @NotNull

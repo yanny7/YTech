@@ -172,8 +172,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     @NotNull public final TagKey<Item> groupItemTag;
     @NotNull public final TagKey<Block> groupBlockTag;
     @NotNull private final Function<Holder.BlockHolder, Block> blockGetter;
-    @NotNull private final HashMap<Integer, Integer> tintColors;
-    @NotNull private final HashMap<MaterialType, ResourceLocation[]> textures;
+    @NotNull private final Map<MaterialType, Map<Integer, Integer>> tintColors;
+    @NotNull private final Map<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter;
@@ -215,14 +215,17 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         for (MaterialType material : materials) {
             TextureHolder[] holders = textureGetter.apply(material);
             ArrayList<ResourceLocation> resources = new ArrayList<>();
+            Map<Integer, Integer> tintMap = new HashMap<>();
 
             for (TextureHolder holder : holders) {
                 if (holder.tintIndex() >= 0) {
-                    this.tintColors.put(holder.tintIndex(), holder.color());
+                    tintMap.put(holder.tintIndex(), holder.color());
                 }
+
                 resources.add(holder.texture());
             }
 
+            this.tintColors.put(material, tintMap);
             this.textures.computeIfAbsent(material, (m) -> resources.toArray(ResourceLocation[]::new));
         }
     }
@@ -259,14 +262,17 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         for (MaterialType material : materials) {
             TextureHolder[] holders = textureGetter.apply(material);
             ArrayList<ResourceLocation> resources = new ArrayList<>();
+            Map<Integer, Integer> tintMap = new HashMap<>();
 
             for (TextureHolder holder : holders) {
                 if (holder.tintIndex() >= 0) {
-                    this.tintColors.put(holder.tintIndex(), holder.color());
+                    tintMap.put(holder.tintIndex(), holder.color());
                 }
+
                 resources.add(holder.texture());
             }
 
+            this.tintColors.put(material, tintMap);
             this.textures.computeIfAbsent(material, (m) -> resources.toArray(ResourceLocation[]::new));
         }
     }
@@ -285,8 +291,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     @NotNull
     @Override
-    public Map<Integer, Integer> getTintColors() {
-        return tintColors;
+    public Map<Integer, Integer> getTintColors(@NotNull MaterialType material) {
+        return tintColors.get(material);
     }
 
     @NotNull

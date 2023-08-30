@@ -8,6 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 public interface IMaterialModel<T extends Holder, U extends DataProvider> extends IModel<T, U> {
-    @NotNull Map<Integer, Integer> getTintColors();
+    @NotNull Map<Integer, Integer> getTintColors(@NotNull MaterialType material);
     @NotNull ResourceLocation[] getTextures(@NotNull MaterialType material);
 }

@@ -209,7 +209,7 @@ public class Registration {
     }
 
     private static <U extends INameable & IMaterialModel<?, ?>> int getTintColor(Holder.MaterialHolder<U> h, int t) {
-        return h.object.getTintColors().getOrDefault(t, 0xFFFFFFFF);
+        return h.object.getTintColors(h.material).getOrDefault(t, 0xFFFFFFFF);
     }
 
     private static int getTintColor(Holder.SimpleItemHolder h, int t) {
