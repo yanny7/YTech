@@ -186,7 +186,7 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
                     .define('W', Utils.getLogFromMaterial(holder.material))
                     .define('S', Items.STICK)
                     .define('T', SimpleItemType.GRASS_TWINE.itemTag)
-                    .define('F', SimpleItemType.SHARP_FLINT.itemTag)
+                    .define('F', MaterialItemType.SAW.groupTag)
                     .define('B', SimpleItemType.WOODEN_BOLT.itemTag)
                     .pattern("TST")
                     .pattern("BFB")

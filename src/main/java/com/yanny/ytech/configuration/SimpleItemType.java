@@ -73,7 +73,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             () -> new CraftUsableDiggerItem(0, 1, Tiers.WOOD, BlockTags.LOGS, new Item.Properties()),
             () -> basicTexture(Utils.modItemLoc("flint_saw")),
             SimpleItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            SimpleItemType::registerFlintSawRecipe,
             (holder, provider) -> {
                 provider.tag(holder.object.itemTag).add(holder.item.get());
                 provider.tag(MaterialItemType.SAW.groupTag).addTag(holder.object.itemTag);
@@ -181,6 +181,15 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         TanningRecipe.Builder.tanning(holder.object.itemTag, 5, Items.LEATHER)
                 .tool(Ingredient.of(SHARP_FLINT.itemTag))
                 .unlockedBy(Utils.getHasName(holder), RecipeProvider.has(RAW_HIDE.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerFlintSawRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
+                .requires(Items.STICK)
+                .requires(Items.FLINT)
+                .requires(SimpleItemType.SHARP_FLINT.itemTag)
+                .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

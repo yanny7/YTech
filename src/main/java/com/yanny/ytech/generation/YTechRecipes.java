@@ -31,27 +31,27 @@ class YTechRecipes extends RecipeProvider {
         HOLDER.simpleItems().values().forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
         HOLDER.simpleBlocks().values().forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
 
-        splitBySawRecipes(recipeConsumer, Items.ACACIA_PLANKS, Items.ACACIA_SLAB, 2);
-        splitBySawRecipes(recipeConsumer, Items.BIRCH_PLANKS, Items.BIRCH_SLAB, 2);
-        splitBySawRecipes(recipeConsumer, Items.CHERRY_PLANKS, Items.CHERRY_SLAB, 2);
-        splitBySawRecipes(recipeConsumer, Items.JUNGLE_PLANKS, Items.JUNGLE_SLAB, 2);
-        splitBySawRecipes(recipeConsumer, Items.OAK_PLANKS, Items.OAK_SLAB, 2);
-        splitBySawRecipes(recipeConsumer, Items.DARK_OAK_PLANKS, Items.DARK_OAK_SLAB, 2);
-        splitBySawRecipes(recipeConsumer, Items.MANGROVE_PLANKS, Items.MANGROVE_SLAB, 2);
-        splitBySawRecipes(recipeConsumer, Items.SPRUCE_PLANKS, Items.SPRUCE_SLAB, 2);
+        splitBySawRecipes(recipeConsumer, Items.ACACIA_PLANKS, Items.ACACIA_SLAB);
+        splitBySawRecipes(recipeConsumer, Items.BIRCH_PLANKS, Items.BIRCH_SLAB);
+        splitBySawRecipes(recipeConsumer, Items.CHERRY_PLANKS, Items.CHERRY_SLAB);
+        splitBySawRecipes(recipeConsumer, Items.JUNGLE_PLANKS, Items.JUNGLE_SLAB);
+        splitBySawRecipes(recipeConsumer, Items.OAK_PLANKS, Items.OAK_SLAB);
+        splitBySawRecipes(recipeConsumer, Items.DARK_OAK_PLANKS, Items.DARK_OAK_SLAB);
+        splitBySawRecipes(recipeConsumer, Items.MANGROVE_PLANKS, Items.MANGROVE_SLAB);
+        splitBySawRecipes(recipeConsumer, Items.SPRUCE_PLANKS, Items.SPRUCE_SLAB);
 
-        splitBySawRecipes(recipeConsumer, Items.ACACIA_LOG, Items.ACACIA_PLANKS, 2);
-        splitBySawRecipes(recipeConsumer, Items.BIRCH_LOG, Items.BIRCH_PLANKS, 2);
-        splitBySawRecipes(recipeConsumer, Items.CHERRY_LOG, Items.CHERRY_PLANKS, 2);
-        splitBySawRecipes(recipeConsumer, Items.JUNGLE_LOG, Items.JUNGLE_PLANKS, 2);
-        splitBySawRecipes(recipeConsumer, Items.OAK_LOG, Items.OAK_PLANKS, 2);
-        splitBySawRecipes(recipeConsumer, Items.DARK_OAK_LOG, Items.DARK_OAK_PLANKS, 2);
-        splitBySawRecipes(recipeConsumer, Items.MANGROVE_LOG, Items.MANGROVE_PLANKS, 2);
-        splitBySawRecipes(recipeConsumer, Items.SPRUCE_LOG, Items.SPRUCE_PLANKS, 2);
+        splitBySawRecipes(recipeConsumer, Items.ACACIA_LOG, Items.ACACIA_PLANKS);
+        splitBySawRecipes(recipeConsumer, Items.BIRCH_LOG, Items.BIRCH_PLANKS);
+        splitBySawRecipes(recipeConsumer, Items.CHERRY_LOG, Items.CHERRY_PLANKS);
+        splitBySawRecipes(recipeConsumer, Items.JUNGLE_LOG, Items.JUNGLE_PLANKS);
+        splitBySawRecipes(recipeConsumer, Items.OAK_LOG, Items.OAK_PLANKS);
+        splitBySawRecipes(recipeConsumer, Items.DARK_OAK_LOG, Items.DARK_OAK_PLANKS);
+        splitBySawRecipes(recipeConsumer, Items.MANGROVE_LOG, Items.MANGROVE_PLANKS);
+        splitBySawRecipes(recipeConsumer, Items.SPRUCE_LOG, Items.SPRUCE_PLANKS);
     }
 
-    private void splitBySawRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result, int count) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, count)
+    private void splitBySawRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
                 .requires(MaterialItemType.SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))

@@ -120,7 +120,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (holder) -> new MaterialSwordItem(holder.material.tier),
             (material) -> basicTexture(Utils.modItemLoc("saw"), material),
             MaterialItemType::basicItemModelProvider,
-            MaterialSwordItem::registerRecipe,
+            IRecipe::noRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.noneOf(MaterialType.class)),
     ;

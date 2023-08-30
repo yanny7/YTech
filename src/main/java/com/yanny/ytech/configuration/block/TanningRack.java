@@ -195,7 +195,7 @@ public class TanningRack extends Block implements EntityBlock, IProbeInfoProvide
                     .define('W', Utils.getLogFromMaterial(holder.material))
                     .define('S', Items.STICK)
                     .define('T', SimpleItemType.GRASS_TWINE.itemTag)
-                    .define('F', SimpleItemType.SHARP_FLINT.itemTag)
+                    .define('F', MaterialItemType.SAW.groupTag)
                     .define('B', SimpleItemType.WOODEN_BOLT.itemTag)
                     .pattern("TST")
                     .pattern("BFB")
