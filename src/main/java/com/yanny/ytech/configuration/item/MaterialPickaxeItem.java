@@ -25,7 +25,7 @@ public class MaterialPickaxeItem extends PickaxeItem {
             case FLINT -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
-                    .define('T', SimpleItemType.GRASS_TWINE.itemTag)
+                    .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
                     .define('#', SimpleItemType.SHARP_FLINT.itemTag)
                     .pattern("FTF")
                     .pattern("#S ")

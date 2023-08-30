@@ -61,6 +61,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerRawHideRecipe,
             SimpleItemType::registerSimpleTag),
+    LEATHER_STRIPS("leather_strips", "Leather strips",
+            ItemTags.create(Utils.modLoc("leather_strips")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("leather_strips")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerLeatherStripsRecipe,
+            SimpleItemType::registerSimpleTag),
     SHARP_FLINT("sharp_flint", "Sharp Flint",
             ItemTags.create(Utils.modLoc("sharp_flints")),
             () -> new CraftUsableSwordItem(Tiers.WOOD, 0, 0, new Item.Properties()),
@@ -181,6 +188,14 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         TanningRecipe.Builder.tanning(holder.object.itemTag, 5, Items.LEATHER)
                 .tool(Ingredient.of(SHARP_FLINT.itemTag))
                 .unlockedBy(Utils.getHasName(holder), RecipeProvider.has(RAW_HIDE.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerLeatherStripsRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 4)
+                .requires(Items.LEATHER)
+                .requires(SimpleItemType.SHARP_FLINT.itemTag)
+                .unlockedBy(RecipeProvider.getHasName(Items.LEATHER), RecipeProvider.has(Items.LEATHER))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

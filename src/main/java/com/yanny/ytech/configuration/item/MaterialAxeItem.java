@@ -26,7 +26,7 @@ public class MaterialAxeItem extends AxeItem {
             case FLINT -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('F', Items.FLINT)
-                    .define('T', SimpleItemType.GRASS_TWINE.itemTag)
+                    .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
                     .define('#', SimpleItemType.SHARP_FLINT.itemTag)
                     .pattern("FT#")
                     .pattern("FS ")
