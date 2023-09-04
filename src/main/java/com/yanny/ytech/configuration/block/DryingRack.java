@@ -93,8 +93,7 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         if (holder instanceof Holder.EntityBlockHolder blockHolder) {
-            BlockEntityType<? extends BlockEntity> blockEntityType = blockHolder.entityType.get();
-            return new DryingRackBlockEntity(blockEntityType, pos, state);
+            return new DryingRackBlockEntity(blockHolder.entityType.get(), pos, state);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

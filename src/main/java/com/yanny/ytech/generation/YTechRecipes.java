@@ -50,7 +50,7 @@ class YTechRecipes extends RecipeProvider {
         splitBySawRecipes(recipeConsumer, Items.SPRUCE_LOG, Items.SPRUCE_PLANKS);
 
         DryingRecipe.Builder.drying(Items.KELP, 20 * 60, Items.DRIED_KELP)
-                .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.DRIED_KELP))
+                .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.KELP))
                 .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DRIED_KELP)).getPath()));
     }
 

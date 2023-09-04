@@ -1,9 +1,6 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.configuration.block.CrusherBlock;
-import com.yanny.ytech.configuration.block.FurnaceBlock;
-import com.yanny.ytech.configuration.block.MachineBlock;
-import com.yanny.ytech.configuration.block.StoneCrusherBlock;
+import com.yanny.ytech.configuration.block.*;
 import com.yanny.ytech.configuration.container.CrusherContainerMenu;
 import com.yanny.ytech.configuration.container.FurnaceContainerMenu;
 import com.yanny.ytech.configuration.screen.BaseScreen;
@@ -38,6 +35,16 @@ import java.util.function.Supplier;
 
 public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, BlockStateProvider>, ILootable<Holder.SimpleBlockHolder, BlockLootSubProvider>,
         IRecipe<Holder.SimpleBlockHolder>, IMenu, IItemTag<Holder.SimpleBlockHolder>, IBlockTag<Holder.SimpleBlockHolder> {
+    MILLSTONE(HolderType.ENTITY_BLOCK, "millstone", "Millstone",
+            ItemTags.create(Utils.modLoc("millstones")),
+            BlockTags.create(Utils.modLoc("millstones")),
+            MillstoneBlock::new,
+            MillstoneBlock::textureHolder,
+            MillstoneBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            MillstoneBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
     STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
@@ -104,8 +111,8 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     @Nullable private final IAbstractMenuGetter menuGetter;
     @Nullable private final IScreenGetter screenGetter;
 
-    SimpleBlockType(@NotNull HolderType type, @NotNull String key, @NotNull String name, @NotNull Function<Holder.SimpleBlockHolder, Block> blockGetter,
-                    @NotNull Supplier<TextureHolder[]> textureGetter, @NotNull TagKey<Item> itemTag, @NotNull TagKey<Block> blockTag,
+    SimpleBlockType(@NotNull HolderType type, @NotNull String key, @NotNull String name, @NotNull TagKey<Item> itemTag, @NotNull TagKey<Block> blockTag,
+                    @NotNull Function<Holder.SimpleBlockHolder, Block> blockGetter, @NotNull Supplier<TextureHolder[]> textureGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockLootSubProvider> lootGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, Consumer<FinishedRecipe>> recipeGetter,

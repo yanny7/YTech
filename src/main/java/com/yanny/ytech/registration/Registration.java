@@ -5,6 +5,7 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
+import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
@@ -82,9 +83,11 @@ public class Registration {
 
         RECIPE_TYPES.register("drying", () -> DryingRecipe.RECIPE_TYPE);
         RECIPE_TYPES.register("tanning", () -> TanningRecipe.RECIPE_TYPE);
+        RECIPE_TYPES.register("milling", () -> MillingRecipe.RECIPE_TYPE);
 
         RECIPE_SERIALIZERS.register("drying", () -> DryingRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("tanning", () -> TanningRecipe.SERIALIZER);
+        RECIPE_SERIALIZERS.register("milling", () -> MillingRecipe.SERIALIZER);
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
         GLM_CODECS.register("remove_item", ReplaceItemModifier.CODEC);

@@ -1,0 +1,130 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#slab"
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            8.0
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            8.0
+          ]
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            8.0
+          ]
+        },
+        "up": {
+          "texture": "#slab"
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            8.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        4,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "#middle",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            10.0
+          ]
+        },
+        "north": {
+          "texture": "#middle",
+          "uv": [
+            12.0,
+            0.0,
+            16.0,
+            10.0
+          ]
+        },
+        "south": {
+          "texture": "#middle",
+          "uv": [
+            4.0,
+            0.0,
+            8.0,
+            10.0
+          ]
+        },
+        "up": {
+          "texture": "#top",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "west": {
+          "texture": "#middle",
+          "uv": [
+            8.0,
+            0.0,
+            12.0,
+            10.0
+          ]
+        }
+      },
+      "from": [
+        6,
+        4,
+        6
+      ],
+      "to": [
+        10,
+        14,
+        10
+      ]
+    }
+  ],
+  "textures": {
+    "middle": "minecraft:block/oak_log",
+    "particle": "minecraft:block/smooth_stone_slab_side",
+    "side": "minecraft:block/smooth_stone_slab_side",
+    "slab": "minecraft:block/smooth_stone",
+    "top": "minecraft:block/oak_log_top"
+  }
+}
