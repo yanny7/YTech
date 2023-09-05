@@ -19,5 +19,9 @@ class YTechLanguages extends LanguageProvider {
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> add(h.bucket.get(), h.name));
         HOLDER.simpleItems().values().forEach(h -> add(h.item.get(), h.name));
         HOLDER.simpleBlocks().values().forEach(h -> add(h.block.get(), h.name));
+
+        add("gui.jei.category.drying", "Drying Recipe");
+        add("gui.jei.category.tanning", "Tanning Recipe");
+        add("gui.jei.category.milling", "Milling Recipe");
     }
 }
