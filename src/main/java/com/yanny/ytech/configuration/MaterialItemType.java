@@ -114,15 +114,24 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialSwordItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.FLINT)),
-    SAW("saw", INameable.suffix("saw"), INameable.suffix("Saw"), //FIXME missing item texture
+    SAW("saw", INameable.suffix("saw"), INameable.suffix("Saw"),
             (material) -> ItemTags.create(Utils.modLoc("saws/" + material.key)),
             ItemTags.create(Utils.modLoc("saws")),
-            (holder) -> new MaterialSwordItem(holder.material.tier),
-            (material) -> basicTexture(Utils.modItemLoc("saw"), material),
-            MaterialItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            (holder) -> new MaterialSawItem(holder.material.tier),
+            (material) -> basicTexture(Utils.modItemLoc("saw"), material), //FIXME missing item texture
+            MaterialItemType::toolItemModelProvider,
+            MaterialSawItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.noneOf(MaterialType.class)),
+    HAMMER("hammer", INameable.suffix("hammer"), INameable.suffix("Hammer"),
+            (material) -> ItemTags.create(Utils.modLoc("hammers/" + material.key)),
+            ItemTags.create(Utils.modLoc("hammers")),
+            (holder) -> new MaterialHammerItem(holder.material.tier),
+            (material) -> toolTexture(Utils.modItemLoc("hammer_handle"), Utils.modItemLoc("hammer_overlay"), material),
+            MaterialItemType::toolItemModelProvider,
+            MaterialHammerItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.of(MaterialType.STONE)),
     ;
 
     @NotNull public final String id;

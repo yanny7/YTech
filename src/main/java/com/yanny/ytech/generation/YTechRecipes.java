@@ -49,6 +49,13 @@ class YTechRecipes extends RecipeProvider {
         splitBySawRecipes(recipeConsumer, Items.MANGROVE_LOG, Items.MANGROVE_PLANKS);
         splitBySawRecipes(recipeConsumer, Items.SPRUCE_LOG, Items.SPRUCE_PLANKS);
 
+        splitByHammerRecipes(recipeConsumer, Items.ANDESITE, Items.ANDESITE_SLAB);
+        splitByHammerRecipes(recipeConsumer, Items.COBBLESTONE, Items.COBBLESTONE_SLAB);
+        splitByHammerRecipes(recipeConsumer, Items.DIORITE, Items.DIORITE_SLAB);
+        splitByHammerRecipes(recipeConsumer, Items.GRANITE, Items.GRANITE_SLAB);
+        splitByHammerRecipes(recipeConsumer, Items.SMOOTH_STONE, Items.SMOOTH_STONE_SLAB);
+        splitByHammerRecipes(recipeConsumer, Items.STONE, Items.STONE_SLAB);
+
         DryingRecipe.Builder.drying(Items.KELP, 20 * 60, Items.DRIED_KELP)
                 .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.KELP))
                 .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DRIED_KELP)).getPath()));
@@ -58,6 +65,14 @@ class YTechRecipes extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
                 .requires(MaterialItemType.SAW.groupTag)
+                .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
+                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
+    }
+
+    private void splitByHammerRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
+                .requires(input)
+                .requires(MaterialItemType.HAMMER.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
     }

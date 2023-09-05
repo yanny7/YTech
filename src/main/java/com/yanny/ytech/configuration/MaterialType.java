@@ -23,6 +23,7 @@ public enum MaterialType {
     SPRUCE_WOOD("spruce", "Spruce", -1, "wooden", Tiers.WOOD, ToolType.AXE),
 
     FLINT("flint", "Flint", hex2rgb("#666666"), Tiers.WOOD, ToolType.PICKAXE),
+    STONE("stone", "Stone", hex2rgb("#999999"), Tiers.STONE, ToolType.PICKAXE),
     ;
 
     public static final EnumSet<MaterialType> ALL_WOOD = EnumSet.of(ACACIA_WOOD, BIRCH_WOOD, CHERRY_WOOD, DARK_OAK_WOOD, JUNGLE_WOOD, MANGROVE_WOOD, OAK_WOOD, SPRUCE_WOOD);

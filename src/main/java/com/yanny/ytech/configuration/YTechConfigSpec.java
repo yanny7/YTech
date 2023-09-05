@@ -115,7 +115,14 @@ public class YTechConfigSpec {
                 Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.OAK_PLANKS)).toString(),
                 Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DARK_OAK_PLANKS)).toString(),
                 Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.MANGROVE_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SPRUCE_PLANKS)).toString()
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SPRUCE_PLANKS)).toString(),
+
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.ANDESITE_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.COBBLESTONE_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DIORITE_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.GRANITE_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SMOOTH_STONE_SLAB)).toString(),
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_SLAB)).toString()
         ).collect(Collectors.toList());
     }
 

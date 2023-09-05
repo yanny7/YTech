@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:stone"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "tag": "ytech:leather_strips"
+    }
+  },
+  "pattern": [
+    " #T",
+    " S#",
+    "S  "
+  ],
+  "result": {
+    "item": "ytech:stone_hammer"
+  },
+  "show_notification": true
+}
