@@ -1,0 +1,10 @@
+{
+  "type": "ytech:milling",
+  "ingredient": {
+    "tag": "forge:crops/wheat"
+  },
+  "millingTime": 100,
+  "result": {
+    "item": "ytech:flour"
+  }
+}

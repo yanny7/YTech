@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.configuration.item.CraftUsableDiggerItem;
 import com.yanny.ytech.configuration.item.CraftUsableSwordItem;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
+import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.*;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -136,6 +138,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 provider.tag(holder.object.itemTag).add(holder.item.get());
                 provider.tag(MaterialItemType.SAW.groupTag).addTag(holder.object.itemTag);
             }),
+    FLOUR("flour", "Flour",
+            ItemTags.create(Utils.modLoc("flour")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("flour")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerFlourRecipe,
+            SimpleItemType::registerSimpleTag),
     ;
 
     @NotNull public final String key;
@@ -266,6 +275,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerDryingRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer, Item rawMeat) {
         DryingRecipe.Builder.drying(rawMeat, 20 * 60, holder.item.get())
                 .unlockedBy(RecipeProvider.getHasName(rawMeat), RecipeProvider.has(rawMeat))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerFlourRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        MillingRecipe.Builder.milling(Tags.Items.CROPS_WHEAT, 20 * 5, holder.item.get())
+                .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }
