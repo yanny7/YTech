@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ytech:item/clay_bucket",
+    "layer1": "ytech:item/bucket_overlay"
+  }
+}

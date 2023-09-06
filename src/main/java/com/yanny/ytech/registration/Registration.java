@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -126,6 +127,41 @@ public class Registration {
         GeneralUtils.mapToStream(HOLDER.items()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
+    }
+
+    @NotNull
+    public static Item item(@NotNull SimpleItemType type) {
+        return Objects.requireNonNull(HOLDER.simpleItems().get(type), "Missing item type " + type).item.get();
+    }
+
+    @NotNull
+    public static Item item(@NotNull SimpleBlockType type) {
+        return Objects.requireNonNull(HOLDER.simpleBlocks().get(type), "Missing item type " + type).block.get().asItem();
+    }
+
+    @NotNull
+    public static Item item(@NotNull MaterialItemType type, @NotNull MaterialType material) {
+        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.items().get(type), "Missing item type " + type).get(material), "Missing material " + material).item.get();
+    }
+
+    @NotNull
+    public static Item item(@NotNull MaterialBlockType type, @NotNull MaterialType material) {
+        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.blocks().get(type), "Missing item type " + type).get(material), "Missing material " + material).block.get().asItem();
+    }
+
+    @NotNull
+    public static Item bucket(@NotNull MaterialFluidType type, @NotNull MaterialType material) {
+        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.fluids().get(type), "Missing bucket type " + type).get(material), "Missing material " + material).bucket.get();
+    }
+
+    @NotNull
+    public static Block block(@NotNull SimpleBlockType type) {
+        return Objects.requireNonNull(HOLDER.simpleBlocks().get(type), "Missing item type " + type).block.get();
+    }
+
+    @NotNull
+    public static Block block(@NotNull MaterialBlockType type, @NotNull MaterialType material) {
+        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.blocks().get(type), "Missing item type " + type).get(material), "Missing material " + material).block.get();
     }
 
     private static Holder.BlockHolder registerBlock(MaterialBlockType blockType, MaterialType material) {

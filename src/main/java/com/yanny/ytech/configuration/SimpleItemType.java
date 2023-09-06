@@ -1,11 +1,13 @@
 package com.yanny.ytech.configuration;
 
+import com.yanny.ytech.configuration.item.ClayBucketItem;
 import com.yanny.ytech.configuration.item.CraftUsableDiggerItem;
 import com.yanny.ytech.configuration.item.CraftUsableSwordItem;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -145,6 +148,27 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerFlourRecipe,
             SimpleItemType::registerSimpleTag),
+    CLAY_BUCKET("clay_bucket", "Clay Bucket",
+            ItemTags.create(Utils.modLoc("clay_bucket")),
+            () -> new ClayBucketItem(() -> Fluids.EMPTY, new Item.Properties().stacksTo(8)),
+            () -> basicTexture(Utils.modItemLoc("clay_bucket")),
+            SimpleItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
+            SimpleItemType::registerSimpleTag),
+    WATER_CLAY_BUCKET("water_clay_bucket", "Water Clay Bucket",
+            ItemTags.create(Utils.modLoc("water_clay_bucket")),
+            () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(Registration.item(CLAY_BUCKET)).stacksTo(1)),
+            () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0x0000FF),
+            SimpleItemType::clayBucketItemModelProvider,
+            IRecipe::noRecipe,
+            SimpleItemType::registerSimpleTag),
+    LAVA_CLAY_BUCKET("lava_clay_bucket", "Lava Clay Bucket",
+            ItemTags.create(Utils.modLoc("lava_clay_bucket")),
+            () -> new ClayBucketItem(() -> Fluids.LAVA, new Item.Properties().craftRemainder(Registration.item(CLAY_BUCKET)).stacksTo(1)),
+            () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0xF54D0C),
+            SimpleItemType::clayBucketItemModelProvider,
+            IRecipe::noRecipe,
+            SimpleItemType::registerSimpleTag),
     ;
 
     @NotNull public final String key;
@@ -219,6 +243,19 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         ResourceLocation[] textures = holder.object.getTextures();
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
         builder.texture("layer0", textures[0]);
+    }
+
+    private static void clayBucketItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures();
+        ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        builder.texture("layer0", textures[0]);
+        builder.texture("layer1", textures[1]);
+    }
+
+    @NotNull
+    private static TextureHolder[] clayBucketTexture(@NotNull ResourceLocation overlay, int color) {
+        return List.of(new TextureHolder(-1, -1, Utils.modItemLoc("clay_bucket")),
+                new TextureHolder(1, color, overlay)).toArray(TextureHolder[]::new);
     }
 
     private static TextureHolder[] basicTexture(ResourceLocation base) {

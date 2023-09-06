@@ -59,6 +59,7 @@
   "gui.jei.category.drying": "Drying Recipe",
   "gui.jei.category.milling": "Milling Recipe",
   "gui.jei.category.tanning": "Tanning Recipe",
+  "item.ytech.clay_bucket": "Clay Bucket",
   "item.ytech.copper_bolt": "Copper Bolt",
   "item.ytech.copper_dust": "Copper Dust",
   "item.ytech.copper_ingot": "Copper Ingot",
@@ -82,6 +83,7 @@
   "item.ytech.grass_twine": "Grass Twine",
   "item.ytech.iron_ingot": "Iron Ingot",
   "item.ytech.iron_plate": "Iron Plate",
+  "item.ytech.lava_clay_bucket": "Lava Clay Bucket",
   "item.ytech.leather_strips": "Leather strips",
   "item.ytech.mercury_bucket": "Bucket of Mercury",
   "item.ytech.raw_copper": "Raw Copper",
@@ -93,5 +95,6 @@
   "item.ytech.stone_hammer": "Stone Hammer",
   "item.ytech.tin_dust": "Tin Dust",
   "item.ytech.tin_ingot": "Tin Ingot",
+  "item.ytech.water_clay_bucket": "Water Clay Bucket",
   "item.ytech.wooden_bolt": "Wooden Bolt"
 }
