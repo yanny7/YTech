@@ -148,12 +148,19 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerFlourRecipe,
             SimpleItemType::registerSimpleTag),
+    UNFIRED_CLAY_BUCKET("unfired_clay_bucket", "Unfired Clay Bucket",
+            ItemTags.create(Utils.modLoc("unfired_clay_bucket")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("unfired_clay_bucket")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerUnfiredClayBucketRecipe,
+            SimpleItemType::registerSimpleTag),
     CLAY_BUCKET("clay_bucket", "Clay Bucket",
             ItemTags.create(Utils.modLoc("clay_bucket")),
             () -> new ClayBucketItem(() -> Fluids.EMPTY, new Item.Properties().stacksTo(8)),
             () -> basicTexture(Utils.modItemLoc("clay_bucket")),
             SimpleItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            SimpleItemType::registerClayBucketRecipe,
             SimpleItemType::registerSimpleTag),
     WATER_CLAY_BUCKET("water_clay_bucket", "Water Clay Bucket",
             ItemTags.create(Utils.modLoc("water_clay_bucket")),
@@ -318,6 +325,22 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerFlourRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         MillingRecipe.Builder.milling(Tags.Items.CROPS_WHEAT, 20 * 5, holder.item.get())
                 .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerUnfiredClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('#', Items.CLAY_BALL)
+                .pattern("# #")
+                .pattern("# #")
+                .pattern(" # ")
+                .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(Registration.item(SimpleItemType.UNFIRED_CLAY_BUCKET)), RecipeCategory.MISC, holder.item.get(), 0.35f, 200)
+                .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

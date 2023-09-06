@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "ytech:unfired_clay_bucket"
+  },
+  "result": "ytech:clay_bucket"
+}
