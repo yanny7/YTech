@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
@@ -11,10 +12,15 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -154,6 +160,14 @@ public class MillstoneBlock extends Block implements EntityBlock, IProbeInfoProv
     }
 
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-            //TODO
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+                .define('W', ItemTags.LOGS)
+                .define('S', Items.SMOOTH_STONE_SLAB)
+                .define('F', SimpleItemType.SHARP_FLINT.itemTag)
+                .pattern("WF")
+                .pattern("S ")
+                .pattern("S ")
+                .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
+                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
     }
 }
