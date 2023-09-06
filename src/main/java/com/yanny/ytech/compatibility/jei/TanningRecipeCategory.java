@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
+import com.yanny.ytech.registration.Registration;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -38,7 +39,7 @@ public class TanningRecipeCategory implements IRecipeCategory<TanningRecipe> {
     public TanningRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 34, 82, 52);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(HOLDER.blocks().get(MaterialBlockType.TANNING_RACK).get(MaterialType.OAK_WOOD).block.get()));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(MaterialBlockType.TANNING_RACK, MaterialType.OAK_WOOD)));
         localizedName = Component.translatable("gui.jei.category.tanning");
     }
 

@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
+import com.yanny.ytech.registration.Registration;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -38,7 +39,7 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
     public DryingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 0, 82, 34);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(HOLDER.blocks().get(MaterialBlockType.DRYING_RACK).get(MaterialType.OAK_WOOD).block.get()));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(MaterialBlockType.DRYING_RACK, MaterialType.OAK_WOOD)));
         localizedName = Component.translatable("gui.jei.category.drying");
     }
 

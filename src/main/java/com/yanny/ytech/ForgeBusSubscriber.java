@@ -2,6 +2,7 @@ package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.SimpleItemType;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -37,8 +38,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeBusSubscriber {
@@ -109,7 +108,7 @@ public class ForgeBusSubscriber {
 
             // Action.ABORT is bugged - getFace returns always DOWN direction
             if (!level.isClientSide && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE) && event.getHand() == InteractionHand.MAIN_HAND) {
-                Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(HOLDER.simpleItems().get(SimpleItemType.SHARP_FLINT).item.get()));
+                Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(Registration.item(SimpleItemType.SHARP_FLINT)));
                 heldItem.shrink(1);
             }
         }

@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -14,8 +15,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
-
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
     public YTechGlobalLootModifier(PackOutput output) {
@@ -30,8 +29,8 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(SimpleItemType.SHARP_FLINT.itemTag)).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRASS).build()
                 },
-                HOLDER.simpleItems().get(SimpleItemType.GRASS_FIBERS).item.get())
-        );
+                Registration.item(SimpleItemType.GRASS_FIBERS)
+        ));
         add("replace_leather_by_raw_hide", new ReplaceItemModifier(
                 new LootItemCondition[] {
                         LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -52,7 +51,7 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
                                 EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.HOGLIN)).build()).build()
                 },
                 Items.LEATHER,
-                HOLDER.simpleItems().get(SimpleItemType.RAW_HIDE).item.get()
+                Registration.item(SimpleItemType.RAW_HIDE)
         ));
     }
 }

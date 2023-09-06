@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.item;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -16,8 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
-
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public class MaterialHammerItem extends SwordItem {
     public MaterialHammerItem(Tier tier) {
@@ -48,7 +47,7 @@ public class MaterialHammerItem extends SwordItem {
                     .pattern(" #T")
                     .pattern(" S#")
                     .pattern("S  ")
-                    .unlockedBy(RecipeProvider.getHasName(HOLDER.simpleItems().get(SimpleItemType.LEATHER_STRIPS).item.get()), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
+                    .unlockedBy(RecipeProvider.getHasName(Registration.item(SimpleItemType.LEATHER_STRIPS)), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
                     .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
             default -> throw new IllegalStateException("Recipe for material " + holder.material.key + " is not defined!");
         }
