@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "ytech:flour"
+    },
+    {
+      "tag": "ytech:flour"
+    },
+    {
+      "tag": "ytech:flour"
+    },
+    {
+      "tag": "ytech:water_bucket"
+    }
+  ],
+  "result": {
+    "item": "ytech:bread_dough"
+  }
+}

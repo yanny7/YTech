@@ -148,6 +148,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerFlourRecipe,
             SimpleItemType::registerSimpleTag),
+    BREAD_DOUGH("bread_dough", "Bread Dough",
+            ItemTags.create(Utils.modLoc("bread_dough")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("bread_dough")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerBreadDoughRecipe,
+            SimpleItemType::registerSimpleTag),
     UNFIRED_CLAY_BUCKET("unfired_clay_bucket", "Unfired Clay Bucket",
             ItemTags.create(Utils.modLoc("unfired_clay_bucket")),
             SimpleItemType::simpleItem,
@@ -163,19 +170,25 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerClayBucketRecipe,
             SimpleItemType::registerSimpleTag),
     WATER_CLAY_BUCKET("water_clay_bucket", "Water Clay Bucket",
-            ItemTags.create(Utils.modLoc("water_clay_bucket")),
+            ItemTags.create(Utils.modLoc("water_bucket")),
             () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(Registration.item(CLAY_BUCKET)).stacksTo(1)),
-            () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0x0000FF),
+            () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0x0C4DF5),
             SimpleItemType::clayBucketItemModelProvider,
             IRecipe::noRecipe,
-            SimpleItemType::registerSimpleTag),
+            (holder, provider) -> {
+                provider.tag(holder.object.itemTag).add(holder.item.get());
+                provider.tag(holder.object.itemTag).add(Items.WATER_BUCKET);
+            }),
     LAVA_CLAY_BUCKET("lava_clay_bucket", "Lava Clay Bucket",
-            ItemTags.create(Utils.modLoc("lava_clay_bucket")),
+            ItemTags.create(Utils.modLoc("lava_bucket")),
             () -> new ClayBucketItem(() -> Fluids.LAVA, new Item.Properties().craftRemainder(Registration.item(CLAY_BUCKET)).stacksTo(1)),
             () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0xF54D0C),
             SimpleItemType::clayBucketItemModelProvider,
             IRecipe::noRecipe,
-            SimpleItemType::registerSimpleTag),
+            (holder, provider) -> {
+                provider.tag(holder.object.itemTag).add(holder.item.get());
+                provider.tag(holder.object.itemTag).add(Items.LAVA_BUCKET);
+            }),
     ;
 
     @NotNull public final String key;
@@ -340,6 +353,16 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
 
     private static void registerClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(Registration.item(SimpleItemType.UNFIRED_CLAY_BUCKET)), RecipeCategory.MISC, holder.item.get(), 0.35f, 200)
+                .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerBreadDoughRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
+                .requires(SimpleItemType.FLOUR.itemTag)
+                .requires(SimpleItemType.FLOUR.itemTag)
+                .requires(SimpleItemType.FLOUR.itemTag)
+                .requires(SimpleItemType.WATER_CLAY_BUCKET.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
