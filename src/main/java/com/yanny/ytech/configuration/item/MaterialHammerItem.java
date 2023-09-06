@@ -8,9 +8,11 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -18,8 +20,23 @@ import java.util.function.Consumer;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public class MaterialHammerItem extends SwordItem {
-    public MaterialHammerItem(Tier pTier) {
-        super(pTier, 3, -2.4f, new Properties());
+    public MaterialHammerItem(Tier tier) {
+        super(tier, 3, -2.4f, new Properties());
+    }
+
+    @Override
+    public float getDestroySpeed(@NotNull ItemStack itemStack, @NotNull BlockState blockState) {
+        return 1.0f;
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(@NotNull BlockState blockState) {
+        return false;
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+        return false;
     }
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
