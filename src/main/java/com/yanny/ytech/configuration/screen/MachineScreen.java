@@ -2,7 +2,6 @@ package com.yanny.ytech.configuration.screen;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MachineItemStackHandler;
-import com.yanny.ytech.configuration.block_entity.MachineBlockEntity;
 import com.yanny.ytech.configuration.container.MachineContainerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -12,17 +11,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.NotNull;
 
 public class MachineScreen extends BaseScreen {
-    protected final MachineContainerMenu containerMenu;
-    protected final MachineBlockEntity blockEntity;
-    protected final MachineItemStackHandler itemStackHandler;
+    private static final ResourceLocation GUI = new ResourceLocation(YTechMod.MOD_ID, "textures/gui/machine.png");
 
-    private final ResourceLocation GUI = new ResourceLocation(YTechMod.MOD_ID, "textures/gui/machine.png");
+    protected final MachineItemStackHandler itemStackHandler;
 
     public MachineScreen(AbstractContainerMenu container, Inventory inventory, Component title) {
         super(container, inventory, title);
-        this.containerMenu = (MachineContainerMenu) container;
-        blockEntity = this.containerMenu.getBlockEntity();
-        itemStackHandler = blockEntity.getItems();
+        itemStackHandler = ((MachineContainerMenu) container).getBlockEntity().getItems();
     }
 
     @Override

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "tag": "ytech:sharp_flints"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    "W": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "pattern": [
+    "WF",
+    "S ",
+    "S "
+  ],
+  "result": {
+    "item": "ytech:millstone"
+  },
+  "show_notification": true
+}

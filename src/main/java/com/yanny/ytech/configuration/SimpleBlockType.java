@@ -3,9 +3,11 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.configuration.block.*;
 import com.yanny.ytech.configuration.container.CrusherContainerMenu;
 import com.yanny.ytech.configuration.container.FurnaceContainerMenu;
+import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
 import com.yanny.ytech.configuration.screen.BaseScreen;
 import com.yanny.ytech.configuration.screen.CrusherScreen;
 import com.yanny.ytech.configuration.screen.FurnaceScreen;
+import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -45,6 +47,18 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             MillstoneBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag),
+    PRIMITIVE_SMELTER(HolderType.MENU_BLOCK, "primitive_smelter", "Primitive Smelter",
+            ItemTags.create(Utils.modLoc("primitive_smelters")),
+            BlockTags.create(Utils.modLoc("primitive_smelters")),
+            PrimitiveSmelterBlock::new,
+            PrimitiveSmelterBlock::textureHolder,
+            PrimitiveSmelterBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            PrimitiveSmelterBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag,
+            (holder, windowId, inv, pos) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos),
+            PrimitiveSmelterScreen::new),
     STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
@@ -241,10 +255,6 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
 
     public Block getBlock(@NotNull Holder.SimpleBlockHolder holder) {
         return blockGetter.apply(holder);
-    }
-
-    private static void dropsSelfProvider(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockLootSubProvider provider) {
-        provider.dropSelf(holder.block.get());
     }
 
     private static void registerItemTag(@NotNull Holder.SimpleBlockHolder holder, @NotNull ItemTagsProvider provider) {
