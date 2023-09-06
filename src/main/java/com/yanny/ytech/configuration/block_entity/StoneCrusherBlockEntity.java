@@ -7,6 +7,8 @@ import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,5 +54,10 @@ public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
                 .addOutputSlot(64, 32)
                 .setOnChangeListener(this::setChanged)
                 .build();
+    }
+
+    @Override
+    protected @NotNull ContainerData getContainerData() {
+        return new SimpleContainerData(0);
     }
 }

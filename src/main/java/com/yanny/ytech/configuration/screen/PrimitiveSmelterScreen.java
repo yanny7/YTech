@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.screen;
 
+import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
 import com.yanny.ytech.configuration.screen.components.FireComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -19,6 +20,7 @@ public class PrimitiveSmelterScreen extends MachineScreen {
     @Override
     protected void renderBg(@NotNull GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
-        fire.render(graphics);
+        fire.set(100, ((PrimitiveSmelterContainerMenu) machineMenu).getTest());
+        fire.render(graphics, leftPos, topPos);
     }
 }

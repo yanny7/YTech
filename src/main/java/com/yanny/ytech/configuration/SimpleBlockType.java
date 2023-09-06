@@ -20,6 +20,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -57,7 +58,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             PrimitiveSmelterBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag,
-            (holder, windowId, inv, pos) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos),
+            (holder, windowId, inv, pos, stack, data) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos, stack, data),
             PrimitiveSmelterScreen::new),
     STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
@@ -69,7 +70,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             FurnaceBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag,
-            (holder, windowId, inv, pos) -> new FurnaceContainerMenu(holder, windowId, inv.player, pos),
+            (holder, windowId, inv, pos, stack, data) -> new FurnaceContainerMenu(holder, windowId, inv.player, pos, stack, data),
             FurnaceScreen::new),
     STEAM_FURNACE(HolderType.MENU_BLOCK, "steam_furnace", "Steam Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
@@ -81,7 +82,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             FurnaceBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag,
-            (holder, windowId, inv, pos) -> new FurnaceContainerMenu(holder, windowId, inv.player, pos),
+            (holder, windowId, inv, pos, stack, data) -> new FurnaceContainerMenu(holder, windowId, inv.player, pos, stack, data),
             FurnaceScreen::new),
     STONE_CRUSHER(HolderType.MENU_BLOCK, "stone_crusher", "Stone Crusher",
             ItemTags.create(Utils.modLoc("crushers")),
@@ -93,7 +94,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             StoneCrusherBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag,
-            (holder, windowId, inv, pos) -> new CrusherContainerMenu(holder, windowId, inv.player, pos),
+            (holder, windowId, inv, pos, stack, data) -> new CrusherContainerMenu(holder, windowId, inv.player, pos, stack, data),
             CrusherScreen::new),
     STEAM_CRUSHER(HolderType.MENU_BLOCK, "steam_crusher", "Steam Crusher",
             ItemTags.create(Utils.modLoc("crushers")),
@@ -105,7 +106,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             CrusherBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag,
-            (holder, windowId, inv, pos) -> new CrusherContainerMenu(holder, windowId, inv.player, pos),
+            (holder, windowId, inv, pos, stack, data) -> new CrusherContainerMenu(holder, windowId, inv.player, pos, stack, data),
             CrusherScreen::new),
     ;
 
@@ -235,9 +236,10 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
 
     @Override
     @Nullable
-    public AbstractContainerMenu getContainerMenu(Holder holder, int windowId, Inventory inv, BlockPos data) {
+    public AbstractContainerMenu getContainerMenu(@NotNull Holder holder, int windowId, @NotNull Inventory inv, @NotNull BlockPos pos,
+                                                  @NotNull MachineItemStackHandler itemStackHandler, @NotNull ContainerData data) {
         if (menuGetter != null) {
-            return menuGetter.getMenu(holder, windowId, inv, data);
+            return menuGetter.getMenu(holder, windowId, inv, pos, itemStackHandler, data);
         } else {
             return null;
         }
@@ -245,7 +247,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
 
     @Override
     @NotNull
-    public BaseScreen getScreen(AbstractContainerMenu container, Inventory inventory, Component title) {
+    public BaseScreen getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
         if (screenGetter != null) {
             return screenGetter.getScreen(container, inventory, title);
         } else {

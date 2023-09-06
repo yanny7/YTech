@@ -13,11 +13,13 @@ import org.jetbrains.annotations.NotNull;
 public class MachineScreen extends BaseScreen {
     private static final ResourceLocation GUI = new ResourceLocation(YTechMod.MOD_ID, "textures/gui/machine.png");
 
+    protected final MachineContainerMenu machineMenu;
     protected final MachineItemStackHandler itemStackHandler;
 
     public MachineScreen(AbstractContainerMenu container, Inventory inventory, Component title) {
         super(container, inventory, title);
-        itemStackHandler = ((MachineContainerMenu) container).getBlockEntity().getItems();
+        machineMenu = (MachineContainerMenu) container;
+        itemStackHandler = machineMenu.getBlockEntity().getItems();
     }
 
     @Override

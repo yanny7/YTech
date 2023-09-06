@@ -11,21 +11,19 @@ public class FireComponent {
     private final int x;
     private final int y;
 
-    private int maxValue = 1;
-    private int value = 0;
+    private int maxValue = 100;
+    private int value = 25;
 
     public FireComponent(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public void render(@NotNull GuiGraphics graphics) {
-        graphics.blit(GUI, x, y, 44, 166, 14, 14);
-        graphics.blit(GUI, x, y, 58, 166, 14, 14);
-    }
-
-    public void updateValue(int value) {
-        this.value = value;
+    public void render(@NotNull GuiGraphics graphics, int left, int top) {
+        int height = Math.min(Math.round((value / (float)maxValue) * 14), 14);
+        int offset = Math.max(14 - height, 0);
+        graphics.blit(GUI, left + x, top + y, 44, 166, 14, 14);
+        graphics.blit(GUI, left + x, top + y + offset, 58, 166 + offset, 14, 14 - offset);
     }
 
     public void set(int maxValue, int value) {

@@ -19,6 +19,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -328,9 +329,10 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     @Override
     @Nullable
-    public AbstractContainerMenu getContainerMenu(Holder holder, int windowId, Inventory inv, BlockPos data) {
+    public AbstractContainerMenu getContainerMenu(@NotNull Holder holder, int windowId, @NotNull Inventory inv, @NotNull BlockPos pos,
+                                                  @NotNull MachineItemStackHandler itemStackHandler, @NotNull ContainerData data) {
         if (menuGetter != null) {
-            return menuGetter.getMenu(holder, windowId, inv, data);
+            return menuGetter.getMenu(holder, windowId, inv, pos, itemStackHandler, data);
         } else {
             return null;
         }
@@ -338,7 +340,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     @Override
     @NotNull
-    public BaseScreen getScreen(AbstractContainerMenu container, Inventory inventory, Component title) {
+    public BaseScreen getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
         if (screenGetter != null) {
             return screenGetter.getScreen(container, inventory, title);
         } else {

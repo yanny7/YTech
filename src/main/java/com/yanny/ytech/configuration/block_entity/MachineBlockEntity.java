@@ -10,6 +10,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -21,17 +22,19 @@ import org.jetbrains.annotations.Nullable;
 public abstract class MachineBlockEntity extends BlockEntity implements BlockEntityTicker<MachineBlockEntity>, MenuProvider {
     private static final String TAG_ITEMS = "items";
 
-    protected final MachineItemStackHandler items;
-    protected final Holder holder;
+    @NotNull protected final MachineItemStackHandler items;
+    @NotNull protected final ContainerData containerData;
+    @NotNull protected final Holder holder;
 
-    public MachineBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
+    public MachineBlockEntity(@NotNull Holder holder, @NotNull BlockEntityType<?> blockEntityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
         super(blockEntityType, pos, blockState);
         this.holder = holder;
-        this.items = getContainerHandler();
+        items = getContainerHandler();
+        containerData = getContainerData();
     }
 
     @Override
-    public void tick(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @NotNull MachineBlockEntity pBlockEntity) {
+    public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
         //FIXME remove
     }
 
@@ -45,7 +48,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pPlayerInventory, @NotNull Player pPlayer) {
         if (holder instanceof IBlockHolder blockHolder) {
-            return blockHolder.getMenu().getContainerMenu(holder, pContainerId, pPlayerInventory, getBlockPos());
+            return blockHolder.getMenu().getContainerMenu(holder, pContainerId, pPlayerInventory, worldPosition, items, containerData);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }
@@ -65,6 +68,10 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
         return items;
     }
 
+    public int getDataSize() {
+        return containerData.getCount();
+    }
+
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
@@ -72,4 +79,6 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
     }
 
     @NotNull abstract protected MachineItemStackHandler getContainerHandler();
+
+    @NotNull abstract protected ContainerData getContainerData();
 }

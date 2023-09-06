@@ -3,16 +3,14 @@ package com.yanny.ytech.configuration.container;
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.block_entity.MachineBlockEntity;
 import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.IBlockHolder;
-import com.yanny.ytech.registration.IMenuEntityBlockHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -23,36 +21,25 @@ public class MachineContainerMenu extends AbstractContainerMenu {
     protected final BlockPos pos;
     @NotNull protected final ItemStackHandler itemStackHandler;
     @NotNull protected final MachineBlockEntity blockEntity;
+    @NotNull protected final ContainerData containerData;
     private final int inputSlots;
 
-    public MachineContainerMenu(Holder holder, int windowId, Player player, BlockPos pos) {
-        super(getMenuEntityBlockHolder(holder).getMenuRegistry().get(), windowId);
-        block = getBlockHolder(holder).getBlockRegistry().get();
+    public MachineContainerMenu(@NotNull Holder holder, int windowId, @NotNull Player player, @NotNull BlockPos pos,
+                                @NotNull MachineItemStackHandler itemStackHandler, @NotNull ContainerData data) {
+        super(Utils.getMenuEntityBlockHolder(holder).getMenuRegistry().get(), windowId);
+        block = Utils.getBlockHolder(holder).getBlockRegistry().get();
         this.pos = pos;
+        containerData = data;
+        blockEntity = Utils.getMachineBlockEntity(player, pos);
+        this.itemStackHandler = itemStackHandler;
+        inputSlots = itemStackHandler.getInputSlots();
 
-        LevelAccessor level = player.level();
-
-        if (level.getBlockEntity(pos) instanceof MachineBlockEntity entity) {
-            MachineItemStackHandler items = entity.getItems();
-
-            // Client side MENU should have dummy ItemStackHandler - it's content is override by netcode
-            if (level.isClientSide()) {
-                itemStackHandler = new ItemStackHandler(items.getSlots());
-            } else {
-                itemStackHandler = items;
-            }
-
-            blockEntity = entity;
-            inputSlots = items.getInputSlots();
-
-            for (int index = 0; index < itemStackHandler.getSlots(); index++) {
-                addSlot(new SlotItemHandler(itemStackHandler, index, items.getX(index), items.getY(index)));
-            }
-        } else {
-            throw new IllegalArgumentException("BlockEntity is not instanceof MachineBlockEntity");
+        for (int index = 0; index < itemStackHandler.getSlots(); index++) {
+            addSlot(new SlotItemHandler(itemStackHandler, index, itemStackHandler.getX(index), itemStackHandler.getY(index)));
         }
 
         Utils.layoutPlayerInventorySlots(this::addSlot, player.getInventory(), 8, 84);
+        addDataSlots(data);
     }
 
     @NotNull
@@ -105,21 +92,5 @@ public class MachineContainerMenu extends AbstractContainerMenu {
     @NotNull
     public MachineBlockEntity getBlockEntity() {
         return blockEntity;
-    }
-
-    static IMenuEntityBlockHolder getMenuEntityBlockHolder(Holder holder) {
-        if (holder instanceof IMenuEntityBlockHolder entityHolder) {
-            return entityHolder;
-        } else {
-            throw new IllegalStateException("Invalid holder type");
-        }
-    }
-
-    static IBlockHolder getBlockHolder(Holder holder) {
-        if (holder instanceof IBlockHolder entityHolder) {
-            return entityHolder;
-        } else {
-            throw new IllegalStateException("Invalid holder type");
-        }
     }
 }
