@@ -1,11 +1,12 @@
 package com.yanny.ytech.configuration.screen;
 
+import com.yanny.ytech.configuration.container.CrusherContainerMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
-public class CrusherScreen extends MachineScreen {
+public class CrusherScreen extends MachineScreen<CrusherContainerMenu> {
     public CrusherScreen(AbstractContainerMenu container, Inventory inventory, Component title) {
-        super(container, inventory, title);
+        super((CrusherContainerMenu) container, inventory, title);
     }
 }

@@ -6,8 +6,8 @@ import com.yanny.ytech.configuration.block.DryingRack;
 import com.yanny.ytech.configuration.block.ShaftBlock;
 import com.yanny.ytech.configuration.block.TanningRack;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
-import com.yanny.ytech.configuration.screen.BaseScreen;
 import com.yanny.ytech.registration.Holder;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.*;
@@ -340,9 +340,10 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     @Override
     @NotNull
-    public BaseScreen getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
+    public AbstractContainerScreen<AbstractContainerMenu> getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
         if (screenGetter != null) {
-            return screenGetter.getScreen(container, inventory, title);
+            //noinspection unchecked
+            return (AbstractContainerScreen<AbstractContainerMenu>) screenGetter.getScreen(container, inventory, title);
         } else {
             throw new IllegalStateException("Missing screen getter");
         }
