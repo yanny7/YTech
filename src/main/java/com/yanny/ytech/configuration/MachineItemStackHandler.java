@@ -27,10 +27,10 @@ import java.util.function.Predicate;
  * SlotItemHandler and then e.g. I can use a no-insert SlotItemHandler for the output slots of the machine.
  */
 public class MachineItemStackHandler extends ItemStackHandler {
-    final List<SlotHolder> inputSlotHolder;
-    final List<SlotHolder> outputSlotHolder;
+    @NotNull private final List<SlotHolder> inputSlotHolder;
+    @NotNull private final List<SlotHolder> outputSlotHolder;
 
-    MachineItemStackHandler(List<SlotHolder> inputSlotHolder, List<SlotHolder> outputSlotHolder, NonNullList<ItemStack> stacks) {
+    MachineItemStackHandler(@NotNull List<SlotHolder> inputSlotHolder, @NotNull List<SlotHolder> outputSlotHolder, @NotNull NonNullList<ItemStack> stacks) {
         super(stacks);
         this.inputSlotHolder = inputSlotHolder;
         this.outputSlotHolder = outputSlotHolder;

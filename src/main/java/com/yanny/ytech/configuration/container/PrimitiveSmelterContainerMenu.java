@@ -13,7 +13,27 @@ public class PrimitiveSmelterContainerMenu extends MachineContainerMenu {
         super(holder, windowId, player, pos, itemStackHandler, data);
     }
 
-    public int getTest() {
+    public int getFuelLeft() {
         return containerData.get(0);
+    }
+
+    public int getMaxTemperature() {
+        return containerData.get(1);
+    }
+
+    public int getTemperature() {
+        return containerData.get(2);
+    }
+
+    public int getSmeltingProgress() {
+        return containerData.get(3);
+    }
+
+    public boolean inProgress() {
+        return containerData.get(4) != 0;
+    }
+
+    public boolean burning() {
+        return containerData.get(5) != 0;
     }
 }

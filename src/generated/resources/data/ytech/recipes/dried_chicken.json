@@ -1,6 +1,6 @@
 {
   "type": "ytech:drying",
-  "clickCount": 1200,
+  "dryingTime": 1200,
   "ingredient": {
     "item": "minecraft:chicken"
   },

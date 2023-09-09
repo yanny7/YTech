@@ -6,16 +6,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class FireComponent extends BottomUpAnimationComponent {
+public class ProgressComponent extends LeftRightAnimationComponent {
     @NotNull private final Supplier<Integer> progressGetter;
     @NotNull private final Supplier<Boolean> animationRendering;
 
-    public FireComponent(int x, int y, @NotNull Supplier<Integer> progressGetter) {
+    public ProgressComponent(int x, int y, @NotNull Supplier<Integer> progressGetter) {
         this(x, y, progressGetter, () -> true);
     }
 
-    public FireComponent(int x, int y, @NotNull Supplier<Integer> progressGetter, @NotNull Supplier<Boolean> animationRendering) {
-        super(x, y, 14, 14, 44, 166, 58, 166);
+    public ProgressComponent(int x, int y, @NotNull Supplier<Integer> progressGetter, @NotNull Supplier<Boolean> animationRendering) {
+        super(x, y, 22, 16, 0, 166, 22, 166);
         this.progressGetter = progressGetter;
         this.animationRendering = animationRendering;
     }

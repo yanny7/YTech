@@ -48,7 +48,7 @@ public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
 
     @NotNull
     @Override
-    protected MachineItemStackHandler getContainerHandler() {
+    protected MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
                 .addInputSlot(32, 32, (itemStack) -> true)
                 .addOutputSlot(64, 32)
@@ -57,7 +57,7 @@ public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
     }
 
     @Override
-    protected @NotNull ContainerData getContainerData() {
+    protected @NotNull ContainerData createContainerData() {
         return new SimpleContainerData(0);
     }
 }

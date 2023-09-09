@@ -17,7 +17,7 @@ public class FurnaceBlockEntity extends MachineBlockEntity {
 
     @NotNull
     @Override
-    protected MachineItemStackHandler getContainerHandler() {
+    protected MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
                 .addInputSlot(32, 32, (itemStack) -> true)
                 .addInputSlot(32, 32 + 18, (AbstractFurnaceBlockEntity::isFuel))
@@ -27,7 +27,7 @@ public class FurnaceBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    protected @NotNull ContainerData getContainerData() {
+    protected @NotNull ContainerData createContainerData() {
         return new SimpleContainerData(0);
     }
 }

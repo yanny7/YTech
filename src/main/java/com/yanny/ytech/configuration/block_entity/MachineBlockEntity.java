@@ -22,15 +22,15 @@ import org.jetbrains.annotations.Nullable;
 public abstract class MachineBlockEntity extends BlockEntity implements BlockEntityTicker<MachineBlockEntity>, MenuProvider {
     private static final String TAG_ITEMS = "items";
 
-    @NotNull protected final MachineItemStackHandler items;
+    @NotNull protected final MachineItemStackHandler itemStackHandler;
     @NotNull protected final ContainerData containerData;
     @NotNull protected final Holder holder;
 
     public MachineBlockEntity(@NotNull Holder holder, @NotNull BlockEntityType<?> blockEntityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
         super(blockEntityType, pos, blockState);
         this.holder = holder;
-        items = getContainerHandler();
-        containerData = getContainerData();
+        itemStackHandler = createItemStackHandler();
+        containerData = createContainerData();
     }
 
     @Override
@@ -48,7 +48,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pPlayerInventory, @NotNull Player pPlayer) {
         if (holder instanceof IBlockHolder blockHolder) {
-            return blockHolder.getMenu().getContainerMenu(holder, pContainerId, pPlayerInventory, worldPosition, items, containerData);
+            return blockHolder.getMenu().getContainerMenu(holder, pContainerId, pPlayerInventory, worldPosition, itemStackHandler, containerData);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }
@@ -59,13 +59,13 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
         super.load(tag);
 
         if (tag.contains(TAG_ITEMS)) {
-            items.deserializeNBT(tag.getCompound(TAG_ITEMS));
+            itemStackHandler.deserializeNBT(tag.getCompound(TAG_ITEMS));
         }
     }
 
     @NotNull
-    public MachineItemStackHandler getItems() {
-        return items;
+    public MachineItemStackHandler getItemStackHandler() {
+        return itemStackHandler;
     }
 
     public int getDataSize() {
@@ -75,10 +75,10 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.put(TAG_ITEMS, items.serializeNBT());
+        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
     }
 
-    @NotNull abstract protected MachineItemStackHandler getContainerHandler();
+    @NotNull abstract protected MachineItemStackHandler createItemStackHandler();
 
-    @NotNull abstract protected ContainerData getContainerData();
+    @NotNull abstract protected ContainerData createContainerData();
 }

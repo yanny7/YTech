@@ -17,7 +17,7 @@ public interface IMenu {
     AbstractContainerScreen<?> getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title);
 
     default AbstractContainerMenu getContainerMenu(@NotNull Holder holder, int windowId, @NotNull Inventory inv, @NotNull BlockPos pos) {
-        return getContainerMenu(holder, windowId, inv, pos, Utils.getMachineBlockEntity(inv.player, pos).getItems(),
+        return getContainerMenu(holder, windowId, inv, pos, Utils.getMachineBlockEntity(inv.player, pos).getItemStackHandler(),
                 new SimpleContainerData(Utils.getMachineBlockEntity(inv.player, pos).getDataSize()));
     }
 }

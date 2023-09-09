@@ -27,12 +27,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryingTime, ItemStack result) implements Recipe<Container> {
+public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<DryingRecipe> RECIPE_TYPE = new RecipeType<>() {
+    public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
         public String toString() {
-            return Utils.modLoc("drying").toString();
+            return Utils.modLoc("smelting").toString();
         }
     };
 
@@ -76,33 +76,36 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
         return RECIPE_TYPE;
     }
 
-    public static class Serializer implements RecipeSerializer<DryingRecipe> {
+    public static class Serializer implements RecipeSerializer<SmeltingRecipe> {
         @NotNull
         @Override
-        public DryingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
+        public SmeltingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
             Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            int dryingTime = GsonHelper.getAsInt(serializedRecipe, "dryingTime");
-            return new DryingRecipe(recipeId, ingredient, dryingTime, result);
+            int minTemperature = GsonHelper.getAsInt(serializedRecipe, "minTemp");
+            int smeltingTime = GsonHelper.getAsInt(serializedRecipe, "smeltingTime");
+            return new SmeltingRecipe(recipeId, ingredient, minTemperature, smeltingTime, result);
         }
 
         @Override
-        public @Nullable DryingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        public @Nullable SmeltingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
+            int minTemperature = buffer.readInt();
             int dryingTime = buffer.readInt();
-            return new DryingRecipe(recipeId, ingredient, dryingTime, result);
+            return new SmeltingRecipe(recipeId, ingredient, minTemperature, dryingTime, result);
         }
 
         @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull DryingRecipe recipe) {
+        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull SmeltingRecipe recipe) {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
-            buffer.writeInt(recipe.dryingTime);
+            buffer.writeInt(recipe.minTemperature);
+            buffer.writeInt(recipe.smeltingTime);
         }
     }
 
-    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int dryingTime, @NotNull Item result,
+    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int minTemperature, int smeltingTime, @NotNull Item result,
                          @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
@@ -112,7 +115,8 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
             resultItemStack.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).toString());
             json.add("result", resultItemStack);
 
-            json.addProperty("dryingTime", dryingTime);
+            json.addProperty("minTemp", minTemperature);
+            json.addProperty("smeltingTime", smeltingTime);
         }
 
         @NotNull
@@ -142,22 +146,24 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
-        private final int dryingTime;
+        private final int minTemperature;
+        private final int smeltingTime;
         private final Item result;
         private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
-        Builder(@NotNull Ingredient ingredient, int dryingTime, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, int minTemperature, int smeltingTime, @NotNull Item result) {
             this.ingredient = ingredient;
-            this.dryingTime = dryingTime;
+            this.minTemperature = minTemperature;
+            this.smeltingTime = smeltingTime;
             this.result = result;
         }
 
-        public static Builder drying(@NotNull TagKey<Item> input, int dryingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), dryingTime, result);
+        public static Builder smelting(@NotNull TagKey<Item> input, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), minTemperature, smeltingTime, result);
         }
 
-        public static Builder drying(@NotNull ItemLike input, int dryingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), dryingTime, result);
+        public static Builder smelting(@NotNull ItemLike input, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), minTemperature, smeltingTime, result);
         }
 
         @NotNull
@@ -184,7 +190,8 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
             ensureValid(recipeId);
             advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new DryingRecipe.Result(recipeId, ingredient, dryingTime, result, advancement, recipeId.withPrefix("recipes/drying/")));
+            finishedRecipeConsumer.accept(new SmeltingRecipe.Result(recipeId, ingredient, minTemperature, smeltingTime, result, advancement,
+                    recipeId.withPrefix("recipes/smelting/")));
         }
 
         //Makes sure that this recipe is valid and obtainable.

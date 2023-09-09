@@ -1,14 +1,25 @@
 package com.yanny.ytech.configuration.block;
 
+import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.IEntityBlockHolder;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoProvider;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -23,7 +34,7 @@ import java.util.function.Consumer;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public class PrimitiveSmelterBlock extends MachineBlock {
+public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoProvider {
     public PrimitiveSmelterBlock(Holder holder) {
         super(holder);
     }
@@ -35,6 +46,49 @@ public class PrimitiveSmelterBlock extends MachineBlock {
             return new PrimitiveSmelterBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pPos, pState);
         } else {
             throw new IllegalStateException("Invalid holder type");
+        }
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.getValue(POWERED) ? 15 : 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (!level.isClientSide && level.getBlockEntity(pos) instanceof PrimitiveSmelterBlockEntity smelter) {
+                NonNullList<ItemStack> items = NonNullList.withSize(smelter.getItemStackHandler().getSlots(), ItemStack.EMPTY);
+
+                for (int index = 0; index < smelter.getItemStackHandler().getSlots(); index++) {
+                    items.set(index, smelter.getItemStackHandler().getStackInSlot(index));
+                }
+
+                Containers.dropContents(level, pos, items);
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
+    public ResourceLocation getID() {
+        return new ResourceLocation(YTechMod.MOD_ID, getClass().getName());
+    }
+
+    @Override
+    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData probeHitData) {
+        if (!level.isClientSide && level.getBlockEntity(probeHitData.getPos()) instanceof PrimitiveSmelterBlockEntity blockEntity) {
+            IProbeInfo verticalLayout = probeInfo.vertical();
+            ItemStack item = blockEntity.processingItem();
+
+            if (blockEntity.isProcessing() && item != null) {
+                verticalLayout.horizontal().text("Processing ").text(item.getDisplayName());
+                verticalLayout.horizontal().text("Progress: ").horizontal().text(Integer.toString(blockEntity.progress())).text("%");
+            }
+
+            verticalLayout.horizontal().text("Temperature: ").horizontal().text(Integer.toString(blockEntity.temperature())).text("°C");
         }
     }
 
