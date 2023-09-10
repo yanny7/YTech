@@ -52,7 +52,7 @@ public class Utils {
     }
 
     @NotNull
-    public static String getHasItem() {
+    public static String getHasName() {
         return "has_item";
     }
 

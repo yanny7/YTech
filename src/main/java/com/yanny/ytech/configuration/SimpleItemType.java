@@ -58,6 +58,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerBrickMoldRecipe,
             SimpleItemType::registerSimpleTag),
+    UNFIRED_BRICK("unfired_brick", "Unfired Brick",
+            ItemTags.create(Utils.modLoc("unfired_bricks")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("unfired_brick")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerUnfiredBrickRecipe,
+            SimpleItemType::registerSimpleTag),
     WOODEN_PLATE("wooden_plate", "Wooden Plate",
             ItemTags.create(Utils.modLoc("plates/wooden")),
             SimpleItemType::simpleItem,
@@ -321,7 +328,18 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .pattern("I#I")
                 .pattern("###")
                 .pattern("I#I")
-                .unlockedBy(Utils.getHasItem(), RecipeProvider.has(WOODEN_PLATE.itemTag))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(WOODEN_PLATE.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerUnfiredBrickRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 8)
+                .define('#', BRICK_MOLD.itemTag)
+                .define('B', Items.CLAY_BALL)
+                .pattern("BBB")
+                .pattern("B#B")
+                .pattern("BBB")
+                .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
@@ -329,7 +347,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
                 .requires(ItemTags.WOODEN_SLABS)
                 .requires(MaterialItemType.SAW.groupTag)
-                .unlockedBy(Utils.getHasItem(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

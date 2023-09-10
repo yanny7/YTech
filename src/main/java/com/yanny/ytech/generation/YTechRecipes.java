@@ -89,7 +89,7 @@ class YTechRecipes extends RecipeProvider {
 
     private void smeltingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int temperature, int smeltingTime) {
         SmeltingRecipe.Builder.smelting(input, temperature, smeltingTime, result)
-                .unlockedBy(Utils.getHasItem(), has(input))
+                .unlockedBy(Utils.getHasName(), has(input))
                 .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
     }
 }

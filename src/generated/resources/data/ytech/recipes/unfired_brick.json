@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:brick_molds"
+    },
+    "B": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "B#B",
+    "BBB"
+  ],
+  "result": {
+    "count": 8,
+    "item": "ytech:unfired_brick"
+  },
+  "show_notification": true
+}
