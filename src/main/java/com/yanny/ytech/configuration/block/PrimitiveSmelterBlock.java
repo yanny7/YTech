@@ -13,7 +13,6 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -83,18 +82,12 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
                 level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE,
                         SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
             }
-
-            if (random.nextInt(5) == 0) {
-                for (int i = 0; i < random.nextInt(1) + 1; ++i) {
-                    level.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
-                            (random.nextFloat() / 2.0F), 5.0E-5D, (random.nextFloat() / 2.0F));
-                }
-            }
-
-            for(int i = 0; i < random.nextInt(2) + 2; ++i) {
-                makeParticles(level, pos, random);
-            }
         }
+    }
+
+    @Override
+    public boolean hasClientTicker() {
+        return true;
     }
 
     @Override
@@ -149,15 +142,5 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
                 new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front_powered"))
         ).toArray(TextureHolder[]::new);
-    }
-
-    private static void makeParticles(@NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource randomSource) {
-        level.addAlwaysVisibleParticle(
-                ParticleTypes.CAMPFIRE_COSY_SMOKE, true,
-                pos.getX() + 0.5D + randomSource.nextDouble() / 3.0D * (randomSource.nextBoolean() ? 1 : -1),
-                pos.getY() + randomSource.nextDouble() + randomSource.nextDouble(),
-                pos.getZ() + 0.5D + randomSource.nextDouble() / 3.0D * (randomSource.nextBoolean() ? 1 : -1),
-                0.0D, 0.07D, 0.0D
-        );
     }
 }

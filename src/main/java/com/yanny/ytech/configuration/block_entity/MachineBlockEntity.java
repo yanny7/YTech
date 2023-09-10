@@ -13,13 +13,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MachineBlockEntity extends BlockEntity implements BlockEntityTicker<MachineBlockEntity>, MenuProvider {
+public abstract class MachineBlockEntity extends BlockEntity implements MenuProvider {
     private static final String TAG_ITEMS = "items";
 
     @NotNull protected final MachineItemStackHandler itemStackHandler;
@@ -31,11 +30,6 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
         this.holder = holder;
         itemStackHandler = createItemStackHandler();
         containerData = createContainerData();
-    }
-
-    @Override
-    public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
-        //FIXME remove
     }
 
     @NotNull
@@ -70,6 +64,14 @@ public abstract class MachineBlockEntity extends BlockEntity implements BlockEnt
 
     public int getDataSize() {
         return containerData.getCount();
+    }
+
+    public void tickServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
+
+    }
+
+    public void tickClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
+
     }
 
     @Override

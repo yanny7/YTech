@@ -53,7 +53,15 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> entityType) {
-        return level.isClientSide ? null : createTickerHelper(entityType, entityType, MachineBlock::createMachineTicker);
+        if (level.isClientSide) {
+            if (hasClientTicker()) {
+                return createTickerHelper(entityType, entityType, MachineBlock::createMachineClientTicker);
+            }
+        } else {
+            return createTickerHelper(entityType, entityType, MachineBlock::createMachineServerTicker);
+        }
+
+        return null;
     }
 
     @Override
@@ -79,9 +87,19 @@ public abstract class MachineBlock extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    public static void createMachineTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
+    public boolean hasClientTicker() {
+        return false;
+    }
+
+    public static void createMachineClientTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
         if (blockEntity instanceof MachineBlockEntity block) {
-            block.tick(level, pos, state, block);
+            block.tickClient(level, pos, state, block);
+        }
+    }
+
+    public static void createMachineServerTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
+        if (blockEntity instanceof MachineBlockEntity block) {
+            block.tickServer(level, pos, state, block);
         }
     }
 

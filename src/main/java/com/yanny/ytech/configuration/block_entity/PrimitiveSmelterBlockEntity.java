@@ -4,7 +4,9 @@ import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
+    private static final RandomSource RANDOM = RandomSource.create(42L);
     private static final String TAG_ITEMS = "items";
     private static final String TAG_RESULT = "result";
     private static final String TAG_SMELTING_TIME = "smeltingTime";
@@ -47,7 +50,7 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
+    public void tickServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
         boolean isBurning = false;
         boolean hasChanged = false;
 
@@ -124,6 +127,15 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
         if (hasChanged) {
             level.sendBlockUpdated(pos, blockState, blockState, Block.UPDATE_ALL);
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+        }
+    }
+
+    @Override
+    public void tickClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
+        if (RANDOM.nextInt(4) == 0) {
+            for(int i = 0; i < RANDOM.nextInt(2) + 2; ++i) {
+                makeParticles(level, pos);
+            }
         }
     }
 
@@ -238,5 +250,15 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
         } else {
             return false;
         }
+    }
+
+    private static void makeParticles(@NotNull Level level, @NotNull BlockPos pos) {
+        level.addAlwaysVisibleParticle(
+                ParticleTypes.CAMPFIRE_COSY_SMOKE, true,
+                pos.getX() + 0.5D + RANDOM.nextDouble() / 3.0D * (RANDOM.nextBoolean() ? 1 : -1),
+                pos.getY() + RANDOM.nextDouble() + RANDOM.nextDouble(),
+                pos.getZ() + 0.5D + RANDOM.nextDouble() / 3.0D * (RANDOM.nextBoolean() ? 1 : -1),
+                0.0D, 0.07D, 0.0D
+        );
     }
 }
