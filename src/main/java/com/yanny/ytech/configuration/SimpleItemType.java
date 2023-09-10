@@ -51,12 +51,22 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerGrassTwineRecipe,
             SimpleItemType::registerSimpleTag),
+    WOODEN_PLATE("wooden_plate", "Wooden Plate",
+            ItemTags.create(Utils.modLoc("plates/wooden")),
+            SimpleItemType::simpleItem,
+            () -> List.of(new TextureHolder(0, MaterialType.OAK_WOOD.color, Utils.modItemLoc("plate"))).toArray(TextureHolder[]::new),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerWoodenPlateRecipe,
+            (holder, provider) -> {
+                provider.tag(holder.object.itemTag).add(holder.item.get());
+                provider.tag(MaterialItemType.PLATE.groupTag).addTag(holder.object.itemTag);
+            }),
     WOODEN_BOLT("wooden_bolt", "Wooden Bolt",
             ItemTags.create(Utils.modLoc("bolts/wooden")),
             SimpleItemType::simpleItem,
             () -> List.of(new TextureHolder(0, MaterialType.OAK_WOOD.color, Utils.modItemLoc("bolt"))).toArray(TextureHolder[]::new),
             SimpleItemType::basicItemModelProvider,
-            SimpleItemType::registerBoltRecipe,
+            SimpleItemType::registerWoodenBoltRecipe,
             (holder, provider) -> {
                 provider.tag(holder.object.itemTag).add(holder.item.get());
                 provider.tag(MaterialItemType.BOLT.groupTag).addTag(holder.object.itemTag);
@@ -297,7 +307,15 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerWoodenPlateRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+                .requires(ItemTags.WOODEN_SLABS)
+                .requires(MaterialItemType.SAW.groupTag)
+                .unlockedBy(Utils.getHasItem(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(Items.STICK)
                 .requires(MaterialItemType.SAW.groupTag)
