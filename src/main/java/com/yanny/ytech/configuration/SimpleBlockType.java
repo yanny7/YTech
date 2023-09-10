@@ -1,11 +1,8 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.configuration.block.*;
-import com.yanny.ytech.configuration.container.CrusherContainerMenu;
-import com.yanny.ytech.configuration.container.FurnaceContainerMenu;
+import com.yanny.ytech.configuration.block.MillstoneBlock;
+import com.yanny.ytech.configuration.block.PrimitiveSmelterBlock;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
-import com.yanny.ytech.configuration.screen.CrusherScreen;
-import com.yanny.ytech.configuration.screen.FurnaceScreen;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -60,7 +57,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             SimpleBlockType::registerBlockTag,
             (holder, windowId, inv, pos, stack, data) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos, stack, data),
             PrimitiveSmelterScreen::new),
-    STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
+    /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
             FurnaceBlock::new,
@@ -107,7 +104,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag,
             (holder, windowId, inv, pos, stack, data) -> new CrusherContainerMenu(holder, windowId, inv.player, pos, stack, data),
-            CrusherScreen::new),
+            CrusherScreen::new),*/
     ;
 
     @NotNull public final HolderType type;
