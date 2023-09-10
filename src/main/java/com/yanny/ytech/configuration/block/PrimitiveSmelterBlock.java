@@ -13,8 +13,12 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,9 +45,9 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState pState) {
         if (holder instanceof IEntityBlockHolder entityHolder) {
-            return new PrimitiveSmelterBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pPos, pState);
+            return new PrimitiveSmelterBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pos, pState);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }
@@ -70,6 +74,27 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
         }
 
         super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (state.getValue(POWERED)) {
+            if (random.nextInt(10) == 0) {
+                level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE,
+                        SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
+            }
+
+            if (random.nextInt(5) == 0) {
+                for (int i = 0; i < random.nextInt(1) + 1; ++i) {
+                    level.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+                            (random.nextFloat() / 2.0F), 5.0E-5D, (random.nextFloat() / 2.0F));
+                }
+            }
+
+            for(int i = 0; i < random.nextInt(2) + 2; ++i) {
+                makeParticles(level, pos, random);
+            }
+        }
     }
 
     @Override
@@ -102,78 +127,9 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
         ResourceLocation top = textures[1];
         ResourceLocation face = textures[2];
         ResourceLocation facePowered = textures[3];
-        BlockModelBuilder model = provider.models().getBuilder(holder.key)
-                .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 3, 16, 13).texture("#1");
-                        case EAST -> faceBuilder.uvs(0, 3, 16, 13).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(0, 3, 16, 13).texture("#0");
-                        case WEST -> faceBuilder.uvs(0, 3, 16, 13).texture("#0");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                    }
-                })
-                .from(0, 0, 0).to(16, 10, 16).end()
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch(direction) {
-                        case NORTH -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case EAST -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case WEST -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case UP -> faceBuilder.uvs(1, 1, 15, 15).texture("#0");
-                    }
-                })
-                .from(1, 10, 1).to(15, 13, 15).end()
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case EAST -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case WEST -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case UP -> faceBuilder.uvs(2, 2, 14, 14).texture("#2");
-                    }
-                })
-                .from(2, 13, 2).to(14, 16, 14).end()
-                .texture("0", casing)
-                .texture("1", face)
-                .texture("2", top);
-        BlockModelBuilder modelPowered = provider.models().getBuilder(holder.key + "_powered")
-                .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 3, 16, 13).texture("#1");
-                        case EAST -> faceBuilder.uvs(0, 3, 16, 13).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(0, 3, 16, 13).texture("#0");
-                        case WEST -> faceBuilder.uvs(0, 3, 16, 13).texture("#0");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                    }
-                })
-                .from(0, 0, 0).to(16, 10, 16).end()
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch(direction) {
-                        case NORTH -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case EAST -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case WEST -> faceBuilder.uvs(1, 1, 15, 4).texture("#0");
-                        case UP -> faceBuilder.uvs(1, 1, 15, 15).texture("#0");
-                    }
-                })
-                .from(1, 10, 1).to(15, 13, 15).end()
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case EAST -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case WEST -> faceBuilder.uvs(2, 1, 14, 4).texture("#0");
-                        case UP -> faceBuilder.uvs(2, 2, 14, 14).texture("#2");
-                    }
-                })
-                .from(2, 13, 2).to(14, 16, 14).end()
-                .texture("0", casing)
-                .texture("1", facePowered)
-                .texture("2", top);
+        BlockModelBuilder model = provider.models().cube(holder.key, casing, top, face, casing, casing, casing).texture("particle", casing);
+        BlockModelBuilder modelPowered = provider.models().cube(holder.key + "_powered", casing, top, facePowered, casing, casing, casing).texture("particle", casing);
+
         provider.getVariantBuilder(holder.block.get())
                 .partialState().with(HORIZONTAL_FACING, Direction.NORTH).with(POWERED, false).setModels(ConfiguredModel.builder().modelFile(model).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.EAST).with(POWERED, false).setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build())
@@ -189,9 +145,19 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
     public static TextureHolder[] textureHolder() {
         return List.of(
                 new TextureHolder(-1, -1, Utils.mcBlockLoc("bricks")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("primitive_furnace_top")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("primitive_furnace_front")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("primitive_furnace_front_powered"))
+                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_top")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front_powered"))
         ).toArray(TextureHolder[]::new);
+    }
+
+    private static void makeParticles(@NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource randomSource) {
+        level.addAlwaysVisibleParticle(
+                ParticleTypes.CAMPFIRE_COSY_SMOKE, true,
+                pos.getX() + 0.5D + randomSource.nextDouble() / 3.0D * (randomSource.nextBoolean() ? 1 : -1),
+                pos.getY() + randomSource.nextDouble() + randomSource.nextDouble(),
+                pos.getZ() + 0.5D + randomSource.nextDouble() / 3.0D * (randomSource.nextBoolean() ? 1 : -1),
+                0.0D, 0.07D, 0.0D
+        );
     }
 }
