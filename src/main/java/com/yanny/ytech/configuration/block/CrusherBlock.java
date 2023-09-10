@@ -6,7 +6,9 @@ import com.yanny.ytech.registration.IEntityBlockHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +16,7 @@ import java.util.function.Consumer;
 
 public class CrusherBlock extends MachineBlock {
     public CrusherBlock(Holder holder) {
-        super(holder);
+        super(holder, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).requiresCorrectToolForDrops().strength(3.5F));
     }
 
     @Nullable

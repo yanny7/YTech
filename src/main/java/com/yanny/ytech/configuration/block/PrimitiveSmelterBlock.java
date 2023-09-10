@@ -22,10 +22,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -40,7 +41,11 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoProvider {
     public PrimitiveSmelterBlock(Holder holder) {
-        super(holder);
+        super(holder, BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_RED)
+                .requiresCorrectToolForDrops()
+                .strength(3.5F)
+                .lightLevel((state) -> state.getValue(POWERED) ? 13 : 0));
     }
 
     @Nullable
@@ -51,11 +56,6 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
         } else {
             throw new IllegalStateException("Invalid holder type");
         }
-    }
-
-    @Override
-    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.getValue(POWERED) ? 15 : 0;
     }
 
     @SuppressWarnings("deprecation")

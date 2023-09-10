@@ -39,8 +39,8 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 public abstract class MachineBlock extends BaseEntityBlock {
     protected final Holder holder;
 
-    public MachineBlock(Holder holder) {
-        super(BlockBehaviour.Properties.of());
+    public MachineBlock(Holder holder, BlockBehaviour.Properties properties) {
+        super(properties);
         this.holder = holder;
     }
 
