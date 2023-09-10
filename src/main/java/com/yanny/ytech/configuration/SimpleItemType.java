@@ -51,6 +51,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerGrassTwineRecipe,
             SimpleItemType::registerSimpleTag),
+    BRICK_MOLD("brick_mold", "Brick Mold",
+            ItemTags.create(Utils.modLoc("brick_molds")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("brick_mold")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerBrickMoldRecipe,
+            SimpleItemType::registerSimpleTag),
     WOODEN_PLATE("wooden_plate", "Wooden Plate",
             ItemTags.create(Utils.modLoc("plates/wooden")),
             SimpleItemType::simpleItem,
@@ -304,6 +311,17 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .pattern("###")
                 .pattern("###")
                 .unlockedBy(Utils.getHasItem(input), RecipeProvider.has(GRASS_FIBERS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerBrickMoldRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('#', WOODEN_PLATE.itemTag)
+                .define('I', WOODEN_BOLT.itemTag)
+                .pattern("I#I")
+                .pattern("###")
+                .pattern("I#I")
+                .unlockedBy(Utils.getHasItem(), RecipeProvider.has(WOODEN_PLATE.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
