@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ytech:brick"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unfired_brick": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:unfired_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_unfired_brick",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ytech:brick"
+    ]
+  },
+  "sends_telemetry_event": false
+}

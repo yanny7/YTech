@@ -69,6 +69,9 @@ class YTechRecipes extends RecipeProvider {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(SimpleItemType.BREAD_DOUGH.itemTag), RecipeCategory.FOOD, Items.BREAD, 0.1f, 200)
                 .unlockedBy(getHasName(Registration.item(SimpleItemType.BREAD_DOUGH)), has(SimpleItemType.BREAD_DOUGH.itemTag))
                 .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BREAD)).getPath()));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(SimpleItemType.UNFIRED_BRICK.itemTag), RecipeCategory.MISC, Items.BRICK, 0.3f, 200)
+                .unlockedBy(getHasName(Registration.item(SimpleItemType.UNFIRED_BRICK)), has(SimpleItemType.UNFIRED_BRICK.itemTag))
+                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BRICK)).getPath()));
     }
 
     private void splitBySawRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
