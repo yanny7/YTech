@@ -1,0 +1,11 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:raw_materials/copper"
+  },
+  "minTemp": 900,
+  "result": {
+    "item": "ytech:arsenical_bronze_ingot"
+  },
+  "smeltingTime": 600
+}

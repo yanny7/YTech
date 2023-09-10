@@ -293,7 +293,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .pattern("###")
                 .pattern("###")
                 .pattern("###")
-                .unlockedBy(Utils.getHasName(input), RecipeProvider.has(GRASS_FIBERS.itemTag))
+                .unlockedBy(Utils.getHasItem(input), RecipeProvider.has(GRASS_FIBERS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
@@ -308,7 +308,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerRawHideRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         TanningRecipe.Builder.tanning(holder.object.itemTag, 5, Items.LEATHER)
                 .tool(Ingredient.of(SHARP_FLINT.itemTag))
-                .unlockedBy(Utils.getHasName(holder), RecipeProvider.has(RAW_HIDE.itemTag))
+                .unlockedBy(Utils.getHasItem(holder), RecipeProvider.has(RAW_HIDE.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

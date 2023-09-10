@@ -47,8 +47,13 @@ public class Utils {
     }
 
     @NotNull
-    public static String getHasName(Holder holder) {
+    public static String getHasItem(Holder holder) {
         return "has_" + holder.key;
+    }
+
+    @NotNull
+    public static String getHasItem() {
+        return "has_item";
     }
 
     @NotNull
