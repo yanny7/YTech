@@ -24,6 +24,8 @@ import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     private static final RandomSource RANDOM = RandomSource.create(42L);
     private static final String TAG_ITEMS = "items";
@@ -38,12 +40,13 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     private static final int SLOT_INPUT = 0;
     private static final int SLOT_FUEL = 1;
     private static final int SLOT_OUTPUT = 2;
+    private static final int BASE_MAX_TEMPERATURE = 700;
+    private static final int BASE_MIN_TEMPERATURE = 20;
+    private static final int TEMP_PER_CHIMNEY = 100;
 
     private int nrChimney = -1;
     private int burningTime = 600;
     private int leftBurningTime = 0;
-    private int maxTemperature = 1000; //TODO F,C,K
-    private int minTemperature = 20; //TODO F,C,K, + from biome temp
     private int temperature = 20;
     private int leftSmelting = 0;
     private int smeltingTime = 0;
@@ -57,7 +60,8 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     @Override
     public void tickServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
         boolean isBurning = false;
-        boolean hasChanged = false;
+        int maxTemperature = getMaxTemperature();
+        AtomicBoolean hasChanged = new AtomicBoolean(false);
 
         if (recipe == null) {
             ItemStack input = itemStackHandler.getStackInSlot(SLOT_INPUT);
@@ -66,12 +70,11 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
                 level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(input), level).ifPresent((r) -> {
                     ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-                    if (result.isEmpty() || ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount()) {
+                    if (r.minTemperature() <= temperature && (result.isEmpty() || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount()))) {
                         recipe = input.split(1);
                         leftSmelting = smeltingTime = r.smeltingTime();
                         recipeTemperature = r.minTemperature();
-                        level.sendBlockUpdated(pos, blockState, blockState, Block.UPDATE_ALL);
-                        setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+                        hasChanged.set(true);
                     }
                 });
             }
@@ -92,26 +95,27 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
                     recipe = null;
                 }
 
-                hasChanged = true;
+                hasChanged.set(true);
             }
         }
 
         if (leftBurningTime > 0) {
             leftBurningTime--;
             isBurning = true;
-            hasChanged = true;
+            hasChanged.set(true);
         } else {
             ItemStack fuel = itemStackHandler.getStackInSlot(SLOT_FUEL);
 
-            if (!fuel.isEmpty() && recipe != null && !recipe.isEmpty()) {
+            if (!fuel.isEmpty() && !itemStackHandler.getStackInSlot(SLOT_INPUT).isEmpty()) {
                 leftBurningTime = burningTime = ForgeHooks.getBurnTime(fuel, RecipeType.BLASTING);
                 fuel.shrink(1);
                 isBurning = true;
-                setPoweredState(level, blockState, pos, true);
 
                 if (fuel.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_FUEL, fuel.getCraftingRemainingItem());
                 }
+
+                setPoweredState(level, blockState, pos, true);
             } else {
                 setPoweredState(level, blockState, pos, false);
             }
@@ -119,18 +123,17 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
 
         int oldTemperature = temperature;
 
-        if (isBurning) {
+        if (isBurning && (maxTemperature > temperature)) {
             temperature = Math.min(maxTemperature, temperature + 1);
-        } else {
-            temperature = Math.max(minTemperature, temperature - 2);
+        } else if (!isBurning || (maxTemperature < temperature)) {
+            temperature = Math.max(BASE_MIN_TEMPERATURE, temperature - 1);
         }
 
         if (temperature != oldTemperature) {
-            hasChanged = true;
+            hasChanged.set(true);
         }
 
-        if (hasChanged) {
-            level.sendBlockUpdated(pos, blockState, blockState, Block.UPDATE_ALL);
+        if (hasChanged.get()) {
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
         }
     }
@@ -145,10 +148,10 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    public void setLevel(@NotNull Level level) {
-        super.setLevel(level);
+    public void onLoad() {
+        super.onLoad();
 
-        if (!level.isClientSide && nrChimney == -1) {
+        if (level != null && !level.isClientSide && nrChimney == -1) {
             nrChimney = detectChimneys(level);
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
@@ -159,33 +162,38 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
 
-        if (tag.contains(TAG_ITEMS)) {
-            itemStackHandler.deserializeNBT(tag.getCompound(TAG_ITEMS));
-        }
+        if (level == null || !level.isClientSide) { // server side
+            if (tag.contains(TAG_ITEMS)) {
+                itemStackHandler.deserializeNBT(tag.getCompound(TAG_ITEMS));
+            }
 
-        if (tag.contains(TAG_RESULT)) {
-            recipe = ItemStack.of(tag.getCompound(TAG_RESULT));
-        } else {
-            recipe = null;
-        }
+            if (tag.contains(TAG_RESULT)) {
+                recipe = ItemStack.of(tag.getCompound(TAG_RESULT));
+            } else {
+                recipe = null;
+            }
 
-        if (tag.contains(TAG_NR_CHIMNEY)) {
+            // Try to load if exists, otherwise load in onLoad method
+            if (tag.contains(TAG_NR_CHIMNEY)) {
+                nrChimney = tag.getInt(TAG_NR_CHIMNEY);
+            }
+
+            burningTime = tag.getInt(TAG_BURNING_TIME);
+            leftBurningTime = tag.getInt(TAG_LEFT_BURNING);
+            smeltingTime = tag.getInt(TAG_SMELTING_TIME);
+            leftSmelting = tag.getInt(TAG_LEFT_SMELTING);
+            temperature = tag.getInt(TAG_TEMPERATURE);
+            recipeTemperature = tag.getInt(TAG_RECIPE_TEMPERATURE);
+        } else { // client side
             nrChimney = tag.getInt(TAG_NR_CHIMNEY);
         }
-
-        burningTime = tag.getInt(TAG_BURNING_TIME);
-        leftBurningTime = tag.getInt(TAG_LEFT_BURNING);
-        smeltingTime = tag.getInt(TAG_SMELTING_TIME);
-        leftSmelting = tag.getInt(TAG_LEFT_SMELTING);
-        temperature = tag.getInt(TAG_TEMPERATURE);
-        recipeTemperature = tag.getInt(TAG_RECIPE_TEMPERATURE);
     }
 
     @NotNull
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+        tag.putInt(TAG_NR_CHIMNEY, nrChimney);
         return tag;
     }
 
@@ -193,6 +201,12 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public void onRemove() {
+        if (level != null && level.getBlockEntity(worldPosition.above()) instanceof BrickChimneyBlockEntity chimney) {
+            chimney.onRemove();
+        }
     }
 
     public boolean isProcessing() {
@@ -232,20 +246,24 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
 
-        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
-        tag.putInt(TAG_NR_CHIMNEY, nrChimney);
-        tag.putInt(TAG_BURNING_TIME, burningTime);
-        tag.putInt(TAG_LEFT_BURNING, leftBurningTime);
-        tag.putInt(TAG_SMELTING_TIME, smeltingTime);
-        tag.putInt(TAG_LEFT_SMELTING, leftSmelting);
-        tag.putInt(TAG_TEMPERATURE, temperature);
-        tag.putInt(TAG_RECIPE_TEMPERATURE, recipeTemperature);
+        if (level == null || !level.isClientSide) {
+            tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
+            tag.putInt(TAG_NR_CHIMNEY, nrChimney);
+            tag.putInt(TAG_BURNING_TIME, burningTime);
+            tag.putInt(TAG_LEFT_BURNING, leftBurningTime);
+            tag.putInt(TAG_SMELTING_TIME, smeltingTime);
+            tag.putInt(TAG_LEFT_SMELTING, leftSmelting);
+            tag.putInt(TAG_TEMPERATURE, temperature);
+            tag.putInt(TAG_RECIPE_TEMPERATURE, recipeTemperature);
 
-        if (recipe != null) {
-            CompoundTag itemStack = new CompoundTag();
+            if (recipe != null) {
+                CompoundTag itemStack = new CompoundTag();
 
-            recipe.save(itemStack);
-            tag.put(TAG_RESULT, itemStack);
+                recipe.save(itemStack);
+                tag.put(TAG_RESULT, itemStack);
+            }
+        } else {
+            tag.putInt(TAG_NR_CHIMNEY, nrChimney);
         }
     }
 
@@ -267,7 +285,7 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
             public int get(int index) {
                 return switch (index) {
                     case 0 -> Math.round(leftBurningTime / (float)burningTime * 100);
-                    case 1 -> maxTemperature;
+                    case 1 -> getMaxTemperature();
                     case 2 -> temperature;
                     case 3 -> leftSmelting > 0 ? Math.round((smeltingTime - leftSmelting) / (float)smeltingTime * 100) : 0;
                     case 4 -> (recipe != null && !recipe.isEmpty()) ? 1 : 0;
@@ -310,9 +328,13 @@ public class PrimitiveSmelterBlockEntity extends MachineBlockEntity {
         while (level.getBlockEntity(blockPos = blockPos.above()) instanceof BrickChimneyBlockEntity blockEntity) {
             nrChimney++;
             blockEntity.setMaster(worldPosition);
-        };
+        }
 
         return nrChimney;
+    }
+
+    private int getMaxTemperature() {
+        return BASE_MAX_TEMPERATURE + nrChimney * TEMP_PER_CHIMNEY;
     }
 
     private static void makeParticles(@NotNull Level level, @NotNull BlockPos pos, int offset) {

@@ -73,6 +73,7 @@ public class PrimitiveSmelterBlock extends MachineBlock implements IProbeInfoPro
                 }
 
                 Containers.dropContents(level, pos, items);
+                smelter.onRemove();
             }
         }
 

@@ -1,19 +1,28 @@
 package com.yanny.ytech.configuration.block_entity;
 
+import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.block.ReinforcedBrickChimneyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 public class BrickChimneyBlockEntity extends BlockEntity {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     private static final String TAG_MASTER_POSITION = "masterPos";
+    private static final String TAG_HEIGHT_INDEX = "heightIndex";
+    private static final int MAX_HEIGHT = 2;
 
     @Nullable private BlockPos masterPos = null;
+    private int heightIndex = -1;
 
     public BrickChimneyBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
         super(blockEntityType, pos, blockState);
@@ -28,6 +37,12 @@ public class BrickChimneyBlockEntity extends BlockEntity {
         } else {
             masterPos = null;
         }
+
+        if (tag.contains(TAG_HEIGHT_INDEX)) {
+            heightIndex = tag.getInt(TAG_HEIGHT_INDEX);
+        } else {
+            heightIndex = -1;
+        }
     }
 
     @Override
@@ -35,33 +50,65 @@ public class BrickChimneyBlockEntity extends BlockEntity {
         super.onLoad();
 
         if (level != null && !level.isClientSide && masterPos == null) {
-            if (level.getBlockEntity(worldPosition.below()) instanceof PrimitiveSmelterBlockEntity blockEntity) {
-                masterPos = blockEntity.getBlockPos();
-                blockEntity.chimneyAdded();
-                setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
-            } else if (level.getBlockEntity(worldPosition.below()) instanceof BrickChimneyBlockEntity chimney && chimney.masterPos != null &&
-                    level.getBlockEntity(chimney.masterPos) instanceof PrimitiveSmelterBlockEntity blockEntity) {
-                masterPos = chimney.masterPos;
-                blockEntity.chimneyAdded();
-                setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
-            }
+            setMaster(worldPosition.below());
+        }
+    }
 
-            // propagate above
-            if (masterPos != null && level.getBlockEntity(worldPosition.above()) instanceof BrickChimneyBlockEntity chimney) {
-                chimney.setMaster(masterPos);
+    public int getNextHeight(boolean isReinforced) {
+        if (heightIndex == -1) {
+            return -1;
+        }
+
+        if (getBlockState().getBlock() instanceof ReinforcedBrickChimneyBlock) {
+            if (heightIndex > 0) {
+                if (isReinforced) {
+                    return heightIndex - 1;
+                } else {
+                    return MAX_HEIGHT;
+                }
+            } else {
+                if (isReinforced) {
+                    return -1;
+                } else {
+                    return MAX_HEIGHT;
+                }
+            }
+        } else {
+            if (heightIndex > 0) {
+                return heightIndex - 1;
+            } else {
+                return -1;
             }
         }
     }
 
     public void setMaster(@NotNull BlockPos blockPos) {
-        if (level != null && level.getBlockEntity(blockPos) instanceof PrimitiveSmelterBlockEntity blockEntity) {
-            masterPos = blockPos;
-            blockEntity.chimneyAdded();
-            setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+        if (level != null) {
+            if (level.getBlockEntity(blockPos) instanceof PrimitiveSmelterBlockEntity blockEntity) {
+                int height = -1;
 
-            // propagate above
-            if (level.getBlockEntity(worldPosition.above()) instanceof BrickChimneyBlockEntity chimney) {
-                chimney.setMaster(masterPos);
+                if (blockPos.equals(worldPosition.below())) {
+                    height = MAX_HEIGHT;
+                } else if (level.getBlockEntity(worldPosition.below()) instanceof BrickChimneyBlockEntity chimney) {
+                    height = chimney.getNextHeight(getBlockState().getBlock() instanceof ReinforcedBrickChimneyBlock);
+                } else {
+                    LOGGER.warn("Cannot get chimney height index, should not happen! At {}, master at {}", worldPosition, blockPos);
+                }
+
+                if (height == -1) {
+                    removeBlock();
+                } else {
+                    registerChimney(level, blockEntity, height);
+
+                    // propagate above
+                    if (level.getBlockEntity(worldPosition.above()) instanceof BrickChimneyBlockEntity chimney) {
+                        chimney.setMaster(blockPos);
+                    }
+                }
+            } else if (level.getBlockEntity(blockPos) instanceof BrickChimneyBlockEntity blockEntity) {
+                if (blockEntity.masterPos != null) {
+                    setMaster(blockEntity.masterPos);
+                }
             }
         }
     }
@@ -69,12 +116,24 @@ public class BrickChimneyBlockEntity extends BlockEntity {
     public void onRemove() {
         if (level != null && masterPos != null && level.getBlockEntity(masterPos) instanceof PrimitiveSmelterBlockEntity blockEntity) {
             masterPos = null;
+            heightIndex = -1;
             blockEntity.chimneyRemoved();
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
 
             // propagate above
             if (level.getBlockEntity(worldPosition.above()) instanceof BrickChimneyBlockEntity chimney) {
                 chimney.onRemove();
+            }
+        }
+    }
+
+    public void removeBlock() {
+        if (level != null) {
+            level.destroyBlock(worldPosition, true);
+
+            // propagate above
+            if (level.getBlockEntity(worldPosition.above()) instanceof BrickChimneyBlockEntity chimney) {
+                chimney.removeBlock();
             }
         }
     }
@@ -86,5 +145,14 @@ public class BrickChimneyBlockEntity extends BlockEntity {
         if (masterPos != null) {
             tag.put(TAG_MASTER_POSITION, Utils.saveBlockPos(masterPos));
         }
+
+        tag.putInt(TAG_HEIGHT_INDEX, heightIndex);
+    }
+
+    private void registerChimney(@NotNull Level level, @NotNull PrimitiveSmelterBlockEntity blockEntity, int height) {
+        masterPos = blockEntity.getBlockPos();
+        heightIndex = height;
+        blockEntity.chimneyAdded();
+        setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
     }
 }
