@@ -77,9 +77,9 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::simpleItem,
             (material) -> basicTexture(Utils.modItemLoc("bolt"), material),
             MaterialItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerBoltRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.noneOf(MaterialType.class)),
+            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
 
     AXE("axe", INameable.suffix("axe"), INameable.suffix("Axe"),
             (material) -> ItemTags.create(Utils.modLoc("axes/" + material.key)),
@@ -272,6 +272,19 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern("#")
                     .pattern("F")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+            default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);
+        }
+    }
+
+    public static void registerBoltRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        switch (holder.material) {
+            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                    .define('#', ROD.itemTag.get(holder.material))
+                    .define('S', SAW.groupTag)
+                    .pattern("# ")
+                    .pattern(" S")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ROD.itemTag.get(holder.material)))
                     .save(recipeConsumer, Utils.modLoc(holder.key));
             default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);
         }
