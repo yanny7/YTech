@@ -13,7 +13,7 @@ public enum MaterialType {
     MERCURY("mercury", "Mercury", hex2rgb("#DBCECA"), Tiers.DIAMOND, ToolType.PICKAXE),
     TIN("tin", "Tin", hex2rgb("#808080"), Tiers.STONE, ToolType.PICKAXE),
 
-    ARSENICAL_BRONZE("arsenical_bronze", "Arsenical Bronze", hex2rgb("#C0C0C0"), Tiers.IRON, ToolType.PICKAXE),
+    ARSENICAL_BRONZE("arsenical_bronze", "Arsenical Bronze", hex2rgb("#B4894B"), Tiers.IRON, ToolType.PICKAXE),
 
     ACACIA_WOOD("acacia", "Acacia", -1, "wooden", Tiers.WOOD, ToolType.AXE),
     BIRCH_WOOD("birch", "Birch", -1, "wooden", Tiers.WOOD, ToolType.AXE),

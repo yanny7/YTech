@@ -16,7 +16,7 @@ public class CrusherBlockEntity extends MachineBlockEntity {
 
     @NotNull
     @Override
-    protected MachineItemStackHandler createItemStackHandler() {
+    public MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
                 .addInputSlot(32, 32, (itemStack) -> true)
                 .addOutputSlot(64, 32)

@@ -7,6 +7,7 @@ import com.yanny.ytech.configuration.block.ShaftBlock;
 import com.yanny.ytech.configuration.block.TanningRack;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -375,8 +376,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     }
 
     private static void oreLootProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider) {
-        provider.add(holder.block.get(), (block -> provider.createOreDrop(block, GeneralUtils.getFromMap(HOLDER.items(),
-                MaterialItemType.RAW_MATERIAL, holder.material).item.get())));
+        provider.add(holder.block.get(), (block -> provider.createOreDrop(block, Registration.item(MaterialItemType.RAW_MATERIAL, holder.material))));
     }
 
     private static TextureHolder[] basicTexture(ResourceLocation base, MaterialType material) {

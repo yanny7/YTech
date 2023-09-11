@@ -80,7 +80,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
         tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
     }
 
-    @NotNull abstract protected MachineItemStackHandler createItemStackHandler();
+    @NotNull abstract public MachineItemStackHandler createItemStackHandler();
 
     @NotNull abstract protected ContainerData createContainerData();
 }

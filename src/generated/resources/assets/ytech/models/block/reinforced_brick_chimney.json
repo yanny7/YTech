@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#1"
+        },
+        "east": {
+          "texture": "#0"
+        },
+        "north": {
+          "texture": "#0"
+        },
+        "south": {
+          "texture": "#0"
+        },
+        "up": {
+          "texture": "#1"
+        },
+        "west": {
+          "texture": "#0"
+        }
+      },
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        16,
+        15
+      ]
+    }
+  ],
+  "textures": {
+    "0": "ytech:block/reinforced_bricks",
+    "1": "ytech:block/machine/primitive_smelter_top",
+    "particle": "ytech:block/reinforced_bricks"
+  }
+}

@@ -17,7 +17,7 @@ public class FurnaceBlockEntity extends MachineBlockEntity {
 
     @NotNull
     @Override
-    protected MachineItemStackHandler createItemStackHandler() {
+    public MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
                 .addInputSlot(32, 32, (itemStack) -> true)
                 .addInputSlot(32, 32 + 18, (AbstractFurnaceBlockEntity::isFuel))

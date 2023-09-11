@@ -3,7 +3,6 @@
     "ytech:millstone",
     "ytech:primitive_smelter",
     "ytech:brick_chimney",
-    "ytech:reinforced_brick_chimney",
-    "ytech:arsenical_bronze_block"
+    "ytech:reinforced_brick_chimney"
   ]
 }

@@ -29,7 +29,9 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -52,7 +54,10 @@ public class MillstoneBlock extends Block implements EntityBlock, IProbeInfoProv
     private final Holder.SimpleBlockHolder holder;
 
     public MillstoneBlock(Holder.SimpleBlockHolder holder) {
-        super(Properties.of());
+        super(BlockBehaviour.Properties.of()
+                .mapColor(MapColor.STONE)
+                .requiresCorrectToolForDrops()
+                .strength(3.5F));
         this.holder = holder;
     }
 

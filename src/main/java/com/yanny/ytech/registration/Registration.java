@@ -238,7 +238,7 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        Supplier<ItemStack> iconSupplier = () -> new ItemStack(GeneralUtils.getFromMap(HOLDER.items(), MaterialItemType.INGOT, MaterialType.GOLD).item.get());
+        Supplier<ItemStack> iconSupplier = () -> new ItemStack(item(SimpleBlockType.PRIMITIVE_SMELTER));
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }
 

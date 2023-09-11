@@ -1,7 +1,9 @@
 package com.yanny.ytech.configuration;
 
+import com.yanny.ytech.configuration.block.BrickChimneyBlock;
 import com.yanny.ytech.configuration.block.MillstoneBlock;
 import com.yanny.ytech.configuration.block.PrimitiveSmelterBlock;
+import com.yanny.ytech.configuration.block.ReinforcedBrickChimneyBlock;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
@@ -44,7 +46,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ILootable::dropsSelfProvider,
             MillstoneBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
-            SimpleBlockType::registerBlockTag),
+            SimpleBlockType::registerStonePickaxeBlockTag),
     PRIMITIVE_SMELTER(HolderType.MENU_BLOCK, "primitive_smelter", "Primitive Smelter",
             ItemTags.create(Utils.modLoc("primitive_smelters")),
             BlockTags.create(Utils.modLoc("primitive_smelters")),
@@ -54,9 +56,29 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ILootable::dropsSelfProvider,
             PrimitiveSmelterBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
-            SimpleBlockType::registerBlockTag,
+            SimpleBlockType::registerStonePickaxeBlockTag,
             (holder, windowId, inv, pos, stack, data) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos, stack, data),
             PrimitiveSmelterScreen::new),
+    BRICK_CHIMNEY(HolderType.ENTITY_BLOCK, "brick_chimney", "Brick Chimney",
+            ItemTags.create(Utils.modLoc("brick_chimneys")),
+            BlockTags.create(Utils.modLoc("brick_chimneys")),
+            BrickChimneyBlock::new,
+            BrickChimneyBlock::getTexture,
+            BrickChimneyBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            BrickChimneyBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag),
+    REINFORCED_BRICK_CHIMNEY(HolderType.ENTITY_BLOCK, "reinforced_brick_chimney", "Reinforced Brick Chimney",
+            ItemTags.create(Utils.modLoc("reinforced_brick_chimneys")),
+            BlockTags.create(Utils.modLoc("reinforced_brick_chimneys")),
+            ReinforcedBrickChimneyBlock::new,
+            ReinforcedBrickChimneyBlock::getTexture,
+            ReinforcedBrickChimneyBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            ReinforcedBrickChimneyBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag),
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
@@ -263,5 +285,11 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
 
     private static void registerBlockTag(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockTagsProvider provider) {
         provider.tag(holder.object.blockTag).add(holder.block.get());
+    }
+
+    private static void registerStonePickaxeBlockTag(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockTagsProvider provider) {
+        provider.tag(holder.object.blockTag).add(holder.block.get());
+        provider.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(holder.block.get());
+        provider.tag(BlockTags.NEEDS_STONE_TOOL).add(holder.block.get());
     }
 }

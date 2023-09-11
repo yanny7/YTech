@@ -2,6 +2,8 @@ package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.registration.Holder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ModelProvider;
@@ -63,5 +65,19 @@ public class Utils {
         } else {
             throw new IllegalStateException("Not wood type provided!");
         }
+    }
+
+    @NotNull
+    public static CompoundTag saveBlockPos(@NotNull BlockPos pos) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("x", pos.getX());
+        tag.putInt("y", pos.getY());
+        tag.putInt("z", pos.getZ());
+        return tag;
+    }
+
+    @NotNull
+    public static BlockPos loadBlockPos(@NotNull CompoundTag tag) {
+        return new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
     }
 }
