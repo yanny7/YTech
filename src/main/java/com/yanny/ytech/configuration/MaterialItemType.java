@@ -279,7 +279,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
     public static void registerBoltRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         switch (holder.material) {
-            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 2)
                     .define('#', ROD.itemTag.get(holder.material))
                     .define('S', SAW.groupTag)
                     .pattern("# ")
