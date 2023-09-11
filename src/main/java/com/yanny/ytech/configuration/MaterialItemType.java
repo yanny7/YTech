@@ -135,6 +135,15 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialHammerItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.STONE)),
+    FILE("file", INameable.suffix("file"), INameable.suffix("File"),
+            (material) -> ItemTags.create(Utils.modLoc("files/" + material.key)),
+            ItemTags.create(Utils.modLoc("files")),
+            (holder) -> new MaterialFileItem(holder.material.tier),
+            (material) -> toolTexture(Utils.modItemLoc("file_handle"), Utils.modItemLoc("file_overlay"), material),
+            MaterialItemType::toolItemModelProvider,
+            MaterialFileItem::registerRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
     ;
 
     @NotNull public final String id;
