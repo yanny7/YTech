@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/arsenical_bronze"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "H"
+  ],
+  "result": {
+    "item": "ytech:arsenical_bronze_plate"
+  },
+  "show_notification": true
+}

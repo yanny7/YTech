@@ -3,6 +3,9 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -56,9 +59,9 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::simpleItem,
             (material) -> basicTexture(Utils.modItemLoc("plate"), material),
             MaterialItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerPlateRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.noneOf(MaterialType.class)),
+            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
     BOLT("bolt", INameable.suffix("bolt"), INameable.suffix("Bolt"),
             (material) -> ItemTags.create(Utils.modLoc("bolts/" + material.key)),
             ItemTags.create(Utils.modLoc("bolts")),
@@ -227,6 +230,20 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
     private static Item simpleItem(@NotNull Holder.ItemHolder holder) {
         return new Item(new Item.Properties());
+    }
+
+    public static void registerPlateRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        switch (holder.material) {
+            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                    .define('#', INGOT.itemTag.get(holder.material))
+                    .define('H', HAMMER.groupTag)
+                    .pattern("#")
+                    .pattern("#")
+                    .pattern("H")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+            default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);
+        }
     }
 
     private static void basicItemModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
