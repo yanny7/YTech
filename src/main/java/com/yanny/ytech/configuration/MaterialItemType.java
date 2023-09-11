@@ -62,6 +62,15 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::registerPlateRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
+    ROD("rod", INameable.suffix("rod"), INameable.suffix("Rod"),
+            (material) -> ItemTags.create(Utils.modLoc("rods/" + material.key)),
+            ItemTags.create(Utils.modLoc("rods")),
+            MaterialItemType::simpleItem,
+            (material) -> basicTexture(Utils.modItemLoc("rod"), material),
+            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::registerRodRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
     BOLT("bolt", INameable.suffix("bolt"), INameable.suffix("Bolt"),
             (material) -> ItemTags.create(Utils.modLoc("bolts/" + material.key)),
             ItemTags.create(Utils.modLoc("bolts")),
@@ -249,6 +258,19 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern("#")
                     .pattern("#")
                     .pattern("H")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+            default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);
+        }
+    }
+
+    public static void registerRodRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        switch (holder.material) {
+            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                    .define('#', INGOT.itemTag.get(holder.material))
+                    .define('F', FILE.groupTag)
+                    .pattern("#")
+                    .pattern("F")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
                     .save(recipeConsumer, Utils.modLoc(holder.key));
             default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);

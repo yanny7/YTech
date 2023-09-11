@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/arsenical_bronze"
+    },
+    "F": {
+      "tag": "ytech:files"
+    }
+  },
+  "pattern": [
+    "#",
+    "F"
+  ],
+  "result": {
+    "item": "ytech:arsenical_bronze_rod"
+  },
+  "show_notification": true
+}
