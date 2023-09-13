@@ -2,6 +2,7 @@ package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.SimpleItemType;
+import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
@@ -11,9 +12,9 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -106,10 +106,11 @@ public class ForgeBusSubscriber {
             BlockState blockState = level.getBlockState(event.getPos());
             Direction direction = event.getFace();
 
-            // Action.ABORT is bugged - getFace returns always DOWN direction
-            if (!level.isClientSide && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && heldItem.is(Items.FLINT) && blockState.is(Tags.Blocks.STONE) && event.getHand() == InteractionHand.MAIN_HAND) {
-                Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(Registration.item(SimpleItemType.SHARP_FLINT)));
-                heldItem.shrink(1);
+            if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
+                level.getRecipeManager().getRecipeFor(BlockHitRecipe.RECIPE_TYPE, new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                    Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(Registration.item(SimpleItemType.SHARP_FLINT)));
+                    heldItem.shrink(1);
+                });
             }
         }
     }

@@ -1,0 +1,12 @@
+{
+  "type": "ytech:block_hit",
+  "block": {
+    "tag": "forge:stone"
+  },
+  "ingredient": {
+    "item": "minecraft:flint"
+  },
+  "result": {
+    "item": "ytech:sharp_flint"
+  }
+}

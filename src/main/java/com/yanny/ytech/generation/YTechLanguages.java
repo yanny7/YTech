@@ -23,5 +23,7 @@ class YTechLanguages extends LanguageProvider {
         add("gui.jei.category.drying", "Drying Recipe");
         add("gui.jei.category.tanning", "Tanning Recipe");
         add("gui.jei.category.milling", "Milling Recipe");
+        add("gui.jei.category.smelting", "Smelting Recipe");
+        add("gui.jei.category.block_hit", "Block Hit Recipe");
     }
 }

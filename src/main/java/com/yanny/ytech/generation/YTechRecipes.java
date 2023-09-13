@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
 import com.yanny.ytech.registration.Registration;
@@ -60,6 +61,10 @@ class YTechRecipes extends RecipeProvider {
 
         smeltingRecipe(recipeConsumer, Tags.Items.RAW_MATERIALS_COPPER, Registration.item(MaterialItemType.INGOT, MaterialType.ARSENICAL_BRONZE), 900, 600);
 
+        BlockHitRecipe.Builder.blockUse(Items.FLINT, Tags.Items.STONE, Registration.item(SimpleItemType.SHARP_FLINT))
+                .unlockedBy(Utils.getHasName(), has(Items.FLINT))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(Registration.item(SimpleItemType.SHARP_FLINT)).getPath()));
+
         DryingRecipe.Builder.drying(Items.KELP, 20 * 60, Items.DRIED_KELP)
                 .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.KELP))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.DRIED_KELP).getPath()));
@@ -90,6 +95,12 @@ class YTechRecipes extends RecipeProvider {
 
     private void smeltingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int temperature, int smeltingTime) {
         SmeltingRecipe.Builder.smelting(input, temperature, smeltingTime, result)
+                .unlockedBy(Utils.getHasName(), has(input))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+    }
+
+    private void blockUseRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull TagKey<Item> block, @NotNull Item result) {
+        BlockHitRecipe.Builder.blockUse(input, block, result)
                 .unlockedBy(Utils.getHasName(), has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }

@@ -1,10 +1,7 @@
 package com.yanny.ytech.compatibility;
 
 import com.mojang.logging.LogUtils;
-import com.yanny.ytech.compatibility.jei.DryingRecipeCategory;
-import com.yanny.ytech.compatibility.jei.MillingRecipeCategory;
-import com.yanny.ytech.compatibility.jei.SmeltingRecipeCategory;
-import com.yanny.ytech.compatibility.jei.TanningRecipeCategory;
+import com.yanny.ytech.compatibility.jei.*;
 import com.yanny.ytech.configuration.Utils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -27,6 +24,7 @@ public class JeiCompatibility implements IModPlugin {
         registration.addRecipeCategories(new TanningRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new MillingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new SmeltingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new BlockHitRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -38,6 +36,7 @@ public class JeiCompatibility implements IModPlugin {
             registration.addRecipes(TanningRecipeCategory.RECIPE_TYPE, TanningRecipeCategory.getRecipes(level.getRecipeManager()));
             registration.addRecipes(MillingRecipeCategory.RECIPE_TYPE, MillingRecipeCategory.getRecipes(level.getRecipeManager()));
             registration.addRecipes(SmeltingRecipeCategory.RECIPE_TYPE, SmeltingRecipeCategory.getRecipes(level.getRecipeManager()));
+            registration.addRecipes(BlockHitRecipeCategory.RECIPE_TYPE, BlockHitRecipeCategory.getRecipes(level.getRecipeManager()));
         } else {
             LOGGER.warn("JEI integration was not loaded! Level is null!");
         }
@@ -49,6 +48,7 @@ public class JeiCompatibility implements IModPlugin {
         TanningRecipeCategory.registerCatalyst(registration);
         MillingRecipeCategory.registerCatalyst(registration);
         SmeltingRecipeCategory.registerCatalyst(registration);
+        BlockHitRecipeCategory.registerCatalyst(registration);
     }
 
     @NotNull
