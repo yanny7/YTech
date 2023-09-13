@@ -3,6 +3,8 @@
     "ytech:millstone",
     "ytech:primitive_smelter",
     "ytech:brick_chimney",
-    "ytech:reinforced_brick_chimney"
+    "ytech:reinforced_brick_chimney",
+    "ytech:raw_cassiterite_block",
+    "ytech:stone_cassiterite_ore"
   ]
 }

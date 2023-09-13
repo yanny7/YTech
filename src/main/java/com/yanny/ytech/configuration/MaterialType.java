@@ -7,14 +7,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.EnumSet;
 
 public enum MaterialType {
+    //elements
     COPPER("copper", "Copper", hex2rgb("#B87333"), Tiers.STONE, ToolType.PICKAXE),
     GOLD("gold", "Gold", hex2rgb("#FFDF00"), Tiers.GOLD, ToolType.PICKAXE),
     IRON("iron", "Iron", hex2rgb("#AAAAAA"), Tiers.IRON, ToolType.PICKAXE),
     MERCURY("mercury", "Mercury", hex2rgb("#DBCECA"), Tiers.DIAMOND, ToolType.PICKAXE),
     TIN("tin", "Tin", hex2rgb("#808080"), Tiers.STONE, ToolType.PICKAXE),
 
+    //alloys
     ARSENICAL_BRONZE("arsenical_bronze", "Arsenical Bronze", hex2rgb("#B4894B"), Tiers.IRON, ToolType.PICKAXE),
 
+    //ores
+    CASSITERITE("cassiterite", "Cassiterite", hex2rgb("#3D3D3D"), Tiers.STONE, ToolType.PICKAXE),
+
+    //woods
     ACACIA_WOOD("acacia", "Acacia", -1, "wooden", Tiers.WOOD, ToolType.AXE),
     BIRCH_WOOD("birch", "Birch", -1, "wooden", Tiers.WOOD, ToolType.AXE),
     CHERRY_WOOD("cherry", "Cherry", -1, "wooden", Tiers.WOOD, ToolType.AXE),

@@ -52,7 +52,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe, // handled in block
             MaterialItemType::registerMaterialTag,
-            EnumSet.noneOf(MaterialType.class)),
+            EnumSet.of(MaterialType.CASSITERITE)),
     PLATE("plate", INameable.suffix("plate"), INameable.suffix("Plate"),
             (material) -> ItemTags.create(Utils.modLoc("plates/" + material.key)),
             ItemTags.create(Utils.modLoc("plates")),

@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "ytech:cassiterite_ore_upper",
+    "ytech:cassiterite_ore_lower"
+  ],
+  "step": "underground_ores"
+}
