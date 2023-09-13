@@ -7,10 +7,14 @@ import com.yanny.ytech.configuration.block.ReinforcedBrickChimneyBlock;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -21,14 +25,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -67,6 +77,16 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             BrickChimneyBlock::registerModel,
             ILootable::dropsSelfProvider,
             BrickChimneyBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag),
+    REINFORCED_BRICKS(HolderType.BLOCK, "reinforced_bricks", "Reinforced Bricks",
+            ItemTags.create(Utils.modLoc("reinforced_bricks")),
+            BlockTags.create(Utils.modLoc("reinforced_bricks")),
+            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.BRICKS)),
+            () -> bottomTopTexture(Utils.modBlockLoc("reinforced_bricks"), Utils.blockLoc(Blocks.BRICKS), Utils.blockLoc(Blocks.BRICKS)),
+            SimpleBlockType::bottomTopBlockStateProvider,
+            ILootable::dropsSelfProvider,
+            SimpleBlockType::registerReinforcedBricksRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag),
     REINFORCED_BRICK_CHIMNEY(HolderType.ENTITY_BLOCK, "reinforced_brick_chimney", "Reinforced Brick Chimney",
@@ -279,6 +299,22 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         return blockGetter.apply(holder);
     }
 
+    private static void bottomTopBlockStateProvider(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures();
+        BlockModelBuilder model = provider.models().cubeBottomTop(holder.key, textures[0], textures[1], textures[2]);
+
+        provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
+        provider.itemModels().getBuilder(holder.key).parent(model);
+    }
+
+    private static TextureHolder[] bottomTopTexture(ResourceLocation base, ResourceLocation bottom, ResourceLocation top) {
+        return List.of(
+                new TextureHolder(-1, -1, base),
+                new TextureHolder(-1, -1, bottom),
+                new TextureHolder(-1, -1, top)
+        ).toArray(TextureHolder[]::new);
+    }
+
     private static void registerItemTag(@NotNull Holder.SimpleBlockHolder holder, @NotNull ItemTagsProvider provider) {
         provider.tag(holder.object.itemTag).add(holder.block.get().asItem());
     }
@@ -291,5 +327,17 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         provider.tag(holder.object.blockTag).add(holder.block.get());
         provider.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(holder.block.get());
         provider.tag(BlockTags.NEEDS_STONE_TOOL).add(holder.block.get());
+    }
+
+    private static void registerReinforcedBricksRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
+                .define('B', Items.BRICKS)
+                .define('P', Registration.item(MaterialItemType.PLATE, MaterialType.ARSENICAL_BRONZE))
+                .define('#', Registration.item(MaterialItemType.BOLT, MaterialType.ARSENICAL_BRONZE))
+                .pattern("#P#")
+                .pattern("PBP")
+                .pattern("#P#")
+                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

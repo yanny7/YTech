@@ -1,6 +1,8 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.SimpleBlockType;
+import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -37,12 +39,10 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', SimpleBlockType.BRICK_CHIMNEY.itemTag)
-                .define('P', MaterialItemType.PLATE.itemTag.get(MaterialType.ARSENICAL_BRONZE))
-                .define('B', MaterialItemType.BOLT.itemTag.get(MaterialType.ARSENICAL_BRONZE))
-                .pattern("BPB")
-                .pattern("P#P")
-                .pattern("BPB")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.PLATE.itemTag.get(MaterialType.ARSENICAL_BRONZE)))
+                .pattern("###")
+                .pattern("# #")
+                .pattern("###")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.REINFORCED_BRICKS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

@@ -5,6 +5,7 @@ import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,18 +20,18 @@ public class Utils {
     }
 
     @NotNull
-    public static ResourceLocation mcLoc(@NotNull String path) {
+    public static ResourceLocation loc(@NotNull String path) {
         return new ResourceLocation(path);
     }
 
     @NotNull
     public static ResourceLocation mcBlockLoc(@NotNull String path) {
-        return mcLoc(ModelProvider.BLOCK_FOLDER + "/" + path);
+        return loc(ModelProvider.BLOCK_FOLDER + "/" + path);
     }
 
     @NotNull
     public static ResourceLocation mcItemLoc(@NotNull String path) {
-        return mcLoc(ModelProvider.ITEM_FOLDER + "/" + path);
+        return loc(ModelProvider.ITEM_FOLDER + "/" + path);
     }
 
     @NotNull
@@ -46,6 +47,28 @@ public class Utils {
     @NotNull
     public static ResourceLocation modItemLoc(@NotNull String path) {
         return modLoc(ModelProvider.ITEM_FOLDER + "/" + path);
+    }
+
+    @NotNull
+    public static ResourceLocation loc(@NotNull Block block) {
+        return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
+    }
+
+    @NotNull
+    public static ResourceLocation loc(@NotNull Item item) {
+        return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+    }
+
+    @NotNull
+    public static ResourceLocation blockLoc(@NotNull Block block) {
+        ResourceLocation loc = loc(block);
+        return new ResourceLocation(loc.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + loc.getPath());
+    }
+
+    @NotNull
+    public static ResourceLocation blockLoc(@NotNull Item item) {
+        ResourceLocation loc = loc(item);
+        return new ResourceLocation(loc.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + loc.getPath());
     }
 
     @NotNull

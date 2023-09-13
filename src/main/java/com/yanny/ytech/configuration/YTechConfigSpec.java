@@ -8,7 +8,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -87,45 +86,45 @@ public class YTechConfigSpec {
     @NotNull
     private static List<String> getToRemoveMinecraftRecipes() {
         return Stream.of(
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_AXE)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_PICKAXE)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_HOE)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_SHOVEL)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.WOODEN_SWORD)).toString(),
+                Utils.loc(Items.WOODEN_AXE).toString(),
+                Utils.loc(Items.WOODEN_PICKAXE).toString(),
+                Utils.loc(Items.WOODEN_HOE).toString(),
+                Utils.loc(Items.WOODEN_SHOVEL).toString(),
+                Utils.loc(Items.WOODEN_SWORD).toString(),
 
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_AXE)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_PICKAXE)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_HOE)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_SHOVEL)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_SWORD)).toString(),
+                Utils.loc(Items.STONE_AXE).toString(),
+                Utils.loc(Items.STONE_PICKAXE).toString(),
+                Utils.loc(Items.STONE_HOE).toString(),
+                Utils.loc(Items.STONE_SHOVEL).toString(),
+                Utils.loc(Items.STONE_SWORD).toString(),
 
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.ACACIA_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BIRCH_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.CHERRY_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.JUNGLE_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.OAK_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DARK_OAK_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.MANGROVE_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SPRUCE_SLAB)).toString(),
+                Utils.loc(Items.ACACIA_SLAB).toString(),
+                Utils.loc(Items.BIRCH_SLAB).toString(),
+                Utils.loc(Items.CHERRY_SLAB).toString(),
+                Utils.loc(Items.JUNGLE_SLAB).toString(),
+                Utils.loc(Items.OAK_SLAB).toString(),
+                Utils.loc(Items.DARK_OAK_SLAB).toString(),
+                Utils.loc(Items.MANGROVE_SLAB).toString(),
+                Utils.loc(Items.SPRUCE_SLAB).toString(),
 
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.ACACIA_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BIRCH_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.CHERRY_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.JUNGLE_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.OAK_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DARK_OAK_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.MANGROVE_PLANKS)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SPRUCE_PLANKS)).toString(),
+                Utils.loc(Items.ACACIA_PLANKS).toString(),
+                Utils.loc(Items.BIRCH_PLANKS).toString(),
+                Utils.loc(Items.CHERRY_PLANKS).toString(),
+                Utils.loc(Items.JUNGLE_PLANKS).toString(),
+                Utils.loc(Items.OAK_PLANKS).toString(),
+                Utils.loc(Items.DARK_OAK_PLANKS).toString(),
+                Utils.loc(Items.MANGROVE_PLANKS).toString(),
+                Utils.loc(Items.SPRUCE_PLANKS).toString(),
 
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.ANDESITE_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.COBBLESTONE_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DIORITE_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.GRANITE_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.SMOOTH_STONE_SLAB)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.STONE_SLAB)).toString(),
+                Utils.loc(Items.ANDESITE_SLAB).toString(),
+                Utils.loc(Items.COBBLESTONE_SLAB).toString(),
+                Utils.loc(Items.DIORITE_SLAB).toString(),
+                Utils.loc(Items.GRANITE_SLAB).toString(),
+                Utils.loc(Items.SMOOTH_STONE_SLAB).toString(),
+                Utils.loc(Items.STONE_SLAB).toString(),
 
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BREAD)).toString(),
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BRICK)).toString()
+                Utils.loc(Items.BREAD).toString(),
+                Utils.loc(Items.BRICK).toString()
         ).collect(Collectors.toList());
     }
 
@@ -175,7 +174,7 @@ public class YTechConfigSpec {
                 Blocks.MYCELIUM,
                 Blocks.COARSE_DIRT,
                 Blocks.ROOTED_DIRT
-        ).map(value -> Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(value)).toString()).collect(Collectors.toList());
+        ).map(value -> Utils.loc(value).toString()).collect(Collectors.toList());
     }
 
     @NotNull

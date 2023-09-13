@@ -4,18 +4,12 @@
   "key": {
     "#": {
       "tag": "ytech:brick_chimneys"
-    },
-    "B": {
-      "tag": "ytech:bolts/arsenical_bronze"
-    },
-    "P": {
-      "tag": "ytech:plates/arsenical_bronze"
     }
   },
   "pattern": [
-    "BPB",
-    "P#P",
-    "BPB"
+    "###",
+    "# #",
+    "###"
   ],
   "result": {
     "item": "ytech:reinforced_brick_chimney"

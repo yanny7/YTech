@@ -20,11 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public record TanningRecipe(ResourceLocation id, Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<Container> {
@@ -113,7 +111,7 @@ public record TanningRecipe(ResourceLocation id, Ingredient ingredient, Ingredie
             json.add("tool", tool.toJson());
 
             JsonObject resultItemStack = new JsonObject();
-            resultItemStack.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).toString());
+            resultItemStack.addProperty("item", Utils.loc(result).toString());
             json.add("result", resultItemStack);
 
             json.addProperty("hitCount", hitCount);

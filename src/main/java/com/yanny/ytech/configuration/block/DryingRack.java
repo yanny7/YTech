@@ -154,7 +154,7 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
     public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ModelFile model = provider.models().getBuilder(holder.key)
-                .parent(provider.models().getExistingFile(Utils.mcLoc("block/block")))
+                .parent(provider.models().getExistingFile(Utils.loc("block/block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch (direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");

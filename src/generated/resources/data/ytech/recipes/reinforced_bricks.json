@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "ytech:arsenical_bronze_bolt"
+    },
+    "B": {
+      "item": "minecraft:bricks"
+    },
+    "P": {
+      "item": "ytech:arsenical_bronze_plate"
+    }
+  },
+  "pattern": [
+    "#P#",
+    "PBP",
+    "#P#"
+  ],
+  "result": {
+    "item": "ytech:reinforced_bricks"
+  },
+  "show_notification": true
+}

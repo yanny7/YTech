@@ -15,10 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
@@ -64,14 +62,14 @@ class YTechRecipes extends RecipeProvider {
 
         DryingRecipe.Builder.drying(Items.KELP, 20 * 60, Items.DRIED_KELP)
                 .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.KELP))
-                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.DRIED_KELP)).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.DRIED_KELP).getPath()));
 
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(SimpleItemType.BREAD_DOUGH.itemTag), RecipeCategory.FOOD, Items.BREAD, 0.1f, 200)
                 .unlockedBy(getHasName(Registration.item(SimpleItemType.BREAD_DOUGH)), has(SimpleItemType.BREAD_DOUGH.itemTag))
-                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BREAD)).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.BREAD).getPath()));
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(SimpleItemType.UNFIRED_BRICK.itemTag), RecipeCategory.MISC, Items.BRICK, 0.3f, 200)
                 .unlockedBy(getHasName(Registration.item(SimpleItemType.UNFIRED_BRICK)), has(SimpleItemType.UNFIRED_BRICK.itemTag))
-                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Items.BRICK)).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.BRICK).getPath()));
     }
 
     private void splitBySawRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
@@ -79,7 +77,7 @@ class YTechRecipes extends RecipeProvider {
                 .requires(input)
                 .requires(MaterialItemType.SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
-                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 
     private void splitByHammerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
@@ -87,12 +85,12 @@ class YTechRecipes extends RecipeProvider {
                 .requires(input)
                 .requires(MaterialItemType.HAMMER.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
-                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 
     private void smeltingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int temperature, int smeltingTime) {
         SmeltingRecipe.Builder.smelting(input, temperature, smeltingTime, result)
                 .unlockedBy(Utils.getHasName(), has(input))
-                .save(recipeConsumer, Utils.modLoc(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result)).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 }

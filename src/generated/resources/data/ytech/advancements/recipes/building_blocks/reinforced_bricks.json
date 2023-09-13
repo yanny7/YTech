@@ -1,11 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item": {
+    "has_bricks": {
       "conditions": {
         "items": [
           {
-            "tag": "ytech:reinforced_bricks"
+            "items": [
+              "minecraft:bricks"
+            ]
           }
         ]
       },
@@ -13,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:reinforced_brick_chimney"
+        "recipe": "ytech:reinforced_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_item",
+      "has_bricks",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "ytech:reinforced_brick_chimney"
+      "ytech:reinforced_bricks"
     ]
   },
   "sends_telemetry_event": false
