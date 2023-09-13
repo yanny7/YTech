@@ -41,10 +41,10 @@ import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeBusSubscriber {
-    private static final Logger LOGGER = LogUtils.getLogger();
+    @NotNull private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
-    public static void onLevelLoad(LevelEvent.Load event) {
+    public static void onLevelLoad(@NotNull LevelEvent.Load event) {
         LevelAccessor levelAccessor = event.getLevel();
 
         if (levelAccessor instanceof ServerLevel level) {
@@ -55,7 +55,7 @@ public class ForgeBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onLevelUnload(LevelEvent.Unload event) {
+    public static void onLevelUnload(@NotNull LevelEvent.Unload event) {
         LevelAccessor levelAccessor = event.getLevel();
 
         if (levelAccessor instanceof ServerLevel level) {
@@ -66,7 +66,7 @@ public class ForgeBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onServerStarting(ServerStartingEvent event) {
+    public static void onServerStarting(@NotNull ServerStartingEvent event) {
         if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
             YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((block) ->
                     setBlockRequireValidTool(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(block))));
@@ -74,12 +74,12 @@ public class ForgeBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onPlayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void onPlayerLogIn(@NotNull PlayerEvent.PlayerLoggedInEvent event) {
         YTechMod.KINETIC_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
     }
 
     @SubscribeEvent
-    public static void onResourceReload(AddReloadListenerEvent event) {
+    public static void onResourceReload(@NotNull AddReloadListenerEvent event) {
         event.addListener(new SimplePreparableReloadListener<Set<ResourceLocation>>() {
             @NotNull
             @Override
@@ -98,7 +98,7 @@ public class ForgeBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onPlayerLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+    public static void onPlayerLeftClickBlock(@NotNull PlayerInteractEvent.LeftClickBlock event) {
         if (YTechMod.CONFIGURATION.enableCraftingSharpFlint()) {
             Player player = event.getEntity();
             Level level = event.getLevel();
@@ -115,7 +115,7 @@ public class ForgeBusSubscriber {
         }
     }
 
-    private static boolean shouldNotRemove(Recipe<?> recipe, Set<ResourceLocation> toRemove) {
+    private static boolean shouldNotRemove(@NotNull Recipe<?> recipe, @NotNull Set<ResourceLocation> toRemove) {
         if (toRemove.contains(recipe.getId())) {
             LOGGER.info(MessageFormat.format("Removing recipe {0}", recipe.getId().toString()));
             return false;
@@ -124,7 +124,7 @@ public class ForgeBusSubscriber {
         }
     }
 
-    private static void setBlockRequireValidTool(Block block) {
+    private static void setBlockRequireValidTool(@NotNull Block block) {
         try {
             BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "defaultBlockState");
 
