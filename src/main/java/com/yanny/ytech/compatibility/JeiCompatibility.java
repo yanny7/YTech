@@ -25,6 +25,7 @@ public class JeiCompatibility implements IModPlugin {
         registration.addRecipeCategories(new MillingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new SmeltingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new BlockHitRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new AlloyingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -37,6 +38,7 @@ public class JeiCompatibility implements IModPlugin {
             registration.addRecipes(MillingRecipeCategory.RECIPE_TYPE, MillingRecipeCategory.getRecipes(level.getRecipeManager()));
             registration.addRecipes(SmeltingRecipeCategory.RECIPE_TYPE, SmeltingRecipeCategory.getRecipes(level.getRecipeManager()));
             registration.addRecipes(BlockHitRecipeCategory.RECIPE_TYPE, BlockHitRecipeCategory.getRecipes(level.getRecipeManager()));
+            registration.addRecipes(AlloyingRecipeCategory.RECIPE_TYPE, AlloyingRecipeCategory.getRecipes(level.getRecipeManager()));
         } else {
             LOGGER.warn("JEI integration was not loaded! Level is null!");
         }
@@ -49,6 +51,7 @@ public class JeiCompatibility implements IModPlugin {
         MillingRecipeCategory.registerCatalyst(registration);
         SmeltingRecipeCategory.registerCatalyst(registration);
         BlockHitRecipeCategory.registerCatalyst(registration);
+        AlloyingRecipeCategory.registerCatalyst(registration);
     }
 
     @NotNull

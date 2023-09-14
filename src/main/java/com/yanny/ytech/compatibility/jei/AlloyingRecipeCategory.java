@@ -3,7 +3,7 @@ package com.yanny.ytech.compatibility.jei;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
+import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.registration.Registration;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -28,24 +28,24 @@ import java.util.List;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
-public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
-    public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "smelting", SmeltingRecipe.class);
+public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
+    public static final RecipeType<AlloyingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "alloying", AlloyingRecipe.class);
 
-    @NotNull private final Font font = Minecraft.getInstance().font;
-    @NotNull private final IDrawable background;
-    @NotNull private final IDrawable icon;
-    @NotNull private final Component localizedName;
+    private final Font font = Minecraft.getInstance().font;
+    private final IDrawable background;
+    private final IDrawable icon;
+    private final Component localizedName;
 
-    public SmeltingRecipeCategory(IGuiHelper guiHelper) {
+    public AlloyingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
-        background = guiHelper.createDrawable(location, 0, 138, 82, 62);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(SimpleBlockType.PRIMITIVE_SMELTER)));
-        localizedName = Component.translatable("gui.ytech.category.smelting");
+        background = guiHelper.createDrawable(location, 82, 0, 92, 62);
+        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(SimpleBlockType.PRIMITIVE_ALLOY_SMELTER)));
+        localizedName = Component.translatable("gui.ytech.category.alloying");
     }
 
     @NotNull
     @Override
-    public RecipeType<SmeltingRecipe> getRecipeType() {
+    public RecipeType<AlloyingRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
@@ -68,13 +68,14 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, SmeltingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(recipe.ingredient());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 61,  23).addItemStack(recipe.result());
+    public void setRecipe(IRecipeLayoutBuilder builder, AlloyingRecipe recipe, @NotNull IFocusGroup focuses) {
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(recipe.ingredient1());
+        builder.addSlot(RecipeIngredientRole.INPUT, 21, 5).addIngredients(recipe.ingredient2());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 71,  23).addItemStack(recipe.result());
     }
 
     @Override
-    public void draw(@NotNull SmeltingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(@NotNull AlloyingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         String smeltingText = (recipe.smeltingTime() / 20) + "s";
         String temperatureText = recipe.minTemperature() + "°C";
 
@@ -85,12 +86,12 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
         guiGraphics.drawString(font, temperatureText, getWidth() - stringWidth, 0, 0xFF808080, false);
     }
 
-    public static List<SmeltingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(SmeltingRecipe.RECIPE_TYPE).stream().toList();
+    public static List<AlloyingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
+        return recipeManager.getAllRecipesFor(AlloyingRecipe.RECIPE_TYPE).stream().toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.PRIMITIVE_SMELTER).block.get()), RECIPE_TYPE, RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.PRIMITIVE_ALLOY_SMELTER).block.get()), RECIPE_TYPE, RecipeTypes.FUELING);
         registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.BRICK_CHIMNEY).block.get()), RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.REINFORCED_BRICK_CHIMNEY).block.get()), RECIPE_TYPE);
     }

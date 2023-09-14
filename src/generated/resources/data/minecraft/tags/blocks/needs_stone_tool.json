@@ -2,6 +2,7 @@
   "values": [
     "ytech:millstone",
     "ytech:primitive_smelter",
+    "ytech:primitive_alloy_smelter",
     "ytech:brick_chimney",
     "ytech:reinforced_bricks",
     "ytech:reinforced_brick_chimney",

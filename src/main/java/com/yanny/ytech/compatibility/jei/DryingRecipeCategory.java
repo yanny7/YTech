@@ -40,7 +40,7 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 0, 82, 34);
         icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(MaterialBlockType.DRYING_RACK, MaterialType.OAK_WOOD)));
-        localizedName = Component.translatable("gui.jei.category.drying");
+        localizedName = Component.translatable("gui.ytech.category.drying");
     }
 
     @NotNull

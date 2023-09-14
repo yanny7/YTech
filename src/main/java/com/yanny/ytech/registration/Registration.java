@@ -85,12 +85,14 @@ public class Registration {
         RECIPE_TYPES.register("milling", () -> MillingRecipe.RECIPE_TYPE);
         RECIPE_TYPES.register("smelting", () -> SmeltingRecipe.RECIPE_TYPE);
         RECIPE_TYPES.register("block_hit", () -> BlockHitRecipe.RECIPE_TYPE);
+        RECIPE_TYPES.register("alloying", () -> AlloyingRecipe.RECIPE_TYPE);
 
         RECIPE_SERIALIZERS.register("drying", () -> DryingRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("tanning", () -> TanningRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("milling", () -> MillingRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("smelting", () -> SmeltingRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("block_hit", () -> BlockHitRecipe.SERIALIZER);
+        RECIPE_SERIALIZERS.register("alloying", () -> AlloyingRecipe.SERIALIZER);
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
         GLM_CODECS.register("remove_item", ReplaceItemModifier.CODEC);

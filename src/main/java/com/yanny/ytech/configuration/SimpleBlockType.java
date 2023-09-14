@@ -1,10 +1,9 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.configuration.block.BrickChimneyBlock;
-import com.yanny.ytech.configuration.block.MillstoneBlock;
-import com.yanny.ytech.configuration.block.PrimitiveSmelterBlock;
-import com.yanny.ytech.configuration.block.ReinforcedBrickChimneyBlock;
+import com.yanny.ytech.configuration.block.*;
+import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
+import com.yanny.ytech.configuration.screen.PrimitiveAlloySmelterScreen;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
@@ -69,6 +68,18 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             SimpleBlockType::registerStonePickaxeBlockTag,
             (holder, windowId, inv, pos, stack, data) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos, stack, data),
             PrimitiveSmelterScreen::new),
+    PRIMITIVE_ALLOY_SMELTER(HolderType.MENU_BLOCK, "primitive_alloy_smelter", "Primitive Alloy Smelter",
+            ItemTags.create(Utils.modLoc("primitive_alloy_smelters")),
+            BlockTags.create(Utils.modLoc("primitive_alloy_smelters")),
+            PrimitiveAlloySmelterBlock::new,
+            PrimitiveAlloySmelterBlock::textureHolder,
+            PrimitiveAlloySmelterBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            PrimitiveAlloySmelterBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag,
+            (holder, windowId, inv, pos, stack, data) -> new PrimitiveAlloySmelterContainerMenu(holder, windowId, inv.player, pos, stack, data),
+            PrimitiveAlloySmelterScreen::new),
     BRICK_CHIMNEY(HolderType.ENTITY_BLOCK, "brick_chimney", "Brick Chimney",
             ItemTags.create(Utils.modLoc("brick_chimneys")),
             BlockTags.create(Utils.modLoc("brick_chimneys")),

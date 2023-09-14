@@ -50,7 +50,7 @@ public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
     @Override
     public MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
-                .addInputSlot(32, 32, (itemStack) -> true)
+                .addInputSlot(32, 32)
                 .addOutputSlot(64, 32)
                 .setOnChangeListener(this::setChanged)
                 .build();

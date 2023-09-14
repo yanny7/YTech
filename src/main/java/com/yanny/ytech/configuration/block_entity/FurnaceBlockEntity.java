@@ -19,8 +19,8 @@ public class FurnaceBlockEntity extends MachineBlockEntity {
     @Override
     public MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
-                .addInputSlot(32, 32, (itemStack) -> true)
-                .addInputSlot(32, 32 + 18, (AbstractFurnaceBlockEntity::isFuel))
+                .addInputSlot(32, 32)
+                .addInputSlot(32, 32 + 18, (itemStackHandler, slot, itemStack) -> AbstractFurnaceBlockEntity.isFuel(itemStack))
                 .addOutputSlot(64, 32)
                 .setOnChangeListener(this::setChanged)
                 .build();

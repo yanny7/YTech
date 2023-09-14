@@ -31,7 +31,7 @@ public class BlockHitRecipeCategory implements IRecipeCategory<BlockHitRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 86, 82, 52);
         icon = guiHelper.createDrawableItemStack(new ItemStack(Items.STONE));
-        localizedName = Component.translatable("gui.jei.category.block_hit");
+        localizedName = Component.translatable("gui.ytech.category.block_hit");
     }
 
     @NotNull

@@ -20,10 +20,11 @@ class YTechLanguages extends LanguageProvider {
         HOLDER.simpleItems().values().forEach(h -> add(h.item.get(), h.name));
         HOLDER.simpleBlocks().values().forEach(h -> add(h.block.get(), h.name));
 
-        add("gui.jei.category.drying", "Drying Recipe");
-        add("gui.jei.category.tanning", "Tanning Recipe");
-        add("gui.jei.category.milling", "Milling Recipe");
-        add("gui.jei.category.smelting", "Smelting Recipe");
-        add("gui.jei.category.block_hit", "Block Hit Recipe");
+        add("gui.ytech.category.drying", "Drying");
+        add("gui.ytech.category.tanning", "Tanning");
+        add("gui.ytech.category.milling", "Milling");
+        add("gui.ytech.category.smelting", "Smelting");
+        add("gui.ytech.category.block_hit", "Block Hit");
+        add("gui.ytech.category.alloying", "Alloying");
     }
 }

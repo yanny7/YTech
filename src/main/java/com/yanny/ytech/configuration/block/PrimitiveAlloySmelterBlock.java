@@ -3,7 +3,7 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
+import com.yanny.ytech.configuration.block_entity.PrimitiveAlloySmelterBlockEntity;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.IEntityBlockHolder;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -13,13 +13,8 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,8 +30,8 @@ import java.util.function.Consumer;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock implements IProbeInfoProvider {
-    public PrimitiveSmelterBlock(Holder holder) {
+public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock implements IProbeInfoProvider {
+    public PrimitiveAlloySmelterBlock(Holder holder) {
         super(holder);
     }
 
@@ -44,7 +39,7 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState pState) {
         if (holder instanceof IEntityBlockHolder entityHolder) {
-            return new PrimitiveSmelterBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pos, pState);
+            return new PrimitiveAlloySmelterBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pos, pState);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }
@@ -57,11 +52,10 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
 
     @Override
     public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData probeHitData) {
-        if (!level.isClientSide && level.getBlockEntity(probeHitData.getPos()) instanceof PrimitiveSmelterBlockEntity blockEntity) {
+        if (!level.isClientSide && level.getBlockEntity(probeHitData.getPos()) instanceof PrimitiveAlloySmelterBlockEntity blockEntity) {
             IProbeInfo verticalLayout = probeInfo.vertical();
-            ItemStack item = blockEntity.processingItem();
 
-            if (blockEntity.hasActiveRecipe() && item != null) {
+            if (blockEntity.hasActiveRecipe()) {
                 verticalLayout.horizontal().text("Progress: ").horizontal().text(Integer.toString(blockEntity.progress())).text("%");
             }
 
@@ -70,14 +64,7 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
     }
 
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', Items.FURNACE)
-                .define('B', Items.BRICKS)
-                .pattern("BBB")
-                .pattern("B#B")
-                .pattern("BBB")
-                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+        //TODO
     }
 
     public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {

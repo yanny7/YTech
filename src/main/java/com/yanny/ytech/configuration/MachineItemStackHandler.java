@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 /* Commoble:
  * Generally this is the superset of itemhandlers you may want
@@ -76,13 +75,18 @@ public class MachineItemStackHandler extends ItemStackHandler {
 
         }
 
-        public Builder addInputSlot(int x, int y, Predicate<ItemStack> isItemValid) {
+        public Builder addInputSlot(int x, int y, TriPredicate<MachineItemStackHandler, Integer, ItemStack> isItemValid) {
             inputSlotHolder.add(new SlotHolder(x, y, isItemValid));
             return this;
         }
 
+        public Builder addInputSlot(int x, int y) {
+            inputSlotHolder.add(new SlotHolder(x, y, ((itemStackHandler, slot, itemStack) -> true)));
+            return this;
+        }
+
         public Builder addOutputSlot(int x, int y) {
-            outputSlotHolder.add(new SlotHolder(x, y, (item) -> true));
+            outputSlotHolder.add(new SlotHolder(x, y, (itemStackHandler, slot, itemStack) -> true));
             return this;
         }
 
@@ -104,7 +108,7 @@ public class MachineItemStackHandler extends ItemStackHandler {
                 @Override
                 public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                     if (slot < inputSlotHolder.size()) {
-                        return inputSlotHolder.get(slot).isItemValid.test(stack);
+                        return inputSlotHolder.get(slot).isItemValid.test(this, slot, stack);
                     } else {
                         return false;
                     }
@@ -113,9 +117,13 @@ public class MachineItemStackHandler extends ItemStackHandler {
         }
     }
 
-    public record SlotHolder(
+    record SlotHolder(
             int x,
             int y,
-            Predicate<ItemStack> isItemValid
+            TriPredicate<MachineItemStackHandler, Integer, ItemStack> isItemValid
     ) {}
+
+    public interface TriPredicate<A, B, C> {
+        boolean test(A a, B b, C c);
+    }
 }

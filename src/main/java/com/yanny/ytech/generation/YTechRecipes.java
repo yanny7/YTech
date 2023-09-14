@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
@@ -64,6 +65,10 @@ class YTechRecipes extends RecipeProvider {
         BlockHitRecipe.Builder.blockUse(Items.FLINT, Tags.Items.STONE, Registration.item(SimpleItemType.SHARP_FLINT))
                 .unlockedBy(Utils.getHasName(), has(Items.FLINT))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(Registration.item(SimpleItemType.SHARP_FLINT)).getPath()));
+
+        AlloyingRecipe.Builder.alloying(Tags.Items.RAW_MATERIALS_COPPER, 9, MaterialItemType.RAW_MATERIAL.itemTag.get(MaterialType.CASSITERITE), 1, 1200, 600, Items.ENCHANTED_GOLDEN_APPLE, 5)
+                .unlockedBy(Utils.getHasName(), has(Items.RAW_COPPER))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.ENCHANTED_GOLDEN_APPLE).getPath()));
 
         DryingRecipe.Builder.drying(Items.KELP, 20 * 60, Items.DRIED_KELP)
                 .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.KELP))

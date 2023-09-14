@@ -1,0 +1,19 @@
+{
+  "type": "ytech:alloying",
+  "ingredient1": {
+    "type": "ytech:tag_stack",
+    "count": 9,
+    "tag": "forge:raw_materials/copper"
+  },
+  "ingredient2": {
+    "type": "ytech:tag_stack",
+    "count": 1,
+    "tag": "forge:raw_materials/cassiterite"
+  },
+  "minTemp": 1200,
+  "result": {
+    "count": 5,
+    "item": "minecraft:enchanted_golden_apple"
+  },
+  "smeltingTime": 600
+}

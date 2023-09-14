@@ -40,7 +40,7 @@ public class TanningRecipeCategory implements IRecipeCategory<TanningRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 34, 82, 52);
         icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(MaterialBlockType.TANNING_RACK, MaterialType.OAK_WOOD)));
-        localizedName = Component.translatable("gui.jei.category.tanning");
+        localizedName = Component.translatable("gui.ytech.category.tanning");
     }
 
     @NotNull
