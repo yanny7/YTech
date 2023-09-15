@@ -1,8 +1,7 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.item.ClayBucketItem;
-import com.yanny.ytech.configuration.item.CraftUsableDiggerItem;
-import com.yanny.ytech.configuration.item.CraftUsableSwordItem;
+import com.yanny.ytech.configuration.item.ToolItem;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
@@ -11,7 +10,6 @@ import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
@@ -150,14 +148,14 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerSimpleTag),
     SHARP_FLINT("sharp_flint", "Sharp Flint",
             ItemTags.create(Utils.modLoc("sharp_flints")),
-            () -> new CraftUsableSwordItem(Tiers.WOOD, 0, 0, new Item.Properties()),
+            () -> new ToolItem(Tiers.WOOD, new Item.Properties()),
             () -> basicTexture(Utils.modItemLoc("sharp_flint")),
             SimpleItemType::basicItemModelProvider,
             IRecipe::noRecipe,
             SimpleItemType::registerSimpleTag),
     FLINT_SAW("flint_saw", "Flint Saw",
             ItemTags.create(Utils.modLoc("saws/flint")),
-            () -> new CraftUsableDiggerItem(0, 1, Tiers.WOOD, BlockTags.LOGS, new Item.Properties()),
+            () -> new ToolItem(Tiers.WOOD, new Item.Properties()),
             () -> basicTexture(Utils.modItemLoc("flint_saw")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerFlintSawRecipe,

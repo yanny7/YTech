@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/bronze"
+    },
+    "P": {
+      "tag": "ytech:plates/bronze"
+    },
+    "R": {
+      "tag": "ytech:rods/bronze"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "P#R",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "ytech:bronze_pickaxe"
+  },
+  "show_notification": true
+}

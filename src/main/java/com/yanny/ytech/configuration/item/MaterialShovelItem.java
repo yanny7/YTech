@@ -1,7 +1,9 @@
 package com.yanny.ytech.configuration.item;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SimpleItemType;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -32,7 +34,14 @@ public class MaterialShovelItem extends ShovelItem {
                     .pattern(" S ")
                     .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
                     .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
-            default -> throw new IllegalStateException("Recipe for material " + holder.material.key + " is not defined!");
+            default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+                    .define('S', Items.STICK)
+                    .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))
+                    .pattern("#")
+                    .pattern("S")
+                    .pattern("S")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.PLATE.itemTag.get(holder.material)))
+                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
         }
     }
 }

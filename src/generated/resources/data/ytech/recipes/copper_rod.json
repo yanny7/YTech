@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/copper"
+    },
+    "F": {
+      "tag": "ytech:files"
+    }
+  },
+  "pattern": [
+    "#",
+    "F"
+  ],
+  "result": {
+    "item": "ytech:copper_rod"
+  },
+  "show_notification": true
+}

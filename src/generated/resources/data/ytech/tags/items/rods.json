@@ -1,5 +1,10 @@
 {
   "values": [
-    "#ytech:rods/arsenical_bronze"
+    "#ytech:rods/arsenical_bronze",
+    "#ytech:rods/bronze",
+    "#ytech:rods/copper",
+    "#ytech:rods/gold",
+    "#ytech:rods/iron",
+    "#ytech:rods/tin"
   ]
 }

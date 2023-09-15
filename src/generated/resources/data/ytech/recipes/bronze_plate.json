@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/bronze"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "H"
+  ],
+  "result": {
+    "item": "ytech:bronze_plate"
+  },
+  "show_notification": true
+}

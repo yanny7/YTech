@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/wooden_hoe",
+    "layer1": "ytech:item/hoe_overlay"
+  }
+}

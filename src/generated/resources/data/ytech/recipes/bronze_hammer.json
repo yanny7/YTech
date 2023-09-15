@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:storage_blocks/bronze"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " # ",
+    " S#",
+    "S  "
+  ],
+  "result": {
+    "item": "ytech:bronze_hammer"
+  },
+  "show_notification": true
+}

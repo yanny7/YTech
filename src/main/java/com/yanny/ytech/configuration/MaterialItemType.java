@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration;
 
+import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -11,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -34,7 +36,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
+            MaterialType.ALL_METALS),
     DUST("dust", INameable.suffix("dust"), INameable.suffix("Dust"),
             (material) -> ItemTags.create(Utils.forgeLoc("dusts/" + material.key)),
             Tags.Items.DUSTS,
@@ -52,7 +54,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             IRecipe::noRecipe, // handled in block
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.CASSITERITE)),
+            MaterialType.ALL_ORES),
     PLATE("plate", INameable.suffix("plate"), INameable.suffix("Plate"),
             (material) -> ItemTags.create(Utils.modLoc("plates/" + material.key)),
             ItemTags.create(Utils.modLoc("plates")),
@@ -61,7 +63,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             MaterialItemType::registerPlateRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
+            MaterialType.ALL_METALS),
     ROD("rod", INameable.suffix("rod"), INameable.suffix("Rod"),
             (material) -> ItemTags.create(Utils.modLoc("rods/" + material.key)),
             ItemTags.create(Utils.modLoc("rods")),
@@ -70,7 +72,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             MaterialItemType::registerRodRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
+            MaterialType.ALL_METALS),
     BOLT("bolt", INameable.suffix("bolt"), INameable.suffix("Bolt"),
             (material) -> ItemTags.create(Utils.modLoc("bolts/" + material.key)),
             ItemTags.create(Utils.modLoc("bolts")),
@@ -79,7 +81,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             MaterialItemType::registerBoltRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
+            MaterialType.ALL_METALS),
 
     AXE("axe", INameable.suffix("axe"), INameable.suffix("Axe"),
             (material) -> ItemTags.create(Utils.modLoc("axes/" + material.key)),
@@ -89,7 +91,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialAxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.FLINT)),
+            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
     PICKAXE("pickaxe", INameable.suffix("pickaxe"), INameable.suffix("Pickaxe"),
             (material) -> ItemTags.create(Utils.modLoc("pickaxes/" + material.key)),
             ItemTags.PICKAXES,
@@ -98,7 +100,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialPickaxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.FLINT)),
+            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
     SHOVEL("shovel", INameable.suffix("shovel"), INameable.suffix("Shovel"),
             (material) -> ItemTags.create(Utils.modLoc("shovels/" + material.key)),
             ItemTags.SHOVELS,
@@ -107,7 +109,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialShovelItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.FLINT)),
+            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
     HOE("hoe", INameable.suffix("hoe"), INameable.suffix("Hoe"),
             (material) -> ItemTags.create(Utils.modLoc("hoes/" + material.key)),
             ItemTags.HOES,
@@ -116,7 +118,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialHoeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.FLINT)),
+            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
     SWORD("sword", INameable.suffix("sword"), INameable.suffix("Sword"),
             (material) -> ItemTags.create(Utils.modLoc("swords/" + material.key)),
             ItemTags.SWORDS,
@@ -125,34 +127,34 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialSwordItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.FLINT)),
+            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
     SAW("saw", INameable.suffix("saw"), INameable.suffix("Saw"),
             (material) -> ItemTags.create(Utils.modLoc("saws/" + material.key)),
             ItemTags.create(Utils.modLoc("saws")),
-            (holder) -> new MaterialSawItem(holder.material.tier),
+            (holder) -> new ToolItem(holder.material.tier, new Item.Properties()),
             (material) -> basicTexture(Utils.modItemLoc("saw"), material), //FIXME missing item texture
             MaterialItemType::toolItemModelProvider,
-            MaterialSawItem::registerRecipe,
+            MaterialItemType::registerSawRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.noneOf(MaterialType.class)),
     HAMMER("hammer", INameable.suffix("hammer"), INameable.suffix("Hammer"),
             (material) -> ItemTags.create(Utils.modLoc("hammers/" + material.key)),
             ItemTags.create(Utils.modLoc("hammers")),
-            (holder) -> new MaterialHammerItem(holder.material.tier),
+            (holder) -> new ToolItem(holder.material.tier, new Item.Properties()),
             (material) -> toolTexture(Utils.modItemLoc("hammer_handle"), Utils.modItemLoc("hammer_overlay"), material),
             MaterialItemType::toolItemModelProvider,
-            MaterialHammerItem::registerRecipe,
+            MaterialItemType::registerHammerRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.STONE)),
+            Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE)),
     FILE("file", INameable.suffix("file"), INameable.suffix("File"),
             (material) -> ItemTags.create(Utils.modLoc("files/" + material.key)),
             ItemTags.create(Utils.modLoc("files")),
-            (holder) -> new MaterialFileItem(holder.material.tier),
+            (holder) -> new ToolItem(holder.material.tier, new Item.Properties()),
             (material) -> toolTexture(Utils.modItemLoc("file_handle"), Utils.modItemLoc("file_overlay"), material),
             MaterialItemType::toolItemModelProvider,
-            MaterialFileItem::registerRecipe,
+            MaterialItemType::registerFileRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.of(MaterialType.ARSENICAL_BRONZE)),
+            MaterialType.ALL_METALS),
     ;
 
     @NotNull public final String id;
@@ -251,43 +253,76 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerPlateRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        switch (holder.material) {
-            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
-                    .define('#', INGOT.itemTag.get(holder.material))
-                    .define('H', HAMMER.groupTag)
-                    .pattern("#")
-                    .pattern("#")
-                    .pattern("H")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
-                    .save(recipeConsumer, Utils.modLoc(holder.key));
-            default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);
-        }
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('#', INGOT.itemTag.get(holder.material))
+                .define('H', HAMMER.groupTag)
+                .pattern("#")
+                .pattern("#")
+                .pattern("H")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerRodRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        switch (holder.material) {
-            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
-                    .define('#', INGOT.itemTag.get(holder.material))
-                    .define('F', FILE.groupTag)
-                    .pattern("#")
-                    .pattern("F")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
-                    .save(recipeConsumer, Utils.modLoc(holder.key));
-            default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);
-        }
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('#', INGOT.itemTag.get(holder.material))
+                .define('F', FILE.groupTag)
+                .pattern("#")
+                .pattern("F")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerBoltRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 2)
+                .define('#', ROD.itemTag.get(holder.material))
+                .define('S', SAW.groupTag)
+                .pattern("# ")
+                .pattern(" S")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ROD.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    public static void registerSawRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+                .define('S', Items.STICK)
+                .define('#', PLATE.itemTag.get(holder.material))
+                .pattern("S##")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+    }
+
+    public static void registerHammerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         switch (holder.material) {
-            case ARSENICAL_BRONZE -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 2)
-                    .define('#', ROD.itemTag.get(holder.material))
-                    .define('S', SAW.groupTag)
-                    .pattern("# ")
-                    .pattern(" S")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ROD.itemTag.get(holder.material)))
-                    .save(recipeConsumer, Utils.modLoc(holder.key));
-            default -> throw new IllegalStateException("Undefined recipe for material " + holder.material.name);
+            case STONE -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+                    .define('S', Items.STICK)
+                    .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
+                    .define('#', Items.STONE)
+                    .pattern(" #T")
+                    .pattern(" S#")
+                    .pattern("S  ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
+                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+            default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+                    .define('S', Items.STICK)
+                    .define('#', MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
+                    .pattern(" # ")
+                    .pattern(" S#")
+                    .pattern("S  ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material)))
+                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
         }
+    }
+
+    public static void registerFileRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('#', PLATE.itemTag.get(holder.material))
+                .define('S', Items.STICK)
+                .pattern("#")
+                .pattern("#")
+                .pattern("S")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void basicItemModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {

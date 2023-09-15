@@ -11,6 +11,8 @@ import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Objects;
 
 public class Utils {
@@ -83,7 +85,7 @@ public class Utils {
 
     @NotNull
     public static Block getLogFromMaterial(MaterialType material) {
-        if (MaterialType.ALL_WOOD.contains(material)) {
+        if (MaterialType.ALL_WOODS.contains(material)) {
             return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(material.key + "_log")));
         } else {
             throw new IllegalStateException("Not wood type provided!");
@@ -102,5 +104,40 @@ public class Utils {
     @NotNull
     public static BlockPos loadBlockPos(@NotNull CompoundTag tag) {
         return new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
+    }
+
+    @SafeVarargs
+    @NotNull
+    public static <E extends Enum<E>> EnumSet<E> merge(@NotNull EnumSet<E> first, @NotNull EnumSet<E> ...list) {
+        EnumSet<E> copy = first.clone();
+        for (EnumSet<E> e : list) {
+            copy.addAll(e);
+        }
+        return copy;
+    }
+
+    @SafeVarargs
+    @NotNull
+    public static <E extends Enum<E>> EnumSet<E> merge(@NotNull EnumSet<E> first, @NotNull E ...list) {
+        EnumSet<E> copy = first.clone();
+        copy.addAll(Arrays.asList(list));
+        return copy;
+    }
+
+    @SafeVarargs
+    @NotNull
+    public static <E extends Enum<E>> EnumSet<E> exclude(@NotNull EnumSet<E> enumSet, @NotNull E ...list) {
+        EnumSet<E> copy = enumSet.clone();
+        for (E e : list) {
+            copy.remove(e);
+        }
+        return copy;
+    }
+
+    @NotNull
+    public static <E extends Enum<E>> EnumSet<E> exclude(@NotNull EnumSet<E> enumSet, @NotNull EnumSet<E> toRemove) {
+        EnumSet<E> copy = enumSet.clone();
+        copy.removeAll(toRemove);
+        return copy;
     }
 }

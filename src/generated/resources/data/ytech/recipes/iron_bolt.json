@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:rods/iron"
+    },
+    "S": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "# ",
+    " S"
+  ],
+  "result": {
+    "count": 2,
+    "item": "ytech:iron_bolt"
+  },
+  "show_notification": true
+}

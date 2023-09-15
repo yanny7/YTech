@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/tin"
+    },
+    "P": {
+      "tag": "ytech:plates/tin"
+    },
+    "R": {
+      "tag": "ytech:rods/tin"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "P#R",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "ytech:tin_pickaxe"
+  },
+  "show_notification": true
+}

@@ -1,6 +1,11 @@
 {
   "values": [
     "#ytech:bolts/wooden",
-    "#ytech:bolts/arsenical_bronze"
+    "#ytech:bolts/arsenical_bronze",
+    "#ytech:bolts/bronze",
+    "#ytech:bolts/copper",
+    "#ytech:bolts/gold",
+    "#ytech:bolts/iron",
+    "#ytech:bolts/tin"
   ]
 }

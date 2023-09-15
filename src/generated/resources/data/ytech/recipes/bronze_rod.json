@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/bronze"
+    },
+    "F": {
+      "tag": "ytech:files"
+    }
+  },
+  "pattern": [
+    "#",
+    "F"
+  ],
+  "result": {
+    "item": "ytech:bronze_rod"
+  },
+  "show_notification": true
+}

@@ -1,5 +1,10 @@
 {
   "values": [
-    "#ytech:files/arsenical_bronze"
+    "#ytech:files/arsenical_bronze",
+    "#ytech:files/bronze",
+    "#ytech:files/copper",
+    "#ytech:files/gold",
+    "#ytech:files/iron",
+    "#ytech:files/tin"
   ]
 }

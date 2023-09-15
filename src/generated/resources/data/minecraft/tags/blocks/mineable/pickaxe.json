@@ -6,8 +6,15 @@
     "ytech:brick_chimney",
     "ytech:reinforced_bricks",
     "ytech:reinforced_brick_chimney",
+    "ytech:deepslate_cassiterite_ore",
+    "ytech:netherrack_cassiterite_ore",
     "ytech:raw_cassiterite_block",
     "ytech:stone_cassiterite_ore",
-    "ytech:arsenical_bronze_block"
+    "ytech:arsenical_bronze_block",
+    "ytech:bronze_block",
+    "ytech:copper_block",
+    "ytech:gold_block",
+    "ytech:iron_block",
+    "ytech:tin_block"
   ]
 }

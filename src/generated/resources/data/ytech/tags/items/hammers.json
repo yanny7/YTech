@@ -1,5 +1,11 @@
 {
   "values": [
-    "#ytech:hammers/stone"
+    "#ytech:hammers/arsenical_bronze",
+    "#ytech:hammers/bronze",
+    "#ytech:hammers/copper",
+    "#ytech:hammers/gold",
+    "#ytech:hammers/iron",
+    "#ytech:hammers/stone",
+    "#ytech:hammers/tin"
   ]
 }

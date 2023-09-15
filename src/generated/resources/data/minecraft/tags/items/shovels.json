@@ -1,5 +1,11 @@
 {
   "values": [
-    "#ytech:shovels/flint"
+    "#ytech:shovels/arsenical_bronze",
+    "#ytech:shovels/bronze",
+    "#ytech:shovels/copper",
+    "#ytech:shovels/flint",
+    "#ytech:shovels/gold",
+    "#ytech:shovels/iron",
+    "#ytech:shovels/tin"
   ]
 }

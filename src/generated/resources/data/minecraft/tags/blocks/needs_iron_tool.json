@@ -1,5 +1,7 @@
 {
   "values": [
-    "ytech:arsenical_bronze_block"
+    "ytech:arsenical_bronze_block",
+    "ytech:bronze_block",
+    "ytech:iron_block"
   ]
 }

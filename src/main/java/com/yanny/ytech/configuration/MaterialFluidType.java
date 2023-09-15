@@ -23,7 +23,7 @@ public enum MaterialFluidType implements INameable, IMaterialModel<Holder.FluidH
             (material) -> bucketTexture(Utils.modItemLoc("bucket_overlay"), material),
             MaterialFluidType::bucketItemModelProvider,
             (holder, provider) -> provider.tag(holder.object.fluidTag.get(holder.material)).add(holder.source.get()).add(holder.flowing.get()),
-            EnumSet.of(MaterialType.MERCURY)),
+            MaterialType.ALL_FLUIDS),
     ;
 
     @NotNull public final String id;

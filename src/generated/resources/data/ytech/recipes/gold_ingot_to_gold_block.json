@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "gold_ingot",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/gold"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "ytech:gold_ingot"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/tin"
+    },
+    "F": {
+      "tag": "ytech:files"
+    }
+  },
+  "pattern": [
+    "#",
+    "F"
+  ],
+  "result": {
+    "item": "ytech:tin_rod"
+  },
+  "show_notification": true
+}

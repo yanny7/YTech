@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/copper"
+    },
+    "P": {
+      "tag": "ytech:plates/copper"
+    },
+    "R": {
+      "tag": "ytech:rods/copper"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "P#R",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "ytech:copper_pickaxe"
+  },
+  "show_notification": true
+}
