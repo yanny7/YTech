@@ -376,8 +376,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         provider.tag(holder.object.blockTag.get(holder.material)).add(holder.block.get());
         provider.tag(holder.object.groupBlockTag).addTag(holder.object.blockTag.get(holder.material));
 
-        if (holder.material.tier.getTag() != null) {
-            provider.tag(holder.material.tier.getTag()).add(holder.block.get());
+        if (holder.material.getTier().getTag() != null) {
+            provider.tag(holder.material.getTier().getTag()).add(holder.block.get());
         }
     }
 
@@ -416,8 +416,11 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             case GOLD -> provider.tag(BlockTags.GOLD_ORES).add(holder.block.get());
         }
 
-        if (holder.material.tier.getTag() != null) {
-            provider.tag(holder.material.tier.getTag()).add(holder.block.get());
+        // ore must be mineable with lesser tier as material tier
+        TagKey<Block> tierTag = Utils.getPreviousTier(holder.material.getTier()).getTag();
+
+        if (tierTag != null) {
+            provider.tag(tierTag).add(holder.block.get());
         }
     }
 }

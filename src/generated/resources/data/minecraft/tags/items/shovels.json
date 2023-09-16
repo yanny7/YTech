@@ -3,6 +3,8 @@
     "#ytech:shovels/bronze",
     "#ytech:shovels/copper",
     "#ytech:shovels/flint",
-    "#ytech:shovels/iron"
+    "#ytech:shovels/gold",
+    "#ytech:shovels/iron",
+    "#ytech:shovels/tin"
   ]
 }

@@ -3,6 +3,8 @@
     "#ytech:swords/bronze",
     "#ytech:swords/copper",
     "#ytech:swords/flint",
-    "#ytech:swords/iron"
+    "#ytech:swords/gold",
+    "#ytech:swords/iron",
+    "#ytech:swords/tin"
   ]
 }

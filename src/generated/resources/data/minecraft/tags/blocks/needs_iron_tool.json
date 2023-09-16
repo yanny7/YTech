@@ -1,10 +1,6 @@
 {
   "values": [
-    "ytech:deepslate_iron_ore",
-    "ytech:nether_iron_ore",
     "ytech:raw_iron_block",
-    "ytech:stone_iron_ore",
-    "ytech:bronze_block",
     "ytech:iron_block"
   ]
 }

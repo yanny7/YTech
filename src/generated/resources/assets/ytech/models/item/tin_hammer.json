@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ytech:item/hammer_handle",
+    "layer1": "ytech:item/hammer_overlay"
+  }
+}

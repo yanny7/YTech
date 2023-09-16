@@ -3,6 +3,8 @@
     "#ytech:saws/flint",
     "#ytech:saws/bronze",
     "#ytech:saws/copper",
-    "#ytech:saws/iron"
+    "#ytech:saws/gold",
+    "#ytech:saws/iron",
+    "#ytech:saws/tin"
   ]
 }

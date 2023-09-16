@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/tin"
+    },
+    "I": {
+      "tag": "forge:ingots/tin"
+    }
+  },
+  "pattern": [
+    " I ",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "item": "ytech:tin_mortar_and_pestle"
+  },
+  "show_notification": true
+}

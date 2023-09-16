@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -139,5 +140,16 @@ public class Utils {
         EnumSet<E> copy = enumSet.clone();
         copy.removeAll(toRemove);
         return copy;
+    }
+
+    @NotNull
+    public static Tier getPreviousTier(@NotNull Tier tier) {
+        int index = MaterialType.TIERS.indexOf(tier);
+
+        if (index > 0) {
+            return MaterialType.TIERS.get(index - 1);
+        }
+
+        throw new IllegalStateException("Setting invalid tier!");
     }
 }

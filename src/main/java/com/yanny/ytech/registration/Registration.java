@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -33,6 +34,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -54,6 +56,17 @@ public class Registration {
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
     static {
+        for (int i = 0; i < MaterialType.TIERS.size(); i++) {
+            Tier tier = MaterialType.TIERS.get(i);
+
+            if (tier instanceof YTechTier techTier) {
+                List<Object> after = i > 0 ? List.of(getTierObject(MaterialType.TIERS.get(i - 1))) : List.of();
+                List<Object> before = i + 1 < MaterialType.TIERS.size() ? List.of(getTierObject(MaterialType.TIERS.get(i + 1))) : List.of();
+
+                TierSortingRegistry.registerTier(tier, techTier.getId(), after, before);
+            }
+        }
+
         for (MaterialItemType itemObject : MaterialItemType.values()) {
             for (MaterialType material : itemObject.materials) {
                 HOLDER.items().computeIfAbsent(itemObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, itemObject,
@@ -261,5 +274,9 @@ public class Registration {
 
     private static int getTintColor(Holder.SimpleBlockHolder h, int t) {
         return h.object.getTintColors().getOrDefault(t, 0xFFFFFFFF);
+    }
+
+    private static Object getTierObject(@NotNull Tier tier) {
+        return tier instanceof YTechTier techTier ? techTier.getId() : tier;
     }
 }
