@@ -1,19 +1,12 @@
 {
-  "type": "ytech:alloying",
-  "ingredient1": {
-    "type": "ytech:tag_stack",
-    "count": 9,
-    "tag": "forge:ingots/copper"
-  },
-  "ingredient2": {
-    "type": "ytech:tag_stack",
-    "count": 1,
-    "tag": "forge:ingots/tin"
-  },
-  "minTemp": 1085,
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/bronze"
+    }
+  ],
   "result": {
-    "count": 10,
     "item": "ytech:bronze_ingot"
-  },
-  "smeltingTime": 200
+  }
 }

@@ -93,8 +93,8 @@ public class Holder {
 
         MaterialHolder(@NotNull U object, @NotNull MaterialType material) {
             super(
-                    Holder.stringify(object.getKeyHolder(), material.key, "_"),
-                    Holder.stringify(object.getNameHolder(), material.name, " ")
+                    Holder.stringify(object.getKeyHolder(), langTransformer(object, material, true), "_"),
+                    Holder.stringify(object.getNameHolder(), langTransformer(object, material, false), " ")
             );
             this.object = object;
             this.material = material;
@@ -184,5 +184,28 @@ public class Holder {
 
     private static String stringify(NameHolder holder, String material, String separator) {
         return (holder.prefix() != null ? holder.prefix() + separator : "") + material + (holder.suffix() != null ? separator + holder.suffix() : "");
+    }
+
+    private static <U extends INameable> String langTransformer(@NotNull U product, @NotNull MaterialType material, boolean isKey) {
+        if (material == MaterialType.GOLD) {
+            if (product instanceof MaterialItemType type) {
+                switch (type) {
+                    case CRUSHED_MATERIAL -> {
+                    }
+                    default -> {
+                        return (isKey ? material.key : material.name) + "en";
+                    }
+                }
+            }
+            if (product instanceof MaterialBlockType type) {
+                switch (type) {
+                    default -> {
+                        return (isKey ? material.key : material.name) + "en";
+                    }
+                }
+            }
+        }
+
+        return isKey ? material.key : material.name;
     }
 }

@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block.DryingRack;
 import com.yanny.ytech.configuration.block.ShaftBlock;
@@ -10,7 +9,10 @@ import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -20,7 +22,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -29,7 +30,6 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,11 +40,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
-
 public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockHolder, BlockStateProvider>, ILootable<Holder.BlockHolder, BlockLootSubProvider>,
         IRecipe<Holder.BlockHolder>, IMenu, IItemTag<Holder.BlockHolder>, IBlockTag<Holder.BlockHolder> {
-    STONE_ORE(HolderType.BLOCK, "stone_ore", INameable.both("stone", "ore"), INameable.suffix("Ore"),
+    STONE_ORE(HolderType.BLOCK, "stone_ore", INameable.suffix("ore"), INameable.suffix("Ore"),
             (material) -> ItemTags.create(Utils.forgeLoc("ores/" + material.key)),
             (material) -> BlockTags.create(Utils.forgeLoc("ores/" + material.key)),
             Tags.Items.ORES,
@@ -56,7 +54,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             IRecipe::noRecipe,
             (holder, provider) -> registerOreItemTag(holder, provider, Tags.Items.ORES_IN_GROUND_STONE),
             (holder, provider) -> registerOreBlockTag(holder, provider, Tags.Blocks.ORES_IN_GROUND_STONE),
-            MaterialType.ALL_ORES),
+            Utils.exclude(MaterialType.ALL_ORES, MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON)),
     NETHER_ORE(HolderType.BLOCK, "nether_ore", INameable.both("nether", "ore"), INameable.both("Nether", "Ore"),
             (material) -> ItemTags.create(Utils.forgeLoc("ores/" + material.key)),
             (material) -> BlockTags.create(Utils.forgeLoc("ores/" + material.key)),
@@ -69,7 +67,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             IRecipe::noRecipe,
             (holder, provider) -> registerOreItemTag(holder, provider, Tags.Items.ORES_IN_GROUND_NETHERRACK),
             (holder, provider) -> registerOreBlockTag(holder, provider, Tags.Blocks.ORES_IN_GROUND_NETHERRACK),
-            MaterialType.ALL_ORES),
+            Utils.exclude(MaterialType.ALL_ORES, MaterialType.GOLD)),
     DEEPSLATE_ORE(HolderType.BLOCK, "deepslate_ore", INameable.both("deepslate", "ore"), INameable.both("Deepslate", "Ore"),
             (material) -> ItemTags.create(Utils.forgeLoc("ores/" + material.key)),
             (material) -> BlockTags.create(Utils.forgeLoc("ores/" + material.key)),
@@ -82,7 +80,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             IRecipe::noRecipe,
             (holder, provider) -> registerOreItemTag(holder, provider, Tags.Items.ORES_IN_GROUND_DEEPSLATE),
             (holder, provider) -> registerOreBlockTag(holder, provider, Tags.Blocks.ORES_IN_GROUND_DEEPSLATE),
-            MaterialType.ALL_ORES),
+            Utils.exclude(MaterialType.ALL_ORES, MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON)),
     STORAGE_BLOCK(HolderType.BLOCK, "storage_block", INameable.suffix("block"), INameable.prefix("Block of"),
             (material) -> ItemTags.create(Utils.forgeLoc("storage_blocks/" + material.key)),
             (material) -> BlockTags.create(Utils.forgeLoc("storage_blocks/" + material.key)),
@@ -92,10 +90,10 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> basicTexture(Utils.modBlockLoc("storage_block"), material),
             MaterialBlockType::basicBlockStateProvider,
             ILootable::dropsSelfProvider,
-            MaterialBlockType::storageBlockRecipe,
+            MaterialBlockType::registerStorageBlockRecipe,
             MaterialBlockType::registerItemTag,
             MaterialBlockType::registerMineableBlockTag,
-            MaterialType.ALL_METALS),
+            Utils.exclude(MaterialType.ALL_METALS, MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON)),
     RAW_STORAGE_BLOCK(HolderType.BLOCK, "raw_storage_block", INameable.both("raw", "block"), INameable.prefix("Block of Raw"),
             (material) -> ItemTags.create(Utils.forgeLoc("storage_blocks/raw_" + material.key)),
             (material) -> BlockTags.create(Utils.forgeLoc("storage_blocks/raw_" + material.key)),
@@ -105,10 +103,10 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> basicTexture(Utils.modBlockLoc("raw_storage_block"), material),
             MaterialBlockType::basicBlockStateProvider,
             ILootable::dropsSelfProvider,
-            MaterialBlockType::rawStorageBlockRecipe,
+            MaterialBlockType::registerRawStorageBlockRecipe,
             MaterialBlockType::registerItemTag,
             MaterialBlockType::registerMineableBlockTag,
-            MaterialType.ALL_ORES),
+            Utils.exclude(MaterialType.ALL_ORES, MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON)),
     DRYING_RACK(HolderType.ENTITY_BLOCK, "drying_rack", INameable.suffix("drying_rack"), INameable.suffix("Drying Rack"),
             (material) -> ItemTags.create(Utils.modLoc("drying_racks/" + material.key)),
             (material) -> BlockTags.create(Utils.modLoc("drying_racks/" + material.key)),
@@ -162,6 +160,17 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             MaterialBlockType::registerMineableBlockTag,
             EnumSet.noneOf(MaterialType.class)),
     ;
+
+    // inject vanilla item tags
+    static {
+        STORAGE_BLOCK.itemTag.put(MaterialType.COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
+        STORAGE_BLOCK.itemTag.put(MaterialType.GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
+        STORAGE_BLOCK.itemTag.put(MaterialType.IRON, Tags.Items.STORAGE_BLOCKS_IRON);
+
+        RAW_STORAGE_BLOCK.itemTag.put(MaterialType.COPPER, Tags.Items.STORAGE_BLOCKS_RAW_COPPER);
+        RAW_STORAGE_BLOCK.itemTag.put(MaterialType.GOLD, Tags.Items.STORAGE_BLOCKS_RAW_GOLD);
+        RAW_STORAGE_BLOCK.itemTag.put(MaterialType.IRON, Tags.Items.STORAGE_BLOCKS_RAW_IRON);
+    }
 
     @NotNull public final HolderType type;
     @NotNull public final String id;
@@ -326,45 +335,20 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                 new TextureHolder(0, material.color, Utils.modBlockLoc("ore_overlay"))).toArray(TextureHolder[]::new);
     }
 
-    private static void rawStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
-        RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), MaterialItemType.RAW_MATERIAL, holder.material).item;
-        TagKey<Item> unpackedTag = MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material);
-        TagKey<Item> packedTag = MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material);
-        nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, holder.block, packedTag);
-    }
-
-    private static void storageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
-        RegistryObject<Item> unpacked = GeneralUtils.getFromMap(HOLDER.items(), MaterialItemType.INGOT, holder.material).item;
-        TagKey<Item> unpackedTag = MaterialItemType.INGOT.itemTag.get(holder.material);
-        TagKey<Item> packedTag = MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material);
-        nineBlockStorageRecipes(recipeConsumer, RecipeCategory.MISC, unpacked, unpackedTag, RecipeCategory.BUILDING_BLOCKS, holder.block, packedTag);
-    }
-
-    private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> recipeConsumer, RecipeCategory unpackedCategory,
-                                                RegistryObject<?> unpacked, TagKey<Item> unpackedTag, RecipeCategory packedCategory,
-                                                RegistryObject<?> packed, TagKey<Item> packedTag) {
-        String unpackedPath = unpacked.getId().getPath();
-        String packedPath = packed.getId().getPath();
-        String unpackedName = unpackedPath + "_to_" + packedPath;
-        String packedName = packedPath + "_to_" + unpackedPath;
-        nineBlockStorageRecipes(recipeConsumer, unpackedCategory, (ItemLike) unpacked.get(), unpackedTag, packedCategory,
-                (ItemLike) packed.get(), packedTag, packedName, packedPath, unpackedName, unpackedPath);
-    }
-
-    private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> recipeConsumer, RecipeCategory unpackedCategory,
-                                                ItemLike unpacked, TagKey<Item> unpackedTag, RecipeCategory packedCategory,
-                                                ItemLike packed, TagKey<Item> packedTag, String packedName, @Nullable String packedGroup,
-                                                String unpackedName, @Nullable String unpackedGroup) {
-        ShapelessRecipeBuilder.shapeless(unpackedCategory, unpacked, 9)
-                .requires(packedTag)
-                .group(unpackedGroup)
-                .unlockedBy(RecipeProvider.getHasName(packed), RecipeProvider.has(packedTag))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, unpackedName));
-        ShapedRecipeBuilder.shaped(packedCategory, packed)
-                .define('#', unpackedTag)
+    private static void registerRawStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+                .define('#', MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material))
                 .pattern("###").pattern("###").pattern("###")
-                .group(packedGroup).unlockedBy(RecipeProvider.getHasName(unpacked), RecipeProvider.has(unpackedTag))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, packedName));
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material)))
+                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+    }
+
+    private static void registerStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+                .define('#', MaterialItemType.INGOT.itemTag.get(holder.material))
+                .pattern("###").pattern("###").pattern("###")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.INGOT.itemTag.get(holder.material)))
+                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
     }
 
     private static void registerItemTag(@NotNull Holder.BlockHolder holder, @NotNull ItemTagsProvider provider) {

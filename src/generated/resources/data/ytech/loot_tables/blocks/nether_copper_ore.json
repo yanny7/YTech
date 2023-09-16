@@ -38,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "ytech:raw_copper"
+              "name": "minecraft:raw_copper"
             }
           ]
         }

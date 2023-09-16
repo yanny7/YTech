@@ -95,7 +95,7 @@ class YTechRecipes extends RecipeProvider {
     private void smeltingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int temperature, int smeltingTime) {
         SmeltingRecipe.Builder.smelting(input, temperature, smeltingTime, result)
                 .unlockedBy(Utils.getHasName(), has(input))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_smelting"));
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -126,7 +126,7 @@ class YTechRecipes extends RecipeProvider {
                                 @NotNull TagKey<Item> input2, int count2, @NotNull Item result, int count, int temp, int smeltingTime) {
         AlloyingRecipe.Builder.alloying(input1, count1, input2, count2, temp, smeltingTime, result, count)
                 .unlockedBy(Utils.getHasName(), has(input1))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_alloying"));
     }
 
     @SuppressWarnings("SameParameterValue")

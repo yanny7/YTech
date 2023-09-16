@@ -6,9 +6,7 @@
     "ytech:brick_chimney",
     "ytech:reinforced_bricks",
     "ytech:reinforced_brick_chimney",
-    "ytech:deepslate_copper_ore",
     "ytech:nether_copper_ore",
-    "ytech:raw_cassiterite_block",
-    "ytech:stone_copper_ore"
+    "ytech:raw_cassiterite_block"
   ]
 }

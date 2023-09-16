@@ -1,11 +1,12 @@
 {
-  "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "forge:crushed_materials/cassiterite"
-  },
-  "minTemp": 1127,
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/tin"
+    }
+  ],
   "result": {
     "item": "ytech:tin_ingot"
-  },
-  "smeltingTime": 200
+  }
 }

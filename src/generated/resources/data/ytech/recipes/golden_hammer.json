@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:storage_blocks/gold"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " # ",
+    " S#",
+    "S  "
+  ],
+  "result": {
+    "item": "ytech:golden_hammer"
+  },
+  "show_notification": true
+}

@@ -1,8 +1,5 @@
 {
   "values": [
-    "#forge:raw_materials/cassiterite",
-    "#forge:raw_materials/copper",
-    "#forge:raw_materials/gold",
-    "#forge:raw_materials/iron"
+    "#forge:raw_materials/cassiterite"
   ]
 }

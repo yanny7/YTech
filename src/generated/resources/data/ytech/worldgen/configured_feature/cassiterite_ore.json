@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "ytech:stone_cassiterite_ore"
+          "Name": "ytech:cassiterite_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

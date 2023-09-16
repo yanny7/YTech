@@ -2,8 +2,6 @@
   "values": [
     "ytech:deepslate_cassiterite_ore",
     "ytech:nether_cassiterite_ore",
-    "ytech:raw_gold_block",
-    "ytech:stone_cassiterite_ore",
-    "ytech:gold_block"
+    "ytech:cassiterite_ore"
   ]
 }

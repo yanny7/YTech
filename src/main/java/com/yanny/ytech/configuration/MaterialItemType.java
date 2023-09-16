@@ -31,9 +31,9 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::simpleItem,
             (material) -> basicTexture(Utils.modItemLoc("ingot"), material),
             MaterialItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerIngotRecipe,
             MaterialItemType::registerMaterialTag,
-            MaterialType.ALL_METALS),
+            Utils.exclude(MaterialType.ALL_METALS, MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON)),
     DUST("dust", INameable.suffix("dust"), INameable.suffix("Dust"),
             (material) -> ItemTags.create(Utils.forgeLoc("dusts/" + material.key)),
             Tags.Items.DUSTS,
@@ -67,9 +67,9 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::simpleItem,
             (material) -> basicTexture(Utils.modItemLoc("raw_material"), material),
             MaterialItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerRawMaterialRecipe,
             MaterialItemType::registerMaterialTag,
-            MaterialType.ALL_ORES),
+            Utils.exclude(MaterialType.ALL_ORES, MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON)),
     CRUSHED_MATERIAL("crushed_material", INameable.prefix("crushed"), INameable.prefix("Crushed"),
             (material) -> ItemTags.create(Utils.forgeLoc("crushed_materials/" + material.key)),
             ItemTags.create(Utils.modLoc("crushed_materials")),
@@ -133,7 +133,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialAxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
     PICKAXE("pickaxe", INameable.suffix("pickaxe"), INameable.suffix("Pickaxe"),
             (material) -> ItemTags.create(Utils.modLoc("pickaxes/" + material.key)),
             ItemTags.PICKAXES,
@@ -142,7 +142,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialPickaxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
     SHOVEL("shovel", INameable.suffix("shovel"), INameable.suffix("Shovel"),
             (material) -> ItemTags.create(Utils.modLoc("shovels/" + material.key)),
             ItemTags.SHOVELS,
@@ -151,7 +151,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialShovelItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
     HOE("hoe", INameable.suffix("hoe"), INameable.suffix("Hoe"),
             (material) -> ItemTags.create(Utils.modLoc("hoes/" + material.key)),
             ItemTags.HOES,
@@ -160,7 +160,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialHoeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
     SWORD("sword", INameable.suffix("sword"), INameable.suffix("Sword"),
             (material) -> ItemTags.create(Utils.modLoc("swords/" + material.key)),
             ItemTags.SWORDS,
@@ -169,7 +169,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialSwordItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
     MORTAR_AND_PESTLE("mortar_and_pestle", INameable.suffix("mortar_and_pestle"), INameable.suffix("Mortar and Pestle"),
             (material) -> ItemTags.create(Utils.modLoc("mortar_and_pestles/" + material.key)),
             ItemTags.create(Utils.modLoc("mortar_and_pestles")),
@@ -207,6 +207,17 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::registerMaterialTag,
             MaterialType.ALL_METALS),
     ;
+
+    // inject vanilla item tags
+    static {
+        INGOT.itemTag.put(MaterialType.COPPER, Tags.Items.INGOTS_COPPER);
+        INGOT.itemTag.put(MaterialType.GOLD, Tags.Items.INGOTS_GOLD);
+        INGOT.itemTag.put(MaterialType.IRON, Tags.Items.INGOTS_IRON);
+
+        RAW_MATERIAL.itemTag.put(MaterialType.COPPER, Tags.Items.RAW_MATERIALS_COPPER);
+        RAW_MATERIAL.itemTag.put(MaterialType.GOLD, Tags.Items.RAW_MATERIALS_GOLD);
+        RAW_MATERIAL.itemTag.put(MaterialType.IRON, Tags.Items.RAW_MATERIALS_IRON);
+    }
 
     @NotNull public final String id;
     @NotNull private final NameHolder key;
@@ -301,6 +312,20 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
     private static Item simpleItem(@NotNull Holder.ItemHolder holder) {
         return new Item(new Item.Properties());
+    }
+
+    public static void registerIngotRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+                .requires(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    public static void registerRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+                .requires(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerCrushedRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {

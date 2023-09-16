@@ -14,6 +14,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -158,6 +159,29 @@ public class Registration {
 
     @NotNull
     public static Item item(@NotNull MaterialItemType type, @NotNull MaterialType material) {
+        Item item = null;
+
+        switch (type) {
+            case INGOT -> {
+                switch (material) {
+                    case COPPER -> item = Items.COPPER_INGOT;
+                    case GOLD -> item = Items.GOLD_INGOT;
+                    case IRON -> item = Items.IRON_INGOT;
+                }
+            }
+            case RAW_MATERIAL -> {
+                switch (material) {
+                    case COPPER -> item = Items.RAW_COPPER;
+                    case GOLD -> item = Items.RAW_GOLD;
+                    case IRON -> item = Items.RAW_IRON;
+                }
+            }
+        }
+
+        if (item != null) {
+            return item;
+        }
+
         return Objects.requireNonNull(Objects.requireNonNull(HOLDER.items().get(type), "Missing item type " + type).get(material), "Missing material " + material).item.get();
     }
 
@@ -178,6 +202,29 @@ public class Registration {
 
     @NotNull
     public static Block block(@NotNull MaterialBlockType type, @NotNull MaterialType material) {
+        Block block = null;
+
+        switch (type) {
+            case STORAGE_BLOCK -> {
+                switch (material) {
+                    case COPPER -> block = Blocks.COPPER_BLOCK;
+                    case GOLD -> block = Blocks.GOLD_BLOCK;
+                    case IRON -> block = Blocks.IRON_BLOCK;
+                }
+            }
+            case RAW_STORAGE_BLOCK -> {
+                switch (material) {
+                    case COPPER -> block = Blocks.RAW_COPPER_BLOCK;
+                    case GOLD -> block = Blocks.RAW_GOLD_BLOCK;
+                    case IRON -> block = Blocks.RAW_IRON_BLOCK;
+                }
+            }
+        }
+
+        if (block != null) {
+            return block;
+        }
+
         return Objects.requireNonNull(Objects.requireNonNull(HOLDER.blocks().get(type), "Missing item type " + type).get(material), "Missing material " + material).block.get();
     }
 
