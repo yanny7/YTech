@@ -1,8 +1,8 @@
 package com.yanny.ytech;
 
 import com.yanny.ytech.compatibility.TopCompatibility;
-import com.yanny.ytech.configuration.HolderType;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.block.IMenuBlock;
 import com.yanny.ytech.configuration.recipe.TagStackIngredient;
 import com.yanny.ytech.configuration.renderer.DryingRackRenderer;
 import com.yanny.ytech.configuration.renderer.KineticRenderer;
@@ -29,13 +29,13 @@ public class ModBusSubscriber {
         TopCompatibility.register();
         event.enqueueWork(() -> {
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((blockHolder) -> {
-                if (blockHolder.object.type == HolderType.MENU_BLOCK && blockHolder instanceof Holder.MenuEntityBlockHolder holder) {
-                    MenuScreens.register(holder.menuType.get(), holder.object::getScreen);
+                if (blockHolder instanceof Holder.MenuEntityBlockHolder holder && holder.block.get() instanceof IMenuBlock menuBlock) {
+                    MenuScreens.register(holder.menuType.get(), menuBlock::getScreen);
                 }
             });
             HOLDER.simpleBlocks().values().forEach((blockHolder) -> {
-                if (blockHolder.object.type == HolderType.MENU_BLOCK && blockHolder instanceof Holder.MenuEntitySimpleBlockHolder holder) {
-                    MenuScreens.register(holder.menuType.get(), holder.object::getScreen);
+                if (blockHolder instanceof Holder.MenuEntitySimpleBlockHolder holder && holder.block.get() instanceof IMenuBlock menuBlock) {
+                    MenuScreens.register(holder.menuType.get(), menuBlock::getScreen);
                 }
             });
         });

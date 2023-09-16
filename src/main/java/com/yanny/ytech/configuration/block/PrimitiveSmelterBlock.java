@@ -4,25 +4,32 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
+import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.IEntityBlockHolder;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -35,7 +42,7 @@ import java.util.function.Consumer;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock implements IProbeInfoProvider {
+public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock implements IMenuBlock, IProbeInfoProvider {
     public PrimitiveSmelterBlock(Holder holder) {
         super(holder);
     }
@@ -48,6 +55,15 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
         } else {
             throw new IllegalStateException("Invalid holder type");
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    @NotNull
+    public AbstractContainerScreen<AbstractContainerMenu> getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
+        AbstractContainerScreen<?> screen = new PrimitiveSmelterScreen(container, inventory, title);
+        //noinspection unchecked
+        return (AbstractContainerScreen<AbstractContainerMenu>)screen;
     }
 
     @Override

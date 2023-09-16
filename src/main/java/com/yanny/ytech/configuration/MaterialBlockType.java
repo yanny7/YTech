@@ -8,12 +8,10 @@ import com.yanny.ytech.configuration.block.TanningRack;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -182,55 +180,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     @NotNull private final BiConsumer<Holder.BlockHolder, ItemTagsProvider> itemTagsGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockTagsProvider> blockTagsGetter;
     @Nullable private final IAbstractMenuGetter menuGetter;
-    @Nullable private final IScreenGetter screenGetter;
     @NotNull public final EnumSet<MaterialType> materials;
-
-    MaterialBlockType(@NotNull HolderType type, @NotNull String id, @NotNull NameHolder keyHolder, @NotNull NameHolder nameHolder,
-                      @NotNull Function<Holder.BlockHolder, Block> blockGetter, @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
-                      @NotNull Function<MaterialType, TagKey<Item>> itemTag, @NotNull Function<MaterialType, TagKey<Block>> blockTag, @NotNull TagKey<Item> groupItemTag,
-                      @NotNull TagKey<Block> groupBlockTag, @NotNull BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter,
-                      @NotNull BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter,
-                      @NotNull BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter,
-                      @NotNull BiConsumer<Holder.BlockHolder, BlockTagsProvider> blockTagsGetter, @NotNull IAbstractMenuGetter menuGetter,
-                      @NotNull IScreenGetter screenGetter, @NotNull BiConsumer<Holder.BlockHolder, ItemTagsProvider> itemTagsGetter,
-                      @NotNull EnumSet<MaterialType> materials) {
-        this.id = id;
-        this.keyHolder = keyHolder;
-        this.nameHolder = nameHolder;
-        this.itemTag = materials.stream().map((material) -> Pair.of(material, itemTag.apply(material))).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
-        this.blockTag = materials.stream().map((material) -> Pair.of(material, blockTag.apply(material))).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
-        this.blockGetter = blockGetter;
-        this.type = type;
-        this.groupItemTag = groupItemTag;
-        this.groupBlockTag = groupBlockTag;
-        this.modelGetter = modelGetter;
-        this.lootGetter = lootGetter;
-        this.recipeGetter = recipeGetter;
-        this.blockTagsGetter = blockTagsGetter;
-        this.menuGetter = menuGetter;
-        this.screenGetter = screenGetter;
-        this.itemTagsGetter = itemTagsGetter;
-        this.materials = materials;
-        this.tintColors = new HashMap<>();
-        this.textures = new HashMap<>();
-
-        for (MaterialType material : materials) {
-            TextureHolder[] holders = textureGetter.apply(material);
-            ArrayList<ResourceLocation> resources = new ArrayList<>();
-            Map<Integer, Integer> tintMap = new HashMap<>();
-
-            for (TextureHolder holder : holders) {
-                if (holder.tintIndex() >= 0) {
-                    tintMap.put(holder.tintIndex(), holder.color());
-                }
-
-                resources.add(holder.texture());
-            }
-
-            this.tintColors.put(material, tintMap);
-            this.textures.computeIfAbsent(material, (m) -> resources.toArray(ResourceLocation[]::new));
-        }
-    }
 
     MaterialBlockType(@NotNull HolderType type, @NotNull String id, @NotNull NameHolder keyHolder, @NotNull NameHolder nameHolder,
                       @NotNull Function<MaterialType, TagKey<Item>> itemTag, @NotNull Function<MaterialType, TagKey<Block>> blockTag,
@@ -256,7 +206,6 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         this.recipeGetter = recipeGetter;
         this.itemTagsGetter = itemTagsGetter;
         this.menuGetter = null;
-        this.screenGetter = null;
         this.materials = materials;
         this.tintColors = new HashMap<>();
         this.textures = new HashMap<>();
@@ -336,17 +285,6 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             return menuGetter.getMenu(holder, windowId, inv, pos, itemStackHandler, data);
         } else {
             return null;
-        }
-    }
-
-    @Override
-    @NotNull
-    public AbstractContainerScreen<AbstractContainerMenu> getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
-        if (screenGetter != null) {
-            //noinspection unchecked
-            return (AbstractContainerScreen<AbstractContainerMenu>) screenGetter.getScreen(container, inventory, title);
-        } else {
-            throw new IllegalStateException("Missing screen getter");
         }
     }
 

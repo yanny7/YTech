@@ -3,11 +3,8 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.configuration.block.*;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
-import com.yanny.ytech.configuration.screen.PrimitiveAlloySmelterScreen;
-import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -15,7 +12,6 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -66,8 +62,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             PrimitiveSmelterBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag,
-            (holder, windowId, inv, pos, stack, data) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos, stack, data),
-            PrimitiveSmelterScreen::new),
+            (holder, windowId, inv, pos, stack, data) -> new PrimitiveSmelterContainerMenu(holder, windowId, inv.player, pos, stack, data)),
     PRIMITIVE_ALLOY_SMELTER(HolderType.MENU_BLOCK, "primitive_alloy_smelter", "Primitive Alloy Smelter",
             ItemTags.create(Utils.modLoc("primitive_alloy_smelters")),
             BlockTags.create(Utils.modLoc("primitive_alloy_smelters")),
@@ -78,8 +73,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             PrimitiveAlloySmelterBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag,
-            (holder, windowId, inv, pos, stack, data) -> new PrimitiveAlloySmelterContainerMenu(holder, windowId, inv.player, pos, stack, data),
-            PrimitiveAlloySmelterScreen::new),
+            (holder, windowId, inv, pos, stack, data) -> new PrimitiveAlloySmelterContainerMenu(holder, windowId, inv.player, pos, stack, data)),
     BRICK_CHIMNEY(HolderType.ENTITY_BLOCK, "brick_chimney", "Brick Chimney",
             ItemTags.create(Utils.modLoc("brick_chimneys")),
             BlockTags.create(Utils.modLoc("brick_chimneys")),
@@ -174,7 +168,6 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, ItemTagsProvider> itemTagsGetter;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockTagsProvider> blockTagsGetter;
     @Nullable private final IAbstractMenuGetter menuGetter;
-    @Nullable private final IScreenGetter screenGetter;
 
     SimpleBlockType(@NotNull HolderType type, @NotNull String key, @NotNull String name, @NotNull TagKey<Item> itemTag, @NotNull TagKey<Block> blockTag,
                     @NotNull Function<Holder.SimpleBlockHolder, Block> blockGetter, @NotNull Supplier<TextureHolder[]> textureGetter,
@@ -195,7 +188,6 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         this.itemTagsGetter = itemTagsGetter;
         this.blockTagsGetter = blockTagsGetter;
         this.menuGetter = null;
-        this.screenGetter = null;
         this.tintColors = new HashMap<>();
 
         TextureHolder[] holders = textureGetter.get();
@@ -218,7 +210,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, Consumer<FinishedRecipe>> recipeGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, ItemTagsProvider> itemTagsGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockTagsProvider> blockTagsGetter,
-                    @NotNull IAbstractMenuGetter menuGetter, @NotNull IScreenGetter screenGetter) {
+                    @NotNull IAbstractMenuGetter menuGetter) {
         this.type = type;
         this.key = key;
         this.name = name;
@@ -231,7 +223,6 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         this.itemTagsGetter = itemTagsGetter;
         this.blockTagsGetter = blockTagsGetter;
         this.menuGetter = menuGetter;
-        this.screenGetter = screenGetter;
         this.tintColors = new HashMap<>();
 
         TextureHolder[] holders = textureGetter.get();
@@ -292,17 +283,6 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             return menuGetter.getMenu(holder, windowId, inv, pos, itemStackHandler, data);
         } else {
             return null;
-        }
-    }
-
-    @Override
-    @NotNull
-    public AbstractContainerScreen<AbstractContainerMenu> getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
-        if (screenGetter != null) {
-            //noinspection unchecked
-            return (AbstractContainerScreen<AbstractContainerMenu>) screenGetter.getScreen(container, inventory, title);
-        } else {
-            throw new IllegalStateException("Missing screen getter");
         }
     }
 
