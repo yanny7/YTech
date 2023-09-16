@@ -1,0 +1,14 @@
+{
+  "type": "ytech:remove_item",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:cow"
+      }
+    }
+  ],
+  "newItem": "ytech:raw_hide",
+  "oldItem": "minecraft:leather"
+}

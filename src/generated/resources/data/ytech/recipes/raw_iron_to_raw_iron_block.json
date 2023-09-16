@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "raw_iron",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/raw_iron"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "ytech:raw_iron"
+  }
+}

@@ -1,11 +1,8 @@
 {
   "values": [
-    "#ytech:axes/arsenical_bronze",
     "#ytech:axes/bronze",
     "#ytech:axes/copper",
     "#ytech:axes/flint",
-    "#ytech:axes/gold",
-    "#ytech:axes/iron",
-    "#ytech:axes/tin"
+    "#ytech:axes/iron"
   ]
 }

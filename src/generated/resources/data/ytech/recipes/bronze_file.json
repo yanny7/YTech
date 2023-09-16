@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "equipment",
   "key": {
     "#": {
       "tag": "ytech:plates/bronze"
@@ -10,7 +10,6 @@
     }
   },
   "pattern": [
-    "#",
     "#",
     "S"
   ],

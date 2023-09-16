@@ -32,14 +32,14 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     private static final String TAG_LEFT_BURNING = "burningLeft";
     private static final String TAG_TEMPERATURE = "temperature";
     private static final String TAG_NR_CHIMNEY = "nrChimney";
-    private static final int BASE_MAX_TEMPERATURE = 700;
+    private static final int BASE_MAX_TEMPERATURE = 900;
     private static final int BASE_MIN_TEMPERATURE = 20;
-    private static final int TEMP_PER_CHIMNEY = 100;
+    private static final int TEMP_PER_CHIMNEY = 50;
 
     private int nrChimney = -1;
-    private int burningTime = 600;
+    private int burningTime = 0;
     private int leftBurningTime = 0;
-    protected int temperature = 20;
+    protected int temperature = 0;
     protected int leftSmelting = 0;
     protected int smeltingTime = 0;
     protected int recipeTemperature = 0;

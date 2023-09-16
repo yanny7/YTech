@@ -1,5 +1,8 @@
 {
   "values": [
-    "ytech:deepslate_cassiterite_ore"
+    "ytech:deepslate_cassiterite_ore",
+    "ytech:deepslate_copper_ore",
+    "ytech:deepslate_gold_ore",
+    "ytech:deepslate_iron_ore"
   ]
 }

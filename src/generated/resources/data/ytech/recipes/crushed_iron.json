@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:raw_materials/iron"
+    },
+    {
+      "tag": "ytech:mortar_and_pestles"
+    }
+  ],
+  "result": {
+    "item": "ytech:crushed_iron"
+  }
+}

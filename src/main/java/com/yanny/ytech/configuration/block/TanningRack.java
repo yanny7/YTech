@@ -26,6 +26,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -51,7 +52,7 @@ public class TanningRack extends Block implements EntityBlock, IProbeInfoProvide
     private final Holder.BlockHolder holder;
 
     public TanningRack(Holder.BlockHolder holder) {
-        super(Properties.of());
+        super(Properties.copy(Blocks.OAK_PLANKS));
         this.holder = holder;
     }
 

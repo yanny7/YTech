@@ -3,13 +3,13 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "ytech:arsenical_bronze_bolt"
+      "item": "ytech:copper_bolt"
     },
     "B": {
       "item": "minecraft:bricks"
     },
     "P": {
-      "item": "ytech:arsenical_bronze_plate"
+      "item": "ytech:copper_plate"
     }
   },
   "pattern": [

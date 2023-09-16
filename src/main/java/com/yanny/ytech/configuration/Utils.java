@@ -22,18 +22,18 @@ public class Utils {
     }
 
     @NotNull
-    public static ResourceLocation loc(@NotNull String path) {
+    public static ResourceLocation mcLoc(@NotNull String path) {
         return new ResourceLocation(path);
     }
 
     @NotNull
     public static ResourceLocation mcBlockLoc(@NotNull String path) {
-        return loc(ModelProvider.BLOCK_FOLDER + "/" + path);
+        return mcLoc(ModelProvider.BLOCK_FOLDER + "/" + path);
     }
 
     @NotNull
     public static ResourceLocation mcItemLoc(@NotNull String path) {
-        return loc(ModelProvider.ITEM_FOLDER + "/" + path);
+        return mcLoc(ModelProvider.ITEM_FOLDER + "/" + path);
     }
 
     @NotNull

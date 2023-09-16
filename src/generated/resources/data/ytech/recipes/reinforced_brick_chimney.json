@@ -7,9 +7,9 @@
     }
   },
   "pattern": [
-    "###",
+    " # ",
     "# #",
-    "###"
+    " # "
   ],
   "result": {
     "item": "ytech:reinforced_brick_chimney"

@@ -1,6 +1,8 @@
 package com.yanny.ytech.configuration;
 
+import com.yanny.ytech.configuration.item.BrickMoldItem;
 import com.yanny.ytech.configuration.item.ClayBucketItem;
+import com.yanny.ytech.configuration.item.FlintSawItem;
 import com.yanny.ytech.configuration.item.ToolItem;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
@@ -51,7 +53,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerSimpleTag),
     BRICK_MOLD("brick_mold", "Brick Mold",
             ItemTags.create(Utils.modLoc("brick_molds")),
-            SimpleItemType::simpleItem,
+            BrickMoldItem::new,
             () -> basicTexture(Utils.modItemLoc("brick_mold")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerBrickMoldRecipe,
@@ -155,7 +157,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerSimpleTag),
     FLINT_SAW("flint_saw", "Flint Saw",
             ItemTags.create(Utils.modLoc("saws/flint")),
-            () -> new ToolItem(Tiers.WOOD, new Item.Properties()),
+            () -> new FlintSawItem(Tiers.WOOD, new Item.Properties()),
             () -> basicTexture(Utils.modItemLoc("flint_saw")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerFlintSawRecipe,

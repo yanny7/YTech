@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "raw_gold",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/raw_gold"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "ytech:raw_gold"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/bronze"
+    },
+    "I": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "pattern": [
+    " I ",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "item": "ytech:bronze_mortar_and_pestle"
+  },
+  "show_notification": true
+}

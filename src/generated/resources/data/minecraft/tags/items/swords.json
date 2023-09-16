@@ -1,11 +1,8 @@
 {
   "values": [
-    "#ytech:swords/arsenical_bronze",
     "#ytech:swords/bronze",
     "#ytech:swords/copper",
     "#ytech:swords/flint",
-    "#ytech:swords/gold",
-    "#ytech:swords/iron",
-    "#ytech:swords/tin"
+    "#ytech:swords/iron"
   ]
 }

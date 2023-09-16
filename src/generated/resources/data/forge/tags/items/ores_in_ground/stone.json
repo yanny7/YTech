@@ -1,5 +1,8 @@
 {
   "values": [
-    "ytech:stone_cassiterite_ore"
+    "ytech:stone_cassiterite_ore",
+    "ytech:stone_copper_ore",
+    "ytech:stone_gold_ore",
+    "ytech:stone_iron_ore"
   ]
 }

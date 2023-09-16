@@ -3,10 +3,7 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.registration.Holder;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -46,15 +43,60 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             IRecipe::noRecipe,
             MaterialItemType::registerMaterialTag,
             EnumSet.noneOf(MaterialType.class)),
+    IMPURE_DUST("impure_dust", INameable.both("impure", "dust"), INameable.both("Impure", "Dust"),
+            (material) -> ItemTags.create(Utils.forgeLoc("impure_dusts/" + material.key)),
+            Tags.Items.DUSTS,
+            MaterialItemType::simpleItem,
+            (material) -> basicTexture(Utils.modItemLoc("impure_dust"), material),
+            MaterialItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.noneOf(MaterialType.class)),
+    PURIFIED_DUST("purified_dust", INameable.both("purified", "dust"), INameable.both("Purified", "Dust"),
+            (material) -> ItemTags.create(Utils.forgeLoc("purified_dusts/" + material.key)),
+            Tags.Items.DUSTS,
+            MaterialItemType::simpleItem,
+            (material) -> basicTexture(Utils.modItemLoc("purified_dust"), material),
+            MaterialItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.noneOf(MaterialType.class)),
     RAW_MATERIAL("raw_material", INameable.prefix("raw"), INameable.prefix("Raw"),
             (material) -> ItemTags.create(Utils.forgeLoc("raw_materials/" + material.key)),
             Tags.Items.RAW_MATERIALS,
             MaterialItemType::simpleItem,
             (material) -> basicTexture(Utils.modItemLoc("raw_material"), material),
             MaterialItemType::basicItemModelProvider,
-            IRecipe::noRecipe, // handled in block
+            IRecipe::noRecipe,
             MaterialItemType::registerMaterialTag,
             MaterialType.ALL_ORES),
+    CRUSHED_MATERIAL("crushed_material", INameable.prefix("crushed"), INameable.prefix("Crushed"),
+            (material) -> ItemTags.create(Utils.forgeLoc("crushed_materials/" + material.key)),
+            ItemTags.create(Utils.modLoc("crushed_materials")),
+            MaterialItemType::simpleItem,
+            (material) -> basicTexture(Utils.modItemLoc("crushed_material"), material),
+            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::registerCrushedRawMaterialRecipe,
+            MaterialItemType::registerMaterialTag,
+            MaterialType.ALL_ORES),
+    IMPURE_MATERIAL("impure_material", INameable.prefix("impure"), INameable.prefix("Impure"),
+            (material) -> ItemTags.create(Utils.forgeLoc("impure_materials/" + material.key)),
+            ItemTags.create(Utils.modLoc("impure_materials")),
+            MaterialItemType::simpleItem,
+            (material) -> basicTexture(Utils.modItemLoc("impure_material"), material),
+            MaterialItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.noneOf(MaterialType.class)),
+    PURIFIED_MATERIAL("purified_material", INameable.prefix("purified"), INameable.prefix("Purified"),
+            (material) -> ItemTags.create(Utils.forgeLoc("purified_materials/" + material.key)),
+            ItemTags.create(Utils.modLoc("purified_materials")),
+            MaterialItemType::simpleItem,
+            (material) -> basicTexture(Utils.modItemLoc("purified_material"), material),
+            MaterialItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            EnumSet.noneOf(MaterialType.class)),
     PLATE("plate", INameable.suffix("plate"), INameable.suffix("Plate"),
             (material) -> ItemTags.create(Utils.modLoc("plates/" + material.key)),
             ItemTags.create(Utils.modLoc("plates")),
@@ -91,7 +133,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialAxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.merge(MaterialType.TOOL_METALS, MaterialType.FLINT)),
     PICKAXE("pickaxe", INameable.suffix("pickaxe"), INameable.suffix("Pickaxe"),
             (material) -> ItemTags.create(Utils.modLoc("pickaxes/" + material.key)),
             ItemTags.PICKAXES,
@@ -100,7 +142,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialPickaxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.merge(MaterialType.TOOL_METALS, MaterialType.FLINT)),
     SHOVEL("shovel", INameable.suffix("shovel"), INameable.suffix("Shovel"),
             (material) -> ItemTags.create(Utils.modLoc("shovels/" + material.key)),
             ItemTags.SHOVELS,
@@ -109,7 +151,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialShovelItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.merge(MaterialType.TOOL_METALS, MaterialType.FLINT)),
     HOE("hoe", INameable.suffix("hoe"), INameable.suffix("Hoe"),
             (material) -> ItemTags.create(Utils.modLoc("hoes/" + material.key)),
             ItemTags.HOES,
@@ -118,7 +160,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialHoeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.merge(MaterialType.TOOL_METALS, MaterialType.FLINT)),
     SWORD("sword", INameable.suffix("sword"), INameable.suffix("Sword"),
             (material) -> ItemTags.create(Utils.modLoc("swords/" + material.key)),
             ItemTags.SWORDS,
@@ -127,16 +169,25 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialSwordItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT)),
+            Utils.merge(MaterialType.TOOL_METALS, MaterialType.FLINT)),
+    MORTAR_AND_PESTLE("mortar_and_pestle", INameable.suffix("mortar_and_pestle"), INameable.suffix("Mortar and Pestle"),
+            (material) -> ItemTags.create(Utils.modLoc("mortar_and_pestles/" + material.key)),
+            ItemTags.create(Utils.modLoc("mortar_and_pestles")),
+            (holder) -> new ToolItem(holder.material.tier, new Item.Properties()),
+            (material) -> basicTexture(Utils.modItemLoc("mortar_and_pestle"), material),
+            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::registerMortarAndPestleRecipe,
+            MaterialItemType::registerMaterialTag,
+            Utils.merge(MaterialType.TOOL_METALS, MaterialType.STONE)),
     SAW("saw", INameable.suffix("saw"), INameable.suffix("Saw"),
             (material) -> ItemTags.create(Utils.modLoc("saws/" + material.key)),
             ItemTags.create(Utils.modLoc("saws")),
             (holder) -> new ToolItem(holder.material.tier, new Item.Properties()),
-            (material) -> basicTexture(Utils.modItemLoc("saw"), material), //FIXME missing item texture
+            (material) -> toolTexture(Utils.modItemLoc("hand_saw_handle"), Utils.modItemLoc("hand_saw_overlay"), material),
             MaterialItemType::toolItemModelProvider,
             MaterialItemType::registerSawRecipe,
             MaterialItemType::registerMaterialTag,
-            EnumSet.noneOf(MaterialType.class)),
+            MaterialType.TOOL_METALS),
     HAMMER("hammer", INameable.suffix("hammer"), INameable.suffix("Hammer"),
             (material) -> ItemTags.create(Utils.modLoc("hammers/" + material.key)),
             ItemTags.create(Utils.modLoc("hammers")),
@@ -145,7 +196,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialItemType::registerHammerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE)),
+            Utils.merge(MaterialType.TOOL_METALS, MaterialType.STONE)),
     FILE("file", INameable.suffix("file"), INameable.suffix("File"),
             (material) -> ItemTags.create(Utils.modLoc("files/" + material.key)),
             ItemTags.create(Utils.modLoc("files")),
@@ -154,7 +205,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::toolItemModelProvider,
             MaterialItemType::registerFileRecipe,
             MaterialItemType::registerMaterialTag,
-            MaterialType.ALL_METALS),
+            MaterialType.TOOL_METALS),
     ;
 
     @NotNull public final String id;
@@ -252,6 +303,14 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         return new Item(new Item.Properties());
     }
 
+    public static void registerCrushedRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+                .requires(RAW_MATERIAL.itemTag.get(holder.material))
+                .requires(MORTAR_AND_PESTLE.groupTag)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(RAW_MATERIAL.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
     public static void registerPlateRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', INGOT.itemTag.get(holder.material))
@@ -283,8 +342,29 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
+    public static void registerMortarAndPestleRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        switch (holder.material) {
+            case STONE -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+                    .define('I', Items.STICK)
+                    .define('#', Tags.Items.STONE)
+                    .pattern(" I ")
+                    .pattern("# #")
+                    .pattern(" # ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.STONE))
+                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+            default -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+                    .define('I', INGOT.itemTag.get(holder.material))
+                    .define('#', PLATE.itemTag.get(holder.material))
+                    .pattern(" I ")
+                    .pattern("# #")
+                    .pattern(" # ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
+                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+        }
+    }
+
     public static void registerSawRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                 .define('S', Items.STICK)
                 .define('#', PLATE.itemTag.get(holder.material))
                 .pattern("S##")
@@ -294,7 +374,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
     public static void registerHammerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         switch (holder.material) {
-            case STONE -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+            case STONE -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('S', Items.STICK)
                     .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
                     .define('#', Items.STONE)
@@ -315,10 +395,9 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerFileRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                 .define('#', PLATE.itemTag.get(holder.material))
                 .define('S', Items.STICK)
-                .pattern("#")
                 .pattern("#")
                 .pattern("S")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))

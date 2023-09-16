@@ -15,6 +15,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Objects;
 
 public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
     public YTechGlobalLootModifier(PackOutput output) {
@@ -31,24 +34,22 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
                 },
                 Registration.item(SimpleItemType.GRASS_FIBERS)
         ));
-        add("replace_leather_by_raw_hide", new ReplaceItemModifier(
+
+        addReplaceLeatherByRawHide(EntityType.COW);
+        addReplaceLeatherByRawHide(EntityType.HORSE);
+        addReplaceLeatherByRawHide(EntityType.DONKEY);
+        addReplaceLeatherByRawHide(EntityType.LLAMA);
+        addReplaceLeatherByRawHide(EntityType.MULE);
+        addReplaceLeatherByRawHide(EntityType.MOOSHROOM);
+        addReplaceLeatherByRawHide(EntityType.TRADER_LLAMA);
+        addReplaceLeatherByRawHide(EntityType.HOGLIN);
+    }
+
+    private void addReplaceLeatherByRawHide(EntityType<?> entityType) {
+        add(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType)).getPath() + "_replace_leather_by_raw_hide", new ReplaceItemModifier(
                 new LootItemCondition[] {
                         LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.COW)).build()).build(),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.HORSE)).build()).build(),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.DONKEY)).build()).build(),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.LLAMA)).build()).build(),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.MULE)).build()).build(),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.MOOSHROOM)).build()).build(),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.TRADER_LLAMA)).build()).build(),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.HOGLIN)).build()).build()
+                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityType)).build()).build()
                 },
                 Items.LEATHER,
                 Registration.item(SimpleItemType.RAW_HIDE)

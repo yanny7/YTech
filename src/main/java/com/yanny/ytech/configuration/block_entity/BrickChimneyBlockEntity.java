@@ -19,7 +19,7 @@ public class BrickChimneyBlockEntity extends BlockEntity {
 
     private static final String TAG_MASTER_POSITION = "masterPos";
     private static final String TAG_HEIGHT_INDEX = "heightIndex";
-    private static final int MAX_HEIGHT = 2;
+    private static final int MAX_HEIGHT = 3; // +1 for total height per chimney type
 
     @Nullable private BlockPos masterPos = null;
     private int heightIndex = -1;

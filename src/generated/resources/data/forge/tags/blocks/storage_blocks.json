@@ -1,7 +1,9 @@
 {
   "values": [
     "#forge:storage_blocks/raw_cassiterite",
-    "#forge:storage_blocks/arsenical_bronze",
+    "#forge:storage_blocks/raw_copper",
+    "#forge:storage_blocks/raw_gold",
+    "#forge:storage_blocks/raw_iron",
     "#forge:storage_blocks/bronze",
     "#forge:storage_blocks/copper",
     "#forge:storage_blocks/gold",

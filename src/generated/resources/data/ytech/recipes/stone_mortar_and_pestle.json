@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:stone"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " I ",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "item": "ytech:stone_mortar_and_pestle"
+  },
+  "show_notification": true
+}

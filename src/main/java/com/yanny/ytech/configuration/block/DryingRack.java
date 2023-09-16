@@ -26,6 +26,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -53,7 +54,7 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
     private final Holder.BlockHolder holder;
 
     public DryingRack(Holder.BlockHolder holder) {
-        super(Properties.of());
+        super(Properties.copy(Blocks.OAK_PLANKS));
         this.holder = holder;
     }
 
@@ -154,7 +155,7 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
     public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ModelFile model = provider.models().getBuilder(holder.key)
-                .parent(provider.models().getExistingFile(Utils.loc("block/block")))
+                .parent(provider.models().getExistingFile(Utils.mcLoc("block/block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch (direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");

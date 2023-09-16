@@ -1,0 +1,11 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:crushed_materials/copper"
+  },
+  "minTemp": 1085,
+  "result": {
+    "item": "ytech:copper_ingot"
+  },
+  "smeltingTime": 200
+}

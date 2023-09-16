@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/copper"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    " I ",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "item": "ytech:copper_mortar_and_pestle"
+  },
+  "show_notification": true
+}

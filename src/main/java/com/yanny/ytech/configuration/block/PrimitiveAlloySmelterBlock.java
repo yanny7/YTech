@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveAlloySmelterBlockEntity;
@@ -13,8 +14,12 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -64,7 +69,14 @@ public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock im
     }
 
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        //TODO
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+                .define('B', Items.BRICKS)
+                .define('S', SimpleBlockType.PRIMITIVE_SMELTER.itemTag)
+                .pattern("BBB")
+                .pattern("SBS")
+                .pattern("BBB")
+                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {

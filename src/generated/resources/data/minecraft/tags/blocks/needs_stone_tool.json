@@ -7,9 +7,13 @@
     "ytech:reinforced_bricks",
     "ytech:reinforced_brick_chimney",
     "ytech:deepslate_cassiterite_ore",
-    "ytech:netherrack_cassiterite_ore",
+    "ytech:deepslate_copper_ore",
+    "ytech:nether_cassiterite_ore",
+    "ytech:nether_copper_ore",
     "ytech:raw_cassiterite_block",
+    "ytech:raw_copper_block",
     "ytech:stone_cassiterite_ore",
+    "ytech:stone_copper_ore",
     "ytech:copper_block",
     "ytech:tin_block"
   ]

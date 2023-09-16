@@ -1,15 +1,12 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
-import com.yanny.ytech.configuration.MaterialItemType;
-import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.TagKey;
@@ -21,7 +18,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
+import static com.yanny.ytech.configuration.MaterialItemType.*;
+import static com.yanny.ytech.configuration.MaterialType.*;
+import static com.yanny.ytech.configuration.SimpleItemType.*;
 import static com.yanny.ytech.registration.Registration.HOLDER;
+import static com.yanny.ytech.registration.Registration.item;
 
 class YTechRecipes extends RecipeProvider {
     public YTechRecipes(PackOutput output) {
@@ -60,32 +61,24 @@ class YTechRecipes extends RecipeProvider {
         splitByHammerRecipe(recipeConsumer, Items.SMOOTH_STONE, Items.SMOOTH_STONE_SLAB);
         splitByHammerRecipe(recipeConsumer, Items.STONE, Items.STONE_SLAB);
 
-        smeltingRecipe(recipeConsumer, Tags.Items.RAW_MATERIALS_COPPER, Registration.item(MaterialItemType.INGOT, MaterialType.ARSENICAL_BRONZE), 900, 600);
+        alloyingRecipe(recipeConsumer, INGOT.itemTag.get(COPPER), 9, INGOT.itemTag.get(TIN), 1, item(INGOT, BRONZE), 10, Math.max(COPPER.meltingTemp, TIN.meltingTemp), 200);
 
-        BlockHitRecipe.Builder.blockUse(Items.FLINT, Tags.Items.STONE, Registration.item(SimpleItemType.SHARP_FLINT))
-                .unlockedBy(Utils.getHasName(), has(Items.FLINT))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(Registration.item(SimpleItemType.SHARP_FLINT)).getPath()));
+        smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(COPPER), item(INGOT, COPPER), COPPER.meltingTemp, 200);
+        smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(GOLD), item(INGOT, GOLD), GOLD.meltingTemp, 200);
+        smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(CASSITERITE), item(INGOT, TIN), CASSITERITE.meltingTemp, 200);
 
-        AlloyingRecipe.Builder.alloying(Tags.Items.RAW_MATERIALS_COPPER, 9, MaterialItemType.RAW_MATERIAL.itemTag.get(MaterialType.CASSITERITE), 1, 1200, 600, Items.ENCHANTED_GOLDEN_APPLE, 5)
-                .unlockedBy(Utils.getHasName(), has(Items.RAW_COPPER))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.ENCHANTED_GOLDEN_APPLE).getPath()));
+        blockHitRecipe(recipeConsumer, Items.FLINT, Tags.Items.STONE, item(SHARP_FLINT));
 
-        DryingRecipe.Builder.drying(Items.KELP, 20 * 60, Items.DRIED_KELP)
-                .unlockedBy(RecipeProvider.getHasName(Items.KELP), has(Items.KELP))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.DRIED_KELP).getPath()));
+        dryingRecipe(recipeConsumer, Items.KELP, Items.DRIED_KELP, 1200);
 
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(SimpleItemType.BREAD_DOUGH.itemTag), RecipeCategory.FOOD, Items.BREAD, 0.1f, 200)
-                .unlockedBy(getHasName(Registration.item(SimpleItemType.BREAD_DOUGH)), has(SimpleItemType.BREAD_DOUGH.itemTag))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.BREAD).getPath()));
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(SimpleItemType.UNFIRED_BRICK.itemTag), RecipeCategory.MISC, Items.BRICK, 0.3f, 200)
-                .unlockedBy(getHasName(Registration.item(SimpleItemType.UNFIRED_BRICK)), has(SimpleItemType.UNFIRED_BRICK.itemTag))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.BRICK).getPath()));
+        cookingRecipe(recipeConsumer, RecipeCategory.FOOD, BREAD_DOUGH, Items.BREAD, 0.1f, 200);
+        cookingRecipe(recipeConsumer, RecipeCategory.MISC, UNFIRED_BRICK, Items.BRICK, 0.3f, 200);
     }
 
     private void splitBySawRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
-                .requires(MaterialItemType.SAW.groupTag)
+                .requires(SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
@@ -93,20 +86,53 @@ class YTechRecipes extends RecipeProvider {
     private void splitByHammerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
-                .requires(MaterialItemType.HAMMER.groupTag)
+                .requires(HAMMER.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void smeltingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int temperature, int smeltingTime) {
         SmeltingRecipe.Builder.smelting(input, temperature, smeltingTime, result)
                 .unlockedBy(Utils.getHasName(), has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 
-    private void blockUseRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull TagKey<Item> block, @NotNull Item result) {
+    @SuppressWarnings("SameParameterValue")
+    private void blockHitRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull TagKey<Item> block, @NotNull Item result) {
         BlockHitRecipe.Builder.blockUse(input, block, result)
                 .unlockedBy(Utils.getHasName(), has(input))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void cookingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RecipeCategory category,
+                               @NotNull SimpleItemType input, @NotNull Item result, float xp, int cookingTime) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(input.itemTag), category, result, xp, cookingTime)
+                .unlockedBy(Utils.getHasName(), has(input.itemTag))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void cookingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RecipeCategory category,
+                               @NotNull TagKey<Item> input, @NotNull Item result, float xp, int cookingTime) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), category, result, xp, cookingTime)
+                .unlockedBy(Utils.getHasName(), has(input))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void alloyingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input1, int count1,
+                                @NotNull TagKey<Item> input2, int count2, @NotNull Item result, int count, int temp, int smeltingTime) {
+        AlloyingRecipe.Builder.alloying(input1, count1, input2, count2, temp, smeltingTime, result, count)
+                .unlockedBy(Utils.getHasName(), has(input1))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void dryingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result, int dryingTime) {
+        DryingRecipe.Builder.drying(input, dryingTime, result)
+                .unlockedBy(RecipeProvider.getHasName(input), has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 }

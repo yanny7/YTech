@@ -14,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,7 +37,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
     protected final Holder.SimpleBlockHolder holder;
 
     public BrickChimneyBlock(Holder.SimpleBlockHolder holder) {
-        super(Properties.of());
+        super(Properties.copy(Blocks.BRICKS).strength(2.0f, 2.0f));
         this.holder = holder;
     }
 
@@ -82,9 +83,9 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('B', Items.BRICKS)
-                .pattern("BBB")
+                .pattern(" B ")
                 .pattern("B B")
-                .pattern("BBB")
+                .pattern(" B ")
                 .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }

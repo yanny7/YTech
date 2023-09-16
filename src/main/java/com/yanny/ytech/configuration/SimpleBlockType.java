@@ -343,8 +343,8 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     private static void registerReinforcedBricksRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .define('B', Items.BRICKS)
-                .define('P', Registration.item(MaterialItemType.PLATE, MaterialType.ARSENICAL_BRONZE))
-                .define('#', Registration.item(MaterialItemType.BOLT, MaterialType.ARSENICAL_BRONZE))
+                .define('P', Registration.item(MaterialItemType.PLATE, MaterialType.COPPER))
+                .define('#', Registration.item(MaterialItemType.BOLT, MaterialType.COPPER))
                 .pattern("#P#")
                 .pattern("PBP")
                 .pattern("#P#")

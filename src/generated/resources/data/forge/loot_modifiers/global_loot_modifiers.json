@@ -1,7 +1,14 @@
 {
   "entries": [
+    "ytech:donkey_replace_leather_by_raw_hide",
+    "ytech:cow_replace_leather_by_raw_hide",
     "ytech:grass_drops_fibers",
-    "ytech:replace_leather_by_raw_hide"
+    "ytech:llama_replace_leather_by_raw_hide",
+    "ytech:hoglin_replace_leather_by_raw_hide",
+    "ytech:mooshroom_replace_leather_by_raw_hide",
+    "ytech:trader_llama_replace_leather_by_raw_hide",
+    "ytech:horse_replace_leather_by_raw_hide",
+    "ytech:mule_replace_leather_by_raw_hide"
   ],
   "replace": false
 }

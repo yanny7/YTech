@@ -39,9 +39,9 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', SimpleBlockType.REINFORCED_BRICKS.itemTag)
-                .pattern("###")
+                .pattern(" # ")
                 .pattern("# #")
-                .pattern("###")
+                .pattern(" # ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.REINFORCED_BRICKS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }

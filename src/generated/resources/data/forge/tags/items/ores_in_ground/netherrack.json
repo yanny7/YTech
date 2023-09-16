@@ -1,5 +1,8 @@
 {
   "values": [
-    "ytech:netherrack_cassiterite_ore"
+    "ytech:nether_cassiterite_ore",
+    "ytech:nether_copper_ore",
+    "ytech:nether_gold_ore",
+    "ytech:nether_iron_ore"
   ]
 }

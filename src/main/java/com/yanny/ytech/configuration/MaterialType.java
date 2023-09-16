@@ -8,20 +8,19 @@ import java.util.EnumSet;
 
 public enum MaterialType {
     //solid elements
-    COPPER("copper", "Copper", hex2rgb("#B87333"), Tiers.STONE, ToolType.PICKAXE),
-    GOLD("gold", "Gold", hex2rgb("#FFDF00"), Tiers.GOLD, ToolType.PICKAXE),
-    IRON("iron", "Iron", hex2rgb("#AAAAAA"), Tiers.IRON, ToolType.PICKAXE),
-    TIN("tin", "Tin", hex2rgb("#808080"), Tiers.STONE, ToolType.PICKAXE),
+    COPPER("copper", "Copper", hex2rgb("#B87333"), 1085, Tiers.STONE, ToolType.PICKAXE),
+    GOLD("gold", "Gold", hex2rgb("#FFDF00"), 1064, Tiers.GOLD, ToolType.PICKAXE),
+    IRON("iron", "Iron", hex2rgb("#AAAAAA"), 1538, Tiers.IRON, ToolType.PICKAXE),
+    TIN("tin", "Tin", hex2rgb("#808080"), 232, Tiers.STONE, ToolType.PICKAXE),
 
     //fluid elements
     MERCURY("mercury", "Mercury", hex2rgb("#DBCECA"), Tiers.DIAMOND, ToolType.PICKAXE),
 
     //alloys
-    ARSENICAL_BRONZE("arsenical_bronze", "Arsenical Bronze", hex2rgb("#B4894B"), Tiers.IRON, ToolType.PICKAXE),
-    BRONZE("bronze", "Bronze", hex2rgb("#D89940"), Tiers.IRON, ToolType.PICKAXE),
+    BRONZE("bronze", "Bronze", hex2rgb("#D89940"), 913, Tiers.IRON, ToolType.PICKAXE),
 
     //ores
-    CASSITERITE("cassiterite", "Cassiterite", hex2rgb("#3D3D3D"), Tiers.STONE, ToolType.PICKAXE),
+    CASSITERITE("cassiterite", "Cassiterite", hex2rgb("#3D3D3D"), 1127, Tiers.STONE, ToolType.PICKAXE),
 
     //woods
     ACACIA_WOOD("acacia", "Acacia", -1, "wooden", Tiers.WOOD, ToolType.AXE),
@@ -38,22 +37,35 @@ public enum MaterialType {
     ;
 
     public static final EnumSet<MaterialType> ALL_WOODS = EnumSet.of(ACACIA_WOOD, BIRCH_WOOD, CHERRY_WOOD, DARK_OAK_WOOD, JUNGLE_WOOD, MANGROVE_WOOD, OAK_WOOD, SPRUCE_WOOD);
-    public static final EnumSet<MaterialType> ALL_METALS = EnumSet.of(ARSENICAL_BRONZE, BRONZE, COPPER, GOLD, IRON, TIN);
-    public static final EnumSet<MaterialType> ALL_ORES = EnumSet.of(CASSITERITE);
+    public static final EnumSet<MaterialType> ALL_METALS = EnumSet.of(BRONZE, COPPER, GOLD, IRON, TIN);
+    public static final EnumSet<MaterialType> ALL_ORES = EnumSet.of(COPPER, GOLD, IRON, CASSITERITE);
     public static final EnumSet<MaterialType> ALL_FLUIDS = EnumSet.noneOf(MaterialType.class);
+    public static final EnumSet<MaterialType> TOOL_METALS = EnumSet.of(BRONZE, COPPER, IRON); // strong enough for tool making
     public static final EnumSet<MaterialType> VANILLA_METALS = EnumSet.of(COPPER, GOLD, IRON);
 
     @NotNull public final String key;
     @NotNull public final String name;
     public final int color;
+    public final int meltingTemp;
     @NotNull public final String group;
     @NotNull public final Tier tier;
     @NotNull public final ToolType tool;
+
+    MaterialType(@NotNull String key, @NotNull String name, int color, int meltingTemp, @NotNull Tier tier, @NotNull ToolType tool) {
+        this.key = key;
+        this.name = name;
+        this.color = color;
+        this.meltingTemp = meltingTemp;
+        this.group = key;
+        this.tier = tier;
+        this.tool = tool;
+    }
 
     MaterialType(@NotNull String key, @NotNull String name, int color, @NotNull Tier tier, @NotNull ToolType tool) {
         this.key = key;
         this.name = name;
         this.color = color;
+        this.meltingTemp = Integer.MAX_VALUE;
         this.group = key;
         this.tier = tier;
         this.tool = tool;
@@ -63,6 +75,7 @@ public enum MaterialType {
         this.key = key;
         this.name = name;
         this.color = color;
+        this.meltingTemp = Integer.MAX_VALUE;
         this.group = group;
         this.tier = tier;
         this.tool = tool;

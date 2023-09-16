@@ -1,13 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "ytech:brick"
-      },
-      "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_unfired_brick": {
+    "has_item": {
       "conditions": {
         "items": [
           {
@@ -16,11 +10,17 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ytech:brick"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_unfired_brick",
+      "has_item",
       "has_the_recipe"
     ]
   ],

@@ -92,12 +92,6 @@ public class YTechConfigSpec {
                 Utils.loc(Items.WOODEN_SHOVEL).toString(),
                 Utils.loc(Items.WOODEN_SWORD).toString(),
 
-                Utils.loc(Items.STONE_AXE).toString(),
-                Utils.loc(Items.STONE_PICKAXE).toString(),
-                Utils.loc(Items.STONE_HOE).toString(),
-                Utils.loc(Items.STONE_SHOVEL).toString(),
-                Utils.loc(Items.STONE_SWORD).toString(),
-
                 Utils.loc(Items.ACACIA_SLAB).toString(),
                 Utils.loc(Items.BIRCH_SLAB).toString(),
                 Utils.loc(Items.CHERRY_SLAB).toString(),
@@ -122,6 +116,30 @@ public class YTechConfigSpec {
                 Utils.loc(Items.GRANITE_SLAB).toString(),
                 Utils.loc(Items.SMOOTH_STONE_SLAB).toString(),
                 Utils.loc(Items.STONE_SLAB).toString(),
+
+                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.RAW_COPPER).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.RAW_COPPER).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.RAW_GOLD).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.RAW_GOLD).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.RAW_IRON).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.RAW_IRON).getPath()).toString(),
+
+                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.COPPER_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.COPPER_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.GOLD_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.GOLD_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.IRON_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.IRON_ORE).getPath()).toString(),
+
+                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.DEEPSLATE_COPPER_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.DEEPSLATE_COPPER_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.DEEPSLATE_GOLD_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.DEEPSLATE_GOLD_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.DEEPSLATE_IRON_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.DEEPSLATE_IRON_ORE).getPath()).toString(),
+
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.NETHER_GOLD_ORE).getPath()).toString(),
+                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.NETHER_GOLD_ORE).getPath()).toString(),
 
                 Utils.loc(Items.BREAD).toString(),
                 Utils.loc(Items.BRICK).toString()
