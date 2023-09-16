@@ -107,7 +107,8 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             level.getRecipeManager().getRecipeFor(AlloyingRecipe.RECIPE_TYPE, new SimpleContainer(inputLeft, inputRight), level).ifPresent((r) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-                if (r.minTemperature() <= temperature && (result.isEmpty() || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount()))) {
+                if (r.minTemperature() <= temperature && (result.isEmpty()
+                        || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount() + r.result().getCount()))) {
                     if (r.matchesIngredient1(inputLeft, false) && r.matchesIngredient2(inputRight, false)) {
                         recipeInputLeft = inputLeft.split(r.getInput1Count());
                         recipeInputRight = inputRight.split(r.getInput2Count());
