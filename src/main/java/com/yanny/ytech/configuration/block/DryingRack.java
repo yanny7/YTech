@@ -155,28 +155,43 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
     public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ModelFile model = provider.models().getBuilder(holder.key)
-                .parent(provider.models().getExistingFile(Utils.mcLoc("block/block")))
+                .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
-                    switch (direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 4, 4).cullface(direction).texture("#all");
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(8, 0, 10, 16).texture("#2");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 16).texture("#2");
+                        case SOUTH -> faceBuilder.uvs(12, 0, 14, 16).texture("#2");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 16).texture("#2");
+                        case UP -> faceBuilder.uvs(8, 0, 10, 2).texture("#2");
+                        case DOWN -> faceBuilder.uvs(8, 14, 10, 16).texture("#2");
                     }
-                }).from(0, 0, 7).to(2, 16, 9).end()
+                })
+                .from(0, 0, 7).to(2, 16, 9).end()
                 .element().allFaces((direction, faceBuilder) -> {
-                    switch (direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 4, 4).cullface(direction).texture("#all");
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 16).texture("#2");
+                        case EAST -> faceBuilder.uvs(2, 0, 4, 16).texture("#2");
+                        case SOUTH -> faceBuilder.uvs(4, 0, 6, 16).texture("#2");
+                        case WEST -> faceBuilder.uvs(6, 0, 8, 16).texture("#2");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 14, 2, 16).texture("#2");
                     }
-                }).from(14, 0, 7).to(16, 16, 9).end()
-                .element()
-                .face(Direction.NORTH).uvs(0, 1, 16, 3).texture("#stick").end()
-                .face(Direction.SOUTH).uvs(0, 1, 16, 3).texture("#stick").end()
-                .face(Direction.UP).uvs(0, 1, 16, 3).texture("#stick").end()
-                .face(Direction.DOWN).uvs(0, 1, 16, 3).texture("#stick").end()
-                .from(2, 14, 7.5f).to(14, 15, 8.5f).end()
+                })
+                .from(14, 0, 7).to(16, 16, 9).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#4");
+                        case EAST -> faceBuilder.uvs(0, 0, 1, 1).texture("#4");
+                        case SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#4");
+                        case WEST -> faceBuilder.uvs(0, 0, 1, 1).texture("#4");
+                        case UP -> faceBuilder.uvs(2, 10, 14, 11).texture("#4");
+                        case DOWN -> faceBuilder.uvs(2, 9, 14, 10).texture("#4");
+                    }
+                })
+                .from(2, 13, 8).to(14, 15, 8).end()
                 .texture("particle", textures[0])
-                .texture("all", textures[0])
-                .texture("stick", textures[1]);
+                .texture("2", textures[0])
+                .texture("4", textures[1]);
         provider.horizontalBlock(holder.block.get(), model);
         provider.itemModels().getBuilder(holder.key).parent(model);
     }
@@ -197,7 +212,7 @@ public class DryingRack extends Block implements EntityBlock, IProbeInfoProvider
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, -1, Utils.mcBlockLoc(material.key + "_log")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc(material.key + "_planks"))).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("horizontal_rope"))).toArray(TextureHolder[]::new);
     }
 }

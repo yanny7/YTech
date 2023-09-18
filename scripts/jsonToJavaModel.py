@@ -42,8 +42,8 @@ except OSError:
     exit(1)
 
 result: str = """
-ModelFile modelFile = provider.models().getBuilder(holder.key)
-.parent(provider.models().getExistingFile(IModel.mcBlockLoc("block")))
+ModelFile model = provider.models().getBuilder(holder.key)
+.parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
 """
 
 for element in model["elements"]:

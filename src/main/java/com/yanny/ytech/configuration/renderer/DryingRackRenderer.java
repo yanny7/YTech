@@ -40,7 +40,7 @@ public class DryingRackRenderer implements BlockEntityRenderer<BlockEntity> {
 
         poseStack.translate(0.5f, 0.5f, 0.5f);
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        poseStack.translate(0, 0.44f, 0);
+        poseStack.translate(0, 0.38f, 0);
 
         if (level != null) {
             if (blockEntity instanceof DryingRackBlockEntity dryingRack) {
