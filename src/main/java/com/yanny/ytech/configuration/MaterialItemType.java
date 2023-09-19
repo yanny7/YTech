@@ -65,7 +65,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.forgeLoc("raw_materials/" + material.key)),
             Tags.Items.RAW_MATERIALS,
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(Utils.modItemLoc("raw_material"), material),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("raw_material/raw_" + material.key))).toArray(TextureHolder[]::new),
             MaterialItemType::basicItemModelProvider,
             MaterialItemType::registerRawMaterialRecipe,
             MaterialItemType::registerMaterialTag,
@@ -74,7 +74,12 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.forgeLoc("crushed_materials/" + material.key)),
             ItemTags.create(Utils.modLoc("crushed_materials")),
             MaterialItemType::simpleItem,
-            (material) -> basicTexture(Utils.modItemLoc("crushed_material"), material),
+            (material) -> {
+                return switch (material) {
+                    case CASSITERITE -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("crushed_material/crushed_" + material.key))).toArray(TextureHolder[]::new);
+                    default -> basicTexture(Utils.modItemLoc("crushed_material"), material);
+                };
+            },
             MaterialItemType::basicItemModelProvider,
             MaterialItemType::registerCrushedRawMaterialRecipe,
             MaterialItemType::registerMaterialTag,
