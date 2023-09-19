@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ytech:item/crushed_material"
+    "layer0": "ytech:item/crushed_material/crushed_iron"
   }
 }
