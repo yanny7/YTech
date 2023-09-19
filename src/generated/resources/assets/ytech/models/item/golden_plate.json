@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ytech:item/plate"
+    "layer0": "ytech:item/plate/gold"
   }
 }

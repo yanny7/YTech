@@ -68,7 +68,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     WOODEN_PLATE("wooden_plate", "Wooden Plate",
             ItemTags.create(Utils.modLoc("plates/wooden")),
             SimpleItemType::simpleItem,
-            () -> List.of(new TextureHolder(0, MaterialType.OAK_WOOD.color, Utils.modItemLoc("plate"))).toArray(TextureHolder[]::new),
+            () -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("plate/wooden"))).toArray(TextureHolder[]::new),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerWoodenPlateRecipe,
             (holder, provider) -> {
@@ -78,7 +78,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     WOODEN_BOLT("wooden_bolt", "Wooden Bolt",
             ItemTags.create(Utils.modLoc("bolts/wooden")),
             SimpleItemType::simpleItem,
-            () -> List.of(new TextureHolder(0, MaterialType.OAK_WOOD.color, Utils.modItemLoc("bolt"))).toArray(TextureHolder[]::new),
+            () -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("bolt/wooden"))).toArray(TextureHolder[]::new),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerWoodenBoltRecipe,
             (holder, provider) -> {
