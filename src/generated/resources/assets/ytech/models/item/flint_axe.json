@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/wooden_axe",
-    "layer1": "ytech:item/axe_overlay"
+    "layer0": "ytech:item/axe/flint"
   }
 }
