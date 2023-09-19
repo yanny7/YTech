@@ -118,10 +118,10 @@ public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock im
 
     public static TextureHolder[] textureHolder() {
         return List.of(
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("bricks")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("bricks")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_top")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front_powered"))
+                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_alloy_smelter_front")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_alloy_smelter_front_powered"))
         ).toArray(TextureHolder[]::new);
     }
 }

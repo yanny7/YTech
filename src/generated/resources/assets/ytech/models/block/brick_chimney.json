@@ -35,8 +35,8 @@
     }
   ],
   "textures": {
-    "0": "minecraft:block/bricks",
+    "0": "ytech:block/bricks",
     "1": "ytech:block/machine/primitive_smelter_top",
-    "particle": "minecraft:block/bricks"
+    "particle": "ytech:block/bricks"
   }
 }

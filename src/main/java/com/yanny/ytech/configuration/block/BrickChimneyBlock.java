@@ -114,7 +114,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
 
     public static TextureHolder[] getTexture() {
         return List.of(
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("bricks")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("bricks")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_top"))
         ).toArray(TextureHolder[]::new);
     }

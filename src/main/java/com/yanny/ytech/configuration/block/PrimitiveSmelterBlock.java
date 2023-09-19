@@ -119,7 +119,7 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
 
     public static TextureHolder[] textureHolder() {
         return List.of(
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("bricks")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("bricks")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_top")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front_powered"))

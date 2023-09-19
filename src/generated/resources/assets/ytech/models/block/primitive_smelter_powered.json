@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "down": "minecraft:block/bricks",
-    "east": "minecraft:block/bricks",
+    "down": "ytech:block/bricks",
+    "east": "ytech:block/bricks",
     "north": "ytech:block/machine/primitive_smelter_front_powered",
-    "particle": "minecraft:block/bricks",
-    "south": "minecraft:block/bricks",
+    "particle": "ytech:block/bricks",
+    "south": "ytech:block/bricks",
     "up": "ytech:block/machine/primitive_smelter_top",
-    "west": "minecraft:block/bricks"
+    "west": "ytech:block/bricks"
   }
 }
