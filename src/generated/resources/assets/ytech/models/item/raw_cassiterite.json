@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ytech:item/raw_material/raw_cassiterite"
+    "layer0": "ytech:item/raw_material/cassiterite"
   }
 }
