@@ -368,8 +368,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerMortarAndPestleRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        switch (holder.material) {
-            case STONE -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+        if (holder.material == MaterialType.STONE) {
+            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', Items.STICK)
                     .define('#', Tags.Items.STONE)
                     .pattern(" I ")
@@ -377,7 +377,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern(" # ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.STONE))
                     .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
-            default -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+        } else {
+            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', INGOT.itemTag.get(holder.material))
                     .define('#', PLATE.itemTag.get(holder.material))
                     .pattern(" I ")
@@ -398,8 +399,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerHammerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        switch (holder.material) {
-            case STONE -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+        if (holder.material == MaterialType.STONE) {
+            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('S', Items.STICK)
                     .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
                     .define('#', Items.STONE)
@@ -408,7 +409,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern("S  ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
                     .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
-            default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+        } else {
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('#', MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
                     .pattern(" # ")
