@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ytech:item/file_handle",
-    "layer1": "ytech:item/file_overlay"
+    "layer0": "ytech:item/file/tin"
   }
 }

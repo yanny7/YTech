@@ -192,8 +192,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.modLoc("hammers/" + material.key)),
             ItemTags.create(Utils.modLoc("hammers")),
             (holder) -> new ToolItem(holder.material.getTier(), new Item.Properties()),
-            (material) -> toolTexture(Utils.modItemLoc("hammer_handle"), Utils.modItemLoc("hammer_overlay"), material),
-            MaterialItemType::toolItemModelProvider,
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("hammer/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialItemType::basicItemModelProvider,
             MaterialItemType::registerHammerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE)),
@@ -201,8 +201,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (material) -> ItemTags.create(Utils.modLoc("files/" + material.key)),
             ItemTags.create(Utils.modLoc("files")),
             (holder) -> new ToolItem(holder.material.getTier(), new Item.Properties()),
-            (material) -> toolTexture(Utils.modItemLoc("file_handle"), Utils.modItemLoc("file_overlay"), material),
-            MaterialItemType::toolItemModelProvider,
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("file/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialItemType::basicItemModelProvider,
             MaterialItemType::registerFileRecipe,
             MaterialItemType::registerMaterialTag,
             MaterialType.ALL_METALS),
@@ -435,21 +435,9 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         builder.texture("layer0", textures[0]);
     }
 
-    private static void toolItemModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures(holder.material);
-        ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
-        builder.texture("layer0", textures[0]);
-        builder.texture("layer1", textures[1]);
-    }
-
     @NotNull
     private static TextureHolder[] basicTexture(@NotNull ResourceLocation overlay, MaterialType material) {
         return List.of(new TextureHolder(0, material.color, overlay)).toArray(TextureHolder[]::new);
-    }
-
-    @NotNull
-    private static TextureHolder[] toolTexture(@NotNull ResourceLocation base, @NotNull ResourceLocation overlay, MaterialType material) {
-        return List.of(new TextureHolder(-1, -1, base), new TextureHolder(1, material.color, overlay)).toArray(TextureHolder[]::new);
     }
 
     private static void registerMaterialTag(@NotNull Holder.ItemHolder holder, @NotNull ItemTagsProvider provider) {
