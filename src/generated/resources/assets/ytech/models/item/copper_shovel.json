@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/wooden_shovel",
-    "layer1": "ytech:item/shovel_overlay"
+    "layer0": "ytech:item/shovel/copper"
   }
 }
