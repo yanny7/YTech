@@ -48,8 +48,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)),
-            (material) -> oreTexture(Utils.mcBlockLoc("stone"), material),
-            MaterialBlockType::oreBlockStateProvider,
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("ore/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             (holder, provider) -> registerOreItemTag(holder, provider, Tags.Items.ORES_IN_GROUND_STONE),
@@ -61,8 +61,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHER_GOLD_ORE)),
-            (material) -> oreTexture(Utils.mcBlockLoc("netherrack"), material),
-            MaterialBlockType::oreBlockStateProvider,
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("nether_ore/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             (holder, provider) -> registerOreItemTag(holder, provider, Tags.Items.ORES_IN_GROUND_NETHERRACK),
@@ -74,8 +74,8 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)),
-            (material) -> oreTexture(Utils.mcBlockLoc("deepslate"), material),
-            MaterialBlockType::oreBlockStateProvider,
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("deepslate_ore/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::oreLootProvider,
             IRecipe::noRecipe,
             (holder, provider) -> registerOreItemTag(holder, provider, Tags.Items.ORES_IN_GROUND_DEEPSLATE),
@@ -310,29 +310,12 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             provider.itemModels().getBuilder(holder.key).parent(model);
     }
 
-    private static void oreBlockStateProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures(holder.material);
-        BlockModelBuilder model = provider.models().cubeAll(holder.key, textures[0]);
-
-        model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").cullface(direction));
-        model.renderType(provider.mcLoc("cutout"));
-        model.texture("overlay", textures[1]);
-        model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#overlay").cullface(direction).tintindex(0));
-        provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-        provider.itemModels().getBuilder(holder.key).parent(model);
-    }
-
     private static void oreLootProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider) {
         provider.add(holder.block.get(), (block -> provider.createOreDrop(block, Registration.item(MaterialItemType.RAW_MATERIAL, holder.material))));
     }
 
     private static TextureHolder[] basicTexture(ResourceLocation base, MaterialType material) {
         return List.of(new TextureHolder(0, material.color, base)).toArray(TextureHolder[]::new);
-    }
-
-    private static TextureHolder[] oreTexture(ResourceLocation base, MaterialType material) {
-        return List.of(new TextureHolder(-1, -1, base),
-                new TextureHolder(0, material.color, Utils.modBlockLoc("ore_overlay"))).toArray(TextureHolder[]::new);
     }
 
     private static void registerRawStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
