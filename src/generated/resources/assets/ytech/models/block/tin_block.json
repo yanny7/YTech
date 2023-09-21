@@ -47,6 +47,6 @@
     }
   ],
   "textures": {
-    "all": "ytech:block/storage_block"
+    "all": "ytech:block/storage/tin"
   }
 }

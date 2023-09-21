@@ -47,6 +47,6 @@
     }
   ],
   "textures": {
-    "all": "ytech:block/raw_storage_block"
+    "all": "ytech:block/raw_storage/cassiterite"
   }
 }
