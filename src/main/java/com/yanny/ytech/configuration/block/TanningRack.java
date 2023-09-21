@@ -140,51 +140,43 @@ public class TanningRack extends Block implements EntityBlock, IProbeInfoProvide
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
-                        case EAST -> faceBuilder.uvs(0, 0, 1, 1).texture("#stick");
-                        case SOUTH -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
-                        case WEST -> faceBuilder.uvs(0, 0, 1, 1).texture("#stick");
-                        case UP -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
-                        case DOWN -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
+                        case NORTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
+                        case SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
                     }
                 })
-                .from(2, 14, 7.5f).to(14, 15, 8.5f).end()
+                .from(2, 13, 8).to(14, 15, 8).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
-                        case EAST -> faceBuilder.uvs(0, 0, 1, 1).texture("#stick");
-                        case SOUTH -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
-                        case WEST -> faceBuilder.uvs(0, 0, 1, 1).texture("#stick");
-                        case UP -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
-                        case DOWN -> faceBuilder.uvs(0, 1, 16, 3).texture("#stick");
+                        case NORTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
+                        case SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
                     }
                 })
-                .from(2, 1, 7.5f).to(14, 2, 8.5f).end()
+                .from(2, 1, 8).to(14, 3, 8).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case EAST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case UP -> faceBuilder.uvs(0, 0, 4, 4).texture("#all");
-                        case DOWN -> faceBuilder.uvs(0, 0, 4, 4).texture("#all");
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 16).texture("#3");
+                        case EAST -> faceBuilder.uvs(2, 0, 4, 16).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(4, 0, 6, 16).texture("#3");
+                        case WEST -> faceBuilder.uvs(6, 0, 8, 16).texture("#3");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 2).texture("#3");
+                        case DOWN -> faceBuilder.uvs(0, 2, 2, 4).texture("#3");
                     }
                 })
                 .from(0, 0, 7).to(2, 16, 9).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case EAST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#all");
-                        case UP -> faceBuilder.uvs(0, 0, 4, 4).texture("#all");
-                        case DOWN -> faceBuilder.uvs(0, 0, 4, 4).texture("#all");
+                        case NORTH -> faceBuilder.uvs(8, 0, 10, 16).texture("#3");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 16).texture("#3");
+                        case SOUTH -> faceBuilder.uvs(12, 0, 14, 16).texture("#3");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 16).texture("#3");
+                        case UP -> faceBuilder.uvs(8, 0, 10, 2).texture("#3");
+                        case DOWN -> faceBuilder.uvs(8, 2, 10, 4).texture("#3");
                     }
                 })
                 .from(14, 0, 7).to(16, 16, 9).end()
                 .texture("particle", textures[0])
-                .texture("all", textures[0])
-                .texture("stick", textures[1]);
+                .texture("3", textures[0])
+                .texture("2", textures[1]);
         provider.horizontalBlock(holder.block.get(), model);
         provider.itemModels().getBuilder(holder.key).parent(model);
     }
@@ -205,7 +197,7 @@ public class TanningRack extends Block implements EntityBlock, IProbeInfoProvide
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, -1, Utils.mcBlockLoc(material.key + "_log")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc(material.key + "_planks"))).toArray(TextureHolder[]::new);
+        return List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("horizontal_rope"))).toArray(TextureHolder[]::new);
     }
 }
