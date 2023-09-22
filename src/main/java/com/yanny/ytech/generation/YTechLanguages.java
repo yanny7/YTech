@@ -26,5 +26,6 @@ class YTechLanguages extends LanguageProvider {
         add("gui.ytech.category.smelting", "Smelting");
         add("gui.ytech.category.block_hit", "Block Hit");
         add("gui.ytech.category.alloying", "Alloying");
+        add("gui.ytech.category.hammering", "Hammering");
     }
 }

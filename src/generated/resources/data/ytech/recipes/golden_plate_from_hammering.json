@@ -1,0 +1,12 @@
+{
+  "type": "ytech:hammering",
+  "ingredient": {
+    "tag": "forge:ingots/gold"
+  },
+  "result": {
+    "item": "ytech:golden_plate"
+  },
+  "tool": {
+    "tag": "ytech:hammers"
+  }
+}

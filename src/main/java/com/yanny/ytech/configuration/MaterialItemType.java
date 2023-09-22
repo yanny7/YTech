@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.item.*;
+import com.yanny.ytech.configuration.recipe.HammeringRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -10,6 +11,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -300,6 +302,10 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .pattern("H")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+        HammeringRecipe.Builder.hammering(INGOT.itemTag.get(holder.material), holder.item.get())
+                .tool(Ingredient.of(HAMMER.groupTag))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_from_hammering"));
     }
 
     public static void registerRodRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
@@ -390,11 +396,6 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
         builder.texture("layer0", textures[0]);
-    }
-
-    @NotNull
-    private static TextureHolder[] basicTexture(@NotNull ResourceLocation overlay, MaterialType material) {
-        return List.of(new TextureHolder(0, material.color, overlay)).toArray(TextureHolder[]::new);
     }
 
     private static void registerMaterialTag(@NotNull Holder.ItemHolder holder, @NotNull ItemTagsProvider provider) {

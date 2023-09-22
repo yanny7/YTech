@@ -1,0 +1,12 @@
+{
+  "type": "ytech:hammering",
+  "ingredient": {
+    "tag": "forge:ingots/tin"
+  },
+  "result": {
+    "item": "ytech:tin_plate"
+  },
+  "tool": {
+    "tag": "ytech:hammers"
+  }
+}

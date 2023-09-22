@@ -4,10 +4,7 @@ import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.IMenuBlock;
 import com.yanny.ytech.configuration.recipe.TagStackIngredient;
-import com.yanny.ytech.configuration.renderer.DryingRackRenderer;
-import com.yanny.ytech.configuration.renderer.KineticRenderer;
-import com.yanny.ytech.configuration.renderer.MillstoneRenderer;
-import com.yanny.ytech.configuration.renderer.TanningRackRenderer;
+import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -47,6 +44,7 @@ public class ModBusSubscriber {
             if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
                 switch (blockType) {
                     case MILLSTONE -> event.registerBlockEntityRenderer(holder.entityType.get(), MillstoneRenderer::new);
+                    case BRONZE_ANVIL -> event.registerBlockEntityRenderer(holder.entityType.get(), BronzeAnvilRenderer::new);
                 }
             }
         });

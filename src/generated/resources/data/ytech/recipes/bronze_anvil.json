@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/bronze"
+    },
+    "I": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "pattern": [
+    "BBB",
+    " I ",
+    "III"
+  ],
+  "result": {
+    "item": "ytech:bronze_anvil"
+  },
+  "show_notification": true
+}

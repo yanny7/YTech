@@ -1,0 +1,12 @@
+{
+  "type": "ytech:hammering",
+  "ingredient": {
+    "tag": "forge:ingots/bronze"
+  },
+  "result": {
+    "item": "ytech:bronze_plate"
+  },
+  "tool": {
+    "tag": "ytech:hammers"
+  }
+}

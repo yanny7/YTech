@@ -42,6 +42,16 @@ import java.util.function.Supplier;
 
 public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, BlockStateProvider>, ILootable<Holder.SimpleBlockHolder, BlockLootSubProvider>,
         IRecipe<Holder.SimpleBlockHolder>, IMenu, IItemTag<Holder.SimpleBlockHolder>, IBlockTag<Holder.SimpleBlockHolder> {
+    BRONZE_ANVIL(HolderType.ENTITY_BLOCK, "bronze_anvil", "Bronze Anvil",
+            ItemTags.ANVIL,
+            BlockTags.ANVIL,
+            BronzeAnvil::new,
+            BronzeAnvil::textureHolder,
+            BronzeAnvil::registerModel,
+            ILootable::dropsSelfProvider,
+            BronzeAnvil::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag),
     MILLSTONE(HolderType.ENTITY_BLOCK, "millstone", "Millstone",
             ItemTags.create(Utils.modLoc("millstones")),
             BlockTags.create(Utils.modLoc("millstones")),

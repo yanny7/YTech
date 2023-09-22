@@ -3,10 +3,7 @@ package com.yanny.ytech.generation;
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
-import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
-import com.yanny.ytech.configuration.recipe.DryingRecipe;
-import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
+import com.yanny.ytech.configuration.recipe.*;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.TagKey;
@@ -133,6 +130,14 @@ class YTechRecipes extends RecipeProvider {
     private void dryingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result, int dryingTime) {
         DryingRecipe.Builder.drying(input, dryingTime, result)
                 .unlockedBy(RecipeProvider.getHasName(input), has(input))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void hammeringRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result) {
+        HammeringRecipe.Builder.hammering(input, result)
+                .tool(Ingredient.of(HAMMER.groupTag))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 }

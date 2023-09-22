@@ -1,0 +1,12 @@
+{
+  "type": "ytech:hammering",
+  "ingredient": {
+    "tag": "forge:ingots/copper"
+  },
+  "result": {
+    "item": "ytech:copper_plate"
+  },
+  "tool": {
+    "tag": "ytech:hammers"
+  }
+}
