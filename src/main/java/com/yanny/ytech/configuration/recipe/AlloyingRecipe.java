@@ -18,6 +18,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -208,6 +209,12 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
                                        int smeltingTime, @NotNull Item result, int count) {
             return new Builder(TagStackIngredient.fromValues(Stream.of(new TagStackIngredient.TagCountValue(input1, count1))),
                     TagStackIngredient.fromValues(Stream.of(new TagStackIngredient.TagCountValue(input2, count2))), minTemperature, smeltingTime, result, count);
+        }
+
+        public static Builder alloying(@NotNull TagKey<Item> input1, int count1, @NotNull ItemLike input2, int count2, int minTemperature,
+                                       int smeltingTime, @NotNull Item result, int count) {
+            return new Builder(TagStackIngredient.fromValues(Stream.of(new TagStackIngredient.TagCountValue(input1, count1))),
+                    TagStackIngredient.fromValues(Stream.of(new Ingredient.ItemValue(new ItemStack(input2, count2)))), minTemperature, smeltingTime, result, count);
         }
 
         @NotNull

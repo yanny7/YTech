@@ -118,12 +118,15 @@ public class TagStackIngredient extends Ingredient {
         @NotNull
         @Override
         public Ingredient parse(@NotNull JsonObject json) {
-            ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(json, "tag"));
-            int count = GsonHelper.getAsInt(json, "count", 1);
-            TagCountValue value = new TagCountValue(TagKey.create(Registries.ITEM, resourceLocation), count);
-            return Ingredient.fromValues(Stream.of(value));
+            if (json.has("tag")) {
+                ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(json, "tag"));
+                int count = GsonHelper.getAsInt(json, "count", 1);
+                TagCountValue value = new TagCountValue(TagKey.create(Registries.ITEM, resourceLocation), count);
+                return Ingredient.fromValues(Stream.of(value));
+            } else {
+                return Ingredient.fromValues(Stream.of(Ingredient.valueFromJson(json)));
+            }
         }
-
     };
 
     public static class TagCountValue extends Ingredient.TagValue {
@@ -152,6 +155,4 @@ public class TagStackIngredient extends Ingredient {
             return object;
         }
     }
-
-
 }

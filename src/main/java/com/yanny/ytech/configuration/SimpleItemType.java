@@ -4,6 +4,7 @@ import com.yanny.ytech.configuration.item.BrickMoldItem;
 import com.yanny.ytech.configuration.item.ClayBucketItem;
 import com.yanny.ytech.configuration.item.FlintSawItem;
 import com.yanny.ytech.configuration.item.ToolItem;
+import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
@@ -34,6 +35,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static com.yanny.ytech.configuration.MaterialItemType.*;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, ItemModelProvider>, IRecipe<Holder.SimpleItemHolder>, IItemTag<Holder.SimpleItemHolder> {
@@ -73,7 +75,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerWoodenPlateRecipe,
             (holder, provider) -> {
                 provider.tag(holder.object.itemTag).add(holder.item.get());
-                provider.tag(MaterialItemType.PLATE.groupTag).addTag(holder.object.itemTag);
+                provider.tag(PLATE.groupTag).addTag(holder.object.itemTag);
             }),
     WOODEN_BOLT("wooden_bolt", "Wooden Bolt",
             ItemTags.create(Utils.modLoc("bolts/wooden")),
@@ -83,7 +85,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerWoodenBoltRecipe,
             (holder, provider) -> {
                 provider.tag(holder.object.itemTag).add(holder.item.get());
-                provider.tag(MaterialItemType.BOLT.groupTag).addTag(holder.object.itemTag);
+                provider.tag(BOLT.groupTag).addTag(holder.object.itemTag);
             }),
     RAW_HIDE("raw_hide", "Raw Hide",
             ItemTags.create(Utils.modLoc("raw_hides")),
@@ -98,6 +100,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             () -> basicTexture(Utils.modItemLoc("leather_strips")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerLeatherStripsRecipe,
+            SimpleItemType::registerSimpleTag),
+    IRON_BLOOM("iron_bloom", "Iron Bloom",
+            ItemTags.create(Utils.modLoc("iron_bloom")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("iron_bloom")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerIronBloomRecipe,
             SimpleItemType::registerSimpleTag),
     DRIED_BEEF("dried_beef", "Dried Beef",
             ItemTags.create(Utils.modLoc("dried_beef")),
@@ -163,7 +172,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerFlintSawRecipe,
             (holder, provider) -> {
                 provider.tag(holder.object.itemTag).add(holder.item.get());
-                provider.tag(MaterialItemType.SAW.groupTag).addTag(holder.object.itemTag);
+                provider.tag(SAW.groupTag).addTag(holder.object.itemTag);
             }),
     FLOUR("flour", "Flour",
             ItemTags.create(Utils.modLoc("flour")),
@@ -346,7 +355,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerWoodenPlateRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
                 .requires(ItemTags.WOODEN_SLABS)
-                .requires(MaterialItemType.SAW.groupTag)
+                .requires(SAW.groupTag)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
@@ -354,7 +363,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(Items.STICK)
-                .requires(MaterialItemType.SAW.groupTag)
+                .requires(SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
@@ -372,6 +381,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .requires(SimpleItemType.SHARP_FLINT.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.LEATHER), RecipeProvider.has(Items.LEATHER))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerIronBloomRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        AlloyingRecipe.Builder.alloying(CRUSHED_MATERIAL.itemTag.get(MaterialType.IRON), 1, Items.CHARCOAL, 1, 1250, 200, holder.item.get(), 1)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(CRUSHED_MATERIAL.itemTag.get(MaterialType.IRON)))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(holder.item.get()).getPath()));
     }
 
     private static void registerFlintSawRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {

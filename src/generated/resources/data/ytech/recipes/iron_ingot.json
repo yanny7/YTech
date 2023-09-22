@@ -1,0 +1,12 @@
+{
+  "type": "ytech:hammering",
+  "ingredient": {
+    "tag": "ytech:iron_bloom"
+  },
+  "result": {
+    "item": "minecraft:iron_ingot"
+  },
+  "tool": {
+    "tag": "ytech:hammers"
+  }
+}

@@ -10,6 +10,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,6 +64,8 @@ class YTechRecipes extends RecipeProvider {
         smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(COPPER), item(INGOT, COPPER), COPPER.meltingTemp, 200);
         smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(GOLD), item(INGOT, GOLD), GOLD.meltingTemp, 200);
         smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(CASSITERITE), item(INGOT, TIN), CASSITERITE.meltingTemp, 200);
+
+        hammeringRecipe(recipeConsumer, IRON_BLOOM.itemTag, Items.IRON_INGOT);
 
         blockHitRecipe(recipeConsumer, Items.FLINT, Tags.Items.STONE, item(SHARP_FLINT));
 
@@ -121,6 +124,14 @@ class YTechRecipes extends RecipeProvider {
     @SuppressWarnings("SameParameterValue")
     private void alloyingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input1, int count1,
                                 @NotNull TagKey<Item> input2, int count2, @NotNull Item result, int count, int temp, int smeltingTime) {
+        AlloyingRecipe.Builder.alloying(input1, count1, input2, count2, temp, smeltingTime, result, count)
+                .unlockedBy(Utils.getHasName(), has(input1))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_alloying"));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void alloyingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input1, int count1,
+                                @NotNull ItemLike input2, int count2, @NotNull Item result, int count, int temp, int smeltingTime) {
         AlloyingRecipe.Builder.alloying(input1, count1, input2, count2, temp, smeltingTime, result, count)
                 .unlockedBy(Utils.getHasName(), has(input1))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_alloying"));
