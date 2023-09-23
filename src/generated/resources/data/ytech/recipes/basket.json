@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:grass_twines"
+    }
+  },
+  "pattern": [
+    " # ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "ytech:basket"
+  },
+  "show_notification": true
+}

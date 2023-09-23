@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "ytech:item/basket_filled",
+      "predicate": {
+        "ytech:filled": 1.0E-4
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "ytech:item/basket"
+  }
+}

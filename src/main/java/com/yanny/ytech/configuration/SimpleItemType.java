@@ -1,9 +1,6 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.configuration.item.BrickMoldItem;
-import com.yanny.ytech.configuration.item.ClayBucketItem;
-import com.yanny.ytech.configuration.item.FlintSawItem;
-import com.yanny.ytech.configuration.item.ToolItem;
+import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
@@ -107,6 +104,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             () -> basicTexture(Utils.modItemLoc("iron_bloom")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerIronBloomRecipe,
+            SimpleItemType::registerSimpleTag),
+    BASKET("basket", "Basket",
+            ItemTags.create(Utils.modLoc("basket")),
+            BasketItem::new,
+            SimpleItemType::basketTexture,
+            SimpleItemType::basketItemModelProvider,
+            SimpleItemType::registerBasketRecipe,
             SimpleItemType::registerSimpleTag),
     DRIED_BEEF("dried_beef", "Dried Beef",
             ItemTags.create(Utils.modLoc("dried_beef")),
@@ -298,6 +302,18 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         builder.texture("layer0", textures[0]);
     }
 
+    private static void basketItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures();
+        ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        ModelFile model = provider.getBuilder(holder.key + "_filled")
+                .parent(builder)
+                .texture("layer0", textures[1]);
+
+        builder.override().predicate(Utils.modLoc("filled"), 0.0001f).model(model).end();
+        builder.texture("layer0", textures[0]);
+    }
+
+
     private static void clayBucketItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures();
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
@@ -309,6 +325,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static TextureHolder[] clayBucketTexture(@NotNull ResourceLocation overlay, int color) {
         return List.of(new TextureHolder(-1, -1, Utils.modItemLoc("clay_bucket")),
                 new TextureHolder(1, color, overlay)).toArray(TextureHolder[]::new);
+    }
+
+    @NotNull
+    private static TextureHolder[] basketTexture() {
+        return List.of(new TextureHolder(-1, -1, Utils.modItemLoc("basket")),
+                new TextureHolder(-1, -1, Utils.modItemLoc("basket_filled"))).toArray(TextureHolder[]::new);
     }
 
     private static TextureHolder[] basicTexture(ResourceLocation base) {
@@ -387,6 +409,16 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         AlloyingRecipe.Builder.alloying(CRUSHED_MATERIAL.itemTag.get(MaterialType.IRON), 1, Items.CHARCOAL, 1, 1250, 200, holder.item.get(), 1)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(CRUSHED_MATERIAL.itemTag.get(MaterialType.IRON)))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(holder.item.get()).getPath()));
+    }
+
+    private static void registerBasketRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('#', GRASS_TWINE.itemTag)
+                .pattern(" # ")
+                .pattern("###")
+                .pattern("###")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(GRASS_TWINE.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerFlintSawRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {

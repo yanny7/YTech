@@ -1,0 +1,6 @@
+{
+  "parent": "ytech:item/basket",
+  "textures": {
+    "layer0": "ytech:item/basket_filled"
+  }
+}

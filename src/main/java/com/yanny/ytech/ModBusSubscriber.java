@@ -1,18 +1,23 @@
 package com.yanny.ytech;
 
 import com.yanny.ytech.compatibility.TopCompatibility;
+import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.IMenuBlock;
+import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.recipe.TagStackIngredient;
 import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +26,11 @@ import static com.yanny.ytech.registration.Registration.HOLDER;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusSubscriber {
+    @SubscribeEvent
+    public static void commonSetup(@NotNull FMLCommonSetupEvent event) {
+        ItemProperties.register(Registration.item(SimpleItemType.BASKET), Utils.modLoc("filled"), (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
+    }
+
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
         TopCompatibility.register();
