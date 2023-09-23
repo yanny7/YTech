@@ -1,7 +1,7 @@
 {
   "type": "ytech:hammering",
   "ingredient": {
-    "tag": "ytech:iron_bloom"
+    "tag": "ytech:iron_blooms"
   },
   "result": {
     "item": "minecraft:iron_ingot"
