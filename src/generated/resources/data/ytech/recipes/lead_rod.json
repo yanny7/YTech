@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/lead"
+    },
+    "F": {
+      "tag": "ytech:files"
+    }
+  },
+  "pattern": [
+    "#",
+    "F"
+  ],
+  "result": {
+    "item": "ytech:lead_rod"
+  },
+  "show_notification": true
+}

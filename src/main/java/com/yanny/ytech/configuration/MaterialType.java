@@ -19,19 +19,21 @@ import static com.yanny.ytech.configuration.MaterialItemType.INGOT;
 
 public enum MaterialType {
     //solid elements
-    COPPER(new Builder("copper", "Copper", ToolType.PICKAXE).color(0xB87333).melting(1085).tier(160, 5.0F, 0.5F, 10, () -> INGOT)),
-    GOLD(new Builder("gold", "Gold", ToolType.PICKAXE).color(0xFFDF00).melting(1064).tier(() -> Tiers.GOLD)), // 32, 12.0F, 0.0F, 22
-    IRON(new Builder("iron", "Iron", ToolType.PICKAXE).color(0xAAAAAA).melting(1538).tier(() -> Tiers.IRON)), // 250, 6.0F, 2.0F, 14
-    TIN(new Builder("tin", "Tin", ToolType.PICKAXE).color(0x808080).melting(232).tier(15, 18.0F, -1.0F, 16, () -> INGOT)),
+    COPPER(new Builder("copper", "Copper", ToolType.PICKAXE).color(0xB87333).temp(1085, 2562).tier(160, 5.0F, 0.5F, 10, () -> INGOT)),
+    GOLD(new Builder("gold", "Gold", ToolType.PICKAXE).color(0xFFDF00).temp(1064, 2856).tier(() -> Tiers.GOLD)), // 32, 12.0F, 0.0F, 22
+    IRON(new Builder("iron", "Iron", ToolType.PICKAXE).color(0xAAAAAA).temp(1538, 2861).tier(() -> Tiers.IRON)), // 250, 6.0F, 2.0F, 14
+    LEAD(new Builder("lead", "Lead", ToolType.PICKAXE).color(0x5C6274).temp(327, 1749).tier(16, 3.0F, 3.0F, 21, () -> INGOT)),
+    TIN(new Builder("tin", "Tin", ToolType.PICKAXE).color(0x808080).temp(232, 2602).tier(15, 10.0F, -1.0F, 16, () -> INGOT)),
 
     //fluid elements
     MERCURY(new Builder("mercury", "Mercury", Tiers.WOOD, ToolType.PICKAXE).color(0xDBCECA)),
 
     //alloys
-    BRONZE(new Builder("bronze", "Bronze", ToolType.PICKAXE).color(0xD89940).melting(913).tier(200, 32.0F, 1.5F, 15, () -> INGOT)),
+    BRONZE(new Builder("bronze", "Bronze", ToolType.PICKAXE).color(0xD89940).temp(913, 2300).tier(200, 32.0F, 1.5F, 15, () -> INGOT)),
 
     //ores
-    CASSITERITE(new Builder("cassiterite", "Cassiterite", Tiers.STONE, ToolType.PICKAXE).color(0x3D3D3D).melting(1127)),
+    CASSITERITE(new Builder("cassiterite", "Cassiterite", Tiers.STONE, ToolType.PICKAXE).color(0x3D3D3D).temp(1127)),
+    GALENA(new Builder("galena", "Galena", Tiers.WOOD, ToolType.PICKAXE).color(0x8493A8).temp(1114)),
 
     //woods
     ACACIA_WOOD(new Builder("acacia", "Acacia", Tiers.WOOD, ToolType.AXE).group("wooden")),
@@ -48,14 +50,15 @@ public enum MaterialType {
     ;
 
     public static final EnumSet<MaterialType> ALL_WOODS = EnumSet.of(ACACIA_WOOD, BIRCH_WOOD, CHERRY_WOOD, DARK_OAK_WOOD, JUNGLE_WOOD, MANGROVE_WOOD, OAK_WOOD, SPRUCE_WOOD);
-    public static final EnumSet<MaterialType> ALL_METALS = EnumSet.of(BRONZE, COPPER, GOLD, IRON, TIN);
-    public static final EnumSet<MaterialType> ALL_ORES = EnumSet.of(COPPER, GOLD, IRON, CASSITERITE);
+    public static final EnumSet<MaterialType> ALL_METALS = EnumSet.of(BRONZE, COPPER, GOLD, IRON, LEAD, TIN);
+    public static final EnumSet<MaterialType> ALL_ORES = EnumSet.of(COPPER, GOLD, IRON, CASSITERITE, GALENA);
     public static final EnumSet<MaterialType> ALL_FLUIDS = EnumSet.noneOf(MaterialType.class);
     public static final EnumSet<MaterialType> VANILLA_METALS = EnumSet.of(COPPER, GOLD, IRON);
 
     public static final List<Tier> TIERS = List.of(
                                     // Mohs hardness
             TIN.getTier(),          // 1.5
+            LEAD.getTier(),         // 1.5
             Tiers.WOOD,             // 2
             Tiers.GOLD,             // 2.5
             Tiers.STONE,            // ?? FIXME ???
@@ -107,6 +110,7 @@ public enum MaterialType {
         @NotNull private String group;
         private int color = -1;
         private int meltingTemp = Integer.MAX_VALUE;
+        private int boilingTemp = Integer.MAX_VALUE;
         private boolean hasCustomTier = false;
 
         Builder(@NotNull String key, @NotNull String name, @NotNull Tier tier, @NotNull ToolType tool) {
@@ -127,8 +131,14 @@ public enum MaterialType {
             };
         }
 
-        Builder melting(int t) {
-            meltingTemp = t;
+        Builder temp(int m, int b) {
+            meltingTemp = m;
+            boilingTemp = b;
+            return this;
+        }
+
+        Builder temp(int m) {
+            meltingTemp = m;
             return this;
         }
 

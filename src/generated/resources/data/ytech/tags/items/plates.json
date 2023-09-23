@@ -5,6 +5,7 @@
     "#ytech:plates/copper",
     "#ytech:plates/gold",
     "#ytech:plates/iron",
+    "#ytech:plates/lead",
     "#ytech:plates/tin"
   ]
 }

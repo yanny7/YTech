@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/lead"
+    },
+    "P": {
+      "tag": "ytech:plates/lead"
+    },
+    "R": {
+      "tag": "ytech:rods/lead"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "P#R",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "ytech:lead_pickaxe"
+  },
+  "show_notification": true
+}

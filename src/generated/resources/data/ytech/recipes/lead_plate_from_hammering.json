@@ -1,0 +1,12 @@
+{
+  "type": "ytech:hammering",
+  "ingredient": {
+    "tag": "forge:ingots/lead"
+  },
+  "result": {
+    "item": "ytech:lead_plate"
+  },
+  "tool": {
+    "tag": "ytech:hammers"
+  }
+}

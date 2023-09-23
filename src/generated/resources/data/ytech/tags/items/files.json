@@ -4,6 +4,7 @@
     "#ytech:files/copper",
     "#ytech:files/gold",
     "#ytech:files/iron",
+    "#ytech:files/lead",
     "#ytech:files/tin"
   ]
 }

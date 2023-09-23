@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/lead"
+    },
+    "I": {
+      "tag": "forge:ingots/lead"
+    }
+  },
+  "pattern": [
+    " I ",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "item": "ytech:lead_mortar_and_pestle"
+  },
+  "show_notification": true
+}

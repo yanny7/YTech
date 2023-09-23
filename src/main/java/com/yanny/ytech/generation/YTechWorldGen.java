@@ -32,8 +32,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
     private static final ResourceKey<ConfiguredFeature<?, ?>> CASSITERITE_ORE_FEATURE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Utils.modLoc("cassiterite_ore"));
+    private static final ResourceKey<ConfiguredFeature<?, ?>> GALENA_ORE_FEATURE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Utils.modLoc("galena_ore"));
     private static final ResourceKey<PlacedFeature> CASSITERITE_ORE_UPPER = ResourceKey.create(Registries.PLACED_FEATURE, Utils.modLoc("cassiterite_ore_upper"));
+    private static final ResourceKey<PlacedFeature> GALENA_ORE_UPPER = ResourceKey.create(Registries.PLACED_FEATURE, Utils.modLoc("galena_ore_upper"));
     private static final ResourceKey<PlacedFeature> CASSITERITE_ORE_LOWER = ResourceKey.create(Registries.PLACED_FEATURE, Utils.modLoc("cassiterite_ore_lower"));
+    private static final ResourceKey<PlacedFeature> GALENA_ORE_LOWER = ResourceKey.create(Registries.PLACED_FEATURE, Utils.modLoc("galena_ore_lower"));
 
     private static final TagMatchTest STONE_ORE_REPLACEABLE = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
 
@@ -51,6 +54,16 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                                     new OreConfiguration(
                                             List.of(OreConfiguration.target(STONE_ORE_REPLACEABLE, Registration.block(MaterialBlockType.STONE_ORE, MaterialType.CASSITERITE).defaultBlockState())),
                                             16
+                                    )
+                            )
+                    );
+                    bootstrap.register(
+                            GALENA_ORE_FEATURE,
+                            new ConfiguredFeature<>(
+                                    Feature.ORE,
+                                    new OreConfiguration(
+                                            List.of(OreConfiguration.target(STONE_ORE_REPLACEABLE, Registration.block(MaterialBlockType.STONE_ORE, MaterialType.GALENA).defaultBlockState())),
+                                            8
                                     )
                             )
                     );
@@ -80,19 +93,47 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                                     )
                             )
                     );
+                    bootstrap.register(
+                            GALENA_ORE_UPPER,
+                            new PlacedFeature(
+                                    configured.getOrThrow(GALENA_ORE_FEATURE),
+                                    List.of(RarityFilter.onAverageOnceEvery(4),
+                                            InSquarePlacement.spread(),
+                                            HeightRangePlacement.uniform(VerticalAnchor.absolute(64), VerticalAnchor.absolute(128)),
+                                            BiomeFilter.biome()
+                                    )
+                            )
+                    );
+                    bootstrap.register(
+                            GALENA_ORE_LOWER,
+                            new PlacedFeature(
+                                    configured.getOrThrow(GALENA_ORE_FEATURE),
+                                    List.of(CountPlacement.of(1),
+                                            InSquarePlacement.spread(),
+                                            HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(60)),
+                                            BiomeFilter.biome()
+                                    )
+                            )
+                    );
                 })
                 .add(ForgeRegistries.Keys.BIOME_MODIFIERS, bootstrap -> {
                     final HolderGetter<Biome> biomeReg = bootstrap.lookup(Registries.BIOME);
                     final HolderGetter<PlacedFeature> featureReg = bootstrap.lookup(Registries.PLACED_FEATURE);
                     HolderSet<Biome> biomeHolderSet = biomeReg.getOrThrow(BiomeTags.IS_OVERWORLD);
-                    HolderSet<PlacedFeature> placedFeatureHolderSet = HolderSet.direct(featureReg.getOrThrow(CASSITERITE_ORE_UPPER), featureReg.getOrThrow(CASSITERITE_ORE_LOWER));
+                    HolderSet<PlacedFeature> placedFeatureHolderSet = HolderSet.direct(
+                            featureReg.getOrThrow(CASSITERITE_ORE_UPPER),
+                            featureReg.getOrThrow(CASSITERITE_ORE_LOWER),
+                            featureReg.getOrThrow(GALENA_ORE_UPPER),
+                            featureReg.getOrThrow(GALENA_ORE_LOWER)
+                    );
 
                     bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_ore_generation")),
                             new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                                     biomeHolderSet,
                                     placedFeatureHolderSet,
                                     GenerationStep.Decoration.UNDERGROUND_ORES
-                            ));
+                            )
+                    );
                 });
     }
 }

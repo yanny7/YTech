@@ -64,6 +64,7 @@ class YTechRecipes extends RecipeProvider {
         smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(COPPER), item(INGOT, COPPER), COPPER.meltingTemp, 200);
         smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(GOLD), item(INGOT, GOLD), GOLD.meltingTemp, 200);
         smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(CASSITERITE), item(INGOT, TIN), CASSITERITE.meltingTemp, 200);
+        smeltingRecipe(recipeConsumer, CRUSHED_MATERIAL.itemTag.get(GALENA), item(INGOT, LEAD), GALENA.meltingTemp, 200);
 
         hammeringRecipe(recipeConsumer, IRON_BLOOM.itemTag, Items.IRON_INGOT);
 
