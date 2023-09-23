@@ -33,7 +33,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.yanny.ytech.configuration.MaterialItemType.*;
+import static com.yanny.ytech.configuration.MaterialType.LEAD;
 import static com.yanny.ytech.registration.Registration.HOLDER;
+import static com.yanny.ytech.registration.Registration.item;
 
 public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, ItemModelProvider>, IRecipe<Holder.SimpleItemHolder>, IItemTag<Holder.SimpleItemHolder> {
     GRASS_FIBERS("grass_fibers", "Grass Fibers",
@@ -418,6 +420,18 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .pattern("###")
                 .pattern("###")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(GRASS_TWINE.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerLeadArrowRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.ARROW)
+                .define('H', item(BOLT, LEAD))
+                .define('I', Items.STICK)
+                .define('F', Items.FEATHER)
+                .pattern("H")
+                .pattern("I")
+                .pattern("F")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(Items.FEATHER))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
