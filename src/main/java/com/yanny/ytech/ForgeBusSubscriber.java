@@ -6,23 +6,16 @@ import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
@@ -34,10 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeBusSubscriber {
@@ -79,25 +69,6 @@ public class ForgeBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onResourceReload(@NotNull AddReloadListenerEvent event) {
-        event.addListener(new SimplePreparableReloadListener<Set<ResourceLocation>>() {
-            @NotNull
-            @Override
-            protected Set<ResourceLocation> prepare(@NotNull ResourceManager pResourceManager, @NotNull ProfilerFiller pProfiler) {
-                return YTechMod.CONFIGURATION.getRemoveMinecraftRecipesList();
-            }
-
-            @Override
-            protected void apply(@NotNull Set<ResourceLocation> toRemove, @NotNull ResourceManager pResourceManager, @NotNull ProfilerFiller pProfiler) {
-                if (YTechMod.CONFIGURATION.shouldRemoveMinecraftRecipes()) {
-                    RecipeManager recipeManager = event.getServerResources().getRecipeManager();
-                    recipeManager.replaceRecipes(recipeManager.getRecipes().stream().filter((r) -> shouldNotRemove(r, toRemove)).collect(Collectors.toList()));
-                }
-            }
-        });
-    }
-
-    @SubscribeEvent
     public static void onPlayerLeftClickBlock(@NotNull PlayerInteractEvent.LeftClickBlock event) {
         if (YTechMod.CONFIGURATION.enableCraftingSharpFlint()) {
             Player player = event.getEntity();
@@ -112,15 +83,6 @@ public class ForgeBusSubscriber {
                     heldItem.shrink(1);
                 });
             }
-        }
-    }
-
-    private static boolean shouldNotRemove(@NotNull Recipe<?> recipe, @NotNull Set<ResourceLocation> toRemove) {
-        if (toRemove.contains(recipe.getId())) {
-            LOGGER.info(MessageFormat.format("Removing recipe {0}", recipe.getId().toString()));
-            return false;
-        } else {
-            return true;
         }
     }
 

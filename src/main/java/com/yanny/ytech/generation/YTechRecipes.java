@@ -10,6 +10,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +75,68 @@ class YTechRecipes extends RecipeProvider {
 
         cookingRecipe(recipeConsumer, RecipeCategory.FOOD, BREAD_DOUGH, Items.BREAD, 0.1f, 200);
         cookingRecipe(recipeConsumer, RecipeCategory.MISC, UNFIRED_BRICK, Items.BRICK, 0.3f, 200);
+
+        removeVanillaRecipes(recipeConsumer);
+    }
+
+    private void removeVanillaRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        removeVanillaRecipe(recipeConsumer, Items.WOODEN_AXE);
+        removeVanillaRecipe(recipeConsumer, Items.WOODEN_HOE);
+        removeVanillaRecipe(recipeConsumer, Items.WOODEN_PICKAXE);
+        removeVanillaRecipe(recipeConsumer, Items.WOODEN_SHOVEL);
+        removeVanillaRecipe(recipeConsumer, Items.WOODEN_SWORD);
+
+        removeVanillaRecipe(recipeConsumer, Items.ACACIA_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.BIRCH_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.CHERRY_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.JUNGLE_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.OAK_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.DARK_OAK_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.MANGROVE_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.SPRUCE_SLAB);
+
+        removeVanillaRecipe(recipeConsumer, Items.ANDESITE_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.COBBLESTONE_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.DIORITE_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.GRANITE_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.SMOOTH_STONE_SLAB);
+        removeVanillaRecipe(recipeConsumer, Items.STONE_SLAB);
+
+        removeVanillaRecipe(recipeConsumer, Items.ACACIA_PLANKS);
+        removeVanillaRecipe(recipeConsumer, Items.BIRCH_PLANKS);
+        removeVanillaRecipe(recipeConsumer, Items.CHERRY_PLANKS);
+        removeVanillaRecipe(recipeConsumer, Items.JUNGLE_PLANKS);
+        removeVanillaRecipe(recipeConsumer, Items.OAK_PLANKS);
+        removeVanillaRecipe(recipeConsumer, Items.DARK_OAK_PLANKS);
+        removeVanillaRecipe(recipeConsumer, Items.MANGROVE_PLANKS);
+        removeVanillaRecipe(recipeConsumer, Items.SPRUCE_PLANKS);
+
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.COPPER_INGOT, Items.RAW_COPPER);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.COPPER_INGOT, Items.COPPER_ORE);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.COPPER_INGOT, Items.DEEPSLATE_COPPER_ORE);
+
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.GOLD_INGOT, Items.RAW_GOLD);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.GOLD_INGOT, Items.GOLD_ORE);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.GOLD_INGOT, Items.DEEPSLATE_GOLD_ORE);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.GOLD_INGOT, Items.NETHER_GOLD_ORE);
+
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.RAW_IRON);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.IRON_ORE);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
+
+        removeVanillaRecipe(recipeConsumer, Items.BREAD);
+        removeVanillaRecipe(recipeConsumer, Items.BRICK);
+    }
+
+    private void removeVanillaRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item item) {
+        SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer, Utils.loc(item).toString());
+    }
+
+    private void removeVanillaSmeltingBlastingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item to, Item from) {
+        SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer,
+                Utils.mcLoc(Utils.loc(to).getPath() + "_from_smelting_" + Utils.loc(from).getPath()).toString());
+        SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer,
+                Utils.mcLoc(Utils.loc(to).getPath() + "_from_blasting_" + Utils.loc(from).getPath()).toString());
     }
 
     private void splitBySawRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {

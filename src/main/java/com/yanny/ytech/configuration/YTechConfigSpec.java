@@ -3,7 +3,6 @@ package com.yanny.ytech.configuration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -17,8 +16,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class YTechConfigSpec {
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> removeMinecraftRecipes;
-    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> removeMinecraftRecipesList;
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
     @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolList;
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
@@ -28,10 +25,6 @@ public class YTechConfigSpec {
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
         builder.push("general");
-        removeMinecraftRecipes = builder.comment("If mod can remove default minecraft recipes")
-                .worldRestart().define("removeMinecraftRecipes", true);
-        removeMinecraftRecipesList = builder.comment("List of recipes that will be removed")
-                .worldRestart().defineListAllowEmpty("removeMinecraftRecipesList", YTechConfigSpec::getToRemoveMinecraftRecipes, YTechConfigSpec::validateResourceLocation);
         makeBlocksRequireValidTool = builder.comment("If mod can change behaviour of specified blocks to require valid tool for harvesting")
                 .worldRestart().define("makeBlocksRequireValidTool", true);
         makeBlocksRequireValidToolList = builder.comment("List of blocks that will require valid tool for harvesting")
@@ -47,15 +40,6 @@ public class YTechConfigSpec {
         fastDryingBiomeTags = builder.comment("List of biome tags, where will be drying 2x faster")
                 .worldRestart().defineListAllowEmpty("fastDryingBiomeTags", YTechConfigSpec::getFastDryingBiomeTags, YTechConfigSpec::validateResourceLocation);
         builder.pop();
-    }
-
-    public boolean shouldRemoveMinecraftRecipes() {
-        return removeMinecraftRecipes.get();
-    }
-
-    @NotNull
-    public Set<ResourceLocation> getRemoveMinecraftRecipesList() {
-        return removeMinecraftRecipesList.get().stream().map(ResourceLocation::new).collect(Collectors.toSet());
     }
 
     public boolean shouldRequireValidTool() {
@@ -81,69 +65,6 @@ public class YTechConfigSpec {
 
     public Set<TagKey<Biome>> getFastDryingBiomes() {
         return fastDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
-    }
-
-    @NotNull
-    private static List<String> getToRemoveMinecraftRecipes() {
-        return Stream.of(
-                Utils.loc(Items.WOODEN_AXE).toString(),
-                Utils.loc(Items.WOODEN_PICKAXE).toString(),
-                Utils.loc(Items.WOODEN_HOE).toString(),
-                Utils.loc(Items.WOODEN_SHOVEL).toString(),
-                Utils.loc(Items.WOODEN_SWORD).toString(),
-
-                Utils.loc(Items.ACACIA_SLAB).toString(),
-                Utils.loc(Items.BIRCH_SLAB).toString(),
-                Utils.loc(Items.CHERRY_SLAB).toString(),
-                Utils.loc(Items.JUNGLE_SLAB).toString(),
-                Utils.loc(Items.OAK_SLAB).toString(),
-                Utils.loc(Items.DARK_OAK_SLAB).toString(),
-                Utils.loc(Items.MANGROVE_SLAB).toString(),
-                Utils.loc(Items.SPRUCE_SLAB).toString(),
-
-                Utils.loc(Items.ACACIA_PLANKS).toString(),
-                Utils.loc(Items.BIRCH_PLANKS).toString(),
-                Utils.loc(Items.CHERRY_PLANKS).toString(),
-                Utils.loc(Items.JUNGLE_PLANKS).toString(),
-                Utils.loc(Items.OAK_PLANKS).toString(),
-                Utils.loc(Items.DARK_OAK_PLANKS).toString(),
-                Utils.loc(Items.MANGROVE_PLANKS).toString(),
-                Utils.loc(Items.SPRUCE_PLANKS).toString(),
-
-                Utils.loc(Items.ANDESITE_SLAB).toString(),
-                Utils.loc(Items.COBBLESTONE_SLAB).toString(),
-                Utils.loc(Items.DIORITE_SLAB).toString(),
-                Utils.loc(Items.GRANITE_SLAB).toString(),
-                Utils.loc(Items.SMOOTH_STONE_SLAB).toString(),
-                Utils.loc(Items.STONE_SLAB).toString(),
-
-                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.RAW_COPPER).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.RAW_COPPER).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.RAW_GOLD).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.RAW_GOLD).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.RAW_IRON).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.RAW_IRON).getPath()).toString(),
-
-                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.COPPER_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.COPPER_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.GOLD_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.GOLD_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.IRON_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.IRON_ORE).getPath()).toString(),
-
-                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.DEEPSLATE_COPPER_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.COPPER_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.DEEPSLATE_COPPER_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.DEEPSLATE_GOLD_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.DEEPSLATE_GOLD_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.DEEPSLATE_IRON_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.IRON_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.DEEPSLATE_IRON_ORE).getPath()).toString(),
-
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_smelting_" + Utils.loc(Items.NETHER_GOLD_ORE).getPath()).toString(),
-                Utils.mcLoc(Utils.loc(Items.GOLD_INGOT).getPath() + "_from_blasting_" + Utils.loc(Items.NETHER_GOLD_ORE).getPath()).toString(),
-
-                Utils.loc(Items.BREAD).toString(),
-                Utils.loc(Items.BRICK).toString()
-        ).collect(Collectors.toList());
     }
 
     @NotNull
