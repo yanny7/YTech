@@ -1,9 +1,9 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.block.DryingRack;
+import com.yanny.ytech.configuration.block.DryingRackBlock;
 import com.yanny.ytech.configuration.block.ShaftBlock;
-import com.yanny.ytech.configuration.block.TanningRack;
+import com.yanny.ytech.configuration.block.TanningRackBlock;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
@@ -112,11 +112,11 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.modLoc("drying_racks/" + material.key)),
             ItemTags.create(Utils.modLoc("drying_racks")),
             BlockTags.create(Utils.modLoc("drying_racks")),
-            DryingRack::new,
-            DryingRack::getTexture,
-            DryingRack::registerModel,
+            DryingRackBlock::new,
+            DryingRackBlock::getTexture,
+            DryingRackBlock::registerModel,
             ILootable::dropsSelfProvider,
-            DryingRack::registerRecipe,
+            DryingRackBlock::registerRecipe,
             MaterialBlockType::registerItemTag,
             MaterialBlockType::registerMineableBlockTag,
             MaterialType.ALL_WOODS),
@@ -125,11 +125,11 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.modLoc("tanning_racks/" + material.key)),
             ItemTags.create(Utils.modLoc("tanning_racks")),
             BlockTags.create(Utils.modLoc("tanning_racks")),
-            TanningRack::new,
-            TanningRack::getTexture,
-            TanningRack::registerModel,
+            TanningRackBlock::new,
+            TanningRackBlock::getTexture,
+            TanningRackBlock::registerModel,
             ILootable::dropsSelfProvider,
-            TanningRack::registerRecipe,
+            TanningRackBlock::registerRecipe,
             MaterialBlockType::registerItemTag,
             MaterialBlockType::registerMineableBlockTag,
             MaterialType.ALL_WOODS),

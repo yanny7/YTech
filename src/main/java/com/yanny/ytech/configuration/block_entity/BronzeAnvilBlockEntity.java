@@ -70,7 +70,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
                         if (recipe.tool().test(holdingItemStack)) {
                             hammeringItem.split(1);
                             holdingItemStack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
-                            level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                            level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
                             Block.popResourceFromFace(level, pos, hitResult.getDirection(), recipe.result().copy());
                             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);

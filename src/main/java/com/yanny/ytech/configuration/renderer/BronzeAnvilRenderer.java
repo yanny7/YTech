@@ -46,6 +46,13 @@ public class BronzeAnvilRenderer implements BlockEntityRenderer<BlockEntity> {
                 if (!input.isEmpty()) {
                     BakedModel bakedmodel = itemRenderer.getModel(input, level, null, 0);
                     itemRenderer.render(input, ItemDisplayContext.FIXED, false, poseStack, buffer, packedLight, packedOverlay, bakedmodel);
+
+                    if (input.getCount() > 1) {
+                        poseStack.pushPose();
+                        poseStack.translate(-0.1f, -0.1f, -0.02f);
+                        itemRenderer.render(input, ItemDisplayContext.FIXED, false, poseStack, buffer, packedLight, packedOverlay, bakedmodel);
+                        poseStack.popPose();
+                    }
                 }
             }
         }
