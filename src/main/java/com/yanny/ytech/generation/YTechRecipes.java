@@ -86,6 +86,12 @@ class YTechRecipes extends RecipeProvider {
         removeVanillaRecipe(recipeConsumer, Items.WOODEN_SHOVEL);
         removeVanillaRecipe(recipeConsumer, Items.WOODEN_SWORD);
 
+        removeVanillaRecipe(recipeConsumer, Items.STONE_AXE);
+        removeVanillaRecipe(recipeConsumer, Items.STONE_HOE);
+        removeVanillaRecipe(recipeConsumer, Items.STONE_PICKAXE);
+        removeVanillaRecipe(recipeConsumer, Items.STONE_SHOVEL);
+        removeVanillaRecipe(recipeConsumer, Items.STONE_SWORD);
+
         removeVanillaRecipe(recipeConsumer, Items.ACACIA_SLAB);
         removeVanillaRecipe(recipeConsumer, Items.BIRCH_SLAB);
         removeVanillaRecipe(recipeConsumer, Items.CHERRY_SLAB);

@@ -49,14 +49,14 @@ public enum MaterialType {
     OAK_WOOD(new Builder("oak", "Oak", Tiers.WOOD, ToolType.AXE).group("wooden").color(0xC4A570)),
     SPRUCE_WOOD(new Builder("spruce", "Spruce", Tiers.WOOD, ToolType.AXE).group("wooden")),
 
-    FLINT(new Builder("flint", "Flint", Tiers.WOOD, ToolType.PICKAXE).color(0x666666)),
+    FLINT(new Builder("flint", "Flint", Tiers.STONE, ToolType.PICKAXE).color(0x666666)),
     STONE(new Builder("stone", "Stone", Tiers.STONE, ToolType.PICKAXE).color(999999)),
     ;
 
     public static final EnumSet<MaterialType> ALL_WOODS = EnumSet.of(ACACIA_WOOD, BIRCH_WOOD, CHERRY_WOOD, DARK_OAK_WOOD, JUNGLE_WOOD, MANGROVE_WOOD, OAK_WOOD, SPRUCE_WOOD);
     public static final EnumSet<MaterialType> ALL_METALS = EnumSet.of(BRONZE, COPPER, GOLD, IRON, LEAD, TIN);
     public static final EnumSet<MaterialType> ALL_ORES = EnumSet.of(COPPER, GOLD, IRON, CASSITERITE, GALENA);
-    public static final EnumSet<MaterialType> HARD_METALS = EnumSet.of(BRONZE, COPPER, IRON);
+    public static final EnumSet<MaterialType> HARD_METALS = EnumSet.of(BRONZE, COPPER, IRON); // used for arrow heads
     public static final EnumSet<MaterialType> ALL_FLUIDS = EnumSet.noneOf(MaterialType.class);
     public static final EnumSet<MaterialType> VANILLA_METALS = EnumSet.of(COPPER, GOLD, IRON);
 
