@@ -1,27 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "ytech:sharp_flints"
-    },
-    "F": {
-      "item": "minecraft:flint"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
     },
-    "T": {
-      "tag": "ytech:leather_strips"
+    {
+      "tag": "ytech:grass_twines"
+    },
+    {
+      "tag": "ytech:sharp_flints"
     }
-  },
-  "pattern": [
-    "FT#",
-    "FS ",
-    " S "
   ],
   "result": {
     "item": "ytech:flint_axe"
-  },
-  "show_notification": true
+  }
 }

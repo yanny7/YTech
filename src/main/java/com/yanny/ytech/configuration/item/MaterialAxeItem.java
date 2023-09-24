@@ -5,10 +5,7 @@ import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.Holder;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
@@ -25,16 +22,13 @@ public class MaterialAxeItem extends AxeItem {
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         switch (holder.material) {
-            case FLINT -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
-                    .define('S', Items.STICK)
-                    .define('F', Items.FLINT)
-                    .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
-                    .define('#', SimpleItemType.SHARP_FLINT.itemTag)
-                    .pattern("FT#")
-                    .pattern("FS ")
-                    .pattern(" S ")
-                    .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+            case FLINT ->
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
+                            .requires(Items.STICK)
+                            .requires(SimpleItemType.GRASS_TWINE.itemTag)
+                            .requires(SimpleItemType.SHARP_FLINT.itemTag)
+                            .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
+                            .save(recipeConsumer, Utils.modLoc(holder.key));
             default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))

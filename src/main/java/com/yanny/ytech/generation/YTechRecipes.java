@@ -132,6 +132,8 @@ class YTechRecipes extends RecipeProvider {
 
         removeVanillaRecipe(recipeConsumer, Items.BREAD);
         removeVanillaRecipe(recipeConsumer, Items.BRICK);
+
+        //TODO first pickaxe was from metal, not flint!
     }
 
     private void removeVanillaRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item item) {

@@ -33,9 +33,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.yanny.ytech.configuration.MaterialItemType.*;
-import static com.yanny.ytech.configuration.MaterialType.LEAD;
 import static com.yanny.ytech.registration.Registration.HOLDER;
-import static com.yanny.ytech.registration.Registration.item;
 
 public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, ItemModelProvider>, IRecipe<Holder.SimpleItemHolder>, IItemTag<Holder.SimpleItemHolder> {
     GRASS_FIBERS("grass_fibers", "Grass Fibers",
@@ -347,9 +345,8 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         Holder input = HOLDER.simpleItems().get(GRASS_FIBERS);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', GRASS_FIBERS.itemTag)
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
+                .pattern("##")
+                .pattern("##")
                 .unlockedBy(Utils.getHasItem(input), RecipeProvider.has(GRASS_FIBERS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
@@ -402,7 +399,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerLeatherStripsRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 4)
                 .requires(Items.LEATHER)
-                .requires(SimpleItemType.SHARP_FLINT.itemTag)
+                .requires(SHARP_FLINT.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.LEATHER), RecipeProvider.has(Items.LEATHER))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
@@ -423,23 +420,11 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerLeadArrowRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.ARROW)
-                .define('H', item(BOLT, LEAD))
-                .define('I', Items.STICK)
-                .define('F', Items.FEATHER)
-                .pattern("H")
-                .pattern("I")
-                .pattern("F")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(Items.FEATHER))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
-    }
-
     private static void registerFlintSawRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
                 .requires(Items.STICK)
                 .requires(Items.FLINT)
-                .requires(SimpleItemType.SHARP_FLINT.itemTag)
+                .requires(SHARP_FLINT.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
@@ -467,17 +452,17 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(Registration.item(SimpleItemType.UNFIRED_CLAY_BUCKET)), RecipeCategory.MISC, holder.item.get(), 0.35f, 200)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(Registration.item(UNFIRED_CLAY_BUCKET)), RecipeCategory.MISC, holder.item.get(), 0.35f, 200)
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerBreadDoughRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
-                .requires(SimpleItemType.FLOUR.itemTag)
-                .requires(SimpleItemType.FLOUR.itemTag)
-                .requires(SimpleItemType.FLOUR.itemTag)
-                .requires(SimpleItemType.WATER_CLAY_BUCKET.itemTag)
+                .requires(FLOUR.itemTag)
+                .requires(FLOUR.itemTag)
+                .requires(FLOUR.itemTag)
+                .requires(WATER_CLAY_BUCKET.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
