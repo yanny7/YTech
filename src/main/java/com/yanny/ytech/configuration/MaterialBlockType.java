@@ -24,6 +24,8 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.GravelBlock;
+import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -81,6 +83,32 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (holder, provider) -> registerOreItemTag(holder, provider, Tags.Items.ORES_IN_GROUND_DEEPSLATE),
             (holder, provider) -> registerOreBlockTag(holder, provider, Tags.Blocks.ORES_IN_GROUND_DEEPSLATE),
             Utils.exclude(MaterialType.ALL_ORES, MaterialType.COPPER, MaterialType.GOLD, MaterialType.IRON)),
+    SAND_DEPOSIT(HolderType.BLOCK, "sand_deposit", INameable.suffix("sand_deposit"), INameable.suffix("Sand Deposit"),
+            (material) -> ItemTags.create(Utils.forgeLoc("sand_deposits/" + material.key)),
+            (material) -> BlockTags.create(Utils.forgeLoc("sand_deposits/" + material.key)),
+            ItemTags.create(Utils.modLoc("sand_deposits")),
+            BlockTags.create(Utils.modLoc("sand_deposits")),
+            (holder) -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("sand_deposit/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialBlockType::basicBlockStateProvider,
+            ILootable::dropsSelfProvider,
+            IRecipe::noRecipe,
+            MaterialBlockType::registerItemTag,
+            MaterialBlockType::registerBlockTag,
+            MaterialType.ALL_DEPOSIT_ORES),
+    GRAVEL_DEPOSIT(HolderType.BLOCK, "gravel_deposit", INameable.suffix("gravel_deposit"), INameable.suffix("Gravel Deposit"),
+            (material) -> ItemTags.create(Utils.forgeLoc("gravel_deposits/" + material.key)),
+            (material) -> BlockTags.create(Utils.forgeLoc("gravel_deposits/" + material.key)),
+            ItemTags.create(Utils.modLoc("gravel_deposits")),
+            BlockTags.create(Utils.modLoc("gravel_deposits")),
+            (holder) -> new GravelBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("gravel_deposit/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialBlockType::basicBlockStateProvider,
+            ILootable::dropsSelfProvider,
+            IRecipe::noRecipe,
+            MaterialBlockType::registerItemTag,
+            MaterialBlockType::registerBlockTag,
+            MaterialType.ALL_DEPOSIT_ORES),
     STORAGE_BLOCK(HolderType.BLOCK, "storage_block", INameable.suffix("block"), INameable.prefix("Block of"),
             (material) -> ItemTags.create(Utils.forgeLoc("storage_blocks/" + material.key)),
             (material) -> BlockTags.create(Utils.forgeLoc("storage_blocks/" + material.key)),

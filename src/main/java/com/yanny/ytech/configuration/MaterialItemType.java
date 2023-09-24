@@ -135,7 +135,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             MaterialArrowItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            MaterialType.HARD_METALS),
+            MaterialType.ALL_HARD_METALS),
     MORTAR_AND_PESTLE("mortar_and_pestle", INameable.suffix("mortar_and_pestle"), INameable.suffix("Mortar and Pestle"),
             (material) -> ItemTags.create(Utils.modLoc("mortar_and_pestles/" + material.key)),
             ItemTags.create(Utils.modLoc("mortar_and_pestles")),
