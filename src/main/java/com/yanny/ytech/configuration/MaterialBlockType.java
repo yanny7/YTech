@@ -7,6 +7,9 @@ import com.yanny.ytech.configuration.block.TanningRackBlock;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import net.minecraft.advancements.critereon.EnchantmentPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -22,11 +25,21 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GravelBlock;
 import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -91,7 +104,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (holder) -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("sand_deposit/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
-            ILootable::dropsSelfProvider,
+            (holder, provider) -> depositLootProvider(holder, provider, Items.SAND),
             IRecipe::noRecipe,
             MaterialBlockType::registerItemTag,
             MaterialBlockType::registerBlockTag,
@@ -104,7 +117,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (holder) -> new GravelBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("gravel_deposit/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
-            ILootable::dropsSelfProvider,
+            (holder, provider) -> depositLootProvider(holder, provider, Items.GRAVEL),
             IRecipe::noRecipe,
             MaterialBlockType::registerItemTag,
             MaterialBlockType::registerBlockTag,
@@ -339,11 +352,39 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     }
 
     private static void oreLootProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider) {
-        provider.add(holder.block.get(), (block -> provider.createOreDrop(block, Registration.item(MaterialItemType.RAW_MATERIAL, holder.material))));
+        provider.add(holder.block.get(), block -> provider.createOreDrop(block, Registration.item(MaterialItemType.RAW_MATERIAL, holder.material)));
     }
 
-    private static TextureHolder[] basicTexture(ResourceLocation base, MaterialType material) {
-        return List.of(new TextureHolder(0, material.color, base)).toArray(TextureHolder[]::new);
+    private static void depositLootProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider, @NotNull Item baseItem) {
+        LootItemCondition.Builder hasSilkTouch = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(
+                new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
+
+        provider.add(
+                holder.block.get(),
+                (block) -> LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .when(hasSilkTouch)
+                                        .add(LootItem.lootTableItem(block))
+                        )
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .when(hasSilkTouch.invert())
+                                        .add(LootItem.lootTableItem(baseItem))
+                        )
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .when(hasSilkTouch.invert())
+                                        .add(
+                                                LootItem.lootTableItem(Registration.item(MaterialItemType.CRUSHED_MATERIAL, holder.material))
+                                                        .when(LootItemRandomChanceCondition.randomChance(0.25F))
+                                                        .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 2))
+                                        )
+                        )
+        );
     }
 
     private static void registerRawStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
