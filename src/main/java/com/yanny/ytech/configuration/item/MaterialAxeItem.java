@@ -25,8 +25,8 @@ public class MaterialAxeItem extends AxeItem {
             case FLINT ->
                     ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
                             .requires(Items.STICK)
+                            .requires(Items.FLINT)
                             .requires(SimpleItemType.GRASS_TWINE.itemTag)
-                            .requires(SimpleItemType.SHARP_FLINT.itemTag)
                             .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
                             .save(recipeConsumer, Utils.modLoc(holder.key));
             default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())

@@ -6,10 +6,10 @@
       "item": "minecraft:stick"
     },
     {
-      "tag": "ytech:grass_twines"
+      "item": "minecraft:flint"
     },
     {
-      "tag": "ytech:sharp_flints"
+      "tag": "ytech:grass_twines"
     }
   ],
   "result": {
