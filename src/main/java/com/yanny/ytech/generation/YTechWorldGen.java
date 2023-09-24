@@ -76,10 +76,10 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                 .add(Registries.CONFIGURED_FEATURE, bootstrap -> {
                     bootstrap.register(CASSITERITE_ORE_FEATURE, oreConfiguration(block(STONE_ORE, CASSITERITE), 16));
                     bootstrap.register(GALENA_ORE_FEATURE, oreConfiguration(block(STONE_ORE, GALENA), 8));
-                    bootstrap.register(GOLD_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(block(SAND_DEPOSIT, GOLD), 1, 3, 1));
-                    bootstrap.register(GOLD_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(block(GRAVEL_DEPOSIT, GOLD), 1, 2, 1));
-                    bootstrap.register(CASSITERITE_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(block(SAND_DEPOSIT, CASSITERITE), 1, 5, 2));
-                    bootstrap.register(CASSITERITE_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(block(GRAVEL_DEPOSIT, CASSITERITE), 1, 4, 2));
+                    bootstrap.register(GOLD_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(block(SAND_DEPOSIT, GOLD), 1, 3, 2));
+                    bootstrap.register(GOLD_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(block(GRAVEL_DEPOSIT, GOLD), 1, 2, 2));
+                    bootstrap.register(CASSITERITE_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(block(SAND_DEPOSIT, CASSITERITE), 2, 5, 2));
+                    bootstrap.register(CASSITERITE_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(block(GRAVEL_DEPOSIT, CASSITERITE), 2, 4, 2));
                 })
                 .add(Registries.PLACED_FEATURE, bootstrap -> {
                     HolderGetter<ConfiguredFeature<?, ?>> configured = bootstrap.lookup(Registries.CONFIGURED_FEATURE);
@@ -88,7 +88,7 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                     bootstrap.register(GALENA_ORE_UPPER, rareOrePlacement(configured, GALENA_ORE_FEATURE, 4, 64, 128));
                     bootstrap.register(GALENA_ORE_LOWER, orePlacement(configured, GALENA_ORE_FEATURE, 1, 0, 60));
                     bootstrap.register(GOLD_SAND_DEPOSIT, rareDepositPlacement(configured, GOLD_SAND_DEPOSIT_FEATURE, 3));
-                    bootstrap.register(GOLD_GRAVEL_DEPOSIT, rareDepositPlacement(configured, GOLD_GRAVEL_DEPOSIT_FEATURE, 5));
+                    bootstrap.register(GOLD_GRAVEL_DEPOSIT, rareDepositPlacement(configured, GOLD_GRAVEL_DEPOSIT_FEATURE, 4));
                     bootstrap.register(CASSITERITE_SAND_DEPOSIT, rareDepositPlacement(configured, CASSITERITE_SAND_DEPOSIT_FEATURE, 2));
                     bootstrap.register(CASSITERITE_GRAVEL_DEPOSIT, rareDepositPlacement(configured, CASSITERITE_GRAVEL_DEPOSIT_FEATURE, 3));
                 })
