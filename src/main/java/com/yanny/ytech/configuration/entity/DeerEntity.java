@@ -9,9 +9,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -22,9 +21,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -43,10 +44,31 @@ public class DeerEntity extends Animal {
     }
 
     @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType reason,
+                                        @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag) {
+        hasAntlers = random.nextBoolean();
+        entityData.set(DATA_HAS_ANTLERS_ID, hasAntlers);
+        return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+    }
+
+    @Override
+    public void finalizeSpawnChildFromBreeding(@NotNull ServerLevel level, @NotNull Animal animal, @Nullable AgeableMob baby) {
+        hasAntlers = random.nextBoolean();
+        entityData.set(DATA_HAS_ANTLERS_ID, hasAntlers);
+        super.finalizeSpawnChildFromBreeding(level, animal, baby);
+    }
+
+    @Override
+    protected void onOffspringSpawnedFromEgg(@NotNull Player pPlayer, @NotNull Mob pChild) {
+        hasAntlers = random.nextBoolean();
+        entityData.set(DATA_HAS_ANTLERS_ID, hasAntlers);
+        super.onOffspringSpawnedFromEgg(pPlayer, pChild);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        hasAntlers = random.nextBoolean();
-        entityData.define(DATA_HAS_ANTLERS_ID, hasAntlers);
+        entityData.define(DATA_HAS_ANTLERS_ID, false);
     }
 
     @Override
@@ -88,6 +110,7 @@ public class DeerEntity extends Animal {
         super.readAdditionalSaveData(tag);
         moreWheatTicks = tag.getInt(TAG_MORE_WHEAT_TICKS);
         hasAntlers = tag.getBoolean(TAG_HAS_ANTLERS);
+        entityData.set(DATA_HAS_ANTLERS_ID, hasAntlers);
     }
 
     public boolean hasAntler() {
