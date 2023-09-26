@@ -7,6 +7,7 @@ import com.yanny.ytech.network.kinetic.message.NetworkAddedOrUpdatedMessage;
 import com.yanny.ytech.network.kinetic.message.NetworkRemovedMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -61,20 +62,25 @@ public class ServerKineticLevel extends SavedData {
     void add(IKineticBlockEntity blockEntity) {
         final int networkId = blockEntity.getNetworkId();
         KineticNetwork resultNetwork;
+        Level level = blockEntity.getLevel();
+
+        if (level == null) {
+            return;
+        }
 
         if (networkId >= 0) {
             resultNetwork = networkMap.get(networkId);
 
             if (!resultNetwork.canAttach(blockEntity)) {
                 LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
-                blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
+                level.destroyBlock(blockEntity.getBlockPos(), true);
                 return;
             }
         } else {
             //TODO possible performance improvement: first check network area intersection
             List<KineticNetwork> networks = networkMap.values().stream().filter((n) -> n.canConnect(blockEntity)).toList();
 
-            if (networks.size() == 0) {
+            if (networks.isEmpty()) {
                 KineticNetwork network = new KineticNetwork(getUniqueId(), this::onRemove);
                 networkMap.put(network.getNetworkId(), network);
                 resultNetwork = network;
@@ -83,7 +89,7 @@ public class ServerKineticLevel extends SavedData {
 
                 if (!resultNetwork.canAttach(blockEntity)) {
                     LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
-                    blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
+                    level.destroyBlock(blockEntity.getBlockPos(), true);
                     return;
                 }
             } else {
@@ -94,7 +100,7 @@ public class ServerKineticLevel extends SavedData {
 
                     if (!resultNetwork.canAttach(blockEntity)) {
                         LOGGER.warn("Can't attach block {} to network at {} - {} <> {}", blockEntity, blockEntity.getBlockPos(), blockEntity.getRotationDirection(), resultNetwork.getRotationDirection());
-                        blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
+                        level.destroyBlock(blockEntity.getBlockPos(), true);
                         return;
                     }
                 } else {
@@ -102,16 +108,16 @@ public class ServerKineticLevel extends SavedData {
 
                     if (!network.canAttach(blockEntity) || !distinctNetworks.stream().allMatch((n) -> n.canAttach(blockEntity) && n.canAttach(network))) {
                         LOGGER.warn("Can't attach block {} to network at {}", blockEntity, blockEntity.getBlockPos());
-                        blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
+                        level.destroyBlock(blockEntity.getBlockPos(), true);
                         return;
                     }
 
                     do {
                         KineticNetwork toRemove = distinctNetworks.remove(0);
-                        network.addAll(toRemove, blockEntity.getLevel());
+                        network.addAll(toRemove, level);
                         networkMap.remove(toRemove.getNetworkId());
                         channel.send(PacketDistributor.ALL.noArg(), new NetworkRemovedMessage(toRemove.getNetworkId()));
-                    } while (distinctNetworks.size() > 0);
+                    } while (!distinctNetworks.isEmpty());
 
                     resultNetwork = network;
                 }
@@ -125,6 +131,11 @@ public class ServerKineticLevel extends SavedData {
 
     public void update(IKineticBlockEntity blockEntity) {
         KineticNetwork network = getNetwork(blockEntity);
+        Level level = blockEntity.getLevel();
+
+        if (level == null) {
+            return;
+        }
 
         if (network != null) {
             if (network.canAttach(blockEntity)) {
@@ -135,7 +146,7 @@ public class ServerKineticLevel extends SavedData {
             } else {
                 List<KineticNetwork> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
                 networkMap.putAll(networks.stream().collect(Collectors.toMap(KineticNetwork::getNetworkId, n -> n)));
-                blockEntity.getLevel().destroyBlock(blockEntity.getBlockPos(), true);
+                level.destroyBlock(blockEntity.getBlockPos(), true);
                 LOGGER.warn("Removed block {} from network at {} because started rotating to wrong direction", blockEntity, blockEntity.getBlockPos());
                 setDirty();
 

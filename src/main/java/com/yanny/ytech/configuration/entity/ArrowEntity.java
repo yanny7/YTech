@@ -21,7 +21,6 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Set;
@@ -129,22 +128,6 @@ public class ArrowEntity extends AbstractArrow {
 
     public int getColor() {
         return this.entityData.get(ID_EFFECT_COLOR);
-    }
-
-    public void setEffects(@Nullable Potion potion, int color) {
-        if (potion != null) {
-            this.potion = potion;
-
-            if (color == NO_EFFECT_COLOR) {
-                this.updateColor();
-            } else {
-                this.setFixedColor(color);
-            }
-        } else {
-            this.potion = Potions.EMPTY;
-            this.effects.clear();
-            this.entityData.set(ID_EFFECT_COLOR, NO_EFFECT_COLOR);
-        }
     }
 
     public void addEffect(@NotNull MobEffectInstance mobEffectInstance) {

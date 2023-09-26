@@ -290,6 +290,7 @@ public class KineticNetwork {
     }
 
     public List<KineticNetwork> remove(Function<Integer, List<Integer>> idsGetter, Consumer<Integer> onRemove, IKineticBlockEntity blockEntity, SimpleChannel channel) {
+        Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
         BlockPos blockPos = blockEntity.getBlockPos();
@@ -299,7 +300,8 @@ public class KineticNetwork {
         consumerBlocks.remove(blockPos);
         blockEntity.getKineticNetworkType().removeEntity.accept(this, blockEntity);
 
-        if ((blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos)).toList().size() == 1) || (providerBlocks.isEmpty() && consumerBlocks.isEmpty())) { // if we are not splitting
+        if ((blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos)).toList().size() == 1)
+                || (providerBlocks.isEmpty() && consumerBlocks.isEmpty()) || level == null) { // if we are not splitting
             return List.of();
         }
 
@@ -308,7 +310,7 @@ public class KineticNetwork {
         BlockPos neighbor = neighbors.remove(0); // remove first network (will be our network)
 
         clear();
-        insertConnectedPositions(this, providerBlocks, consumerBlocks, neighbor, blockEntity.getLevel()); // re-insert blocks
+        insertConnectedPositions(this, providerBlocks, consumerBlocks, neighbor, level); // re-insert blocks
 
         return neighbors.stream().map((pos) -> {
             if ((providerBlocks.isEmpty() && consumerBlocks.isEmpty()) || (!providerBlocks.containsKey(pos) && !consumerBlocks.containsKey(pos))) {
@@ -316,7 +318,7 @@ public class KineticNetwork {
             }
 
             KineticNetwork network = new KineticNetwork(ids.remove(0), onRemove);
-            insertConnectedPositions(network, providerBlocks, consumerBlocks, pos, blockEntity.getLevel());
+            insertConnectedPositions(network, providerBlocks, consumerBlocks, pos, level);
             channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
             return network;
         }).filter(Objects::nonNull).toList();

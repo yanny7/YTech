@@ -48,8 +48,8 @@ public class MachineScreenHandler<T extends MachineContainerMenu> {
     }
 
     public static class Builder<T extends MachineContainerMenu> {
-        @NotNull MachineItemStackHandler itemStackHandler;
-        @NotNull Set<IComponent> components = new LinkedHashSet<>();
+        @NotNull final MachineItemStackHandler itemStackHandler;
+        @NotNull final Set<IComponent> components = new LinkedHashSet<>();
 
         public Builder(@NotNull T menu) {
             itemStackHandler = menu.getBlockEntity().getItemStackHandler();

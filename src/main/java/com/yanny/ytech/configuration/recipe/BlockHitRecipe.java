@@ -139,7 +139,7 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
-        private Ingredient block = Ingredient.EMPTY;
+        private final Ingredient block;
         private final Item result;
         private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 

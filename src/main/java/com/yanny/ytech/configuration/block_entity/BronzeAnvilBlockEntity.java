@@ -39,11 +39,6 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
         };
     }
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-    }
-
     public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                    @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
