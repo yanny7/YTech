@@ -1,6 +1,9 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.configuration.item.*;
+import com.yanny.ytech.configuration.item.BasketItem;
+import com.yanny.ytech.configuration.item.BrickMoldItem;
+import com.yanny.ytech.configuration.item.ClayBucketItem;
+import com.yanny.ytech.configuration.item.ToolItem;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
@@ -14,6 +17,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluids;
@@ -196,16 +200,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             IRecipe::noRecipe, // hit flint on stone
             SimpleItemType::registerSimpleTag),
-    FLINT_SAW("flint_saw", "Flint Saw",
-            ItemTags.create(Utils.modLoc("saws/flint")),
-            () -> new FlintSawItem(Tiers.WOOD, new Item.Properties()),
-            () -> basicTexture(Utils.modItemLoc("flint_saw")),
+    FLINT_KNIFE("flint_knife", "Flint Knife",
+            ItemTags.create(Utils.modLoc("knives/flint")),
+            () -> new SwordItem(Tiers.WOOD, 1, -1.0f, new Item.Properties()),
+            () -> basicTexture(Utils.modItemLoc("knife/flint")),
             SimpleItemType::basicItemModelProvider,
-            SimpleItemType::registerFlintSawRecipe,
-            (holder, provider) -> {
-                provider.tag(holder.object.itemTag).add(holder.item.get());
-                provider.tag(SAW.groupTag).addTag(holder.object.itemTag);
-            }),
+            SimpleItemType::registerFlintKnifeRecipe,
+            SimpleItemType::registerSimpleTag),
     FLOUR("flour", "Flour",
             ItemTags.create(Utils.modLoc("flour")),
             SimpleItemType::simpleItem,
@@ -404,15 +405,20 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerWoodenPlateRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
                 .requires(ItemTags.WOODEN_SLABS)
+                .requires(AXE.groupTag)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_axe"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
+                .requires(ItemTags.WOODEN_SLABS)
                 .requires(SAW.groupTag)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_saw"));
     }
 
     private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(Items.STICK)
-                .requires(SAW.groupTag)
+                .requires(AXE.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
@@ -458,11 +464,11 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerFlintSawRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerFlintKnifeRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
                 .requires(Items.STICK)
                 .requires(Items.FLINT)
-                .requires(SHARP_FLINT.itemTag)
+                .requires(GRASS_TWINE.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }

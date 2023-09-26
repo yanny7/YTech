@@ -9,14 +9,13 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 public class MaterialPickaxeItem extends PickaxeItem {
-    public MaterialPickaxeItem(Tier pTier) {
-        super(pTier, 1, -2.8f, new Properties());
+    public MaterialPickaxeItem(@NotNull Holder.ItemHolder holder) {
+        super(holder.material.getTier(), 1, -2.8f, new Properties());
     }
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {

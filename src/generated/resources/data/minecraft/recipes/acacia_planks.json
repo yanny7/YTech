@@ -1,4 +1,16 @@
 {
-  "type": "minecraft:crafting_special_tippedarrow",
-  "category": "misc"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:acacia_log"
+    },
+    {
+      "tag": "ytech:saws"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:acacia_planks"
+  }
 }

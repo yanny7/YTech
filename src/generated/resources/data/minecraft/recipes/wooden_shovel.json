@@ -1,4 +1,21 @@
 {
-  "type": "minecraft:crafting_special_tippedarrow",
-  "category": "misc"
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/wooden"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "#",
+    "S",
+    "S"
+  ],
+  "result": {
+    "item": "minecraft:wooden_shovel"
+  },
+  "show_notification": true
 }

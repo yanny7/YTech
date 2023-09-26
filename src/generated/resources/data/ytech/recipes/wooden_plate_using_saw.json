@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:wooden_slabs"
+    },
+    {
+      "tag": "ytech:saws"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "ytech:wooden_plate"
+  }
+}

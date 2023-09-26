@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.item;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialItemType;
+import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.Holder;
@@ -9,15 +10,23 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Tier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 public class MaterialAxeItem extends AxeItem {
-    public MaterialAxeItem(Tier pTier) {
-        super(pTier, 6.0f, -3.2f, new Item.Properties());
+    @NotNull private final Holder.ItemHolder holder;
+
+    public MaterialAxeItem(@NotNull Holder.ItemHolder holder) {
+        super(holder.material.getTier(), 6.0f, -3.2f, new Item.Properties());
+        this.holder = holder;
+    }
+
+    @Override
+    public boolean hasCraftingRemainingItem(@NotNull ItemStack stack) {
+        return holder.material == MaterialType.FLINT;
     }
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
