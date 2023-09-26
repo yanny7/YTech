@@ -9,6 +9,9 @@ import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -53,6 +56,7 @@ public class Registration {
     private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> GLM_CODECS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, YTechMod.MOD_ID);
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, YTechMod.MOD_ID);
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, YTechMod.MOD_ID);
+    private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, YTechMod.MOD_ID);
 
     private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
 
@@ -94,6 +98,10 @@ public class Registration {
             HOLDER.simpleBlocks().put(type, registerBlock(type));
         }
 
+        for (AnimalEntityType type : AnimalEntityType.values()) {
+            HOLDER.entities().put(type, registerAnimalEntity(type));
+        }
+
         RECIPE_TYPES.register("drying", () -> DryingRecipe.RECIPE_TYPE);
         RECIPE_TYPES.register("tanning", () -> TanningRecipe.RECIPE_TYPE);
         RECIPE_TYPES.register("milling", () -> MillingRecipe.RECIPE_TYPE);
@@ -125,6 +133,7 @@ public class Registration {
         GLM_CODECS.register(eventBus);
         RECIPE_TYPES.register(eventBus);
         RECIPE_SERIALIZERS.register(eventBus);
+        ENTITY_TYPES.register(eventBus);
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -134,6 +143,7 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
             HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
+            HOLDER.entities().values().forEach(h -> event.accept(h.spawnEgg.get()));
         }
     }
 
@@ -230,6 +240,11 @@ public class Registration {
         return Objects.requireNonNull(Objects.requireNonNull(HOLDER.blocks().get(type), "Missing item type " + type).get(material), "Missing material " + material).block.get();
     }
 
+    @NotNull
+    public static EntityType<?> entityType(@NotNull AnimalEntityType type) {
+        return Objects.requireNonNull(HOLDER.entities().get(type), "Missing entity type " + type).entityType.get();
+    }
+
     private static Holder.BlockHolder registerBlock(MaterialBlockType blockType, MaterialType material) {
         return switch (blockType.type) {
             case BLOCK -> new Holder.BlockHolder(blockType, material, Registration::registerBlockItem);
@@ -244,6 +259,22 @@ public class Registration {
             case ENTITY_BLOCK -> new Holder.EntitySimpleBlockHolder(blockType, Registration::registerBlockItem, Registration::registerBlockEntity);
             case MENU_BLOCK -> new Holder.MenuEntitySimpleBlockHolder(blockType, Registration::registerBlockItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
         };
+    }
+
+    private static Holder.EntityHolder registerAnimalEntity(AnimalEntityType type) {
+        return new Holder.EntityHolder(type, Registration::registerEntityType, Registration::registerSpawnEgg);
+    }
+
+    private static RegistryObject<Item> registerSpawnEgg(Holder.EntityHolder holder) {
+        return ITEMS.register(holder.key + "_spawn_egg", () -> holder.object.getSpawnEgg(holder));
+    }
+
+    private static RegistryObject<EntityType<Animal>> registerEntityType(Holder.EntityHolder holder) {
+        return ENTITY_TYPES.register(holder.key, () -> {
+            EntityType.Builder<Animal> builder = EntityType.Builder.of((entityType, level) -> holder.object.getEntity(holder, entityType, level), MobCategory.CREATURE);
+            holder.object.entityTypeBuilder.accept(builder);
+            return builder.build(holder.key);
+        });
     }
 
     private static RegistryObject<Block> registerBlockItem(Holder.BlockHolder holder) {

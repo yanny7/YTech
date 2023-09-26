@@ -1,34 +1,34 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_flint": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ytech:dried_venison"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_venison": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:flint"
+              "ytech:venison"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
-    },
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "ytech:flint_pickaxe"
-      },
-      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_flint",
+      "has_venison",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "ytech:flint_pickaxe"
+      "ytech:dried_venison"
     ]
   },
   "sends_telemetry_event": false

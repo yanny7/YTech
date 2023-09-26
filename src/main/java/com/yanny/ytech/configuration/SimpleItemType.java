@@ -6,7 +6,6 @@ import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +33,7 @@ import java.util.function.Supplier;
 
 import static com.yanny.ytech.configuration.MaterialItemType.*;
 import static com.yanny.ytech.registration.Registration.HOLDER;
+import static com.yanny.ytech.registration.Registration.item;
 
 public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, ItemModelProvider>, IRecipe<Holder.SimpleItemHolder>, IItemTag<Holder.SimpleItemHolder> {
     GRASS_FIBERS("grass_fibers", "Grass Fibers",
@@ -113,60 +113,88 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerBasketRecipe,
             SimpleItemType::registerSimpleTag),
     DRIED_BEEF("dried_beef", "Dried Beef",
-            ItemTags.create(Utils.modLoc("dried_beef")),
+            ItemTags.create(Utils.modLoc("dried_beefs")),
             () -> simpleFood(6, 0.7f),
             () -> basicTexture(Utils.modItemLoc("dried_beef")),
             SimpleItemType::basicItemModelProvider,
             (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.BEEF),
             SimpleItemType::registerSimpleTag),
     DRIED_CHICKEN("dried_chicken", "Dried Chicken",
-            ItemTags.create(Utils.modLoc("dried_chicken")),
+            ItemTags.create(Utils.modLoc("dried_chickens")),
             () -> simpleFood(4, 0.5f),
             () -> basicTexture(Utils.modItemLoc("dried_chicken")),
             SimpleItemType::basicItemModelProvider,
             (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.CHICKEN),
             SimpleItemType::registerSimpleTag),
     DRIED_COD("dried_cod", "Dried Cod",
-            ItemTags.create(Utils.modLoc("dried_cod")),
+            ItemTags.create(Utils.modLoc("dried_cods")),
             () -> simpleFood(4, 0.5f),
             () -> basicTexture(Utils.modItemLoc("dried_cod")),
             SimpleItemType::basicItemModelProvider,
             (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.COD),
             SimpleItemType::registerSimpleTag),
     DRIED_MUTTON("dried_mutton", "Dried Mutton",
-            ItemTags.create(Utils.modLoc("dried_mutton")),
+            ItemTags.create(Utils.modLoc("dried_muttons")),
             () -> simpleFood(4, 0.5f),
             () -> basicTexture(Utils.modItemLoc("dried_mutton")),
             SimpleItemType::basicItemModelProvider,
             (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.MUTTON),
             SimpleItemType::registerSimpleTag),
     DRIED_PORKCHOP("dried_porkchop", "Dried Porkchop",
-            ItemTags.create(Utils.modLoc("dried_porkchop")),
+            ItemTags.create(Utils.modLoc("dried_porkchops")),
             () -> simpleFood(6, 0.7f),
             () -> basicTexture(Utils.modItemLoc("dried_porkchop")),
             SimpleItemType::basicItemModelProvider,
             (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.PORKCHOP),
             SimpleItemType::registerSimpleTag),
     DRIED_RABBIT("dried_rabbit", "Dried Rabbit",
-            ItemTags.create(Utils.modLoc("dried_rabbit")),
+            ItemTags.create(Utils.modLoc("dried_rabbits")),
             () -> simpleFood(4, 0.5f),
             () -> basicTexture(Utils.modItemLoc("dried_rabbit")),
             SimpleItemType::basicItemModelProvider,
             (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.RABBIT),
             SimpleItemType::registerSimpleTag),
     DRIED_SALMON("dried_salmon", "Dried Salmon",
-            ItemTags.create(Utils.modLoc("dried_salmon")),
+            ItemTags.create(Utils.modLoc("dried_salmons")),
             () -> simpleFood(4, 0.5f),
             () -> basicTexture(Utils.modItemLoc("dried_salmon")),
             SimpleItemType::basicItemModelProvider,
             (holder, recipeConsumer) -> registerDryingRecipe(holder, recipeConsumer, Items.SALMON),
+            SimpleItemType::registerSimpleTag),
+    DRIED_VENISON("dried_venison", "Dried Venison",
+            ItemTags.create(Utils.modLoc("dried_venison")),
+            () -> simpleFood(5, 0.7f),
+            () -> basicTexture(Utils.modItemLoc("dried_venison")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerDriedVenisonRecipe,
+            SimpleItemType::registerSimpleTag),
+    COOKED_VENISON("cooked_venison", "Cooked Venison",
+            ItemTags.create(Utils.modLoc("cooked_venison")),
+            () -> simpleFood(7, 0.8f),
+            () -> basicTexture(Utils.modItemLoc("cooked_venison")),
+            SimpleItemType::basicItemModelProvider,
+            SimpleItemType::registerCookedVenisonRecipe,
+            SimpleItemType::registerSimpleTag),
+    VENISON("venison", "Venison",
+            ItemTags.create(Utils.modLoc("venison")),
+            () -> simpleFood(2, 0.3f),
+            () -> basicTexture(Utils.modItemLoc("venison")),
+            SimpleItemType::basicItemModelProvider,
+            IRecipe::noRecipe, // drops from Deer
+            SimpleItemType::registerSimpleTag),
+    ANTLER("antler", "Antler",
+            ItemTags.create(Utils.modLoc("antlers")),
+            SimpleItemType::simpleItem,
+            () -> basicTexture(Utils.modItemLoc("antler")),
+            SimpleItemType::basicItemModelProvider,
+            IRecipe::noRecipe, // drops from Deer
             SimpleItemType::registerSimpleTag),
     SHARP_FLINT("sharp_flint", "Sharp Flint",
             ItemTags.create(Utils.modLoc("sharp_flints")),
             () -> new ToolItem(Tiers.WOOD, new Item.Properties()),
             () -> basicTexture(Utils.modItemLoc("sharp_flint")),
             SimpleItemType::basicItemModelProvider,
-            IRecipe::noRecipe,
+            IRecipe::noRecipe, // hit flint on stone
             SimpleItemType::registerSimpleTag),
     FLINT_SAW("flint_saw", "Flint Saw",
             ItemTags.create(Utils.modLoc("saws/flint")),
@@ -208,20 +236,20 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerSimpleTag),
     WATER_CLAY_BUCKET("water_clay_bucket", "Water Clay Bucket",
             ItemTags.create(Utils.modLoc("water_bucket")),
-            () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(Registration.item(CLAY_BUCKET)).stacksTo(1)),
+            () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(item(CLAY_BUCKET)).stacksTo(1)),
             () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0x0C4DF5),
             SimpleItemType::clayBucketItemModelProvider,
-            IRecipe::noRecipe,
+            IRecipe::noRecipe, // take water
             (holder, provider) -> {
                 provider.tag(holder.object.itemTag).add(holder.item.get());
                 provider.tag(holder.object.itemTag).add(Items.WATER_BUCKET);
             }),
     LAVA_CLAY_BUCKET("lava_clay_bucket", "Lava Clay Bucket",
             ItemTags.create(Utils.modLoc("lava_bucket")),
-            () -> new ClayBucketItem(() -> Fluids.LAVA, new Item.Properties().craftRemainder(Registration.item(CLAY_BUCKET)).stacksTo(1)),
+            () -> new ClayBucketItem(() -> Fluids.LAVA, new Item.Properties().craftRemainder(item(CLAY_BUCKET)).stacksTo(1)),
             () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0xF54D0C),
             SimpleItemType::clayBucketItemModelProvider,
-            IRecipe::noRecipe,
+            IRecipe::noRecipe, // take lava
             (holder, provider) -> {
                 provider.tag(holder.object.itemTag).add(holder.item.get());
                 provider.tag(holder.object.itemTag).add(Items.LAVA_BUCKET);
@@ -420,6 +448,16 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
+    private static void registerDriedVenisonRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        registerDryingRecipe(holder, recipeConsumer, item(VENISON));
+    }
+
+    private static void registerCookedVenisonRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 200)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
     private static void registerFlintSawRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
                 .requires(Items.STICK)
@@ -452,7 +490,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(Registration.item(UNFIRED_CLAY_BUCKET)), RecipeCategory.MISC, holder.item.get(), 0.35f, 200)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(item(UNFIRED_CLAY_BUCKET)), RecipeCategory.MISC, holder.item.get(), 0.35f, 200)
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }

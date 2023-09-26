@@ -50,6 +50,7 @@ public enum MaterialType {
     SPRUCE_WOOD(new Builder("spruce", "Spruce", Tiers.WOOD, ToolType.AXE).group("wooden")),
 
     FLINT(new Builder("flint", "Flint", Tiers.STONE, ToolType.PICKAXE).color(0x666666)),
+    ANTLER(new Builder("antler", "Antler", Tiers.STONE, ToolType.PICKAXE).color(0xFCFBED)),
     STONE(new Builder("stone", "Stone", Tiers.STONE, ToolType.PICKAXE).color(999999)),
     ;
 

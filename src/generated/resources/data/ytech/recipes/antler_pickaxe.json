@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "ytech:antlers"
+    },
+    {
+      "tag": "ytech:sharp_flints"
+    }
+  ],
+  "result": {
+    "item": "ytech:antler_pickaxe"
+  }
+}

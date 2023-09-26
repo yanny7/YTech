@@ -99,7 +99,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::basicItemModelProvider,
             MaterialPickaxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
-            Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
+            Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.ANTLER), MaterialType.GOLD, MaterialType.IRON)),
     SHOVEL("shovel", INameable.suffix("shovel"), INameable.suffix("Shovel"),
             (material) -> ItemTags.create(Utils.modLoc("shovels/" + material.key)),
             ItemTags.SHOVELS,

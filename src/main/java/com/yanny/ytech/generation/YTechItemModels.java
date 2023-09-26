@@ -18,5 +18,6 @@ class YTechItemModels extends ItemModelProvider {
         GeneralUtils.mapToStream(HOLDER.items()).forEach((item) -> item.object.registerModel(item, this));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach((fluid) -> fluid.object.registerModel(fluid, this));
         HOLDER.simpleItems().values().forEach((item) -> item.object.registerModel(item, this));
+        HOLDER.entities().values().forEach((entity) -> entity.object.registerModel(entity, this));
     }
 }

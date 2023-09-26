@@ -5,10 +5,7 @@ import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.Holder;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
@@ -24,16 +21,11 @@ public class MaterialPickaxeItem extends PickaxeItem {
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         switch (holder.material) {
-            case FLINT -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
-                    .define('S', Items.STICK)
-                    .define('F', Items.FLINT)
-                    .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
-                    .define('#', SimpleItemType.SHARP_FLINT.itemTag)
-                    .pattern("FTF")
-                    .pattern("#S ")
-                    .pattern(" S ")
-                    .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+            case ANTLER -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
+                            .requires(SimpleItemType.ANTLER.itemTag)
+                            .requires(SimpleItemType.SHARP_FLINT.itemTag)
+                            .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.ANTLER.itemTag))
+                            .save(recipeConsumer, Utils.modLoc(holder.key));
             default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('P', MaterialItemType.PLATE.itemTag.get(holder.material))

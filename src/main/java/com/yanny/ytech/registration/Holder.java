@@ -1,6 +1,8 @@
 package com.yanny.ytech.registration;
 
 import com.yanny.ytech.configuration.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -179,6 +181,20 @@ public class Holder {
             this.source = source;
             this.flowing = flowing;
             this.bucket = bucket;
+        }
+    }
+
+    public static class EntityHolder extends Holder {
+        @NotNull public final AnimalEntityType object;
+        @NotNull public final RegistryObject<EntityType<Animal>> entityType;
+        @NotNull public final RegistryObject<Item> spawnEgg;
+
+        EntityHolder(@NotNull AnimalEntityType object, @NotNull Function<EntityHolder, RegistryObject<EntityType<Animal>>> typeSupplier,
+                     @NotNull Function<EntityHolder, RegistryObject<Item>> spawnEggSupplier) {
+            super(object.key, object.name);
+            this.object = object;
+            this.entityType = typeSupplier.apply(this);
+            this.spawnEgg = spawnEggSupplier.apply(this);
         }
     }
 
