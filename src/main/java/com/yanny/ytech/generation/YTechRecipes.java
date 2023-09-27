@@ -365,6 +365,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("H W")
                 .pattern("PSP")
                 .pattern("PSP")
+                .group("fence")
                 .unlockedBy(getHasName(Items.STICK), has(Items.STICK))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -379,6 +380,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("H W")
                 .pattern("BPB")
                 .pattern("SPS")
+                .group("fence_gate")
                 .unlockedBy(getHasName(Items.STICK), has(Items.STICK))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -392,6 +394,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("PPH")
                 .pattern("PPB")
                 .pattern("PPW")
+                .group("door")
                 .unlockedBy(getHasName(planks), has(planks))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -405,6 +408,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("HBW")
                 .pattern("PPP")
                 .pattern("PPP")
+                .group("trapdoor")
                 .unlockedBy(getHasName(planks), has(planks))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -418,6 +422,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("H W")
                 .pattern("BBB")
                 .pattern("PPP")
+                .group("pressure_plate")
                 .unlockedBy(getHasName(planks), has(planks))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -427,6 +432,7 @@ class YTechRecipes extends RecipeProvider {
                 .requires(HAMMER.groupTag)
                 .requires(SAW.groupTag)
                 .requires(planks)
+                .group("button")
                 .unlockedBy(getHasName(planks), has(planks))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -440,6 +446,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("H S")
                 .pattern("WWW")
                 .pattern("PPP")
+                .group("bed")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -454,6 +461,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("HFS")
                 .pattern("PIP")
                 .pattern("PPP")
+                .group("boat")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
     }

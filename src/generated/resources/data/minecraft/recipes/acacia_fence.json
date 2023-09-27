@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "fence",
   "key": {
     "H": {
       "tag": "ytech:hammers"
