@@ -88,10 +88,10 @@ public class ForgeBusSubscriber {
 
     private static void setBlockRequireValidTool(@NotNull Block block) {
         try {
-            BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "defaultBlockState");
+            BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "f_49786_"); // defaultBlockState
 
             if (blockState != null) {
-                ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "requiresCorrectToolForDrops");
+                ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "f_60600_"); // requiresCorrectToolForDrops
             }
 
             LOGGER.info("Set requiresCorrectToolForDrops on {}", block.getName());
