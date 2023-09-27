@@ -1,6 +1,7 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.AnimalEntityType;
 import com.yanny.ytech.configuration.Utils;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
@@ -11,6 +12,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -37,6 +39,7 @@ import java.util.concurrent.CompletableFuture;
 import static com.yanny.ytech.configuration.MaterialBlockType.*;
 import static com.yanny.ytech.configuration.MaterialType.*;
 import static com.yanny.ytech.registration.Registration.block;
+import static com.yanny.ytech.registration.Registration.entityType;
 
 public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
     private static final ResourceKey<ConfiguredFeature<?, ?>> CASSITERITE_ORE_FEATURE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Utils.modLoc("cassiterite_ore"));
@@ -95,6 +98,13 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                 .add(ForgeRegistries.Keys.BIOME_MODIFIERS, bootstrap -> {
                     final HolderGetter<Biome> biomeReg = bootstrap.lookup(Registries.BIOME);
                     final HolderGetter<PlacedFeature> featureReg = bootstrap.lookup(Registries.PLACED_FEATURE);
+
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_deer_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(AnimalEntityType.DEER.biomeTag),
+                                    List.of(new MobSpawnSettings.SpawnerData(entityType(AnimalEntityType.DEER), 10, 4, 8))
+                            )
+                    );
 
                     bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_ore_generation")),
                             new ForgeBiomeModifiers.AddFeaturesBiomeModifier(

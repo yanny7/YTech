@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#ytech:deer_native_biome",
+  "spawners": {
+    "type": "ytech:deer",
+    "maxCount": 8,
+    "minCount": 4,
+    "weight": 10
+  }
+}

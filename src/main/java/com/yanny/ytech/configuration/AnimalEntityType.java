@@ -8,7 +8,10 @@ import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
+import net.minecraft.data.tags.BiomeTagsProvider;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -18,6 +21,8 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -41,6 +46,7 @@ import java.util.function.Supplier;
 
 public enum AnimalEntityType {
     DEER("deer", "Deer",
+            TagKey.create(Registries.BIOME, Utils.modLoc("deer_native_biome")),
             (builder) -> builder.sized(0.9F, 1.6F).clientTrackingRange(10),
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
@@ -49,11 +55,13 @@ public enum AnimalEntityType {
             holder -> AnimalEntityType.spawnEggItem(holder, 0x664825, 0xE09C53),
             AnimalEntityType::registerSpawnEggModel,
             AnimalEntityType::registerDeerDrops,
+            AnimalEntityType::registerDeerBiomeTag,
             AnimalEntityType::spawnAnimalPredicate)
     ;
 
     @NotNull public final String key;
     @NotNull public final String name;
+    @NotNull public final TagKey<Biome> biomeTag;
     @NotNull public final Consumer<EntityType.Builder<Animal>> entityTypeBuilder;
     @NotNull public final SpawnPlacements.Type spawnPlacement;
     @NotNull public final Heightmap.Types heightMapType;
@@ -62,16 +70,19 @@ public enum AnimalEntityType {
     @NotNull private final Function<Holder.EntityHolder, Item> spawnEggGetter;
     @NotNull private final BiConsumer<Holder.EntityHolder, ItemModelProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.EntityHolder, EntityLootSubProvider> lootGetter;
+    @NotNull private final BiConsumer<Holder.EntityHolder, BiomeTagsProvider> biomeTagsGetter;
     @NotNull public final SpawnPlacements.SpawnPredicate<Animal> spawnPredicate;
 
-    AnimalEntityType(@NotNull String key, @NotNull String name, @NotNull Consumer<EntityType.Builder<Animal>> entityTypeBuilder,
+    AnimalEntityType(@NotNull String key, @NotNull String name, @NotNull TagKey<Biome> biomeTag, @NotNull Consumer<EntityType.Builder<Animal>> entityTypeBuilder,
                      @NotNull SpawnPlacements.Type spawnPlacement, @NotNull Heightmap.Types heightMapType, @NotNull AnimalEntityGetter entityGetter,
                      @NotNull Supplier<AttributeSupplier> attributeGetter, @NotNull Function<Holder.EntityHolder, Item> spawnEggGetter,
                      @NotNull BiConsumer<Holder.EntityHolder, ItemModelProvider> modelGetter,
                      @NotNull BiConsumer<Holder.EntityHolder, EntityLootSubProvider> lootGetter,
+                     @NotNull BiConsumer<Holder.EntityHolder, BiomeTagsProvider> biomeTagsGetter,
                      @NotNull SpawnPlacements.SpawnPredicate<Animal> spawnPredicate) {
         this.key = key;
         this.name = name;
+        this.biomeTag = biomeTag;
         this.entityTypeBuilder = entityTypeBuilder;
         this.spawnPlacement = spawnPlacement;
         this.heightMapType = heightMapType;
@@ -80,6 +91,7 @@ public enum AnimalEntityType {
         this.spawnEggGetter = spawnEggGetter;
         this.modelGetter = modelGetter;
         this.lootGetter = lootGetter;
+        this.biomeTagsGetter = biomeTagsGetter;
         this.spawnPredicate = spawnPredicate;
     }
 
@@ -89,6 +101,10 @@ public enum AnimalEntityType {
 
     public void registerLoot(@NotNull Holder.EntityHolder holder, @NotNull EntityLootSubProvider provider) {
         lootGetter.accept(holder, provider);
+    }
+
+    public void registerTag(@NotNull Holder.EntityHolder holder, @NotNull BiomeTagsProvider provider) {
+        biomeTagsGetter.accept(holder, provider);
     }
 
     public Animal getEntity(@NotNull Holder.EntityHolder holder, @NotNull EntityType<Animal> entityType, @NotNull Level level) {
@@ -154,6 +170,12 @@ public enum AnimalEntityType {
                                 )
                 )
         );
+    }
+
+    private static void registerDeerBiomeTag(Holder.EntityHolder holder, BiomeTagsProvider provider) {
+        provider.tag(holder.object.biomeTag).add(Biomes.FOREST).add(Biomes.WINDSWEPT_FOREST).add(Biomes.OLD_GROWTH_BIRCH_FOREST)
+                .add(Biomes.BIRCH_FOREST).add(Biomes.DARK_FOREST).add(Biomes.OLD_GROWTH_PINE_TAIGA).add(Biomes.OLD_GROWTH_SPRUCE_TAIGA)
+                .add(Biomes.WOODED_BADLANDS).add(Biomes.FLOWER_FOREST).add(Biomes.CHERRY_GROVE).add(Biomes.GROVE).add(Biomes.SNOWY_TAIGA);
     }
 
     interface AnimalEntityGetter {
