@@ -196,7 +196,7 @@ class YTechRecipes extends RecipeProvider {
         mcCookingRecipe(recipeConsumer, RecipeCategory.FOOD, BREAD_DOUGH, Items.BREAD, 0.1f, 200);
         mcCookingRecipe(recipeConsumer, RecipeCategory.MISC, UNFIRED_BRICK, Items.BRICK, 0.3f, 200);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.WOODEN_SHOVEL)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Items.WOODEN_SHOVEL)
                 .define('#', WOODEN_PLATE.itemTag)
                 .define('S', Items.STICK)
                 .pattern("#")
@@ -213,7 +213,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("B#B")
                 .unlockedBy(Utils.getHasName(), has(WOODEN_PLATE.itemTag))
                 .save(recipeConsumer, Utils.loc(Items.CHEST));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEATHER_BOOTS)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_BOOTS)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -222,7 +222,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_BOOTS));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEATHER_HELMET)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_HELMET)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -231,7 +231,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_HELMET));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEATHER_LEGGINGS)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_LEGGINGS)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -240,7 +240,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_LEGGINGS));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEATHER_CHESTPLATE)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_CHESTPLATE)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -249,7 +249,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LLL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_CHESTPLATE));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEATHER_HORSE_ARMOR)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_HORSE_ARMOR)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -258,7 +258,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_HORSE_ARMOR));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BOW)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.BOW)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', Items.STICK)
                 .define('W', Items.STRING)

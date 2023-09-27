@@ -20,12 +20,12 @@ public class MaterialPickaxeItem extends PickaxeItem {
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         switch (holder.material) {
-            case ANTLER -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
+            case ANTLER -> ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, holder.item.get())
                             .requires(SimpleItemType.ANTLER.itemTag)
                             .requires(SimpleItemType.SHARP_FLINT.itemTag)
                             .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.SHARP_FLINT.itemTag))
                             .save(recipeConsumer, Utils.modLoc(holder.key));
-            default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+            default -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('S', Items.STICK)
                     .define('P', MaterialItemType.PLATE.itemTag.get(holder.material))
                     .define('R', MaterialItemType.ROD.itemTag.get(holder.material))

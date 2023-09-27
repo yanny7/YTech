@@ -21,7 +21,7 @@ public class MaterialShovelItem extends ShovelItem {
     }
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                 .define('S', Items.STICK)
                 .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))
                 .pattern("#")
