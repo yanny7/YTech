@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "boat",
+  "key": {
+    "F": {
+      "tag": "ytech:files"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "I": {
+      "tag": "ytech:rods"
+    },
+    "P": {
+      "item": "minecraft:bamboo_planks"
+    },
+    "S": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "HFS",
+    "PIP",
+    "PPP"
+  ],
+  "result": {
+    "item": "minecraft:bamboo_raft"
+  },
+  "show_notification": true
+}
