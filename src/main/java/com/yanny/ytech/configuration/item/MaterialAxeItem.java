@@ -26,7 +26,14 @@ public class MaterialAxeItem extends AxeItem {
 
     @Override
     public boolean hasCraftingRemainingItem(@NotNull ItemStack stack) {
-        return holder.material == MaterialType.FLINT;
+        return holder.material == MaterialType.FLINT && stack.getMaxDamage() - stack.getDamageValue() > 1;
+    }
+
+    @Override
+    public ItemStack getCraftingRemainingItem(@NotNull ItemStack itemStack) {
+        ItemStack result = itemStack.copy();
+        result.setDamageValue(itemStack.getDamageValue() + 1);
+        return result;
     }
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
