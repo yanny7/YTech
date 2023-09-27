@@ -1,46 +1,28 @@
+# YTech
 
-Source installation information for modders
--------------------------------------------
-This code follows the Minecraft Forge installation methodology. It will apply
-some small patches to the vanilla MCP source code, giving you and it access 
-to some of the data and functions you need to build a successful mod.
+is tech mod based on real life, increasing difficulty on early game.
 
-Note also that the patches are built against "un-renamed" MCP source code (aka
-SRG Names) - this means that you will not be able to read them directly against
-normal code.
+It modifies vanilla recipes for early game items, forcing tools on some blocks and adding new tools, items and blocks to help you with progression.
 
-Setup Process:
-==============================
+This mod is in development. Expect bugs, unfinished and half-baked progression tree.
 
-Step 1: Open your command-line and browse to the folder where you extracted the zip file.
+Currently mod covers
+- Stone age
+- Bronze age
+- Beginning of iron age (crafting iron ingot is final step right now)
 
-Step 2: You're left with a choice.
-If you prefer to use Eclipse:
-1. Run the following command: `gradlew genEclipseRuns` (`./gradlew genEclipseRuns` if you are on Mac/Linux)
-2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
-   or run `gradlew eclipse` to generate the project.
+All bugs report on [github](https://github.com/yanny7/ytech).
 
-If you prefer to use IntelliJ:
-1. Open IDEA, and import project.
-2. Select your build.gradle file and have it import.
-3. Run the following command: `gradlew genIntellijRuns` (`./gradlew genIntellijRuns` if you are on Mac/Linux)
-4. Refresh the Gradle Project in IDEA if required.
+Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/c2knc97j):
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can 
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
-
-Mapping Names:
-=============================
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license, if you do not agree with it you can change your mapping names to other crowdsourced names in your 
-build.gradle. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-
-Additional Resources: 
-=========================
-Community Documentation: https://mcforge.readthedocs.io/en/latest/gettingstarted/  
-LexManos' Install Video: https://www.youtube.com/watch?v=8VEdtQLuLO0  
-Forge Forum: https://forums.minecraftforge.net/  
-Forge Discord: https://discord.gg/UvedJ9m  
+> **Hints**
+> - You can't mine wood and dirt without correct tool
+> - Your first goal is to find flint and hit stone with it
+> - Grass fibers can be obtained by breaking grass with sharp flint
+> - Look for deer, you need it for your first pickaxe
+> - Only deer with antlers drops correct item
+> - Primitive Smelter and Primitive Alloy Smelter needs chimneys for increasing temperature
+> - Each type of chimney can be up to 4 blocks high, otherwise it collapse
+> - Using reinforced chimney you can increase height up to 8 blocks, with 4 of each chimney
+> - In rivers you can find sand and gravel deposits with cassiterite (tin) and gold
+> - It's recommended to use JEI
