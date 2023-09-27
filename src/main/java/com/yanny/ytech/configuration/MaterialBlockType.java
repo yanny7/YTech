@@ -107,7 +107,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (holder, provider) -> depositLootProvider(holder, provider, Items.SAND),
             IRecipe::noRecipe,
             MaterialBlockType::registerItemTag,
-            MaterialBlockType::registerBlockTag,
+            MaterialBlockType::registerDepositBlockTag,
             MaterialType.ALL_DEPOSIT_ORES),
     GRAVEL_DEPOSIT(HolderType.BLOCK, "gravel_deposit", INameable.suffix("gravel_deposit"), INameable.suffix("Gravel Deposit"),
             (material) -> ItemTags.create(Utils.forgeLoc("gravel_deposits/" + material.key)),
@@ -120,7 +120,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (holder, provider) -> depositLootProvider(holder, provider, Items.GRAVEL),
             IRecipe::noRecipe,
             MaterialBlockType::registerItemTag,
-            MaterialBlockType::registerBlockTag,
+            MaterialBlockType::registerDepositBlockTag,
             MaterialType.ALL_DEPOSIT_ORES),
     STORAGE_BLOCK(HolderType.BLOCK, "storage_block", INameable.suffix("block"), INameable.prefix("Block of"),
             (material) -> ItemTags.create(Utils.forgeLoc("storage_blocks/" + material.key)),
@@ -457,6 +457,16 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
         if (tierTag != null) {
             provider.tag(tierTag).add(holder.block.get());
+        }
+    }
+
+    private static void registerDepositBlockTag(@NotNull Holder.BlockHolder holder, @NotNull BlockTagsProvider provider) {
+        provider.tag(holder.object.blockTag.get(holder.material)).add(holder.block.get());
+        provider.tag(holder.object.groupBlockTag).addTag(holder.object.blockTag.get(holder.material));
+        provider.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(holder.block.get());
+
+        if (holder.material.getTier().getTag() != null) {
+            provider.tag(holder.material.getTier().getTag()).add(holder.block.get());
         }
     }
 }
