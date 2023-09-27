@@ -468,7 +468,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
                 .requires(Items.STICK)
                 .requires(Items.FLINT)
-                .requires(GRASS_TWINE.itemTag)
+                .requires(LEATHER_STRIPS.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
