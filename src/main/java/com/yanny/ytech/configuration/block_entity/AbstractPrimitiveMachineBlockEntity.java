@@ -250,7 +250,7 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
 
     protected abstract void finishRecipe();
 
-    protected abstract boolean hasActiveRecipe();
+    public abstract boolean hasActiveRecipe();
 
     protected abstract boolean isValidRecipeInInput();
 

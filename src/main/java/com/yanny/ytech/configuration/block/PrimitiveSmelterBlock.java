@@ -1,16 +1,11 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.IEntityBlockHolder;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,11 +16,8 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,7 +34,7 @@ import java.util.function.Consumer;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock implements IMenuBlock, IProbeInfoProvider {
+public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock implements IMenuBlock {
     public PrimitiveSmelterBlock(Holder holder) {
         super(holder);
     }
@@ -64,25 +56,6 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
         AbstractContainerScreen<?> screen = new PrimitiveSmelterScreen(container, inventory, title);
         //noinspection unchecked
         return (AbstractContainerScreen<AbstractContainerMenu>)screen;
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return new ResourceLocation(YTechMod.MOD_ID, getClass().getName());
-    }
-
-    @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData probeHitData) {
-        if (!level.isClientSide && level.getBlockEntity(probeHitData.getPos()) instanceof PrimitiveSmelterBlockEntity blockEntity) {
-            IProbeInfo verticalLayout = probeInfo.vertical();
-            ItemStack item = blockEntity.processingItem();
-
-            if (blockEntity.hasActiveRecipe() && item != null) {
-                verticalLayout.horizontal().text("Progress: ").horizontal().text(Integer.toString(blockEntity.progress())).text("%");
-            }
-
-            verticalLayout.horizontal().text("Temperature: ").horizontal().text(Integer.toString(blockEntity.temperature())).text("°C");
-        }
     }
 
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {

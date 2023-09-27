@@ -4,10 +4,6 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
 import com.yanny.ytech.registration.Holder;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -46,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BronzeAnvilBlock extends FallingBlock implements EntityBlock, IProbeInfoProvider {
+public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
     private static final VoxelShape X_LEG1 = Block.box(3.0D, 4.0D, 4.0D, 13.0D, 5.0D, 12.0D);
     private static final VoxelShape X_LEG2 = Block.box(4.0D, 5.0D, 6.0D, 12.0D, 10.0D, 10.0D);
@@ -165,18 +161,6 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock, IProb
     @Override
     public int getDustColor(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
         return state.getMapColor(level, pos).col;
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return new ResourceLocation(YTechMod.MOD_ID, getClass().getName());
-    }
-
-    @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData probeHitData) {
-        if (!level.isClientSide && level.getBlockEntity(probeHitData.getPos()) instanceof BronzeAnvilBlockEntity blockEntity && blockEntity.getItemStackHandler().getStackInSlot(0).getCount() >= 0) {
-            probeInfo.horizontal().item(blockEntity.getItemStackHandler().getStackInSlot(0));
-        }
     }
 
     public static TextureHolder[] textureHolder() {

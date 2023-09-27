@@ -4,10 +4,6 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.TanningRackBlockEntity;
 import com.yanny.ytech.registration.Holder;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -45,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class TanningRackBlock extends Block implements EntityBlock, IProbeInfoProvider {
+public class TanningRackBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(7/16.0, 0, 0, 9/16.0, 1, 1);
 
@@ -120,18 +116,6 @@ public class TanningRackBlock extends Block implements EntityBlock, IProbeInfoPr
         }
 
         super.onRemove(state, level, pos, newState, movedByPiston);
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return new ResourceLocation(YTechMod.MOD_ID, getClass().getName());
-    }
-
-    @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData probeHitData) {
-        if (!level.isClientSide && level.getBlockEntity(probeHitData.getPos()) instanceof TanningRackBlockEntity blockEntity && blockEntity.getHitLeft() > 0) {
-            probeInfo.horizontal().text("Hit left: ").text(Integer.toString(blockEntity.getHitLeft())).text(" times");
-        }
     }
 
     public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {

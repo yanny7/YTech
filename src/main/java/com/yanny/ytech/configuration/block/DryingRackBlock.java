@@ -4,10 +4,6 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.DryingRackBlockEntity;
 import com.yanny.ytech.registration.Holder;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -47,7 +43,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class DryingRackBlock extends Block implements EntityBlock, IProbeInfoProvider {
+public class DryingRackBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(7/16.0, 0, 0, 9/16.0, 1, 1);
 
@@ -138,18 +134,6 @@ public class DryingRackBlock extends Block implements EntityBlock, IProbeInfoPro
         }
 
         super.onRemove(state, level, pos, newState, movedByPiston);
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return new ResourceLocation(YTechMod.MOD_ID, getClass().getName());
-    }
-
-    @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData probeHitData) {
-        if (!level.isClientSide && level.getBlockEntity(probeHitData.getPos()) instanceof DryingRackBlockEntity blockEntity && blockEntity.getDryingLeft() >= 0) {
-            probeInfo.horizontal().text("Remaining: ").text(Integer.toString(Math.round(blockEntity.getDryingLeft() / 20f))).text("s");
-        }
     }
 
     public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
