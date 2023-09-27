@@ -23,7 +23,7 @@ public class MaterialPickaxeItem extends PickaxeItem {
             case ANTLER -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
                             .requires(SimpleItemType.ANTLER.itemTag)
                             .requires(SimpleItemType.SHARP_FLINT.itemTag)
-                            .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.ANTLER.itemTag))
+                            .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.SHARP_FLINT.itemTag))
                             .save(recipeConsumer, Utils.modLoc(holder.key));
             default -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
