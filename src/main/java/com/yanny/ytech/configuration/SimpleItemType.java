@@ -403,24 +403,33 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerWoodenPlateRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
                 .requires(ItemTags.WOODEN_SLABS)
                 .requires(AXE.groupTag)
+                .group(holder.key)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_using_axe"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(ItemTags.WOODEN_SLABS)
                 .requires(SAW.groupTag)
+                .group(holder.key)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_using_saw"));
     }
 
     private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
+                .requires(Items.STICK)
+                .requires(AXE.groupTag)
+                .group(holder.key)
+                .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_axe"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(Items.STICK)
                 .requires(SAW.groupTag)
+                .group(holder.key)
                 .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_saw"));
     }
 
     private static void registerRawHideRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {

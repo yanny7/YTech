@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:wooden_bolt"
+        "recipe": "ytech:wooden_bolt_using_saw"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "ytech:wooden_bolt"
+      "ytech:wooden_bolt_using_saw"
     ]
   },
   "sends_telemetry_event": false

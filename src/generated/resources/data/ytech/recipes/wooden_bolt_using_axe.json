@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "group": "wooden_plate",
+  "group": "wooden_bolt",
   "ingredients": [
     {
-      "tag": "minecraft:wooden_slabs"
+      "item": "minecraft:stick"
     },
     {
       "tag": "minecraft:axes"
     }
   ],
   "result": {
-    "item": "ytech:wooden_plate"
+    "item": "ytech:wooden_bolt"
   }
 }
