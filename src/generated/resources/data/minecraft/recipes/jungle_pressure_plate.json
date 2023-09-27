@@ -6,9 +6,6 @@
     "B": {
       "tag": "ytech:bolts/wooden"
     },
-    "H": {
-      "tag": "ytech:hammers"
-    },
     "P": {
       "item": "minecraft:jungle_planks"
     },
@@ -17,9 +14,9 @@
     }
   },
   "pattern": [
-    "H W",
-    "BBB",
-    "PPP"
+    " W ",
+    "PPP",
+    "BBB"
   ],
   "result": {
     "item": "minecraft:jungle_pressure_plate"

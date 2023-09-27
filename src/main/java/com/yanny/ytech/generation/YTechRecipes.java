@@ -415,13 +415,12 @@ class YTechRecipes extends RecipeProvider {
 
     private void mcPressurePlateRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
-                .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
                 .define('B', WOODEN_BOLT.itemTag)
                 .define('P', planks)
-                .pattern("H W")
-                .pattern("BBB")
+                .pattern(" W ")
                 .pattern("PPP")
+                .pattern("BBB")
                 .group("pressure_plate")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
@@ -429,7 +428,6 @@ class YTechRecipes extends RecipeProvider {
 
     private void mcButtonRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
-                .requires(HAMMER.groupTag)
                 .requires(SAW.groupTag)
                 .requires(planks)
                 .group("button")

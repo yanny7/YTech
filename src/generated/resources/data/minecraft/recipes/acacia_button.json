@@ -4,9 +4,6 @@
   "group": "button",
   "ingredients": [
     {
-      "tag": "ytech:hammers"
-    },
-    {
       "tag": "ytech:saws"
     },
     {

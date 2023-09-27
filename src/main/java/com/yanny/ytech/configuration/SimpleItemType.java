@@ -418,7 +418,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(Items.STICK)
-                .requires(AXE.groupTag)
+                .requires(SAW.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }

@@ -6,9 +6,6 @@
     "B": {
       "tag": "ytech:bolts/wooden"
     },
-    "H": {
-      "tag": "ytech:hammers"
-    },
     "P": {
       "item": "minecraft:mangrove_planks"
     },
@@ -17,9 +14,9 @@
     }
   },
   "pattern": [
-    "H W",
-    "BBB",
-    "PPP"
+    " W ",
+    "PPP",
+    "BBB"
   ],
   "result": {
     "item": "minecraft:mangrove_pressure_plate"
