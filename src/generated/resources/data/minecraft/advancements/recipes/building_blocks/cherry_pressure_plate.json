@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cherry_planks": {
+    "has_item": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:cherry_planks"
-            ]
+            "tag": "minecraft:planks"
           }
         ]
       },
@@ -22,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_cherry_planks",
+      "has_item",
       "has_the_recipe"
     ]
   ],

@@ -395,7 +395,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("PPB")
                 .pattern("PPW")
                 .group("door")
-                .unlockedBy(getHasName(planks), has(planks))
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
     }
 
@@ -409,7 +409,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("PPP")
                 .pattern("PPP")
                 .group("trapdoor")
-                .unlockedBy(getHasName(planks), has(planks))
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
     }
 
@@ -423,7 +423,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("BBB")
                 .pattern("PPP")
                 .group("pressure_plate")
-                .unlockedBy(getHasName(planks), has(planks))
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
     }
 
@@ -433,7 +433,7 @@ class YTechRecipes extends RecipeProvider {
                 .requires(SAW.groupTag)
                 .requires(planks)
                 .group("button")
-                .unlockedBy(getHasName(planks), has(planks))
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
     }
 
@@ -442,12 +442,12 @@ class YTechRecipes extends RecipeProvider {
                 .define('H', HAMMER.groupTag)
                 .define('S', SAW.groupTag)
                 .define('W', wool)
-                .define('P', ItemTags.PLANKS)
+                .define('P', ItemTags.WOODEN_SLABS)
                 .pattern("H S")
                 .pattern("WWW")
                 .pattern("PPP")
                 .group("bed")
-                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .unlockedBy(Utils.getHasName(), has(ItemTags.WOOL))
                 .save(recipeConsumer, Utils.loc(result));
     }
 
