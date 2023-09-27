@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:knives/flint"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "P#P",
+    " P "
+  ],
+  "result": {
+    "item": "minecraft:bowl"
+  },
+  "show_notification": true
+}

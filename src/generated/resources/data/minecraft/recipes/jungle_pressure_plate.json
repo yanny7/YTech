@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/wooden"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "item": "minecraft:jungle_planks"
+    },
+    "W": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "H W",
+    "BBB",
+    "PPP"
+  ],
+  "result": {
+    "item": "minecraft:jungle_pressure_plate"
+  },
+  "show_notification": true
+}

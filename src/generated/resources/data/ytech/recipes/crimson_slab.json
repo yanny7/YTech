@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:crimson_planks"
+    },
+    {
+      "tag": "minecraft:axes"
+    }
+  ],
+  "result": {
+    "item": "minecraft:crimson_slab"
+  }
+}

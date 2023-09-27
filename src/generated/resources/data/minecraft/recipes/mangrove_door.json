@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/wooden"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "item": "minecraft:mangrove_planks"
+    },
+    "W": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "PPH",
+    "PPB",
+    "PPW"
+  ],
+  "result": {
+    "item": "minecraft:mangrove_door"
+  },
+  "show_notification": true
+}

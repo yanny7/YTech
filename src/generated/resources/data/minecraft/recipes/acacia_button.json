@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "tag": "ytech:hammers"
+    },
+    {
+      "tag": "ytech:saws"
+    },
+    {
+      "item": "minecraft:acacia_planks"
+    }
+  ],
+  "result": {
+    "item": "minecraft:acacia_button"
+  }
+}

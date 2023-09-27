@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/wooden"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "item": "minecraft:cherry_planks"
+    },
+    "W": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "HBW",
+    "PPP",
+    "PPP"
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:cherry_trapdoor"
+  },
+  "show_notification": true
+}

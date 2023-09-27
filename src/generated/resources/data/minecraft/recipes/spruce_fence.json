@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "item": "minecraft:spruce_planks"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "H W",
+    "PSP",
+    "PSP"
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:spruce_fence"
+  },
+  "show_notification": true
+}

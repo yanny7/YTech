@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/wooden"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "item": "minecraft:spruce_planks"
+    },
+    "W": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "H W",
+    "BBB",
+    "PPP"
+  ],
+  "result": {
+    "item": "minecraft:spruce_pressure_plate"
+  },
+  "show_notification": true
+}

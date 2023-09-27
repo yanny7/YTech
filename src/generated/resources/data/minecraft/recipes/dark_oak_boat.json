@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "tag": "ytech:files"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "I": {
+      "tag": "ytech:rods"
+    },
+    "P": {
+      "item": "minecraft:dark_oak_planks"
+    },
+    "S": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "HFS",
+    "PIP",
+    "PPP"
+  ],
+  "result": {
+    "item": "minecraft:dark_oak_boat"
+  },
+  "show_notification": true
+}

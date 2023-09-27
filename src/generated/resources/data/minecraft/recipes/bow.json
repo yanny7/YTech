@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:knives/flint"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    " SW",
+    "S#W",
+    " SW"
+  ],
+  "result": {
+    "item": "minecraft:bow"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "tag": "ytech:saws"
+    },
+    "W": {
+      "item": "minecraft:light_blue_wool"
+    }
+  },
+  "pattern": [
+    "H S",
+    "WWW",
+    "PPP"
+  ],
+  "result": {
+    "item": "minecraft:light_blue_bed"
+  },
+  "show_notification": true
+}

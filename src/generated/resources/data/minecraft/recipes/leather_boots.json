@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:knives/flint"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "S": {
+      "tag": "ytech:leather_strips"
+    }
+  },
+  "pattern": [
+    " # ",
+    "LSL",
+    "LSL"
+  ],
+  "result": {
+    "item": "minecraft:leather_boots"
+  },
+  "show_notification": true
+}
