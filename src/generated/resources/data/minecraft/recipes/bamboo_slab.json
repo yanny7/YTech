@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "bamboo_slab",
   "ingredients": [
     {
       "item": "minecraft:bamboo_planks"

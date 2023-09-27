@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "oak_slab",
   "ingredients": [
     {
       "item": "minecraft:oak_planks"

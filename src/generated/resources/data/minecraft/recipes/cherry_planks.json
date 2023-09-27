@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "cherry_planks",
   "ingredients": [
     {
       "item": "minecraft:cherry_log"

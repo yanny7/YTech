@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "cherry_slab",
   "ingredients": [
     {
       "item": "minecraft:cherry_planks"

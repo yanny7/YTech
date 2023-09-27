@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "warped_slab",
   "ingredients": [
     {
       "item": "minecraft:warped_planks"

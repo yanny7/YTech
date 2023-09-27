@@ -334,6 +334,7 @@ class YTechRecipes extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, 2)
                 .requires(input)
                 .requires(SAW.groupTag)
+                .group(Utils.loc(result).getPath())
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.loc(result));
     }
@@ -342,6 +343,7 @@ class YTechRecipes extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
                 .requires(AXE.groupTag)
+                .group(Utils.loc(result).getPath())
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
