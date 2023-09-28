@@ -24,5 +24,5 @@ Ideas for expanding implemented ages or for next ages can be shared on [discord]
 > - Primitive Smelter and Primitive Alloy Smelter needs chimneys for increasing temperature
 > - Each type of chimney can be up to 4 blocks high, otherwise it collapse
 > - Using reinforced chimney you can increase height up to 8 blocks, with 4 of each chimney
-> - In rivers you can find sand and gravel deposits with cassiterite (tin) and gold
+> - In rivers, you can find sand and gravel deposits with cassiterite (tin) and gold
 > - It's recommended to use JEI
