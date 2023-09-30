@@ -7,7 +7,9 @@
     "ytech:brick_chimney",
     "ytech:reinforced_bricks",
     "ytech:reinforced_brick_chimney",
+    "ytech:cassiterite_gravel_deposit",
     "ytech:nether_copper_ore",
-    "ytech:raw_cassiterite_block"
+    "ytech:raw_cassiterite_block",
+    "ytech:cassiterite_sand_deposit"
   ]
 }

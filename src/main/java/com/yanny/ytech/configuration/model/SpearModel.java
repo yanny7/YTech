@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public class SpearModel extends Model {
    @NotNull public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Utils.modLoc("spear"), "main");
    @NotNull public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(YTechMod.MOD_ID, "spear", "inventory");
+   @NotNull public static final ModelResourceLocation MODEL_IN_HAND_LOCATION = new ModelResourceLocation(YTechMod.MOD_ID, "spear_in_hand", "inventory");
    @NotNull private final ModelPart root;
 
    public SpearModel(@NotNull ModelPart root) {

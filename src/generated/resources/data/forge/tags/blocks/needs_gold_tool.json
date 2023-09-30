@@ -1,7 +1,9 @@
 {
   "values": [
     "ytech:deepslate_cassiterite_ore",
+    "ytech:golden_gravel_deposit",
     "ytech:nether_cassiterite_ore",
+    "ytech:golden_sand_deposit",
     "ytech:cassiterite_ore"
   ]
 }

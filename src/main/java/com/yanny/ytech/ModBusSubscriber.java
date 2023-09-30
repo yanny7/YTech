@@ -116,6 +116,7 @@ public class ModBusSubscriber {
     @SubscribeEvent
     public static void registerModel(@NotNull ModelEvent.RegisterAdditional event) {
         event.register(Utils.modBlockLoc("millstone_upper_part"));
+        event.register(SpearModel.MODEL_IN_HAND_LOCATION);
     }
 
     @SubscribeEvent

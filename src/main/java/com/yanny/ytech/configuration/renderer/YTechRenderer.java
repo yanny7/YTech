@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.StainedGlassPaneBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ForgeItemModelShaper;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -33,13 +31,17 @@ import javax.annotation.Nullable;
 public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
     @NotNull public static final BlockEntityWithoutLevelRenderer INSTANCE = new YTechRenderer();
 
-    @NotNull private final SpearModel spearModel;
     @NotNull private final ItemModelShaper itemModelShaper;
+    @NotNull private final ItemRenderer itemRenderer;
+    @NotNull private final SpearModel spearModel;
+    @NotNull private final BakedModel missingModel;
 
     private YTechRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
         spearModel = new SpearModel(Minecraft.getInstance().getEntityModels().bakeLayer(SpearModel.LAYER_LOCATION));
-        itemModelShaper = new ForgeItemModelShaper(Minecraft.getInstance().getModelManager());
+        itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
+        itemRenderer = Minecraft.getInstance().getItemRenderer();
+        missingModel = Minecraft.getInstance().getModelManager().getMissingModel();
     }
 
     @Override
@@ -64,8 +66,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
 
             if (is2dModel) {
                 if (stack.is(Registration.item(SimpleItemType.SPEAR))) {
-                    bakedModel = itemModelShaper.getModelManager().getModel(ModelResourceLocation.vanilla("trident", "inventory"));
-                    //bakedModel = itemModelShaper.getModelManager().getModel(new ModelResourceLocation(YTechMod.MOD_ID, "spear", "inventory"));
+                    bakedModel = itemModelShaper.getModelManager().getModel(SpearModel.MODEL_LOCATION);
                 }
             }
 
@@ -93,7 +94,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
                             vertexConsumer = ItemRenderer.getFoilBuffer(buffer, rendertype, true, stack.hasFoil());
                         }
 
-                        Minecraft.getInstance().getItemRenderer().renderModelLists(model, stack, packedLight, packedOverlay, poseStack, vertexConsumer);
+                        itemRenderer.renderModelLists(model, stack, packedLight, packedOverlay, poseStack, vertexConsumer);
                     }
                 }
             } else {
@@ -129,14 +130,13 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
         BakedModel bakedModel;
 
         if (stack.is(Registration.item(SimpleItemType.SPEAR))) {
-            //bakedModel = itemModelShaper.getModelManager().getModel(new ModelResourceLocation(YTechMod.MOD_ID, "spear_in_hand", "inventory"));
-            bakedModel = itemModelShaper.getModelManager().getModel(ItemRenderer.TRIDENT_IN_HAND_MODEL);
+            bakedModel = itemModelShaper.getModelManager().getModel(SpearModel.MODEL_IN_HAND_LOCATION);
         } else {
             bakedModel = itemModelShaper.getItemModel(stack);
         }
 
         ClientLevel clientlevel = level instanceof ClientLevel ? (ClientLevel)level : null;
         BakedModel modelOverride = bakedModel.getOverrides().resolve(bakedModel, stack, clientlevel, pEntity, seed);
-        return modelOverride == null ? itemModelShaper.getModelManager().getMissingModel() : modelOverride;
+        return modelOverride == null ? missingModel : modelOverride;
     }
 }
