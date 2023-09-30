@@ -1,9 +1,7 @@
 package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -79,7 +77,7 @@ public class ForgeBusSubscriber {
 
             if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
                 level.getRecipeManager().getRecipeFor(BlockHitRecipe.RECIPE_TYPE, new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
-                    Block.popResourceFromFace(level, event.getPos(), direction, new ItemStack(Registration.item(SimpleItemType.SHARP_FLINT)));
+                    Block.popResourceFromFace(level, event.getPos(), direction, recipe.result().copy());
                     heldItem.shrink(1);
                 });
             }

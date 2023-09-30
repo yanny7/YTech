@@ -1,11 +1,13 @@
 package com.yanny.ytech.configuration.item;
 
+import com.yanny.ytech.configuration.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -30,6 +32,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class BasketItem extends Item {
+    public static final ResourceLocation FILLED_PREDICATE = Utils.modLoc("filled");
     private static final String TAG_ITEMS = "items";
     public static final int MAX_WEIGHT = 16;
     private static final int BUNDLE_IN_BUNDLE_WEIGHT = 4;

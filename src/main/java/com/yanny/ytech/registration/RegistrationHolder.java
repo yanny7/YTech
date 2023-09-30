@@ -10,9 +10,10 @@ public record RegistrationHolder(
         HashMap<MaterialFluidType, HashMap<MaterialType, Holder.FluidHolder>> fluids,
         HashMap<SimpleItemType, Holder.SimpleItemHolder> simpleItems,
         HashMap<SimpleBlockType, Holder.SimpleBlockHolder> simpleBlocks,
-        HashMap<AnimalEntityType, Holder.EntityHolder> entities
+        HashMap<SimpleEntityType, Holder.SimpleEntityHolder> simpleEntities,
+        HashMap<AnimalEntityType, Holder.AnimalEntityHolder> entities
 ) {
     public RegistrationHolder() {
-        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 }

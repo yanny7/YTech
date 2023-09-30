@@ -67,18 +67,18 @@ public enum AnimalEntityType {
     @NotNull public final Heightmap.Types heightMapType;
     @NotNull private final AnimalEntityGetter entityGetter;
     @NotNull private final Supplier<AttributeSupplier> attributeGetter;
-    @NotNull private final Function<Holder.EntityHolder, Item> spawnEggGetter;
-    @NotNull private final BiConsumer<Holder.EntityHolder, ItemModelProvider> modelGetter;
-    @NotNull private final BiConsumer<Holder.EntityHolder, EntityLootSubProvider> lootGetter;
-    @NotNull private final BiConsumer<Holder.EntityHolder, BiomeTagsProvider> biomeTagsGetter;
+    @NotNull private final Function<Holder.AnimalEntityHolder, Item> spawnEggGetter;
+    @NotNull private final BiConsumer<Holder.AnimalEntityHolder, ItemModelProvider> modelGetter;
+    @NotNull private final BiConsumer<Holder.AnimalEntityHolder, EntityLootSubProvider> lootGetter;
+    @NotNull private final BiConsumer<Holder.AnimalEntityHolder, BiomeTagsProvider> biomeTagsGetter;
     @NotNull public final SpawnPlacements.SpawnPredicate<Animal> spawnPredicate;
 
     AnimalEntityType(@NotNull String key, @NotNull String name, @NotNull TagKey<Biome> biomeTag, @NotNull Consumer<EntityType.Builder<Animal>> entityTypeBuilder,
                      @NotNull SpawnPlacements.Type spawnPlacement, @NotNull Heightmap.Types heightMapType, @NotNull AnimalEntityGetter entityGetter,
-                     @NotNull Supplier<AttributeSupplier> attributeGetter, @NotNull Function<Holder.EntityHolder, Item> spawnEggGetter,
-                     @NotNull BiConsumer<Holder.EntityHolder, ItemModelProvider> modelGetter,
-                     @NotNull BiConsumer<Holder.EntityHolder, EntityLootSubProvider> lootGetter,
-                     @NotNull BiConsumer<Holder.EntityHolder, BiomeTagsProvider> biomeTagsGetter,
+                     @NotNull Supplier<AttributeSupplier> attributeGetter, @NotNull Function<Holder.AnimalEntityHolder, Item> spawnEggGetter,
+                     @NotNull BiConsumer<Holder.AnimalEntityHolder, ItemModelProvider> modelGetter,
+                     @NotNull BiConsumer<Holder.AnimalEntityHolder, EntityLootSubProvider> lootGetter,
+                     @NotNull BiConsumer<Holder.AnimalEntityHolder, BiomeTagsProvider> biomeTagsGetter,
                      @NotNull SpawnPlacements.SpawnPredicate<Animal> spawnPredicate) {
         this.key = key;
         this.name = name;
@@ -95,23 +95,23 @@ public enum AnimalEntityType {
         this.spawnPredicate = spawnPredicate;
     }
 
-    public void registerModel(@NotNull Holder.EntityHolder holder, @NotNull ItemModelProvider provider) {
+    public void registerModel(@NotNull Holder.AnimalEntityHolder holder, @NotNull ItemModelProvider provider) {
         modelGetter.accept(holder, provider);
     }
 
-    public void registerLoot(@NotNull Holder.EntityHolder holder, @NotNull EntityLootSubProvider provider) {
+    public void registerLoot(@NotNull Holder.AnimalEntityHolder holder, @NotNull EntityLootSubProvider provider) {
         lootGetter.accept(holder, provider);
     }
 
-    public void registerTag(@NotNull Holder.EntityHolder holder, @NotNull BiomeTagsProvider provider) {
+    public void registerTag(@NotNull Holder.AnimalEntityHolder holder, @NotNull BiomeTagsProvider provider) {
         biomeTagsGetter.accept(holder, provider);
     }
 
-    public Animal getEntity(@NotNull Holder.EntityHolder holder, @NotNull EntityType<Animal> entityType, @NotNull Level level) {
+    public Animal getEntity(@NotNull Holder.AnimalEntityHolder holder, @NotNull EntityType<Animal> entityType, @NotNull Level level) {
         return entityGetter.get(holder, entityType, level);
     }
 
-    public Item getSpawnEgg(@NotNull Holder.EntityHolder holder) {
+    public Item getSpawnEgg(@NotNull Holder.AnimalEntityHolder holder) {
         return spawnEggGetter.apply(holder);
     }
 
@@ -119,11 +119,11 @@ public enum AnimalEntityType {
         return attributeGetter.get();
     }
 
-    private static Item spawnEggItem(@NotNull Holder.EntityHolder holder, int background, int highlight) {
+    private static Item spawnEggItem(@NotNull Holder.AnimalEntityHolder holder, int background, int highlight) {
         return new ForgeSpawnEggItem(holder.entityType, background, highlight, new Item.Properties());
     }
 
-    private static void registerSpawnEggModel(@NotNull Holder.EntityHolder holder, @NotNull ItemModelProvider provider) {
+    private static void registerSpawnEggModel(@NotNull Holder.AnimalEntityHolder holder, @NotNull ItemModelProvider provider) {
         provider.getBuilder(holder.key + "_spawn_egg").parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
     }
 
@@ -132,7 +132,7 @@ public enum AnimalEntityType {
         return Animal.checkAnimalSpawnRules(entityType, level, spawnType, pos, random);
     }
 
-    private static void registerDeerDrops(Holder.EntityHolder holder, EntityLootSubProvider provider) {
+    private static void registerDeerDrops(Holder.AnimalEntityHolder holder, EntityLootSubProvider provider) {
         EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
 
         provider.add(holder.entityType.get(), LootTable.lootTable()
@@ -172,13 +172,13 @@ public enum AnimalEntityType {
         );
     }
 
-    private static void registerDeerBiomeTag(Holder.EntityHolder holder, BiomeTagsProvider provider) {
+    private static void registerDeerBiomeTag(Holder.AnimalEntityHolder holder, BiomeTagsProvider provider) {
         provider.tag(holder.object.biomeTag).add(Biomes.FOREST).add(Biomes.WINDSWEPT_FOREST).add(Biomes.OLD_GROWTH_BIRCH_FOREST)
                 .add(Biomes.BIRCH_FOREST).add(Biomes.DARK_FOREST).add(Biomes.OLD_GROWTH_PINE_TAIGA).add(Biomes.OLD_GROWTH_SPRUCE_TAIGA)
                 .add(Biomes.WOODED_BADLANDS).add(Biomes.FLOWER_FOREST).add(Biomes.CHERRY_GROVE).add(Biomes.GROVE).add(Biomes.SNOWY_TAIGA);
     }
 
     interface AnimalEntityGetter {
-        Animal get(@NotNull Holder.EntityHolder holder, @NotNull EntityType<Animal> entityType, @NotNull Level level);
+        Animal get(@NotNull Holder.AnimalEntityHolder holder, @NotNull EntityType<Animal> entityType, @NotNull Level level);
     }
 }

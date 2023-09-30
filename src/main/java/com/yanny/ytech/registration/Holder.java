@@ -1,6 +1,7 @@
 package com.yanny.ytech.registration;
 
 import com.yanny.ytech.configuration.*;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -184,13 +185,24 @@ public class Holder {
         }
     }
 
-    public static class EntityHolder extends Holder {
+    public static class SimpleEntityHolder extends Holder {
+        @NotNull public final SimpleEntityType object;
+        @NotNull public final RegistryObject<EntityType<? extends Entity>> entityType;
+
+        SimpleEntityHolder(@NotNull SimpleEntityType object, @NotNull Function<SimpleEntityHolder, RegistryObject<EntityType<? extends Entity>>> typeSupplier) {
+            super(object.key, object.name);
+            this.object = object;
+            this.entityType = typeSupplier.apply(this);
+        }
+    }
+
+    public static class AnimalEntityHolder extends Holder {
         @NotNull public final AnimalEntityType object;
         @NotNull public final RegistryObject<EntityType<Animal>> entityType;
         @NotNull public final RegistryObject<Item> spawnEgg;
 
-        EntityHolder(@NotNull AnimalEntityType object, @NotNull Function<EntityHolder, RegistryObject<EntityType<Animal>>> typeSupplier,
-                     @NotNull Function<EntityHolder, RegistryObject<Item>> spawnEggSupplier) {
+        AnimalEntityHolder(@NotNull AnimalEntityType object, @NotNull Function<AnimalEntityHolder, RegistryObject<EntityType<Animal>>> typeSupplier,
+                           @NotNull Function<AnimalEntityHolder, RegistryObject<Item>> spawnEggSupplier) {
             super(object.key, object.name);
             this.object = object;
             this.entityType = typeSupplier.apply(this);

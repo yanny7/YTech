@@ -1,24 +1,19 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.configuration.item.BasketItem;
-import com.yanny.ytech.configuration.item.BrickMoldItem;
-import com.yanny.ytech.configuration.item.ClayBucketItem;
-import com.yanny.ytech.configuration.item.ToolItem;
+import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.Holder;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -207,6 +202,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerFlintKnifeRecipe,
             SimpleItemType::registerSimpleTag),
+    SPEAR("spear", "Spear",
+            ItemTags.create(Utils.modLoc("spears")),
+            () -> new SpearItem(new Item.Properties().durability(20)),
+            () -> basicTexture(Utils.modItemLoc("spear")),
+            SimpleItemType::spearItemModelProvider,
+            SimpleItemType::registerSpearRecipe,
+            SimpleItemType::registerSimpleTag),
     FLOUR("flour", "Flour",
             ItemTags.create(Utils.modLoc("flour")),
             SimpleItemType::simpleItem,
@@ -338,10 +340,46 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .parent(builder)
                 .texture("layer0", textures[1]);
 
-        builder.override().predicate(Utils.modLoc("filled"), 0.0001f).model(model).end();
+        builder.override().predicate(BasketItem.FILLED_PREDICATE, 0.0001f).model(model).end();
         builder.texture("layer0", textures[0]);
     }
 
+    private static void spearItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures();
+
+        provider.getBuilder(holder.key)
+                .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", textures[0]);
+
+        ItemModelBuilder throwing = provider.getBuilder(holder.key + "_throwing")
+                .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+                .guiLight(BlockModel.GuiLight.FRONT)
+                .texture("particle", textures[0])
+                .transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 90, 180).translation(8, -17, 9).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 90, 180).translation(8, 17, -7).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 17, 1).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 17, 1).end()
+                .transform(ItemDisplayContext.GUI).rotation(15, -25, -5).translation(2, 3, 0).scale(0.65F).end()
+                .transform(ItemDisplayContext.FIXED).rotation(0, 180, 0).translation(-2, 4, -5).scale(0.5F).end()
+                .transform(ItemDisplayContext.GROUND).translation(4, 4, 2).scale(0.25F).end()
+                .end();
+
+        provider.getBuilder(holder.key + "_in_hand")
+                .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+                .guiLight(BlockModel.GuiLight.FRONT)
+                .texture("particle", textures[0])
+                .transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 60, 0).translation(11, 17, -2).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 60, 0).translation(3, 17, 12).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 17, 1).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 17, 1).end()
+                .transform(ItemDisplayContext.GUI).rotation(15, -25, -5).translation(2, 3, 0).scale(0.65F).end()
+                .transform(ItemDisplayContext.FIXED).rotation(0, 180, 0).translation(-2, 4, -5).scale(0.5F).end()
+                .transform(ItemDisplayContext.GROUND).translation(4, 4, 2).scale(0.25F).end()
+                .end()
+                .override().predicate(SpearItem.THROWING_PREDICATE, 1).model(throwing).end();
+    }
 
     private static void clayBucketItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures();
@@ -479,6 +517,18 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .requires(Items.FLINT)
                 .requires(LEATHER_STRIPS.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerSpearRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+                .define('T', LEATHER_STRIPS.itemTag)
+                .define('S', Items.FLINT)
+                .define('#', Items.STICK)
+                .pattern(" TS")
+                .pattern(" #T")
+                .pattern("#  ")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(LEATHER_STRIPS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

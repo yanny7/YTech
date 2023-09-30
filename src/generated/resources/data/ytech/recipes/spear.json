@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "S": {
+      "item": "minecraft:flint"
+    },
+    "T": {
+      "tag": "ytech:leather_strips"
+    }
+  },
+  "pattern": [
+    " TS",
+    " #T",
+    "#  "
+  ],
+  "result": {
+    "item": "ytech:spear"
+  },
+  "show_notification": true
+}

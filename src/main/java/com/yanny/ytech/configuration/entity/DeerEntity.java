@@ -34,11 +34,11 @@ public class DeerEntity extends Animal {
     private static final String TAG_HAS_ANTLERS = "HasAntlers";
     private static final String TAG_MORE_WHEAT_TICKS = "MoreWheatTicks";
 
-    @NotNull private final Holder.EntityHolder holder;
+    @NotNull private final Holder.AnimalEntityHolder holder;
     private int moreWheatTicks;
     private boolean hasAntlers;
 
-    public DeerEntity(@NotNull Holder.EntityHolder holder, @NotNull EntityType<? extends Animal> entityType, @NotNull Level level) {
+    public DeerEntity(@NotNull Holder.AnimalEntityHolder holder, @NotNull EntityType<? extends Animal> entityType, @NotNull Level level) {
         super(entityType, level);
         this.holder = holder;
     }
