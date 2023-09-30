@@ -146,7 +146,8 @@ public class SpearItem extends Item implements Vanishable {
     @Override
     public InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
+
+        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
             return InteractionResultHolder.fail(itemstack);
         } else if (EnchantmentHelper.getRiptide(itemstack) > 0 && !player.isInWaterOrRain()) {
             return InteractionResultHolder.fail(itemstack);

@@ -34,15 +34,16 @@ public class SpearModel extends Model {
    public static LayerDefinition createLayer() {
       MeshDefinition meshDefinition = new MeshDefinition();
       PartDefinition rootPart = meshDefinition.getRoot();
-      PartDefinition polePart = rootPart.addOrReplaceChild("pole", CubeListBuilder.create().texOffs(0, 6)
-                      .addBox(-0.5F, 2.0F, -0.5F, 1.0F, 25.0F, 1.0F), PartPose.ZERO);
+
+      PartDefinition polePart = rootPart.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0)
+              .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 25.0F, 1.0F), PartPose.ZERO);
       polePart.addOrReplaceChild("base", CubeListBuilder.create().texOffs(4, 0)
-              .addBox(-1.5F, 0.0F, -0.5F, 3.0F, 2.0F, 1.0F), PartPose.ZERO);
-      polePart.addOrReplaceChild("left_spike", CubeListBuilder.create().texOffs(4, 3)
-              .addBox(-2.5F, -3.0F, -0.5F, 1.0F, 4.0F, 1.0F), PartPose.ZERO);
-      //polePart.addOrReplaceChild("middle_spike", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -4.0F, -0.5F, 1.0F, 4.0F, 1.0F), PartPose.ZERO);
-      polePart.addOrReplaceChild("right_spike", CubeListBuilder.create().texOffs(4, 3).mirror()
-              .addBox(1.5F, -3.0F, -0.5F, 1.0F, 4.0F, 1.0F), PartPose.ZERO);
+              .addBox(-1.5F, -1.0F, -0.5F, 3.0F, 1.0F, 1.0F), PartPose.ZERO);
+      polePart.addOrReplaceChild("tip", CubeListBuilder.create().texOffs(4, 2)
+              .addBox(-1.0F, -2.0F, -0.5F, 2.0F, 1.0F, 1.0F), PartPose.ZERO);
+      polePart.addOrReplaceChild("k", CubeListBuilder.create().texOffs(4, 4)
+              .addBox(-0.5F, -3.0F, -0.5F, 1.0F, 1.0F, 1.0F), PartPose.ZERO);
+
       return LayerDefinition.create(meshDefinition, 32, 32);
    }
 

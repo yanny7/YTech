@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.SpearEntity;
 import com.yanny.ytech.configuration.model.SpearModel;
 import net.minecraft.client.model.TridentModel;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class SpearRenderer extends EntityRenderer<Entity> {
-    public static final ResourceLocation SPEAR_LOCATION = new ResourceLocation("textures/entity/trident.png");
+    public static final ResourceLocation SPEAR_LOCATION = Utils.modLoc("textures/entity/spear.png");
     private final TridentModel model;
 
     public SpearRenderer(@NotNull EntityRendererProvider.Context context) {
