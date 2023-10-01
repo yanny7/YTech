@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ytech:block/terracotta_brick_slab"
+    },
+    "type=double": {
+      "model": "ytech:block/terracotta_bricks"
+    },
+    "type=top": {
+      "model": "ytech:block/terracotta_brick_slab_top"
+    }
+  }
+}

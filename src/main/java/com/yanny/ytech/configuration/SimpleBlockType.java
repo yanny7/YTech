@@ -7,10 +7,7 @@ import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -21,12 +18,17 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -112,6 +114,36 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ReinforcedBrickChimneyBlock::registerModel,
             ILootable::dropsSelfProvider,
             ReinforcedBrickChimneyBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag),
+    TERRACOTTA_BRICKS(HolderType.BLOCK, "terracotta_bricks", "Terracotta Bricks",
+            ItemTags.create(Utils.modLoc("terracotta_bricks")),
+            BlockTags.create(Utils.modLoc("terracotta_bricks")),
+            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.BRICKS)),
+            () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
+            SimpleBlockType::simpleBlockStateProvider,
+            ILootable::dropsSelfProvider,
+            SimpleBlockType::registerTerracottaBricksRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag),
+    TERRACOTTA_BRICK_SLAB(HolderType.BLOCK, "terracotta_brick_slab", "Terracotta Brick Slab",
+            ItemTags.SLABS,
+            BlockTags.SLABS,
+            (holder) -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BRICK_SLAB)),
+            () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
+            SimpleBlockType::registerSlabBlockState,
+            SimpleBlockType::registerSlabLootTable,
+            SimpleBlockType::registerTerracottaBrickSlabRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag),
+    TERRACOTTA_BRICK_STAIRS(HolderType.BLOCK, "terracotta_brick_stairs", "Terracotta Brick Stairs",
+            ItemTags.STAIRS,
+            BlockTags.STAIRS,
+            (holder) -> new StairBlock(() -> Registration.block(TERRACOTTA_BRICKS).defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BRICK_STAIRS)),
+            () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
+            SimpleBlockType::registerStairsBlockState,
+            ILootable::dropsSelfProvider,
+            SimpleBlockType::registerTerracottaBrickStairsRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag),
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
@@ -308,12 +340,47 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         provider.itemModels().getBuilder(holder.key).parent(model);
     }
 
+    private static void simpleBlockStateProvider(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures();
+        BlockModelBuilder model = provider.models().cubeAll(holder.key, textures[0]);
+
+        provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
+        provider.itemModels().getBuilder(holder.key).parent(model);
+    }
+
+    private static void registerSlabBlockState(Holder.SimpleBlockHolder holder, BlockStateProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures();
+        ModelFile bottom = provider.models().slab(holder.key, textures[0], textures[0], textures[0]);
+        ModelFile top = provider.models().slabTop(holder.key + "_top", textures[0], textures[0], textures[0]);
+        ModelFile doubleSlab = provider.models().getExistingFile(textures[0]); //model of full block, in this case same as texture name!
+
+        provider.getVariantBuilder(holder.block.get())
+                .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bottom))
+                .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(top))
+                .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(doubleSlab));
+        provider.itemModels().getBuilder(holder.key).parent(bottom);
+    }
+
+    private static void registerStairsBlockState(Holder.SimpleBlockHolder holder, BlockStateProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures();
+        ModelFile stairs = provider.models().stairs(holder.key, textures[0], textures[0], textures[0]);
+        ModelFile stairsInner = provider.models().stairsInner(holder.key + "_inner", textures[0], textures[0], textures[0]);
+        ModelFile stairsOuter = provider.models().stairsOuter(holder.key + "_outer", textures[0], textures[0], textures[0]);
+
+        provider.stairsBlock((StairBlock)holder.block.get(), stairs, stairsInner, stairsOuter);
+        provider.itemModels().getBuilder(holder.key).parent(stairs);
+    }
+
     private static TextureHolder[] bottomTopTexture(ResourceLocation base, ResourceLocation bottom, ResourceLocation top) {
         return List.of(
                 new TextureHolder(-1, -1, base),
                 new TextureHolder(-1, -1, bottom),
                 new TextureHolder(-1, -1, top)
         ).toArray(TextureHolder[]::new);
+    }
+
+    private static TextureHolder[] simpleTexture(ResourceLocation texture) {
+        return List.of(new TextureHolder(-1, -1, texture)).toArray(TextureHolder[]::new);
     }
 
     private static void registerItemTag(@NotNull Holder.SimpleBlockHolder holder, @NotNull ItemTagsProvider provider) {
@@ -340,5 +407,38 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 .pattern("#P#")
                 .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerTerracottaBricksRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
+                .define('B', Items.TERRACOTTA)
+                .pattern("BB")
+                .pattern("BB")
+                .unlockedBy(RecipeProvider.getHasName(Items.TERRACOTTA), RecipeProvider.has(Items.TERRACOTTA))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerTerracottaBrickSlabRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 6)
+                .define('B', TERRACOTTA_BRICKS.itemTag)
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 2);
+    }
+
+    private static void registerTerracottaBrickStairsRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 4)
+                .define('B', TERRACOTTA_BRICKS.itemTag)
+                .pattern("B  ")
+                .pattern("BB ")
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get());
+    }
+
+    private static void registerSlabLootTable(Holder.SimpleBlockHolder holder, BlockLootSubProvider provider) {
+        provider.add(holder.block.get(), provider::createSlabItemTable);
     }
 }
