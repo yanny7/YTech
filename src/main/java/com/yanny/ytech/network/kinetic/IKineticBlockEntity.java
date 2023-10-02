@@ -1,4 +1,4 @@
-package com.yanny.ytech.network.kinetic.common;
+package com.yanny.ytech.network.kinetic;
 
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

@@ -1,6 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

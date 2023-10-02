@@ -6,8 +6,6 @@ import com.yanny.ytech.network.generic.message.LevelSyncMessage;
 import com.yanny.ytech.network.generic.message.NetworkAddedOrUpdatedMessage;
 import com.yanny.ytech.network.generic.message.NetworkRemovedMessage;
 import com.yanny.ytech.network.generic.server.ServerPropagator;
-import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;

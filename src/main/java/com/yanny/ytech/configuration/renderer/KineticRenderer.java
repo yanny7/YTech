@@ -2,9 +2,9 @@ package com.yanny.ytech.configuration.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticNetwork;
-import com.yanny.ytech.network.kinetic.common.RotationDirection;
+import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.KineticNetwork;
+import com.yanny.ytech.network.kinetic.RotationDirection;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

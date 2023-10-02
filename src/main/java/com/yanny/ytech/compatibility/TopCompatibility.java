@@ -2,8 +2,8 @@ package com.yanny.ytech.compatibility;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block_entity.*;
-import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticNetwork;
+import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.KineticNetwork;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;

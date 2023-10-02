@@ -2,8 +2,8 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.network.kinetic.KineticUtils;
-import com.yanny.ytech.network.kinetic.common.NetworkType;
-import com.yanny.ytech.network.kinetic.common.RotationDirection;
+import com.yanny.ytech.network.kinetic.NetworkType;
+import com.yanny.ytech.network.kinetic.RotationDirection;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

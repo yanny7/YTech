@@ -1,4 +1,4 @@
-package com.yanny.ytech.network.kinetic.common;
+package com.yanny.ytech.network.kinetic;
 
 public enum NetworkType {
     PROVIDER,

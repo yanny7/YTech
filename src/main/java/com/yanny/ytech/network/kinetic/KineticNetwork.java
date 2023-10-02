@@ -1,4 +1,4 @@
-package com.yanny.ytech.network.kinetic.common;
+package com.yanny.ytech.network.kinetic;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
