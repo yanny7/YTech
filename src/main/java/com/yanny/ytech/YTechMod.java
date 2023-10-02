@@ -2,9 +2,11 @@ package com.yanny.ytech;
 
 import com.yanny.ytech.configuration.YTechConfigSpec;
 import com.yanny.ytech.generation.DataGeneration;
+import com.yanny.ytech.network.generic.client.ClientPropagator;
+import com.yanny.ytech.network.generic.server.ServerPropagator;
 import com.yanny.ytech.network.kinetic.KineticUtils;
-import com.yanny.ytech.network.kinetic.client.ClientKineticPropagator;
-import com.yanny.ytech.network.kinetic.server.ServerKineticPropagator;
+import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
+import com.yanny.ytech.network.kinetic.common.KineticNetwork;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,7 +24,7 @@ import org.apache.commons.lang3.tuple.Pair;
 @Mod(YTechMod.MOD_ID)
 public class YTechMod {
     public static final String MOD_ID = "ytech";
-    public static final DistHolder<ClientKineticPropagator, ServerKineticPropagator> KINETIC_PROPAGATOR;
+    public static final DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> KINETIC_PROPAGATOR;
     public static final YTechConfigSpec CONFIGURATION;
 
     private static final String PROTOCOL_VERSION = "1";

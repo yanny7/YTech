@@ -64,7 +64,7 @@ public class TopCompatibility {
     }
 
     private static void addKineticInfo(IProbeInfo probeInfo, IKineticBlockEntity blockEntity) {
-        switch (blockEntity.getKineticNetworkType()) {
+        switch (blockEntity.getNetworkType()) {
             case PROVIDER -> probeInfo.horizontal().text("Producing: ").text(Integer.toString(blockEntity.getStress())).text(" units");
             case CONSUMER -> probeInfo.horizontal().text("Consuming: ").text(Integer.toString(blockEntity.getStress())).text(" units");
         }

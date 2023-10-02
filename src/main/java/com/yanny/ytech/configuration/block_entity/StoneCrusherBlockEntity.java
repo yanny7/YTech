@@ -2,7 +2,7 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.network.kinetic.KineticUtils;
-import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
+import com.yanny.ytech.network.kinetic.common.NetworkType;
 import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
@@ -31,8 +31,8 @@ public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
     }
 
     @Override
-    public @NotNull KineticNetworkType getKineticNetworkType() {
-        return KineticNetworkType.CONSUMER;
+    public @NotNull NetworkType getNetworkType() {
+        return NetworkType.CONSUMER;
     }
 
     @Override

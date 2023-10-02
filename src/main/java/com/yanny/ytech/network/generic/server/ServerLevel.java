@@ -23,7 +23,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class ServerLevel<T extends AbstractNetwork> extends SavedData {
+public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBlockEntity> extends SavedData {
     protected static final String TAG_NETWORKS = "networks";
     protected static final String TAG_NETWORK = "network";
     protected static final String TAG_NETWORK_ID = "networkId";
@@ -31,15 +31,15 @@ public class ServerLevel<T extends AbstractNetwork> extends SavedData {
 
     private final ConcurrentHashMap<Integer, T> networkMap = new ConcurrentHashMap<>();
     private final SimpleChannel channel;
-    private final AbstractNetwork.Factory<T> networkFactory;
+    private final AbstractNetwork.Factory<T, O> networkFactory;
 
-    ServerLevel(CompoundTag tag, SimpleChannel channel, AbstractNetwork.Factory<T> networkFactory) {
+    ServerLevel(CompoundTag tag, SimpleChannel channel, AbstractNetwork.Factory<T, O> networkFactory) {
         load(tag);
         this.channel = channel;
         this.networkFactory = networkFactory;
     }
 
-    ServerLevel(SimpleChannel channel, AbstractNetwork.Factory<T> networkFactory) {
+    ServerLevel(SimpleChannel channel, AbstractNetwork.Factory<T, O> networkFactory) {
         this.channel = channel;
         this.networkFactory = networkFactory;
     }
@@ -60,7 +60,7 @@ public class ServerLevel<T extends AbstractNetwork> extends SavedData {
         return tag;
     }
 
-    public void add(INetworkBlockEntity blockEntity) {
+    public void add(O blockEntity) {
         final int networkId = blockEntity.getNetworkId();
         T resultNetwork;
         Level level = blockEntity.getLevel();
@@ -125,12 +125,12 @@ public class ServerLevel<T extends AbstractNetwork> extends SavedData {
             }
         }
 
-        blockEntity.getNetworkType().addEntity.accept(resultNetwork, blockEntity);
+        resultNetwork.add(blockEntity);
         setDirty();
         channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(resultNetwork));
     }
 
-    public void update(INetworkBlockEntity blockEntity) {
+    public void update(O blockEntity) {
         T network = getNetwork(blockEntity);
         Level level = blockEntity.getLevel();
 
@@ -160,7 +160,7 @@ public class ServerLevel<T extends AbstractNetwork> extends SavedData {
         }
     }
 
-    public void remove(INetworkBlockEntity blockEntity) {
+    public void remove(O blockEntity) {
         T network = getNetwork(blockEntity);
 
         if (network != null) {
@@ -229,7 +229,7 @@ public class ServerLevel<T extends AbstractNetwork> extends SavedData {
         }
     }
 
-    public T getNetwork(INetworkBlockEntity blockEntity) {
+    public T getNetwork(O blockEntity) {
         return networkMap.get(blockEntity.getNetworkId());
     }
 

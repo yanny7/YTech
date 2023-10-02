@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public abstract class AbstractNetwork {
+public abstract class AbstractNetwork<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
     protected static final Logger LOGGER = LogUtils.getLogger();
 
-    private final Consumer<Integer> onRemove;
+    protected final Consumer<Integer> onRemove;
     private final int networkId;
 
     public AbstractNetwork(CompoundTag tag, int networkId, Consumer<Integer> onRemove) {
@@ -29,39 +29,27 @@ public abstract class AbstractNetwork {
         this.onRemove = onRemove;
     }
 
-    public abstract boolean canAttach(@NotNull INetworkBlockEntity entity);
+    public abstract boolean canAttach(@NotNull O entity);
 
-    public abstract boolean canAttach(@NotNull AbstractNetwork network);
+    public abstract boolean canAttach(@NotNull N network);
 
-    void addProvider(@NotNull INetworkBlockEntity entity) {
+    public void add(@NotNull O entity) {
         entity.setNetworkId(networkId);
     }
 
-    void addConsumer(@NotNull INetworkBlockEntity entity) {
-        entity.setNetworkId(networkId);
-    }
-
-    void removeProvider(@NotNull INetworkBlockEntity entity) {
+    public void remove(@NotNull O entity) {
         entity.setNetworkId(-1);
 
-        if (entity.isEmpty()) {
+        if (!isNotEmpty()) {
             onRemove.accept(networkId);
         }
     }
 
-    void removeConsumer(@NotNull INetworkBlockEntity entity) {
-        entity.setNetworkId(-1);
-
-        if (entity.isEmpty()) {
-            onRemove.accept(networkId);
-        }
-    }
-
-    public boolean canConnect(@NotNull INetworkBlockEntity blockEntity) {
+    public boolean canConnect(@NotNull O blockEntity) {
         return blockEntity.getValidNeighbors().stream().anyMatch(pos -> isValidPosition(blockEntity, pos));
     }
 
-    abstract void load(CompoundTag tag);
+    protected abstract void load(CompoundTag tag);
 
     public abstract CompoundTag save();
 
@@ -69,17 +57,17 @@ public abstract class AbstractNetwork {
         return networkId;
     }
 
-    public abstract void addAll(AbstractNetwork network, Level level);
+    public abstract void addAll(N network, Level level);
 
-    public abstract boolean update(INetworkBlockEntity entity);
+    public abstract boolean update(O entity);
 
-    public abstract <T extends AbstractNetwork> List<T> remove(Function<Integer, List<Integer>> idsGetter, Consumer<Integer> onRemove, INetworkBlockEntity blockEntity, SimpleChannel channel);
+    public abstract  List<N> remove(Function<Integer, List<Integer>> idsGetter, Consumer<Integer> onRemove, O blockEntity, SimpleChannel channel);
 
     public abstract boolean isNotEmpty();
 
-    abstract boolean isValidPosition(INetworkBlockEntity blockEntity, BlockPos pos);
+    protected abstract boolean isValidPosition(O blockEntity, BlockPos pos);
 
-    public interface Factory<T extends AbstractNetwork> {
+    public interface Factory<T extends AbstractNetwork<T, O>, O extends INetworkBlockEntity> {
         T create(CompoundTag tag, int networkId, Consumer<Integer> onRemove);
         T create(int networkId, Consumer<Integer> onRemove);
     }

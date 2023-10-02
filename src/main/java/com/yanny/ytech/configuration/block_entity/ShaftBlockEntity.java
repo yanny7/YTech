@@ -2,7 +2,7 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
+import com.yanny.ytech.network.kinetic.common.NetworkType;
 import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,8 +34,8 @@ public class ShaftBlockEntity extends KineticBlockEntity implements IKineticBloc
 
     @NotNull
     @Override
-    public KineticNetworkType getKineticNetworkType() {
-        return KineticNetworkType.CONSUMER;
+    public NetworkType getNetworkType() {
+        return NetworkType.CONSUMER;
     }
 
     @Override

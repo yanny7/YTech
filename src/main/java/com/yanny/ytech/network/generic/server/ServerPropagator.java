@@ -17,26 +17,26 @@ import org.slf4j.Logger;
 
 import java.util.HashMap;
 
-public class ServerPropagator<N extends AbstractNetwork> {
+public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
     protected static final Logger LOGGER = LogUtils.getLogger();
-    private final HashMap<LevelAccessor, ServerLevel<N>> levelMap = new HashMap<>();
+    private final HashMap<LevelAccessor, ServerLevel<N, O>> levelMap = new HashMap<>();
     private final SimpleChannel channel;
-    private final AbstractNetwork.Factory<N> networkFactory;
+    private final AbstractNetwork.Factory<N, O> networkFactory;
 
-    public ServerPropagator(SimpleChannel channel, AbstractNetwork.Factory<N> networkFactory) {
+    public ServerPropagator(SimpleChannel channel, AbstractNetwork.Factory<N, O> networkFactory) {
         this.channel = channel;
         this.networkFactory = networkFactory;
     }
 
-    public void add(@NotNull INetworkBlockEntity blockEntity) {
+    public void add(@NotNull O blockEntity) {
         levelMap.get(blockEntity.getLevel()).add(blockEntity);
     }
 
-    public void changed(INetworkBlockEntity blockEntity) {
+    public void changed(O blockEntity) {
         levelMap.get(blockEntity.getLevel()).update(blockEntity);
     }
 
-    public void remove(@NotNull INetworkBlockEntity blockEntity) {
+    public void remove(@NotNull O blockEntity) {
         levelMap.get(blockEntity.getLevel()).remove(blockEntity);
     }
 
@@ -60,8 +60,8 @@ public class ServerPropagator<N extends AbstractNetwork> {
     }
 
     @Nullable
-    public N getNetwork(@NotNull INetworkBlockEntity blockEntity) {
-        ServerLevel<N> level = levelMap.get(blockEntity.getLevel());
+    public N getNetwork(@NotNull O blockEntity) {
+        ServerLevel<N, O> level = levelMap.get(blockEntity.getLevel());
 
         if (level != null) {
             return level.getNetwork(blockEntity);

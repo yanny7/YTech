@@ -6,10 +6,10 @@ import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ClientLevel<T extends AbstractNetwork> {
-    protected final ConcurrentHashMap<Integer, T> networkMap;
+public class ClientLevel<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
+    protected final ConcurrentHashMap<Integer, N> networkMap;
 
-    ClientLevel(Map<Integer, T> networkMap) {
+    ClientLevel(Map<Integer, N> networkMap) {
         this.networkMap = new ConcurrentHashMap<>(networkMap);
     }
 
@@ -17,11 +17,11 @@ public class ClientLevel<T extends AbstractNetwork> {
         networkMap = new ConcurrentHashMap<>();
     }
 
-    public T getNetwork(INetworkBlockEntity blockEntity) {
+    public N getNetwork(O blockEntity) {
         return networkMap.get(blockEntity.getNetworkId());
     }
 
-    void onNetworkAddedOrUpdated(T network) {
+    void onNetworkAddedOrUpdated(N network) {
         networkMap.put(network.getNetworkId(), network);
     }
 

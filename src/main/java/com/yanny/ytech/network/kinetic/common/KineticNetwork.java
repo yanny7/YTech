@@ -1,7 +1,8 @@
 package com.yanny.ytech.network.kinetic.common;
 
 import com.mojang.logging.LogUtils;
-import com.yanny.ytech.network.kinetic.message.NetworkAddedOrUpdatedMessage;
+import com.yanny.ytech.network.generic.common.AbstractNetwork;
+import com.yanny.ytech.network.generic.message.NetworkAddedOrUpdatedMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,7 +19,19 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class KineticNetwork {
+public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBlockEntity> {
+    public static final Factory<KineticNetwork, IKineticBlockEntity> FACTORY = new Factory<>() {
+        @Override
+        public KineticNetwork create(CompoundTag tag, int networkId, Consumer<Integer> onRemove) {
+            return new KineticNetwork(tag, networkId, onRemove);
+        }
+
+        @Override
+        public KineticNetwork create(int networkId, Consumer<Integer> onRemove) {
+            return new KineticNetwork(networkId, onRemove);
+        }
+    };
+
     private static final String TAG_PROVIDERS = "providers";
     private static final String TAG_CONSUMERS = "consumers";
     private static final String TAG_DIR_PROVIDERS = "dirProviders";
@@ -31,28 +44,22 @@ public class KineticNetwork {
     private final HashMap<BlockPos, Integer> providers = new HashMap<>();
     private final HashMap<BlockPos, Integer> consumers = new HashMap<>();
     private final Set<BlockPos> directionProviders = new HashSet<>();
-    private final Consumer<Integer> onRemove;
-
-    private final int networkId;
     private int stressCapacity;
     private int stress;
     private RotationDirection rotationDirection = RotationDirection.NONE;
 
     public KineticNetwork(CompoundTag tag, int networkId, Consumer<Integer> onRemove) {
-        load(tag);
-        this.networkId = networkId;
-        this.onRemove = onRemove;
+        super(tag, networkId, onRemove);
     }
 
     public KineticNetwork(int networkId, Consumer<Integer> onRemove) {
-        this.networkId = networkId;
-        this.onRemove = onRemove;
+        super(networkId, onRemove);
     }
 
     @Override
     public String toString() {
         return MessageFormat.format("Id:{0,number}, C:{1,number}, P:{2,number}, K: {3, number} {4,number}/{5,number}, {6}",
-                networkId, consumers.size(), providers.size(), directionProviders.size(), stress, stressCapacity, rotationDirection);
+                getNetworkId(), consumers.size(), providers.size(), directionProviders.size(), stress, stressCapacity, rotationDirection);
     }
 
     public int getStress() {
@@ -67,6 +74,7 @@ public class KineticNetwork {
         return rotationDirection;
     }
 
+    @Override
     public boolean canAttach(@NotNull IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
 
@@ -78,17 +86,37 @@ public class KineticNetwork {
         return entityRotationDirection == RotationDirection.NONE || rotationDirection == RotationDirection.NONE || entityRotationDirection == rotationDirection;
     }
 
+    @Override
     public boolean canAttach(@NotNull KineticNetwork network) {
         return rotationDirection == RotationDirection.NONE || network.rotationDirection == RotationDirection.NONE || rotationDirection == network.rotationDirection;
     }
 
-    void addProvider(@NotNull IKineticBlockEntity entity) {
+    @Override
+    public void add(@NotNull IKineticBlockEntity entity) {
+        super.add(entity);
+
+        switch (entity.getNetworkType()) {
+            case CONSUMER -> addConsumer(entity);
+            case PROVIDER -> addProvider(entity);
+        }
+    }
+
+    @Override
+    public void remove(@NotNull IKineticBlockEntity entity) {
+        switch (entity.getNetworkType()) {
+            case CONSUMER -> removeConsumer(entity);
+            case PROVIDER -> removeProvider(entity);
+        }
+
+        super.remove(entity);
+    }
+
+    private void addProvider(@NotNull IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
         BlockPos blockPos = entity.getBlockPos();
         int stressValue = entity.getStress();
 
         providers.put(blockPos, stressValue);
-        entity.setNetworkId(networkId);
         stressCapacity += stressValue;
 
         if (entityRotationDirection != RotationDirection.NONE) {
@@ -101,13 +129,12 @@ public class KineticNetwork {
         }
     }
 
-    void addConsumer(@NotNull IKineticBlockEntity entity) {
+    private void addConsumer(@NotNull IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
         BlockPos blockPos = entity.getBlockPos();
         int stressValue = entity.getStress();
 
         consumers.put(blockPos, stressValue);
-        entity.setNetworkId(networkId);
         stress += stressValue;
 
         if (entityRotationDirection != RotationDirection.NONE) {
@@ -120,7 +147,8 @@ public class KineticNetwork {
         }
     }
 
-    void removeProvider(@NotNull IKineticBlockEntity entity) {
+
+    private void removeProvider(@NotNull IKineticBlockEntity entity) {
         BlockPos blockPos = entity.getBlockPos();
         int value = providers.remove(blockPos);
 
@@ -130,13 +158,9 @@ public class KineticNetwork {
         if (directionProviders.remove(blockPos) && directionProviders.isEmpty()) {
             rotationDirection = RotationDirection.NONE;
         }
-
-        if (providers.isEmpty() && consumers.isEmpty()) {
-            onRemove.accept(networkId);
-        }
     }
 
-    void removeConsumer(@NotNull IKineticBlockEntity entity) {
+    private void removeConsumer(@NotNull IKineticBlockEntity entity) {
         BlockPos blockPos = entity.getBlockPos();
         int value = consumers.remove(blockPos);
 
@@ -146,17 +170,10 @@ public class KineticNetwork {
         if (directionProviders.remove(blockPos) && directionProviders.isEmpty()) {
             rotationDirection = RotationDirection.NONE;
         }
-
-        if (providers.isEmpty() && consumers.isEmpty()) {
-            onRemove.accept(networkId);
-        }
     }
 
-    public boolean canConnect(@NotNull IKineticBlockEntity blockEntity) {
-        return blockEntity.getValidNeighbors().stream().anyMatch(pos -> isValidPosition(blockEntity, pos));
-    }
-
-    void load(CompoundTag tag) {
+    @Override
+    protected void load(CompoundTag tag) {
         if (tag.contains(TAG_PROVIDERS) && tag.getTagType(TAG_PROVIDERS) != 0) {
             tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) -> providers.put(loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_STRESS)));
         }
@@ -178,9 +195,10 @@ public class KineticNetwork {
             } catch (Exception ignored) {}
         }
 
-        LOGGER.debug("Network {}: Loaded {} providers, {} consumers, {} dirProviders, {}", networkId, providers.size(), consumers.size(), directionProviders.size(), rotationDirection);
+        LOGGER.debug("Network {}: Loaded {} providers, {} consumers, {} dirProviders, {}", getNetworkId(), providers.size(), consumers.size(), directionProviders.size(), rotationDirection);
     }
 
+    @Override
     public CompoundTag save() {
         CompoundTag tag = new CompoundTag();
         ListTag providersTag = new ListTag();
@@ -209,10 +227,7 @@ public class KineticNetwork {
         return tag;
     }
 
-    public int getNetworkId() {
-        return networkId;
-    }
-
+    @Override
     public void addAll(KineticNetwork network, Level level) {
         if (network.rotationDirection != RotationDirection.NONE && rotationDirection != RotationDirection.NONE && rotationDirection != network.rotationDirection) {
             throw new IllegalStateException("Invalid rotation direction provided!");
@@ -223,7 +238,7 @@ public class KineticNetwork {
             stressCapacity += value;
 
             if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
-                kineticBlockEntity.setNetworkId(networkId);
+                kineticBlockEntity.setNetworkId(getNetworkId());
             }
         });
         network.consumers.forEach((pos, value) -> {
@@ -231,7 +246,7 @@ public class KineticNetwork {
             stress += value;
 
             if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
-                kineticBlockEntity.setNetworkId(networkId);
+                kineticBlockEntity.setNetworkId(getNetworkId());
             }
         });
 
@@ -239,13 +254,14 @@ public class KineticNetwork {
         rotationDirection = network.rotationDirection;
     }
 
+    @Override
     public boolean update(IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
         BlockPos blockPos = entity.getBlockPos();
         boolean wasChange = false;
         int value = entity.getStress();
 
-        switch (entity.getKineticNetworkType()) {
+        switch (entity.getNetworkType()) {
             case PROVIDER -> {
                 int oldCapacity = stressCapacity;
 
@@ -289,6 +305,7 @@ public class KineticNetwork {
         return wasChange;
     }
 
+    @Override
     public List<KineticNetwork> remove(Function<Integer, List<Integer>> idsGetter, Consumer<Integer> onRemove, IKineticBlockEntity blockEntity, SimpleChannel channel) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
@@ -298,7 +315,7 @@ public class KineticNetwork {
         // remove splitting block
         providerBlocks.remove(blockPos);
         consumerBlocks.remove(blockPos);
-        blockEntity.getKineticNetworkType().removeEntity.accept(this, blockEntity);
+        remove(blockEntity);
 
         if ((blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos)).toList().size() == 1)
                 || (providerBlocks.isEmpty() && consumerBlocks.isEmpty()) || level == null) { // if we are not splitting
@@ -319,17 +336,18 @@ public class KineticNetwork {
 
             KineticNetwork network = new KineticNetwork(ids.remove(0), onRemove);
             insertConnectedPositions(network, providerBlocks, consumerBlocks, pos, level);
-            channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage(network));
+            channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(network));
             return network;
         }).filter(Objects::nonNull).toList();
     }
 
+    @Override
     public boolean isNotEmpty() {
         return !providers.isEmpty() || !consumers.isEmpty();
     }
 
     public static void encode(FriendlyByteBuf buffer, KineticNetwork level) {
-        buffer.writeInt(level.networkId);
+        buffer.writeInt(level.getNetworkId());
         buffer.writeInt(level.stressCapacity);
         buffer.writeInt(level.stress);
         buffer.writeEnum(level.rotationDirection);
@@ -350,7 +368,7 @@ public class KineticNetwork {
         BlockEntity blockEntity = level.getBlockEntity(from);
 
         if (blockEntity instanceof IKineticBlockEntity block) {
-            block.getKineticNetworkType().addEntity.accept(network, block); // insert from to new network
+            network.add(block);
             providerBlocks.remove(from);
             consumerBlocks.remove(from);
             block.getValidNeighbors().forEach((pos) -> {
@@ -373,7 +391,8 @@ public class KineticNetwork {
         return tag;
     }
 
-    private boolean isValidPosition(IKineticBlockEntity blockEntity, BlockPos pos) {
+    @Override
+    protected boolean isValidPosition(IKineticBlockEntity blockEntity, BlockPos pos) {
         if (providers.containsKey(pos) || consumers.containsKey(pos)) {
             Level level = blockEntity.getLevel();
 

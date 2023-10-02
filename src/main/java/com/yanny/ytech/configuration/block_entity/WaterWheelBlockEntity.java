@@ -3,7 +3,7 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.common.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.common.KineticNetworkType;
+import com.yanny.ytech.network.kinetic.common.NetworkType;
 import com.yanny.ytech.network.kinetic.common.RotationDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,8 +47,8 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
 
     @NotNull
     @Override
-    public KineticNetworkType getKineticNetworkType() {
-        return KineticNetworkType.PROVIDER;
+    public NetworkType getNetworkType() {
+        return NetworkType.PROVIDER;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
                 }
             }
 
-            strength *= 1000.0 / Math.max(1, fluidState.getFluidType().getViscosity());
+            strength *= (int) (1000.0 / Math.max(1, fluidState.getFluidType().getViscosity()));
         }
 
         return strength;

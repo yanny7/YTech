@@ -11,8 +11,6 @@ public interface INetworkBlockEntity {
     @Nullable Level getLevel();
     int getNetworkId();
     @NotNull BlockPos getBlockPos();
-    NetworkType getNetworkType();
     void setNetworkId(int networkId);
-    boolean isEmpty();
     @NotNull List<BlockPos> getValidNeighbors();
 }

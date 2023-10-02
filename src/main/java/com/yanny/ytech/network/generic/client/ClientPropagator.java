@@ -17,11 +17,11 @@ import org.slf4j.Logger;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-public class ClientPropagator<N extends AbstractNetwork> {
+public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetworkBlockEntity> {
     private final Minecraft minecraft = Minecraft.getInstance();
 
     private static final Logger LOGGER = LogUtils.getLogger();
-    private final HashMap<LevelAccessor, ClientLevel<N>> levelMap = new HashMap<>();
+    private final HashMap<LevelAccessor, ClientLevel<N, B>> levelMap = new HashMap<>();
 
     public void onLevelLoad(@NotNull net.minecraft.client.multiplayer.ClientLevel level) {
         LOGGER.debug("Preparing rotary propagator for {}", KineticUtils.getLevelId(level));
@@ -35,7 +35,7 @@ public class ClientPropagator<N extends AbstractNetwork> {
         LOGGER.debug("Removed rotary propagator for {}", KineticUtils.getLevelId(level));
     }
 
-    public void onSyncLevel(LevelSyncMessage<N> msg, Supplier<NetworkEvent.Context> contextSupplier) {
+    public void onSyncLevel(LevelSyncMessage<N, B> msg, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             levelMap.clear(); // client have only one instance of level
@@ -44,10 +44,10 @@ public class ClientPropagator<N extends AbstractNetwork> {
         context.setPacketHandled(true);
     }
 
-    public void onNetworkAddedOrUpdated(NetworkAddedOrUpdatedMessage<N> msg, Supplier<NetworkEvent.Context> contextSupplier) {
+    public void onNetworkAddedOrUpdated(NetworkAddedOrUpdatedMessage<N, B> msg, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            ClientLevel<N> level = levelMap.get(minecraft.level);
+            ClientLevel<N, B> level = levelMap.get(minecraft.level);
 
             if (level != null) {
                 level.onNetworkAddedOrUpdated(msg.network());
@@ -62,7 +62,7 @@ public class ClientPropagator<N extends AbstractNetwork> {
     public void onNetworkRemoved(NetworkRemovedMessage msg, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            ClientLevel<N> level = levelMap.get(minecraft.level);
+            ClientLevel<N, B> level = levelMap.get(minecraft.level);
 
             if (level != null) {
                 level.onNetworkRemoved(msg.networkId());
@@ -75,8 +75,8 @@ public class ClientPropagator<N extends AbstractNetwork> {
     }
 
     @Nullable
-    public N getNetwork(@NotNull INetworkBlockEntity blockEntity) {
-        ClientLevel<N> level = levelMap.get(blockEntity.getLevel());
+    public N getNetwork(@NotNull B blockEntity) {
+        ClientLevel<N, B> level = levelMap.get(blockEntity.getLevel());
 
         if (level != null) {
             return level.getNetwork(blockEntity);

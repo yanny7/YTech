@@ -1,22 +1,13 @@
 package com.yanny.ytech.network.kinetic.common;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public interface IKineticBlockEntity {
-    @NotNull BlockPos getBlockPos();
-    @Nullable Level getLevel();
-    @NotNull List<BlockPos> getValidNeighbors();
-    int getNetworkId();
-    void setNetworkId(int id);
+public interface IKineticBlockEntity extends INetworkBlockEntity {
     void onRemove();
     void onChangedState(BlockState oldBlockState, BlockState newBlockState);
-    @NotNull KineticNetworkType getKineticNetworkType();
     int getStress();
+    NetworkType getNetworkType();
     @NotNull RotationDirection getRotationDirection();
 }
