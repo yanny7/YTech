@@ -51,7 +51,7 @@ public abstract class KineticMachineBlockEntity extends MachineBlockEntity imple
     }
 
     @Override
-    public void onChangedState(BlockState oldBlockState, BlockState newBlockState) {
+    public void onChangedState(@NotNull BlockState oldBlockState, @NotNull BlockState newBlockState) {
         if (!oldBlockState.equals(newBlockState)) {
             setChanged();
         }

@@ -6,8 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IKineticBlockEntity extends INetworkBlockEntity {
     void onRemove();
-    void onChangedState(BlockState oldBlockState, BlockState newBlockState);
+    void onChangedState(@NotNull BlockState oldBlockState, @NotNull BlockState newBlockState);
     int getStress();
-    NetworkType getNetworkType();
+    @NotNull NetworkType getNetworkType();
     @NotNull RotationDirection getRotationDirection();
 }

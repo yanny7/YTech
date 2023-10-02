@@ -18,12 +18,13 @@ import org.slf4j.Logger;
 import java.util.HashMap;
 
 public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
-    protected static final Logger LOGGER = LogUtils.getLogger();
-    private final HashMap<LevelAccessor, ServerLevel<N, O>> levelMap = new HashMap<>();
-    private final SimpleChannel channel;
-    private final AbstractNetwork.Factory<N, O> networkFactory;
+    private static final Logger LOGGER = LogUtils.getLogger();
 
-    public ServerPropagator(SimpleChannel channel, AbstractNetwork.Factory<N, O> networkFactory) {
+    @NotNull private final HashMap<LevelAccessor, ServerLevel<N, O>> levelMap = new HashMap<>();
+    @NotNull private final SimpleChannel channel;
+    @NotNull private final AbstractNetwork.Factory<N, O> networkFactory;
+
+    public ServerPropagator(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<N, O> networkFactory) {
         this.channel = channel;
         this.networkFactory = networkFactory;
     }
@@ -32,7 +33,7 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
         levelMap.get(blockEntity.getLevel()).add(blockEntity);
     }
 
-    public void changed(O blockEntity) {
+    public void changed(@NotNull O blockEntity) {
         levelMap.get(blockEntity.getLevel()).update(blockEntity);
     }
 
@@ -53,7 +54,7 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
         LOGGER.debug("Removed rotary propagator for {}", KineticUtils.getLevelId(level));
     }
 
-    public void onPlayerLogIn(Player player) {
+    public void onPlayerLogIn(@NotNull Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new LevelSyncMessage<>(levelMap.get(serverPlayer.level()).getNetworks()));
         }

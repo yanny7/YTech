@@ -29,17 +29,17 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
     protected static final String TAG_NETWORK_ID = "networkId";
     protected static final Logger LOGGER = LogUtils.getLogger();
 
-    private final ConcurrentHashMap<Integer, T> networkMap = new ConcurrentHashMap<>();
-    private final SimpleChannel channel;
-    private final AbstractNetwork.Factory<T, O> networkFactory;
+    @NotNull private final ConcurrentHashMap<Integer, T> networkMap = new ConcurrentHashMap<>();
+    @NotNull private final SimpleChannel channel;
+    @NotNull private final AbstractNetwork.Factory<T, O> networkFactory;
 
-    ServerLevel(CompoundTag tag, SimpleChannel channel, AbstractNetwork.Factory<T, O> networkFactory) {
+    ServerLevel(@NotNull CompoundTag tag, @NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory) {
         load(tag);
         this.channel = channel;
         this.networkFactory = networkFactory;
     }
 
-    ServerLevel(SimpleChannel channel, AbstractNetwork.Factory<T, O> networkFactory) {
+    ServerLevel(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory) {
         this.channel = channel;
         this.networkFactory = networkFactory;
     }
@@ -60,7 +60,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
         return tag;
     }
 
-    public void add(O blockEntity) {
+    public void add(@NotNull O blockEntity) {
         final int networkId = blockEntity.getNetworkId();
         T resultNetwork;
         Level level = blockEntity.getLevel();
@@ -130,7 +130,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
         channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(resultNetwork));
     }
 
-    public void update(O blockEntity) {
+    public void update(@NotNull O blockEntity) {
         T network = getNetwork(blockEntity);
         Level level = blockEntity.getLevel();
 
@@ -160,7 +160,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
         }
     }
 
-    public void remove(O blockEntity) {
+    public void remove(@NotNull O blockEntity) {
         T network = getNetwork(blockEntity);
 
         if (network != null) {
@@ -176,8 +176,13 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
         }
     }
 
+    @NotNull
     public Map<Integer, T> getNetworks() {
         return networkMap;
+    }
+
+    public T getNetwork(@NotNull O blockEntity) {
+        return networkMap.get(blockEntity.getNetworkId());
     }
 
     private void onRemove(int networkId) {
@@ -229,11 +234,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
         }
     }
 
-    public T getNetwork(O blockEntity) {
-        return networkMap.get(blockEntity.getNetworkId());
-    }
-
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+    private static <T> Predicate<T> distinctByKey(@NotNull Function<? super T, ?> keyExtractor) {
         return t -> ConcurrentHashMap.newKeySet().add(keyExtractor.apply(t));
     }
 

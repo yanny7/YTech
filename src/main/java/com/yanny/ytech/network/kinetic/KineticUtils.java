@@ -23,15 +23,13 @@ public class KineticUtils {
 
     private KineticUtils() {}
 
-    public static List<BlockPos> getDirections(List<Direction> validDirections, BlockPos position, Direction currentDirection) {
+    @NotNull
+    public static List<BlockPos> getDirections(@NotNull List<Direction> validDirections, @NotNull BlockPos position, @NotNull Direction currentDirection) {
         return validDirections.stream().map((direction -> position.offset(rotateDirection(currentDirection, direction).getNormal()))).collect(Collectors.toList());
     }
 
-    public static Direction rotateDirection(Direction currentDirection, Direction baseDirection) {
-        return Direction.from2DDataValue((currentDirection.get2DDataValue() + baseDirection.get2DDataValue()) % 4);
-    }
-
-    public static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerKineticPropagator(SimpleChannel channel) {
+    @NotNull
+    public static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerKineticPropagator(@NotNull SimpleChannel channel) {
         return DistExecutor.unsafeRunForDist(() -> () -> registerClientKineticPropagator(channel), () -> () -> registerServerKineticPropagator(channel));
     }
 
@@ -40,7 +38,8 @@ public class KineticUtils {
         return level.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getKey(level.dimensionType());
     }
 
-    private static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerClientKineticPropagator(SimpleChannel channel) {
+    @NotNull
+    private static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerClientKineticPropagator(@NotNull SimpleChannel channel) {
         int messageId = 0;
         ClientPropagator<KineticNetwork, IKineticBlockEntity> client = new ClientPropagator<>();
         ServerPropagator<KineticNetwork, IKineticBlockEntity> server = new ServerPropagator<>(channel, KineticNetwork.FACTORY);
@@ -53,7 +52,8 @@ public class KineticUtils {
         return new YTechMod.DistHolder<>(client, server);
     }
 
-    private static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerServerKineticPropagator(SimpleChannel channel) {
+    @NotNull
+    private static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerServerKineticPropagator(@NotNull SimpleChannel channel) {
         int messageId = 0;
         ServerPropagator<KineticNetwork, IKineticBlockEntity> server = new ServerPropagator<>(channel, KineticNetwork.FACTORY);
 
@@ -63,5 +63,10 @@ public class KineticUtils {
                 (b) -> NetworkAddedOrUpdatedMessage.decode(b, KineticNetwork::decode), (m, c) -> {});
         channel.registerMessage(messageId++, NetworkRemovedMessage.class, NetworkRemovedMessage::encode, NetworkRemovedMessage::decode, (m, c) -> {});
         return new YTechMod.DistHolder<>(null, server);
+    }
+
+    @NotNull
+    private static Direction rotateDirection(@NotNull Direction currentDirection, @NotNull Direction baseDirection) {
+        return Direction.from2DDataValue((currentDirection.get2DDataValue() + baseDirection.get2DDataValue()) % 4);
     }
 }

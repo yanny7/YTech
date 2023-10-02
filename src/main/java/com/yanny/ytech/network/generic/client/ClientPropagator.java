@@ -18,10 +18,10 @@ import java.util.HashMap;
 import java.util.function.Supplier;
 
 public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetworkBlockEntity> {
-    private final Minecraft minecraft = Minecraft.getInstance();
-
     private static final Logger LOGGER = LogUtils.getLogger();
-    private final HashMap<LevelAccessor, ClientLevel<N, B>> levelMap = new HashMap<>();
+
+    @NotNull private final Minecraft minecraft = Minecraft.getInstance();
+    @NotNull private final HashMap<LevelAccessor, ClientLevel<N, B>> levelMap = new HashMap<>();
 
     public void onLevelLoad(@NotNull net.minecraft.client.multiplayer.ClientLevel level) {
         LOGGER.debug("Preparing rotary propagator for {}", KineticUtils.getLevelId(level));
@@ -35,7 +35,7 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
         LOGGER.debug("Removed rotary propagator for {}", KineticUtils.getLevelId(level));
     }
 
-    public void onSyncLevel(LevelSyncMessage<N, B> msg, Supplier<NetworkEvent.Context> contextSupplier) {
+    public void onSyncLevel(@NotNull LevelSyncMessage<N, B> msg, @NotNull Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             levelMap.clear(); // client have only one instance of level
@@ -44,7 +44,7 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
         context.setPacketHandled(true);
     }
 
-    public void onNetworkAddedOrUpdated(NetworkAddedOrUpdatedMessage<N, B> msg, Supplier<NetworkEvent.Context> contextSupplier) {
+    public void onNetworkAddedOrUpdated(@NotNull NetworkAddedOrUpdatedMessage<N, B> msg, @NotNull Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ClientLevel<N, B> level = levelMap.get(minecraft.level);
@@ -59,7 +59,7 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
         context.setPacketHandled(true);
     }
 
-    public void onNetworkRemoved(NetworkRemovedMessage msg, Supplier<NetworkEvent.Context> contextSupplier) {
+    public void onNetworkRemoved(@NotNull NetworkRemovedMessage msg, @NotNull Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ClientLevel<N, B> level = levelMap.get(minecraft.level);

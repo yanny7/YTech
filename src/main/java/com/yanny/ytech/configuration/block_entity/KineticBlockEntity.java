@@ -46,7 +46,7 @@ public abstract class KineticBlockEntity extends BlockEntity implements IKinetic
     }
 
     @Override
-    public void onChangedState(BlockState oldBlockState, BlockState newBlockState) {
+    public void onChangedState(@NotNull BlockState oldBlockState, @NotNull BlockState newBlockState) {
         if (!oldBlockState.equals(newBlockState)) {
             setChanged();
         }

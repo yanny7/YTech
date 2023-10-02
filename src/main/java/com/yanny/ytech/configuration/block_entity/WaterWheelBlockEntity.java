@@ -57,7 +57,7 @@ public class WaterWheelBlockEntity extends KineticBlockEntity implements IKineti
     }
 
     @Override
-    public void onChangedState(BlockState oldBlockState, BlockState newBlockState) {
+    public void onChangedState(@NotNull BlockState oldBlockState, @NotNull BlockState newBlockState) {
         //FIXME debounce
         if (level != null && !level.isClientSide) {
             RotationDirection oldRotationDirection = rotationDirection;
