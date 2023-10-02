@@ -352,7 +352,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         ResourceLocation[] textures = holder.object.getTextures();
         ModelFile bottom = provider.models().slab(holder.key, textures[0], textures[0], textures[0]);
         ModelFile top = provider.models().slabTop(holder.key + "_top", textures[0], textures[0], textures[0]);
-        ModelFile doubleSlab = provider.models().getExistingFile(textures[0]); //model of full block, in this case same as texture name!
+        ModelFile doubleSlab = provider.models().cubeAll(holder.key + "_double", textures[0]);
 
         provider.getVariantBuilder(holder.block.get())
                 .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bottom))
