@@ -4,6 +4,9 @@ import com.yanny.ytech.configuration.YTechConfigSpec;
 import com.yanny.ytech.generation.DataGeneration;
 import com.yanny.ytech.network.generic.client.ClientPropagator;
 import com.yanny.ytech.network.generic.server.ServerPropagator;
+import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
+import com.yanny.ytech.network.irrigation.IrrigationNetwork;
+import com.yanny.ytech.network.irrigation.IrrigationUtils;
 import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.KineticNetwork;
 import com.yanny.ytech.network.kinetic.KineticUtils;
@@ -25,6 +28,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class YTechMod {
     public static final String MOD_ID = "ytech";
     public static final DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> KINETIC_PROPAGATOR;
+    public static final DistHolder<ClientPropagator<IrrigationNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationNetwork, IIrrigationBlockEntity>> IRRIGATION_PROPAGATOR;
     public static final YTechConfigSpec CONFIGURATION;
 
     private static final String PROTOCOL_VERSION = "1";
@@ -42,6 +46,7 @@ public class YTechMod {
         CONFIGURATION = pair.getKey();
         CONFIGURATION_SPEC = pair.getValue();
         KINETIC_PROPAGATOR = KineticUtils.registerKineticPropagator(channel);
+        IRRIGATION_PROPAGATOR = IrrigationUtils.registerIrrigationPropagator(channel);
     }
 
     public YTechMod() {

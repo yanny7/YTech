@@ -2,10 +2,10 @@ package com.yanny.ytech.network.generic.server;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import com.yanny.ytech.network.generic.message.LevelSyncMessage;
-import com.yanny.ytech.network.kinetic.KineticUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,10 +23,12 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
     @NotNull private final HashMap<LevelAccessor, ServerLevel<N, O>> levelMap = new HashMap<>();
     @NotNull private final SimpleChannel channel;
     @NotNull private final AbstractNetwork.Factory<N, O> networkFactory;
+    @NotNull private final String networkName;
 
-    public ServerPropagator(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<N, O> networkFactory) {
+    public ServerPropagator(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<N, O> networkFactory, @NotNull String networkName) {
         this.channel = channel;
         this.networkFactory = networkFactory;
+        this.networkName = networkName;
     }
 
     public void add(@NotNull O blockEntity) {
@@ -42,16 +44,16 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
     }
 
     public void onLevelLoad(@NotNull net.minecraft.server.level.ServerLevel level) {
-        LOGGER.debug("Preparing rotary propagator for {}", KineticUtils.getLevelId(level));
-        levelMap.put(level, level.getDataStorage().computeIfAbsent((tag) -> new ServerLevel<>(tag, channel, networkFactory),
-                () -> new ServerLevel<>(channel, networkFactory), YTechMod.MOD_ID + "_rotary"));
-        LOGGER.debug("Prepared rotary propagator for {}", KineticUtils.getLevelId(level));
+        LOGGER.debug("[{}] Preparing propagators for {}", networkName, NetworkUtils.getLevelId(level));
+        levelMap.put(level, level.getDataStorage().computeIfAbsent((tag) -> new ServerLevel<>(tag, channel, networkFactory, networkName),
+                () -> new ServerLevel<>(channel, networkFactory, networkName), YTechMod.MOD_ID + "_" + networkName));
+        LOGGER.debug("[{}] Prepared propagators for {}", networkName, NetworkUtils.getLevelId(level));
     }
 
     public void onLevelUnload(@NotNull net.minecraft.server.level.ServerLevel level) {
-        LOGGER.debug("Removing rotary propagator for {}", KineticUtils.getLevelId(level));
+        LOGGER.debug("[{}] Removing propagator for {}", networkName, NetworkUtils.getLevelId(level));
         levelMap.remove(level);
-        LOGGER.debug("Removed rotary propagator for {}", KineticUtils.getLevelId(level));
+        LOGGER.debug("[{}] Removed propagator for {}", networkName, NetworkUtils.getLevelId(level));
     }
 
     public void onPlayerLogIn(@NotNull Player player) {
@@ -67,7 +69,7 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
         if (level != null) {
             return level.getNetwork(blockEntity);
         } else {
-            LOGGER.warn("No kinetic network for level {}", blockEntity.getLevel());
+            LOGGER.warn("[{}] No " + networkName + " network for level {}", networkName, blockEntity.getLevel());
             return null;
         }
     }

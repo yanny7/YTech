@@ -32,16 +32,19 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
     @NotNull private final ConcurrentHashMap<Integer, T> networkMap = new ConcurrentHashMap<>();
     @NotNull private final SimpleChannel channel;
     @NotNull private final AbstractNetwork.Factory<T, O> networkFactory;
+    @NotNull private final String networkName;
 
-    ServerLevel(@NotNull CompoundTag tag, @NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory) {
+    ServerLevel(@NotNull CompoundTag tag, @NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory, @NotNull String networkName) {
+        this.networkName = networkName;
         load(tag);
         this.channel = channel;
         this.networkFactory = networkFactory;
     }
 
-    ServerLevel(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory) {
+    ServerLevel(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory, @NotNull String networkName) {
         this.channel = channel;
         this.networkFactory = networkFactory;
+        this.networkName = networkName;
     }
 
     @NotNull
@@ -73,7 +76,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             resultNetwork = networkMap.get(networkId);
 
             if (!resultNetwork.canAttach(blockEntity)) {
-                LOGGER.warn("Can't attach block {} to network at {}", blockEntity, blockEntity.getBlockPos());
+                LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
                 level.destroyBlock(blockEntity.getBlockPos(), true);
                 return;
             }
@@ -89,7 +92,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                 resultNetwork = networks.get(0);
 
                 if (!resultNetwork.canAttach(blockEntity)) {
-                    LOGGER.warn("Can't attach block {} to network at {}", blockEntity, blockEntity.getBlockPos());
+                    LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
                     level.destroyBlock(blockEntity.getBlockPos(), true);
                     return;
                 }
@@ -100,7 +103,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                     resultNetwork = distinctNetworks.get(0);
 
                     if (!resultNetwork.canAttach(blockEntity)) {
-                        LOGGER.warn("Can't attach block {} to network at {}", blockEntity, blockEntity.getBlockPos());
+                        LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
                         level.destroyBlock(blockEntity.getBlockPos(), true);
                         return;
                     }
@@ -108,7 +111,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                     T network = distinctNetworks.remove(0);
 
                     if (!network.canAttach(blockEntity) || !distinctNetworks.stream().allMatch((n) -> n.canAttach(blockEntity) && n.canAttach(network))) {
-                        LOGGER.warn("Can't attach block {} to network at {}", blockEntity, blockEntity.getBlockPos());
+                        LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
                         level.destroyBlock(blockEntity.getBlockPos(), true);
                         return;
                     }
@@ -148,7 +151,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                 List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
                 networkMap.putAll(networks.stream().collect(Collectors.toMap(AbstractNetwork::getNetworkId, n -> n)));
                 level.destroyBlock(blockEntity.getBlockPos(), true);
-                LOGGER.warn("Removed block {} from network at {} because started rotating to wrong direction", blockEntity, blockEntity.getBlockPos());
+                LOGGER.warn("[{}] Removed block {} from network at {}", networkName, blockEntity, blockEntity.getBlockPos());
                 setDirty();
 
                 if (network.isNotEmpty()) {
@@ -156,7 +159,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                 }
             }
         } else {
-            LOGGER.warn("UPDATE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
+            LOGGER.warn("[{}] UPDATE: Can't get network for block {} at {}", networkName, blockEntity, blockEntity.getBlockPos());
         }
     }
 
@@ -172,7 +175,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                 channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(network));
             }
         } else {
-            LOGGER.warn("REMOVE: Can't get network for block {} at {}", blockEntity, blockEntity.getBlockPos());
+            LOGGER.warn("[{}] REMOVE: Can't get network for block {} at {}", networkName, blockEntity, blockEntity.getBlockPos());
         }
     }
 
@@ -197,7 +200,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             }
         }
 
-        LOGGER.error("Network keys overflow!");
+        LOGGER.error("[{}] Network keys overflow!", networkName);
         throw new IllegalStateException("Can't generate new ID for network!");
     }
 
@@ -214,7 +217,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             }
         }
 
-        LOGGER.error("Network keys overflow!");
+        LOGGER.error("[{}] Network keys overflow!", networkName);
         throw new IllegalStateException("Can't generate new ID for network!");
     }
 
@@ -228,9 +231,9 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                 networkMap.put(networkId, networkFactory.create(itemHolder.getCompound(TAG_NETWORK), networkId, this::onRemove));
             });
 
-            LOGGER.info("Loaded {} rotary networks", networkMap.size());
+            LOGGER.info("[{}] Loaded {} networks", networkName, networkMap.size());
         } else {
-            LOGGER.info("No rotary network loaded");
+            LOGGER.info("[{}] No network loaded", networkName);
         }
     }
 
@@ -244,7 +247,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
     @Override
     public void setDirty() {
         super.setDirty();
-        LOGGER.warn("Updated network. Total: {}", networkMap.size());
-        networkMap.forEach((i, n) -> LOGGER.info(n.toString()));
+        LOGGER.warn("[{}] Updated network. Total: {}", networkName, networkMap.size());
+        networkMap.forEach((i, n) -> LOGGER.info("[{}]: {}", networkName, n.toString()));
     }
 }

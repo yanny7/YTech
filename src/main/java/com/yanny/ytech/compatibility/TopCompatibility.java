@@ -2,6 +2,8 @@ package com.yanny.ytech.compatibility;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block_entity.*;
+import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
+import com.yanny.ytech.network.irrigation.IrrigationNetwork;
 import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.KineticNetwork;
 import mcjty.theoneprobe.api.*;
@@ -55,6 +57,8 @@ public class TopCompatibility {
                             probeInfo.horizontal().text("Hit left: ").text(Integer.toString(blockEntity.getHitLeft())).text(" times");
                         } else if (entity instanceof AbstractPrimitiveMachineBlockEntity blockEntity) {
                             addPrimitiveSmelterInfo(probeInfo, blockEntity);
+                        } else if (entity instanceof IIrrigationBlockEntity blockEntity) {
+                            addIrrigationInfo(probeInfo, blockEntity);
                         }
                     }
                 }
@@ -73,6 +77,20 @@ public class TopCompatibility {
 
         if (network != null) {
             probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getStress())).text("/").text(Integer.toString(network.getStressCapacity()));
+        }
+    }
+
+    private static void addIrrigationInfo(IProbeInfo probeInfo, IIrrigationBlockEntity blockEntity) {
+        switch (blockEntity.getNetworkType()) {
+            case PROVIDER -> probeInfo.horizontal().text("Producing: ").text(Integer.toString(blockEntity.getFlow())).text(" mb/t");
+            case CONSUMER -> probeInfo.horizontal().text("Consuming: ").text(Integer.toString(blockEntity.getFlow())).text(" mb/t");
+        }
+
+        IrrigationNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
+
+        if (network != null) {
+            probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getFluidHandler().getFluidAmount())).text("/")
+                    .text(Integer.toString(network.getFluidHandler().getCapacity()));
         }
     }
 

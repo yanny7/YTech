@@ -1,12 +1,12 @@
 package com.yanny.ytech.network.generic.client;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import com.yanny.ytech.network.generic.message.LevelSyncMessage;
 import com.yanny.ytech.network.generic.message.NetworkAddedOrUpdatedMessage;
 import com.yanny.ytech.network.generic.message.NetworkRemovedMessage;
-import com.yanny.ytech.network.kinetic.KineticUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.network.NetworkEvent;
@@ -22,17 +22,22 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
 
     @NotNull private final Minecraft minecraft = Minecraft.getInstance();
     @NotNull private final HashMap<LevelAccessor, ClientLevel<N, B>> levelMap = new HashMap<>();
+    @NotNull private final String networkName;
+
+    public ClientPropagator(@NotNull String networkName) {
+        this.networkName = networkName;
+    }
 
     public void onLevelLoad(@NotNull net.minecraft.client.multiplayer.ClientLevel level) {
-        LOGGER.debug("Preparing rotary propagator for {}", KineticUtils.getLevelId(level));
+        LOGGER.debug("[{}] Preparing propagators for {}", networkName, NetworkUtils.getLevelId(level));
         levelMap.put(level, new ClientLevel<>());
-        LOGGER.debug("Prepared rotary propagator for {}", KineticUtils.getLevelId(level));
+        LOGGER.debug("[{}] Prepared propagators for {}", networkName, NetworkUtils.getLevelId(level));
     }
 
     public void onLevelUnload(@NotNull net.minecraft.client.multiplayer.ClientLevel level) {
-        LOGGER.debug("Removing rotary propagator for {}", KineticUtils.getLevelId(level));
+        LOGGER.debug("[{}] Removing propagator for {}", networkName, NetworkUtils.getLevelId(level));
         levelMap.remove(level);
-        LOGGER.debug("Removed rotary propagator for {}", KineticUtils.getLevelId(level));
+        LOGGER.debug("[{}] Removed propagator for {}", networkName, NetworkUtils.getLevelId(level));
     }
 
     public void onSyncLevel(@NotNull LevelSyncMessage<N, B> msg, @NotNull Supplier<NetworkEvent.Context> contextSupplier) {
@@ -51,9 +56,9 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
 
             if (level != null) {
                 level.onNetworkAddedOrUpdated(msg.network());
-                LOGGER.info("Added or updated network {}" , msg.network());
+                LOGGER.info("[{}] Added or updated network {}", networkName, msg.network());
             } else {
-                LOGGER.warn("No level stored for {}", minecraft.level);
+                LOGGER.warn("[{}] No level stored for {}", networkName, minecraft.level);
             }
         });
         context.setPacketHandled(true);
@@ -66,9 +71,9 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
 
             if (level != null) {
                 level.onNetworkRemoved(msg.networkId());
-                LOGGER.info("Removed network {}", msg.networkId());
+                LOGGER.info("[{}] Removed network {}", networkName, msg.networkId());
             } else {
-                LOGGER.warn("No level stored for {}", minecraft.level);
+                LOGGER.warn("[{}] No level stored for {}", networkName, minecraft.level);
             }
         });
         context.setPacketHandled(true);
@@ -81,7 +86,7 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
         if (level != null) {
             return level.getNetwork(blockEntity);
         } else {
-            LOGGER.warn("No kinetic network for level {}", blockEntity.getLevel());
+            LOGGER.warn("[{}] No network for level {}", networkName, blockEntity.getLevel());
             return null;
         }
     }

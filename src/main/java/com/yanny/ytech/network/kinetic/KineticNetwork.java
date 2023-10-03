@@ -1,6 +1,7 @@
 package com.yanny.ytech.network.kinetic;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.message.NetworkAddedOrUpdatedMessage;
 import net.minecraft.core.BlockPos;
@@ -80,35 +81,17 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
     }
 
     @Override
-    public void add(@NotNull IKineticBlockEntity entity) {
-        super.add(entity);
-
-        switch (entity.getNetworkType()) {
-            case CONSUMER -> addConsumer(entity);
-            case PROVIDER -> addProvider(entity);
-        }
-    }
-
-    @Override
-    public void remove(@NotNull IKineticBlockEntity entity) {
-        switch (entity.getNetworkType()) {
-            case CONSUMER -> removeConsumer(entity);
-            case PROVIDER -> removeProvider(entity);
-        }
-
-        super.remove(entity);
-    }
-
-    @Override
     public void load(@NotNull CompoundTag tag) {
         if (tag.contains(TAG_PROVIDERS) && tag.getTagType(TAG_PROVIDERS) != 0) {
-            tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) -> providers.put(loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_STRESS)));
+            tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) ->
+                    providers.put(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_STRESS)));
         }
         if (tag.contains(TAG_CONSUMERS) && tag.getTagType(TAG_CONSUMERS) != 0) {
-            tag.getList(TAG_CONSUMERS, ListTag.TAG_COMPOUND).forEach((t) -> consumers.put(loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_STRESS)));
+            tag.getList(TAG_CONSUMERS, ListTag.TAG_COMPOUND).forEach((t) ->
+                    consumers.put(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_STRESS)));
         }
         if (tag.contains(TAG_DIR_PROVIDERS) && tag.getTagType(TAG_DIR_PROVIDERS) != 0) {
-            tag.getList(TAG_DIR_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) -> directionProviders.add(loadBlockPos((CompoundTag) t)));
+            tag.getList(TAG_DIR_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) -> directionProviders.add(NetworkUtils.loadBlockPos((CompoundTag) t)));
         }
         if (tag.contains(TAG_STRESS_CAPACITY) && tag.getTagType(TAG_STRESS_CAPACITY) != 0) {
             stressCapacity = tag.getInt(TAG_STRESS_CAPACITY);
@@ -122,7 +105,8 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
             } catch (Exception ignored) {}
         }
 
-        LOGGER.debug("Network {}: Loaded {} providers, {} consumers, {} dirProviders, {}", getNetworkId(), providers.size(), consumers.size(), directionProviders.size(), rotationDirection);
+        LOGGER.debug("Network {}: Loaded {} providers, {} consumers, {} dirProviders, {}", getNetworkId(), providers.size(),
+                consumers.size(), directionProviders.size(), rotationDirection);
     }
 
     @Override
@@ -134,17 +118,17 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
 
         providers.forEach((pos, stress) -> {
             CompoundTag t = new CompoundTag();
-            t.put(TAG_BLOCK_POS, saveBlockPos(pos));
+            t.put(TAG_BLOCK_POS, NetworkUtils.saveBlockPos(pos));
             t.putInt(TAG_STRESS, stress);
             providersTag.add(t);
         });
         consumers.forEach((pos, stress) -> {
             CompoundTag t = new CompoundTag();
-            t.put(TAG_BLOCK_POS, saveBlockPos(pos));
+            t.put(TAG_BLOCK_POS, NetworkUtils.saveBlockPos(pos));
             t.putInt(TAG_STRESS, stress);
             consumersTag.add(t);
         });
-        directionProviders.forEach((pos) -> dirProvidersTag.add(saveBlockPos(pos)));
+        directionProviders.forEach((pos) -> dirProvidersTag.add(NetworkUtils.saveBlockPos(pos)));
         tag.put(TAG_PROVIDERS, providersTag);
         tag.put(TAG_CONSUMERS, consumersTag);
         tag.put(TAG_DIR_PROVIDERS, dirProvidersTag);
@@ -289,6 +273,26 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
         return false;
     }
 
+    @Override
+    public void add(@NotNull IKineticBlockEntity entity) {
+        super.add(entity);
+
+        switch (entity.getNetworkType()) {
+            case CONSUMER -> addConsumer(entity);
+            case PROVIDER -> addProvider(entity);
+        }
+    }
+
+    @Override
+    public void remove(@NotNull IKineticBlockEntity entity) {
+        switch (entity.getNetworkType()) {
+            case CONSUMER -> removeConsumer(entity);
+            case PROVIDER -> removeProvider(entity);
+        }
+
+        super.remove(entity);
+    }
+
     public int getStress() {
         return stress;
     }
@@ -388,20 +392,6 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
         network.stress = buffer.readInt();
         network.rotationDirection = buffer.readEnum(RotationDirection.class);
         return network;
-    }
-
-    @NotNull
-    private static BlockPos loadBlockPos(@NotNull CompoundTag tag) {
-        return new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
-    }
-
-    @NotNull
-    private static CompoundTag saveBlockPos(@NotNull BlockPos pos) {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("x", pos.getX());
-        tag.putInt("y", pos.getY());
-        tag.putInt("z", pos.getZ());
-        return tag;
     }
 
     private static void insertConnectedPositions(@NotNull KineticNetwork network, @NotNull Map<BlockPos, Integer> providerBlocks,

@@ -8,13 +8,9 @@ import com.yanny.ytech.network.generic.message.NetworkRemovedMessage;
 import com.yanny.ytech.network.generic.server.ServerPropagator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,16 +29,11 @@ public class KineticUtils {
         return DistExecutor.unsafeRunForDist(() -> () -> registerClientKineticPropagator(channel), () -> () -> registerServerKineticPropagator(channel));
     }
 
-    @Nullable
-    public static ResourceLocation getLevelId(@NotNull LevelAccessor level) {
-        return level.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getKey(level.dimensionType());
-    }
-
     @NotNull
     private static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerClientKineticPropagator(@NotNull SimpleChannel channel) {
         int messageId = 0;
-        ClientPropagator<KineticNetwork, IKineticBlockEntity> client = new ClientPropagator<>();
-        ServerPropagator<KineticNetwork, IKineticBlockEntity> server = new ServerPropagator<>(channel, KineticNetwork.FACTORY);
+        ClientPropagator<KineticNetwork, IKineticBlockEntity> client = new ClientPropagator<>("kinetic");
+        ServerPropagator<KineticNetwork, IKineticBlockEntity> server = new ServerPropagator<>(channel, KineticNetwork.FACTORY, "kinetic");
 
         channel.registerMessage(messageId++, LevelSyncMessage.class, (m, b) -> LevelSyncMessage.encode(m, b, KineticNetwork::encode),
                 (b) -> LevelSyncMessage.decode(b, KineticNetwork::decode), client::onSyncLevel);
@@ -55,7 +46,7 @@ public class KineticUtils {
     @NotNull
     private static YTechMod.DistHolder<ClientPropagator<KineticNetwork, IKineticBlockEntity>, ServerPropagator<KineticNetwork, IKineticBlockEntity>> registerServerKineticPropagator(@NotNull SimpleChannel channel) {
         int messageId = 0;
-        ServerPropagator<KineticNetwork, IKineticBlockEntity> server = new ServerPropagator<>(channel, KineticNetwork.FACTORY);
+        ServerPropagator<KineticNetwork, IKineticBlockEntity> server = new ServerPropagator<>(channel, KineticNetwork.FACTORY, "kinetic");
 
         channel.registerMessage(messageId++, LevelSyncMessage.class, (m, b) -> LevelSyncMessage.encode(m, b, KineticNetwork::encode),
                 (b) -> LevelSyncMessage.decode(b, KineticNetwork::decode), (m, c) -> {});

@@ -37,8 +37,10 @@ public class ForgeBusSubscriber {
 
         if (levelAccessor instanceof ServerLevel level) {
             YTechMod.KINETIC_PROPAGATOR.server().onLevelLoad(level);
+            YTechMod.IRRIGATION_PROPAGATOR.server().onLevelLoad(level);
         } else if (levelAccessor instanceof ClientLevel level) {
             YTechMod.KINETIC_PROPAGATOR.client().onLevelLoad(level);
+            YTechMod.IRRIGATION_PROPAGATOR.client().onLevelLoad(level);
         }
     }
 
@@ -48,8 +50,10 @@ public class ForgeBusSubscriber {
 
         if (levelAccessor instanceof ServerLevel level) {
             YTechMod.KINETIC_PROPAGATOR.server().onLevelUnload(level);
+            YTechMod.IRRIGATION_PROPAGATOR.server().onLevelUnload(level);
         } else if (levelAccessor instanceof ClientLevel level) {
             YTechMod.KINETIC_PROPAGATOR.client().onLevelUnload(level);
+            YTechMod.IRRIGATION_PROPAGATOR.client().onLevelUnload(level);
         }
     }
 
@@ -64,6 +68,7 @@ public class ForgeBusSubscriber {
     @SubscribeEvent
     public static void onPlayerLogIn(@NotNull PlayerEvent.PlayerLoggedInEvent event) {
         YTechMod.KINETIC_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
+        YTechMod.IRRIGATION_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
     }
 
     @SubscribeEvent
