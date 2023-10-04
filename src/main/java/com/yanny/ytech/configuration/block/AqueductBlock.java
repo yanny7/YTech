@@ -11,6 +11,10 @@ import com.yanny.ytech.registration.Registration;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -34,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
@@ -218,6 +223,16 @@ public class AqueductBlock extends IrrigationBlock {
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.SOUTH)).addModel().condition(SOUTH_EAST, true).end();
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.WEST)).addModel().condition(SOUTH_WEST, true).end();
         provider.itemModels().getBuilder(holder.key).parent(base);
+    }
+
+    public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+                .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
+                .pattern("# #")
+                .pattern("# #")
+                .pattern("###")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.TERRACOTTA_BRICKS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static boolean hasSide(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BooleanProperty property) {

@@ -153,7 +153,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             AqueductBlock::getTexture,
             AqueductBlock::registerModel,
             ILootable::dropsSelfProvider,
-            IRecipe::noRecipe,
+            AqueductBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag),
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
