@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
@@ -157,6 +156,6 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .pattern("S ")
                 .pattern("S ")
                 .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

@@ -8,7 +8,6 @@ import com.yanny.ytech.configuration.recipe.*;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -333,10 +332,10 @@ public class Registration {
         String flowingName = "flowing_" + name;
         String bucketName = name + "_bucket";
         String blockName = name + "_fluid";
-        RegistryObject<Fluid> sourceFluid = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, name), ForgeRegistries.FLUIDS);
-        RegistryObject<Fluid> flowingFluid = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, flowingName), ForgeRegistries.FLUIDS);
-        RegistryObject<Item> bucket = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, bucketName), ForgeRegistries.ITEMS);
-        RegistryObject<Block> block = RegistryObject.create(new ResourceLocation(YTechMod.MOD_ID, blockName), ForgeRegistries.BLOCKS);
+        RegistryObject<Fluid> sourceFluid = RegistryObject.create(Utils.modLoc(name), ForgeRegistries.FLUIDS);
+        RegistryObject<Fluid> flowingFluid = RegistryObject.create(Utils.modLoc(flowingName), ForgeRegistries.FLUIDS);
+        RegistryObject<Item> bucket = RegistryObject.create(Utils.modLoc(bucketName), ForgeRegistries.ITEMS);
+        RegistryObject<Block> block = RegistryObject.create(Utils.modLoc(blockName), ForgeRegistries.BLOCKS);
         FluidType fluidType = new YTechFluidType(material);
         ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(() ->
                 fluidType, sourceFluid, flowingFluid).bucket(bucket).tickRate(20).block(() -> (LiquidBlock) block.get());

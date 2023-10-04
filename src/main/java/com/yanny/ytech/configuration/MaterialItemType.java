@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.configuration.recipe.HammeringRecipe;
 import com.yanny.ytech.registration.Holder;
@@ -346,7 +345,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern("# #")
                     .pattern(" # ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.STONE))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
         } else {
             ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', INGOT.itemTag.get(holder.material))
@@ -355,7 +354,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern("# #")
                     .pattern(" # ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(INGOT.itemTag.get(holder.material)))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
         }
     }
 
@@ -365,7 +364,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .define('#', PLATE.itemTag.get(holder.material))
                 .pattern("S##")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerHammerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
@@ -378,7 +377,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern(" S#")
                     .pattern("S  ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
         } else {
             ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
@@ -387,7 +386,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .pattern(" S#")
                     .pattern("S  ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material)))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
         }
     }
 

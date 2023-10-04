@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block.DryingRackBlock;
 import com.yanny.ytech.configuration.block.ShaftBlock;
 import com.yanny.ytech.configuration.block.TanningRackBlock;
@@ -392,7 +391,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                 .define('#', MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material))
                 .pattern("###").pattern("###").pattern("###")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material)))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
@@ -400,7 +399,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                 .define('#', MaterialItemType.INGOT.itemTag.get(holder.material))
                 .pattern("###").pattern("###").pattern("###")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.INGOT.itemTag.get(holder.material)))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerItemTag(@NotNull Holder.BlockHolder holder, @NotNull ItemTagsProvider provider) {

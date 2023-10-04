@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.item;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.ArrowEntity;
@@ -9,7 +8,6 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,6 +51,6 @@ public class MaterialArrowItem extends ArrowItem {
                 .pattern("S")
                 .pattern("F")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.BOLT.itemTag.get(holder.material)))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

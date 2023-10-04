@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.DryingRackBlockEntity;
 import com.yanny.ytech.registration.Holder;
@@ -192,7 +191,7 @@ public class DryingRackBlock extends Block implements EntityBlock {
                     .pattern("W W")
                     .group(MaterialBlockType.DRYING_RACK.id + "_" + holder.material.group)
                     .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static TextureHolder[] getTexture(MaterialType material) {

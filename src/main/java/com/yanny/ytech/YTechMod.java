@@ -1,5 +1,6 @@
 package com.yanny.ytech;
 
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.YTechConfigSpec;
 import com.yanny.ytech.generation.DataGeneration;
 import com.yanny.ytech.network.generic.client.ClientPropagator;
@@ -11,7 +12,6 @@ import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.KineticNetwork;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.registration.Registration;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -37,7 +37,7 @@ public class YTechMod {
     static {
         Pair<YTechConfigSpec, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(YTechConfigSpec::new);
         SimpleChannel channel = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(YTechMod.MOD_ID, "network"),
+                Utils.modLoc("network"),
                 () -> PROTOCOL_VERSION,
                 PROTOCOL_VERSION::equals,
                 PROTOCOL_VERSION::equals

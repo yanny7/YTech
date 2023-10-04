@@ -1,13 +1,11 @@
 package com.yanny.ytech.configuration.item;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -52,7 +50,7 @@ public class MaterialAxeItem extends AxeItem {
                     .pattern("#S")
                     .pattern(" S")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.PLATE.itemTag.get(holder.material)))
-                    .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
 import com.yanny.ytech.registration.Holder;
@@ -230,6 +229,6 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .pattern(" I ")
                 .pattern("III")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE)))
-                .save(recipeConsumer, new ResourceLocation(YTechMod.MOD_ID, holder.key));
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

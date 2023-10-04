@@ -1,7 +1,7 @@
 package com.yanny.ytech.configuration.screen.components;
 
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MachineItemStackHandler;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.container.MachineContainerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -12,7 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class MachineScreenHandler<T extends MachineContainerMenu> {
-    private static final ResourceLocation GUI = new ResourceLocation(YTechMod.MOD_ID, "textures/gui/machine.png");
+    private static final ResourceLocation GUI = Utils.modLoc("textures/gui/machine.png");
 
     @NotNull private final MachineItemStackHandler itemStackHandler;
     @NotNull private final Set<IComponent> components;
