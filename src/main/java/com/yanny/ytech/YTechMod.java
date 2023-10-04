@@ -37,7 +37,7 @@ public class YTechMod {
     static {
         Pair<YTechConfigSpec, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(YTechConfigSpec::new);
         SimpleChannel channel = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(YTechMod.MOD_ID, YTechMod.MOD_ID),
+                new ResourceLocation(YTechMod.MOD_ID, "network"),
                 () -> PROTOCOL_VERSION,
                 PROTOCOL_VERSION::equals,
                 PROTOCOL_VERSION::equals

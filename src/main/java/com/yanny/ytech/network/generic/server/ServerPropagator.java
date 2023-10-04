@@ -5,7 +5,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
-import com.yanny.ytech.network.generic.message.LevelSyncMessage;
+import com.yanny.ytech.network.generic.common.NetworkFactory;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
@@ -22,10 +22,10 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
 
     @NotNull private final HashMap<LevelAccessor, ServerLevel<N, O>> levelMap = new HashMap<>();
     @NotNull private final SimpleChannel channel;
-    @NotNull private final AbstractNetwork.Factory<N, O> networkFactory;
+    @NotNull private final NetworkFactory<N, O> networkFactory;
     @NotNull private final String networkName;
 
-    public ServerPropagator(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<N, O> networkFactory, @NotNull String networkName) {
+    public ServerPropagator(@NotNull SimpleChannel channel, @NotNull NetworkFactory<N, O> networkFactory, @NotNull String networkName) {
         this.channel = channel;
         this.networkFactory = networkFactory;
         this.networkName = networkName;
@@ -58,7 +58,7 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
 
     public void onPlayerLogIn(@NotNull Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new LevelSyncMessage<>(levelMap.get(serverPlayer.level()).getNetworks()));
+            channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), networkFactory.createLevelSyncMessage(levelMap.get(serverPlayer.level()).getNetworks()));
         }
     }
 

@@ -14,12 +14,6 @@ public abstract class AbstractNetwork<N extends AbstractNetwork<N, O>, O extends
     @NotNull private final Consumer<Integer> onRemove;
     private final int networkId;
 
-    public AbstractNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove) {
-        load(tag);
-        this.networkId = networkId;
-        this.onRemove = onRemove;
-    }
-
     public AbstractNetwork(int networkId, @NotNull Consumer<Integer> onRemove) {
         this.networkId = networkId;
         this.onRemove = onRemove;
@@ -64,12 +58,5 @@ public abstract class AbstractNetwork<N extends AbstractNetwork<N, O>, O extends
 
     public int getNetworkId() {
         return networkId;
-    }
-
-    public interface Factory<T extends AbstractNetwork<T, O>, O extends INetworkBlockEntity> {
-        @NotNull
-        T create(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove);
-        @NotNull
-        T create(int networkId, @NotNull Consumer<Integer> onRemove);
     }
 }

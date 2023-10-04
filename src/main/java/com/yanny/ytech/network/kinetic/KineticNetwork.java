@@ -3,7 +3,6 @@ package com.yanny.ytech.network.kinetic;
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
-import com.yanny.ytech.network.generic.message.NetworkAddedOrUpdatedMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -19,20 +18,9 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBlockEntity> {
-    public static final Factory<KineticNetwork, IKineticBlockEntity> FACTORY = new Factory<>() {
-        @Override
-        public @NotNull KineticNetwork create(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove) {
-            return new KineticNetwork(tag, networkId, onRemove);
-        }
-
-        @Override
-        public @NotNull KineticNetwork create(int networkId, @NotNull Consumer<Integer> onRemove) {
-            return new KineticNetwork(networkId, onRemove);
-        }
-    };
-
     private static final String TAG_PROVIDERS = "providers";
     private static final String TAG_CONSUMERS = "consumers";
     private static final String TAG_DIR_PROVIDERS = "dirProviders";
@@ -50,7 +38,8 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
     private int stress;
 
     public KineticNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove) {
-        super(tag, networkId, onRemove);
+        super(networkId, onRemove);
+        load(tag);
     }
 
     public KineticNetwork(int networkId, @NotNull Consumer<Integer> onRemove) {
@@ -229,13 +218,13 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
         consumerBlocks.remove(blockPos);
         remove(blockEntity);
 
-        if ((blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos)).toList().size() == 1)
-                || (providerBlocks.isEmpty() && consumerBlocks.isEmpty()) || level == null) { // if we are not splitting
+        List<BlockPos> neighbors = blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos)).collect(Collectors.toList());
+
+        if ((neighbors.size() == 1) || (providerBlocks.isEmpty() && consumerBlocks.isEmpty()) || level == null) { // if we are not splitting
             return List.of();
         }
 
-        List<Integer> ids = idsGetter.apply(blockEntity.getValidNeighbors().size() - 1);
-        List<BlockPos> neighbors = blockEntity.getValidNeighbors();
+        List<Integer> ids = idsGetter.apply(neighbors.size() - 1);
         BlockPos neighbor = neighbors.remove(0); // remove first network (will be our network)
 
         clear();
@@ -248,7 +237,7 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
 
             KineticNetwork network = new KineticNetwork(ids.remove(0), onRemove);
             insertConnectedPositions(network, providerBlocks, consumerBlocks, pos, level);
-            channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(network));
+            channel.send(PacketDistributor.ALL.noArg(), new KineticUtils.MyNetworkAddedOrUpdatedMessage(network));
             return network;
         }).filter(Objects::nonNull).toList();
     }

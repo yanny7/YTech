@@ -1,7 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
-import com.yanny.ytech.network.kinetic.KineticUtils;
+import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.kinetic.NetworkType;
 import com.yanny.ytech.network.kinetic.RotationDirection;
 import com.yanny.ytech.registration.Holder;
@@ -22,7 +22,7 @@ public class StoneCrusherBlockEntity extends KineticMachineBlockEntity {
 
     public StoneCrusherBlockEntity(Holder holder, BlockEntityType<? extends BlockEntity> blockEntityType, BlockPos pos, BlockState blockState) {
         super(holder, blockEntityType, pos, blockState);
-        validNeighbors = KineticUtils.getDirections(List.of(Direction.EAST, Direction.WEST, Direction.NORTH), pos, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+        validNeighbors = NetworkUtils.getDirections(List.of(Direction.EAST, Direction.WEST, Direction.NORTH), pos, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 
     @Override

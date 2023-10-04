@@ -1,7 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
+import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.network.kinetic.NetworkType;
 import com.yanny.ytech.network.kinetic.RotationDirection;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ public class ShaftBlockEntity extends KineticBlockEntity implements IKineticBloc
     public ShaftBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState, float stressMultiplier) {
         super(entityType, pos, blockState);
         this.stressMultiplier = stressMultiplier;
-        validNeighbors = KineticUtils.getDirections(List.of(Direction.EAST, Direction.WEST), pos, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+        validNeighbors = NetworkUtils.getDirections(List.of(Direction.EAST, Direction.WEST), pos, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 
     @NotNull

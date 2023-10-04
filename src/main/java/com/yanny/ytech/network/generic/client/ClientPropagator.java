@@ -44,7 +44,7 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             levelMap.clear(); // client have only one instance of level
-            levelMap.put(minecraft.level, new ClientLevel<>(msg.networkMap()));
+            levelMap.put(minecraft.level, new ClientLevel<>(msg.networkMap));
         });
         context.setPacketHandled(true);
     }
@@ -55,8 +55,8 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
             ClientLevel<N, B> level = levelMap.get(minecraft.level);
 
             if (level != null) {
-                level.onNetworkAddedOrUpdated(msg.network());
-                LOGGER.info("[{}] Added or updated network {}", networkName, msg.network());
+                level.onNetworkAddedOrUpdated(msg.network);
+                LOGGER.info("[{}] Added or updated network {}", networkName, msg.network);
             } else {
                 LOGGER.warn("[{}] No level stored for {}", networkName, minecraft.level);
             }
@@ -70,8 +70,8 @@ public class ClientPropagator<N extends AbstractNetwork<N, B>, B extends INetwor
             ClientLevel<N, B> level = levelMap.get(minecraft.level);
 
             if (level != null) {
-                level.onNetworkRemoved(msg.networkId());
-                LOGGER.info("[{}] Removed network {}", networkName, msg.networkId());
+                level.onNetworkRemoved(msg.networkId);
+                LOGGER.info("[{}] Removed network {}", networkName, msg.networkId);
             } else {
                 LOGGER.warn("[{}] No level stored for {}", networkName, minecraft.level);
             }

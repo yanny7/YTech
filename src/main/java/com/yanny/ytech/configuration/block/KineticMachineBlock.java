@@ -16,7 +16,7 @@ abstract class KineticMachineBlock extends MachineBlock {
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onRemove(@NotNull BlockState oldBlockState, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newBlockState, boolean b) {
+    public void onRemove(@NotNull BlockState oldBlockState, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newBlockState, boolean movedByPiston) {
         if (!level.isClientSide) {
             if (oldBlockState.hasBlockEntity() && (!oldBlockState.is(newBlockState.getBlock()) || !newBlockState.hasBlockEntity())) {
                 if (level.getBlockEntity(pos) instanceof IKineticBlockEntity kineticBlockEntity) {
@@ -29,6 +29,6 @@ abstract class KineticMachineBlock extends MachineBlock {
             }
         }
 
-        super.onRemove(oldBlockState, level, pos, newBlockState, b);
+        super.onRemove(oldBlockState, level, pos, newBlockState, movedByPiston);
     }
 }

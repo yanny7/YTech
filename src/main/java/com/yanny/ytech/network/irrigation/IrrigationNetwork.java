@@ -1,9 +1,9 @@
 package com.yanny.ytech.network.irrigation;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
-import com.yanny.ytech.network.generic.message.NetworkAddedOrUpdatedMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,25 +18,13 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrigationBlockEntity> {
-    public static final Factory<IrrigationNetwork, IIrrigationBlockEntity> FACTORY = new Factory<>() {
-        @NotNull
-        @Override
-        public IrrigationNetwork create(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove) {
-            return new IrrigationNetwork(tag, networkId, onRemove);
-        }
-
-        @NotNull
-        @Override
-        public IrrigationNetwork create(int networkId, @NotNull Consumer<Integer> onRemove) {
-            return new IrrigationNetwork(networkId, onRemove);
-        }
-    };
-
     private static final String TAG_PROVIDERS = "providers";
     private static final String TAG_CONSUMERS = "consumers";
     private static final String TAG_STORAGES = "storages";
@@ -46,7 +34,6 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
     private static final String TAG_FLOW = "flow";
     private static final String TAG_FLUID_TANK = "fluidHolder";
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final int BASE_BLOCK_CAPACITY = 500;
 
     @NotNull private final HashMap<BlockPos, Integer> providers = new HashMap<>();
     @NotNull private final HashMap<BlockPos, Integer> consumers = new HashMap<>();
@@ -56,11 +43,18 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
     private int outflow = 0;
 
     public IrrigationNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove) {
-        super(tag, networkId, onRemove);
+        super(networkId, onRemove);
+        load(tag);
     }
 
     public IrrigationNetwork(int networkId, @NotNull Consumer<Integer> onRemove) {
         super(networkId, onRemove);
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("Id:{0,number}, C:{1,number}, P:{2,number}, S: {3,number} {4,number}/{5,number}, {6,number}/{7,number}",
+                getNetworkId(), consumers.size(), providers.size(), storages.size(), inflow, outflow, fluidHandler.getFluidAmount(), fluidHandler.getCapacity());
     }
 
     @Override
@@ -93,10 +87,11 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
             inflow = tag.getInt(TAG_OUTFLOW);
         }
         if (tag.contains(TAG_FLUID_TANK) && tag.getTagType(TAG_FLUID_TANK) != 0) {
+            fluidHandler.setCapacity(storages.size() * YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock());
             fluidHandler.readFromNBT(tag.getCompound(TAG_FLUID_TANK));
         }
 
-        LOGGER.debug("Network {}: Loaded {} providers, {} consumers", getNetworkId(), providers.size(), consumers.size());
+        LOGGER.debug("Network {}: {}", getNetworkId(), this);
     }
 
     @NotNull
@@ -211,13 +206,13 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
         storageBlocks.remove(blockPos);
         remove(blockEntity);
 
-        if ((blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos) || storageBlocks.contains(pos)).toList().size() == 1)
-                || (providerBlocks.isEmpty() && consumerBlocks.isEmpty() && storageBlocks.isEmpty()) || level == null) { // if we are not splitting
+        List<BlockPos> neighbors = blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos) || storageBlocks.contains(pos)).collect(Collectors.toList());
+
+        if ((neighbors.size() == 1) || (providerBlocks.isEmpty() && consumerBlocks.isEmpty() && storageBlocks.isEmpty()) || level == null) { // if we are not splitting
             return List.of();
         }
 
-        List<Integer> ids = idsGetter.apply(blockEntity.getValidNeighbors().size() - 1);
-        List<BlockPos> neighbors = blockEntity.getValidNeighbors();
+        List<Integer> ids = idsGetter.apply(neighbors.size() - 1);
         BlockPos neighbor = neighbors.remove(0); // remove first network (will be our network)
 
         clear();
@@ -231,7 +226,7 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
 
             IrrigationNetwork network = new IrrigationNetwork(ids.remove(0), onRemove);
             insertConnectedPositions(network, providerBlocks, consumerBlocks, storageBlocks, pos, level);
-            channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(network));
+            channel.send(PacketDistributor.ALL.noArg(), new IrrigationUtils.MyNetworkAddedOrUpdatedMessage(network));
             return network;
         }).filter(Objects::nonNull).toList();
     }
@@ -303,7 +298,7 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
         BlockPos blockPos = entity.getBlockPos();
 
         storages.add(blockPos);
-        fluidHandler.setCapacity(BASE_BLOCK_CAPACITY * storages.size());
+        fluidHandler.setCapacity(YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock() * storages.size());
     }
 
     private void removeProvider(@NotNull IIrrigationBlockEntity entity) {
@@ -326,7 +321,7 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
         BlockPos blockPos = entity.getBlockPos();
 
         storages.remove(blockPos);
-        fluidHandler.setCapacity(BASE_BLOCK_CAPACITY * storages.size());
+        fluidHandler.setCapacity(YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock() * storages.size());
     }
 
     private void clear() {

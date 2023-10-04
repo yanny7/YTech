@@ -22,6 +22,7 @@ public class YTechConfigSpec {
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
     @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
     @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
+    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -39,6 +40,10 @@ public class YTechConfigSpec {
                 .worldRestart().defineListAllowEmpty("slowDryingBiomeTags", YTechConfigSpec::getSlowDryingBiomeTags, YTechConfigSpec::validateResourceLocation);
         fastDryingBiomeTags = builder.comment("List of biome tags, where will be drying 2x faster")
                 .worldRestart().defineListAllowEmpty("fastDryingBiomeTags", YTechConfigSpec::getFastDryingBiomeTags, YTechConfigSpec::validateResourceLocation);
+        builder.pop();
+        builder.push("irrigation");
+        baseFluidStoragePerBlock = builder.comment("Base amount of fluid stored per block")
+                .worldRestart().define("baseFluidStoragePerBlock", 500);
         builder.pop();
     }
 
@@ -65,6 +70,10 @@ public class YTechConfigSpec {
 
     public Set<TagKey<Biome>> getFastDryingBiomes() {
         return fastDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
+    }
+
+    public int getBaseFluidStoragePerBlock() {
+        return baseFluidStoragePerBlock.get();
     }
 
     @NotNull

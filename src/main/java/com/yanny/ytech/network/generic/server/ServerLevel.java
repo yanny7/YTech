@@ -3,8 +3,7 @@ package com.yanny.ytech.network.generic.server;
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
-import com.yanny.ytech.network.generic.message.NetworkAddedOrUpdatedMessage;
-import com.yanny.ytech.network.generic.message.NetworkRemovedMessage;
+import com.yanny.ytech.network.generic.common.NetworkFactory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.Level;
@@ -31,17 +30,17 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
 
     @NotNull private final ConcurrentHashMap<Integer, T> networkMap = new ConcurrentHashMap<>();
     @NotNull private final SimpleChannel channel;
-    @NotNull private final AbstractNetwork.Factory<T, O> networkFactory;
+    @NotNull private final NetworkFactory<T, O> networkFactory;
     @NotNull private final String networkName;
 
-    ServerLevel(@NotNull CompoundTag tag, @NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory, @NotNull String networkName) {
+    ServerLevel(@NotNull CompoundTag tag, @NotNull SimpleChannel channel, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
         this.networkName = networkName;
-        load(tag);
         this.channel = channel;
         this.networkFactory = networkFactory;
+        load(tag);
     }
 
-    ServerLevel(@NotNull SimpleChannel channel, @NotNull AbstractNetwork.Factory<T, O> networkFactory, @NotNull String networkName) {
+    ServerLevel(@NotNull SimpleChannel channel, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
         this.channel = channel;
         this.networkFactory = networkFactory;
         this.networkName = networkName;
@@ -85,7 +84,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             List<T> networks = networkMap.values().stream().filter((n) -> n.canConnect(blockEntity)).toList();
 
             if (networks.isEmpty()) {
-                T network = networkFactory.create(getUniqueId(), this::onRemove);
+                T network = networkFactory.createNetwork(getUniqueId(), this::onRemove);
                 networkMap.put(network.getNetworkId(), network);
                 resultNetwork = network;
             } else if (networks.size() == 1) {
@@ -120,7 +119,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                         T toRemove = distinctNetworks.remove(0);
                         network.addAll(toRemove, level);
                         networkMap.remove(toRemove.getNetworkId());
-                        channel.send(PacketDistributor.ALL.noArg(), new NetworkRemovedMessage(toRemove.getNetworkId()));
+                        channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkRemoveMessage(toRemove.getNetworkId()));
                     } while (!distinctNetworks.isEmpty());
 
                     resultNetwork = network;
@@ -130,7 +129,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
 
         resultNetwork.add(blockEntity);
         setDirty();
-        channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(resultNetwork));
+        channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(resultNetwork));
     }
 
     public void update(@NotNull O blockEntity) {
@@ -145,7 +144,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             if (network.canAttach(blockEntity)) {
                 if (network.update(blockEntity)) {
                     setDirty();
-                    channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(network));
+                    channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(network));
                 }
             } else {
                 List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
@@ -155,7 +154,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                 setDirty();
 
                 if (network.isNotEmpty()) {
-                    channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(network));
+                    channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(network));
                 }
             }
         } else {
@@ -172,7 +171,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             setDirty();
 
             if (network.isNotEmpty()) {
-                channel.send(PacketDistributor.ALL.noArg(), new NetworkAddedOrUpdatedMessage<>(network));
+                channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(network));
             }
         } else {
             LOGGER.warn("[{}] REMOVE: Can't get network for block {} at {}", networkName, blockEntity, blockEntity.getBlockPos());
@@ -190,7 +189,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
 
     private void onRemove(int networkId) {
         networkMap.remove(networkId);
-        channel.send(PacketDistributor.ALL.noArg(), new NetworkRemovedMessage(networkId));
+        channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkRemoveMessage(networkId));
     }
 
     private int getUniqueId() {
@@ -228,7 +227,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             list.forEach((listItem) -> {
                 CompoundTag itemHolder = (CompoundTag) listItem;
                 int networkId = itemHolder.getInt(TAG_NETWORK_ID);
-                networkMap.put(networkId, networkFactory.create(itemHolder.getCompound(TAG_NETWORK), networkId, this::onRemove));
+                networkMap.put(networkId, networkFactory.createNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, this::onRemove));
             });
 
             LOGGER.info("[{}] Loaded {} networks", networkName, networkMap.size());

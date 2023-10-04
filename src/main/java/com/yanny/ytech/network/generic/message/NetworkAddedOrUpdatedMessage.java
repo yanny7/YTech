@@ -8,17 +8,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public record NetworkAddedOrUpdatedMessage<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity>(
-        @NotNull N network
-) {
-    public static <N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> void encode(@NotNull NetworkAddedOrUpdatedMessage<N, O> msg,
-                                                                                               @NotNull FriendlyByteBuf buffer,
-                                                                                               @NotNull BiConsumer<FriendlyByteBuf, N> networkEncode) {
-        networkEncode.accept(buffer, msg.network);
+public abstract class NetworkAddedOrUpdatedMessage<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
+    @NotNull public final N network;
+    @NotNull private final BiConsumer<FriendlyByteBuf, N> networkEncode;
+
+    public NetworkAddedOrUpdatedMessage(@NotNull N network, @NotNull BiConsumer<FriendlyByteBuf, N> networkEncode) {
+        this.network = network;
+        this.networkEncode = networkEncode;
     }
 
-    public static <N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> NetworkAddedOrUpdatedMessage<N, O> decode(@NotNull FriendlyByteBuf buffer,
-                                                                                                                             @NotNull Function<FriendlyByteBuf, N> networkDecode) {
-        return new NetworkAddedOrUpdatedMessage<>(networkDecode.apply(buffer));
+    public NetworkAddedOrUpdatedMessage(@NotNull FriendlyByteBuf buf, @NotNull BiConsumer<FriendlyByteBuf, N> networkEncode, @NotNull Function<FriendlyByteBuf, N> networkDecode) {
+        this.networkEncode = networkEncode;
+        network = networkDecode.apply(buf);
+    }
+
+    public void encode(@NotNull FriendlyByteBuf buf) {
+        networkEncode.accept(buf, network);
     }
 }
