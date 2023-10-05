@@ -1,0 +1,41 @@
+package com.yanny.ytech.configuration.renderer;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+
+@OnlyIn(Dist.CLIENT)
+public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
+    private static final FakeLevel level = new FakeLevel();
+    private final BlockState water;
+
+    public AqueductRenderer(BlockEntityRendererProvider.Context context) {
+        water = Blocks.WATER.defaultBlockState().setValue(LiquidBlock.LEVEL, 8);
+    }
+
+    @Override
+    public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        level.setData(blockEntity, water);
+
+        poseStack.pushPose();
+        poseStack.translate(0, 0, 0);
+        PoseStack.Pose pose = poseStack.last();
+
+        VertexConsumer builder = new FluidVertexConsumer(buffer, water.getFluidState(), pose.pose(), pose.normal());
+        Minecraft.getInstance().getBlockRenderer().renderLiquid(BlockPos.ZERO, level, builder, water, water.getFluidState());
+
+        poseStack.popPose();
+        level.clearData();
+    }
+}

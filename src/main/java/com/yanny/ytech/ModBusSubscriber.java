@@ -69,6 +69,7 @@ public class ModBusSubscriber {
                 switch (blockType) {
                     case MILLSTONE -> event.registerBlockEntityRenderer(holder.entityType.get(), MillstoneRenderer::new);
                     case BRONZE_ANVIL -> event.registerBlockEntityRenderer(holder.entityType.get(), BronzeAnvilRenderer::new);
+                    case AQUEDUCT -> event.registerBlockEntityRenderer(holder.entityType.get(), AqueductRenderer::new);
                 }
             }
         });
