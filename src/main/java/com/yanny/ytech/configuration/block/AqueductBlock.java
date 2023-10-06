@@ -22,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +39,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -249,6 +251,30 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
                 entity.setDeltaMovement(entity.getDeltaMovement().multiply(new Vec3(0.5 + multiplier, 1.0, 0.5 + multiplier)));
             }
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull PathComputationType type) {
+        return false;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean isRandomlyTicking(@NotNull BlockState state) {
+        return YTechMod.CONFIGURATION.isValidBlockForRaining();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (level.getBlockEntity(pos) instanceof AqueductBlockEntity blockEntity) {
+            blockEntity.onRandomTick();
         }
     }
 

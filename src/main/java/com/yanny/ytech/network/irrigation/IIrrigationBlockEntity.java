@@ -8,5 +8,6 @@ public interface IIrrigationBlockEntity extends INetworkBlockEntity {
     void onRemove();
     void onChangedState(@NotNull BlockState oldBlockState, @NotNull BlockState newBlockState);
     int getFlow();
+    boolean validForRainFilling();
     @NotNull NetworkType getNetworkType();
 }

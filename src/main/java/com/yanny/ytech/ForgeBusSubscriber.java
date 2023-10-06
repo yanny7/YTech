@@ -81,7 +81,7 @@ public class ForgeBusSubscriber {
         if (event.phase == TickEvent.Phase.START && event.side == LogicalSide.SERVER) {
             if (YTechMod.CONFIGURATION.shouldRainingFillAqueduct() && event.level.isRaining() && event.level.getGameTime() % YTechMod.CONFIGURATION.getRainingFillPerNthTick() == 0) {
                 YTechMod.IRRIGATION_PROPAGATOR.server().getNetworks(event.level).values().forEach((network) -> {
-                    FluidStack fluidStack = new FluidStack(Fluids.WATER, YTechMod.CONFIGURATION.getRainingFillAmount() * network.storageBlockCount());
+                    FluidStack fluidStack = new FluidStack(Fluids.WATER, YTechMod.CONFIGURATION.getRainingFillAmount() * network.filledByRainCount());
                     network.getFluidHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 });
             }

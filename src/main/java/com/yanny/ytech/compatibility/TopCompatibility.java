@@ -89,8 +89,9 @@ public class TopCompatibility {
         IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
 
         if (network != null) {
-            probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getFluidHandler().getFluidAmount())).text("/")
+            probeInfo.horizontal().text("Capacity: ").text(Integer.toString(network.getFluidHandler().getFluidAmount())).text("/")
                     .text(Integer.toString(network.getFluidHandler().getCapacity()));
+            probeInfo.horizontal().text("Rain Valid: ").text(Integer.toString(network.filledByRainCount())).text("/").text(Integer.toString(network.storageBlockCount()));
         }
     }
 
