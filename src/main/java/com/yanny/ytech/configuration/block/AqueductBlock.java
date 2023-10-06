@@ -7,6 +7,7 @@ import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
+import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
@@ -20,6 +21,9 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,6 +38,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -211,6 +216,36 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         }
 
         return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
+        if (!(entity instanceof LivingEntity) || entity.getFeetBlockState().is(this)) {
+            if (entity.isOnFire()) {
+                entity.extinguishFire();
+            }
+
+            if (level.getBlockEntity(pos) instanceof AqueductBlockEntity aqueductBlockEntity) {
+                double multiplier = 0.5;
+
+                if (level.isClientSide) {
+                    IrrigationClientNetwork network = YTechMod.IRRIGATION_PROPAGATOR.client().getNetwork(aqueductBlockEntity);
+
+                    if (network != null && network.getCapacity() > 0) {
+                        multiplier = Mth.clamp((1 - network.getAmount() / (double) network.getCapacity()) * 0.5, 0, 0.5);
+                    }
+                } else {
+                    IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(aqueductBlockEntity);
+
+                    if (network != null && network.getFluidHandler().getCapacity() > 0) {
+                        multiplier = Mth.clamp((1 - network.getFluidHandler().getFluidAmount() / (double)network.getFluidHandler().getCapacity()) * 0.5, 0, 0.5);
+                    }
+                }
+
+                entity.setDeltaMovement(entity.getDeltaMovement().multiply(new Vec3(0.5 + multiplier, 1.0, 0.5 + multiplier)));
+            }
+        }
     }
 
     @NotNull
