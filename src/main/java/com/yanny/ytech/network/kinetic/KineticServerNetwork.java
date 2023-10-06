@@ -2,15 +2,12 @@ package com.yanny.ytech.network.kinetic;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.network.generic.NetworkUtils;
-import com.yanny.ytech.network.generic.common.AbstractNetwork;
+import com.yanny.ytech.network.generic.server.ServerNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -20,7 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBlockEntity> {
+public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IKineticBlockEntity> {
     private static final String TAG_PROVIDERS = "providers";
     private static final String TAG_CONSUMERS = "consumers";
     private static final String TAG_DIR_PROVIDERS = "dirProviders";
@@ -37,13 +34,13 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
     private int stressCapacity;
     private int stress;
 
-    public KineticNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove) {
-        super(networkId, onRemove);
+    public KineticServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+        super(networkId, onChange, onRemove);
         load(tag);
     }
 
-    public KineticNetwork(int networkId, @NotNull Consumer<Integer> onRemove) {
-        super(networkId, onRemove);
+    public KineticServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+        super(networkId, onChange, onRemove);
     }
 
     @Override
@@ -65,7 +62,7 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
     }
 
     @Override
-    public boolean canAttach(@NotNull KineticNetwork network) {
+    public boolean canAttach(@NotNull KineticServerNetwork network) {
         return rotationDirection == RotationDirection.NONE || network.rotationDirection == RotationDirection.NONE || rotationDirection == network.rotationDirection;
     }
 
@@ -128,7 +125,7 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
     }
 
     @Override
-    public void addAll(@NotNull KineticNetwork network, @NotNull Level level) {
+    public void addAll(@NotNull KineticServerNetwork network, @NotNull Level level) {
         if (network.rotationDirection != RotationDirection.NONE && rotationDirection != RotationDirection.NONE && rotationDirection != network.rotationDirection) {
             throw new IllegalStateException("Invalid rotation direction provided!");
         }
@@ -207,7 +204,7 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
 
     @Override
     @NotNull
-    public List<KineticNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IKineticBlockEntity blockEntity, @NotNull SimpleChannel channel) {
+    public List<KineticServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IKineticBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
@@ -235,9 +232,8 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
                 return null;
             }
 
-            KineticNetwork network = new KineticNetwork(ids.remove(0), onRemove);
+            KineticServerNetwork network = new KineticServerNetwork(ids.remove(0), onChange, onRemove);
             insertConnectedPositions(network, providerBlocks, consumerBlocks, pos, level);
-            channel.send(PacketDistributor.ALL.noArg(), new KineticUtils.MyNetworkAddedOrUpdatedMessage(network));
             return network;
         }).filter(Objects::nonNull).toList();
     }
@@ -365,25 +361,7 @@ public class KineticNetwork extends AbstractNetwork<KineticNetwork, IKineticBloc
         rotationDirection = RotationDirection.NONE;
     }
 
-    public static void encode(@NotNull FriendlyByteBuf buffer, @NotNull KineticNetwork level) {
-        buffer.writeInt(level.getNetworkId());
-        buffer.writeInt(level.stressCapacity);
-        buffer.writeInt(level.stress);
-        buffer.writeEnum(level.rotationDirection);
-    }
-
-    @NotNull
-    public static KineticNetwork decode(@NotNull FriendlyByteBuf buffer) {
-        int networkId = buffer.readInt();
-        KineticNetwork network = new KineticNetwork(networkId, (i) -> {});
-
-        network.stressCapacity = buffer.readInt();
-        network.stress = buffer.readInt();
-        network.rotationDirection = buffer.readEnum(RotationDirection.class);
-        return network;
-    }
-
-    private static void insertConnectedPositions(@NotNull KineticNetwork network, @NotNull Map<BlockPos, Integer> providerBlocks,
+    private static void insertConnectedPositions(@NotNull KineticServerNetwork network, @NotNull Map<BlockPos, Integer> providerBlocks,
                                                  @NotNull Map<BlockPos, Integer> consumerBlocks, @NotNull BlockPos from, @NotNull Level level) {
         BlockEntity blockEntity = level.getBlockEntity(from);
 

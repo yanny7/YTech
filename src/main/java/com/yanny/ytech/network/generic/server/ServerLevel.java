@@ -1,7 +1,6 @@
 package com.yanny.ytech.network.generic.server;
 
 import com.mojang.logging.LogUtils;
-import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import com.yanny.ytech.network.generic.common.NetworkFactory;
 import net.minecraft.nbt.CompoundTag;
@@ -9,7 +8,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -22,26 +20,23 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBlockEntity> extends SavedData {
+public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockEntity> extends SavedData {
     protected static final String TAG_NETWORKS = "networks";
     protected static final String TAG_NETWORK = "network";
     protected static final String TAG_NETWORK_ID = "networkId";
     protected static final Logger LOGGER = LogUtils.getLogger();
 
     @NotNull private final ConcurrentHashMap<Integer, T> networkMap = new ConcurrentHashMap<>();
-    @NotNull private final SimpleChannel channel;
     @NotNull private final NetworkFactory<T, O> networkFactory;
     @NotNull private final String networkName;
 
-    ServerLevel(@NotNull CompoundTag tag, @NotNull SimpleChannel channel, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
+    ServerLevel(@NotNull CompoundTag tag, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
         this.networkName = networkName;
-        this.channel = channel;
         this.networkFactory = networkFactory;
         load(tag);
     }
 
-    ServerLevel(@NotNull SimpleChannel channel, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
-        this.channel = channel;
+    ServerLevel(@NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
         this.networkFactory = networkFactory;
         this.networkName = networkName;
     }
@@ -84,7 +79,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             List<T> networks = networkMap.values().stream().filter((n) -> n.canConnect(blockEntity)).toList();
 
             if (networks.isEmpty()) {
-                T network = networkFactory.createNetwork(getUniqueId(), this::onRemove);
+                T network = networkFactory.createNetwork(getUniqueId(), this::onChange, this::onRemove);
                 networkMap.put(network.getNetworkId(), network);
                 resultNetwork = network;
             } else if (networks.size() == 1) {
@@ -119,7 +114,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
                         T toRemove = distinctNetworks.remove(0);
                         network.addAll(toRemove, level);
                         networkMap.remove(toRemove.getNetworkId());
-                        channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkRemoveMessage(toRemove.getNetworkId()));
+                        networkFactory.sendRemoved(PacketDistributor.ALL.noArg(), toRemove.getNetworkId());
                     } while (!distinctNetworks.isEmpty());
 
                     resultNetwork = network;
@@ -129,7 +124,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
 
         resultNetwork.add(blockEntity);
         setDirty();
-        channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(resultNetwork));
+        networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), resultNetwork);
     }
 
     public void update(@NotNull O blockEntity) {
@@ -144,17 +139,20 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             if (network.canAttach(blockEntity)) {
                 if (network.update(blockEntity)) {
                     setDirty();
-                    channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(network));
+                    networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
                 }
             } else {
-                List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
-                networkMap.putAll(networks.stream().collect(Collectors.toMap(AbstractNetwork::getNetworkId, n -> n)));
+                List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity);
+                networkMap.putAll(networks.stream().collect(Collectors.toMap(ServerNetwork::getNetworkId, (n) -> {
+                    networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), n);
+                    return n;
+                })));
                 level.destroyBlock(blockEntity.getBlockPos(), true);
                 LOGGER.warn("[{}] Removed block {} from network at {}", networkName, blockEntity, blockEntity.getBlockPos());
                 setDirty();
 
                 if (network.isNotEmpty()) {
-                    channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(network));
+                    networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
                 }
             }
         } else {
@@ -166,12 +164,12 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
         T network = getNetwork(blockEntity);
 
         if (network != null) {
-            List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity, channel);
-            networkMap.putAll(networks.stream().collect(Collectors.toMap(AbstractNetwork::getNetworkId, n -> n)));
+            List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity);
+            networkMap.putAll(networks.stream().collect(Collectors.toMap(ServerNetwork::getNetworkId, n -> n)));
             setDirty();
 
             if (network.isNotEmpty()) {
-                channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkAddedOrUpdatedMessage(network));
+                networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
             }
         } else {
             LOGGER.warn("[{}] REMOVE: Can't get network for block {} at {}", networkName, blockEntity, blockEntity.getBlockPos());
@@ -187,9 +185,15 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
         return networkMap.get(blockEntity.getNetworkId());
     }
 
+    private void onChange(int networkId) {
+        networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), networkMap.get(networkId));
+        setDirty();
+    }
+
     private void onRemove(int networkId) {
         networkMap.remove(networkId);
-        channel.send(PacketDistributor.ALL.noArg(), networkFactory.createNetworkRemoveMessage(networkId));
+        networkFactory.sendRemoved(PacketDistributor.ALL.noArg(), networkId);
+        setDirty();
     }
 
     private int getUniqueId() {
@@ -227,7 +231,7 @@ public class ServerLevel<T extends AbstractNetwork<T, O>, O extends INetworkBloc
             list.forEach((listItem) -> {
                 CompoundTag itemHolder = (CompoundTag) listItem;
                 int networkId = itemHolder.getInt(TAG_NETWORK_ID);
-                networkMap.put(networkId, networkFactory.createNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, this::onRemove));
+                networkMap.put(networkId, networkFactory.createNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, this::onChange, this::onRemove));
             });
 
             LOGGER.info("[{}] Loaded {} networks", networkName, networkMap.size());

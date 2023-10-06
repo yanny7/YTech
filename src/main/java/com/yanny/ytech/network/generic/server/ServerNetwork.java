@@ -1,21 +1,23 @@
-package com.yanny.ytech.network.generic.common;
+package com.yanny.ytech.network.generic.server;
 
+import com.yanny.ytech.network.generic.common.CommonNetwork;
+import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public abstract class AbstractNetwork<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
-    @NotNull private final Consumer<Integer> onRemove;
-    private final int networkId;
+public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INetworkBlockEntity> extends CommonNetwork {
+    @NotNull protected final Consumer<Integer> onChange;
+    @NotNull protected final Consumer<Integer> onRemove;
 
-    public AbstractNetwork(int networkId, @NotNull Consumer<Integer> onRemove) {
-        this.networkId = networkId;
+    public ServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+        super(networkId);
+        this.onChange = onChange;
         this.onRemove = onRemove;
     }
 
@@ -33,30 +35,25 @@ public abstract class AbstractNetwork<N extends AbstractNetwork<N, O>, O extends
     public abstract boolean update(@NotNull O entity);
 
     @NotNull
-    public abstract  List<N> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove,
-                                    @NotNull O blockEntity, @NotNull SimpleChannel channel);
+    public abstract List<N> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull O blockEntity);
 
     public abstract boolean isNotEmpty();
 
     protected abstract boolean isValidPosition(@NotNull O blockEntity, @NotNull BlockPos pos);
 
     public void add(@NotNull O entity) {
-        entity.setNetworkId(networkId);
+        entity.setNetworkId(getNetworkId());
     }
 
     public void remove(@NotNull O entity) {
         entity.setNetworkId(-1);
 
         if (!isNotEmpty()) {
-            onRemove.accept(networkId);
+            onRemove.accept(getNetworkId());
         }
     }
 
     public boolean canConnect(@NotNull O blockEntity) {
         return blockEntity.getValidNeighbors().stream().anyMatch(pos -> isValidPosition(blockEntity, pos));
-    }
-
-    public int getNetworkId() {
-        return networkId;
     }
 }

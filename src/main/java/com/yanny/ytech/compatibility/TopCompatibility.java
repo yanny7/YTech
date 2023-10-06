@@ -3,9 +3,9 @@ package com.yanny.ytech.compatibility;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block_entity.*;
 import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
-import com.yanny.ytech.network.irrigation.IrrigationNetwork;
+import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticNetwork;
+import com.yanny.ytech.network.kinetic.KineticServerNetwork;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -73,7 +73,7 @@ public class TopCompatibility {
             case CONSUMER -> probeInfo.horizontal().text("Consuming: ").text(Integer.toString(blockEntity.getStress())).text(" units");
         }
 
-        KineticNetwork network = YTechMod.KINETIC_PROPAGATOR.server().getNetwork(blockEntity);
+        KineticServerNetwork network = YTechMod.KINETIC_PROPAGATOR.server().getNetwork(blockEntity);
 
         if (network != null) {
             probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getStress())).text("/").text(Integer.toString(network.getStressCapacity()));
@@ -86,7 +86,7 @@ public class TopCompatibility {
             case CONSUMER -> probeInfo.horizontal().text("Consuming: ").text(Integer.toString(blockEntity.getFlow())).text(" mb/t");
         }
 
-        IrrigationNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
+        IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
 
         if (network != null) {
             probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getFluidHandler().getFluidAmount())).text("/")

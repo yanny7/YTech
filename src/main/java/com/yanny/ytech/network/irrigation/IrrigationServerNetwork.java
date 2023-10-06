@@ -3,18 +3,15 @@ package com.yanny.ytech.network.irrigation;
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.generic.NetworkUtils;
-import com.yanny.ytech.network.generic.common.AbstractNetwork;
+import com.yanny.ytech.network.generic.server.ServerNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -24,7 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrigationBlockEntity> {
+public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwork, IIrrigationBlockEntity> {
     private static final String TAG_PROVIDERS = "providers";
     private static final String TAG_CONSUMERS = "consumers";
     private static final String TAG_STORAGES = "storages";
@@ -42,13 +39,13 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
     private int inflow = 0;
     private int outflow = 0;
 
-    public IrrigationNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onRemove) {
-        super(networkId, onRemove);
+    public IrrigationServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+        super(networkId, onChange, onRemove);
         load(tag);
     }
 
-    public IrrigationNetwork(int networkId, @NotNull Consumer<Integer> onRemove) {
-        super(networkId, onRemove);
+    public IrrigationServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+        super(networkId, onChange, onRemove);
     }
 
     @Override
@@ -63,7 +60,7 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
     }
 
     @Override
-    public boolean canAttach(@NotNull IrrigationNetwork network) {
+    public boolean canAttach(@NotNull IrrigationServerNetwork network) {
         return true;
     }
 
@@ -129,7 +126,7 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
     }
 
     @Override
-    public void addAll(@NotNull IrrigationNetwork network, @NotNull Level level) {
+    public void addAll(@NotNull IrrigationServerNetwork network, @NotNull Level level) {
         network.providers.forEach((pos, value) -> {
             providers.put(pos, value);
 
@@ -192,8 +189,7 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
 
     @NotNull
     @Override
-    public List<IrrigationNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove,
-                                          @NotNull IIrrigationBlockEntity blockEntity, @NotNull SimpleChannel channel) {
+    public List<IrrigationServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IIrrigationBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
@@ -224,9 +220,8 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
                 return null;
             }
 
-            IrrigationNetwork network = new IrrigationNetwork(ids.remove(0), onRemove);
+            IrrigationServerNetwork network = new IrrigationServerNetwork(ids.remove(0), onChange, onRemove);
             insertConnectedPositions(network, providerBlocks, consumerBlocks, storageBlocks, pos, level);
-            channel.send(PacketDistributor.ALL.noArg(), new IrrigationUtils.MyNetworkAddedOrUpdatedMessage(network));
             return network;
         }).filter(Objects::nonNull).toList();
     }
@@ -333,17 +328,7 @@ public class IrrigationNetwork extends AbstractNetwork<IrrigationNetwork, IIrrig
         fluidHandler.setCapacity(0);
     }
 
-    public static void encode(@NotNull FriendlyByteBuf buffer, @NotNull IrrigationNetwork level) {
-        buffer.writeInt(level.getNetworkId());
-    }
-
-    @NotNull
-    public static IrrigationNetwork decode(@NotNull FriendlyByteBuf buffer) {
-        int networkId = buffer.readInt();
-        return new IrrigationNetwork(networkId, (i) -> {});
-    }
-
-    private static void insertConnectedPositions(@NotNull IrrigationNetwork network, @NotNull Map<BlockPos, Integer> providerBlocks,
+    private static void insertConnectedPositions(@NotNull IrrigationServerNetwork network, @NotNull Map<BlockPos, Integer> providerBlocks,
                                                  @NotNull Map<BlockPos, Integer> consumerBlocks, @NotNull Set<BlockPos> storageBlocks,
                                                  @NotNull BlockPos from, @NotNull Level level) {
         BlockEntity blockEntity = level.getBlockEntity(from);

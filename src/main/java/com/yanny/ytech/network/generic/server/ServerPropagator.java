@@ -3,30 +3,26 @@ package com.yanny.ytech.network.generic.server;
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.generic.NetworkUtils;
-import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import com.yanny.ytech.network.generic.common.NetworkFactory;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
 
-public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
+public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkBlockEntity> {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     @NotNull private final HashMap<LevelAccessor, ServerLevel<N, O>> levelMap = new HashMap<>();
-    @NotNull private final SimpleChannel channel;
     @NotNull private final NetworkFactory<N, O> networkFactory;
     @NotNull private final String networkName;
 
-    public ServerPropagator(@NotNull SimpleChannel channel, @NotNull NetworkFactory<N, O> networkFactory, @NotNull String networkName) {
-        this.channel = channel;
+    public ServerPropagator(@NotNull NetworkFactory<N, O> networkFactory, @NotNull String networkName) {
         this.networkFactory = networkFactory;
         this.networkName = networkName;
     }
@@ -45,8 +41,8 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
 
     public void onLevelLoad(@NotNull net.minecraft.server.level.ServerLevel level) {
         LOGGER.debug("[{}] Preparing propagators for {}", networkName, NetworkUtils.getLevelId(level));
-        levelMap.put(level, level.getDataStorage().computeIfAbsent((tag) -> new ServerLevel<>(tag, channel, networkFactory, networkName),
-                () -> new ServerLevel<>(channel, networkFactory, networkName), YTechMod.MOD_ID + "_" + networkName));
+        levelMap.put(level, level.getDataStorage().computeIfAbsent((tag) -> new ServerLevel<>(tag, networkFactory, networkName),
+                () -> new ServerLevel<>(networkFactory, networkName), YTechMod.MOD_ID + "_" + networkName));
         LOGGER.debug("[{}] Prepared propagators for {}", networkName, NetworkUtils.getLevelId(level));
     }
 
@@ -58,7 +54,7 @@ public class ServerPropagator<N extends AbstractNetwork<N, O>, O extends INetwor
 
     public void onPlayerLogIn(@NotNull Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), networkFactory.createLevelSyncMessage(levelMap.get(serverPlayer.level()).getNetworks()));
+            networkFactory.sendLevelSync(PacketDistributor.PLAYER.with(() -> serverPlayer), levelMap.get(serverPlayer.level()).getNetworks());
         }
     }
 

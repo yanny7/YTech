@@ -1,28 +1,23 @@
 package com.yanny.ytech.network.generic.message;
 
-import com.yanny.ytech.network.generic.common.AbstractNetwork;
-import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public abstract class NetworkAddedOrUpdatedMessage<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
-    @NotNull public final N network;
-    @NotNull private final BiConsumer<FriendlyByteBuf, N> networkEncode;
+public abstract class NetworkAddedOrUpdatedMessage<T> {
+    public final T payload;
 
-    public NetworkAddedOrUpdatedMessage(@NotNull N network, @NotNull BiConsumer<FriendlyByteBuf, N> networkEncode) {
-        this.network = network;
-        this.networkEncode = networkEncode;
+    public NetworkAddedOrUpdatedMessage(T payload) {
+        this.payload = payload;
     }
 
-    public NetworkAddedOrUpdatedMessage(@NotNull FriendlyByteBuf buf, @NotNull BiConsumer<FriendlyByteBuf, N> networkEncode, @NotNull Function<FriendlyByteBuf, N> networkDecode) {
-        this.networkEncode = networkEncode;
-        network = networkDecode.apply(buf);
+    public NetworkAddedOrUpdatedMessage(@NotNull FriendlyByteBuf buf, Function<FriendlyByteBuf, T> valueReader) {
+        this.payload = valueReader.apply(buf);
     }
 
-    public void encode(@NotNull FriendlyByteBuf buf) {
-        networkEncode.accept(buf, network);
+    public void encode(@NotNull FriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
+        valueWriter.accept(buf, payload);
     }
 }

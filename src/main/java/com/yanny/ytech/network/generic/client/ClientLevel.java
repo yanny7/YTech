@@ -1,20 +1,19 @@
 package com.yanny.ytech.network.generic.client;
 
-import com.yanny.ytech.network.generic.common.AbstractNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ClientLevel<N extends AbstractNetwork<N, O>, O extends INetworkBlockEntity> {
+public class ClientLevel<N extends ClientNetwork, O extends INetworkBlockEntity> {
     @NotNull private final ConcurrentHashMap<Integer, N> networkMap;
 
-    ClientLevel(@NotNull Map<Integer, N> networkMap) {
+    public ClientLevel(@NotNull Map<Integer, N> networkMap) {
         this.networkMap = new ConcurrentHashMap<>(networkMap);
     }
 
-    ClientLevel() {
+    public ClientLevel() {
         networkMap = new ConcurrentHashMap<>();
     }
 
@@ -23,11 +22,11 @@ public class ClientLevel<N extends AbstractNetwork<N, O>, O extends INetworkBloc
         return networkMap.get(blockEntity.getNetworkId());
     }
 
-    void onNetworkAddedOrUpdated(@NotNull N network) {
+    public void onNetworkAddedOrUpdated(@NotNull N network) {
         networkMap.put(network.getNetworkId(), network);
     }
 
-    void onNetworkRemoved(int networkId) {
+    public void onNetworkRemoved(int networkId) {
         networkMap.remove(networkId);
     }
 }

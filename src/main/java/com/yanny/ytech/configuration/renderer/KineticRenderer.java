@@ -3,7 +3,7 @@ package com.yanny.ytech.configuration.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticNetwork;
+import com.yanny.ytech.network.kinetic.KineticClientNetwork;
 import com.yanny.ytech.network.kinetic.RotationDirection;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -42,7 +42,7 @@ public class KineticRenderer implements BlockEntityRenderer<BlockEntity> {
 
         if (level != null) {
             if (blockEntity instanceof IKineticBlockEntity kineticBlock) {
-                KineticNetwork network = YTechMod.KINETIC_PROPAGATOR.client().getNetwork(kineticBlock);
+                KineticClientNetwork network = YTechMod.KINETIC_PROPAGATOR.client().getNetwork(kineticBlock);
 
                 if (network != null && network.getStressCapacity() > 0) {
                     boolean isRunning = network.getStressCapacity() > 0 && network.getStressCapacity() >= network.getStress();
