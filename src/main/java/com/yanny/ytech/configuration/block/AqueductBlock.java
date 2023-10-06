@@ -60,6 +60,11 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     private static final VoxelShape SHAPE_SOUTH_SIDE = Shapes.box(0, 0, 14/16.0, 1, 1, 1);
     private static final VoxelShape SHAPE_WEST_SIDE = Shapes.box(0, 0, 0, 2/16.0, 1, 1);
 
+    private static final VoxelShape SHAPE_NORTH_WEST_SIDE = Shapes.join(SHAPE_WEST_SIDE, SHAPE_NORTH_SIDE, BooleanOp.AND);
+    private static final VoxelShape SHAPE_NORTH_EAST_SIDE = Shapes.join(SHAPE_NORTH_SIDE, SHAPE_EAST_SIDE, BooleanOp.AND);
+    private static final VoxelShape SHAPE_SOUTH_EAST_SIDE = Shapes.join(SHAPE_EAST_SIDE, SHAPE_SOUTH_SIDE, BooleanOp.AND);
+    private static final VoxelShape SHAPE_SOUTH_WEST_SIDE = Shapes.join(SHAPE_SOUTH_SIDE, SHAPE_WEST_SIDE, BooleanOp.AND);
+
     private static final BooleanProperty NORTH_EAST = BooleanProperty.create("north_east");
     private static final BooleanProperty NORTH_WEST = BooleanProperty.create("north_west");
     private static final BooleanProperty SOUTH_EAST = BooleanProperty.create("south_east");
@@ -78,8 +83,11 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         enumMap.put(Direction.WEST, 270);
     }));
 
+    private final Map<BlockState, VoxelShape> shapesCache;
+
     public AqueductBlock() {
         super(Properties.copy(Blocks.TERRACOTTA));
+        this.shapesCache = this.getShapeForEachState(AqueductBlock::calculateShape);
     }
 
     @SuppressWarnings("deprecation")
@@ -93,29 +101,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     @NotNull
     @Override
     public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        VoxelShape shape = SHAPE_BOTTOM;
-
-        if (state.getValue(NORTH)) {
-            shape = Shapes.join(shape, SHAPE_NORTH_SIDE, BooleanOp.OR);
-        }
-        if (state.getValue(EAST)) {
-            shape = Shapes.join(shape, SHAPE_EAST_SIDE, BooleanOp.OR);
-        }
-        if (state.getValue(SOUTH)) {
-            shape = Shapes.join(shape, SHAPE_SOUTH_SIDE, BooleanOp.OR);
-        }
-        if (state.getValue(WEST)) {
-            shape = Shapes.join(shape, SHAPE_WEST_SIDE, BooleanOp.OR);
-        }
-
-        return shape;
-    }
-
-    @SuppressWarnings("deprecation")
-    @NotNull
-    @Override
-    public VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return Shapes.block();
+        return this.shapesCache.get(state);
     }
 
     @Override
@@ -302,5 +288,36 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         BlockState blockState = level.getBlockState(pos);
         boolean isIrrigation = blockState.getBlock() instanceof IrrigationBlock;
         return isIrrigation && blockState.hasProperty(property) && blockState.getValue(property);
+    }
+
+    private static VoxelShape calculateShape(BlockState state) {
+        VoxelShape shape = SHAPE_BOTTOM;
+
+        if (state.getValue(NORTH)) {
+            shape = Shapes.join(shape, SHAPE_NORTH_SIDE, BooleanOp.OR);
+        }
+        if (state.getValue(EAST)) {
+            shape = Shapes.join(shape, SHAPE_EAST_SIDE, BooleanOp.OR);
+        }
+        if (state.getValue(SOUTH)) {
+            shape = Shapes.join(shape, SHAPE_SOUTH_SIDE, BooleanOp.OR);
+        }
+        if (state.getValue(WEST)) {
+            shape = Shapes.join(shape, SHAPE_WEST_SIDE, BooleanOp.OR);
+        }
+        if (state.getValue(NORTH_WEST)) {
+            shape = Shapes.join(shape, SHAPE_NORTH_WEST_SIDE, BooleanOp.OR);
+        }
+        if (state.getValue(NORTH_EAST)) {
+            shape = Shapes.join(shape, SHAPE_NORTH_EAST_SIDE, BooleanOp.OR);
+        }
+        if (state.getValue(SOUTH_EAST)) {
+            shape = Shapes.join(shape, SHAPE_SOUTH_EAST_SIDE, BooleanOp.OR);
+        }
+        if (state.getValue(SOUTH_WEST)) {
+            shape = Shapes.join(shape, SHAPE_SOUTH_WEST_SIDE, BooleanOp.OR);
+        }
+
+        return shape;
     }
 }
