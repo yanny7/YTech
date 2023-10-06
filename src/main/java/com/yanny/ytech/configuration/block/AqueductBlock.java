@@ -336,7 +336,44 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.EAST)).addModel().condition(NORTH_EAST, true).end();
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.SOUTH)).addModel().condition(SOUTH_EAST, true).end();
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.WEST)).addModel().condition(SOUTH_WEST, true).end();
-        provider.itemModels().getBuilder(holder.key).parent(base);
+
+        ModelFile itemModel = provider.models().getBuilder(holder.key + "_inventory")
+                .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
+                        case EAST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
+                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                    }
+                })
+                .from(0, 0, 0).to(16, 2, 16).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
+                        case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
+                        case UP -> faceBuilder.uvs(2, 0, 14, 2).texture("#0");
+                    }
+                })
+                .from(0, 2, 0).to(16, 16, 2).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
+                        case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
+                        case UP -> faceBuilder.uvs(2, 0, 14, 2).texture("#0");
+                    }
+                })
+                .from(0, 2, 14).to(16, 16, 16).end()
+                .texture("particle", textures[0])
+                .texture("0", textures[0]);
+
+        provider.itemModels().getBuilder(holder.key).parent(itemModel);
     }
 
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
