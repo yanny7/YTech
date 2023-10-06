@@ -149,7 +149,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     AQUEDUCT(HolderType.ENTITY_BLOCK, "aqueduct", "Aqueduct",
             ItemTags.create(Utils.modLoc("aqueducts")),
             BlockTags.create(Utils.modLoc("aqueducts")),
-            AqueductBlock::new,
+            holder -> new AqueductBlock(),
             AqueductBlock::getTexture,
             AqueductBlock::registerModel,
             ILootable::dropsSelfProvider,

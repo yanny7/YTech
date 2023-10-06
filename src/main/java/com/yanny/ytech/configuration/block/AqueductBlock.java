@@ -2,10 +2,12 @@ package com.yanny.ytech.configuration.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
+import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.Util;
@@ -16,17 +18,22 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -34,15 +41,19 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
-public class AqueductBlock extends IrrigationBlock {
+public class AqueductBlock extends IrrigationBlock implements BucketPickup, LiquidBlockContainer {
     private static final VoxelShape SHAPE_BOTTOM = Shapes.box(0, 0, 0, 1, 2/16.0, 1);
     private static final VoxelShape SHAPE_NORTH_SIDE = Shapes.box(0, 0, 0, 1, 1, 2/16.0);
     private static final VoxelShape SHAPE_EAST_SIDE = Shapes.box(14/16.0, 0, 0, 1, 1, 1);
@@ -67,7 +78,7 @@ public class AqueductBlock extends IrrigationBlock {
         enumMap.put(Direction.WEST, 270);
     }));
 
-    public AqueductBlock(@NotNull Holder.SimpleBlockHolder holder) {
+    public AqueductBlock() {
         super(Properties.copy(Blocks.TERRACOTTA));
     }
 
@@ -98,6 +109,13 @@ public class AqueductBlock extends IrrigationBlock {
         }
 
         return shape;
+    }
+
+    @SuppressWarnings("deprecation")
+    @NotNull
+    @Override
+    public VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        return Shapes.block();
     }
 
     @Override
@@ -162,6 +180,51 @@ public class AqueductBlock extends IrrigationBlock {
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }
+    }
+
+    @NotNull
+    @Override
+    public ItemStack pickupBlock(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockState state) {
+        if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof AqueductBlockEntity aqueductBlock) {
+            IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(aqueductBlock);
+
+            if (network != null) {
+                FluidTank tank = network.getFluidHandler();
+
+                if (tank.getFluidAmount() > 1000) {
+                    tank.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                    return new ItemStack(Items.WATER_BUCKET);
+                }
+            }
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    @NotNull
+    @Override
+    public Optional<SoundEvent> getPickupSound() {
+        return Fluids.WATER.getPickupSound();
+    }
+
+    @Override
+    public boolean canPlaceLiquid(@NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Fluid fluid) {
+        return fluid == Fluids.WATER;
+    }
+
+    @Override
+    public boolean placeLiquid(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull FluidState fluidState) {
+        if (fluidState.getType() == Fluids.WATER && !level.isClientSide() && level.getBlockEntity(pos) instanceof AqueductBlockEntity aqueductBlock) {
+            IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(aqueductBlock);
+
+            if (network != null) {
+                FluidTank tank = network.getFluidHandler();
+                tank.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @NotNull
