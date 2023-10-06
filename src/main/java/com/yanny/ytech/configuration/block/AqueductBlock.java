@@ -222,10 +222,6 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     @Override
     public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (!(entity instanceof LivingEntity) || entity.getFeetBlockState().is(this)) {
-            if (entity.isOnFire()) {
-                entity.extinguishFire();
-            }
-
             if (level.getBlockEntity(pos) instanceof AqueductBlockEntity aqueductBlockEntity) {
                 double multiplier = 0.5;
 
@@ -234,12 +230,20 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
                     if (network != null && network.getCapacity() > 0) {
                         multiplier = Mth.clamp((1 - network.getAmount() / (double) network.getCapacity()) * 0.5, 0, 0.5);
+
+                        if (entity.isOnFire()) {
+                            entity.extinguishFire();
+                        }
                     }
                 } else {
                     IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(aqueductBlockEntity);
 
                     if (network != null && network.getFluidHandler().getCapacity() > 0) {
                         multiplier = Mth.clamp((1 - network.getFluidHandler().getFluidAmount() / (double)network.getFluidHandler().getCapacity()) * 0.5, 0, 0.5);
+
+                        if (entity.isOnFire()) {
+                            entity.extinguishFire();
+                        }
                     }
                 }
 

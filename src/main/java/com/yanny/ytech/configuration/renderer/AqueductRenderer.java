@@ -32,7 +32,7 @@ public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
         if (blockEntity instanceof AqueductBlockEntity aqueductBlockEntity) {
             IrrigationClientNetwork network = YTechMod.IRRIGATION_PROPAGATOR.client().getNetwork(aqueductBlockEntity);
 
-            if (network != null && network.getCapacity() > 0) {
+            if (network != null && network.getCapacity() > 0 && network.getAmount() > 0) {
                 level.setData(blockEntity, water);
 
                 poseStack.pushPose();
