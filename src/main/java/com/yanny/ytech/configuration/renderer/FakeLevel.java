@@ -48,12 +48,12 @@ public final class FakeLevel implements BlockAndTintGetter {
 
     @Override
     public @NotNull BlockState getBlockState(@NotNull BlockPos pPos) {
-        return pPos.getY() == 0 ? fluid : Blocks.AIR.defaultBlockState();
+        return pPos.getY() <= 0 ? fluid : Blocks.AIR.defaultBlockState();
     }
 
     @Override
     public @NotNull FluidState getFluidState(@NotNull BlockPos pPos) {
-        return (pPos.getY() == 0 ? fluid : Blocks.AIR.defaultBlockState()).getFluidState();
+        return (pPos.getY() <= 0 ? fluid : Blocks.AIR.defaultBlockState()).getFluidState();
     }
 
     @Override

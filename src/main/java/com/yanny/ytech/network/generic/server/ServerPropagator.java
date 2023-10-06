@@ -7,6 +7,7 @@ import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import com.yanny.ytech.network.generic.common.NetworkFactory;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkBlockEntity> {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -67,6 +69,17 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         } else {
             LOGGER.warn("[{}] No " + networkName + " network for level {}", networkName, blockEntity.getLevel());
             return null;
+        }
+    }
+
+    @NotNull
+    public Map<Integer, N> getNetworks(@NotNull Level level) {
+        ServerLevel<N, O> serverLevel = levelMap.get(level);
+
+        if (serverLevel != null) {
+            return serverLevel.getNetworks();
+        } else {
+            return Map.of();
         }
     }
 }

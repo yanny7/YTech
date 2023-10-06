@@ -10,6 +10,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
@@ -35,17 +36,19 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     @NotNull private final HashMap<BlockPos, Integer> providers = new HashMap<>();
     @NotNull private final HashMap<BlockPos, Integer> consumers = new HashMap<>();
     @NotNull private final Set<BlockPos> storages = new HashSet<>();
-    @NotNull private final FluidTank fluidHandler = new FluidTank(0, (fluid) -> fluid.getFluid().isSame(Fluids.WATER));
+    @NotNull private final FluidTank fluidHandler;
     private int inflow = 0;
     private int outflow = 0;
 
     public IrrigationServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
         super(networkId, onChange, onRemove);
+        fluidHandler = createFluidTank(networkId);
         load(tag);
     }
 
     public IrrigationServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
         super(networkId, onChange, onRemove);
+        fluidHandler = createFluidTank(networkId);
     }
 
     @Override
@@ -195,6 +198,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
         Set<BlockPos> storageBlocks = new HashSet<>(storages);
         BlockPos blockPos = blockEntity.getBlockPos();
+        double fluidPerBlock = storageBlockCount() > 0 ? fluidHandler.getFluidAmount() / (double)storageBlockCount() : 0;
 
         // remove splitting block
         providerBlocks.remove(blockPos);
@@ -205,6 +209,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         List<BlockPos> neighbors = blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos) || storageBlocks.contains(pos)).collect(Collectors.toList());
 
         if ((neighbors.size() == 1) || (providerBlocks.isEmpty() && consumerBlocks.isEmpty() && storageBlocks.isEmpty()) || level == null) { // if we are not splitting
+            fluidHandler.setFluid(new FluidStack(Fluids.WATER, (int) (storageBlockCount() * fluidPerBlock)));
             return List.of();
         }
 
@@ -213,17 +218,22 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
         clear();
         insertConnectedPositions(this, providerBlocks, consumerBlocks, storageBlocks, neighbor, level); // re-insert blocks
+        fluidHandler.setFluid(new FluidStack(Fluids.WATER, (int) (storageBlockCount() * fluidPerBlock)));
 
-        return neighbors.stream().map((pos) -> {
-            if ((providerBlocks.isEmpty() && consumerBlocks.isEmpty() && storageBlocks.isEmpty())
-                    || (!providerBlocks.containsKey(pos) && !consumerBlocks.containsKey(pos) && !storageBlocks.contains(pos))) {
-                return null;
-            }
+        return neighbors.stream()
+                .map((pos) -> {
+                    if ((providerBlocks.isEmpty() && consumerBlocks.isEmpty() && storageBlocks.isEmpty())
+                            || (!providerBlocks.containsKey(pos) && !consumerBlocks.containsKey(pos) && !storageBlocks.contains(pos))) {
+                        return null;
+                    }
 
-            IrrigationServerNetwork network = new IrrigationServerNetwork(ids.remove(0), onChange, onRemove);
-            insertConnectedPositions(network, providerBlocks, consumerBlocks, storageBlocks, pos, level);
-            return network;
-        }).filter(Objects::nonNull).toList();
+                    IrrigationServerNetwork network = new IrrigationServerNetwork(ids.remove(0), onChange, onRemove);
+                    insertConnectedPositions(network, providerBlocks, consumerBlocks, storageBlocks, pos, level);
+                    return network;
+                })
+                .filter(Objects::nonNull)
+                .peek((n) -> n.fluidHandler.setFluid(new FluidStack(Fluids.WATER, (int) (n.storageBlockCount() * fluidPerBlock))))
+                .toList();
     }
 
     @Override
@@ -271,6 +281,10 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     @NotNull
     public FluidTank getFluidHandler() {
         return fluidHandler;
+    }
+
+    public int storageBlockCount() {
+        return storages.size();
     }
 
     private void addProvider(@NotNull IIrrigationBlockEntity entity) {
@@ -326,6 +340,15 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         inflow = 0;
         outflow = 0;
         fluidHandler.setCapacity(0);
+    }
+
+    private FluidTank createFluidTank(int networkId) {
+        return new FluidTank(0, (fluid) -> fluid.getFluid().isSame(Fluids.WATER)) {
+            @Override
+            protected void onContentsChanged() {
+                onChange.accept(networkId);
+            }
+        };
     }
 
     private static void insertConnectedPositions(@NotNull IrrigationServerNetwork network, @NotNull Map<BlockPos, Integer> providerBlocks,

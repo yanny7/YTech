@@ -19,10 +19,15 @@ public class YTechConfigSpec {
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
     @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolList;
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
+
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
     @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
     @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
+
     @NotNull private final ForgeConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
+    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
+    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillAmount;
+    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -43,7 +48,13 @@ public class YTechConfigSpec {
         builder.pop();
         builder.push("irrigation");
         baseFluidStoragePerBlock = builder.comment("Base amount of fluid stored per block")
-                .worldRestart().define("baseFluidStoragePerBlock", 500);
+                .worldRestart().defineInRange("baseFluidStoragePerBlock", 500, 1, Integer.MAX_VALUE);
+        rainingFillAqueduct = builder.comment("If raining should fill aqueduct")
+                .worldRestart().define("rainingFillAqueduct", true);
+        rainingFillAmount = builder.comment("Amount of which will be aqueduct filled per nth tick when raining")
+                .worldRestart().defineInRange("rainingFillAmount", 1, 1, Integer.MAX_VALUE);
+        rainingFillPerNthTick = builder.comment("How often should be filled aqueduct when raining (1 - every tick, 20 - every second)")
+                .worldRestart().defineInRange("rainingFillPerNthTick", 10, 1, Integer.MAX_VALUE);
         builder.pop();
     }
 
@@ -74,6 +85,18 @@ public class YTechConfigSpec {
 
     public int getBaseFluidStoragePerBlock() {
         return baseFluidStoragePerBlock.get();
+    }
+
+    public boolean shouldRainingFillAqueduct() {
+        return rainingFillAqueduct.get();
+    }
+
+    public int getRainingFillAmount() {
+        return rainingFillAmount.get();
+    }
+
+    public int getRainingFillPerNthTick() {
+        return rainingFillPerNthTick.get();
     }
 
     @NotNull

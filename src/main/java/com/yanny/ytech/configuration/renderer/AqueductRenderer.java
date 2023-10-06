@@ -2,6 +2,9 @@ package com.yanny.ytech.configuration.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
+import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -26,16 +29,22 @@ public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
 
     @Override
     public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        level.setData(blockEntity, water);
+        if (blockEntity instanceof AqueductBlockEntity aqueductBlockEntity) {
+            IrrigationClientNetwork network = YTechMod.IRRIGATION_PROPAGATOR.client().getNetwork(aqueductBlockEntity);
 
-        poseStack.pushPose();
-        poseStack.translate(0, 0, 0);
-        PoseStack.Pose pose = poseStack.last();
+            if (network != null && network.getCapacity() > 0) {
+                level.setData(blockEntity, water);
 
-        VertexConsumer builder = new FluidVertexConsumer(buffer, water.getFluidState(), pose.pose(), pose.normal());
-        Minecraft.getInstance().getBlockRenderer().renderLiquid(BlockPos.ZERO, level, builder, water, water.getFluidState());
+                poseStack.pushPose();
+                poseStack.translate(0, -12.0/16.0 + (network.getAmount() / (float)network.getCapacity()) * (12.0/16.0), 0);
+                PoseStack.Pose pose = poseStack.last();
 
-        poseStack.popPose();
-        level.clearData();
+                VertexConsumer builder = new FluidVertexConsumer(buffer, water.getFluidState(), pose.pose(), pose.normal());
+                Minecraft.getInstance().getBlockRenderer().renderLiquid(BlockPos.ZERO, level, builder, water, water.getFluidState());
+
+                poseStack.popPose();
+                level.clearData();
+            }
+        }
     }
 }
