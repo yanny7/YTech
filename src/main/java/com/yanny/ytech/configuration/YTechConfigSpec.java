@@ -29,6 +29,8 @@ public class YTechConfigSpec {
     @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillAmount;
     @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
     @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> validBlockForRaining;
+    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> valveFillAmount;
+    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -58,6 +60,10 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("rainingFillPerNthTick", 10, 1, Integer.MAX_VALUE);
         validBlockForRaining = builder.comment("If aqueduct must see sky and must be in valid biome where is raining when raining for filling")
                 .worldRestart().define("validBlockForRaining", true);
+        valveFillAmount = builder.comment("Amount of which will be aqueduct filled every nth tick thru valve")
+                .worldRestart().defineInRange("valveFillAmount", 1, 1, Integer.MAX_VALUE);
+        valveFillPerNthTick = builder.comment("How often should be filled aqueduct thru valve (1 - every tick, 20 - every second)")
+                .worldRestart().defineInRange("rainingFillPerNthTick", 10, 1, Integer.MAX_VALUE);
         builder.pop();
     }
 
@@ -96,6 +102,14 @@ public class YTechConfigSpec {
 
     public int getRainingFillAmount() {
         return rainingFillAmount.get();
+    }
+
+    public int getValveFillAmount() {
+        return valveFillAmount.get();
+    }
+
+    public int getValveFillPerNthTick() {
+        return valveFillPerNthTick.get();
     }
 
     public int getRainingFillPerNthTick() {

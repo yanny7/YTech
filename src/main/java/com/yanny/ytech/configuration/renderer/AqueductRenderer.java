@@ -3,7 +3,7 @@ package com.yanny.ytech.configuration.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
+import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
-    private static final FakeLevel level = new FakeLevel();
+    private static final FakeAqueductLevel level = new FakeAqueductLevel();
     private final BlockState water;
 
     public AqueductRenderer(BlockEntityRendererProvider.Context context) {
@@ -29,8 +29,8 @@ public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
 
     @Override
     public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        if (blockEntity instanceof AqueductBlockEntity aqueductBlockEntity) {
-            IrrigationClientNetwork network = YTechMod.IRRIGATION_PROPAGATOR.client().getNetwork(aqueductBlockEntity);
+        if (blockEntity instanceof IrrigationBlockEntity irrigationBlockEntity) {
+            IrrigationClientNetwork network = YTechMod.IRRIGATION_PROPAGATOR.client().getNetwork(irrigationBlockEntity);
 
             if (network != null && network.getCapacity() > 0 && network.getAmount() > 0) {
                 level.setData(blockEntity, water);

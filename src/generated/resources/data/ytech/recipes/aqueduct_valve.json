@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "ytech:terracotta_bricks"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "R": {
+      "tag": "ytech:rods"
+    },
+    "S": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "###",
+    "HRS",
+    "###"
+  ],
+  "result": {
+    "item": "ytech:aqueduct_valve"
+  },
+  "show_notification": true
+}

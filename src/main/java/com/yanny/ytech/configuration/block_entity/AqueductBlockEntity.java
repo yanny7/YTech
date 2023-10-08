@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.block.AqueductBlock;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.network.irrigation.NetworkType;
 import net.minecraft.core.BlockPos;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -20,16 +20,12 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public class AqueductBlockEntity extends IrrigationBlockEntity {
     @NotNull private final AABB renderBox;
-    @NotNull private final List<BlockPos> validNeighbors;
     @Nullable private LazyOptional<IFluidHandler> lazyFluidHandler;
 
     public AqueductBlockEntity(@NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
-        super(entityType, pos, blockState);
-        validNeighbors = Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getNormal())).toList();
+        super(entityType, pos, blockState, ((AqueductBlock)blockState.getBlock()).getValidNeighbors(blockState, pos));
         renderBox = new AABB(pos, pos.offset(1, 1, 1));
     }
 
@@ -47,11 +43,6 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
     }
 
     @Override
-    public @NotNull List<BlockPos> getValidNeighbors() {
-        return validNeighbors;
-    }
-
-    @Override
     public int getFlow() {
         return 0;
     }
@@ -65,8 +56,8 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
     public boolean validForRainFilling() {
         if (level instanceof ServerLevel) {
             Holder<Biome> biome = level.getBiome(worldPosition);
-            return !YTechMod.CONFIGURATION.isValidBlockForRaining() || (level.isRainingAt(worldPosition.above())
-                    && biome.get().warmEnoughToRain(worldPosition) && !biome.is(Tags.Biomes.IS_DRY));
+            return !YTechMod.CONFIGURATION.isValidBlockForRaining() || (level.canSeeSky(worldPosition.above())
+                    && biome.get().getPrecipitationAt(worldPosition) == Biome.Precipitation.RAIN);
         }
 
         return false;

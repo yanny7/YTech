@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ytech:block/aqueduct_valve",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "ytech:block/aqueduct_valve"
+    },
+    "facing=south": {
+      "model": "ytech:block/aqueduct_valve",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "ytech:block/aqueduct_valve",
+      "y": 270
+    }
+  }
+}

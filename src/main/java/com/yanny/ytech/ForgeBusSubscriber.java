@@ -14,15 +14,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
@@ -79,12 +76,7 @@ public class ForgeBusSubscriber {
     @SubscribeEvent
     public static void onLevelTick(@NotNull TickEvent.LevelTickEvent event) {
         if (event.phase == TickEvent.Phase.START && event.side == LogicalSide.SERVER) {
-            if (YTechMod.CONFIGURATION.shouldRainingFillAqueduct() && event.level.isRaining() && event.level.getGameTime() % YTechMod.CONFIGURATION.getRainingFillPerNthTick() == 0) {
-                YTechMod.IRRIGATION_PROPAGATOR.server().getNetworks(event.level).values().forEach((network) -> {
-                    FluidStack fluidStack = new FluidStack(Fluids.WATER, YTechMod.CONFIGURATION.getRainingFillAmount() * network.filledByRainCount());
-                    network.getFluidHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-                });
-            }
+            YTechMod.IRRIGATION_PROPAGATOR.server().getNetworks(event.level).values().forEach((network) -> network.tick((ServerLevel) event.level));
         }
     }
 

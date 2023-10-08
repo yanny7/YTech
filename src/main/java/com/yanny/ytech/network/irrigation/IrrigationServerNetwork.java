@@ -7,6 +7,7 @@ import com.yanny.ytech.network.generic.server.ServerNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
@@ -28,8 +29,6 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     private static final String TAG_STORAGES = "storages";
     private static final String TAG_FILLED_BY_RAIN = "filledByRain";
     private static final String TAG_BLOCK_POS = "pos";
-    private static final String TAG_INFLOW = "inflow";
-    private static final String TAG_OUTFLOW = "outflow";
     private static final String TAG_FLOW = "flow";
     private static final String TAG_FLUID_TANK = "fluidHolder";
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -85,17 +84,13 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         if (tag.contains(TAG_FILLED_BY_RAIN) && tag.getTagType(TAG_FILLED_BY_RAIN) != 0) {
             tag.getList(TAG_FILLED_BY_RAIN, ListTag.TAG_COMPOUND).forEach((t) -> filledByRain.add(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS))));
         }
-        if (tag.contains(TAG_INFLOW) && tag.getTagType(TAG_INFLOW) != 0) {
-            inflow = tag.getInt(TAG_INFLOW);
-        }
-        if (tag.contains(TAG_OUTFLOW) && tag.getTagType(TAG_OUTFLOW) != 0) {
-            inflow = tag.getInt(TAG_OUTFLOW);
-        }
         if (tag.contains(TAG_FLUID_TANK) && tag.getTagType(TAG_FLUID_TANK) != 0) {
             fluidHandler.setCapacity(storages.size() * YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock());
             fluidHandler.readFromNBT(tag.getCompound(TAG_FLUID_TANK));
         }
 
+        inflow = providers.values().stream().mapToInt(Integer::intValue).sum();
+        outflow = consumers.values().stream().mapToInt(Integer::intValue).sum();
         LOGGER.debug("Network {}: {}", getNetworkId(), this);
     }
 
@@ -134,8 +129,6 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         tag.put(TAG_CONSUMERS, consumersTag);
         tag.put(TAG_STORAGES, storagesTag);
         tag.put(TAG_FILLED_BY_RAIN, filledByRainTag);
-        tag.putInt(TAG_INFLOW, inflow);
-        tag.putInt(TAG_OUTFLOW, outflow);
         tag.put(TAG_FLUID_TANK, fluidHandler.writeToNBT(new CompoundTag()));
         return tag;
     }
@@ -181,8 +174,8 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
                 int oldCapacity = inflow;
                 int value = entity.getFlow();
 
-                inflow = inflow - providers.get(blockPos) + value;
                 providers.put(blockPos, value);
+                inflow = providers.values().stream().mapToInt(Integer::intValue).sum();
 
                 if (oldCapacity != inflow) {
                     wasChange = true;
@@ -192,8 +185,8 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
                 int oldStress = outflow;
                 int value = entity.getFlow();
 
-                outflow = outflow - providers.get(blockPos) + value;
                 consumers.put(blockPos, value);
+                outflow = consumers.values().stream().mapToInt(Integer::intValue).sum();
 
                 if (oldStress != outflow) {
                     wasChange = true;
@@ -311,6 +304,24 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
         filledByRain.remove(entity.getBlockPos());
         super.remove(entity);
+    }
+
+    public void tick(@NotNull ServerLevel level) {
+        // rain filling
+        if (YTechMod.CONFIGURATION.shouldRainingFillAqueduct() && level.isRaining() && level.getGameTime() % YTechMod.CONFIGURATION.getRainingFillPerNthTick() == 0) {
+            FluidStack fluidStack = new FluidStack(Fluids.WATER, YTechMod.CONFIGURATION.getRainingFillAmount() * filledByRainCount());
+            fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+        }
+
+        if (level.getGameTime() % YTechMod.CONFIGURATION.getValveFillPerNthTick() == 0) {
+            if (inflow > outflow) {
+                FluidStack fluidStack = new FluidStack(Fluids.WATER, YTechMod.CONFIGURATION.getValveFillAmount() * providers.size());
+                fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            } else if (inflow < outflow) {
+                FluidStack fluidStack = new FluidStack(Fluids.WATER, YTechMod.CONFIGURATION.getValveFillAmount() * providers.size());
+                fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            }
+        }
     }
 
     @NotNull

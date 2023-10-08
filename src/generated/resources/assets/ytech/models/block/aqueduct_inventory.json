@@ -48,13 +48,7 @@
           "texture": "#0"
         },
         "up": {
-          "texture": "#0",
-          "uv": [
-            2.0,
-            0.0,
-            14.0,
-            2.0
-          ]
+          "texture": "#0"
         },
         "west": {
           "texture": "#0"
@@ -77,13 +71,7 @@
           "texture": "minecraft:missingno"
         },
         "east": {
-          "texture": "#0",
-          "uv": [
-            14.0,
-            0.0,
-            16.0,
-            14.0
-          ]
+          "texture": "#0"
         },
         "north": {
           "texture": "#0"
@@ -94,20 +82,14 @@
         "up": {
           "texture": "#0",
           "uv": [
-            2.0,
             0.0,
-            14.0,
+            0.0,
+            16.0,
             2.0
           ]
         },
         "west": {
-          "texture": "#0",
-          "uv": [
-            0.0,
-            0.0,
-            2.0,
-            14.0
-          ]
+          "texture": "#0"
         }
       },
       "from": [

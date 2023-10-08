@@ -13,13 +13,19 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public abstract class IrrigationBlockEntity extends BlockEntity implements IIrrigationBlockEntity {
     private static final String NETWORK_ID = "networkId";
 
+    @NotNull private final List<BlockPos> validNeighbors;
+
     protected int networkId = -1;
 
-    public IrrigationBlockEntity(@NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
+    public IrrigationBlockEntity(@NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState,
+                                 @NotNull List<BlockPos> validNeighbors) {
         super(entityType, pos, blockState);
+        this.validNeighbors = validNeighbors;
     }
 
     @Override
@@ -35,6 +41,11 @@ public abstract class IrrigationBlockEntity extends BlockEntity implements IIrri
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
         }
+    }
+
+    @Override
+    public @NotNull List<BlockPos> getValidNeighbors() {
+        return validNeighbors;
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 // https://gist.github.com/XFactHD/337be1471ca4b60c1959dc02691a24fc
-public final class FakeLevel implements BlockAndTintGetter {
+public final class FakeAqueductLevel implements BlockAndTintGetter {
     private Level level;
     private BlockPos originalPos;
     private BlockState fluid;

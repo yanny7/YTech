@@ -52,6 +52,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -116,7 +117,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         stateBuilder.add(EAST).add(WEST).add(SOUTH).add(NORTH).add(NORTH_EAST).add(NORTH_WEST).add(SOUTH_EAST).add(SOUTH_WEST);
     }
 
-    @NotNull
+    @Nullable
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
         BlockState state = defaultBlockState();
@@ -137,7 +138,11 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         state = state.setValue(SOUTH_EAST, hasSide(level, pos.east(), SOUTH) || hasSide(level, pos.south(), EAST) || !(hasEastConnection && hasSouthConnection));
         state = state.setValue(SOUTH_WEST, hasSide(level, pos.south(), WEST) || hasSide(level, pos.west(), SOUTH) || !(hasSouthConnection && hasWestConnection));
 
-        return state;
+        if (isValidNeighborBlock(blockPlaceContext, state)) {
+            return state;
+        }
+
+        return null;
     }
 
     @SuppressWarnings("deprecation")
@@ -278,6 +283,11 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         }
     }
 
+    @Override
+    public List<BlockPos> getValidNeighbors(@NotNull BlockState blockState, @NotNull BlockPos pos) {
+        return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getNormal())).toList();
+    }
+
     @NotNull
     public static TextureHolder[] getTexture() {
         return List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks"))).toArray(TextureHolder[]::new);
@@ -356,17 +366,17 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
                         case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
                         case SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
                         case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case UP -> faceBuilder.uvs(2, 0, 14, 2).texture("#0");
+                        case UP -> faceBuilder.uvs(0, 0, 16, 2).texture("#0");
                     }
                 })
                 .from(0, 2, 0).to(16, 16, 2).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
-                        case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
+                        case EAST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
                         case SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case UP -> faceBuilder.uvs(2, 0, 14, 2).texture("#0");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
+                        case UP -> faceBuilder.uvs(0, 0, 16, 2).texture("#0");
                     }
                 })
                 .from(0, 2, 14).to(16, 16, 16).end()
