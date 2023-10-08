@@ -21,7 +21,7 @@ public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INe
         this.onRemove = onRemove;
     }
 
-    protected abstract boolean canAttach(@NotNull O entity);
+    protected abstract boolean canAttach(@NotNull O blockEntity);
 
     protected abstract boolean canAttach(@NotNull N network);
 
@@ -30,23 +30,23 @@ public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INe
     @NotNull
     protected abstract CompoundTag save();
 
-    protected abstract void addAll(@NotNull N network, @NotNull Level level);
+    protected abstract void appendNetwork(@NotNull N network, @NotNull Level level);
 
-    protected abstract boolean update(@NotNull O entity);
+    protected abstract boolean updateBlockEntity(@NotNull O blockEntity);
 
     @NotNull
-    protected abstract List<N> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull O blockEntity);
+    protected abstract List<N> removeBlockEntity(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull O blockEntity);
 
     protected abstract boolean isNotEmpty();
 
     protected abstract boolean isValidPosition(@NotNull O blockEntity, @NotNull BlockPos pos);
 
-    protected void add(@NotNull O entity) {
-        entity.setNetworkId(getNetworkId());
+    protected void addBlockEntity(@NotNull O blockEntity) {
+        blockEntity.setNetworkId(getNetworkId());
     }
 
-    protected void remove(@NotNull O entity) {
-        entity.setNetworkId(-1);
+    protected void removeBlockEntity(@NotNull O blockEntity) {
+        blockEntity.setNetworkId(-1);
 
         if (!isNotEmpty()) {
             onRemove.accept(getNetworkId());

@@ -59,7 +59,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    protected boolean canAttach(@NotNull IIrrigationBlockEntity entity) {
+    protected boolean canAttach(@NotNull IIrrigationBlockEntity blockEntity) {
         return true;
     }
 
@@ -134,7 +134,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    protected void addAll(@NotNull IrrigationServerNetwork network, @NotNull Level level) {
+    protected void appendNetwork(@NotNull IrrigationServerNetwork network, @NotNull Level level) {
         network.providers.forEach((pos, value) -> {
             providers.put(pos, value);
 
@@ -165,14 +165,14 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    protected boolean update(@NotNull IIrrigationBlockEntity entity) {
-        BlockPos blockPos = entity.getBlockPos();
+    protected boolean updateBlockEntity(@NotNull IIrrigationBlockEntity blockEntity) {
+        BlockPos blockPos = blockEntity.getBlockPos();
         boolean wasChange = false;
 
-        switch (entity.getNetworkType()) {
+        switch (blockEntity.getNetworkType()) {
             case PROVIDER -> {
                 int oldCapacity = inflow;
-                int value = entity.getFlow();
+                int value = blockEntity.getFlow();
 
                 providers.put(blockPos, value);
                 inflow = providers.values().stream().mapToInt(Integer::intValue).sum();
@@ -183,7 +183,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
             }
             case CONSUMER -> {
                 int oldStress = outflow;
-                int value = entity.getFlow();
+                int value = blockEntity.getFlow();
 
                 consumers.put(blockPos, value);
                 outflow = consumers.values().stream().mapToInt(Integer::intValue).sum();
@@ -194,7 +194,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
             }
             case STORAGE -> {
                 boolean oldValue = filledByRain.contains(blockPos);
-                boolean rainFilling = entity.validForRainFilling();
+                boolean rainFilling = blockEntity.validForRainFilling();
 
                 if (oldValue != rainFilling) {
                     if (rainFilling) {
@@ -213,7 +213,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     @NotNull
     @Override
-    protected List<IrrigationServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IIrrigationBlockEntity blockEntity) {
+    protected List<IrrigationServerNetwork> removeBlockEntity(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IIrrigationBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
@@ -227,7 +227,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         consumerBlocks.remove(blockPos);
         storageBlocks.remove(blockPos);
         filledByRainBlocks.remove(blockPos);
-        remove(blockEntity);
+        removeBlockEntity(blockEntity);
 
         List<BlockPos> neighbors = blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos) || storageBlocks.contains(pos)).collect(Collectors.toList());
 
@@ -280,30 +280,30 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    protected void add(@NotNull IIrrigationBlockEntity entity) {
-        super.add(entity);
+    protected void addBlockEntity(@NotNull IIrrigationBlockEntity blockEntity) {
+        super.addBlockEntity(blockEntity);
 
-        switch (entity.getNetworkType()) {
-            case CONSUMER -> addConsumer(entity);
-            case PROVIDER -> addProvider(entity);
-            case STORAGE -> addStorage(entity);
+        switch (blockEntity.getNetworkType()) {
+            case CONSUMER -> addConsumer(blockEntity);
+            case PROVIDER -> addProvider(blockEntity);
+            case STORAGE -> addStorage(blockEntity);
         }
 
-        if (entity.validForRainFilling()) {
-            filledByRain.add(entity.getBlockPos());
+        if (blockEntity.validForRainFilling()) {
+            filledByRain.add(blockEntity.getBlockPos());
         }
     }
 
     @Override
-    protected void remove(@NotNull IIrrigationBlockEntity entity) {
-        switch (entity.getNetworkType()) {
-            case CONSUMER -> removeConsumer(entity);
-            case PROVIDER -> removeProvider(entity);
-            case STORAGE -> removeStorage(entity);
+    protected void removeBlockEntity(@NotNull IIrrigationBlockEntity blockEntity) {
+        switch (blockEntity.getNetworkType()) {
+            case CONSUMER -> removeConsumer(blockEntity);
+            case PROVIDER -> removeProvider(blockEntity);
+            case STORAGE -> removeStorage(blockEntity);
         }
 
-        filledByRain.remove(entity.getBlockPos());
-        super.remove(entity);
+        filledByRain.remove(blockEntity.getBlockPos());
+        super.removeBlockEntity(blockEntity);
     }
 
     public void tick(@NotNull ServerLevel level) {
@@ -408,7 +408,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         BlockEntity blockEntity = level.getBlockEntity(from);
 
         if (blockEntity instanceof IIrrigationBlockEntity block) {
-            network.add(block);
+            network.addBlockEntity(block);
             providerBlocks.remove(from);
             consumerBlocks.remove(from);
             storageBlocks.remove(from);

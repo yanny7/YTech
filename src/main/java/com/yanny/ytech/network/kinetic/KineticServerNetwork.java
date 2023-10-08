@@ -50,11 +50,11 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    protected boolean canAttach(@NotNull IKineticBlockEntity entity) {
-        RotationDirection entityRotationDirection = entity.getRotationDirection();
+    protected boolean canAttach(@NotNull IKineticBlockEntity blockEntity) {
+        RotationDirection entityRotationDirection = blockEntity.getRotationDirection();
 
         // if there is no rotation provider, or changed rotation for only our only provider
-        if (directionProviders.isEmpty() || (directionProviders.size() == 1 && directionProviders.contains(entity.getBlockPos()))) {
+        if (directionProviders.isEmpty() || (directionProviders.size() == 1 && directionProviders.contains(blockEntity.getBlockPos()))) {
             return true;
         }
 
@@ -125,7 +125,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    protected void addAll(@NotNull KineticServerNetwork network, @NotNull Level level) {
+    protected void appendNetwork(@NotNull KineticServerNetwork network, @NotNull Level level) {
         if (network.rotationDirection != RotationDirection.NONE && rotationDirection != RotationDirection.NONE && rotationDirection != network.rotationDirection) {
             throw new IllegalStateException("Invalid rotation direction provided!");
         }
@@ -152,13 +152,13 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    protected boolean update(@NotNull IKineticBlockEntity entity) {
-        RotationDirection entityRotationDirection = entity.getRotationDirection();
-        BlockPos blockPos = entity.getBlockPos();
+    protected boolean updateBlockEntity(@NotNull IKineticBlockEntity blockEntity) {
+        RotationDirection entityRotationDirection = blockEntity.getRotationDirection();
+        BlockPos blockPos = blockEntity.getBlockPos();
         boolean wasChange = false;
-        int value = entity.getStress();
+        int value = blockEntity.getStress();
 
-        switch (entity.getNetworkType()) {
+        switch (blockEntity.getNetworkType()) {
             case PROVIDER -> {
                 int oldCapacity = stressCapacity;
 
@@ -181,7 +181,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
             }
         }
 
-        if (directionProviders.remove(entity.getBlockPos())) {
+        if (directionProviders.remove(blockEntity.getBlockPos())) {
             if (directionProviders.isEmpty()) {
                 rotationDirection = RotationDirection.NONE;
             }
@@ -204,7 +204,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
 
     @Override
     @NotNull
-    protected List<KineticServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IKineticBlockEntity blockEntity) {
+    protected List<KineticServerNetwork> removeBlockEntity(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IKineticBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
@@ -213,7 +213,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
         // remove splitting block
         providerBlocks.remove(blockPos);
         consumerBlocks.remove(blockPos);
-        remove(blockEntity);
+        removeBlockEntity(blockEntity);
 
         List<BlockPos> neighbors = blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.containsKey(pos)).collect(Collectors.toList());
 
@@ -259,23 +259,23 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    protected void add(@NotNull IKineticBlockEntity entity) {
-        super.add(entity);
+    protected void addBlockEntity(@NotNull IKineticBlockEntity blockEntity) {
+        super.addBlockEntity(blockEntity);
 
-        switch (entity.getNetworkType()) {
-            case CONSUMER -> addConsumer(entity);
-            case PROVIDER -> addProvider(entity);
+        switch (blockEntity.getNetworkType()) {
+            case CONSUMER -> addConsumer(blockEntity);
+            case PROVIDER -> addProvider(blockEntity);
         }
     }
 
     @Override
-    protected void remove(@NotNull IKineticBlockEntity entity) {
-        switch (entity.getNetworkType()) {
-            case CONSUMER -> removeConsumer(entity);
-            case PROVIDER -> removeProvider(entity);
+    protected void removeBlockEntity(@NotNull IKineticBlockEntity blockEntity) {
+        switch (blockEntity.getNetworkType()) {
+            case CONSUMER -> removeConsumer(blockEntity);
+            case PROVIDER -> removeProvider(blockEntity);
         }
 
-        super.remove(entity);
+        super.removeBlockEntity(blockEntity);
     }
 
     public int getStress() {
@@ -366,7 +366,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
         BlockEntity blockEntity = level.getBlockEntity(from);
 
         if (blockEntity instanceof IKineticBlockEntity block) {
-            network.add(block);
+            network.addBlockEntity(block);
             providerBlocks.remove(from);
             consumerBlocks.remove(from);
             block.getValidNeighbors().forEach((pos) -> {

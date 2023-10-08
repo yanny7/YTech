@@ -112,7 +112,7 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
 
                     do {
                         T toRemove = distinctNetworks.remove(0);
-                        network.addAll(toRemove, level);
+                        network.appendNetwork(toRemove, level);
                         networkMap.remove(toRemove.getNetworkId());
                         networkFactory.sendRemoved(PacketDistributor.ALL.noArg(), toRemove.getNetworkId());
                     } while (!distinctNetworks.isEmpty());
@@ -122,7 +122,7 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
             }
         }
 
-        resultNetwork.add(blockEntity);
+        resultNetwork.addBlockEntity(blockEntity);
         setDirty();
         networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), resultNetwork);
     }
@@ -137,12 +137,12 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
 
         if (network != null) {
             if (network.canAttach(blockEntity)) {
-                if (network.update(blockEntity)) {
+                if (network.updateBlockEntity(blockEntity)) {
                     setDirty();
                     networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
                 }
             } else {
-                List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity);
+                List<T> networks = network.removeBlockEntity(this::getUniqueIds, this::onRemove, blockEntity);
                 networkMap.putAll(networks.stream().collect(Collectors.toMap(ServerNetwork::getNetworkId, (n) -> {
                     networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), n);
                     return n;
@@ -164,7 +164,7 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
         T network = getNetwork(blockEntity);
 
         if (network != null) {
-            List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity);
+            List<T> networks = network.removeBlockEntity(this::getUniqueIds, this::onRemove, blockEntity);
             networkMap.putAll(
                     networks.stream()
                             .peek((n) -> networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), n)).
