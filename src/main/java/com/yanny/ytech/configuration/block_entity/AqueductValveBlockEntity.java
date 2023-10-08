@@ -26,7 +26,7 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
-        flow = getFlow();
+        flow = calculateFlow();
     }
 
     @Override
@@ -73,14 +73,24 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
         if (level != null && !level.isClientSide) {
             int oldValue = flow;
 
-            flow = getValidNeighbors().stream().anyMatch((pos) -> {
-                BlockState blockState = level.getBlockState(pos);
-                return blockState.getBlock() == Blocks.WATER || (blockState.hasProperty(WATERLOGGED) && blockState.getValue(WATERLOGGED));
-            }) ? YTechMod.CONFIGURATION.getValveFillAmount() : 0;
+            flow = calculateFlow();
 
             if (oldValue != flow) {
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             }
+
+            YTechMod.IRRIGATION_PROPAGATOR.server().changed(this);
         }
+    }
+
+    private int calculateFlow() {
+        if (level != null) {
+            return getValidNeighbors().stream().anyMatch((pos) -> {
+                BlockState blockState = level.getBlockState(pos);
+                return blockState.getBlock() == Blocks.WATER || (blockState.hasProperty(WATERLOGGED) && blockState.getValue(WATERLOGGED));
+            }) ? YTechMod.CONFIGURATION.getValveFillAmount() : 0;
+        }
+
+        return 0;
     }
 }

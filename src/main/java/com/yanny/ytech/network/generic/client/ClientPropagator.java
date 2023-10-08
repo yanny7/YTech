@@ -44,7 +44,7 @@ public abstract class ClientPropagator<N extends ClientNetwork, B extends INetwo
 
         if (level != null) {
             level.onNetworkAddedOrUpdated(network);
-            LOGGER.info("[{}] Added or updated network {}", networkName, network);
+            LOGGER.debug("[{}] Added or updated network {} ({})", networkName, network.getNetworkId(), network);
         } else {
             LOGGER.warn("[{}] No level stored for {}", networkName, Minecraft.getInstance().level);
         }
@@ -55,7 +55,7 @@ public abstract class ClientPropagator<N extends ClientNetwork, B extends INetwo
 
         if (level != null) {
             level.onNetworkRemoved(networkId);
-            LOGGER.info("[{}] Removed network {}", networkName, networkId);
+            LOGGER.debug("[{}] Removed network {}", networkName, networkId);
         } else {
             LOGGER.warn("[{}] No level stored for {}", networkName, Minecraft.getInstance().level);
         }

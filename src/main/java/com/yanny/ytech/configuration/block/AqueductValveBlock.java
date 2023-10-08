@@ -72,13 +72,7 @@ public class AqueductValveBlock extends IrrigationBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
-        BlockState blockState = defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getClockWise());
-
-        if (isValidNeighborBlock(blockPlaceContext, blockState)) {
-            return blockState;
-        }
-
-        return null;
+        return defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getClockWise());
     }
 
     @SuppressWarnings("deprecation")
@@ -91,7 +85,6 @@ public class AqueductValveBlock extends IrrigationBlock {
             IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
 
             if (network != null) {
-                network.update(blockEntity);
                 blockEntity.neighborChanged();
             }
         }

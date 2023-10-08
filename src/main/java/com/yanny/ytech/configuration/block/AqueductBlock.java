@@ -123,10 +123,10 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         BlockState state = defaultBlockState();
         Level level = blockPlaceContext.getLevel();
         BlockPos pos = blockPlaceContext.getClickedPos();
-        boolean hasNorthConnection = level.getBlockState(pos.north()).getBlock() instanceof IrrigationBlock;
-        boolean hasEastConnection = level.getBlockState(pos.east()).getBlock() instanceof IrrigationBlock;
-        boolean hasSouthConnection = level.getBlockState(pos.south()).getBlock() instanceof IrrigationBlock;
-        boolean hasWestConnection = level.getBlockState(pos.west()).getBlock() instanceof IrrigationBlock;
+        boolean hasNorthConnection = isValidForConnection(level, pos, Direction.NORTH);
+        boolean hasEastConnection = isValidForConnection(level, pos, Direction.EAST);
+        boolean hasSouthConnection = isValidForConnection(level, pos, Direction.SOUTH);
+        boolean hasWestConnection = isValidForConnection(level, pos, Direction.WEST);
 
         state = state.setValue(NORTH, !hasNorthConnection);
         state = state.setValue(EAST, !hasEastConnection);
@@ -138,11 +138,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         state = state.setValue(SOUTH_EAST, hasSide(level, pos.east(), SOUTH) || hasSide(level, pos.south(), EAST) || !(hasEastConnection && hasSouthConnection));
         state = state.setValue(SOUTH_WEST, hasSide(level, pos.south(), WEST) || hasSide(level, pos.west(), SOUTH) || !(hasSouthConnection && hasWestConnection));
 
-        if (isValidNeighborBlock(blockPlaceContext, state)) {
-            return state;
-        }
-
-        return null;
+        return state;
     }
 
     @SuppressWarnings("deprecation")
@@ -150,10 +146,10 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     @Override
     public BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState,
                                   @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
-        boolean hasNorthConnection = level.getBlockState(pos.north()).getBlock() instanceof IrrigationBlock;
-        boolean hasEastConnection = level.getBlockState(pos.east()).getBlock() instanceof IrrigationBlock;
-        boolean hasSouthConnection = level.getBlockState(pos.south()).getBlock() instanceof IrrigationBlock;
-        boolean hasWestConnection = level.getBlockState(pos.west()).getBlock() instanceof IrrigationBlock;
+        boolean hasNorthConnection = isValidForConnection(level, pos, Direction.NORTH);
+        boolean hasEastConnection = isValidForConnection(level, pos, Direction.EAST);
+        boolean hasSouthConnection = isValidForConnection(level, pos, Direction.SOUTH);
+        boolean hasWestConnection = isValidForConnection(level, pos, Direction.WEST);
 
         state = state.setValue(NORTH, !hasNorthConnection);
         state = state.setValue(EAST, !hasEastConnection);
@@ -431,5 +427,16 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         }
 
         return shape;
+    }
+
+    private static boolean isValidForConnection(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull Direction direction) {
+        BlockPos neighborPos = pos.offset(direction.getNormal());
+        BlockState blockState = level.getBlockState(neighborPos);
+
+        if (blockState.getBlock() instanceof IrrigationBlock irrigationBlock) {
+            return irrigationBlock.getValidNeighbors(blockState, neighborPos).contains(pos);
+        }
+
+        return false;
     }
 }

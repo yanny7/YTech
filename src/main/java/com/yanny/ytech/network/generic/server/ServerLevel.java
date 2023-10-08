@@ -165,7 +165,11 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
 
         if (network != null) {
             List<T> networks = network.remove(this::getUniqueIds, this::onRemove, blockEntity);
-            networkMap.putAll(networks.stream().collect(Collectors.toMap(ServerNetwork::getNetworkId, n -> n)));
+            networkMap.putAll(
+                    networks.stream()
+                            .peek((n) -> networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), n)).
+                            collect(Collectors.toMap(ServerNetwork::getNetworkId, n -> n))
+            );
             setDirty();
 
             if (network.isNotEmpty()) {
@@ -234,9 +238,9 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
                 networkMap.put(networkId, networkFactory.createNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, this::onChange, this::onRemove));
             });
 
-            LOGGER.info("[{}] Loaded {} networks", networkName, networkMap.size());
+            LOGGER.debug("[{}] Loaded {} networks", networkName, networkMap.size());
         } else {
-            LOGGER.info("[{}] No network loaded", networkName);
+            LOGGER.debug("[{}] No network loaded", networkName);
         }
     }
 

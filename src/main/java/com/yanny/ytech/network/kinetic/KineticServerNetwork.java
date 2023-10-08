@@ -50,7 +50,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public boolean canAttach(@NotNull IKineticBlockEntity entity) {
+    protected boolean canAttach(@NotNull IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
 
         // if there is no rotation provider, or changed rotation for only our only provider
@@ -62,12 +62,12 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public boolean canAttach(@NotNull KineticServerNetwork network) {
+    protected boolean canAttach(@NotNull KineticServerNetwork network) {
         return rotationDirection == RotationDirection.NONE || network.rotationDirection == RotationDirection.NONE || rotationDirection == network.rotationDirection;
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
+    protected void load(@NotNull CompoundTag tag) {
         if (tag.contains(TAG_PROVIDERS) && tag.getTagType(TAG_PROVIDERS) != 0) {
             tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) ->
                     providers.put(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_STRESS)));
@@ -96,7 +96,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public @NotNull CompoundTag save() {
+    protected @NotNull CompoundTag save() {
         CompoundTag tag = new CompoundTag();
         ListTag providersTag = new ListTag();
         ListTag consumersTag = new ListTag();
@@ -125,7 +125,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public void addAll(@NotNull KineticServerNetwork network, @NotNull Level level) {
+    protected void addAll(@NotNull KineticServerNetwork network, @NotNull Level level) {
         if (network.rotationDirection != RotationDirection.NONE && rotationDirection != RotationDirection.NONE && rotationDirection != network.rotationDirection) {
             throw new IllegalStateException("Invalid rotation direction provided!");
         }
@@ -152,7 +152,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public boolean update(@NotNull IKineticBlockEntity entity) {
+    protected boolean update(@NotNull IKineticBlockEntity entity) {
         RotationDirection entityRotationDirection = entity.getRotationDirection();
         BlockPos blockPos = entity.getBlockPos();
         boolean wasChange = false;
@@ -204,7 +204,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
 
     @Override
     @NotNull
-    public List<KineticServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IKineticBlockEntity blockEntity) {
+    protected List<KineticServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IKineticBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
@@ -239,7 +239,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public boolean isNotEmpty() {
+    protected boolean isNotEmpty() {
         return !providers.isEmpty() || !consumers.isEmpty();
     }
 
@@ -259,7 +259,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public void add(@NotNull IKineticBlockEntity entity) {
+    protected void add(@NotNull IKineticBlockEntity entity) {
         super.add(entity);
 
         switch (entity.getNetworkType()) {
@@ -269,7 +269,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     }
 
     @Override
-    public void remove(@NotNull IKineticBlockEntity entity) {
+    protected void remove(@NotNull IKineticBlockEntity entity) {
         switch (entity.getNetworkType()) {
             case CONSUMER -> removeConsumer(entity);
             case PROVIDER -> removeProvider(entity);

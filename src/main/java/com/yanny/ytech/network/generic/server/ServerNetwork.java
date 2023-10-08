@@ -21,31 +21,31 @@ public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INe
         this.onRemove = onRemove;
     }
 
-    public abstract boolean canAttach(@NotNull O entity);
+    protected abstract boolean canAttach(@NotNull O entity);
 
-    public abstract boolean canAttach(@NotNull N network);
+    protected abstract boolean canAttach(@NotNull N network);
 
-    public abstract void load(@NotNull CompoundTag tag);
-
-    @NotNull
-    public abstract CompoundTag save();
-
-    public abstract void addAll(@NotNull N network, @NotNull Level level);
-
-    public abstract boolean update(@NotNull O entity);
+    protected abstract void load(@NotNull CompoundTag tag);
 
     @NotNull
-    public abstract List<N> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull O blockEntity);
+    protected abstract CompoundTag save();
 
-    public abstract boolean isNotEmpty();
+    protected abstract void addAll(@NotNull N network, @NotNull Level level);
+
+    protected abstract boolean update(@NotNull O entity);
+
+    @NotNull
+    protected abstract List<N> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull O blockEntity);
+
+    protected abstract boolean isNotEmpty();
 
     protected abstract boolean isValidPosition(@NotNull O blockEntity, @NotNull BlockPos pos);
 
-    public void add(@NotNull O entity) {
+    protected void add(@NotNull O entity) {
         entity.setNetworkId(getNetworkId());
     }
 
-    public void remove(@NotNull O entity) {
+    protected void remove(@NotNull O entity) {
         entity.setNetworkId(-1);
 
         if (!isNotEmpty()) {
@@ -53,7 +53,7 @@ public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INe
         }
     }
 
-    public boolean canConnect(@NotNull O blockEntity) {
+    protected boolean canConnect(@NotNull O blockEntity) {
         return blockEntity.getValidNeighbors().stream().anyMatch(pos -> isValidPosition(blockEntity, pos));
     }
 }

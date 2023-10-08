@@ -59,17 +59,17 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    public boolean canAttach(@NotNull IIrrigationBlockEntity entity) {
+    protected boolean canAttach(@NotNull IIrrigationBlockEntity entity) {
         return true;
     }
 
     @Override
-    public boolean canAttach(@NotNull IrrigationServerNetwork network) {
+    protected boolean canAttach(@NotNull IrrigationServerNetwork network) {
         return true;
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
+    protected void load(@NotNull CompoundTag tag) {
         if (tag.contains(TAG_PROVIDERS) && tag.getTagType(TAG_PROVIDERS) != 0) {
             tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) ->
                     providers.put(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_FLOW)));
@@ -96,7 +96,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     @NotNull
     @Override
-    public CompoundTag save() {
+    protected CompoundTag save() {
         CompoundTag tag = new CompoundTag();
         ListTag providersTag = new ListTag();
         ListTag consumersTag = new ListTag();
@@ -134,7 +134,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    public void addAll(@NotNull IrrigationServerNetwork network, @NotNull Level level) {
+    protected void addAll(@NotNull IrrigationServerNetwork network, @NotNull Level level) {
         network.providers.forEach((pos, value) -> {
             providers.put(pos, value);
 
@@ -161,11 +161,11 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         inflow += network.inflow;
         outflow += network.outflow;
         fluidHandler.setCapacity(fluidHandler.getCapacity() + network.fluidHandler.getCapacity());
-        fluidHandler.fill(network.fluidHandler.getFluid(), IFluidHandler.FluidAction.EXECUTE);
+        fluidHandler.setFluid(new FluidStack(Fluids.WATER, fluidHandler.getFluidAmount() + network.fluidHandler.getFluidAmount()));
     }
 
     @Override
-    public boolean update(@NotNull IIrrigationBlockEntity entity) {
+    protected boolean update(@NotNull IIrrigationBlockEntity entity) {
         BlockPos blockPos = entity.getBlockPos();
         boolean wasChange = false;
 
@@ -213,7 +213,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     @NotNull
     @Override
-    public List<IrrigationServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IIrrigationBlockEntity blockEntity) {
+    protected List<IrrigationServerNetwork> remove(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IIrrigationBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);
@@ -260,7 +260,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    public boolean isNotEmpty() {
+    protected boolean isNotEmpty() {
         return !providers.isEmpty() || !consumers.isEmpty() || !storages.isEmpty();
     }
 
@@ -280,7 +280,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    public void add(@NotNull IIrrigationBlockEntity entity) {
+    protected void add(@NotNull IIrrigationBlockEntity entity) {
         super.add(entity);
 
         switch (entity.getNetworkType()) {
@@ -295,7 +295,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    public void remove(@NotNull IIrrigationBlockEntity entity) {
+    protected void remove(@NotNull IIrrigationBlockEntity entity) {
         switch (entity.getNetworkType()) {
             case CONSUMER -> removeConsumer(entity);
             case PROVIDER -> removeProvider(entity);
