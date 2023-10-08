@@ -82,16 +82,21 @@ public class TopCompatibility {
 
     private static void addIrrigationInfo(IProbeInfo probeInfo, IIrrigationBlockEntity blockEntity) {
         switch (blockEntity.getNetworkType()) {
-            case PROVIDER -> probeInfo.horizontal().text("Producing: ").text(Integer.toString(blockEntity.getFlow())).text(" mb/t");
-            case CONSUMER -> probeInfo.horizontal().text("Consuming: ").text(Integer.toString(blockEntity.getFlow())).text(" mb/t");
+            case PROVIDER -> {
+                int perSec = Math.round(blockEntity.getFlow() * (20 / (float) YTechMod.CONFIGURATION.getValveFillPerNthTick()));
+                probeInfo.horizontal().text("Producing: ").text(Integer.toString(perSec)).text(" mb/s");
+            }
+            case CONSUMER -> {
+                int perSec = Math.round(blockEntity.getFlow() * (20 / (float) YTechMod.CONFIGURATION.getValveFillPerNthTick()));
+                probeInfo.horizontal().text("Consuming: ").text(Integer.toString(perSec)).text(" mb/s");
+            }
         }
 
         IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
 
         if (network != null) {
-            probeInfo.horizontal().text("Capacity: ").text(Integer.toString(network.getFluidHandler().getFluidAmount())).text("/")
+            probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getFluidHandler().getFluidAmount())).text("/")
                     .text(Integer.toString(network.getFluidHandler().getCapacity()));
-            probeInfo.horizontal().text("Rain Valid: ").text(Integer.toString(network.filledByRainCount())).text("/").text(Integer.toString(network.storageBlockCount()));
         }
     }
 
