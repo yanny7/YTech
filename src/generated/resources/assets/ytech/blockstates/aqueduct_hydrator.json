@@ -1,0 +1,44 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ytech:block/aqueduct_hydrator"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/aqueduct_hydrator_overlay"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/aqueduct_hydrator_overlay",
+        "y": 180
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/aqueduct_hydrator_overlay",
+        "y": 270
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/aqueduct_hydrator_overlay",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    }
+  ]
+}

@@ -1,7 +1,5 @@
 package com.yanny.ytech.configuration.block;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
@@ -11,7 +9,6 @@ import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -77,19 +74,6 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     private static final BooleanProperty NORTH_WEST = BooleanProperty.create("north_west");
     private static final BooleanProperty SOUTH_EAST = BooleanProperty.create("south_east");
     private static final BooleanProperty SOUTH_WEST = BooleanProperty.create("south_west");
-
-    public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class), (enumMap) -> {
-        enumMap.put(Direction.NORTH, NORTH);
-        enumMap.put(Direction.EAST, EAST);
-        enumMap.put(Direction.SOUTH, SOUTH);
-        enumMap.put(Direction.WEST, WEST);
-    }));
-    public static final Map<Direction, Integer> ANGLE_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class), (enumMap) -> {
-        enumMap.put(Direction.NORTH, 0);
-        enumMap.put(Direction.EAST, 90);
-        enumMap.put(Direction.SOUTH, 180);
-        enumMap.put(Direction.WEST, 270);
-    }));
 
     private final Map<BlockState, VoxelShape> shapesCache;
 
@@ -394,7 +378,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
     private static boolean hasSide(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BooleanProperty property) {
         BlockState blockState = level.getBlockState(pos);
-        boolean isIrrigation = blockState.getBlock() instanceof IrrigationBlock;
+        boolean isIrrigation = blockState.getBlock() instanceof AqueductBlock;
         return isIrrigation && blockState.hasProperty(property) && blockState.getValue(property);
     }
 
@@ -427,16 +411,5 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         }
 
         return shape;
-    }
-
-    private static boolean isValidForConnection(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull Direction direction) {
-        BlockPos neighborPos = pos.offset(direction.getNormal());
-        BlockState blockState = level.getBlockState(neighborPos);
-
-        if (blockState.getBlock() instanceof IrrigationBlock irrigationBlock) {
-            return irrigationBlock.getValidNeighbors(blockState, neighborPos).contains(pos);
-        }
-
-        return false;
     }
 }

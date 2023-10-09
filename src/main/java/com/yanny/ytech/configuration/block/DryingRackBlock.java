@@ -105,12 +105,6 @@ public class DryingRackBlock extends Block implements EntityBlock {
         }
     }
 
-    public static void createDryingRackTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
-        if (blockEntity instanceof DryingRackBlockEntity block) {
-            block.tick(level, pos, state, block);
-        }
-    }
-
     @SuppressWarnings("deprecation")
     @NotNull
     @Override
@@ -197,5 +191,11 @@ public class DryingRackBlock extends Block implements EntityBlock {
     public static TextureHolder[] getTexture(MaterialType material) {
         return List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("horizontal_rope"))).toArray(TextureHolder[]::new);
+    }
+
+    private static void createDryingRackTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
+        if (blockEntity instanceof DryingRackBlockEntity block) {
+            block.tick(level, pos, state, block);
+        }
     }
 }

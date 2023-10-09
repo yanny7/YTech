@@ -87,8 +87,9 @@ public class TopCompatibility {
                 probeInfo.horizontal().text("Producing: ").text(Integer.toString(perSec)).text(" mb/s");
             }
             case CONSUMER -> {
-                int perSec = Math.round(blockEntity.getFlow() * (20 / (float) YTechMod.CONFIGURATION.getValveFillPerNthTick()));
-                probeInfo.horizontal().text("Consuming: ").text(Integer.toString(perSec)).text(" mb/s");
+                if (blockEntity instanceof AqueductHydratorBlockEntity hydratorBlock && hydratorBlock.isHydrating()) {
+                    probeInfo.horizontal().text("Hydrating");
+                }
             }
         }
 

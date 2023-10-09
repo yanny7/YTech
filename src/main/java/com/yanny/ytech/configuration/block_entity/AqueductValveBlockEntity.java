@@ -84,7 +84,7 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     }
 
     private int calculateFlow() {
-        if (level != null) {
+        if (level != null && !level.isClientSide) {
             return getValidNeighbors().stream().anyMatch((pos) -> {
                 BlockState blockState = level.getBlockState(pos);
                 return blockState.getBlock() == Blocks.WATER || (blockState.hasProperty(WATERLOGGED) && blockState.getValue(WATERLOGGED));
