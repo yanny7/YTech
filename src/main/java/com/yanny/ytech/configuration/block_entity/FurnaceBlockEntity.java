@@ -27,7 +27,7 @@ public class FurnaceBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    protected @NotNull ContainerData createContainerData() {
+    public @NotNull ContainerData createContainerData() {
         return new SimpleContainerData(0);
     }
 }

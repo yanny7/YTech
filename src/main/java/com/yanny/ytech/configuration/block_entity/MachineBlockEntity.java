@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MachineBlockEntity extends BlockEntity implements MenuProvider {
+public abstract class MachineBlockEntity extends BlockEntity implements MenuProvider, IMenuBlockEntity {
     private static final String TAG_ITEMS = "items";
 
     @NotNull protected final MachineItemStackHandler itemStackHandler;
@@ -62,6 +62,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
         return itemStackHandler;
     }
 
+    @Override
     public int getDataSize() {
         return containerData.getCount();
     }
@@ -82,5 +83,5 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
 
     @NotNull abstract public MachineItemStackHandler createItemStackHandler();
 
-    @NotNull abstract protected ContainerData createContainerData();
+    @NotNull abstract public ContainerData createContainerData();
 }

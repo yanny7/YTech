@@ -1,17 +1,17 @@
 package com.yanny.ytech.configuration.screen;
 
-import com.yanny.ytech.configuration.container.MachineContainerMenu;
-import com.yanny.ytech.configuration.screen.components.MachineScreenHandler;
+import com.yanny.ytech.configuration.screen.components.AbstractScreenHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class MachineScreen<T extends MachineContainerMenu> extends AbstractContainerScreen<T> {
-    @NotNull protected final MachineScreenHandler<T> screenHandler;
+public abstract class AbstractScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
+    @NotNull protected final AbstractScreenHandler<T> screenHandler;
 
-    public MachineScreen(T container, Inventory inventory, Component title) {
+    public AbstractScreen(T container, Inventory inventory, Component title) {
         super(container, inventory, title);
         this.screenHandler = getScreenHandler();
     }
@@ -40,5 +40,5 @@ public abstract class MachineScreen<T extends MachineContainerMenu> extends Abst
         screenHandler.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
-    abstract MachineScreenHandler<T> getScreenHandler();
+    abstract AbstractScreenHandler<T> getScreenHandler();
 }

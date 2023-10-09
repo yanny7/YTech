@@ -1,6 +1,6 @@
 package com.yanny.ytech.configuration.container;
 
-import com.yanny.ytech.configuration.block_entity.MachineBlockEntity;
+import com.yanny.ytech.configuration.block_entity.IMenuBlockEntity;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.IBlockHolder;
 import com.yanny.ytech.registration.IMenuEntityBlockHolder;
@@ -30,10 +30,10 @@ public class Utils {
         }
     }
 
-    public static MachineBlockEntity getMachineBlockEntity(@NotNull Player player, @NotNull BlockPos pos) {
+    public static IMenuBlockEntity getMachineBlockEntity(@NotNull Player player, @NotNull BlockPos pos) {
         LevelAccessor level = player.level();
 
-        if (level.getBlockEntity(pos) instanceof MachineBlockEntity entity) {
+        if (level.getBlockEntity(pos) instanceof IMenuBlockEntity entity) {
             return entity;
         } else {
             throw new IllegalArgumentException("BlockEntity is not instanceof MachineBlockEntity");

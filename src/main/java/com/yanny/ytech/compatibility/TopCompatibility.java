@@ -27,7 +27,6 @@ public class TopCompatibility {
     }
 
     public static class GetTheOneProbe implements Function<ITheOneProbe, Void> {
-
         public static ITheOneProbe probe;
 
         @Nullable
@@ -89,6 +88,9 @@ public class TopCompatibility {
             case CONSUMER -> {
                 if (blockEntity instanceof AqueductHydratorBlockEntity hydratorBlock && hydratorBlock.isHydrating()) {
                     probeInfo.horizontal().text("Hydrating");
+                }
+                if (blockEntity instanceof AqueductFertilizerBlockEntity fertilizerBlock && fertilizerBlock.isFertilizing()) {
+                    probeInfo.horizontal().text("Fertilizing");
                 }
             }
         }

@@ -25,7 +25,7 @@ public class CrusherBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    protected @NotNull ContainerData createContainerData() {
+    public @NotNull ContainerData createContainerData() {
         return new SimpleContainerData(0);
     }
 }

@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "ytech:block/aqueduct_hydrator"
+        "model": "ytech:block/aqueduct_fertilizer"
       },
       "when": {
         "waterlogged": "false"
@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_hydrator_waterlogged"
+        "model": "ytech:block/aqueduct_fertilizer_waterlogged"
       },
       "when": {
         "waterlogged": "true"
@@ -18,7 +18,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_hydrator_overlay"
+        "model": "ytech:block/aqueduct_fertilizer_overlay"
       },
       "when": {
         "north": "true"
@@ -26,7 +26,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_hydrator_overlay",
+        "model": "ytech:block/aqueduct_fertilizer_overlay",
         "y": 180
       },
       "when": {
@@ -35,7 +35,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_hydrator_overlay",
+        "model": "ytech:block/aqueduct_fertilizer_overlay",
         "y": 270
       },
       "when": {
@@ -44,7 +44,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_hydrator_overlay",
+        "model": "ytech:block/aqueduct_fertilizer_overlay",
         "y": 90
       },
       "when": {

@@ -1,25 +1,39 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.*;
-import com.yanny.ytech.configuration.block_entity.AqueductHydratorBlockEntity;
+import com.yanny.ytech.configuration.block_entity.AqueductFertilizerBlockEntity;
+import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,19 +41,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class AqueductHydratorBlock extends AqueductConsumerBlock {
-    public AqueductHydratorBlock(Holder.SimpleBlockHolder holder) {
+public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IMenuBlock {
+    public AqueductFertilizerBlock(Holder.SimpleBlockHolder holder) {
         super(holder);
     }
 
-    @NotNull
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
+    public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
         if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new AqueductHydratorBlockEntity(blockHolder.entityType.get(), pos, blockState);
+            return new AqueductFertilizerBlockEntity(holder, blockHolder.entityType.get(), pos, blockState);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @NotNull
+    @Override
+    public InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult trace) {
+        if (!level.isClientSide) {
+            NetworkHooks.openScreen((ServerPlayer) player, getMenuProvider(state, level, pos), pos);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable
@@ -52,14 +75,23 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @NotNull
+    @Override
+    public AbstractContainerScreen<AbstractContainerMenu> getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
+        AbstractContainerScreen<?> screen = new AqueductFertilizerScreen(container, inventory, title);
+        //noinspection unchecked
+        return (AbstractContainerScreen<AbstractContainerMenu>)screen;
+    }
+
     @NotNull
     public static TextureHolder[] getTexture() {
         return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_hydrator")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_fertilizer")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_valve")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("invisible")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_hydrator_working"))
+                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_fertilizer_working"))
         ).toArray(TextureHolder[]::new);
     }
 
@@ -137,13 +169,16 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
 
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
-                .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.COPPER))
-                .define('S', MaterialItemType.PLATE.itemTag.get(MaterialType.COPPER))
+                .define('#', Registration.item(SimpleBlockType.AQUEDUCT_HYDRATOR))
+                .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.BRONZE))
+                .define('S', MaterialItemType.PLATE.itemTag.get(MaterialType.BRONZE))
+                .define('B', MaterialItemType.BOLT.itemTag.get(MaterialType.BRONZE))
                 .define('H', MaterialItemType.HAMMER.groupTag)
-                .pattern("#R#")
-                .pattern("SHS")
-                .pattern("#R#")
+                .define('F', MaterialItemType.FILE.groupTag)
+                .define('C', Tags.Items.CHESTS)
+                .pattern("HCF")
+                .pattern("S#S")
+                .pattern("RBR")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.TERRACOTTA_BRICKS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }

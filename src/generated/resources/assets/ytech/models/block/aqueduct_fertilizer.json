@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#0"
+        },
+        "east": {
+          "texture": "#2"
+        },
+        "north": {
+          "texture": "#2"
+        },
+        "south": {
+          "texture": "#2"
+        },
+        "up": {
+          "texture": "#0"
+        },
+        "west": {
+          "texture": "#2"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "0": "ytech:block/aqueduct_fertilizer",
+    "2": "ytech:block/terracotta_bricks",
+    "particle": "ytech:block/aqueduct_fertilizer"
+  }
+}

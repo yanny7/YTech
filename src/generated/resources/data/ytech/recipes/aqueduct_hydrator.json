@@ -9,10 +9,10 @@
       "tag": "ytech:hammers"
     },
     "R": {
-      "tag": "ytech:rods"
+      "tag": "ytech:rods/copper"
     },
     "S": {
-      "tag": "ytech:plates"
+      "tag": "ytech:plates/copper"
     }
   },
   "pattern": [

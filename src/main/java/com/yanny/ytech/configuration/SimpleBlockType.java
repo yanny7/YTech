@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.block.*;
+import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
 import com.yanny.ytech.registration.Holder;
@@ -169,13 +170,24 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     AQUEDUCT_HYDRATOR(HolderType.ENTITY_BLOCK, "aqueduct_hydrator", "Aqueduct Hydrator",
             ItemTags.create(Utils.modLoc("aqueduct_hydrators")),
             BlockTags.create(Utils.modLoc("aqueduct_hydrators")),
-            holder -> new AqueductHydratorBlock(),
+            AqueductHydratorBlock::new,
             AqueductHydratorBlock::getTexture,
             AqueductHydratorBlock::registerModel,
             ILootable::dropsSelfProvider,
             AqueductHydratorBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag),
+    AQUEDUCT_FERTILIZER(HolderType.MENU_BLOCK, "aqueduct_fertilizer", "Aqueduct Fertilizer",
+            ItemTags.create(Utils.modLoc("aqueduct_fertilizers")),
+            BlockTags.create(Utils.modLoc("aqueduct_fertilizers")),
+            AqueductFertilizerBlock::new,
+            AqueductFertilizerBlock::getTexture,
+            AqueductFertilizerBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            AqueductFertilizerBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerStonePickaxeBlockTag,
+            (holder, windowId, inv, pos, stack, data) -> new AqueductFertilizerMenu(holder, windowId, inv.player, pos, stack, data)),
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),

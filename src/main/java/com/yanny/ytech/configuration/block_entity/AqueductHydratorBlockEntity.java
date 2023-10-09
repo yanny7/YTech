@@ -1,9 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.block.AqueductHydratorBlock;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
-import com.yanny.ytech.network.irrigation.NetworkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -18,49 +16,19 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class AqueductHydratorBlockEntity extends IrrigationBlockEntity {
+public class AqueductHydratorBlockEntity extends AqueductConsumerBlockEntity {
     private static final String TAG_TIMER = "timer";
 
-    private int timer = 0;
+    protected int timer = 0;
 
     public AqueductHydratorBlockEntity(@NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
-        super(entityType, pos, blockState, ((AqueductHydratorBlock) blockState.getBlock()).getValidNeighbors(blockState, pos));
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
+        super(entityType, pos, blockState);
     }
 
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         timer = tag.getInt(TAG_TIMER);
-    }
-
-    @Override
-    public int getFlow() {
-        return 0;
-    }
-
-    @Override
-    public boolean validForRainFilling() {
-        return false;
-    }
-
-    @Override
-    public @NotNull NetworkType getNetworkType() {
-        return NetworkType.CONSUMER;
-    }
-
-    public void neighborChanged() {
-        if (level != null && !level.isClientSide) {
-            YTechMod.IRRIGATION_PROPAGATOR.server().changed(this);
-        }
-    }
-
-    public boolean isHydrating() {
-        return getBlockState().getValue(BlockStateProperties.WATERLOGGED);
     }
 
     public void tick(@NotNull ServerLevel level) {
@@ -96,7 +64,7 @@ public class AqueductHydratorBlockEntity extends IrrigationBlockEntity {
         tag.putInt(TAG_TIMER, timer);
     }
 
-    private boolean drainLiquid(@NotNull ServerLevel level) {
+    protected boolean drainLiquid(@NotNull ServerLevel level) {
         IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(this);
 
         if (network != null) {

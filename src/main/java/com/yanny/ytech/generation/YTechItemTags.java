@@ -2,6 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.GenericItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -10,6 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,5 +28,7 @@ class YTechItemTags extends ItemTagsProvider {
         GeneralUtils.sortedStreamMap(HOLDER.simpleBlocks(), Map.Entry.comparingByKey()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
         GeneralUtils.sortedStreamMapOfMap(HOLDER.items(), Utils.itemComparator()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
         GeneralUtils.sortedStreamMapOfMap(HOLDER.blocks(), Utils.blockComparator()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
+
+        Arrays.stream(GenericItemTags.values()).forEach((type) -> type.registerTags(this));
     }
 }

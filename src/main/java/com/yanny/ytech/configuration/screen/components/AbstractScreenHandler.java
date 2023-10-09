@@ -2,16 +2,16 @@ package com.yanny.ytech.configuration.screen.components;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.container.MachineContainerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class MachineScreenHandler<T extends MachineContainerMenu> {
+public class AbstractScreenHandler<T extends AbstractContainerMenu> {
     private static final ResourceLocation GUI = Utils.modLoc("textures/gui/machine.png");
 
     @NotNull private final MachineItemStackHandler itemStackHandler;
@@ -21,7 +21,7 @@ public class MachineScreenHandler<T extends MachineContainerMenu> {
     private int imageWidth;
     private int imageHeight;
 
-    private MachineScreenHandler(@NotNull MachineItemStackHandler itemStackHandler, @NotNull Set<IComponent> components) {
+    private AbstractScreenHandler(@NotNull MachineItemStackHandler itemStackHandler, @NotNull Set<IComponent> components) {
         this.itemStackHandler = itemStackHandler;
         this.components = components;
     }
@@ -47,12 +47,12 @@ public class MachineScreenHandler<T extends MachineContainerMenu> {
         components.forEach(component -> component.renderTooltip(guiGraphics, leftPos, topPos, mouseX, mouseY));
     }
 
-    public static class Builder<T extends MachineContainerMenu> {
+    public static class Builder<T extends AbstractContainerMenu> {
         @NotNull final MachineItemStackHandler itemStackHandler;
         @NotNull final Set<IComponent> components = new LinkedHashSet<>();
 
-        public Builder(@NotNull T menu) {
-            itemStackHandler = menu.getBlockEntity().getItemStackHandler();
+        public Builder(@NotNull MachineItemStackHandler itemStackHandler) {
+            this.itemStackHandler = itemStackHandler;
         }
 
         public Builder<T> addComponent(@NotNull IComponent component) {
@@ -60,8 +60,8 @@ public class MachineScreenHandler<T extends MachineContainerMenu> {
             return this;
         }
 
-        public MachineScreenHandler<T> build() {
-            return new MachineScreenHandler<>(itemStackHandler, components);
+        public AbstractScreenHandler<T> build() {
+            return new AbstractScreenHandler<>(itemStackHandler, components);
         }
     }
 }

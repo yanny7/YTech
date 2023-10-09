@@ -168,6 +168,32 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    @Override
+    public @NotNull ContainerData createContainerData() {
+        return new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> Math.round(leftBurningTime / (float)burningTime * 100);
+                    case 1 -> getMaxTemperature();
+                    case 2 -> temperature;
+                    case 3 -> leftSmelting > 0 ? Math.round((smeltingTime - leftSmelting) / (float)smeltingTime * 100) : 0;
+                    case 4 -> hasActiveRecipe() ? 1 : 0;
+                    case 5 -> (getBlockState().getValue(BlockStateProperties.POWERED) ? 1 : 0);
+                    default -> throw new IllegalStateException("Invalid index");
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {}
+
+            @Override
+            public int getCount() {
+                return 6;
+            }
+        };
+    }
+
     public void onRemove() {
         if (level != null && level.getBlockEntity(worldPosition.above()) instanceof BrickChimneyBlockEntity chimney) {
             chimney.onRemove();
@@ -214,32 +240,6 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
         } else {
             tag.putInt(TAG_NR_CHIMNEY, nrChimney);
         }
-    }
-
-    @Override
-    protected @NotNull ContainerData createContainerData() {
-        return new ContainerData() {
-            @Override
-            public int get(int index) {
-                return switch (index) {
-                    case 0 -> Math.round(leftBurningTime / (float)burningTime * 100);
-                    case 1 -> getMaxTemperature();
-                    case 2 -> temperature;
-                    case 3 -> leftSmelting > 0 ? Math.round((smeltingTime - leftSmelting) / (float)smeltingTime * 100) : 0;
-                    case 4 -> hasActiveRecipe() ? 1 : 0;
-                    case 5 -> (getBlockState().getValue(BlockStateProperties.POWERED) ? 1 : 0);
-                    default -> throw new IllegalStateException("Invalid index");
-                };
-            }
-
-            @Override
-            public void set(int index, int value) {}
-
-            @Override
-            public int getCount() {
-                return 6;
-            }
-        };
     }
 
     protected abstract boolean hasItemsInInput();
