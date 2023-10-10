@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "tag": "ytech:terracotta_bricks"
+  },
+  "result": "ytech:terracotta_brick_stairs"
+}

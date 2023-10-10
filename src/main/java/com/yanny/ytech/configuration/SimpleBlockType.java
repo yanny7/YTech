@@ -466,7 +466,9 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 .pattern("BBB")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 2);
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 2)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_stonecutting"));
     }
 
     private static void registerTerracottaBrickStairsRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
@@ -477,7 +479,9 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 .pattern("BBB")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get());
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get())
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_stonecutting"));
     }
 
     private static void registerSlabLootTable(Holder.SimpleBlockHolder holder, BlockLootSubProvider provider) {
