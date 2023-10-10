@@ -36,7 +36,7 @@
   ],
   "textures": {
     "2": "ytech:block/terracotta_bricks",
-    "4": "ytech:block/aqueduct_hydrator_working",
-    "particle": "ytech:block/aqueduct_hydrator"
+    "4": "ytech:block/aqueduct/aqueduct_hydrator_working",
+    "particle": "ytech:block/aqueduct/aqueduct_hydrator"
   }
 }

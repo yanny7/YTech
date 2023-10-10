@@ -36,7 +36,7 @@
   ],
   "render_type": "minecraft:cutout",
   "textures": {
-    "1": "ytech:block/aqueduct_valve",
+    "1": "ytech:block/aqueduct/aqueduct_valve",
     "3": "ytech:block/invisible"
   }
 }

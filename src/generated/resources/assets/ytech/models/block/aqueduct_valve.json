@@ -2,11 +2,11 @@
   "parent": "minecraft:block/cube",
   "textures": {
     "down": "ytech:block/terracotta_bricks",
-    "east": "ytech:block/aqueduct_valve",
+    "east": "ytech:block/aqueduct/aqueduct_valve",
     "north": "ytech:block/terracotta_bricks",
-    "particle": "ytech:block/aqueduct_valve",
+    "particle": "ytech:block/aqueduct/aqueduct_valve",
     "south": "ytech:block/terracotta_bricks",
     "up": "ytech:block/terracotta_bricks",
-    "west": "ytech:block/aqueduct_valve"
+    "west": "ytech:block/aqueduct/aqueduct_valve"
   }
 }

@@ -87,11 +87,11 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
     @NotNull
     public static TextureHolder[] getTexture() {
         return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_fertilizer")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_valve")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_fertilizer")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_valve")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("invisible")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_fertilizer_working"))
+                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_fertilizer_working"))
         ).toArray(TextureHolder[]::new);
     }
 

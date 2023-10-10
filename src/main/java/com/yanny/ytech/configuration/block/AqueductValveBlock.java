@@ -110,7 +110,7 @@ public class AqueductValveBlock extends IrrigationBlock {
     @NotNull
     public static TextureHolder[] getTexture() {
         return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct_valve")),
+                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_valve")),
                 new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks"))
         ).toArray(TextureHolder[]::new);
     }

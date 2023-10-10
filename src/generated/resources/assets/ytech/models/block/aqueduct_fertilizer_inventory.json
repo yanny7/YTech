@@ -35,8 +35,8 @@
     }
   ],
   "textures": {
-    "0": "ytech:block/aqueduct_fertilizer",
-    "1": "ytech:block/aqueduct_valve",
-    "particle": "ytech:block/aqueduct_fertilizer"
+    "0": "ytech:block/aqueduct/aqueduct_fertilizer",
+    "1": "ytech:block/aqueduct/aqueduct_valve",
+    "particle": "ytech:block/aqueduct/aqueduct_fertilizer"
   }
 }

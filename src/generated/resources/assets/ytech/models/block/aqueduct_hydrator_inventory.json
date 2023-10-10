@@ -35,8 +35,8 @@
     }
   ],
   "textures": {
-    "0": "ytech:block/aqueduct_hydrator",
-    "1": "ytech:block/aqueduct_valve",
-    "particle": "ytech:block/aqueduct_hydrator"
+    "0": "ytech:block/aqueduct/aqueduct_hydrator",
+    "1": "ytech:block/aqueduct/aqueduct_valve",
+    "particle": "ytech:block/aqueduct/aqueduct_hydrator"
   }
 }
