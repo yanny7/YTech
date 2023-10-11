@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -77,6 +78,8 @@ public abstract class IrrigationBlockEntity extends BlockEntity implements IIrri
         super.onLoad();
 
         if (level != null && !level.isClientSide) {
+            onLevelSet((ServerLevel) level);
+
             if (networkId < 0) {
                 YTechMod.IRRIGATION_PROPAGATOR.server().add(this);
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
@@ -103,6 +106,10 @@ public abstract class IrrigationBlockEntity extends BlockEntity implements IIrri
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    protected void onLevelSet(@NotNull ServerLevel level) {
+
     }
 
     @Override

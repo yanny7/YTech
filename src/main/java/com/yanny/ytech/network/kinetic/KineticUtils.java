@@ -11,6 +11,7 @@ import com.yanny.ytech.network.generic.message.NetworkRemovedMessage;
 import com.yanny.ytech.network.generic.server.ServerPropagator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -18,6 +19,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -82,12 +84,12 @@ public class KineticUtils {
 
     private record Factory(@NotNull SimpleChannel channel) implements NetworkFactory<KineticServerNetwork, IKineticBlockEntity> {
         @Override
-        public @NotNull KineticServerNetwork createNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+        public @NotNull KineticServerNetwork createNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
             return new KineticServerNetwork(tag, networkId, onChange, onRemove);
         }
 
         @Override
-        public @NotNull KineticServerNetwork createNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+        public @NotNull KineticServerNetwork createNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
             return new KineticServerNetwork(networkId, onChange, onRemove);
         }
 

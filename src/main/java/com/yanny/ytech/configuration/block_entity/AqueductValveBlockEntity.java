@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.block.AqueductValveBlock;
 import com.yanny.ytech.network.irrigation.NetworkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,15 +23,14 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-        flow = calculateFlow();
-    }
-
-    @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         flow = tag.getInt(TAG_FLOW);
+    }
+
+    @Override
+    protected void onLevelSet(@NotNull ServerLevel level) {
+        flow = calculateFlow(level);
     }
 
     @NotNull
@@ -71,7 +71,7 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
         if (level != null && !level.isClientSide) {
             int oldValue = flow;
 
-            flow = calculateFlow();
+            flow = calculateFlow((ServerLevel) level);
 
             if (oldValue != flow) {
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
@@ -81,14 +81,10 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
         }
     }
 
-    private int calculateFlow() {
-        if (level != null && !level.isClientSide) {
-            return getValidNeighbors().stream().anyMatch((pos) -> {
-                BlockState blockState = level.getBlockState(pos);
-                return blockState.getBlock() == Blocks.WATER && blockState.getFluidState().isSource();
-            }) ? YTechMod.CONFIGURATION.getValveFillAmount() : 0;
-        }
-
-        return 0;
+    private int calculateFlow(@NotNull ServerLevel level) {
+        return getValidNeighbors().stream().anyMatch((pos) -> {
+            BlockState blockState = level.getBlockState(pos);
+            return blockState.getBlock() == Blocks.WATER && blockState.getFluidState().isSource();
+        }) ? YTechMod.CONFIGURATION.getValveFillAmount() : 0;
     }
 }

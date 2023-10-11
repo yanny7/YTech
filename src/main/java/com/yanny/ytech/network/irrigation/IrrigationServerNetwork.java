@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -40,13 +42,13 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     @NotNull private final FluidTank fluidHandler;
     private int inflow = 0;
 
-    public IrrigationServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+    public IrrigationServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
         super(networkId, onChange, onRemove);
         fluidHandler = createFluidTank(networkId);
         load(tag);
     }
 
-    public IrrigationServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+    public IrrigationServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
         super(networkId, onChange, onRemove);
         fluidHandler = createFluidTank(networkId);
     }
@@ -69,6 +71,8 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     @Override
     protected void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+
         if (tag.contains(TAG_PROVIDERS) && tag.getTagType(TAG_PROVIDERS) != 0) {
             tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) ->
                     providers.put(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_FLOW)));
@@ -94,7 +98,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     @NotNull
     @Override
     protected CompoundTag save() {
-        CompoundTag tag = new CompoundTag();
+        CompoundTag tag = super.save();
         ListTag providersTag = new ListTag();
         ListTag consumersTag = new ListTag();
         ListTag storagesTag = new ListTag();
@@ -135,21 +139,21 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
             providers.put(pos, value);
 
             if (level.getBlockEntity(pos) instanceof IIrrigationBlockEntity irrigationBlockEntity) {
-                irrigationBlockEntity.setNetworkId(getNetworkId());
+                addBlockEntity(irrigationBlockEntity);
             }
         });
         network.consumers.forEach((pos) -> {
             consumers.add(pos);
 
             if (level.getBlockEntity(pos) instanceof IIrrigationBlockEntity irrigationBlockEntity) {
-                irrigationBlockEntity.setNetworkId(getNetworkId());
+                addBlockEntity(irrigationBlockEntity);
             }
         });
         network.storages.forEach((pos) -> {
             storages.add(pos);
 
             if (level.getBlockEntity(pos) instanceof IIrrigationBlockEntity irrigationBlockEntity) {
-                irrigationBlockEntity.setNetworkId(getNetworkId());
+                addBlockEntity(irrigationBlockEntity);
             }
         });
         filledByRain.addAll(network.filledByRain);
@@ -198,7 +202,8 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     @NotNull
     @Override
-    protected List<IrrigationServerNetwork> removeBlockEntity(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IIrrigationBlockEntity blockEntity) {
+    protected List<IrrigationServerNetwork> removeBlockEntity(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull BiConsumer<Integer, ChunkPos> onRemove,
+                                                              @NotNull IIrrigationBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Set<BlockPos> consumerBlocks = new HashSet<>(consumers);
@@ -345,14 +350,12 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         BlockPos blockPos = entity.getBlockPos();
         int value = providers.remove(blockPos);
 
-        entity.setNetworkId(-1);
         inflow -= value;
     }
 
     private void removeConsumer(@NotNull IIrrigationBlockEntity entity) {
         BlockPos blockPos = entity.getBlockPos();
         consumers.remove(blockPos);
-        entity.setNetworkId(-1);
     }
 
     private void removeStorage(@NotNull IIrrigationBlockEntity entity) {

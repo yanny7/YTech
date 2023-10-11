@@ -2,12 +2,11 @@ package com.yanny.ytech.network.generic;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +24,11 @@ public class NetworkUtils {
     }
 
     @NotNull
+    public static ChunkPos loadChunkPos(@NotNull CompoundTag tag) {
+        return new ChunkPos(tag.getInt("x"), tag.getInt("z"));
+    }
+
+    @NotNull
     public static CompoundTag saveBlockPos(@NotNull BlockPos pos) {
         CompoundTag tag = new CompoundTag();
         tag.putInt("x", pos.getX());
@@ -33,9 +37,17 @@ public class NetworkUtils {
         return tag;
     }
 
-    @Nullable
-    public static ResourceLocation getLevelId(@NotNull LevelAccessor level) {
-        return level.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getKey(level.dimensionType());
+    @NotNull
+    public static CompoundTag saveChunkPos(@NotNull ChunkPos pos) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("x", pos.x);
+        tag.putInt("z", pos.z);
+        return tag;
+    }
+
+    @NotNull
+    public static ResourceLocation getLevelId(@NotNull Level level) {
+        return level.dimension().location();
     }
 
     @NotNull

@@ -6,6 +6,7 @@ import com.yanny.ytech.network.generic.server.ServerNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,12 +36,12 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
     private int stressCapacity;
     private int stress;
 
-    public KineticServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+    public KineticServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
         super(networkId, onChange, onRemove);
         load(tag);
     }
 
-    public KineticServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
+    public KineticServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
         super(networkId, onChange, onRemove);
     }
 
@@ -68,6 +70,8 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
 
     @Override
     protected void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+
         if (tag.contains(TAG_PROVIDERS) && tag.getTagType(TAG_PROVIDERS) != 0) {
             tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) ->
                     providers.put(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_STRESS)));
@@ -97,7 +101,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
 
     @Override
     protected @NotNull CompoundTag save() {
-        CompoundTag tag = new CompoundTag();
+        CompoundTag tag = super.save();
         ListTag providersTag = new ListTag();
         ListTag consumersTag = new ListTag();
         ListTag dirProvidersTag = new ListTag();
@@ -204,7 +208,7 @@ public class KineticServerNetwork extends ServerNetwork<KineticServerNetwork, IK
 
     @Override
     @NotNull
-    protected List<KineticServerNetwork> removeBlockEntity(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull Consumer<Integer> onRemove, @NotNull IKineticBlockEntity blockEntity) {
+    protected List<KineticServerNetwork> removeBlockEntity(@NotNull Function<Integer, List<Integer>> idsGetter, @NotNull BiConsumer<Integer, ChunkPos> onRemove, @NotNull IKineticBlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Map<BlockPos, Integer> consumerBlocks = new HashMap<>(consumers);

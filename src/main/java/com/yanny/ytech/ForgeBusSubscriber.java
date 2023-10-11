@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -83,6 +84,12 @@ public class ForgeBusSubscriber {
             YTechMod.KINETIC_PROPAGATOR.server().tick(level);
             YTechMod.IRRIGATION_PROPAGATOR.server().tick(level);
         }
+    }
+
+    @SubscribeEvent
+    public static void onChunkWatch(@NotNull ChunkWatchEvent.Watch event) {
+        YTechMod.KINETIC_PROPAGATOR.server().onChunkWatch(event.getLevel(), event.getPlayer(), event.getChunk());
+        YTechMod.IRRIGATION_PROPAGATOR.server().onChunkWatch(event.getLevel(), event.getPlayer(), event.getChunk());
     }
 
     @SubscribeEvent

@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +34,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         if (blockEntity.getLevel() instanceof ServerLevel level) {
             levelMap.get(NetworkUtils.getLevelId(level)).add(blockEntity);
         } else {
-            LOGGER.warn("[{}] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
+            LOGGER.warn("[{}][add] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
         }
     }
 
@@ -41,7 +42,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         if (blockEntity.getLevel() instanceof ServerLevel level) {
             levelMap.get(NetworkUtils.getLevelId(level)).update(blockEntity);
         } else {
-            LOGGER.warn("[{}] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
+            LOGGER.warn("[{}][changed] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
         }
     }
 
@@ -49,29 +50,30 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         if (blockEntity.getLevel() instanceof ServerLevel level) {
             levelMap.get(NetworkUtils.getLevelId(level)).remove(blockEntity);
         } else {
-            LOGGER.warn("[{}] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
+            LOGGER.warn("[{}][remove] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
         }
     }
 
     public void onLevelLoad(@NotNull ServerLevel level) {
         ResourceLocation id = NetworkUtils.getLevelId(level);
 
-        LOGGER.debug("[{}] Preparing propagators for {}", networkName, id);
-        levelMap.put(id, level.getDataStorage().computeIfAbsent((tag) -> new ServerLevelData<>(tag, networkFactory, networkName),
-                () -> new ServerLevelData<>(networkFactory, networkName), YTechMod.MOD_ID + "_" + networkName));
-        LOGGER.debug("[{}] Prepared propagators for {}", networkName, id);
+        LOGGER.debug("[{}][onLevelLoad] Preparing propagators for {}", networkName, id);
+        levelMap.put(id, level.getDataStorage().computeIfAbsent((tag) -> new ServerLevelData<>(tag, id, level.getServer(), networkFactory, networkName),
+                () -> new ServerLevelData<>(id, level.getServer(), networkFactory, networkName), YTechMod.MOD_ID + "_" + networkName));
+        LOGGER.debug("[{}][onLevelLoad] Prepared propagators for {}", networkName, id);
     }
 
     public void onLevelUnload(@NotNull ServerLevel level) {
         ResourceLocation id = NetworkUtils.getLevelId(level);
 
-        LOGGER.debug("[{}] Removing propagator for {}", networkName, id);
+        LOGGER.debug("[{}][onLevelUnload] Removing propagator for {}", networkName, id);
         levelMap.remove(id);
-        LOGGER.debug("[{}] Removed propagator for {}", networkName, id);
+        LOGGER.debug("[{}][onLevelUnload] Removed propagator for {}", networkName, id);
     }
 
     public void onPlayerLogIn(@NotNull Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
+            LOGGER.debug("[{}][onPlayerLogIn] Connecting player {}", networkName, serverPlayer);
             networkFactory.sendLevelSync(PacketDistributor.PLAYER.with(() -> serverPlayer), levelMap.get(NetworkUtils.getLevelId(serverPlayer.level())).getNetworks());
         }
     }
@@ -84,11 +86,11 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
             if (levelData != null) {
                 return levelData.getNetwork(blockEntity);
             } else {
-                LOGGER.warn("[{}] No " + networkName + " network for level {}", networkName, level);
+                LOGGER.warn("[{}][getNetwork] No " + networkName + " network for level {}", networkName, level);
                 return null;
             }
         } else {
-            LOGGER.warn("[{}] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
+            LOGGER.warn("[{}][getNetwork] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
             return null;
         }
     }
@@ -100,7 +102,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         if (serverLevelData != null) {
             return serverLevelData.getNetworks();
         } else {
-            LOGGER.warn("[{}] No networks defined for level {}", networkName, level);
+            LOGGER.warn("[{}][getNetworks] No networks defined for level {}", networkName, level);
             return Map.of();
         }
     }
@@ -109,9 +111,21 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         ServerLevelData<N, O> serverLevelData = levelMap.get(NetworkUtils.getLevelId(level));
 
         if (serverLevelData != null) {
-            serverLevelData.tick();
+            serverLevelData.tick(level.getChunkSource());
         } else {
-            LOGGER.warn("[{}] No networks defined for level {}", networkName, level);
+            LOGGER.warn("[{}][tick] No networks defined for level {}", networkName, level);
+        }
+    }
+
+    public void onChunkWatch(@NotNull ServerLevel level, @NotNull ServerPlayer player, @NotNull LevelChunk chunk) {
+        ServerLevelData<N, O> serverLevelData = levelMap.get(NetworkUtils.getLevelId(level));
+
+        if (serverLevelData != null) {
+            serverLevelData.getNetworks().values().stream()
+                    .filter((network) -> network.getChunks().contains(chunk.getPos()))
+                    .forEach((network) -> networkFactory.sendUpdated(PacketDistributor.PLAYER.with(() -> player), network));
+        } else {
+            LOGGER.warn("[{}][onChunkWatch] No networks defined for level {}", networkName, level);
         }
     }
 }
