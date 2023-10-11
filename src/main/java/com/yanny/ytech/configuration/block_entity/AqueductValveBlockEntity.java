@@ -12,8 +12,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
-
 public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     private static final String TAG_FLOW = "flow";
 
@@ -87,7 +85,7 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
         if (level != null && !level.isClientSide) {
             return getValidNeighbors().stream().anyMatch((pos) -> {
                 BlockState blockState = level.getBlockState(pos);
-                return blockState.getBlock() == Blocks.WATER || (blockState.hasProperty(WATERLOGGED) && blockState.getValue(WATERLOGGED));
+                return blockState.getBlock() == Blocks.WATER && blockState.getFluidState().isSource();
             }) ? YTechMod.CONFIGURATION.getValveFillAmount() : 0;
         }
 
