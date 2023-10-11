@@ -148,7 +148,7 @@ public class AqueductFertilizerBlockEntity extends AqueductHydratorBlockEntity i
     }
 
     public boolean isFertilizing() {
-        return fertilizer > 0;
+        return fertilizer > 0 && isHydrating();
     }
 
     @Override
