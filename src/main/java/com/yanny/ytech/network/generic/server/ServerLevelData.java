@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockEntity> extends SavedData {
+public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBlockEntity> extends SavedData {
     protected static final String TAG_NETWORKS = "networks";
     protected static final String TAG_NETWORK = "network";
     protected static final String TAG_NETWORK_ID = "networkId";
@@ -30,13 +30,13 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
     @NotNull private final NetworkFactory<T, O> networkFactory;
     @NotNull private final String networkName;
 
-    ServerLevel(@NotNull CompoundTag tag, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
+    ServerLevelData(@NotNull CompoundTag tag, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
         this.networkName = networkName;
         this.networkFactory = networkFactory;
         load(tag);
     }
 
-    ServerLevel(@NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
+    ServerLevelData(@NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
         this.networkFactory = networkFactory;
         this.networkName = networkName;
     }
@@ -246,15 +246,5 @@ public class ServerLevel<T extends ServerNetwork<T, O>, O extends INetworkBlockE
 
     private static <T> Predicate<T> distinctByKey(@NotNull Function<? super T, ?> keyExtractor) {
         return t -> ConcurrentHashMap.newKeySet().add(keyExtractor.apply(t));
-    }
-
-    /**
-     * FIXME REMOVE - Testing
-     */
-    @Override
-    public void setDirty() {
-        super.setDirty();
-        LOGGER.warn("[{}] Updated network. Total: {}", networkName, networkMap.size());
-        networkMap.forEach((i, n) -> LOGGER.info("[{}]: {}", networkName, n.toString()));
     }
 }

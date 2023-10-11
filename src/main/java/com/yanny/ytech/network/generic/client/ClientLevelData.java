@@ -6,14 +6,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ClientLevel<N extends ClientNetwork, O extends INetworkBlockEntity> {
+public class ClientLevelData<N extends ClientNetwork, O extends INetworkBlockEntity> {
     @NotNull private final ConcurrentHashMap<Integer, N> networkMap;
 
-    public ClientLevel(@NotNull Map<Integer, N> networkMap) {
+    public ClientLevelData(@NotNull Map<Integer, N> networkMap) {
         this.networkMap = new ConcurrentHashMap<>(networkMap);
     }
 
-    public ClientLevel() {
+    public ClientLevelData() {
         networkMap = new ConcurrentHashMap<>();
     }
 
