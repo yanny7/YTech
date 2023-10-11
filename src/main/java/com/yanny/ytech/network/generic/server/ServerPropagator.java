@@ -104,4 +104,14 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
             return Map.of();
         }
     }
+
+    public void tick(@NotNull ServerLevel level) {
+        ServerLevelData<N, O> serverLevelData = levelMap.get(NetworkUtils.getLevelId(level));
+
+        if (serverLevelData != null) {
+            serverLevelData.tick();
+        } else {
+            LOGGER.warn("[{}] No networks defined for level {}", networkName, level);
+        }
+    }
 }

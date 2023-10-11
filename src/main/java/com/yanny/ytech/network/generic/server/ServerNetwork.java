@@ -14,6 +14,7 @@ import java.util.function.Function;
 public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INetworkBlockEntity> extends CommonNetwork {
     @NotNull protected final Consumer<Integer> onChange;
     @NotNull protected final Consumer<Integer> onRemove;
+    private boolean dirty = false;
 
     public ServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull Consumer<Integer> onRemove) {
         super(networkId);
@@ -55,5 +56,17 @@ public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INe
 
     protected boolean canConnect(@NotNull O blockEntity) {
         return blockEntity.getValidNeighbors().stream().anyMatch(pos -> isValidPosition(blockEntity, pos));
+    }
+
+    protected void setClean() {
+        dirty = false;
+    }
+
+    protected void setDirty() {
+        dirty = true;
+    }
+
+    protected boolean isDirty() {
+        return dirty;
     }
 }

@@ -124,7 +124,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
 
         resultNetwork.addBlockEntity(blockEntity);
         setDirty();
-        networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), resultNetwork);
+        resultNetwork.setDirty();
     }
 
     public void update(@NotNull O blockEntity) {
@@ -139,12 +139,12 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
             if (network.canAttach(blockEntity)) {
                 if (network.updateBlockEntity(blockEntity)) {
                     setDirty();
-                    networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
+                    network.setDirty();
                 }
             } else {
                 List<T> networks = network.removeBlockEntity(this::getUniqueIds, this::onRemove, blockEntity);
                 networkMap.putAll(networks.stream().collect(Collectors.toMap(ServerNetwork::getNetworkId, (n) -> {
-                    networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), n);
+                    n.setDirty();
                     return n;
                 })));
                 level.destroyBlock(blockEntity.getBlockPos(), true);
@@ -152,7 +152,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                 setDirty();
 
                 if (network.isNotEmpty()) {
-                    networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
+                    network.setDirty();
                 }
             }
         } else {
@@ -165,19 +165,24 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
 
         if (network != null) {
             List<T> networks = network.removeBlockEntity(this::getUniqueIds, this::onRemove, blockEntity);
-            networkMap.putAll(
-                    networks.stream()
-                            .peek((n) -> networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), n)).
-                            collect(Collectors.toMap(ServerNetwork::getNetworkId, n -> n))
-            );
+            networkMap.putAll(networks.stream().peek(ServerNetwork::setDirty).collect(Collectors.toMap(ServerNetwork::getNetworkId, n -> n)));
             setDirty();
 
             if (network.isNotEmpty()) {
-                networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
+                network.setDirty();;
             }
         } else {
             LOGGER.warn("[{}] REMOVE: Can't get network for block {} at {}", networkName, blockEntity, blockEntity.getBlockPos());
         }
+    }
+
+    public void tick() {
+        networkMap.values().forEach((network) -> {
+            if (network.isDirty()) {
+                networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), network);
+                network.setClean();
+            }
+        });
     }
 
     @NotNull
@@ -190,7 +195,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
     }
 
     private void onChange(int networkId) {
-        networkFactory.sendUpdated(PacketDistributor.ALL.noArg(), networkMap.get(networkId));
+        networkMap.get(networkId).setDirty();
         setDirty();
     }
 

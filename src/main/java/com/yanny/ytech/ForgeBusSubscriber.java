@@ -78,6 +78,11 @@ public class ForgeBusSubscriber {
         if (event.phase == TickEvent.Phase.START && event.side == LogicalSide.SERVER && event.level instanceof ServerLevel level) {
             YTechMod.IRRIGATION_PROPAGATOR.server().getNetworks(level).values().forEach((network) -> network.tick((ServerLevel) event.level));
         }
+
+        if (event.phase == TickEvent.Phase.END && event.side == LogicalSide.SERVER && event.level instanceof ServerLevel level) {
+            YTechMod.KINETIC_PROPAGATOR.server().tick(level);
+            YTechMod.IRRIGATION_PROPAGATOR.server().tick(level);
+        }
     }
 
     @SubscribeEvent
