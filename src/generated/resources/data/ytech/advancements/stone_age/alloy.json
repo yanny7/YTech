@@ -1,0 +1,36 @@
+{
+  "parent": "ytech:stone_age/copper",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:primitive_alloy_smelters"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.stone_age.description.alloy"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:primitive_alloy_smelter"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.stone_age.title.alloy"
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

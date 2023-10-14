@@ -1,0 +1,36 @@
+{
+  "parent": "ytech:stone_age/first_steps",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:antlers"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.stone_age.description.run_forest_run"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:antler"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.stone_age.title.run_forest_run"
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,36 @@
+{
+  "parent": "ytech:stone_age/first_steps",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:grass_fibers"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.stone_age.description.grass_hunt"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:grass_fibers"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.stone_age.title.grass_hunt"
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

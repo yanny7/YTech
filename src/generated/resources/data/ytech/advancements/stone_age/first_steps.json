@@ -1,0 +1,37 @@
+{
+  "parent": "ytech:stone_age/root",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:sharp_flints"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.stone_age.description.first_steps"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:sharp_flint",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.stone_age.title.first_steps"
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

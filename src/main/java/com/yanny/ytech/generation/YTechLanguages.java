@@ -2,6 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.AdvancementType;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
@@ -23,6 +24,11 @@ class YTechLanguages extends LanguageProvider {
             add(h.entityType.get(), h.name);
             add(h.spawnEgg.get(), h.name + " Spawn Egg");
         });
+
+        for (AdvancementType type : AdvancementType.values()) {
+            add(type.titleId(), type.title());
+            add(type.descriptionId(), type.description());
+        }
 
         add("gui.ytech.category.drying", "Drying");
         add("gui.ytech.category.tanning", "Tanning");

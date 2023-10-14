@@ -23,7 +23,7 @@ class YTechLootTables extends LootTableProvider {
         super(packOutput, Collections.emptySet(), getSubProviders());
     }
 
-    public static List<SubProviderEntry> getSubProviders() {
+    private static List<SubProviderEntry> getSubProviders() {
         return List.of(
                 new LootTableProvider.SubProviderEntry(YTechBlockLootSub::new, LootContextParamSets.BLOCK),
                 new LootTableProvider.SubProviderEntry(YTechEntityLootSub::new, LootContextParamSets.ENTITY)

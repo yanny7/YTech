@@ -1,0 +1,36 @@
+{
+  "parent": "ytech:stone_age/first_steps",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:drying_racks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.stone_age.description.sunny_day"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:oak_drying_rack"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.stone_age.title.sunny_day"
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
