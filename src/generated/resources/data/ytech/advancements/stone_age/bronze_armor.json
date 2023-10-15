@@ -1,0 +1,76 @@
+{
+  "parent": "ytech:bronze_age/root",
+  "criteria": {
+    "has_item_boots/bronze": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:boots/bronze"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_chestplates/bronze": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:chestplates/bronze"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_helmets/bronze": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:helmets/bronze"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_leggings/bronze": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:leggings/bronze"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.stone_age.description.bronze_armor"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:bronze_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.stone_age.title.bronze_armor"
+    }
+  },
+  "requirements": [
+    [
+      "has_item_helmets/bronze"
+    ],
+    [
+      "has_item_chestplates/bronze"
+    ],
+    [
+      "has_item_leggings/bronze"
+    ],
+    [
+      "has_item_boots/bronze"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

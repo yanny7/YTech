@@ -83,6 +83,9 @@ public enum AdvancementType {
     ALLOY_SMELTER(new Builder(AdvancementType.STONE_AGE_GROUP, "alloy_smelter").parent(() -> COPPER.advancement)
             .display(block(PRIMITIVE_ALLOY_SMELTER), FrameType.TASK, "Alloy Smelter", "Craft the alloy smelter and raise the temperature.")
             .hasOneOfTags(PRIMITIVE_ALLOY_SMELTER.itemTag)),
+    COPPER_ARMOR(new Builder(AdvancementType.STONE_AGE_GROUP, "copper_armor").parent(() -> COPPER.advancement)
+            .display(item(CHESTPLATE, MaterialType.COPPER), FrameType.GOAL, "Copper Armor", "Craft all pieces of copper armor.")
+            .hasAllTags(HELMET.itemTag.get(MaterialType.COPPER), CHESTPLATE.itemTag.get(MaterialType.COPPER), LEGGINGS.itemTag.get(MaterialType.COPPER), BOOTS.itemTag.get(MaterialType.COPPER))),
     NEW_FRONTIER(new Builder(AdvancementType.STONE_AGE_GROUP, "new_frontier").parent(() -> ALLOY_SMELTER.advancement)
             .display(item(MaterialItemType.INGOT, MaterialType.BRONZE), FrameType.GOAL, "New Frontier", "Smelting copper and tin together creates new stronger material.")
             .hasOneOfTags(MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE))),
@@ -93,11 +96,14 @@ public enum AdvancementType {
     HIT_HARD(new Builder(AdvancementType.BRONZE_AGE_GROUP, "hit_hard").parent(() -> BRONZE_AGE.advancement)
             .display(block(BRONZE_ANVIL), FrameType.TASK, "Hit Hard", "Craft bronze anvil.")
             .hasOneOfTags(BRONZE_ANVIL.itemTag)),
+    BRONZE_ARMOR(new Builder(AdvancementType.STONE_AGE_GROUP, "bronze_armor").parent(() -> BRONZE_AGE.advancement)
+            .display(item(CHESTPLATE, MaterialType.BRONZE), FrameType.GOAL, "Bronze Armor", "Craft all pieces of bronze armor.")
+            .hasAllTags(HELMET.itemTag.get(MaterialType.BRONZE), CHESTPLATE.itemTag.get(MaterialType.BRONZE), LEGGINGS.itemTag.get(MaterialType.BRONZE), BOOTS.itemTag.get(MaterialType.BRONZE))),
     BRONZE_TOOLS(new Builder(AdvancementType.BRONZE_AGE_GROUP, "bronze_tools").parent(() -> BRONZE_AGE.advancement)
             .display(item(PICKAXE, MaterialType.BRONZE), FrameType.GOAL, "Bronze Tools", "Craft all bronze tools.")
             .hasAllTags(PICKAXE.itemTag.get(MaterialType.BRONZE), AXE.itemTag.get(MaterialType.BRONZE), SHOVEL.itemTag.get(MaterialType.BRONZE), SWORD.itemTag.get(MaterialType.BRONZE))),
     MORE_AND_MORE(new Builder(AdvancementType.BRONZE_AGE_GROUP, "more_and_more").parent(() -> BRONZE_AGE.advancement)
-            .display(block(REINFORCED_BRICK_CHIMNEY), FrameType.TASK, "More and More", "Craft reinforced brick chimney and raise temperature to be able smelt iron.")
+            .display(block(REINFORCED_BRICK_CHIMNEY), FrameType.TASK, "More and More", "Craft reinforced brick chimney.")
             .hasOneOfTags(REINFORCED_BRICK_CHIMNEY.itemTag)),
     BLOOMBERG(new Builder(AdvancementType.BRONZE_AGE_GROUP, "bloomberg").parent(() -> MORE_AND_MORE.advancement)
             .display(item(IRON_BLOOM), FrameType.TASK, "Bloomberg", "Smelt iron with charcoal to create iron bloom.")

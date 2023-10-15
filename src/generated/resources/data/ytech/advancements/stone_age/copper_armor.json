@@ -1,0 +1,76 @@
+{
+  "parent": "ytech:stone_age/copper",
+  "criteria": {
+    "has_item_boots/copper": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:boots/copper"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_chestplates/copper": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:chestplates/copper"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_helmets/copper": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:helmets/copper"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_leggings/copper": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:leggings/copper"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.stone_age.description.copper_armor"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:copper_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.stone_age.title.copper_armor"
+    }
+  },
+  "requirements": [
+    [
+      "has_item_helmets/copper"
+    ],
+    [
+      "has_item_chestplates/copper"
+    ],
+    [
+      "has_item_leggings/copper"
+    ],
+    [
+      "has_item_boots/copper"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
