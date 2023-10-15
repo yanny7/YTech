@@ -1,49 +1,41 @@
 {
-  "parent": "ytech:stone_age/leathercraft",
+  "parent": "ytech:bronze_age/root",
   "criteria": {
-    "has_leather_boots": {
+    "has_item_axes/bronze": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_boots"
-            ]
+            "tag": "ytech:axes/bronze"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_leather_chestplate": {
+    "has_item_pickaxes/bronze": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_chestplate"
-            ]
+            "tag": "ytech:pickaxes/bronze"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_leather_helmet": {
+    "has_item_shovels/bronze": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_helmet"
-            ]
+            "tag": "ytech:shovels/bronze"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_leather_leggings": {
+    "has_item_swords/bronze": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_leggings"
-            ]
+            "tag": "ytech:swords/bronze"
           }
         ]
       },
@@ -53,31 +45,31 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ytech.stone_age.description.cover_me_in_leather"
+      "translate": "advancements.ytech.bronze_age.description.bronze_tools"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "minecraft:leather_chestplate",
+      "item": "ytech:bronze_pickaxe",
       "nbt": "{Damage:0}"
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.ytech.stone_age.title.cover_me_in_leather"
+      "translate": "advancements.ytech.bronze_age.title.bronze_tools"
     }
   },
   "requirements": [
     [
-      "has_leather_helmet"
+      "has_item_pickaxes/bronze"
     ],
     [
-      "has_leather_chestplate"
+      "has_item_axes/bronze"
     ],
     [
-      "has_leather_leggings"
+      "has_item_shovels/bronze"
     ],
     [
-      "has_leather_boots"
+      "has_item_swords/bronze"
     ]
   ],
   "sends_telemetry_event": true

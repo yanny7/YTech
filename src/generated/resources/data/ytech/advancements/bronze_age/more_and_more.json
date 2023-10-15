@@ -1,11 +1,11 @@
 {
-  "parent": "ytech:stone_age/copper",
+  "parent": "ytech:bronze_age/root",
   "criteria": {
     "has_item": {
       "conditions": {
         "items": [
           {
-            "tag": "ytech:primitive_alloy_smelters"
+            "tag": "ytech:reinforced_brick_chimneys"
           }
         ]
       },
@@ -15,16 +15,16 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ytech.stone_age.description.alloy"
+      "translate": "advancements.ytech.bronze_age.description.more_and_more"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "ytech:primitive_alloy_smelter"
+      "item": "ytech:reinforced_brick_chimney"
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.ytech.stone_age.title.alloy"
+      "translate": "advancements.ytech.bronze_age.title.more_and_more"
     }
   },
   "requirements": [

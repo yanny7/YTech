@@ -1,11 +1,11 @@
 {
-  "parent": "ytech:stone_age/alloy_smelter",
+  "parent": "ytech:bronze_age/bloomberg",
   "criteria": {
     "has_item": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/bronze"
+            "tag": "forge:ingots/iron"
           }
         ]
       },
@@ -15,16 +15,16 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ytech.stone_age.description.new_frontier"
+      "translate": "advancements.ytech.bronze_age.description.iron_man"
     },
-    "frame": "goal",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "ytech:bronze_ingot"
+      "item": "minecraft:iron_ingot"
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.ytech.stone_age.title.new_frontier"
+      "translate": "advancements.ytech.bronze_age.title.iron_man"
     }
   },
   "requirements": [

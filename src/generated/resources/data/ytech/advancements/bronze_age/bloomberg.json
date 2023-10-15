@@ -1,11 +1,11 @@
 {
-  "parent": "ytech:stone_age/alloy_smelter",
+  "parent": "ytech:bronze_age/more_and_more",
   "criteria": {
     "has_item": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/bronze"
+            "tag": "ytech:iron_blooms"
           }
         ]
       },
@@ -15,16 +15,16 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.ytech.stone_age.description.new_frontier"
+      "translate": "advancements.ytech.bronze_age.description.bloomberg"
     },
-    "frame": "goal",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "ytech:bronze_ingot"
+      "item": "ytech:iron_bloom"
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.ytech.stone_age.title.new_frontier"
+      "translate": "advancements.ytech.bronze_age.title.bloomberg"
     }
   },
   "requirements": [

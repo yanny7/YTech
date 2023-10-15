@@ -2,8 +2,10 @@ package com.yanny.ytech.configuration;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -17,10 +19,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.yanny.ytech.configuration.MaterialBlockType.DRYING_RACK;
-import static com.yanny.ytech.configuration.MaterialItemType.AXE;
-import static com.yanny.ytech.configuration.MaterialItemType.PICKAXE;
-import static com.yanny.ytech.configuration.SimpleBlockType.PRIMITIVE_ALLOY_SMELTER;
-import static com.yanny.ytech.configuration.SimpleBlockType.PRIMITIVE_SMELTER;
+import static com.yanny.ytech.configuration.MaterialItemType.*;
+import static com.yanny.ytech.configuration.SimpleBlockType.*;
 import static com.yanny.ytech.configuration.SimpleItemType.*;
 import static com.yanny.ytech.configuration.Utils.getHasName;
 import static com.yanny.ytech.configuration.Utils.modLoc;
@@ -29,64 +29,86 @@ import static com.yanny.ytech.registration.Registration.item;
 import static net.minecraft.world.item.Items.FLINT;
 
 public enum AdvancementType {
-    STONE_AGE(new Builder("stone_age", "root")
+    STONE_AGE(new Builder(AdvancementType.STONE_AGE_GROUP, "root")
             .root(FLINT, modLoc("textures/advancements/stone_age.png"), "Stone Age", "Lasted for roughly 3.4 million years and ended with the advent of metalworking.")
-            .hasItems(FLINT)),
-    FIRST_STEPS(new Builder("stone_age", "first_steps").parent(() -> STONE_AGE.advancement)
-            .display(item(SHARP_FLINT), FrameType.TASK, "First Steps", "Hit the flint against the stone. Simple.")
-            .hasTag(SHARP_FLINT.itemTag)),
-    GRASS_HUNT(new Builder("stone_age", "grass_hunt").parent(() -> FIRST_STEPS.advancement)
-            .display(item(GRASS_FIBERS), FrameType.TASK, "Grass Hunt", "Collect grass fibers by breaking grass with a sharp flint, it's used to make simple tools.")
-            .hasTag(GRASS_FIBERS.itemTag)),
-    RUN_FOREST_RUN(new Builder("stone_age", "run_forest_run").parent(() -> FIRST_STEPS.advancement)
+            .hasOneOfItems(FLINT)),
+    FIRST_STEPS(new Builder(AdvancementType.STONE_AGE_GROUP, "first_steps").parent(() -> STONE_AGE.advancement)
+            .display(item(SHARP_FLINT), FrameType.TASK, "First Steps", "Hit the flint against the stone.")
+            .hasOneOfTags(SHARP_FLINT.itemTag)),
+    GRASS_HUNT(new Builder(AdvancementType.STONE_AGE_GROUP, "grass_hunt").parent(() -> FIRST_STEPS.advancement)
+            .display(item(GRASS_FIBERS), FrameType.TASK, "Grass Hunt", "Collect grass fibers by breaking grass with a sharp flint.")
+            .hasOneOfTags(GRASS_FIBERS.itemTag)),
+    RUN_FOREST_RUN(new Builder(AdvancementType.STONE_AGE_GROUP, "run_forest_run").parent(() -> FIRST_STEPS.advancement)
             .display(item(ANTLER), FrameType.TASK, "Run Forest Run", "Go and hunt deer for antlers.")
-            .hasTag(ANTLER.itemTag)),
-    LEATHERCRAFT(new Builder("stone_age", "leathercraft").parent(() -> FIRST_STEPS.advancement)
+            .hasOneOfTags(ANTLER.itemTag)),
+    LEATHERCRAFT(new Builder(AdvancementType.STONE_AGE_GROUP, "leathercraft").parent(() -> FIRST_STEPS.advancement)
             .display(Items.LEATHER, FrameType.TASK, "Leathercraft", "Process raw hide to create leather.")
-            .hasItems(Items.LEATHER)),
-    SUNNY_DAY(new Builder("stone_age", "sunny_day").parent(() -> FIRST_STEPS.advancement)
+            .hasOneOfItems(Items.LEATHER)),
+    SUNNY_DAY(new Builder(AdvancementType.STONE_AGE_GROUP, "sunny_day").parent(() -> FIRST_STEPS.advancement)
             .display(block(DRYING_RACK, MaterialType.OAK_WOOD), FrameType.CHALLENGE, "Sunny Day", "Create all dried foods.")
-            .hasTag(DRYING_RACK.groupItemTag)),
-    SMELTER_TIME(new Builder("stone_age", "smelter_time").parent(() -> FIRST_STEPS.advancement)
+            .hasOneOfTags(DRYING_RACK.groupItemTag)),
+    SMELTER_TIME(new Builder(AdvancementType.STONE_AGE_GROUP, "smelter_time").parent(() -> FIRST_STEPS.advancement)
             .display(block(PRIMITIVE_SMELTER), FrameType.TASK, "Smelter Time", "Craft smelter and some chimneys to be able melt crushed ore.")
-            .hasTag(PRIMITIVE_SMELTER.itemTag)),
-    BETTER_THAN_NOTHING(new Builder("stone_age", "better_than_nothing").parent(() -> GRASS_HUNT.advancement)
-            .display(item(FLINT_KNIFE), FrameType.TASK, "Better Than Nothing", "First real close range weapon.")
-            .hasTag(FLINT_KNIFE.itemTag)),
-    NOT_THAT_SIMPLE(new Builder("stone_age", "not_that_simple").parent(() -> GRASS_HUNT.advancement)
-            .display(item(AXE, MaterialType.FLINT), FrameType.TASK, "Not That Simple", "Finally not breaking your fists.")
-            .hasTag(AXE.itemTag.get(MaterialType.FLINT))),
-    MINECRAFT(new Builder("stone_age", "minecraft").parent(() -> GRASS_HUNT.advancement)
-            .display(item(PICKAXE, MaterialType.ANTLER), FrameType.TASK, "Minecraft", "Really, first pickaxe was made from antler.")
-            .hasTag(PICKAXE.itemTag.get(MaterialType.ANTLER))),
-    DIRTY_THINGS(new Builder("stone_age", "dirty_things").parent(() -> GRASS_HUNT.advancement)
-            .display(Items.WOODEN_SHOVEL, FrameType.TASK, "Dirty Things", "Go and build shack, you earned it.")
-            .hasItems(Items.WOODEN_SHOVEL)),
-    STORAGE_MANAGEMENT(new Builder("stone_age", "storage_management").parent(() -> GRASS_HUNT.advancement)
-            .display(item(BASKET), FrameType.TASK, "Storage Management", "Simple and useful.")
-            .hasTag(BASKET.itemTag)),
-    COVER_ME_IN_LEATHER(new Builder("stone_age", "cover_me_in_leather").parent(() -> LEATHERCRAFT.advancement)
+            .hasOneOfTags(PRIMITIVE_SMELTER.itemTag)),
+    BETTER_THAN_NOTHING(new Builder(AdvancementType.STONE_AGE_GROUP, "better_than_nothing").parent(() -> GRASS_HUNT.advancement)
+            .display(item(FLINT_KNIFE), FrameType.TASK, "Better Than Nothing", "Craft flint knife.")
+            .hasOneOfTags(FLINT_KNIFE.itemTag)),
+    NOT_THAT_SIMPLE(new Builder(AdvancementType.STONE_AGE_GROUP, "not_that_simple").parent(() -> GRASS_HUNT.advancement)
+            .display(item(AXE, MaterialType.FLINT), FrameType.TASK, "Not That Simple", "Craft flint axe to get wood.")
+            .hasOneOfTags(AXE.itemTag.get(MaterialType.FLINT))),
+    MINECRAFT(new Builder(AdvancementType.STONE_AGE_GROUP, "minecraft").parent(() -> GRASS_HUNT.advancement)
+            .display(item(PICKAXE, MaterialType.ANTLER), FrameType.TASK, "Minecraft", "First pickaxe was made from antler.")
+            .hasOneOfTags(PICKAXE.itemTag.get(MaterialType.ANTLER))),
+    DIRTY_THINGS(new Builder(AdvancementType.STONE_AGE_GROUP, "dirty_things").parent(() -> GRASS_HUNT.advancement)
+            .display(Items.WOODEN_SHOVEL, FrameType.TASK, "Dirty Things", "Craft wooden shovel, so you can finally build an shack.")
+            .hasOneOfItems(Items.WOODEN_SHOVEL)),
+    STORAGE_MANAGEMENT(new Builder(AdvancementType.STONE_AGE_GROUP, "storage_management").parent(() -> GRASS_HUNT.advancement)
+            .display(item(BASKET), FrameType.TASK, "Storage Management", "Increase your inventory capacity by crafting basket.")
+            .hasOneOfTags(BASKET.itemTag)),
+    COVER_ME_IN_LEATHER(new Builder(AdvancementType.STONE_AGE_GROUP, "cover_me_in_leather").parent(() -> LEATHERCRAFT.advancement)
             .display(Items.LEATHER_CHESTPLATE, FrameType.GOAL, "Cover Me in Leather", "Craft all parts of leather armor.")
-            .hasItems(Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS)),
-    COPPER(new Builder("stone_age", "copper").parent(() -> SMELTER_TIME.advancement)
+            .hasAllItems(Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS)),
+    COPPER(new Builder(AdvancementType.STONE_AGE_GROUP, "copper").parent(() -> SMELTER_TIME.advancement)
             .display(Items.COPPER_INGOT, FrameType.TASK, "Copper", "Smelt copper ingot.")
-            .hasTag(MaterialItemType.INGOT.itemTag.get(MaterialType.COPPER))),
-    TIN(new Builder("stone_age", "tin").parent(() -> SMELTER_TIME.advancement)
+            .hasOneOfTags(MaterialItemType.INGOT.itemTag.get(MaterialType.COPPER))),
+    TIN(new Builder(AdvancementType.STONE_AGE_GROUP, "tin").parent(() -> SMELTER_TIME.advancement)
             .display(item(MaterialItemType.INGOT, MaterialType.TIN), FrameType.TASK, "Tin", "Smelt tin ingot.")
-            .hasTag(MaterialItemType.INGOT.itemTag.get(MaterialType.TIN))),
-    TAKE_THE_LEAD(new Builder("stone_age", "take_the_lead").parent(() -> SMELTER_TIME.advancement)
+            .hasOneOfTags(MaterialItemType.INGOT.itemTag.get(MaterialType.TIN))),
+    TAKE_THE_LEAD(new Builder(AdvancementType.STONE_AGE_GROUP, "take_the_lead").parent(() -> SMELTER_TIME.advancement)
             .display(item(MaterialItemType.INGOT, MaterialType.LEAD), FrameType.TASK, "Take The Lead", "Smelt lead ingot.")
-            .hasTag(MaterialItemType.INGOT.itemTag.get(MaterialType.LEAD))),
-    IN_GOLD_WE_TRUST(new Builder("stone_age", "in_gold_we_trust").parent(() -> SMELTER_TIME.advancement)
+            .hasOneOfTags(MaterialItemType.INGOT.itemTag.get(MaterialType.LEAD))),
+    IN_GOLD_WE_TRUST(new Builder(AdvancementType.STONE_AGE_GROUP, "in_gold_we_trust").parent(() -> SMELTER_TIME.advancement)
             .display(item(MaterialItemType.INGOT, MaterialType.GOLD), FrameType.TASK, "In Gold We Trust", "Smelt gold ingot.")
-            .hasTag(MaterialItemType.INGOT.itemTag.get(MaterialType.GOLD))),
-    ALLOY(new Builder("stone_age", "alloy").parent(() -> COPPER.advancement)
-            .display(block(PRIMITIVE_ALLOY_SMELTER), FrameType.TASK, "Alloy", "Craft the alloy smelter and raise the temperature.")
-            .hasTag(PRIMITIVE_ALLOY_SMELTER.itemTag)),
-    NEW_FRONTIER(new Builder("stone_age", "new_frontier").parent(() -> ALLOY.advancement)
-            .display(item(MaterialItemType.INGOT, MaterialType.GOLD), FrameType.GOAL, "New Frontier", "Alloy smelting copper and tin creates new stronger material.")
-            .hasTag(MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE))),
+            .hasOneOfTags(MaterialItemType.INGOT.itemTag.get(MaterialType.GOLD))),
+    ALLOY_SMELTER(new Builder(AdvancementType.STONE_AGE_GROUP, "alloy_smelter").parent(() -> COPPER.advancement)
+            .display(block(PRIMITIVE_ALLOY_SMELTER), FrameType.TASK, "Alloy Smelter", "Craft the alloy smelter and raise the temperature.")
+            .hasOneOfTags(PRIMITIVE_ALLOY_SMELTER.itemTag)),
+    NEW_FRONTIER(new Builder(AdvancementType.STONE_AGE_GROUP, "new_frontier").parent(() -> ALLOY_SMELTER.advancement)
+            .display(item(MaterialItemType.INGOT, MaterialType.BRONZE), FrameType.GOAL, "New Frontier", "Smelting copper and tin together creates new stronger material.")
+            .hasOneOfTags(MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE))),
+
+    BRONZE_AGE(new Builder(AdvancementType.BRONZE_AGE_GROUP, "root")
+            .root(item(AXE, MaterialType.BRONZE), modLoc("textures/advancements/bronze_age.png"), "Bronze Age", "Bronze Age is characterized by the use of bronze")
+            .hasOneOfTags(MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE))),
+    HIT_HARD(new Builder(AdvancementType.BRONZE_AGE_GROUP, "hit_hard").parent(() -> BRONZE_AGE.advancement)
+            .display(block(BRONZE_ANVIL), FrameType.TASK, "Hit Hard", "Craft bronze anvil.")
+            .hasOneOfTags(BRONZE_ANVIL.itemTag)),
+    BRONZE_TOOLS(new Builder(AdvancementType.BRONZE_AGE_GROUP, "bronze_tools").parent(() -> BRONZE_AGE.advancement)
+            .display(item(PICKAXE, MaterialType.BRONZE), FrameType.GOAL, "Bronze Tools", "Craft all bronze tools.")
+            .hasAllTags(PICKAXE.itemTag.get(MaterialType.BRONZE), AXE.itemTag.get(MaterialType.BRONZE), SHOVEL.itemTag.get(MaterialType.BRONZE), SWORD.itemTag.get(MaterialType.BRONZE))),
+    MORE_AND_MORE(new Builder(AdvancementType.BRONZE_AGE_GROUP, "more_and_more").parent(() -> BRONZE_AGE.advancement)
+            .display(block(REINFORCED_BRICK_CHIMNEY), FrameType.TASK, "More and More", "Craft reinforced brick chimney and raise temperature to be able smelt iron.")
+            .hasOneOfTags(REINFORCED_BRICK_CHIMNEY.itemTag)),
+    BLOOMBERG(new Builder(AdvancementType.BRONZE_AGE_GROUP, "bloomberg").parent(() -> MORE_AND_MORE.advancement)
+            .display(item(IRON_BLOOM), FrameType.TASK, "Bloomberg", "Smelt iron with charcoal to create iron bloom.")
+            .hasOneOfTags(IRON_BLOOM.itemTag)),
+    IRON_MAN(new Builder(AdvancementType.BRONZE_AGE_GROUP, "iron_man").parent(() -> BLOOMBERG.advancement)
+            .display(Items.IRON_INGOT, FrameType.TASK, "Iron Man", "Using hammer on iron bloom creates iron ingot.")
+            .hasOneOfTags(INGOT.itemTag.get(MaterialType.IRON))),
     ;
+
+    private static final String STONE_AGE_GROUP = "stone_age";
+    private static final String BRONZE_AGE_GROUP = "bronze_age";
 
     private final Builder builder;
     private Advancement advancement;
@@ -178,13 +200,40 @@ public enum AdvancementType {
             return this;
         }
 
-        Builder hasItems(@NotNull ItemLike ...items) {
+        Builder hasOneOfItems(@NotNull ItemLike ...items) {
             builder.addCriterion(getHasName(), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(items).build()));
             return this;
         }
 
-        Builder hasTag(@NotNull TagKey<Item> tag) {
-            builder.addCriterion(getHasName(), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(tag).build()));
+        Builder hasAllItems(@NotNull ItemLike ...items) {
+            builder.requirements(RequirementsStrategy.AND);
+
+            for (ItemLike item : items) {
+                builder.addCriterion(RecipeProvider.getHasName(item), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(item).build()));
+            }
+
+            return this;
+        }
+
+        @SafeVarargs
+        final Builder hasOneOfTags(@NotNull TagKey<Item> ...tags) {
+            builder.requirements(RequirementsStrategy.OR);
+
+            for (TagKey<Item> tag : tags) {
+                builder.addCriterion(getHasName(), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(tag).build()));
+            }
+
+            return this;
+        }
+
+        @SafeVarargs
+        final Builder hasAllTags(@NotNull TagKey<Item> ...tags) {
+            builder.requirements(RequirementsStrategy.AND);
+
+            for (TagKey<Item> tag : tags) {
+                builder.addCriterion(getHasName() + "_" + tag.location().getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(tag).build()));
+            }
+
             return this;
         }
     }

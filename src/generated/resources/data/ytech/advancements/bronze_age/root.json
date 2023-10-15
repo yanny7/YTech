@@ -1,5 +1,4 @@
 {
-  "parent": "ytech:stone_age/alloy_smelter",
   "criteria": {
     "has_item": {
       "conditions": {
@@ -14,17 +13,19 @@
   },
   "display": {
     "announce_to_chat": false,
+    "background": "ytech:textures/advancements/bronze_age.png",
     "description": {
-      "translate": "advancements.ytech.stone_age.description.new_frontier"
+      "translate": "advancements.ytech.bronze_age.description.root"
     },
-    "frame": "goal",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "ytech:bronze_ingot"
+      "item": "ytech:bronze_axe",
+      "nbt": "{Damage:0}"
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.ytech.stone_age.title.new_frontier"
+      "translate": "advancements.ytech.bronze_age.title.root"
     }
   },
   "requirements": [

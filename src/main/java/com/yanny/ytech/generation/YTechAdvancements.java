@@ -18,12 +18,10 @@ class YTechAdvancements extends ForgeAdvancementProvider {
     }
 
     private static List<ForgeAdvancementProvider.AdvancementGenerator> getSubProviders() {
-        return List.of(
-                new StoneAgeAdvancementProvider()
-        );
+        return List.of(new AdvancementProvider());
     }
 
-    private static class StoneAgeAdvancementProvider implements AdvancementGenerator {
+    private static class AdvancementProvider implements AdvancementGenerator {
         @Override
         public void generate(@NotNull HolderLookup.Provider registries, @NotNull Consumer<Advancement> saver, @NotNull ExistingFileHelper existingFileHelper) {
             for (AdvancementType type : AdvancementType.values()) {
