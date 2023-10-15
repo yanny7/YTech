@@ -1,4 +1,5 @@
 - 0.0.3     Added bronze armor
+            Added copper armor
             Added advancements for each age
 - 0.0.2     Added Spear item
             Added Terracotta Bricks block
