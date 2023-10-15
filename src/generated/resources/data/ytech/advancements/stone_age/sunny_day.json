@@ -1,11 +1,81 @@
 {
   "parent": "ytech:stone_age/first_steps",
   "criteria": {
-    "has_item": {
+    "has_item_dried_beefs": {
       "conditions": {
         "items": [
           {
-            "tag": "ytech:drying_racks"
+            "tag": "ytech:dried_beefs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_dried_chickens": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:dried_chickens"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_dried_cods": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:dried_cods"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_dried_muttons": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:dried_muttons"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_dried_porkchops": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:dried_porkchops"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_dried_rabbits": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:dried_rabbits"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_dried_salmons": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:dried_salmons"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_item_dried_venison": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:dried_venison"
           }
         ]
       },
@@ -29,7 +99,28 @@
   },
   "requirements": [
     [
-      "has_item"
+      "has_item_dried_beefs"
+    ],
+    [
+      "has_item_dried_chickens"
+    ],
+    [
+      "has_item_dried_cods"
+    ],
+    [
+      "has_item_dried_muttons"
+    ],
+    [
+      "has_item_dried_porkchops"
+    ],
+    [
+      "has_item_dried_rabbits"
+    ],
+    [
+      "has_item_dried_salmons"
+    ],
+    [
+      "has_item_dried_venison"
     ]
   ],
   "sends_telemetry_event": true

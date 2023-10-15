@@ -46,7 +46,7 @@ public enum AdvancementType {
             .hasOneOfItems(Items.LEATHER)),
     SUNNY_DAY(new Builder(AdvancementType.STONE_AGE_GROUP, "sunny_day").parent(() -> FIRST_STEPS.advancement)
             .display(block(DRYING_RACK, MaterialType.OAK_WOOD), FrameType.CHALLENGE, "Sunny Day", "Create all dried foods.")
-            .hasOneOfTags(DRYING_RACK.groupItemTag)),
+            .hasAllTags(DRIED_BEEF.itemTag, DRIED_CHICKEN.itemTag, DRIED_COD.itemTag, DRIED_MUTTON.itemTag, DRIED_PORKCHOP.itemTag, DRIED_RABBIT.itemTag, DRIED_SALMON.itemTag, DRIED_VENISON.itemTag)),
     SMELTER_TIME(new Builder(AdvancementType.STONE_AGE_GROUP, "smelter_time").parent(() -> FIRST_STEPS.advancement)
             .display(block(PRIMITIVE_SMELTER), FrameType.TASK, "Smelter Time", "Craft smelter and some chimneys to be able melt crushed ore.")
             .hasOneOfTags(PRIMITIVE_SMELTER.itemTag)),
