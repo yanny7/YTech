@@ -87,7 +87,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             ItemTags.AXES,
             MaterialAxeItem::new,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("axe/" + material.key))).toArray(TextureHolder[]::new),
-            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::basicHandheldModelProvider,
             MaterialAxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
@@ -96,7 +96,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             ItemTags.PICKAXES,
             MaterialPickaxeItem::new,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("pickaxe/" + material.key))).toArray(TextureHolder[]::new),
-            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::basicHandheldModelProvider,
             MaterialPickaxeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.ANTLER), MaterialType.GOLD, MaterialType.IRON)),
@@ -105,7 +105,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             ItemTags.SHOVELS,
             MaterialShovelItem::new,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("shovel/" + material.key))).toArray(TextureHolder[]::new),
-            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::basicHandheldModelProvider,
             MaterialShovelItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON)),
@@ -114,7 +114,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             ItemTags.HOES,
             MaterialHoeItem::new,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("hoe/" + material.key))).toArray(TextureHolder[]::new),
-            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::basicHandheldModelProvider,
             MaterialHoeItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON)),
@@ -123,7 +123,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             ItemTags.SWORDS,
             MaterialSwordItem::new,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("sword/" + material.key))).toArray(TextureHolder[]::new),
-            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::basicHandheldModelProvider,
             MaterialSwordItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON)),
@@ -195,7 +195,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             ItemTags.create(Utils.modLoc("hammers")),
             (holder) -> new ToolItem(holder.material.getTier(), new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("hammer/" + material.key))).toArray(TextureHolder[]::new),
-            MaterialItemType::basicItemModelProvider,
+            MaterialItemType::basicHandheldModelProvider,
             MaterialItemType::registerHammerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE)),
@@ -440,6 +440,12 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     private static void basicItemModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        builder.texture("layer0", textures[0]);
+    }
+
+    private static void basicHandheldModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures(holder.material);
+        ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/handheld"));
         builder.texture("layer0", textures[0]);
     }
 

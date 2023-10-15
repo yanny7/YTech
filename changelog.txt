@@ -1,6 +1,9 @@
 - 0.0.3     Added bronze armor
             Added copper armor
             Added advancements for each age
+            Fixed tool display in third person
+            Re-textured aqueduct
+            Aqueduct now accept liquid only from water source block
 - 0.0.2     Added Spear item
             Added Terracotta Bricks block
             Added Aqueduct, Aqueduct Valve, Aqueduct Hydrator and Aqueduct Fertilizer
