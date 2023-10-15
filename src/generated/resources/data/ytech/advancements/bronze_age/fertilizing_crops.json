@@ -1,0 +1,36 @@
+{
+  "parent": "ytech:bronze_age/hit_hard",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:aqueduct_fertilizers"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.ytech.bronze_age.description.fertilizing_crops"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ytech:aqueduct_fertilizer"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ytech.bronze_age.title.fertilizing_crops"
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

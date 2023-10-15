@@ -50,6 +50,9 @@ public enum AdvancementType {
     SMELTER_TIME(new Builder(AdvancementType.STONE_AGE_GROUP, "smelter_time").parent(() -> FIRST_STEPS.advancement)
             .display(block(PRIMITIVE_SMELTER), FrameType.TASK, "Smelter Time", "Craft smelter and some chimneys to be able melt crushed ore.")
             .hasOneOfTags(PRIMITIVE_SMELTER.itemTag)),
+    IRRIGATION_SYSTEM(new Builder(AdvancementType.STONE_AGE_GROUP, "irrigation_system").parent(() -> FIRST_STEPS.advancement)
+            .display(block(AQUEDUCT), FrameType.TASK, "Irrigation System", "Craft aqueduct for long distance water transportation.")
+            .hasOneOfTags(AQUEDUCT.itemTag)),
     BETTER_THAN_NOTHING(new Builder(AdvancementType.STONE_AGE_GROUP, "better_than_nothing").parent(() -> GRASS_HUNT.advancement)
             .display(item(FLINT_KNIFE), FrameType.TASK, "Better Than Nothing", "Craft flint knife.")
             .hasOneOfTags(FLINT_KNIFE.itemTag)),
@@ -96,6 +99,9 @@ public enum AdvancementType {
     HIT_HARD(new Builder(AdvancementType.BRONZE_AGE_GROUP, "hit_hard").parent(() -> BRONZE_AGE.advancement)
             .display(block(BRONZE_ANVIL), FrameType.TASK, "Hit Hard", "Craft bronze anvil.")
             .hasOneOfTags(BRONZE_ANVIL.itemTag)),
+    FERTILIZING_CROPS(new Builder(AdvancementType.BRONZE_AGE_GROUP, "fertilizing_crops").parent(() -> HIT_HARD.advancement)
+            .display(block(AQUEDUCT_FERTILIZER), FrameType.TASK, "Fertilizing Crops", "Craft aqueduct fertilizer.")
+            .hasOneOfTags(AQUEDUCT_FERTILIZER.itemTag)),
     BRONZE_ARMOR(new Builder(AdvancementType.STONE_AGE_GROUP, "bronze_armor").parent(() -> BRONZE_AGE.advancement)
             .display(item(CHESTPLATE, MaterialType.BRONZE), FrameType.GOAL, "Bronze Armor", "Craft all pieces of bronze armor.")
             .hasAllTags(HELMET.itemTag.get(MaterialType.BRONZE), CHESTPLATE.itemTag.get(MaterialType.BRONZE), LEGGINGS.itemTag.get(MaterialType.BRONZE), BOOTS.itemTag.get(MaterialType.BRONZE))),
