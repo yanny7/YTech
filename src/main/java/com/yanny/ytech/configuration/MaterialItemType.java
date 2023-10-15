@@ -8,6 +8,7 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -126,6 +127,42 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialSwordItem::registerRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON)),
+    HELMET("helmet", INameable.suffix("helmet"), INameable.suffix("Helmet"),
+            (material) -> ItemTags.create(Utils.modLoc("helmets/" + material.key)),
+            Tags.Items.ARMORS_HELMETS,
+            (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.HELMET, new Item.Properties()),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_helmet"))).toArray(TextureHolder[]::new),
+            MaterialItemType::basicArmorModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.COPPER, MaterialType.IRON)),
+    CHESTPLATE("chestplate", INameable.suffix("chestplate"), INameable.suffix("Chestplate"),
+            (material) -> ItemTags.create(Utils.modLoc("chestplates/" + material.key)),
+            Tags.Items.ARMORS_CHESTPLATES,
+            (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.CHESTPLATE, new Item.Properties()),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_chestplate"))).toArray(TextureHolder[]::new),
+            MaterialItemType::basicArmorModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.COPPER, MaterialType.IRON)),
+    LEGGINGS("leggings", INameable.suffix("leggings"), INameable.suffix("Leggings"),
+            (material) -> ItemTags.create(Utils.modLoc("leggings/" + material.key)),
+            Tags.Items.ARMORS_LEGGINGS,
+            (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.LEGGINGS, new Item.Properties()),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_leggings"))).toArray(TextureHolder[]::new),
+            MaterialItemType::basicArmorModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.COPPER, MaterialType.IRON)),
+    BOOTS("boots", INameable.suffix("boots"), INameable.suffix("Boots"),
+            (material) -> ItemTags.create(Utils.modLoc("boots/" + material.key)),
+            Tags.Items.ARMORS_BOOTS,
+            (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.BOOTS, new Item.Properties()),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_boots"))).toArray(TextureHolder[]::new),
+            MaterialItemType::basicArmorModelProvider,
+            IRecipe::noRecipe,
+            MaterialItemType::registerMaterialTag,
+            Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.COPPER, MaterialType.IRON)),
     ARROW("arrow", INameable.suffix("arrow"), INameable.suffix("Arrow"),
             (material) -> ItemTags.create(Utils.modLoc("arrows/" + material.key)),
             ItemTags.ARROWS,
@@ -401,6 +438,12 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     private static void basicItemModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures(holder.material);
+        ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        builder.texture("layer0", textures[0]);
+    }
+
+    private static void basicArmorModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
         builder.texture("layer0", textures[0]);
