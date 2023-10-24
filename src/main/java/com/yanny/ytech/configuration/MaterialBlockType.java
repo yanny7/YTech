@@ -16,6 +16,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -23,9 +24,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GravelBlock;
@@ -54,6 +55,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.yanny.ytech.YTechMod.CONFIGURATION;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+
 public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockHolder, BlockStateProvider>, ILootable<Holder.BlockHolder, BlockLootSubProvider>,
         IRecipe<Holder.BlockHolder>, IMenu, IItemTag<Holder.BlockHolder>, IBlockTag<Holder.BlockHolder> {
     STONE_ORE(HolderType.BLOCK, "stone_ore", INameable.suffix("ore"), INameable.suffix("Ore"),
@@ -62,6 +66,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)),
+            MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("ore/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::oreLootProvider,
@@ -75,6 +80,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHER_GOLD_ORE)),
+            MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("nether_ore/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::oreLootProvider,
@@ -88,6 +94,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.ORES,
             Tags.Blocks.ORES,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)),
+            MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("deepslate_ore/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
             MaterialBlockType::oreLootProvider,
@@ -101,6 +108,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             ItemTags.create(Utils.modLoc("sand_deposits")),
             BlockTags.create(Utils.modLoc("sand_deposits")),
             (holder) -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)),
+            MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("sand_deposit/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
             (holder, provider) -> depositLootProvider(holder, provider, Items.SAND),
@@ -114,6 +122,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             ItemTags.create(Utils.modLoc("gravel_deposits")),
             BlockTags.create(Utils.modLoc("gravel_deposits")),
             (holder) -> new GravelBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)),
+            MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("gravel_deposit/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
             (holder, provider) -> depositLootProvider(holder, provider, Items.GRAVEL),
@@ -127,6 +136,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.STORAGE_BLOCKS,
             Tags.Blocks.STORAGE_BLOCKS,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)),
+            MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("storage/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
             ILootable::dropsSelfProvider,
@@ -140,6 +150,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             Tags.Items.STORAGE_BLOCKS,
             Tags.Blocks.STORAGE_BLOCKS,
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)),
+            MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("raw_storage/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
             ILootable::dropsSelfProvider,
@@ -153,6 +164,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             ItemTags.create(Utils.modLoc("drying_racks")),
             BlockTags.create(Utils.modLoc("drying_racks")),
             DryingRackBlock::new,
+            MaterialBlockType::dryingRackBlockItem,
             DryingRackBlock::getTexture,
             DryingRackBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -166,6 +178,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             ItemTags.create(Utils.modLoc("tanning_racks")),
             BlockTags.create(Utils.modLoc("tanning_racks")),
             TanningRackBlock::new,
+            MaterialBlockType::simpleBlockItem,
             TanningRackBlock::getTexture,
             TanningRackBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -179,6 +192,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             ItemTags.create(Utils.modLoc("shafts")),
             BlockTags.create(Utils.modLoc("shafts")),
             (holder) -> new ShaftBlock(holder.material, 2f),
+            MaterialBlockType::simpleBlockItem,
             ShaftBlock::getTexture,
             ShaftBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -192,6 +206,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             ItemTags.create(Utils.modLoc("water_wheels")),
             BlockTags.create(Utils.modLoc("water_wheels")),
             (holder) -> new WaterWheelBlock(holder.material, 0.2f),
+            MaterialBlockType::simpleBlockItem,
             WaterWheelBlock::getTexture,
             WaterWheelBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -221,6 +236,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     @NotNull public final TagKey<Item> groupItemTag;
     @NotNull public final TagKey<Block> groupBlockTag;
     @NotNull private final Function<Holder.BlockHolder, Block> blockGetter;
+    @NotNull private final Function<Holder.BlockHolder, Item> itemGetter;
     @NotNull private final Map<MaterialType, Map<Integer, Integer>> tintColors;
     @NotNull private final Map<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter;
@@ -233,7 +249,9 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     MaterialBlockType(@NotNull HolderType type, @NotNull String id, @NotNull NameHolder keyHolder, @NotNull NameHolder nameHolder,
                       @NotNull Function<MaterialType, TagKey<Item>> itemTag, @NotNull Function<MaterialType, TagKey<Block>> blockTag,
-                      @NotNull TagKey<Item> groupItemTag, @NotNull TagKey<Block> groupBlockTag, @NotNull Function<Holder.BlockHolder, Block> blockGetter,
+                      @NotNull TagKey<Item> groupItemTag, @NotNull TagKey<Block> groupBlockTag,
+                      @NotNull Function<Holder.BlockHolder, Block> blockGetter,
+                      @NotNull Function<Holder.BlockHolder, Item> itemGetter,
                       @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter,
@@ -243,6 +261,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         this.id = id;
         this.keyHolder = keyHolder;
         this.nameHolder = nameHolder;
+        this.itemGetter = itemGetter;
         this.itemTag = materials.stream().map((material) -> Pair.of(material, itemTag.apply(material))).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
         this.blockTag = materials.stream().map((material) -> Pair.of(material, blockTag.apply(material))).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
         this.blockTagsGetter = blockTagsGetter;
@@ -339,6 +358,28 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     public Block getBlock(@NotNull Holder.BlockHolder holder) {
         return blockGetter.apply(holder);
+    }
+
+    public Item getItem(@NotNull Holder.BlockHolder holder) {
+        return itemGetter.apply(holder);
+    }
+
+    private static Item simpleBlockItem(@NotNull Holder.BlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties());
+    }
+
+    private static Item dryingRackBlockItem(@NotNull Holder.BlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.drying_rack1").withStyle(DARK_GRAY));
+
+                if (CONFIGURATION.noDryingDuringRain()) {
+                    tooltipComponents.add(Component.translatable("text.ytech.hover.drying_rack2").withStyle(DARK_GRAY));
+                }
+            }
+        };
     }
 
     private static void basicBlockStateProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {

@@ -39,11 +39,14 @@ public class Holder {
     public static class SimpleBlockHolder extends Holder implements IBlockHolder {
         @NotNull public final SimpleBlockType object;
         @NotNull public final RegistryObject<Block> block;
+        @NotNull public final RegistryObject<Item> item;
 
-        SimpleBlockHolder(@NotNull SimpleBlockType object, @NotNull Function<SimpleBlockHolder, RegistryObject<Block>> blockSupplier) {
+        SimpleBlockHolder(@NotNull SimpleBlockType object, @NotNull Function<SimpleBlockHolder, RegistryObject<Block>> blockSupplier,
+                          @NotNull Function<SimpleBlockHolder, RegistryObject<Item>> itemSupplier) {
             super(object.key, object.name);
             this.object = object;
             this.block = blockSupplier.apply(this);
+            this.item = itemSupplier.apply(this);
         }
 
         @Override
@@ -62,8 +65,9 @@ public class Holder {
 
 
         public EntitySimpleBlockHolder(@NotNull SimpleBlockType product, @NotNull Function<SimpleBlockHolder, RegistryObject<Block>> blockSupplier,
+                                       @NotNull Function<SimpleBlockHolder, RegistryObject<Item>> itemSupplier,
                                        @NotNull Function<EntitySimpleBlockHolder, RegistryObject<BlockEntityType<?>>> entityType) {
-            super(product, blockSupplier);
+            super(product, blockSupplier, itemSupplier);
             this.entityType = entityType.apply(this);
         }
 
@@ -78,9 +82,10 @@ public class Holder {
 
         public MenuEntitySimpleBlockHolder(@NotNull SimpleBlockType product,
                                            @NotNull Function<SimpleBlockHolder, RegistryObject<Block>> blockSupplier,
+                                           @NotNull Function<SimpleBlockHolder, RegistryObject<Item>> itemSupplier,
                                            @NotNull Function<EntitySimpleBlockHolder, RegistryObject<BlockEntityType<?>>> entityTypeSupplier,
                                            @NotNull Function<MenuEntitySimpleBlockHolder, RegistryObject<MenuType<? extends AbstractContainerMenu>>> menuType) {
-            super(product, blockSupplier, entityTypeSupplier);
+            super(product, blockSupplier, itemSupplier, entityTypeSupplier);
             this.menuType = menuType.apply(this);
         }
 
@@ -115,10 +120,14 @@ public class Holder {
 
     public static class BlockHolder extends MaterialHolder<MaterialBlockType> implements IBlockHolder {
         @NotNull public final RegistryObject<Block> block;
+        @NotNull public final RegistryObject<Item> item;
 
-        public BlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder, @NotNull Function<BlockHolder, @NotNull RegistryObject<Block>> block) {
+        public BlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
+                           @NotNull Function<BlockHolder, RegistryObject<Block>> blockSupplier,
+                           @NotNull Function<BlockHolder, RegistryObject<Item>> itemSupplier) {
             super(product, materialHolder);
-            this.block = block.apply(this);
+            this.block = blockSupplier.apply(this);
+            this.item = itemSupplier.apply(this);
         }
 
         @Override
@@ -138,8 +147,9 @@ public class Holder {
 
         public EntityBlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
                                  @NotNull Function<BlockHolder, RegistryObject<Block>> blockSupplier,
+                                 @NotNull Function<BlockHolder, RegistryObject<Item>> itemSupplier,
                                  @NotNull Function<EntityBlockHolder, RegistryObject<BlockEntityType<?>>> entityType) {
-            super(product, materialHolder, blockSupplier);
+            super(product, materialHolder, blockSupplier, itemSupplier);
             this.entityType = entityType.apply(this);
         }
 
@@ -154,9 +164,10 @@ public class Holder {
 
         public MenuEntityBlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
                                      @NotNull Function<BlockHolder, RegistryObject<Block>> blockSupplier,
+                                     @NotNull Function<BlockHolder, RegistryObject<Item>> itemSupplier,
                                      @NotNull Function<EntityBlockHolder, RegistryObject<BlockEntityType<?>>> entityTypeSupplier,
                                      @NotNull Function<MenuEntityBlockHolder, RegistryObject<MenuType<? extends AbstractContainerMenu>>> menuType) {
-            super(product, materialHolder, blockSupplier, entityTypeSupplier);
+            super(product, materialHolder, blockSupplier, itemSupplier, entityTypeSupplier);
             this.menuType = menuType.apply(this);
         }
 

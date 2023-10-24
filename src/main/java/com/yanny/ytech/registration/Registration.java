@@ -255,17 +255,17 @@ public class Registration {
 
     private static Holder.BlockHolder registerBlock(MaterialBlockType blockType, MaterialType material) {
         return switch (blockType.type) {
-            case BLOCK -> new Holder.BlockHolder(blockType, material, Registration::registerBlockItem);
-            case ENTITY_BLOCK -> new Holder.EntityBlockHolder(blockType, material, Registration::registerBlockItem, Registration::registerBlockEntity);
-            case MENU_BLOCK -> new Holder.MenuEntityBlockHolder(blockType, material, Registration::registerBlockItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
+            case BLOCK -> new Holder.BlockHolder(blockType, material, Registration::registerBlock, Registration::registerItem);
+            case ENTITY_BLOCK -> new Holder.EntityBlockHolder(blockType, material, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity);
+            case MENU_BLOCK -> new Holder.MenuEntityBlockHolder(blockType, material, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
         };
     }
 
     private static Holder.SimpleBlockHolder registerBlock(SimpleBlockType blockType) {
         return switch (blockType.type) {
-            case BLOCK -> new Holder.SimpleBlockHolder(blockType, Registration::registerBlockItem);
-            case ENTITY_BLOCK -> new Holder.EntitySimpleBlockHolder(blockType, Registration::registerBlockItem, Registration::registerBlockEntity);
-            case MENU_BLOCK -> new Holder.MenuEntitySimpleBlockHolder(blockType, Registration::registerBlockItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
+            case BLOCK -> new Holder.SimpleBlockHolder(blockType, Registration::registerBlock, Registration::registerItem);
+            case ENTITY_BLOCK -> new Holder.EntitySimpleBlockHolder(blockType, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity);
+            case MENU_BLOCK -> new Holder.MenuEntitySimpleBlockHolder(blockType, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
         };
     }
 
@@ -297,16 +297,20 @@ public class Registration {
         });
     }
 
-    private static RegistryObject<Block> registerBlockItem(Holder.BlockHolder holder) {
-        RegistryObject<Block> block = BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
-        ITEMS.register(holder.key, () -> new BlockItem(block.get(), new Item.Properties()));
-        return block;
+    private static RegistryObject<Block> registerBlock(Holder.BlockHolder holder) {
+        return BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
     }
 
-    private static RegistryObject<Block> registerBlockItem(Holder.SimpleBlockHolder holder) {
-        RegistryObject<Block> block = BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
-        ITEMS.register(holder.key, () -> new BlockItem(block.get(), new Item.Properties()));
-        return block;
+    private static RegistryObject<Item> registerItem(Holder.BlockHolder holder) {
+        return ITEMS.register(holder.key, () -> holder.object.getItem(holder));
+    }
+
+    private static RegistryObject<Block> registerBlock(Holder.SimpleBlockHolder holder) {
+        return BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
+    }
+
+    private static RegistryObject<Item> registerItem(Holder.SimpleBlockHolder holder) {
+        return ITEMS.register(holder.key, () -> holder.object.getItem(holder));
     }
 
     private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder) {

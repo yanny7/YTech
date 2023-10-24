@@ -230,5 +230,18 @@
   "item.ytech.water_clay_bucket": "Water Clay Bucket",
   "item.ytech.wooden_bolt": "Wooden Bolt",
   "item.ytech.wooden_plate": "Wooden Plate",
+  "text.ytech.hover.aqueduct1": "Can hold %smB of water",
+  "text.ytech.hover.aqueduct2": "Raining generates %smB every %s tick(s), if visible to sky",
+  "text.ytech.hover.aqueduct_fertilizer1": "Hydrates soil similar to water source and applies random bonemeal effect when fertilizer is provided",
+  "text.ytech.hover.aqueduct_fertilizer2": "Consumes %smB every %s tick(s)",
+  "text.ytech.hover.aqueduct_hydrator1": "Hydrates soil similar to water source",
+  "text.ytech.hover.aqueduct_hydrator2": "Consumes %smB every %s tick(s)",
+  "text.ytech.hover.aqueduct_valve1": "Provides water from water source to aqueduct network",
+  "text.ytech.hover.aqueduct_valve2": "Generates %smB every %s tick(s)",
+  "text.ytech.hover.chimney": "Increases temperature in smelter by %s °C",
+  "text.ytech.hover.drying_rack1": "Works faster in dry biomes and slower in wet biomes",
+  "text.ytech.hover.drying_rack2": "Doesn't work during rain",
+  "text.ytech.hover.grass_fibers": "Obtainable by breaking grass with",
+  "text.ytech.hover.primitive_smelter": "Increase temperature by adding chimneys",
   "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint"
 }

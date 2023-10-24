@@ -6,21 +6,26 @@ import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.Holder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +42,7 @@ import static com.yanny.ytech.registration.Registration.item;
 public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, ItemModelProvider>, IRecipe<Holder.SimpleItemHolder>, IItemTag<Holder.SimpleItemHolder> {
     GRASS_FIBERS("grass_fibers", "Grass Fibers",
             ItemTags.create(Utils.modLoc("grass_fibers")),
-            SimpleItemType::simpleItem,
+            SimpleItemType::grassFibersItem,
             () -> basicTexture(Utils.modItemLoc("grass_fibers")),
             SimpleItemType::basicItemModelProvider,
             IRecipe::noRecipe,
@@ -321,6 +326,20 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
 
     private static Item simpleItem() {
         return new Item(new Item.Properties());
+    }
+
+    private static Item grassFibersItem() {
+        return new Item(new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+                        .append(CommonComponents.SPACE)
+                        .append(item(SHARP_FLINT).asItem().getDefaultInstance().getDisplayName())
+                );
+            }
+        };
     }
 
     private static Item simpleFood(int nutrition, float saturation) {

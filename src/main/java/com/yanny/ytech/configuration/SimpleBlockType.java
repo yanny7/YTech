@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.block.*;
+import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
 import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
@@ -10,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -17,9 +19,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -43,12 +45,16 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.yanny.ytech.YTechMod.CONFIGURATION;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+
 public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, BlockStateProvider>, ILootable<Holder.SimpleBlockHolder, BlockLootSubProvider>,
         IRecipe<Holder.SimpleBlockHolder>, IMenu, IItemTag<Holder.SimpleBlockHolder>, IBlockTag<Holder.SimpleBlockHolder> {
     BRONZE_ANVIL(HolderType.ENTITY_BLOCK, "bronze_anvil", "Bronze Anvil",
             ItemTags.ANVIL,
             BlockTags.ANVIL,
             BronzeAnvilBlock::new,
+            SimpleBlockType::simpleBlockItem,
             BronzeAnvilBlock::textureHolder,
             BronzeAnvilBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -59,6 +65,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("millstones")),
             BlockTags.create(Utils.modLoc("millstones")),
             MillstoneBlock::new,
+            SimpleBlockType::simpleBlockItem,
             MillstoneBlock::textureHolder,
             MillstoneBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -69,6 +76,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("primitive_smelters")),
             BlockTags.create(Utils.modLoc("primitive_smelters")),
             PrimitiveSmelterBlock::new,
+            (holder) -> SimpleBlockType.simpleDescrBlockItem(holder, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))),
             PrimitiveSmelterBlock::textureHolder,
             PrimitiveSmelterBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -80,6 +88,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("primitive_alloy_smelters")),
             BlockTags.create(Utils.modLoc("primitive_alloy_smelters")),
             PrimitiveAlloySmelterBlock::new,
+            (holder) -> SimpleBlockType.simpleDescrBlockItem(holder, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))),
             PrimitiveAlloySmelterBlock::textureHolder,
             PrimitiveAlloySmelterBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -91,6 +100,8 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("brick_chimneys")),
             BlockTags.create(Utils.modLoc("brick_chimneys")),
             BrickChimneyBlock::new,
+            (holder) -> SimpleBlockType.simpleDescrBlockItem(holder,
+                    List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))),
             BrickChimneyBlock::getTexture,
             BrickChimneyBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -101,6 +112,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("reinforced_bricks")),
             BlockTags.create(Utils.modLoc("reinforced_bricks")),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.BRICKS)),
+            SimpleBlockType::simpleBlockItem,
             () -> bottomTopTexture(Utils.modBlockLoc("reinforced_bricks"), Utils.blockLoc(Blocks.BRICKS), Utils.blockLoc(Blocks.BRICKS)),
             SimpleBlockType::bottomTopBlockStateProvider,
             ILootable::dropsSelfProvider,
@@ -111,6 +123,8 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("reinforced_brick_chimneys")),
             BlockTags.create(Utils.modLoc("reinforced_brick_chimneys")),
             ReinforcedBrickChimneyBlock::new,
+            (holder) -> SimpleBlockType.simpleDescrBlockItem(holder,
+                    List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))),
             ReinforcedBrickChimneyBlock::getTexture,
             ReinforcedBrickChimneyBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -121,6 +135,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("terracotta_bricks")),
             BlockTags.create(Utils.modLoc("terracotta_bricks")),
             (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.BRICKS)),
+            SimpleBlockType::simpleBlockItem,
             () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
             SimpleBlockType::simpleBlockStateProvider,
             ILootable::dropsSelfProvider,
@@ -131,6 +146,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.SLABS,
             BlockTags.SLABS,
             (holder) -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BRICK_SLAB)),
+            SimpleBlockType::simpleBlockItem,
             () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
             SimpleBlockType::registerSlabBlockState,
             SimpleBlockType::registerSlabLootTable,
@@ -141,6 +157,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.STAIRS,
             BlockTags.STAIRS,
             (holder) -> new StairBlock(() -> Registration.block(TERRACOTTA_BRICKS).defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BRICK_STAIRS)),
+            SimpleBlockType::simpleBlockItem,
             () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
             SimpleBlockType::registerStairsBlockState,
             ILootable::dropsSelfProvider,
@@ -151,6 +168,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("aqueducts")),
             BlockTags.create(Utils.modLoc("aqueducts")),
             holder -> new AqueductBlock(),
+            SimpleBlockType::aqueductBlockItem,
             AqueductBlock::getTexture,
             AqueductBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -161,6 +179,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("aqueduct_valves")),
             BlockTags.create(Utils.modLoc("aqueduct_valves")),
             holder -> new AqueductValveBlock(),
+            SimpleBlockType::aqueductValveBlockItem,
             AqueductValveBlock::getTexture,
             AqueductValveBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -171,6 +190,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("aqueduct_hydrators")),
             BlockTags.create(Utils.modLoc("aqueduct_hydrators")),
             AqueductHydratorBlock::new,
+            SimpleBlockType::aqueductHydratorBlockItem,
             AqueductHydratorBlock::getTexture,
             AqueductHydratorBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -181,6 +201,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("aqueduct_fertilizers")),
             BlockTags.create(Utils.modLoc("aqueduct_fertilizers")),
             AqueductFertilizerBlock::new,
+            SimpleBlockType::aqueductFertilizerBlockItem,
             AqueductFertilizerBlock::getTexture,
             AqueductFertilizerBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -192,6 +213,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
             FurnaceBlock::new,
+            SimpleBlockType::simpleBlockItem,
             () -> MachineBlock.getTexture("stone", "furnace"),
             MachineBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -204,6 +226,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
             FurnaceBlock::new,
+            SimpleBlockType::simpleBlockItem,
             () -> MachineBlock.getTexture("steam", "furnace"),
             MachineBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -216,6 +239,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("crushers")),
             BlockTags.create(Utils.modLoc("crushers")),
             StoneCrusherBlock::new,
+            SimpleBlockType::simpleBlockItem,
             () -> MachineBlock.getTexture("stone", "crusher"),
             MachineBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -228,6 +252,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("crushers")),
             BlockTags.create(Utils.modLoc("crushers")),
             CrusherBlock::new,
+            SimpleBlockType::simpleBlockItem,
             () -> MachineBlock.getTexture("steam", "crusher"),
             MachineBlock::registerModel,
             ILootable::dropsSelfProvider,
@@ -244,6 +269,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     @NotNull public final TagKey<Item> itemTag;
     @NotNull public final TagKey<Block> blockTag;
     @NotNull private final Function<Holder.SimpleBlockHolder, Block> blockGetter;
+    @NotNull private final Function<Holder.SimpleBlockHolder, Item> itemGetter;
     @NotNull private final HashMap<Integer, Integer> tintColors;
     @NotNull private final ResourceLocation[] textures;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter;
@@ -253,8 +279,11 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockTagsProvider> blockTagsGetter;
     @Nullable private final IAbstractMenuGetter menuGetter;
 
-    SimpleBlockType(@NotNull HolderType type, @NotNull String key, @NotNull String name, @NotNull TagKey<Item> itemTag, @NotNull TagKey<Block> blockTag,
-                    @NotNull Function<Holder.SimpleBlockHolder, Block> blockGetter, @NotNull Supplier<TextureHolder[]> textureGetter,
+    SimpleBlockType(@NotNull HolderType type, @NotNull String key, @NotNull String name,
+                    @NotNull TagKey<Item> itemTag, @NotNull TagKey<Block> blockTag,
+                    @NotNull Function<Holder.SimpleBlockHolder, Block> blockGetter,
+                    @NotNull Function<Holder.SimpleBlockHolder, Item> itemGetter,
+                    @NotNull Supplier<TextureHolder[]> textureGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockLootSubProvider> lootGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, Consumer<FinishedRecipe>> recipeGetter,
@@ -264,6 +293,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         this.key = key;
         this.name = name;
         this.blockGetter = blockGetter;
+        this.itemGetter = itemGetter;
         this.itemTag = itemTag;
         this.blockTag = blockTag;
         this.modelGetter = modelGetter;
@@ -287,8 +317,11 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         this.textures = resources.toArray(ResourceLocation[]::new);
     }
 
-    SimpleBlockType(@NotNull HolderType type, @NotNull String key, @NotNull String name, @NotNull TagKey<Item> itemTag, @NotNull TagKey<Block> blockTag,
-                    @NotNull Function<Holder.SimpleBlockHolder, Block> blockGetter, @NotNull Supplier<TextureHolder[]> textureGetter,
+    SimpleBlockType(@NotNull HolderType type, @NotNull String key, @NotNull String name,
+                    @NotNull TagKey<Item> itemTag, @NotNull TagKey<Block> blockTag,
+                    @NotNull Function<Holder.SimpleBlockHolder, Block> blockGetter,
+                    @NotNull Function<Holder.SimpleBlockHolder, Item> itemGetter,
+                    @NotNull Supplier<TextureHolder[]> textureGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockLootSubProvider> lootGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, Consumer<FinishedRecipe>> recipeGetter,
@@ -301,6 +334,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         this.itemTag = itemTag;
         this.blockTag = blockTag;
         this.blockGetter = blockGetter;
+        this.itemGetter = itemGetter;
         this.modelGetter = modelGetter;
         this.lootGetter = lootGetter;
         this.recipeGetter = recipeGetter;
@@ -372,6 +406,75 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
 
     public Block getBlock(@NotNull Holder.SimpleBlockHolder holder) {
         return blockGetter.apply(holder);
+    }
+
+    public Item getItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return itemGetter.apply(holder);
+    }
+
+    private static Item simpleBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties());
+    }
+
+    private static Item simpleDescrBlockItem(@NotNull Holder.SimpleBlockHolder holder, @NotNull List<Component> description) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.addAll(description);
+            }
+        };
+    }
+
+    private static Item aqueductBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct1", CONFIGURATION.getBaseFluidStoragePerBlock()).withStyle(DARK_GRAY));
+
+                if (CONFIGURATION.shouldRainingFillAqueduct()) {
+                    tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct2",
+                            CONFIGURATION.getRainingFillAmount(), CONFIGURATION.getRainingFillPerNthTick()).withStyle(DARK_GRAY));
+                }
+            }
+        };
+    }
+
+    private static Item aqueductValveBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_valve1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_valve2",
+                        CONFIGURATION.getValveFillAmount(), CONFIGURATION.getValveFillPerNthTick()).withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item aqueductHydratorBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_hydrator1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_hydrator2",
+                        CONFIGURATION.getHydratorDrainAmount(), CONFIGURATION.getHydratorDrainPerNthTick()).withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item aqueductFertilizerBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_fertilizer1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_fertilizer2",
+                        CONFIGURATION.getHydratorDrainAmount(), CONFIGURATION.getHydratorDrainPerNthTick()).withStyle(DARK_GRAY));
+            }
+        };
     }
 
     private static void bottomTopBlockStateProvider(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {

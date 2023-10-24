@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEntity {
+    public static final int TEMP_PER_CHIMNEY = 50;
     private static final RandomSource RANDOM = RandomSource.create(42L);
     private static final String TAG_ITEMS = "items";
     private static final String TAG_SMELTING_TIME = "smeltingTime";
@@ -34,7 +35,6 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     private static final String TAG_NR_CHIMNEY = "nrChimney";
     private static final int BASE_MAX_TEMPERATURE = 900;
     private static final int BASE_MIN_TEMPERATURE = 20;
-    private static final int TEMP_PER_CHIMNEY = 50;
 
     private int nrChimney = -1;
     private int burningTime = 0;
