@@ -13,7 +13,7 @@ Currently mod covers
 
 All bugs report on [github](https://github.com/yanny7/ytech).
 
-Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/c2knc97j):
+Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/HauMDpbkNN):
 
 > **Hints**
 > - You can't mine wood and dirt without correct tool
