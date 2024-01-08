@@ -16,7 +16,7 @@ public class MaterialPickaxeItem extends PickaxeItem {
         super(holder.material.getTier(), 1, -2.8f, new Properties());
     }
 
-    public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         switch (holder.material) {
             case ANTLER -> ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, holder.item.get())
                             .requires(SimpleItemType.ANTLER.itemTag)

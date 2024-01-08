@@ -1,8 +1,9 @@
 package com.yanny.ytech.registration;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Supplier;
 
 public interface IEntityBlockHolder {
-    RegistryObject<BlockEntityType<?>> getEntityTypeRegistry();
+    Supplier<BlockEntityType<?>> getEntityTypeRegistry();
 }

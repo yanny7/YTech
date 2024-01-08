@@ -1,19 +1,21 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +25,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingredient tool, ItemStack result) implements Recipe<Container> {
+public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<HammeringRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
@@ -58,12 +62,6 @@ public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingred
 
     @NotNull
     @Override
-    public ResourceLocation getId() {
-        return id;
-    }
-
-    @NotNull
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
@@ -75,21 +73,32 @@ public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingred
     }
 
     public static class Serializer implements RecipeSerializer<HammeringRecipe> {
-        @NotNull
+        private static final Codec<HammeringRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((hammeringRecipe) -> hammeringRecipe.ingredient),
+                Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter((hammeringRecipe) -> hammeringRecipe.tool),
+                ExtraCodecs.either(BuiltInRegistries.ITEM.byNameCodec(), CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC)
+                        .xmap((either) -> either.map(ItemStack::new, Function.identity()), (stack) -> {
+                            if (stack.getCount() != 1) {
+                                return Either.right(stack);
+                            } else {
+                                return ItemStack.matches(stack, new ItemStack(stack.getItem())) ? Either.left(stack.getItem()) : Either.right(stack);
+                            }
+                        }).fieldOf("result").forGetter((hammeringRecipe) -> hammeringRecipe.result)
+        ).apply(recipe, HammeringRecipe::new));
+
         @Override
-        public HammeringRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
-            Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
-            Ingredient tool = Ingredient.fromJson(serializedRecipe.get("tool"), true);
-            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            return new HammeringRecipe(recipeId, ingredient, tool, result);
+        @NotNull
+        public Codec<HammeringRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public @Nullable HammeringRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        @NotNull
+        public HammeringRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             Ingredient tool = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            return new HammeringRecipe(recipeId, ingredient, tool, result);
+            return new HammeringRecipe(ingredient, tool, result);
         }
 
         @Override
@@ -101,11 +110,11 @@ public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingred
     }
 
     public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, @NotNull Ingredient tool, @NotNull Item result,
-                         @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
+                         @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
-            json.add("ingredient", ingredient.toJson());
-            json.add("tool", tool.toJson());
+            json.add("ingredient", ingredient.toJson(false));
+            json.add("tool", tool.toJson(false));
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
@@ -114,26 +123,14 @@ public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingred
 
         @NotNull
         @Override
-        public ResourceLocation getId() {
-            return id;
+        public AdvancementHolder advancement() {
+            return advancementHolder;
         }
 
         @NotNull
         @Override
-        public RecipeSerializer<?> getType() {
+        public RecipeSerializer<?> type() {
             return SERIALIZER;
-        }
-
-        @NotNull
-        @Override
-        public JsonObject serializeAdvancement() {
-            return advancement.serializeToJson();
-        }
-
-        @NotNull
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return advancementId;
         }
     }
 
@@ -141,7 +138,7 @@ public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingred
         private final Ingredient ingredient;
         private Ingredient tool = Ingredient.EMPTY;
         private final Item result;
-        private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
+        private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
         Builder(@NotNull Ingredient ingredient, @NotNull Item result) {
             this.ingredient = ingredient;
@@ -163,8 +160,8 @@ public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingred
 
         @NotNull
         @Override
-        public Builder unlockedBy(@NotNull String criterionName, @NotNull CriterionTriggerInstance criterionTrigger) {
-            this.advancement.addCriterion(criterionName, criterionTrigger);
+        public Builder unlockedBy(@NotNull String criterionName, @NotNull Criterion criterionTrigger) {
+            this.criteria.put(criterionName, criterionTrigger);
             return this;
         }
 
@@ -181,16 +178,17 @@ public record HammeringRecipe(ResourceLocation id, Ingredient ingredient, Ingred
         }
 
         @Override
-        public void save(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
             ensureValid(recipeId);
-            advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
-                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new HammeringRecipe.Result(recipeId, ingredient, tool, result, advancement, recipeId.withPrefix("recipes/hammering/")));
+            Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
+                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
+            this.criteria.forEach(builder::addCriterion);
+            finishedRecipeConsumer.accept(new HammeringRecipe.Result(recipeId, ingredient, tool, result, builder.build(recipeId.withPrefix("recipes/hammering/"))));
         }
 
         //Makes sure that this recipe is valid and obtainable.
         private void ensureValid(@NotNull ResourceLocation id) {
-            if (this.advancement.getCriteria().isEmpty()) {
+            if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }
         }

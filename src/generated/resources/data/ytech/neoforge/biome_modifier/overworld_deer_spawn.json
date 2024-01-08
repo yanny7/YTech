@@ -1,5 +1,5 @@
 {
-  "type": "forge:add_spawns",
+  "type": "neoforge:add_spawns",
   "biomes": "#ytech:deer_native_biome",
   "spawners": {
     "type": "ytech:deer",

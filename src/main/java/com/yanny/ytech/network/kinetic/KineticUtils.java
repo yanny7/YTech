@@ -12,16 +12,15 @@ import com.yanny.ytech.network.generic.server.ServerPropagator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.fml.DistExecutor;
+import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class KineticUtils {
@@ -57,8 +56,7 @@ public class KineticUtils {
         public KineticClientPropagator() {
             super("kinetic");
         }
-        public void onSyncLevel(@NotNull MyLevelSyncMessage msg, @NotNull Supplier<NetworkEvent.Context> contextSupplier) {
-            NetworkEvent.Context context = contextSupplier.get();
+        public void onSyncLevel(@NotNull MyLevelSyncMessage msg, @NotNull NetworkEvent.Context context) {
             context.enqueueWork(() -> syncLevel(msg.networkMap.entrySet().stream().map((entry) -> {
                 Payload payload = entry.getValue();
                 return new KineticClientNetwork(entry.getKey(), payload.stressCapacity, payload.stress, payload.rotationDirection);
@@ -66,8 +64,7 @@ public class KineticUtils {
             context.setPacketHandled(true);
         }
 
-        public void onNetworkAddedOrUpdated(@NotNull MyNetworkUpdatedMessage msg, @NotNull Supplier<NetworkEvent.Context> contextSupplier) {
-            NetworkEvent.Context context = contextSupplier.get();
+        public void onNetworkAddedOrUpdated(@NotNull MyNetworkUpdatedMessage msg, @NotNull NetworkEvent.Context context) {
             context.enqueueWork(() -> {
                 Payload payload = msg.payload;
                 addOrUpdateNetwork(new KineticClientNetwork(payload.networkId, payload.stressCapacity, payload.stress, payload.rotationDirection));
@@ -75,8 +72,7 @@ public class KineticUtils {
             context.setPacketHandled(true);
         }
 
-        public void onNetworkRemoved(@NotNull MyNetworkRemoveMessage msg, @NotNull Supplier<NetworkEvent.Context> contextSupplier) {
-            NetworkEvent.Context context = contextSupplier.get();
+        public void onNetworkRemoved(@NotNull MyNetworkRemoveMessage msg, @NotNull NetworkEvent.Context context) {
             context.enqueueWork(() -> deletedNetwork(msg.networkId));
             context.setPacketHandled(true);
         }

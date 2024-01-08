@@ -28,11 +28,11 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -274,7 +274,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     @NotNull private final ResourceLocation[] textures;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockLootSubProvider> lootGetter;
-    @NotNull private final BiConsumer<Holder.SimpleBlockHolder, Consumer<FinishedRecipe>> recipeGetter;
+    @NotNull private final BiConsumer<Holder.SimpleBlockHolder, RecipeOutput> recipeGetter;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, ItemTagsProvider> itemTagsGetter;
     @NotNull private final BiConsumer<Holder.SimpleBlockHolder, BlockTagsProvider> blockTagsGetter;
     @Nullable private final IAbstractMenuGetter menuGetter;
@@ -286,7 +286,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                     @NotNull Supplier<TextureHolder[]> textureGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockLootSubProvider> lootGetter,
-                    @NotNull BiConsumer<Holder.SimpleBlockHolder, Consumer<FinishedRecipe>> recipeGetter,
+                    @NotNull BiConsumer<Holder.SimpleBlockHolder, RecipeOutput> recipeGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, ItemTagsProvider> itemTagsGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockTagsProvider> blockTagsGetter) {
         this.type = type;
@@ -324,7 +324,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                     @NotNull Supplier<TextureHolder[]> textureGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockStateProvider> modelGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockLootSubProvider> lootGetter,
-                    @NotNull BiConsumer<Holder.SimpleBlockHolder, Consumer<FinishedRecipe>> recipeGetter,
+                    @NotNull BiConsumer<Holder.SimpleBlockHolder, RecipeOutput> recipeGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, ItemTagsProvider> itemTagsGetter,
                     @NotNull BiConsumer<Holder.SimpleBlockHolder, BlockTagsProvider> blockTagsGetter,
                     @NotNull IAbstractMenuGetter menuGetter) {
@@ -367,7 +367,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     }
 
     @Override
-    public void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
         recipeGetter.accept(holder, recipeConsumer);
     }
 
@@ -542,7 +542,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         provider.tag(BlockTags.NEEDS_STONE_TOOL).add(holder.block.get());
     }
 
-    private static void registerReinforcedBricksRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerReinforcedBricksRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .define('B', Items.BRICKS)
                 .define('P', Registration.item(MaterialItemType.PLATE, MaterialType.COPPER))
@@ -554,7 +554,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerTerracottaBricksRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerTerracottaBricksRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .define('B', Items.TERRACOTTA)
                 .pattern("BB")
@@ -563,7 +563,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerTerracottaBrickSlabRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerTerracottaBrickSlabRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 6)
                 .define('B', TERRACOTTA_BRICKS.itemTag)
                 .pattern("BBB")
@@ -574,7 +574,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_stonecutting"));
     }
 
-    private static void registerTerracottaBrickStairsRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerTerracottaBrickStairsRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 4)
                 .define('B', TERRACOTTA_BRICKS.itemTag)
                 .pattern("B  ")

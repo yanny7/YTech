@@ -20,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_raw_hide",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_raw_hide"
     ]
   ],
   "rewards": {

@@ -8,14 +8,14 @@ import com.yanny.ytech.registration.Registration;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
-import net.minecraftforge.common.data.GlobalLootModifierProvider;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 
 import java.util.Objects;
 
@@ -46,7 +46,7 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
     }
 
     private void addReplaceLeatherByRawHide(EntityType<?> entityType) {
-        add(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType)).getPath() + "_replace_leather_by_raw_hide", new ReplaceItemModifier(
+        add(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(entityType)).getPath() + "_replace_leather_by_raw_hide", new ReplaceItemModifier(
                 new LootItemCondition[] {
                         LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
                                 EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityType)).build()).build()

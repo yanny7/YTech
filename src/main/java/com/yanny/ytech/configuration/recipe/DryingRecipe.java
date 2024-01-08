@@ -1,19 +1,21 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +25,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryingTime, ItemStack result) implements Recipe<Container> {
+public record DryingRecipe(Ingredient ingredient, int dryingTime, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<DryingRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
@@ -58,12 +62,6 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
 
     @NotNull
     @Override
-    public ResourceLocation getId() {
-        return id;
-    }
-
-    @NotNull
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
@@ -75,21 +73,32 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
     }
 
     public static class Serializer implements RecipeSerializer<DryingRecipe> {
-        @NotNull
+        private static final Codec<DryingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((dryingRecipe) -> dryingRecipe.ingredient),
+                Codec.INT.fieldOf("dryingTime").forGetter((dryingRecipe) -> dryingRecipe.dryingTime),
+                ExtraCodecs.either(BuiltInRegistries.ITEM.byNameCodec(), CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC)
+                        .xmap((either) -> either.map(ItemStack::new, Function.identity()), (stack) -> {
+                            if (stack.getCount() != 1) {
+                                return Either.right(stack);
+                            } else {
+                                return ItemStack.matches(stack, new ItemStack(stack.getItem())) ? Either.left(stack.getItem()) : Either.right(stack);
+                            }
+                        }).fieldOf("result").forGetter((dryingRecipe) -> dryingRecipe.result)
+        ).apply(recipe, DryingRecipe::new));
+
         @Override
-        public DryingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
-            Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
-            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            int dryingTime = GsonHelper.getAsInt(serializedRecipe, "dryingTime");
-            return new DryingRecipe(recipeId, ingredient, dryingTime, result);
+        @NotNull
+        public Codec<DryingRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public @Nullable DryingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        @NotNull
+        public DryingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
             int dryingTime = buffer.readInt();
-            return new DryingRecipe(recipeId, ingredient, dryingTime, result);
+            return new DryingRecipe(ingredient, dryingTime, result);
         }
 
         @Override
@@ -101,10 +110,10 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
     }
 
     public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int dryingTime, @NotNull Item result,
-                         @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
+                         @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
-            json.add("ingredient", ingredient.toJson());
+            json.add("ingredient", ingredient.toJson(false));
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
@@ -115,26 +124,14 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
 
         @NotNull
         @Override
-        public ResourceLocation getId() {
-            return id;
+        public AdvancementHolder advancement() {
+            return advancementHolder;
         }
 
         @NotNull
         @Override
-        public RecipeSerializer<?> getType() {
+        public RecipeSerializer<?> type() {
             return SERIALIZER;
-        }
-
-        @NotNull
-        @Override
-        public JsonObject serializeAdvancement() {
-            return advancement.serializeToJson();
-        }
-
-        @NotNull
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return advancementId;
         }
     }
 
@@ -142,7 +139,7 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
         private final Ingredient ingredient;
         private final int dryingTime;
         private final Item result;
-        private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
+        private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
         Builder(@NotNull Ingredient ingredient, int dryingTime, @NotNull Item result) {
             this.ingredient = ingredient;
@@ -160,8 +157,8 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
 
         @NotNull
         @Override
-        public RecipeBuilder unlockedBy(@NotNull String criterionName, @NotNull CriterionTriggerInstance criterionTrigger) {
-            this.advancement.addCriterion(criterionName, criterionTrigger);
+        public RecipeBuilder unlockedBy(@NotNull String criterionName, @NotNull Criterion criterionTrigger) {
+            this.criteria.put(criterionName, criterionTrigger);
             return this;
         }
 
@@ -178,16 +175,17 @@ public record DryingRecipe(ResourceLocation id, Ingredient ingredient, int dryin
         }
 
         @Override
-        public void save(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
             ensureValid(recipeId);
-            advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
-                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new DryingRecipe.Result(recipeId, ingredient, dryingTime, result, advancement, recipeId.withPrefix("recipes/drying/")));
+            Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
+                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
+            this.criteria.forEach(builder::addCriterion);
+            finishedRecipeConsumer.accept(new DryingRecipe.Result(recipeId, ingredient, dryingTime, result, builder.build(recipeId.withPrefix("recipes/drying/"))));
         }
 
         //Makes sure that this recipe is valid and obtainable.
         private void ensureValid(@NotNull ResourceLocation id) {
-            if (this.advancement.getCriteria().isEmpty()) {
+            if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }
         }

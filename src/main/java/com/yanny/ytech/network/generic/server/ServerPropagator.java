@@ -10,7 +10,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -58,8 +59,10 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         ResourceLocation id = NetworkUtils.getLevelId(level);
 
         LOGGER.debug("[{}][onLevelLoad] Preparing propagators for {}", networkName, id);
-        levelMap.put(id, level.getDataStorage().computeIfAbsent((tag) -> new ServerLevelData<>(tag, id, level.getServer(), networkFactory, networkName),
-                () -> new ServerLevelData<>(id, level.getServer(), networkFactory, networkName), YTechMod.MOD_ID + "_" + networkName));
+        levelMap.put(id, level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(
+                () -> new ServerLevelData<>(id, level.getServer(), networkFactory, networkName),
+                (tag) -> new ServerLevelData<>(tag, id, level.getServer(), networkFactory, networkName)
+        ), YTechMod.MOD_ID + "_" + networkName));
         LOGGER.debug("[{}][onLevelLoad] Prepared propagators for {}", networkName, id);
     }
 

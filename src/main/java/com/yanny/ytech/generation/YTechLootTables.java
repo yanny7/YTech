@@ -45,8 +45,8 @@ class YTechLootTables extends LootTableProvider {
         @Override
         protected Iterable<Block> getKnownBlocks() {
             return Stream.of(
-                    GeneralUtils.mapToStream(HOLDER.blocks()).flatMap(e -> e.block.stream()),
-                    HOLDER.simpleBlocks().values().stream().flatMap(e -> e.block.stream())
+                    GeneralUtils.mapToStream(HOLDER.blocks()).map(e -> e.block.get()),
+                    HOLDER.simpleBlocks().values().stream().map(e -> e.block.get())
             ).flatMap(i -> i).toList();
         }
     }

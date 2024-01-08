@@ -1,5 +1,5 @@
 {
-  "type": "forge:add_features",
+  "type": "neoforge:add_features",
   "biomes": "#minecraft:is_river",
   "features": [
     "ytech:gold_sand_deposit",

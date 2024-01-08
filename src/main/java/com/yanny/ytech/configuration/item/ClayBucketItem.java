@@ -25,7 +25,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -39,7 +39,7 @@ public class ClayBucketItem extends BucketItem {
     public InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
         BlockHitResult blockHitResult = getPlayerPOVHitResult(level, player, getFluid() == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
-        InteractionResultHolder<ItemStack> interactionResult = ForgeEventFactory.onBucketUse(player, level, itemInHand, blockHitResult);
+        InteractionResultHolder<ItemStack> interactionResult = EventHooks.onBucketUse(player, level, itemInHand, blockHitResult);
 
         if (interactionResult != null) {
             return interactionResult;
@@ -68,7 +68,7 @@ public class ClayBucketItem extends BucketItem {
                     }
 
                     if (blockState.getBlock() instanceof BucketPickup bucketPickup) {
-                        ItemStack pickedItemStack = bucketPickup.pickupBlock(level, blockPos, blockState);
+                        ItemStack pickedItemStack = bucketPickup.pickupBlock(player, level, blockPos, blockState);
 
                         if (!pickedItemStack.isEmpty()) {
                             if (pickedItemStack.is(Items.WATER_BUCKET)) {
@@ -96,7 +96,7 @@ public class ClayBucketItem extends BucketItem {
                     return InteractionResultHolder.fail(itemInHand);
                 } else {
                     BlockState blockState = level.getBlockState(blockPos);
-                    BlockPos placePos = canBlockContainFluid(level, blockPos, blockState) ? blockPos : relativePos;
+                    BlockPos placePos = canBlockContainFluid(player, level, blockPos, blockState) ? blockPos : relativePos;
 
                     if (this.emptyContents(player, level, placePos, blockHitResult, itemInHand)) {
                         this.checkExtraContent(player, level, itemInHand, placePos);

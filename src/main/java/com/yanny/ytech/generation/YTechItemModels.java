@@ -3,8 +3,8 @@ package com.yanny.ytech.generation;
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 

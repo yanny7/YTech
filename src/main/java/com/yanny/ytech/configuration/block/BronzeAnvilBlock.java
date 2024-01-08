@@ -6,8 +6,8 @@ import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -32,14 +32,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
@@ -221,7 +220,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
         provider.itemModels().getBuilder(holder.key).parent(model);
     }
 
-    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('B', MaterialBlockType.STORAGE_BLOCK.itemTag.get(MaterialType.BRONZE))
                 .define('I', MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE))

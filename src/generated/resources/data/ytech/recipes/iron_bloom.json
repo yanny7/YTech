@@ -1,12 +1,10 @@
 {
   "type": "ytech:alloying",
   "ingredient1": {
-    "type": "ytech:tag_stack",
     "count": 1,
     "tag": "forge:crushed_materials/iron"
   },
   "ingredient2": {
-    "type": "ytech:tag_stack",
     "item": "minecraft:charcoal"
   },
   "minTemp": 1250,

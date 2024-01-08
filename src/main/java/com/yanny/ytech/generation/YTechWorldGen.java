@@ -27,9 +27,11 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockS
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.common.world.BiomeModifiers;
+import net.neoforged.neoforge.common.world.NoneBiomeModifier;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -95,19 +97,19 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                     bootstrap.register(CASSITERITE_SAND_DEPOSIT, rareDepositPlacement(configured, CASSITERITE_SAND_DEPOSIT_FEATURE, 2));
                     bootstrap.register(CASSITERITE_GRAVEL_DEPOSIT, rareDepositPlacement(configured, CASSITERITE_GRAVEL_DEPOSIT_FEATURE, 3));
                 })
-                .add(ForgeRegistries.Keys.BIOME_MODIFIERS, bootstrap -> {
+                .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, bootstrap -> {
                     final HolderGetter<Biome> biomeReg = bootstrap.lookup(Registries.BIOME);
                     final HolderGetter<PlacedFeature> featureReg = bootstrap.lookup(Registries.PLACED_FEATURE);
 
-                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_deer_spawn")),
-                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                    bootstrap.register(ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_deer_spawn")),
+                            new BiomeModifiers.AddSpawnsBiomeModifier(
                                     biomeReg.getOrThrow(AnimalEntityType.DEER.biomeTag),
                                     List.of(new MobSpawnSettings.SpawnerData(entityType(AnimalEntityType.DEER), 10, 4, 8))
                             )
                     );
 
-                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_ore_generation")),
-                            new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+                    bootstrap.register(ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_ore_generation")),
+                            new BiomeModifiers.AddFeaturesBiomeModifier(
                                     biomeReg.getOrThrow(BiomeTags.IS_OVERWORLD),
                                     HolderSet.direct(
                                             featureReg.getOrThrow(CASSITERITE_ORE_UPPER),
@@ -118,8 +120,8 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                                     GenerationStep.Decoration.UNDERGROUND_ORES
                             )
                     );
-                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("river_ore_generation")),
-                            new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+                    bootstrap.register(ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("river_ore_generation")),
+                            new BiomeModifiers.AddFeaturesBiomeModifier(
                                     biomeReg.getOrThrow(BiomeTags.IS_RIVER),
                                     HolderSet.direct(
                                             featureReg.getOrThrow(GOLD_SAND_DEPOSIT),

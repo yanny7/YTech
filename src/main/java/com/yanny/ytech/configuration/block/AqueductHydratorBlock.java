@@ -6,8 +6,8 @@ import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -17,15 +17,14 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class AqueductHydratorBlock extends AqueductConsumerBlock {
     public AqueductHydratorBlock(Holder.SimpleBlockHolder holder) {
@@ -135,7 +134,7 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
         provider.itemModels().getBuilder(holder.key).parent(inventory);
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
                 .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.COPPER))

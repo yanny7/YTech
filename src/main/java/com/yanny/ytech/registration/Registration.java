@@ -7,7 +7,7 @@ import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.recipe.*;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -24,17 +24,17 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.common.TierSortingRegistry;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.common.TierSortingRegistry;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -46,19 +46,19 @@ import java.util.function.Supplier;
 public class Registration {
     public static final RegistrationHolder HOLDER = new RegistrationHolder();
 
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
-    private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, YTechMod.MOD_ID);
-    private static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, YTechMod.MOD_ID);
-    private static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, YTechMod.MOD_ID);
-    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, YTechMod.MOD_ID);
-    private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, YTechMod.MOD_ID);
-    private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> GLM_CODECS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, YTechMod.MOD_ID);
-    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, YTechMod.MOD_ID);
-    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, YTechMod.MOD_ID);
-    private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, YTechMod.MOD_ID);
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(BuiltInRegistries.BLOCK, YTechMod.MOD_ID);
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, YTechMod.MOD_ID);
+    private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(BuiltInRegistries.FLUID, YTechMod.MOD_ID);
+    private static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, YTechMod.MOD_ID);
+    private static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, YTechMod.MOD_ID);
+    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, YTechMod.MOD_ID);
+    private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, YTechMod.MOD_ID);
+    private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> GLM_CODECS = DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, YTechMod.MOD_ID);
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, YTechMod.MOD_ID);
+    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, YTechMod.MOD_ID);
+    private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, YTechMod.MOD_ID);
 
-    private static final RegistryObject<CreativeModeTab> TAB = registerCreativeTab();
+    private static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = registerCreativeTab();
 
     static {
         for (int i = 0; i < MaterialType.TIERS.size(); i++) {
@@ -141,9 +141,9 @@ public class Registration {
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == TAB.getKey()) {
-            GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> event.accept(holder.item));
-            GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
-            GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
+            GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> event.accept(holder.item.get()));
+            GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block.get()));
+            GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket.get()));
             HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
             HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
             HOLDER.entities().values().forEach(h -> event.accept(h.spawnEgg.get()));
@@ -277,11 +277,11 @@ public class Registration {
         return new Holder.AnimalEntityHolder(type, Registration::registerEntityType, Registration::registerSpawnEgg);
     }
 
-    private static RegistryObject<Item> registerSpawnEgg(Holder.AnimalEntityHolder holder) {
+    private static Supplier<Item> registerSpawnEgg(Holder.AnimalEntityHolder holder) {
         return ITEMS.register(holder.key + "_spawn_egg", () -> holder.object.getSpawnEgg(holder));
     }
 
-    private static RegistryObject<EntityType<? extends Entity>> registerSimpleEntityType(Holder.SimpleEntityHolder holder) {
+    private static Supplier<EntityType<? extends Entity>> registerSimpleEntityType(Holder.SimpleEntityHolder holder) {
         return ENTITY_TYPES.register(holder.key, () -> {
             EntityType.Builder<Entity> builder = EntityType.Builder.of(holder.object::getEntity, MobCategory.MISC);
             holder.object.entityTypeBuilder.accept(builder);
@@ -289,7 +289,7 @@ public class Registration {
         });
     }
 
-    private static RegistryObject<EntityType<Animal>> registerEntityType(Holder.AnimalEntityHolder holder) {
+    private static Supplier<EntityType<Animal>> registerEntityType(Holder.AnimalEntityHolder holder) {
         return ENTITY_TYPES.register(holder.key, () -> {
             EntityType.Builder<Animal> builder = EntityType.Builder.of((entityType, level) -> holder.object.getEntity(holder, entityType, level), MobCategory.CREATURE);
             holder.object.entityTypeBuilder.accept(builder);
@@ -297,38 +297,38 @@ public class Registration {
         });
     }
 
-    private static RegistryObject<Block> registerBlock(Holder.BlockHolder holder) {
+    private static Supplier<Block> registerBlock(Holder.BlockHolder holder) {
         return BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
     }
 
-    private static RegistryObject<Item> registerItem(Holder.BlockHolder holder) {
+    private static Supplier<Item> registerItem(Holder.BlockHolder holder) {
         return ITEMS.register(holder.key, () -> holder.object.getItem(holder));
     }
 
-    private static RegistryObject<Block> registerBlock(Holder.SimpleBlockHolder holder) {
+    private static Supplier<Block> registerBlock(Holder.SimpleBlockHolder holder) {
         return BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
     }
 
-    private static RegistryObject<Item> registerItem(Holder.SimpleBlockHolder holder) {
+    private static Supplier<Item> registerItem(Holder.SimpleBlockHolder holder) {
         return ITEMS.register(holder.key, () -> holder.object.getItem(holder));
     }
 
-    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder) {
+    private static Supplier<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder) {
         return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
                 Objects.requireNonNull(((EntityBlock) holder.block.get()).newBlockEntity(pos, blockState)), holder.block.get()).build(null));
     }
 
-    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.SimpleBlockHolder holder) {
+    private static Supplier<BlockEntityType<?>> registerBlockEntity(Holder.SimpleBlockHolder holder) {
         return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
                 Objects.requireNonNull(((EntityBlock) holder.block.get()).newBlockEntity(pos, blockState)), holder.block.get()).build(null));
     }
 
-    private static RegistryObject<MenuType<?>> registerMenuBlockEntity(Holder.BlockHolder holder) {
-        return MENU_TYPES.register(holder.key, () -> IForgeMenuType.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
+    private static Supplier<MenuType<?>> registerMenuBlockEntity(Holder.BlockHolder holder) {
+        return MENU_TYPES.register(holder.key, () -> IMenuTypeExtension.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
     }
 
-    private static RegistryObject<MenuType<?>> registerMenuBlockEntity(Holder.SimpleBlockHolder holder) {
-        return MENU_TYPES.register(holder.key, () -> IForgeMenuType.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
+    private static Supplier<MenuType<?>> registerMenuBlockEntity(Holder.SimpleBlockHolder holder) {
+        return MENU_TYPES.register(holder.key, () -> IMenuTypeExtension.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
     }
 
     private static Holder.FluidHolder registerFluid(MaterialFluidType fluidObject, MaterialType material) {
@@ -336,12 +336,12 @@ public class Registration {
         String flowingName = "flowing_" + name;
         String bucketName = name + "_bucket";
         String blockName = name + "_fluid";
-        RegistryObject<Fluid> sourceFluid = RegistryObject.create(Utils.modLoc(name), ForgeRegistries.FLUIDS);
-        RegistryObject<Fluid> flowingFluid = RegistryObject.create(Utils.modLoc(flowingName), ForgeRegistries.FLUIDS);
-        RegistryObject<Item> bucket = RegistryObject.create(Utils.modLoc(bucketName), ForgeRegistries.ITEMS);
-        RegistryObject<Block> block = RegistryObject.create(Utils.modLoc(blockName), ForgeRegistries.BLOCKS);
+        Supplier<Fluid> sourceFluid = DeferredHolder.create(Utils.modLoc(name), BuiltInRegistries.FLUID.getDefaultKey());
+        Supplier<Fluid> flowingFluid = DeferredHolder.create(Utils.modLoc(flowingName), BuiltInRegistries.FLUID.getDefaultKey());
+        Supplier<Item> bucket = DeferredHolder.create(Utils.modLoc(bucketName), BuiltInRegistries.ITEM.getDefaultKey());
+        Supplier<Block> block = DeferredHolder.create(Utils.modLoc(blockName), BuiltInRegistries.BLOCK.getDefaultKey());
         FluidType fluidType = new YTechFluidType(material);
-        ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(() ->
+        BaseFlowingFluid.Properties properties = new BaseFlowingFluid.Properties(() ->
                 fluidType, sourceFluid, flowingFluid).bucket(bucket).tickRate(20).block(() -> (LiquidBlock) block.get());
 
         return new Holder.FluidHolder(
@@ -349,13 +349,13 @@ public class Registration {
                 material,
                 BLOCKS.register(blockName, () -> new LiquidBlock(() -> (FlowingFluid)flowingFluid.get(), BlockBehaviour.Properties.of())),
                 FLUID_TYPES.register(name, () -> fluidType),
-                FLUIDS.register(name, () -> new ForgeFlowingFluid.Source(properties)),
-                FLUIDS.register(flowingName, () -> new ForgeFlowingFluid.Flowing(properties)),
+                FLUIDS.register(name, () -> new BaseFlowingFluid.Source(properties)),
+                FLUIDS.register(flowingName, () -> new BaseFlowingFluid.Flowing(properties)),
                 ITEMS.register(bucketName, () -> new BucketItem(sourceFluid, new Item.Properties()))
         );
     }
 
-    private static RegistryObject<CreativeModeTab> registerCreativeTab() {
+    private static DeferredHolder<CreativeModeTab, CreativeModeTab> registerCreativeTab() {
         Supplier<ItemStack> iconSupplier = () -> new ItemStack(item(SimpleBlockType.PRIMITIVE_SMELTER));
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
     }

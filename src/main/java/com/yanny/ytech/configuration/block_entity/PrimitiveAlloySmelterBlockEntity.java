@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +37,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         return new MachineItemStackHandler.Builder()
                 .addInputSlot(45, 16, this::canInput)
                 .addInputSlot(65, 16, this::canInput)
-                .addInputSlot(55, 52, (itemStackHandler, slot, itemStack) -> ForgeHooks.getBurnTime(itemStack, RecipeType.BLASTING) > 0)
+                .addInputSlot(55, 52, (itemStackHandler, slot, itemStack) -> CommonHooks.getBurnTime(itemStack, RecipeType.BLASTING) > 0)
                 .addOutputSlot(116, 35)
                 .setOnChangeListener(this::setChanged)
                 .build();
@@ -104,8 +104,9 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             ItemStack inputLeft = itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT);
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
-            level.getRecipeManager().getRecipeFor(AlloyingRecipe.RECIPE_TYPE, new SimpleContainer(inputLeft, inputRight), level).ifPresent((r) -> {
+            level.getRecipeManager().getRecipeFor(AlloyingRecipe.RECIPE_TYPE, new SimpleContainer(inputLeft, inputRight), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
+                AlloyingRecipe r = recipe.value();
 
                 if (r.minTemperature() <= temperature && (result.isEmpty()
                         || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount() + r.result().getCount()))) {
@@ -132,9 +133,9 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
 
             level.getRecipeManager().getRecipeFor(AlloyingRecipe.RECIPE_TYPE, new SimpleContainer(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
-                    itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.result().copy());
+                    itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {
-                    result.grow(r.result().getCount());
+                    result.grow(r.value().result().getCount());
                 }
             });
             recipeInputLeft = null;
@@ -149,7 +150,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
             return level.getRecipeManager().getAllRecipesFor(AlloyingRecipe.RECIPE_TYPE).stream()
-                    .anyMatch((recipe) -> recipe.matchesFully(inputLeft, inputRight, false));
+                    .anyMatch((recipe) -> recipe.value().matchesFully(inputLeft, inputRight, false));
         }
 
         return false;
@@ -163,9 +164,9 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         if (level != null) {
             return level.getRecipeManager().getAllRecipesFor(AlloyingRecipe.RECIPE_TYPE).stream().anyMatch((recipe) -> {
                 if (isPartial) {
-                    return recipe.matchesPartially(itemStack1, itemStack2, true);
+                    return recipe.value().matchesPartially(itemStack1, itemStack2, true);
                 } else {
-                    return recipe.matchesFully(itemStack1, itemStack2, true);
+                    return recipe.value().matchesFully(itemStack1, itemStack2, true);
                 }
             });
         } else {

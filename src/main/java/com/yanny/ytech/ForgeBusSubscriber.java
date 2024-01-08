@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -14,17 +15,16 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.ChunkWatchEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.ChunkWatchEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -64,7 +64,7 @@ public class ForgeBusSubscriber {
     public static void onServerStarting(@NotNull ServerStartingEvent event) {
         if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
             YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((block) ->
-                    setBlockRequireValidTool(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(block))));
+                    setBlockRequireValidTool(Objects.requireNonNull(BuiltInRegistries.BLOCK.get(block))));
         }
     }
 
@@ -103,7 +103,7 @@ public class ForgeBusSubscriber {
 
             if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
                 level.getRecipeManager().getRecipeFor(BlockHitRecipe.RECIPE_TYPE, new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
-                    Block.popResourceFromFace(level, event.getPos(), direction, recipe.result().copy());
+                    Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
                     heldItem.shrink(1);
                 });
             }
@@ -112,10 +112,10 @@ public class ForgeBusSubscriber {
 
     private static void setBlockRequireValidTool(@NotNull Block block) {
         try {
-            BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "f_49786_"); // defaultBlockState
+            BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "defaultBlockState"); // defaultBlockState
 
             if (blockState != null) {
-                ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "f_60600_"); // requiresCorrectToolForDrops
+                ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "requiresCorrectToolForDrops"); // requiresCorrectToolForDrops
             }
 
             LOGGER.info("Set requiresCorrectToolForDrops on {}", block.getName());

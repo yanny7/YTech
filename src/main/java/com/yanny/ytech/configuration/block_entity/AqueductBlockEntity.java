@@ -12,21 +12,18 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AqueductBlockEntity extends IrrigationBlockEntity {
-    @NotNull private final AABB renderBox;
     @Nullable private LazyOptional<IFluidHandler> lazyFluidHandler;
 
     public AqueductBlockEntity(@NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
         super(entityType, pos, blockState, ((AqueductBlock)blockState.getBlock()).getValidNeighbors(blockState, pos));
-        renderBox = new AABB(pos, pos.offset(1, 1, 1));
     }
 
     @Override
@@ -57,20 +54,15 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
         if (level instanceof ServerLevel) {
             Holder<Biome> biome = level.getBiome(worldPosition);
             return !YTechMod.CONFIGURATION.isValidBlockForRaining() || (level.canSeeSky(worldPosition.above())
-                    && biome.get().getPrecipitationAt(worldPosition) == Biome.Precipitation.RAIN);
+                    && biome.value().getPrecipitationAt(worldPosition) == Biome.Precipitation.RAIN);
         }
 
         return false;
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
-        return renderBox;
-    }
-
-    @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return ForgeCapabilities.FLUID_HANDLER.orEmpty(cap, lazyFluidHandler);
+        return Capabilities.FLUID_HANDLER.orEmpty(cap, lazyFluidHandler);
     }
 
     public void onRandomTick() {

@@ -14,8 +14,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
@@ -25,6 +26,12 @@ public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
 
     public AqueductRenderer(BlockEntityRendererProvider.Context context) {
         water = Blocks.WATER.defaultBlockState().setValue(LiquidBlock.LEVEL, 8);
+    }
+
+    @Override
+    @NotNull
+    public AABB getRenderBoundingBox(@NotNull BlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos(), blockEntity.getBlockPos().offset(1, 1, 1));
     }
 
     @Override

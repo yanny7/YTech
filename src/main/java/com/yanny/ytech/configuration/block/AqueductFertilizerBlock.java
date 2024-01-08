@@ -8,8 +8,8 @@ import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.network.chat.Component;
@@ -27,19 +27,18 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IMenuBlock {
     public AqueductFertilizerBlock(Holder.SimpleBlockHolder holder) {
@@ -167,7 +166,7 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
         provider.itemModels().getBuilder(holder.key).parent(inventory);
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.AQUEDUCT_HYDRATOR))
                 .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.BRONZE))

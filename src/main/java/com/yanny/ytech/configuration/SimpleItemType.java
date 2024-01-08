@@ -20,10 +20,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -271,12 +271,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     @NotNull private final HashMap<Integer, Integer> tintColors;
     @NotNull private final ResourceLocation[] textures;
     @NotNull private final BiConsumer<Holder.SimpleItemHolder, ItemModelProvider> modelGetter;
-    @NotNull private final BiConsumer<Holder.SimpleItemHolder, Consumer<FinishedRecipe>> recipeGetter;
+    @NotNull private final BiConsumer<Holder.SimpleItemHolder, RecipeOutput> recipeGetter;
     @NotNull private final BiConsumer<Holder.SimpleItemHolder, ItemTagsProvider> itemTagsGetter;
 
     SimpleItemType(@NotNull String key, @NotNull String name, @NotNull TagKey<Item> itemTag, @NotNull Supplier<Item> itemGetter,
                    @NotNull Supplier<TextureHolder[]> textureGetter, @NotNull BiConsumer<Holder.SimpleItemHolder, ItemModelProvider> modelGetter,
-                   @NotNull BiConsumer<Holder.SimpleItemHolder, Consumer<FinishedRecipe>> recipeGetter, @NotNull BiConsumer<Holder.SimpleItemHolder, ItemTagsProvider> itemTagsGetter) {
+                   @NotNull BiConsumer<Holder.SimpleItemHolder, RecipeOutput> recipeGetter, @NotNull BiConsumer<Holder.SimpleItemHolder, ItemTagsProvider> itemTagsGetter) {
         this.key = key;
         this.name = name;
         this.itemTag = itemTag;
@@ -305,7 +305,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     @Override
-    public void registerRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public void registerRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         recipeGetter.accept(holder, recipeConsumer);
     }
 
@@ -427,7 +427,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         provider.tag(holder.object.itemTag).add(holder.item.get());
     }
 
-    private static void registerGrassTwineRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerGrassTwineRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         Holder input = HOLDER.simpleItems().get(GRASS_FIBERS);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', GRASS_FIBERS.itemTag)
@@ -437,7 +437,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerBrickMoldRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerBrickMoldRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', WOODEN_PLATE.itemTag)
                 .define('I', WOODEN_BOLT.itemTag)
@@ -448,7 +448,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerUnfiredBrickRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerUnfiredBrickRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 8)
                 .define('#', BRICK_MOLD.itemTag)
                 .define('B', Items.CLAY_BALL)
@@ -459,7 +459,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerWoodenPlateRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerWoodenPlateRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
                 .requires(ItemTags.WOODEN_SLABS)
                 .requires(AXE.groupTag)
@@ -474,7 +474,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_using_saw"));
     }
 
-    private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
                 .requires(Items.STICK)
                 .requires(AXE.groupTag)
@@ -489,14 +489,14 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_using_saw"));
     }
 
-    private static void registerRawHideRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerRawHideRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         TanningRecipe.Builder.tanning(holder.object.itemTag, 5, Items.LEATHER)
                 .tool(Ingredient.of(SHARP_FLINT.itemTag))
                 .unlockedBy(Utils.getHasItem(holder), RecipeProvider.has(RAW_HIDE.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerLeatherStripsRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerLeatherStripsRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 4)
                 .requires(Items.LEATHER)
                 .requires(SHARP_FLINT.itemTag)
@@ -504,13 +504,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerIronBloomRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerIronBloomRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         AlloyingRecipe.Builder.alloying(CRUSHED_MATERIAL.itemTag.get(MaterialType.IRON), 1, Items.CHARCOAL, 1, 1250, 200, holder.item.get(), 1)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(CRUSHED_MATERIAL.itemTag.get(MaterialType.IRON)))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(holder.item.get()).getPath()));
     }
 
-    private static void registerBasketRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerBasketRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', GRASS_TWINE.itemTag)
                 .pattern(" # ")
@@ -520,17 +520,17 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerDriedVenisonRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerDriedVenisonRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         registerDryingRecipe(holder, recipeConsumer, item(VENISON));
     }
 
-    private static void registerCookedVenisonRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerCookedVenisonRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 200)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerFlintKnifeRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerFlintKnifeRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
                 .requires(Items.STICK)
                 .requires(Items.FLINT)
@@ -539,7 +539,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerSpearRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerSpearRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('T', LEATHER_STRIPS.itemTag)
                 .define('S', Items.FLINT)
@@ -551,19 +551,19 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerDryingRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer, Item rawMeat) {
+    private static void registerDryingRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer, Item rawMeat) {
         DryingRecipe.Builder.drying(rawMeat, 20 * 60, holder.item.get())
                 .unlockedBy(RecipeProvider.getHasName(rawMeat), RecipeProvider.has(rawMeat))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerFlourRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerFlourRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
         MillingRecipe.Builder.milling(Tags.Items.CROPS_WHEAT, 20 * 5, holder.item.get())
                 .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerUnfiredClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerUnfiredClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', Items.CLAY_BALL)
                 .pattern("# #")
@@ -573,13 +573,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(item(UNFIRED_CLAY_BUCKET)), RecipeCategory.MISC, holder.item.get(), 0.35f, 200)
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerBreadDoughRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerBreadDoughRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
                 .requires(FLOUR.itemTag)
                 .requires(FLOUR.itemTag)

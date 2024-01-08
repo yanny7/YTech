@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -16,27 +16,27 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class YTechConfigSpec {
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
-    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolList;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
+    @NotNull private final ModConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
+    @NotNull private final ModConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolList;
+    @NotNull private final ModConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
 
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
-    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
-    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
+    @NotNull private final ModConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
+    @NotNull private final ModConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
+    @NotNull private final ModConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
 
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillAmount;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> validBlockForRaining;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> valveFillAmount;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainAmount;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainPerNthTick;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> fertilizerDuration;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> applyFertilizerChance;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
+    @NotNull private final ModConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> rainingFillAmount;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
+    @NotNull private final ModConfigSpec.ConfigValue<Boolean> validBlockForRaining;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> valveFillAmount;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> hydratorDrainAmount;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> hydratorDrainPerNthTick;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> fertilizerDuration;
+    @NotNull private final ModConfigSpec.ConfigValue<Integer> applyFertilizerChance;
 
-    public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
+    public YTechConfigSpec(@NotNull ModConfigSpec.Builder builder) {
         builder.push("general");
             makeBlocksRequireValidTool = builder.comment("If mod can change behaviour of specified blocks to require valid tool for harvesting")
                     .worldRestart().define("makeBlocksRequireValidTool", true);

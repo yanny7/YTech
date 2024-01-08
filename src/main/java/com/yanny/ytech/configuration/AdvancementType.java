@@ -1,8 +1,9 @@
 package com.yanny.ytech.configuration;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -12,7 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -123,7 +124,7 @@ public enum AdvancementType {
     private static final String BRONZE_AGE_GROUP = "bronze_age";
 
     private final Builder builder;
-    private Advancement advancement;
+    private AdvancementHolder advancement;
 
     AdvancementType(@NotNull AdvancementType.Builder builder) {
         this.builder = builder;
@@ -145,7 +146,7 @@ public enum AdvancementType {
         return builder.descriptionId;
     }
 
-    public void generate(@NotNull Consumer<Advancement> saver, @NotNull ExistingFileHelper existingFileHelper) {
+    public void generate(@NotNull Consumer<AdvancementHolder> saver, @NotNull ExistingFileHelper existingFileHelper) {
         if (builder.advancement != null) {
             builder.builder.parent(builder.advancement.get());
         }
@@ -157,7 +158,7 @@ public enum AdvancementType {
         private final Advancement.Builder builder;
         private final String group;
         private final String id;
-        private Supplier<Advancement> advancement;
+        private Supplier<AdvancementHolder> advancement;
         private String titleId = "";
         private String title = "";
         private String descriptionId = "";
@@ -169,7 +170,7 @@ public enum AdvancementType {
             builder = Advancement.Builder.advancement();
         }
 
-        Builder parent(@NotNull Supplier<Advancement> advancement) {
+        Builder parent(@NotNull Supplier<AdvancementHolder> advancement) {
             this.advancement = advancement;
             return this;
         }
@@ -218,7 +219,7 @@ public enum AdvancementType {
         }
 
         Builder hasAllItems(@NotNull ItemLike ...items) {
-            builder.requirements(RequirementsStrategy.AND);
+            builder.requirements(AdvancementRequirements.Strategy.AND);
 
             for (ItemLike item : items) {
                 builder.addCriterion(RecipeProvider.getHasName(item), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(item).build()));
@@ -229,7 +230,7 @@ public enum AdvancementType {
 
         @SafeVarargs
         final Builder hasOneOfTags(@NotNull TagKey<Item> ...tags) {
-            builder.requirements(RequirementsStrategy.OR);
+            builder.requirements(AdvancementRequirements.Strategy.OR);
 
             for (TagKey<Item> tag : tags) {
                 builder.addCriterion(getHasName(), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(tag).build()));
@@ -240,7 +241,7 @@ public enum AdvancementType {
 
         @SafeVarargs
         final Builder hasAllTags(@NotNull TagKey<Item> ...tags) {
-            builder.requirements(RequirementsStrategy.AND);
+            builder.requirements(AdvancementRequirements.Strategy.AND);
 
             for (TagKey<Item> tag : tags) {
                 builder.addCriterion(getHasName() + "_" + tag.location().getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(tag).build()));

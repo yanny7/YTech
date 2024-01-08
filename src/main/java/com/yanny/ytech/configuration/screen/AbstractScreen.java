@@ -24,7 +24,6 @@ public abstract class AbstractScreen<T extends AbstractContainerMenu> extends Ab
 
     @Override
     protected void renderBg(@NotNull GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-        renderBackground(graphics);
         screenHandler.render(graphics);
     }
 

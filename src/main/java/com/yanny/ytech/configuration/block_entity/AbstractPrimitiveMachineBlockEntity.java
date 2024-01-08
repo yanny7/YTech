@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -78,7 +78,7 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
             ItemStack fuel = itemStackHandler.getStackInSlot(getFuelSlot());
 
             if (!fuel.isEmpty() && ((hasItemsInInput() && isValidRecipeInInput()) || hasActiveRecipe())) {
-                leftBurningTime = burningTime = ForgeHooks.getBurnTime(fuel, RecipeType.BLASTING);
+                leftBurningTime = burningTime = CommonHooks.getBurnTime(fuel, RecipeType.BLASTING);
                 fuel.shrink(1);
                 isBurning = true;
 

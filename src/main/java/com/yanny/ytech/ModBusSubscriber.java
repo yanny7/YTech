@@ -9,7 +9,6 @@ import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.CustomRendererBakedModel;
 import com.yanny.ytech.configuration.model.DeerModel;
 import com.yanny.ytech.configuration.model.SpearModel;
-import com.yanny.ytech.configuration.recipe.TagStackIngredient;
 import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
@@ -18,18 +17,15 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -118,13 +114,6 @@ public class ModBusSubscriber {
     public static void registerModel(@NotNull ModelEvent.RegisterAdditional event) {
         event.register(Utils.modBlockLoc("millstone_upper_part"));
         event.register(SpearModel.MODEL_IN_HAND_LOCATION);
-    }
-
-    @SubscribeEvent
-    public static void registerRecipeSerializers(@NotNull RegisterEvent event) {
-        if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
-            CraftingHelper.register(Utils.modLoc("tag_stack"), TagStackIngredient.SERIALIZER);
-        }
     }
 
     @OnlyIn(Dist.CLIENT)

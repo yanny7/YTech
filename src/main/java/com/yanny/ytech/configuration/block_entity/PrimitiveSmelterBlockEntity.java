@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +33,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     public MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
                 .addInputSlot(55, 16, this::canInput)
-                .addInputSlot(55, 52, (itemStackHandler, slot, itemStack) -> ForgeHooks.getBurnTime(itemStack, RecipeType.BLASTING) > 0)
+                .addInputSlot(55, 52, (itemStackHandler, slot, itemStack) -> CommonHooks.getBurnTime(itemStack, RecipeType.BLASTING) > 0)
                 .addOutputSlot(116, 35)
                 .setOnChangeListener(this::setChanged)
                 .build();
@@ -91,8 +91,9 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
         if (level != null) {
             ItemStack input = itemStackHandler.getStackInSlot(SLOT_INPUT);
 
-            level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(input), level).ifPresent((r) -> {
+            level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(input), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
+                SmeltingRecipe r = recipe.value();
 
                 if (r.minTemperature() <= temperature && (result.isEmpty() || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount()))) {
                     recipeInput = input.split(1);
@@ -111,7 +112,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
 
             level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(recipeInput), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
-                    itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.result().copy());
+                    itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {
                     result.grow(1);
                 }

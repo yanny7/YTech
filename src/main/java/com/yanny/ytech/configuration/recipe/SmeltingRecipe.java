@@ -1,19 +1,21 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +25,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
+public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
@@ -58,12 +62,6 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
 
     @NotNull
     @Override
-    public ResourceLocation getId() {
-        return id;
-    }
-
-    @NotNull
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
@@ -75,23 +73,34 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
     }
 
     public static class Serializer implements RecipeSerializer<SmeltingRecipe> {
-        @NotNull
-        @Override
-        public SmeltingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
-            Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
-            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            int minTemperature = GsonHelper.getAsInt(serializedRecipe, "minTemp");
-            int smeltingTime = GsonHelper.getAsInt(serializedRecipe, "smeltingTime");
-            return new SmeltingRecipe(recipeId, ingredient, minTemperature, smeltingTime, result);
-        }
+        private static final Codec<SmeltingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((smeltingRecipe) -> smeltingRecipe.ingredient),
+                Codec.INT.fieldOf("minTemp").forGetter((smeltingRecipe) -> smeltingRecipe.minTemperature),
+                Codec.INT.fieldOf("smeltingTime").forGetter((smeltingRecipe) -> smeltingRecipe.smeltingTime),
+                ExtraCodecs.either(BuiltInRegistries.ITEM.byNameCodec(), CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC)
+                        .xmap((either) -> either.map(ItemStack::new, Function.identity()), (stack) -> {
+                    if (stack.getCount() != 1) {
+                        return Either.right(stack);
+                    } else {
+                        return ItemStack.matches(stack, new ItemStack(stack.getItem())) ? Either.left(stack.getItem()) : Either.right(stack);
+                    }
+                }).fieldOf("result").forGetter((smeltingRecipe) -> smeltingRecipe.result)
+        ).apply(recipe, SmeltingRecipe::new));
 
         @Override
-        public @Nullable SmeltingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        @NotNull
+        public SmeltingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
             int minTemperature = buffer.readInt();
             int dryingTime = buffer.readInt();
-            return new SmeltingRecipe(recipeId, ingredient, minTemperature, dryingTime, result);
+            return new SmeltingRecipe(ingredient, minTemperature, dryingTime, result);
+        }
+
+        @Override
+        @NotNull
+        public Codec<SmeltingRecipe> codec() {
+            return CODEC;
         }
 
         @Override
@@ -104,10 +113,10 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
     }
 
     public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int minTemperature, int smeltingTime, @NotNull Item result,
-                         @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
+                         @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
-            json.add("ingredient", ingredient.toJson());
+            json.add("ingredient", ingredient.toJson(false));
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
@@ -119,26 +128,14 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
 
         @NotNull
         @Override
-        public ResourceLocation getId() {
-            return id;
-        }
-
-        @NotNull
-        @Override
-        public RecipeSerializer<?> getType() {
+        public RecipeSerializer<?> type() {
             return SERIALIZER;
         }
 
         @NotNull
         @Override
-        public JsonObject serializeAdvancement() {
-            return advancement.serializeToJson();
-        }
-
-        @NotNull
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return advancementId;
+        public AdvancementHolder advancement() {
+            return advancementHolder;
         }
     }
 
@@ -147,7 +144,7 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
         private final int minTemperature;
         private final int smeltingTime;
         private final Item result;
-        private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
+        private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
         Builder(@NotNull Ingredient ingredient, int minTemperature, int smeltingTime, @NotNull Item result) {
             this.ingredient = ingredient;
@@ -166,8 +163,8 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
 
         @NotNull
         @Override
-        public RecipeBuilder unlockedBy(@NotNull String criterionName, @NotNull CriterionTriggerInstance criterionTrigger) {
-            this.advancement.addCriterion(criterionName, criterionTrigger);
+        public RecipeBuilder unlockedBy(@NotNull String criterionName, @NotNull Criterion criterionTrigger) {
+            this.criteria.put(criterionName, criterionTrigger);
             return this;
         }
 
@@ -184,17 +181,18 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
         }
 
         @Override
-        public void save(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
             ensureValid(recipeId);
-            advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
-                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new SmeltingRecipe.Result(recipeId, ingredient, minTemperature, smeltingTime, result, advancement,
-                    recipeId.withPrefix("recipes/smelting/")));
+            Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
+                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
+            this.criteria.forEach(builder::addCriterion);
+            finishedRecipeConsumer.accept(new SmeltingRecipe.Result(recipeId, ingredient, minTemperature, smeltingTime, result,
+                    builder.build(recipeId.withPrefix("recipes/smelting/"))));
         }
 
         //Makes sure that this recipe is valid and obtainable.
         private void ensureValid(@NotNull ResourceLocation id) {
-            if (this.advancement.getCriteria().isEmpty()) {
+            if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }
         }

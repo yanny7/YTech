@@ -4,6 +4,7 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
@@ -12,10 +13,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 import static com.yanny.ytech.configuration.MaterialItemType.*;
 import static com.yanny.ytech.configuration.MaterialType.*;
@@ -24,12 +25,12 @@ import static com.yanny.ytech.registration.Registration.HOLDER;
 import static com.yanny.ytech.registration.Registration.item;
 
 class YTechRecipes extends RecipeProvider {
-    public YTechRecipes(PackOutput output) {
-        super(output);
+    public YTechRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider);
     }
 
     @Override
-    protected void buildRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    protected void buildRecipes(@NotNull RecipeOutput recipeConsumer) {
         GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
         HOLDER.simpleItems().values().forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
@@ -295,7 +296,7 @@ class YTechRecipes extends RecipeProvider {
         removeVanillaRecipes(recipeConsumer);
     }
 
-    private void removeVanillaRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    private void removeVanillaRecipes(@NotNull RecipeOutput recipeConsumer) {
         removeVanillaRecipe(recipeConsumer, Items.WOODEN_AXE);
         removeVanillaRecipe(recipeConsumer, Items.WOODEN_HOE);
         removeVanillaRecipe(recipeConsumer, Items.WOODEN_PICKAXE);
@@ -320,18 +321,18 @@ class YTechRecipes extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
     }
 
-    private void removeVanillaRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item item) {
+    private void removeVanillaRecipe(@NotNull RecipeOutput recipeConsumer, Item item) {
         SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer, Utils.loc(item).toString());
     }
 
-    private void removeVanillaSmeltingBlastingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item to, Item from) {
+    private void removeVanillaSmeltingBlastingRecipe(@NotNull RecipeOutput recipeConsumer, Item to, Item from) {
         SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer,
                 Utils.mcLoc(Utils.loc(to).getPath() + "_from_smelting_" + Utils.loc(from).getPath()).toString());
         SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer,
                 Utils.mcLoc(Utils.loc(to).getPath() + "_from_blasting_" + Utils.loc(from).getPath()).toString());
     }
 
-    private void mcSplitBySawRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
+    private void mcSplitBySawRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull Item result) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, 2)
                 .requires(input)
                 .requires(SAW.groupTag)
@@ -340,7 +341,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcSplitByAxeRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
+    private void mcSplitByAxeRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull Item result) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
                 .requires(AXE.groupTag)
@@ -349,7 +350,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 
-    private void mcSplitByHammerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
+    private void mcSplitByHammerRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull Item result) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
                 .requires(HAMMER.groupTag)
@@ -357,7 +358,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcFenceRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
+    private void mcFenceRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
@@ -371,7 +372,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcFenceGateRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
+    private void mcFenceGateRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
@@ -386,7 +387,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcDoorRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
+    private void mcDoorRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
@@ -400,7 +401,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcTrapdoorRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
+    private void mcTrapdoorRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
@@ -414,7 +415,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcPressurePlateRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
+    private void mcPressurePlateRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('W', SAW.groupTag)
                 .define('B', WOODEN_BOLT.itemTag)
@@ -427,7 +428,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcButtonRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
+    private void mcButtonRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
                 .requires(SAW.groupTag)
                 .requires(planks)
@@ -436,7 +437,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcBedRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item wool, @NotNull Item result) {
+    private void mcBedRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item wool, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('H', HAMMER.groupTag)
                 .define('S', SAW.groupTag)
@@ -450,7 +451,7 @@ class YTechRecipes extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
-    private void mcBoatRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
+    private void mcBoatRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('H', HAMMER.groupTag)
                 .define('S', SAW.groupTag)
@@ -466,21 +467,21 @@ class YTechRecipes extends RecipeProvider {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void smeltingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int temperature, int smeltingTime) {
+    private void smeltingRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int temperature, int smeltingTime) {
         SmeltingRecipe.Builder.smelting(input, temperature, smeltingTime, result)
                 .unlockedBy(Utils.getHasName(), has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_smelting"));
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void blockHitRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull TagKey<Item> block, @NotNull Item result) {
+    private void blockHitRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull TagKey<Item> block, @NotNull Item result) {
         BlockHitRecipe.Builder.blockUse(input, block, result)
                 .unlockedBy(Utils.getHasName(), has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void mcCookingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RecipeCategory category,
+    private void mcCookingRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull RecipeCategory category,
                                @NotNull SimpleItemType input, @NotNull Item result, float xp, int cookingTime) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(input.itemTag), category, result, xp, cookingTime)
                 .unlockedBy(Utils.getHasName(), has(input.itemTag))
@@ -488,7 +489,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void alloyingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input1, int count1,
+    private void alloyingRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull TagKey<Item> input1, int count1,
                                 @NotNull TagKey<Item> input2, int count2, @NotNull Item result, int count, int temp, int smeltingTime) {
         AlloyingRecipe.Builder.alloying(input1, count1, input2, count2, temp, smeltingTime, result, count)
                 .unlockedBy(Utils.getHasName(), has(input1))
@@ -496,14 +497,14 @@ class YTechRecipes extends RecipeProvider {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void dryingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result, int dryingTime) {
+    private void dryingRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull Item result, int dryingTime) {
         DryingRecipe.Builder.drying(input, dryingTime, result)
                 .unlockedBy(RecipeProvider.getHasName(input), has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void hammeringRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result) {
+    private void hammeringRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result) {
         HammeringRecipe.Builder.hammering(input, result)
                 .tool(Ingredient.of(HAMMER.groupTag))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))

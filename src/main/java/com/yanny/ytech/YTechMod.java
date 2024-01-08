@@ -14,16 +14,16 @@ import com.yanny.ytech.network.kinetic.KineticClientNetwork;
 import com.yanny.ytech.network.kinetic.KineticServerNetwork;
 import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.registration.Registration;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.DistExecutor;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.network.NetworkRegistry;
+import net.neoforged.neoforge.network.simple.SimpleChannel;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod(YTechMod.MOD_ID)
@@ -34,10 +34,10 @@ public class YTechMod {
     public static final YTechConfigSpec CONFIGURATION;
 
     private static final String PROTOCOL_VERSION = "1";
-    private static final ForgeConfigSpec CONFIGURATION_SPEC;
+    private static final ModConfigSpec CONFIGURATION_SPEC;
 
     static {
-        Pair<YTechConfigSpec, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(YTechConfigSpec::new);
+        Pair<YTechConfigSpec, ModConfigSpec> pair = new ModConfigSpec.Builder().configure(YTechConfigSpec::new);
         SimpleChannel channel = NetworkRegistry.newSimpleChannel(
                 Utils.modLoc("network"),
                 () -> PROTOCOL_VERSION,

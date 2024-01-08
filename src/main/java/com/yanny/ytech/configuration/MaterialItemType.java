@@ -12,16 +12,15 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.Tags;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -230,13 +229,13 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     @NotNull private final Map<MaterialType, Map<Integer, Integer>> tintColors;
     @NotNull private final Map<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.ItemHolder, ItemModelProvider> modelGetter;
-    @NotNull private final BiConsumer<Holder.ItemHolder, Consumer<FinishedRecipe>> recipeGetter;
+    @NotNull private final BiConsumer<Holder.ItemHolder, RecipeOutput> recipeGetter;
     @NotNull private final BiConsumer<Holder.ItemHolder, ItemTagsProvider> itemTagsGetter;
     @NotNull public final EnumSet<MaterialType> materials;
 
     MaterialItemType(@NotNull String id, @NotNull NameHolder key, @NotNull NameHolder name, @NotNull Function<MaterialType, TagKey<Item>> itemTag, @NotNull TagKey<Item> groupTag,
                      @NotNull Function<Holder.ItemHolder, Item> itemGetter, @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
-                     @NotNull BiConsumer<Holder.ItemHolder, ItemModelProvider> modelGetter, @NotNull BiConsumer<Holder.ItemHolder, Consumer<FinishedRecipe>> recipeGetter,
+                     @NotNull BiConsumer<Holder.ItemHolder, ItemModelProvider> modelGetter, @NotNull BiConsumer<Holder.ItemHolder, RecipeOutput> recipeGetter,
                      @NotNull BiConsumer<Holder.ItemHolder, ItemTagsProvider> itemTagsGetter, @NotNull EnumSet<MaterialType> materials) {
         this.id = id;
         this.key = key;
@@ -299,7 +298,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     @Override
-    public void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         recipeGetter.accept(holder, recipeConsumer);
     }
 
@@ -316,21 +315,21 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         return new Item(new Item.Properties());
     }
 
-    public static void registerIngotRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerIngotRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
                 .requires(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    public static void registerRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
                 .requires(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    public static void registerCrushedRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerCrushedRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
                 .requires(RAW_MATERIAL.itemTag.get(holder.material))
                 .requires(MORTAR_AND_PESTLE.groupTag)
@@ -338,7 +337,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    public static void registerPlateRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerPlateRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', INGOT.itemTag.get(holder.material))
                 .define('H', HAMMER.groupTag)
@@ -353,7 +352,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_from_hammering"));
     }
 
-    public static void registerRodRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRodRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', INGOT.itemTag.get(holder.material))
                 .define('F', FILE.groupTag)
@@ -363,7 +362,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    public static void registerBoltRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerBoltRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 2)
                 .define('#', ROD.itemTag.get(holder.material))
                 .define('S', SAW.groupTag)
@@ -373,7 +372,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    public static void registerMortarAndPestleRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerMortarAndPestleRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         if (holder.material == MaterialType.STONE) {
             ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', Items.STICK)
@@ -395,7 +394,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         }
     }
 
-    public static void registerSawRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerSawRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                 .define('S', Items.STICK)
                 .define('#', PLATE.itemTag.get(holder.material))
@@ -404,7 +403,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    public static void registerHammerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerHammerRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         if (holder.material == MaterialType.STONE) {
             ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('S', Items.STICK)
@@ -427,7 +426,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         }
     }
 
-    public static void registerFileRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerFileRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                 .define('#', PLATE.itemTag.get(holder.material))
                 .define('S', Items.STICK)

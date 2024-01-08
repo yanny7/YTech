@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration;
 
 import com.google.gson.JsonPrimitive;
+import com.mojang.serialization.JsonOps;
 import com.yanny.ytech.configuration.entity.DeerEntity;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
@@ -34,9 +35,9 @@ import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -120,7 +121,7 @@ public enum AnimalEntityType {
     }
 
     private static Item spawnEggItem(@NotNull Holder.AnimalEntityHolder holder, int background, int highlight) {
-        return new ForgeSpawnEggItem(holder.entityType, background, highlight, new Item.Properties());
+        return new DeferredSpawnEggItem(holder.entityType, background, highlight, new Item.Properties());
     }
 
     private static void registerSpawnEggModel(@NotNull Holder.AnimalEntityHolder holder, @NotNull ItemModelProvider provider) {
@@ -133,7 +134,7 @@ public enum AnimalEntityType {
     }
 
     private static void registerDeerDrops(Holder.AnimalEntityHolder holder, EntityLootSubProvider provider) {
-        EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+        EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true));
 
         provider.add(holder.entityType.get(), LootTable.lootTable()
                 .withPool(
@@ -163,7 +164,7 @@ public enum AnimalEntityType {
                                                 .when(
                                                         LootItemEntityPropertyCondition.hasProperties(
                                                                 LootContext.EntityTarget.THIS,
-                                                                EntityPredicate.Builder.entity().nbt(NbtPredicate.fromJson(new JsonPrimitive(DeerEntity.hasAntlersStr())))
+                                                                EntityPredicate.Builder.entity().nbt(NbtPredicate.CODEC.parse(JsonOps.INSTANCE, new JsonPrimitive(DeerEntity.hasAntlersStr())).result().orElseThrow())
                                                         )
                                                 )
                                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))

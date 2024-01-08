@@ -4,7 +4,7 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.AdvancementType;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 

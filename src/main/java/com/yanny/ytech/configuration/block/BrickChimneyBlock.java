@@ -5,8 +5,8 @@ import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.BrickChimneyBlockEntity;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -22,14 +22,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BrickChimneyBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(3/16.0, 0, 3/16.0, 13/16.0, 1, 13/16.0);
@@ -80,7 +79,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
-    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('B', Items.BRICKS)
                 .pattern(" B ")

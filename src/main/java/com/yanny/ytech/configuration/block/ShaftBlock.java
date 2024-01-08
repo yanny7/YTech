@@ -9,7 +9,7 @@ import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -23,14 +23,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ShaftBlock extends KineticBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 6/16.0, 6/16.0, 1, 10/16.0, 10/16.0);
@@ -45,7 +44,6 @@ public class ShaftBlock extends KineticBlock {
         this.stressMultiplier = stressMultiplier;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
@@ -113,7 +111,7 @@ public class ShaftBlock extends KineticBlock {
         provider.itemModels().getBuilder(holder.key).parent(modelFile);
     }
 
-    public static void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
         //TODO
     }
 

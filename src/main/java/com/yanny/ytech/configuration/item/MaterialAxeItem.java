@@ -34,7 +34,7 @@ public class MaterialAxeItem extends AxeItem {
         return result;
     }
 
-    public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         switch (holder.material) {
             case FLINT ->
                     ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, holder.item.get())

@@ -2,7 +2,7 @@ package com.yanny.ytech.generation;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class DataGeneration {
@@ -18,7 +18,7 @@ public class DataGeneration {
         generator.addProvider(event.includeServer(), new YTechFluidTags(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new YTechItemTags(packOutput, event.getLookupProvider(), blockTags.contentsGetter(), event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new YTechBiomeTags(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
-        generator.addProvider(event.includeServer(), new YTechRecipes(packOutput));
+        generator.addProvider(event.includeServer(), new YTechRecipes(packOutput, event.getLookupProvider()));
         generator.addProvider(event.includeServer(), new YTechLootTables(packOutput));
         generator.addProvider(event.includeServer(), new YTechGlobalLootModifier(packOutput));
         generator.addProvider(event.includeServer(), new YTechWorldGen(packOutput, event.getLookupProvider()));

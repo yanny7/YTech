@@ -3,7 +3,7 @@ package com.yanny.ytech.network.generic.common;
 import com.yanny.ytech.network.generic.server.ServerNetwork;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

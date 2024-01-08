@@ -14,6 +14,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,12 +57,12 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             ItemStack dryingItem = items.getStackInSlot(0);
 
             if (dryingItem.isEmpty()) {
-                Optional<DryingRecipe> dryingRecipe = level.getRecipeManager().getRecipeFor(DryingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<RecipeHolder<DryingRecipe>> dryingRecipe = level.getRecipeManager().getRecipeFor(DryingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
 
                 dryingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-                    result = r.result().copy();
-                    dryingLeft = r.dryingTime();
+                    result = r.value().result().copy();
+                    dryingLeft = r.value().dryingTime();
                     player.setItemSlot(slot, items.insertItem(0, holdingItemStack, false));
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());

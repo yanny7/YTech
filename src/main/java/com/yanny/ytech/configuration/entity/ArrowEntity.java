@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.entity;
 
 import com.google.common.collect.Sets;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -37,7 +37,7 @@ public class ArrowEntity extends AbstractArrow {
 
     public ArrowEntity(@NotNull Level level, @NotNull LivingEntity shooter, @NotNull Item arrowType) {
         super(EntityType.ARROW, shooter, level);
-        this.arrowType = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(arrowType)).toString();
+        this.arrowType = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(arrowType)).toString();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ArrowEntity extends AbstractArrow {
         super.addAdditionalSaveData(tag);
 
         if (this.potion != Potions.EMPTY) {
-            tag.putString("Potion", Objects.requireNonNull(ForgeRegistries.POTIONS.getKey(this.potion)).toString());
+            tag.putString("Potion", Objects.requireNonNull(BuiltInRegistries.POTION.getKey(this.potion)).toString());
         }
 
         if (this.fixedColor) {
@@ -155,13 +155,7 @@ public class ArrowEntity extends AbstractArrow {
     @NotNull
     @Override
     protected ItemStack getPickupItem() {
-        Item arrow = ForgeRegistries.ITEMS.getValue(new ResourceLocation(arrowType));
-
-        if (arrow != null) {
-            return new ItemStack(arrow);
-        } else {
-            return ItemStack.EMPTY;
-        }
+        return new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(arrowType)));
     }
 
     private void updateColor() {

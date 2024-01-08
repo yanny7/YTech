@@ -4,8 +4,8 @@ import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.ArrowEntity;
 import com.yanny.ytech.registration.Holder;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.effect.MobEffect;
@@ -18,8 +18,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 public class MaterialArrowItem extends ArrowItem {
     @NotNull private final Holder.ItemHolder holder;
@@ -42,7 +40,7 @@ public class MaterialArrowItem extends ArrowItem {
         return arrow;
     }
 
-    public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
                 .define('S', Items.STICK)
                 .define('F', Items.FEATHER)

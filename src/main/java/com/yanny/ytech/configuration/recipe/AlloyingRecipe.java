@@ -1,19 +1,21 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,10 +25,12 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
-public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1, TagStackIngredient ingredient2, int minTemperature,
+public record AlloyingRecipe(TagStackIngredient ingredient1, TagStackIngredient ingredient2, int minTemperature,
                              int smeltingTime, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<AlloyingRecipe> RECIPE_TYPE = new RecipeType<>() {
@@ -56,12 +60,6 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
     @Override
     public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
         return result;
-    }
-
-    @NotNull
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     @NotNull
@@ -103,26 +101,36 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
     }
 
     public static class Serializer implements RecipeSerializer<AlloyingRecipe> {
-        @NotNull
+        private static final Codec<AlloyingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
+                TagStackIngredient.CODEC_NONEMPTY.fieldOf("ingredient1").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient1),
+                TagStackIngredient.CODEC_NONEMPTY.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
+                Codec.INT.fieldOf("minTemp").forGetter((alloyingRecipe) -> alloyingRecipe.minTemperature),
+                Codec.INT.fieldOf("smeltingTime").forGetter((alloyingRecipe) -> alloyingRecipe.smeltingTime),
+                ExtraCodecs.either(BuiltInRegistries.ITEM.byNameCodec(), CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC)
+                        .xmap((either) -> either.map(ItemStack::new, Function.identity()), (stack) -> {
+                            if (stack.getCount() != 1) {
+                                return Either.right(stack);
+                            } else {
+                                return ItemStack.matches(stack, new ItemStack(stack.getItem())) ? Either.left(stack.getItem()) : Either.right(stack);
+                            }
+                        }).fieldOf("result").forGetter((alloyingRecipe) -> alloyingRecipe.result)
+        ).apply(recipe, AlloyingRecipe::new));
+
         @Override
-        public AlloyingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
-            Ingredient ingredient1 = Ingredient.fromJson(serializedRecipe.get("ingredient1"), false);
-            Ingredient ingredient2 = Ingredient.fromJson(serializedRecipe.get("ingredient2"), false);
-            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            int minTemperature = GsonHelper.getAsInt(serializedRecipe, "minTemp");
-            int smeltingTime = GsonHelper.getAsInt(serializedRecipe, "smeltingTime");
-            return new AlloyingRecipe(recipeId, TagStackIngredient.fromIngredient(ingredient1),
-                    TagStackIngredient.fromIngredient(ingredient2), minTemperature, smeltingTime, result);
+        @NotNull
+        public Codec<AlloyingRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public @Nullable AlloyingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        @NotNull
+        public AlloyingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient1 = Ingredient.fromNetwork(buffer);
             Ingredient ingredient2 = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
             int minTemperature = buffer.readInt();
             int dryingTime = buffer.readInt();
-            return new AlloyingRecipe(recipeId, TagStackIngredient.fromIngredient(ingredient1),
+            return new AlloyingRecipe(TagStackIngredient.fromIngredient(ingredient1),
                     TagStackIngredient.fromIngredient(ingredient2), minTemperature, dryingTime, result);
         }
 
@@ -137,12 +145,11 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
     }
 
     public record Result(@NotNull ResourceLocation id, @NotNull TagStackIngredient ingredient1, TagStackIngredient ingredient2, int minTemperature,
-                         int smeltingTime, @NotNull Item result, int count, @NotNull Advancement.Builder advancement,
-                         @NotNull ResourceLocation advancementId) implements FinishedRecipe {
+                         int smeltingTime, @NotNull Item result, int count, @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
-            json.add("ingredient1", ingredient1.toJson());
-            json.add("ingredient2", ingredient2.toJson());
+            json.add("ingredient1", ingredient1.toJson(false));
+            json.add("ingredient2", ingredient2.toJson(false));
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
@@ -157,28 +164,16 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
             json.addProperty("smeltingTime", smeltingTime);
         }
 
-        @NotNull
         @Override
-        public ResourceLocation getId() {
-            return id;
-        }
-
         @NotNull
-        @Override
-        public RecipeSerializer<?> getType() {
+        public RecipeSerializer<?> type() {
             return SERIALIZER;
         }
 
         @NotNull
         @Override
-        public JsonObject serializeAdvancement() {
-            return advancement.serializeToJson();
-        }
-
-        @NotNull
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return advancementId;
+        public AdvancementHolder advancement() {
+            return advancementHolder;
         }
     }
 
@@ -189,7 +184,7 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
         private final int smeltingTime;
         private final Item result;
         private final int count;
-        private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
+        private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
         Builder(@NotNull TagStackIngredient ingredient1, @NotNull TagStackIngredient ingredient2, int minTemperature, int smeltingTime, @NotNull Item result, int count) {
             this.ingredient1 = ingredient1;
@@ -219,8 +214,8 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
 
         @NotNull
         @Override
-        public RecipeBuilder unlockedBy(@NotNull String criterionName, @NotNull CriterionTriggerInstance criterionTrigger) {
-            this.advancement.addCriterion(criterionName, criterionTrigger);
+        public RecipeBuilder unlockedBy(@NotNull String criterionName, @NotNull Criterion criterionTrigger) {
+            this.criteria.put(criterionName, criterionTrigger);
             return this;
         }
 
@@ -237,17 +232,18 @@ public record AlloyingRecipe(ResourceLocation id, TagStackIngredient ingredient1
         }
 
         @Override
-        public void save(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
             ensureValid(recipeId);
-            advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
-                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new AlloyingRecipe.Result(recipeId, ingredient1, ingredient2, minTemperature, smeltingTime, result, count, advancement,
-                    recipeId.withPrefix("recipes/alloying/")));
+            Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
+                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
+            this.criteria.forEach(builder::addCriterion);
+            finishedRecipeConsumer.accept(new AlloyingRecipe.Result(recipeId, ingredient1, ingredient2, minTemperature, smeltingTime, result, count,
+                    builder.build(recipeId.withPrefix("recipes/alloying/"))));
         }
 
         //Makes sure that this recipe is valid and obtainable.
         private void ensureValid(@NotNull ResourceLocation id) {
-            if (this.advancement.getCriteria().isEmpty()) {
+            if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }
         }

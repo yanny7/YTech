@@ -1,28 +1,63 @@
 package com.yanny.ytech.configuration.recipe;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.IIngredientSerializer;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class TagStackIngredient extends Ingredient {
     public static final TagStackIngredient EMPTY = new TagStackIngredient(Stream.empty());
+    public static final Codec<Value> CODEC = ExtraCodecs
+            .xor(TagCountValue.CODEC, Ingredient.Value.CODEC)
+            .xmap(
+                    (either) -> either.map((tagCountValue) -> tagCountValue, (value) -> value),
+                    (value) -> {
+                        if (value instanceof TagCountValue ingredient$tagcountvalue) {
+                            return Either.left(ingredient$tagcountvalue);
+                        } else {
+                            return Either.right(value);
+                        }
+                    }
+            );
+    public static final Codec<TagStackIngredient> CODEC_NONEMPTY = ExtraCodecs.either(Codec.list(TagStackIngredient.CODEC).comapFlatMap((list) -> {
+                return list.isEmpty() ? DataResult.error(() -> {
+                    return "Item array cannot be empty, at least one item must be defined";
+                }) : DataResult.success(list.toArray(new Value[0]));
+            }, List::of), TagStackIngredient.CODEC).flatComapMap((either) -> {
+                return either.map((values) -> new TagStackIngredient(Stream.of(values)), (value) -> {
+                    return new TagStackIngredient(Stream.of(value));
+                });
+            }, (tagStackIngredient) -> {
+                if (tagStackIngredient.values.length == 1) {
+                    return DataResult.success(Either.right(tagStackIngredient.values[0]));
+                } else {
+                    return tagStackIngredient.values.length == 0 ? DataResult.error(() -> {
+                        return "Item array cannot be empty, at least one item must be defined";
+                    }) : DataResult.success(Either.left(tagStackIngredient.values));
+                }
+            });
 
     protected TagStackIngredient(@NotNull Stream<? extends Value> pValues) {
         super(pValues);
@@ -51,16 +86,8 @@ public class TagStackIngredient extends Ingredient {
 
     @NotNull
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer() {
-        return SERIALIZER;
-    }
-
-    @NotNull
-    @Override
-    public JsonElement toJson() {
-        JsonElement element = super.toJson();
-        element.getAsJsonObject().addProperty("type", Objects.requireNonNull(CraftingHelper.getID(SERIALIZER)).toString());
-        return element;
+    public JsonElement toJson(boolean canBeEmpty) {
+        return Util.getOrThrow(CODEC_NONEMPTY.encodeStart(JsonOps.INSTANCE, this), IllegalStateException::new);
     }
 
     @NotNull
@@ -80,12 +107,12 @@ public class TagStackIngredient extends Ingredient {
 
     @NotNull
     public static TagStackIngredient of(Stream<ItemStack> stacks) {
-        return fromValues(stacks.filter((itemStack) -> !itemStack.isEmpty()).map(Ingredient.ItemValue::new));
+        return fromValues(stacks.filter((itemStack) -> !itemStack.isEmpty()).map(ItemValue::new));
     }
 
     @NotNull
     public static TagStackIngredient of(@NotNull TagKey<Item> tag) {
-        return fromValues(Stream.of(new Ingredient.TagValue(tag)));
+        return fromValues(Stream.of(new TagValue(tag)));
     }
 
     public static TagStackIngredient fromIngredient(@NotNull Ingredient ingredient) {
@@ -93,66 +120,43 @@ public class TagStackIngredient extends Ingredient {
     }
 
     @NotNull
-    public static TagStackIngredient fromValues(Stream<? extends Ingredient.Value> stream) {
+    public static TagStackIngredient fromValues(Stream<? extends Value> stream) {
         TagStackIngredient ingredient = new TagStackIngredient(stream);
         return ingredient.isEmpty() ? EMPTY : ingredient;
     }
 
-    public static final IIngredientSerializer<Ingredient> SERIALIZER = new IIngredientSerializer<>() {
-        @Override
-        public void write(FriendlyByteBuf buffer, Ingredient ingredient) {
-            ItemStack[] items = ingredient.getItems();
-            buffer.writeVarInt(items.length);
+    public record TagCountValue(TagKey<Item> tag, int count) implements Value {
+        static final Codec<TagCountValue> CODEC = RecordCodecBuilder.create((valueInstance) -> valueInstance.group(
+                TagKey.codec(Registries.ITEM).fieldOf("tag").forGetter((tagCountValue) -> tagCountValue.tag),
+                Codec.INT.fieldOf("count").forGetter((tagCountValue) -> tagCountValue.count)
+        ).apply(valueInstance, TagCountValue::new));
 
-            for (ItemStack stack : items) {
-                buffer.writeItem(stack);
-            }
-        }
-
-        @NotNull
         @Override
-        public Ingredient parse(@NotNull FriendlyByteBuf buffer) {
-            return Ingredient.fromValues(Stream.generate(() -> new Ingredient.ItemValue(buffer.readItem())).limit(buffer.readVarInt()));
-        }
-
-        @NotNull
-        @Override
-        public Ingredient parse(@NotNull JsonObject json) {
-            if (json.has("tag")) {
-                ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(json, "tag"));
-                int count = GsonHelper.getAsInt(json, "count", 1);
-                TagCountValue value = new TagCountValue(TagKey.create(Registries.ITEM, resourceLocation), count);
-                return Ingredient.fromValues(Stream.of(value));
+        public boolean equals(Object p_301162_) {
+            boolean result;
+            if (p_301162_ instanceof TagCountValue tagValue) {
+                result = tagValue.tag.location().equals(this.tag.location()) && tagValue.count == this.count;
             } else {
-                return Ingredient.fromValues(Stream.of(Ingredient.valueFromJson(json)));
+                result = false;
             }
-        }
-    };
 
-    public static class TagCountValue extends Ingredient.TagValue {
-        private final int count;
-
-        public TagCountValue(@NotNull TagKey<Item> tag, int count) {
-            super(tag);
-            this.count = count;
+            return result;
         }
 
-        @NotNull
         @Override
+        @NotNull
         public Collection<ItemStack> getItems() {
-            var items = super.getItems();
+            List<ItemStack> list = Lists.newArrayList();
 
-            items.forEach(stack -> stack.setCount(count));
-            return items;
-        }
+            for (Holder<Item> holder : BuiltInRegistries.ITEM.getTagOrEmpty(this.tag)) {
+                list.add(new ItemStack(holder, this.count));
+            }
 
-        @NotNull
-        @Override
-        public JsonObject serialize() {
-            JsonObject object = super.serialize();
+            if (list.isEmpty()) {
+                list.add((new ItemStack(Blocks.BARRIER)).setHoverName(Component.literal("Empty Tag: " + this.tag.location())));
+            }
 
-            object.addProperty("count", count);
-            return object;
+            return list;
         }
     }
 }

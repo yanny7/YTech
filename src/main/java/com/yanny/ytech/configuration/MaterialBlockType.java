@@ -11,8 +11,8 @@ import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -40,18 +40,17 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -241,7 +240,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     @NotNull private final Map<MaterialType, ResourceLocation[]> textures;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter;
-    @NotNull private final BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter;
+    @NotNull private final BiConsumer<Holder.BlockHolder, RecipeOutput> recipeGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, ItemTagsProvider> itemTagsGetter;
     @NotNull private final BiConsumer<Holder.BlockHolder, BlockTagsProvider> blockTagsGetter;
     @Nullable private final IAbstractMenuGetter menuGetter;
@@ -255,7 +254,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                       @NotNull Function<MaterialType, TextureHolder[]> textureGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, BlockStateProvider> modelGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, BlockLootSubProvider> lootGetter,
-                      @NotNull BiConsumer<Holder.BlockHolder, Consumer<FinishedRecipe>> recipeGetter,
+                      @NotNull BiConsumer<Holder.BlockHolder, RecipeOutput> recipeGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, ItemTagsProvider> itemTagsGetter,
                       @NotNull BiConsumer<Holder.BlockHolder, BlockTagsProvider> blockTagsGetter, @NotNull EnumSet<MaterialType> materials) {
         this.id = id;
@@ -331,7 +330,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     }
 
     @Override
-    public void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
         recipeGetter.accept(holder, recipeConsumer);
     }
 
@@ -427,7 +426,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
         );
     }
 
-    private static void registerRawStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerRawStorageBlockRecipe(Holder.BlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material))
                 .pattern("###").pattern("###").pattern("###")
@@ -435,7 +434,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
-    private static void registerStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    private static void registerStorageBlockRecipe(Holder.BlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', MaterialItemType.INGOT.itemTag.get(holder.material))
                 .pattern("###").pattern("###").pattern("###")

@@ -4,13 +4,13 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 public class ReplaceItemModifier extends LootModifier {
     public static final Supplier<Codec<ReplaceItemModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst ->
             codecStart(inst)
-                    .and(ForgeRegistries.ITEMS.getCodec().fieldOf("oldItem").forGetter(m -> m.oldItem))
-                    .and(ForgeRegistries.ITEMS.getCodec().fieldOf("newItem").forGetter(m -> m.newItem))
+                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("oldItem").forGetter(m -> m.oldItem))
+                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("newItem").forGetter(m -> m.newItem))
                     .apply(inst, ReplaceItemModifier::new)));
     private final Item oldItem;
     private final Item newItem;

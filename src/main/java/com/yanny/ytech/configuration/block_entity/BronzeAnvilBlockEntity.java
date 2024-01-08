@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class BronzeAnvilBlockEntity extends BlockEntity {
@@ -62,11 +62,11 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                 } else {
                     level.getRecipeManager().getRecipeFor(HammeringRecipe.RECIPE_TYPE, new SimpleContainer(hammeringItem), level).ifPresent((recipe) -> {
-                        if (recipe.tool().test(holdingItemStack)) {
+                        if (recipe.value().tool().test(holdingItemStack)) {
                             hammeringItem.split(1);
                             holdingItemStack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
                             level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
-                            Block.popResourceFromFace(level, pos, hitResult.getDirection(), recipe.result().copy());
+                            Block.popResourceFromFace(level, pos, hitResult.getDirection(), recipe.value().result().copy());
                             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                         }

@@ -1,12 +1,10 @@
 {
   "type": "ytech:alloying",
   "ingredient1": {
-    "type": "ytech:tag_stack",
     "count": 9,
     "tag": "forge:ingots/copper"
   },
   "ingredient2": {
-    "type": "ytech:tag_stack",
     "count": 1,
     "tag": "forge:ingots/tin"
   },

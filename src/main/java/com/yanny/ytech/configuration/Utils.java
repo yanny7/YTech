@@ -3,13 +3,13 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.ModelProvider;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -54,12 +54,12 @@ public class Utils {
 
     @NotNull
     public static ResourceLocation loc(@NotNull Block block) {
-        return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
+        return Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block));
     }
 
     @NotNull
     public static ResourceLocation loc(@NotNull Item item) {
-        return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+        return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
     }
 
     @NotNull
@@ -87,7 +87,7 @@ public class Utils {
     @NotNull
     public static Block getLogFromMaterial(MaterialType material) {
         if (MaterialType.ALL_WOODS.contains(material)) {
-            return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(material.key + "_log")));
+            return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(material.key + "_log")));
         } else {
             throw new IllegalStateException("Not wood type provided!");
         }

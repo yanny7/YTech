@@ -12,6 +12,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,23 +53,23 @@ public class TanningRackBlockEntity extends BlockEntity {
             ItemStack tanningItem = items.getStackInSlot(0);
 
             if (tanningItem.isEmpty()) {
-                Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<RecipeHolder<TanningRecipe>> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
 
                 tanningRecipe.ifPresent((recipe) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-                    result = recipe.result().copy();
-                    hitLeft = recipe.hitCount();
+                    result = recipe.value().result().copy();
+                    hitLeft = recipe.value().hitCount();
                     player.setItemSlot(slot, items.insertItem(0, holdingItemStack, false));
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                 });
             } else {
                 if (result != null) {
-                    Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(items.getStackInSlot(0)), level);
+                    Optional<RecipeHolder<TanningRecipe>> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(items.getStackInSlot(0)), level);
 
                     tanningRecipe.ifPresent((recipe) -> {
-                        if (recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack)) {
+                        if (recipe.value().tool().isEmpty() || recipe.value().tool().test(holdingItemStack)) {
                             player.getItemInHand(hand).hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
                             hitLeft--;
 

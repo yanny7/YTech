@@ -5,8 +5,8 @@ import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -15,13 +15,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
     private static final VoxelShape SHAPE = Shapes.box(1/16.0, 0, 1/16.0, 15/16.0, 1, 15/16.0);
@@ -36,7 +35,7 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
         return SHAPE;
     }
 
-    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', SimpleBlockType.REINFORCED_BRICKS.itemTag)
                 .pattern(" # ")

@@ -24,6 +24,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -159,7 +160,7 @@ public class DeerEntity extends Animal {
         @Override
         public boolean canUse() {
             if (nextStartTick <= 0) {
-                if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(deer.level(), deer)) {
+                if (!EventHooks.getMobGriefingEvent(deer.level(), deer)) {
                     return false;
                 }
 

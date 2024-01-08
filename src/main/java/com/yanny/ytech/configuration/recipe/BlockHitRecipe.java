@@ -1,19 +1,21 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +25,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredient block, ItemStack result) implements Recipe<Container> {
+public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<BlockHitRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
@@ -58,12 +62,6 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
 
     @NotNull
     @Override
-    public ResourceLocation getId() {
-        return id;
-    }
-
-    @NotNull
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
@@ -75,21 +73,32 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
     }
 
     public static class Serializer implements RecipeSerializer<BlockHitRecipe> {
-        @NotNull
+        private static final Codec<BlockHitRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((blockHitRecipe) -> blockHitRecipe.ingredient),
+                Ingredient.CODEC_NONEMPTY.fieldOf("block").forGetter((blockHitRecipe) -> blockHitRecipe.block),
+                ExtraCodecs.either(BuiltInRegistries.ITEM.byNameCodec(), CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC)
+                        .xmap((either) -> either.map(ItemStack::new, Function.identity()), (stack) -> {
+                            if (stack.getCount() != 1) {
+                                return Either.right(stack);
+                            } else {
+                                return ItemStack.matches(stack, new ItemStack(stack.getItem())) ? Either.left(stack.getItem()) : Either.right(stack);
+                            }
+                        }).fieldOf("result").forGetter((blockHitRecipe) -> blockHitRecipe.result)
+        ).apply(recipe, BlockHitRecipe::new));
+
         @Override
-        public BlockHitRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
-            Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
-            Ingredient block = Ingredient.fromJson(serializedRecipe.get("block"), true);
-            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            return new BlockHitRecipe(recipeId, ingredient, block, result);
+        @NotNull
+        public Codec<BlockHitRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public @Nullable BlockHitRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        @NotNull
+        public BlockHitRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             Ingredient block = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            return new BlockHitRecipe(recipeId, ingredient, block, result);
+            return new BlockHitRecipe(ingredient, block, result);
         }
 
         @Override
@@ -101,11 +110,11 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
     }
 
     public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, @NotNull Ingredient block, @NotNull Item result,
-                         @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
+                         @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
-            json.add("ingredient", ingredient.toJson());
-            json.add("block", block.toJson());
+            json.add("ingredient", ingredient.toJson(false));
+            json.add("block", block.toJson(false));
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
@@ -114,26 +123,14 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
 
         @NotNull
         @Override
-        public ResourceLocation getId() {
-            return id;
+        public AdvancementHolder advancement() {
+            return advancementHolder;
         }
 
         @NotNull
         @Override
-        public RecipeSerializer<?> getType() {
+        public RecipeSerializer<?> type() {
             return SERIALIZER;
-        }
-
-        @NotNull
-        @Override
-        public JsonObject serializeAdvancement() {
-            return advancement.serializeToJson();
-        }
-
-        @NotNull
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return advancementId;
         }
     }
 
@@ -141,7 +138,7 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
         private final Ingredient ingredient;
         private final Ingredient block;
         private final Item result;
-        private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
+        private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
         Builder(@NotNull Ingredient ingredient, @NotNull Ingredient block, @NotNull Item result) {
             this.ingredient = ingredient;
@@ -163,8 +160,8 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
 
         @NotNull
         @Override
-        public Builder unlockedBy(@NotNull String criterionName, @NotNull CriterionTriggerInstance criterionTrigger) {
-            this.advancement.addCriterion(criterionName, criterionTrigger);
+        public Builder unlockedBy(@NotNull String criterionName, @NotNull Criterion criterionTrigger) {
+            this.criteria.put(criterionName, criterionTrigger);
             return this;
         }
 
@@ -181,16 +178,17 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
         }
 
         @Override
-        public void save(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
             ensureValid(recipeId);
-            advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
-                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new BlockHitRecipe.Result(recipeId, ingredient, block, result, advancement, recipeId.withPrefix("recipes/block_hit/")));
+            Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
+                    RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
+            this.criteria.forEach(builder::addCriterion);
+            finishedRecipeConsumer.accept(new BlockHitRecipe.Result(recipeId, ingredient, block, result, builder.build(recipeId.withPrefix("recipes/block_hit/"))));
         }
 
         //Makes sure that this recipe is valid and obtainable.
         private void ensureValid(@NotNull ResourceLocation id) {
-            if (this.advancement.getCriteria().isEmpty()) {
+            if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }
         }

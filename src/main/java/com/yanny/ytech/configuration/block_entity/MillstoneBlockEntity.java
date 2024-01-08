@@ -12,6 +12,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -45,13 +46,13 @@ public class MillstoneBlockEntity extends BlockEntity implements BlockEntityTick
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (result == null) {
-                Optional<MillingRecipe> millingRecipe = level.getRecipeManager().getRecipeFor(MillingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<RecipeHolder<MillingRecipe>> millingRecipe = level.getRecipeManager().getRecipeFor(MillingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-                    result = r.result().copy();
-                    millingTime = r.millingTime();
+                    result = r.value().result().copy();
+                    millingTime = r.value().millingTime();
                     spinTimeout = 10;
                     player.setItemSlot(slot, holdingItemStack.copyWithCount(holdingItemStack.getCount() - 1));
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);

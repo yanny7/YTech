@@ -89,7 +89,7 @@ public class AqueductFertilizerBlockEntity extends AqueductHydratorBlockEntity i
                     }
 
                     if (state.getBlock() instanceof BonemealableBlock bonemealableBlock) {
-                        if (bonemealableBlock.isValidBonemealTarget(level, randomPos, state, level.isClientSide)) {
+                        if (bonemealableBlock.isValidBonemealTarget(level, randomPos, state)) {
                             if (bonemealableBlock.isBonemealSuccess(level, level.random, randomPos, state)) {
                                 bonemealableBlock.performBonemeal(level, level.random, randomPos, state);
                                 level.sendParticles(

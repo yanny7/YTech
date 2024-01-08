@@ -11,8 +11,8 @@ import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -42,19 +43,18 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
@@ -82,7 +82,6 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         this.shapesCache = this.getShapeForEachState(AqueductBlock::calculateShape);
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
@@ -162,7 +161,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
     @NotNull
     @Override
-    public ItemStack pickupBlock(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockState state) {
+    public ItemStack pickupBlock(@Nullable Player player, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockState state) {
         if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof AqueductBlockEntity aqueductBlock) {
             IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(aqueductBlock);
 
@@ -186,7 +185,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     }
 
     @Override
-    public boolean canPlaceLiquid(@NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Fluid fluid) {
+    public boolean canPlaceLiquid(@Nullable Player player, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Fluid fluid) {
         return fluid == Fluids.WATER;
     }
 
@@ -252,7 +251,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
     @Override
     public boolean isRandomlyTicking(@NotNull BlockState state) {
-        return YTechMod.CONFIGURATION.isValidBlockForRaining();
+        return true;
     }
 
     @SuppressWarnings("deprecation")
@@ -366,7 +365,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         provider.itemModels().getBuilder(holder.key).parent(itemModel);
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
+    public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
                 .pattern("# #")
