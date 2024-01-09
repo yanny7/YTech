@@ -6,6 +6,7 @@ import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.registration.Registration;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
@@ -69,8 +71,8 @@ public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlloyingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(recipe.ingredient1());
-        builder.addSlot(RecipeIngredientRole.INPUT, 21, 5).addIngredients(recipe.ingredient2());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(VanillaTypes.ITEM_STACK, Stream.of(recipe.ingredient1().getItems()).peek((r) -> r.setCount(recipe.count1())).toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 21, 5).addIngredients(VanillaTypes.ITEM_STACK, Stream.of(recipe.ingredient2().getItems()).peek((r) -> r.setCount(recipe.count2())).toList());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 71,  23).addItemStack(recipe.result());
     }
 
