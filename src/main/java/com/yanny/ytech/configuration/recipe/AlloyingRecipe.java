@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public record AlloyingRecipe(ResourceLocation id, Ingredient ingredient1, int count1, Ingredient ingredient2, int count2,
+public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingredient2,
                              int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<AlloyingRecipe> RECIPE_TYPE = new RecipeType<>() {
@@ -75,37 +75,44 @@ public record AlloyingRecipe(ResourceLocation id, Ingredient ingredient1, int co
     }
 
     public int getInput1Count() {
-        return count1;
+        return ingredient1.count;
     }
 
     public int getInput2Count() {
-        return count2;
+        return ingredient2.count;
     }
 
     public boolean matchesPartially(@NotNull ItemStack itemStack1, @NotNull ItemStack itemStack2, boolean ignoreCount) {
-        return (ingredient1.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= count1))
-                || (ingredient1.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= count1))
-                || (ingredient2.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= count2))
-                || (ingredient2.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= count2));
+        return (ingredient1.ingredient.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= ingredient1.count))
+                || (ingredient1.ingredient.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= ingredient1.count))
+                || (ingredient2.ingredient.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= ingredient2.count))
+                || (ingredient2.ingredient.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= ingredient2.count));
     }
 
     public boolean matchesFully(@NotNull ItemStack itemStack1, @NotNull ItemStack itemStack2, boolean ignoreCount) {
-        return (ingredient1.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= count1) && ingredient2.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= count2))
-                || (ingredient1.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= count1) && ingredient2.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= count2));
+        return (ingredient1.ingredient.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= ingredient1.count) && ingredient2.ingredient.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= ingredient2.count))
+                || (ingredient1.ingredient.test(itemStack2) && (ignoreCount || itemStack2.getCount() >= ingredient1.count) && ingredient2.ingredient.test(itemStack1) && (ignoreCount || itemStack1.getCount() >= ingredient2.count));
     }
 
     public boolean matchesIngredient1(@NotNull ItemStack itemStack, boolean ignoreCount) {
-        return ingredient1.test(itemStack) && (ignoreCount || itemStack.getCount() >= count1);
+        return ingredient1.ingredient.test(itemStack) && (ignoreCount || itemStack.getCount() >= ingredient1.count);
     }
 
     public boolean matchesIngredient2(@NotNull ItemStack itemStack, boolean ignoreCount) {
-        return ingredient2.test(itemStack) && (ignoreCount || itemStack.getCount() >= count2);
+        return ingredient2.ingredient.test(itemStack) && (ignoreCount || itemStack.getCount() >= ingredient2.count);
+    }
+
+    public record IngredientCount(Ingredient ingredient, int count) {
+        public static Codec<IngredientCount> CODEC = RecordCodecBuilder.create((ingredient) -> ingredient.group(
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((ingredientCount) -> ingredientCount.ingredient),
+                Codec.INT.fieldOf("count").forGetter((ingredientCount) -> ingredientCount.count)
+        ).apply(ingredient, IngredientCount::new));
     }
 
     public static class Serializer implements RecipeSerializer<AlloyingRecipe> {
         private static final Codec<AlloyingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                TagStackIngredient.CODEC_NONEMPTY.fieldOf("ingredient1").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient1),
-                TagStackIngredient.CODEC_NONEMPTY.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
+                IngredientCount.CODEC.fieldOf("ingredient1").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient1),
+                IngredientCount.CODEC.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
                 Codec.INT.fieldOf("minTemp").forGetter((alloyingRecipe) -> alloyingRecipe.minTemperature),
                 Codec.INT.fieldOf("smeltingTime").forGetter((alloyingRecipe) -> alloyingRecipe.smeltingTime),
                 ExtraCodecs.either(BuiltInRegistries.ITEM.byNameCodec(), CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC)
@@ -134,25 +141,23 @@ public record AlloyingRecipe(ResourceLocation id, Ingredient ingredient1, int co
             int smeltingTime = buffer.readInt();
             int count1 = buffer.readInt();
             int count2 = buffer.readInt();
-            return new AlloyingRecipe(TagStackIngredient.fromIngredient(ingredient1),
-                    TagStackIngredient.fromIngredient(ingredient2), minTemperature, smeltingTime, result);
+            return new AlloyingRecipe(new IngredientCount(ingredient1, count1), new IngredientCount(ingredient2, count2), minTemperature, smeltingTime, result);
         }
 
         @Override
         public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull AlloyingRecipe recipe) {
-            recipe.ingredient1.toNetwork(buffer);
-            recipe.ingredient2.toNetwork(buffer);
+            recipe.ingredient1.ingredient.toNetwork(buffer);
+            recipe.ingredient2.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
             buffer.writeInt(recipe.minTemperature);
             buffer.writeInt(recipe.smeltingTime);
-            buffer.writeInt(recipe.count1);
-            buffer.writeInt(recipe.count2);
+            buffer.writeInt(recipe.ingredient1.count);
+            buffer.writeInt(recipe.ingredient1.count);
         }
     }
 
     public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient1, int count1, Ingredient ingredient2, int count2,
-                         int minTemperature, int smeltingTime, @NotNull Item result, int count, @NotNull Advancement.Builder advancement,
-                         @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
+                         int minTemperature, int smeltingTime, @NotNull Item result, int count, @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
             JsonObject item1 = new JsonObject();
