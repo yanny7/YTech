@@ -8,6 +8,7 @@ import com.yanny.ytech.configuration.recipe.*;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -357,7 +358,7 @@ public class Registration {
 
     private static DeferredHolder<CreativeModeTab, CreativeModeTab> registerCreativeTab() {
         Supplier<ItemStack> iconSupplier = () -> new ItemStack(item(SimpleBlockType.PRIMITIVE_SMELTER));
-        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().icon(iconSupplier).build());
+        return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().title(Component.translatable("creativeTab.ytech.title")).icon(iconSupplier).build());
     }
 
     private static <U extends INameable & IMaterialModel<?, ?>, V extends Holder.MaterialHolder<U>> V uniqueKey(V v, U object, Function<U, V> consumer) {

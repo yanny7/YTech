@@ -54,5 +54,6 @@ class YTechLanguages extends LanguageProvider {
         add("text.ytech.hover.drying_rack1", "Works faster in dry biomes and slower in wet biomes");
         add("text.ytech.hover.drying_rack2", "Doesn't work during rain");
 
+        add("creativeTab.ytech.title", "YTech");
     }
 }
