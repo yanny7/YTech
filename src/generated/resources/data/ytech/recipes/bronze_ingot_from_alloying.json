@@ -2,11 +2,15 @@
   "type": "ytech:alloying",
   "ingredient1": {
     "count": 9,
-    "tag": "forge:ingots/copper"
+    "ingredient": {
+      "tag": "forge:ingots/copper"
+    }
   },
   "ingredient2": {
     "count": 1,
-    "tag": "forge:ingots/tin"
+    "ingredient": {
+      "tag": "forge:ingots/tin"
+    }
   },
   "minTemp": 1085,
   "result": {
