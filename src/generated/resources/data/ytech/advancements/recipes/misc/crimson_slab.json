@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:crimson_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

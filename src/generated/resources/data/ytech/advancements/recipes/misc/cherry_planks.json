@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:cherry_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

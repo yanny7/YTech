@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:birch_drying_rack"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

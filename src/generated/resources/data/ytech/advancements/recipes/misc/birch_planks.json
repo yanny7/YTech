@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:birch_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

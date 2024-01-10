@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
+import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
 import com.yanny.ytech.registration.Holder;
@@ -54,7 +55,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     private final Holder.SimpleBlockHolder holder;
 
     public BronzeAnvilBlock(Holder.SimpleBlockHolder holder) {
-        super(Properties.copy(Blocks.ANVIL));
+        super(Properties.ofFullCopy(Blocks.ANVIL));
         this.holder = holder;
     }
 
@@ -154,6 +155,12 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     @Override
     public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull PathComputationType type) {
         return false;
+    }
+
+    @Override
+    @NotNull
+    protected MapCodec<? extends BronzeAnvilBlock> codec() {
+        throw new RuntimeException("Not implemented yet!");
     }
 
     @Override

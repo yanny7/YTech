@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:jungle_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

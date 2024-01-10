@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:reinforced_brick_chimney"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

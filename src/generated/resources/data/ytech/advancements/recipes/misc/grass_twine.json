@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:grass_twine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

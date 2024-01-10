@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:wooden_bolt_using_saw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

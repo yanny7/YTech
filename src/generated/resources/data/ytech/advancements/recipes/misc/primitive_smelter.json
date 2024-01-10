@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:primitive_smelter"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

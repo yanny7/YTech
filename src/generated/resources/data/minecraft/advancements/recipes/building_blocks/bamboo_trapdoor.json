@@ -28,6 +28,5 @@
     "recipes": [
       "minecraft:bamboo_trapdoor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -34,11 +34,10 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
     protected final Holder.SimpleBlockHolder holder;
 
     public AqueductConsumerBlock(Holder.SimpleBlockHolder holder) {
-        super(Properties.copy(Blocks.TERRACOTTA));
+        super(Properties.ofFullCopy(Blocks.TERRACOTTA));
         this.holder = holder;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {

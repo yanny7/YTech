@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
@@ -29,8 +30,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.GravelBlock;
-import net.minecraft.world.level.block.SandBlock;
+import net.minecraft.world.level.block.ColoredFallingBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -64,7 +64,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.forgeLoc("ores/" + material.key)),
             Tags.Items.ORES,
             Tags.Blocks.ORES,
-            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)),
             MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("ore/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
@@ -78,7 +78,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.forgeLoc("ores/" + material.key)),
             Tags.Items.ORES,
             Tags.Blocks.ORES,
-            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHER_GOLD_ORE)),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_GOLD_ORE)),
             MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("nether_ore/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
@@ -92,7 +92,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.forgeLoc("ores/" + material.key)),
             Tags.Items.ORES,
             Tags.Blocks.ORES,
-            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE)),
             MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("deepslate_ore/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
@@ -106,7 +106,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.forgeLoc("sand_deposits/" + material.key)),
             ItemTags.create(Utils.modLoc("sand_deposits")),
             BlockTags.create(Utils.modLoc("sand_deposits")),
-            (holder) -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)),
+            (holder) -> new ColoredFallingBlock(new ColorRGBA(14406560), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)),
             MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("sand_deposit/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
@@ -120,7 +120,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.forgeLoc("gravel_deposits/" + material.key)),
             ItemTags.create(Utils.modLoc("gravel_deposits")),
             BlockTags.create(Utils.modLoc("gravel_deposits")),
-            (holder) -> new GravelBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)),
+            (holder) -> new ColoredFallingBlock(new ColorRGBA(-8356741), BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)),
             MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("gravel_deposit/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
@@ -134,7 +134,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.forgeLoc("storage_blocks/" + material.key)),
             Tags.Items.STORAGE_BLOCKS,
             Tags.Blocks.STORAGE_BLOCKS,
-            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)),
             MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("storage/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,
@@ -148,7 +148,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
             (material) -> BlockTags.create(Utils.forgeLoc("storage_blocks/raw_" + material.key)),
             Tags.Items.STORAGE_BLOCKS,
             Tags.Blocks.STORAGE_BLOCKS,
-            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)),
             MaterialBlockType::simpleBlockItem,
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("raw_storage/" + material.key))).toArray(TextureHolder[]::new),
             MaterialBlockType::basicBlockStateProvider,

@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:aqueduct_hydrator"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

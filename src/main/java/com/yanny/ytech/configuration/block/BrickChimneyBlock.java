@@ -36,7 +36,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
     protected final Holder.SimpleBlockHolder holder;
 
     public BrickChimneyBlock(Holder.SimpleBlockHolder holder) {
-        super(Properties.copy(Blocks.BRICKS).strength(2.0f, 2.0f));
+        super(Properties.ofFullCopy(Blocks.BRICKS).strength(2.0f, 2.0f));
         this.holder = holder;
     }
 

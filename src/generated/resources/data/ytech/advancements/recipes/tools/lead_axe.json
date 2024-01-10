@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:lead_axe"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

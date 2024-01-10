@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:unfired_clay_bucket"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

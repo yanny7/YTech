@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
+import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MachineBlockEntity;
@@ -66,6 +67,12 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
         stateBuilder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.POWERED);
+    }
+
+    @Override
+    @NotNull
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        throw new RuntimeException("Not implemented yet!");
     }
 
     @Nullable

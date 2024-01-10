@@ -31,7 +31,7 @@ public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
     @Override
     @NotNull
     public AABB getRenderBoundingBox(@NotNull BlockEntity blockEntity) {
-        return new AABB(blockEntity.getBlockPos(), blockEntity.getBlockPos().offset(1, 1, 1));
+        return new AABB(blockEntity.getBlockPos().getCenter(), blockEntity.getBlockPos().offset(1, 1, 1).getCenter());
     }
 
     @Override

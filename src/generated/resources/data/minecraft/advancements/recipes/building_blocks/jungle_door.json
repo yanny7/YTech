@@ -28,6 +28,5 @@
     "recipes": [
       "minecraft:jungle_door"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

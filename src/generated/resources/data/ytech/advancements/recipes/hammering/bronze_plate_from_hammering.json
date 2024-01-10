@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:bronze_plate_from_hammering"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:iron_bloom"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

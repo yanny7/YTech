@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:oak_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:dried_salmon"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

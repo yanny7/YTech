@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.first_steps"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:sharp_flint",
       "nbt": "{Damage:0}"

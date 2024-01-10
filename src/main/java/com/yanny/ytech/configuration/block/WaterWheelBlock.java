@@ -34,7 +34,7 @@ public class WaterWheelBlock extends KineticBlock {
     private final float stressMultiplier;
 
     public WaterWheelBlock(@NotNull MaterialType material, float stressMultiplier) {
-        super(Properties.copy(Blocks.STONE).noOcclusion());
+        super(Properties.ofFullCopy(Blocks.STONE).noOcclusion());
         this.material = material;
         this.stressMultiplier = stressMultiplier;
     }

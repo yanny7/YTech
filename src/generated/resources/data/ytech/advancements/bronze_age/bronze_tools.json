@@ -48,7 +48,6 @@
       "translate": "advancements.ytech.bronze_age.description.bronze_tools"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "ytech:bronze_pickaxe",
       "nbt": "{Damage:0}"

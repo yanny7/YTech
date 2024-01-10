@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:dried_chicken"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

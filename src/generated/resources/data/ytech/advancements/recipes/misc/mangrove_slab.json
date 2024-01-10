@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:mangrove_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

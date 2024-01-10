@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.take_the_lead"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:lead_ingot"
     },

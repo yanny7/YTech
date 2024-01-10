@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:aqueduct_fertilizer"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.storage_management"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:basket"
     },

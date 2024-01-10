@@ -48,7 +48,7 @@ public class DryingRackBlock extends Block implements EntityBlock {
     private final Holder.BlockHolder holder;
 
     public DryingRackBlock(Holder.BlockHolder holder) {
-        super(Properties.copy(Blocks.OAK_PLANKS));
+        super(Properties.ofFullCopy(Blocks.OAK_PLANKS));
         this.holder = holder;
     }
 

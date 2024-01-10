@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:copper_saw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:birch_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

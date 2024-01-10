@@ -41,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -111,7 +110,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     REINFORCED_BRICKS(HolderType.BLOCK, "reinforced_bricks", "Reinforced Bricks",
             ItemTags.create(Utils.modLoc("reinforced_bricks")),
             BlockTags.create(Utils.modLoc("reinforced_bricks")),
-            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.BRICKS)),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)),
             SimpleBlockType::simpleBlockItem,
             () -> bottomTopTexture(Utils.modBlockLoc("reinforced_bricks"), Utils.blockLoc(Blocks.BRICKS), Utils.blockLoc(Blocks.BRICKS)),
             SimpleBlockType::bottomTopBlockStateProvider,
@@ -134,7 +133,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     TERRACOTTA_BRICKS(HolderType.BLOCK, "terracotta_bricks", "Terracotta Bricks",
             ItemTags.create(Utils.modLoc("terracotta_bricks")),
             BlockTags.create(Utils.modLoc("terracotta_bricks")),
-            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.BRICKS)),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)),
             SimpleBlockType::simpleBlockItem,
             () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
             SimpleBlockType::simpleBlockStateProvider,
@@ -145,7 +144,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     TERRACOTTA_BRICK_SLAB(HolderType.BLOCK, "terracotta_brick_slab", "Terracotta Brick Slab",
             ItemTags.SLABS,
             BlockTags.SLABS,
-            (holder) -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BRICK_SLAB)),
+            (holder) -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_SLAB)),
             SimpleBlockType::simpleBlockItem,
             () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
             SimpleBlockType::registerSlabBlockState,
@@ -156,7 +155,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     TERRACOTTA_BRICK_STAIRS(HolderType.BLOCK, "terracotta_brick_stairs", "Terracotta Brick Stairs",
             ItemTags.STAIRS,
             BlockTags.STAIRS,
-            (holder) -> new StairBlock(() -> Registration.block(TERRACOTTA_BRICKS).defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BRICK_STAIRS)),
+            (holder) -> new StairBlock(() -> Registration.block(TERRACOTTA_BRICKS).defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_STAIRS)),
             SimpleBlockType::simpleBlockItem,
             () -> simpleTexture(Utils.modBlockLoc("terracotta_bricks")),
             SimpleBlockType::registerStairsBlockState,

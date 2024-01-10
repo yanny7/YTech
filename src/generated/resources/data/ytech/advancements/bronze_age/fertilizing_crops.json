@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.bronze_age.description.fertilizing_crops"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:aqueduct_fertilizer"
     },

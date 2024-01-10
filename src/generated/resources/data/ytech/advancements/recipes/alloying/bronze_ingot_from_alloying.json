@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:bronze_ingot_from_alloying"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

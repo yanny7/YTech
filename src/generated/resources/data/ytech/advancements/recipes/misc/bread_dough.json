@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:bread_dough"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.copper"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:copper_ingot"
     },

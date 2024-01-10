@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:dried_kelp"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.bronze_age.description.bloomberg"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:iron_bloom"
     },

@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:flint_axe"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

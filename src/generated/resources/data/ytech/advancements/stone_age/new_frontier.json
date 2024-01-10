@@ -18,7 +18,6 @@
       "translate": "advancements.ytech.stone_age.description.new_frontier"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "ytech:bronze_ingot"
     },

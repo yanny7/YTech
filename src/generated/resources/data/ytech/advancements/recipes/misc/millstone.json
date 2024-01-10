@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:millstone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

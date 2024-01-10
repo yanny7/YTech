@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.bronze_age.description.root"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:bronze_axe",
       "nbt": "{Damage:0}"

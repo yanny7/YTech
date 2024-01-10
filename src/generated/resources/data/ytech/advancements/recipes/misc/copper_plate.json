@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:copper_plate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

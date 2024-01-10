@@ -30,7 +30,7 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
                 new LootItemCondition[] {
                         LootItemRandomChanceCondition.randomChance(0.1f).build(),
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(SimpleItemType.SHARP_FLINT.itemTag)).build(),
-                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRASS).build()
+                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRASS_BLOCK).build()
                 },
                 Registration.item(SimpleItemType.GRASS_FIBERS)
         ));

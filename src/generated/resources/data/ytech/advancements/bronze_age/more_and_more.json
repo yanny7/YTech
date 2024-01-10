@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.bronze_age.description.more_and_more"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:reinforced_brick_chimney"
     },

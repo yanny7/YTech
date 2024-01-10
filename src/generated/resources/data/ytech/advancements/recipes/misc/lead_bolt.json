@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:lead_bolt"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

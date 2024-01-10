@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:copper_sword"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

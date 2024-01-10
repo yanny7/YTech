@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.bronze_age.description.iron_man"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:iron_ingot"
     },

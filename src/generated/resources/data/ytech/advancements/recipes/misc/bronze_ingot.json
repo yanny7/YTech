@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:bronze_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

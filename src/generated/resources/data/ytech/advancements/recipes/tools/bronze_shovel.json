@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:bronze_shovel"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

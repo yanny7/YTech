@@ -19,8 +19,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.dirty_things"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:wooden_shovel",
       "nbt": "{Damage:0}"

@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:wooden_plate_using_axe"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

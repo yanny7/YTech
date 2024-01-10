@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:aqueduct"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

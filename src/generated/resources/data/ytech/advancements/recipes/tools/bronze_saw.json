@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:bronze_saw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

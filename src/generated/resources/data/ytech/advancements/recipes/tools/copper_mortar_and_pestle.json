@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:copper_mortar_and_pestle"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

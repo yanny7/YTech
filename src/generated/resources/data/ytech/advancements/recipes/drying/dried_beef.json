@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:dried_beef"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

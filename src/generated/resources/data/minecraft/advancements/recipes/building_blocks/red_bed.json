@@ -28,6 +28,5 @@
     "recipes": [
       "minecraft:red_bed"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:copper_hoe"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

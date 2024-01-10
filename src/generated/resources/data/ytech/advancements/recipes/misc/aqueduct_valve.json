@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:aqueduct_valve"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

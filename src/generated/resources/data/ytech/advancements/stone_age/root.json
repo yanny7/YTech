@@ -19,8 +19,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.root"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:flint"
     },

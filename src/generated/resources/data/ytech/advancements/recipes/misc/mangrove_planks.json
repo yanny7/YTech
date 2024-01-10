@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:mangrove_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

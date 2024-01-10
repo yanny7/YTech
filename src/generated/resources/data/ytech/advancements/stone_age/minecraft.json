@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.minecraft"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:antler_pickaxe",
       "nbt": "{Damage:0}"

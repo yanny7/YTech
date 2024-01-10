@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:mangrove_drying_rack"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

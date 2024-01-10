@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:iron_file"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

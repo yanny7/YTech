@@ -28,6 +28,5 @@
     "recipes": [
       "minecraft:white_bed"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

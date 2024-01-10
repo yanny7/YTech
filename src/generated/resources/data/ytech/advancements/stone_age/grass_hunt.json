@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.grass_hunt"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:grass_fibers"
     },

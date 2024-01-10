@@ -1,25 +1,26 @@
 package com.yanny.ytech.configuration.recipe;
 
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
-import net.minecraft.advancements.*;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingredient2,
@@ -115,14 +115,7 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
                 IngredientCount.CODEC.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
                 Codec.INT.fieldOf("minTemp").forGetter((alloyingRecipe) -> alloyingRecipe.minTemperature),
                 Codec.INT.fieldOf("smeltingTime").forGetter((alloyingRecipe) -> alloyingRecipe.smeltingTime),
-                ExtraCodecs.either(BuiltInRegistries.ITEM.byNameCodec(), CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC)
-                        .xmap((either) -> either.map(ItemStack::new, Function.identity()), (stack) -> {
-                            if (stack.getCount() != 1) {
-                                return Either.right(stack);
-                            } else {
-                                return ItemStack.matches(stack, new ItemStack(stack.getItem())) ? Either.left(stack.getItem()) : Either.right(stack);
-                            }
-                        }).fieldOf("result").forGetter((alloyingRecipe) -> alloyingRecipe.result)
+                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((alloyingRecipe) -> alloyingRecipe.result)
         ).apply(recipe, AlloyingRecipe::new));
 
         @Override
@@ -153,46 +146,6 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
             buffer.writeInt(recipe.smeltingTime);
             buffer.writeInt(recipe.ingredient1.count);
             buffer.writeInt(recipe.ingredient1.count);
-        }
-    }
-
-    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient1, int count1, Ingredient ingredient2, int count2,
-                         int minTemperature, int smeltingTime, @NotNull Item result, int count, @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
-        @Override
-        public void serializeRecipeData(@NotNull JsonObject json) {
-            JsonObject item1 = new JsonObject();
-            JsonObject item2 = new JsonObject();
-
-            item1.add("ingredient", ingredient1.toJson(false));
-            item1.addProperty("count", count1);
-            item2.add("ingredient", ingredient2.toJson(false));
-            item2.addProperty("count", count2);
-            json.add("ingredient1", item1);
-            json.add("ingredient2", item2);
-
-            JsonObject resultItemStack = new JsonObject();
-            resultItemStack.addProperty("item", Utils.loc(result).toString());
-
-            if (count > 1) {
-                resultItemStack.addProperty("count", count);
-            }
-
-            json.add("result", resultItemStack);
-
-            json.addProperty("minTemp", minTemperature);
-            json.addProperty("smeltingTime", smeltingTime);
-        }
-
-        @Override
-        @NotNull
-        public RecipeSerializer<?> type() {
-            return SERIALIZER;
-        }
-
-        @NotNull
-        @Override
-        public AdvancementHolder advancement() {
-            return advancementHolder;
         }
     }
 
@@ -261,8 +214,17 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
             this.criteria.forEach(builder::addCriterion);
-            finishedRecipeConsumer.accept(new AlloyingRecipe.Result(recipeId, ingredient1, count1, ingredient2, count2, minTemperature, smeltingTime, result, count,
-                    builder.build(recipeId.withPrefix("recipes/alloying/"))));
+            finishedRecipeConsumer.accept(
+                    recipeId,
+                    new AlloyingRecipe(
+                            new IngredientCount(ingredient1, count1),
+                            new IngredientCount(ingredient2, count2),
+                            minTemperature,
+                            smeltingTime,
+                            new ItemStack(result, count)
+                    ),
+                    builder.build(recipeId.withPrefix("recipes/alloying/"))
+            );
         }
 
         //Makes sure that this recipe is valid and obtainable.

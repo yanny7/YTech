@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:dried_cod"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "minecraft:mangrove_trapdoor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

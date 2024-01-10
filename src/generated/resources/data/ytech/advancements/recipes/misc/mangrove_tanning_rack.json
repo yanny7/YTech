@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:mangrove_tanning_rack"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

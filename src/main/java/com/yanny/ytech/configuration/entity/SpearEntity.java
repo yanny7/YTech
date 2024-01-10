@@ -41,11 +41,11 @@ public class SpearEntity extends AbstractArrow {
     public int clientSideReturnSpearTickCount;
 
     public SpearEntity(EntityType<? extends Entity> entityType, Level level) {
-        super((EntityType<? extends AbstractArrow>) entityType, level);
+        super((EntityType<? extends AbstractArrow>) entityType, level, ItemStack.EMPTY);
     }
 
     public SpearEntity(Level level, LivingEntity shooter, ItemStack stack) {
-        super((EntityType<? extends AbstractArrow>) Registration.entityType(SimpleEntityType.SPEAR), shooter, level);
+        super((EntityType<? extends AbstractArrow>) Registration.entityType(SimpleEntityType.SPEAR), shooter, level, stack);
         spearItem = stack.copy();
         entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
         entityData.set(ID_FOIL, stack.hasFoil());

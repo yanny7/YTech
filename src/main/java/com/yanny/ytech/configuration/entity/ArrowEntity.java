@@ -36,7 +36,7 @@ public class ArrowEntity extends AbstractArrow {
     private boolean fixedColor;
 
     public ArrowEntity(@NotNull Level level, @NotNull LivingEntity shooter, @NotNull Item arrowType) {
-        super(EntityType.ARROW, shooter, level);
+        super(EntityType.ARROW, shooter, level, arrowType.getDefaultInstance());
         this.arrowType = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(arrowType)).toString();
     }
 

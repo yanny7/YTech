@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:leather_strips"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

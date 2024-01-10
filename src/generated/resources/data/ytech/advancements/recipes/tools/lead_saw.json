@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:lead_saw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -39,7 +39,7 @@ public class ShaftBlock extends KineticBlock {
     private final float stressMultiplier;
 
     public ShaftBlock(@NotNull MaterialType material, float stressMultiplier) {
-        super(Properties.copy(Blocks.STONE));
+        super(Properties.ofFullCopy(Blocks.STONE));
         this.material = material;
         this.stressMultiplier = stressMultiplier;
     }

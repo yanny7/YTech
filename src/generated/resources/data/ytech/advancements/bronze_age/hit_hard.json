@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.bronze_age.description.hit_hard"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:bronze_anvil"
     },

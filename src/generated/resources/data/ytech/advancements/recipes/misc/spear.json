@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:spear"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

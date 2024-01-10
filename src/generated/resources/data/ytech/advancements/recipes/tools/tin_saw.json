@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:tin_saw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

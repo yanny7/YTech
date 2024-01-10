@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
+import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -11,6 +12,12 @@ public abstract class KineticBlock extends BaseEntityBlock {
 
     protected KineticBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    @NotNull
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        throw new RuntimeException("Not implemented yet!");
     }
 
     @SuppressWarnings("deprecation")

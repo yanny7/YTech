@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:iron_arrow"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

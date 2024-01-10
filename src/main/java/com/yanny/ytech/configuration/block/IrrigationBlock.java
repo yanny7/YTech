@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -55,6 +56,12 @@ public abstract class IrrigationBlock extends BaseEntityBlock {
     }
 
     abstract List<BlockPos> getValidNeighbors(@NotNull BlockState blockState, @NotNull BlockPos pos);
+
+    @Override
+    @NotNull
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        throw new RuntimeException("Not implemented yet!");
+    }
 
     static boolean isValidForConnection(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull Direction direction) {
         BlockPos neighborPos = pos.offset(direction.getNormal());

@@ -28,6 +28,5 @@
     "recipes": [
       "minecraft:magenta_bed"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

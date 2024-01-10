@@ -30,6 +30,5 @@
     "recipes": [
       "ytech:flint_knife"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

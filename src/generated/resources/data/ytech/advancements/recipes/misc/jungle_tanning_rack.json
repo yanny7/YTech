@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:jungle_tanning_rack"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

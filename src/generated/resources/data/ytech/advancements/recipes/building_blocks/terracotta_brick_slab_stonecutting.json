@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:terracotta_brick_slab_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

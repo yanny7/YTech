@@ -48,7 +48,6 @@
       "translate": "advancements.ytech.stone_age.description.copper_armor"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "ytech:copper_chestplate",
       "nbt": "{Damage:0}"

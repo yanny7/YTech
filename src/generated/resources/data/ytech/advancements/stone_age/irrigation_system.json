@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.irrigation_system"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:aqueduct"
     },

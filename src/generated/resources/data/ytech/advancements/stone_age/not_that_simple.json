@@ -17,8 +17,6 @@
     "description": {
       "translate": "advancements.ytech.stone_age.description.not_that_simple"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "ytech:flint_axe",
       "nbt": "{Damage:0}"

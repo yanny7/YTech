@@ -2,7 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.AdvancementType;
+import com.yanny.ytech.configuration.YtechAdvancementType;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
@@ -25,7 +25,7 @@ class YTechLanguages extends LanguageProvider {
             add(h.spawnEgg.get(), h.name + " Spawn Egg");
         });
 
-        for (AdvancementType type : AdvancementType.values()) {
+        for (YtechAdvancementType type : YtechAdvancementType.values()) {
             add(type.titleId(), type.title());
             add(type.descriptionId(), type.description());
         }

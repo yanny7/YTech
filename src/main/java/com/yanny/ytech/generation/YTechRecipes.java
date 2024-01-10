@@ -12,7 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.TippedArrowRecipe;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
@@ -322,13 +322,13 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void removeVanillaRecipe(@NotNull RecipeOutput recipeConsumer, Item item) {
-        SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer, Utils.loc(item).toString());
+        SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(recipeConsumer, Utils.loc(item).toString());
     }
 
     private void removeVanillaSmeltingBlastingRecipe(@NotNull RecipeOutput recipeConsumer, Item to, Item from) {
-        SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer,
+        SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(recipeConsumer,
                 Utils.mcLoc(Utils.loc(to).getPath() + "_from_smelting_" + Utils.loc(from).getPath()).toString());
-        SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer,
+        SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(recipeConsumer,
                 Utils.mcLoc(Utils.loc(to).getPath() + "_from_blasting_" + Utils.loc(from).getPath()).toString());
     }
 

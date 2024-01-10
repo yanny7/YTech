@@ -56,7 +56,6 @@
       "translate": "advancements.ytech.stone_age.description.cover_me_in_leather"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "minecraft:leather_chestplate",
       "nbt": "{Damage:0}"

@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:cooked_venison"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -41,7 +41,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class AqueductValveBlock extends IrrigationBlock {
     public AqueductValveBlock() {
-        super(Properties.copy(Blocks.TERRACOTTA));
+        super(Properties.ofFullCopy(Blocks.TERRACOTTA));
     }
 
     @NotNull
@@ -56,7 +56,6 @@ public class AqueductValveBlock extends IrrigationBlock {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {

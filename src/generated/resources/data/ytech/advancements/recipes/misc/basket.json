@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:basket"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "ytech:terracotta_brick_stairs_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "minecraft:green_bed"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
