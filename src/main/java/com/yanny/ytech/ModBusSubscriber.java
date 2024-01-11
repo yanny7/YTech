@@ -114,13 +114,11 @@ public class ModBusSubscriber {
         event.register(SpearModel.MODEL_IN_HAND_LOCATION);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         Registration.HOLDER.entities().forEach((type, holder) -> event.put(holder.entityType.get(), holder.object.getAttributes()));
     }
 
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event) {
         Registration.HOLDER.entities().forEach((type, holder) -> event.register(holder.entityType.get(), holder.object.spawnPlacement,
