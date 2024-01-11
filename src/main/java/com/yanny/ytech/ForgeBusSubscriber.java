@@ -1,11 +1,7 @@
 package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
-import com.yanny.ytech.configuration.SimpleBlockType;
-import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
-import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,8 +19,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -114,21 +108,6 @@ public class ForgeBusSubscriber {
                 });
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void onRegisterCap(@NotNull RegisterCapabilitiesEvent event) {
-        event.registerBlock(Capabilities.FluidHandler.BLOCK, (level, pos, state, be, side) -> {
-            if (level != null && !level.isClientSide && be instanceof IrrigationBlockEntity irrigationBlockEntity) {
-                IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(irrigationBlockEntity);
-
-                if (network != null) {
-                    return network.getFluidHandler();
-                }
-            }
-
-            return null;
-        }, Registration.block(SimpleBlockType.AQUEDUCT));
     }
 
     private static void setBlockRequireValidTool(@NotNull Block block) {

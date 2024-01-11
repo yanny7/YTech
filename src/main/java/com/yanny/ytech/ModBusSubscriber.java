@@ -1,14 +1,17 @@
 package com.yanny.ytech;
 
+import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.IMenuBlock;
+import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
 import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.CustomRendererBakedModel;
 import com.yanny.ytech.configuration.model.DeerModel;
 import com.yanny.ytech.configuration.model.SpearModel;
 import com.yanny.ytech.configuration.renderer.*;
+import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -21,6 +24,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -137,5 +142,20 @@ public class ModBusSubscriber {
         } else {
             modelRegistry.put(location, new CustomRendererBakedModel(existingModel));
         }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCap(@NotNull RegisterCapabilitiesEvent event) {
+        event.registerBlock(Capabilities.FluidHandler.BLOCK, (level, pos, state, be, side) -> {
+            if (level != null && !level.isClientSide && be instanceof IrrigationBlockEntity irrigationBlockEntity) {
+                IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(irrigationBlockEntity);
+
+                if (network != null) {
+                    return network.getFluidHandler();
+                }
+            }
+
+            return null;
+        }, Registration.block(SimpleBlockType.AQUEDUCT));
     }
 }
