@@ -18,7 +18,7 @@ public abstract class LevelSyncMessage<T> {
         networkMap = buf.readMap(FriendlyByteBuf::readInt, valueReader::apply);
     }
 
-    public void encode(@NotNull FriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
+    public void write(@NotNull FriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
         buf.writeMap(networkMap, FriendlyByteBuf::writeInt, valueWriter::accept);
     }
 }

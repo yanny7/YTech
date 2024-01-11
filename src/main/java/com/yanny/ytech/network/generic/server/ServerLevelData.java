@@ -129,7 +129,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                                     .map((chunkPos) -> level.getChunkSource().chunkMap.getPlayers(chunkPos, false))
                                     .flatMap(Collection::stream)
                                     .collect(Collectors.toSet())
-                                    .forEach((player) -> networkFactory.sendRemoved(PacketDistributor.PLAYER.with(() -> player), toRemove.getNetworkId()));
+                                    .forEach((player) -> networkFactory.sendRemoved(PacketDistributor.PLAYER.with(player), toRemove.getNetworkId()));
                         } while (!distinctNetworks.isEmpty());
 
                         resultNetwork = network;
@@ -200,7 +200,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                         .map((chunkPos) -> chunkCache.chunkMap.getPlayers(chunkPos, false))
                         .flatMap(Collection::stream)
                         .collect(Collectors.toSet())
-                        .forEach((player) -> networkFactory.sendUpdated(PacketDistributor.PLAYER.with(() -> player), network));
+                        .forEach((player) -> networkFactory.sendUpdated(PacketDistributor.PLAYER.with(player), network));
                 network.setClean();
             }
         });
@@ -226,7 +226,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
         if (level != null) {
             networkMap.remove(networkId);
             level.getChunkSource().chunkMap.getPlayers(chunkPos, false)
-                    .forEach((player) -> networkFactory.sendRemoved(PacketDistributor.PLAYER.with(() -> player), networkId));
+                    .forEach((player) -> networkFactory.sendRemoved(PacketDistributor.PLAYER.with(player), networkId));
             setDirty();
         }
     }

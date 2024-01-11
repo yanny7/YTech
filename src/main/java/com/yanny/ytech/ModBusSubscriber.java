@@ -12,6 +12,8 @@ import com.yanny.ytech.configuration.model.DeerModel;
 import com.yanny.ytech.configuration.model.SpearModel;
 import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
+import com.yanny.ytech.network.irrigation.IrrigationUtils;
+import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -30,6 +32,8 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -38,6 +42,8 @@ import static com.yanny.ytech.registration.Registration.HOLDER;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusSubscriber {
+    private static final String PROTOCOL_VERSION = "1";
+
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
@@ -157,5 +163,13 @@ public class ModBusSubscriber {
 
             return null;
         }, Registration.block(SimpleBlockType.AQUEDUCT));
+    }
+
+    @SubscribeEvent
+    public static void registerPayloadHandler(final RegisterPayloadHandlerEvent event) {
+        final IPayloadRegistrar registrar = event.registrar(YTechMod.MOD_ID).versioned(PROTOCOL_VERSION);
+
+        YTechMod.KINETIC_PROPAGATOR = KineticUtils.registerKineticPropagator(registrar);
+        YTechMod.IRRIGATION_PROPAGATOR = IrrigationUtils.registerIrrigationPropagator(registrar);
     }
 }

@@ -77,7 +77,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
     public void onPlayerLogIn(@NotNull Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             LOGGER.debug("[{}][onPlayerLogIn] Connecting player {}", networkName, serverPlayer);
-            networkFactory.sendLevelSync(PacketDistributor.PLAYER.with(() -> serverPlayer), levelMap.get(NetworkUtils.getLevelId(serverPlayer.level())).getNetworks());
+            networkFactory.sendLevelSync(PacketDistributor.PLAYER.with(serverPlayer), levelMap.get(NetworkUtils.getLevelId(serverPlayer.level())).getNetworks());
         }
     }
 
@@ -126,7 +126,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         if (serverLevelData != null) {
             serverLevelData.getNetworks().values().stream()
                     .filter((network) -> network.getChunks().contains(chunk.getPos()))
-                    .forEach((network) -> networkFactory.sendUpdated(PacketDistributor.PLAYER.with(() -> player), network));
+                    .forEach((network) -> networkFactory.sendUpdated(PacketDistributor.PLAYER.with(player), network));
         } else {
             LOGGER.warn("[{}][onChunkWatch] No networks defined for level {}", networkName, level);
         }

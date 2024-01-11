@@ -17,7 +17,7 @@ public abstract class NetworkAddedOrUpdatedMessage<T> {
         this.payload = valueReader.apply(buf);
     }
 
-    public void encode(@NotNull FriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
+    public void write(@NotNull FriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
         valueWriter.accept(buf, payload);
     }
 }

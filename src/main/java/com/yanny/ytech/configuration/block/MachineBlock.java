@@ -8,7 +8,6 @@ import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +27,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,7 +86,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult trace) {
         if (!level.isClientSide) {
-            NetworkHooks.openScreen((ServerPlayer) player, getMenuProvider(state, level, pos), pos);
+            player.openMenu(getMenuProvider(state, level, pos), pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

@@ -1,7 +1,7 @@
 package com.yanny.ytech.network.irrigation;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.network.generic.NetworkUtils;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.network.generic.client.ClientPropagator;
 import com.yanny.ytech.network.generic.common.CommonNetwork;
 import com.yanny.ytech.network.generic.common.NetworkFactory;
@@ -11,11 +11,13 @@ import com.yanny.ytech.network.generic.message.NetworkRemovedMessage;
 import com.yanny.ytech.network.generic.server.ServerPropagator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.fml.DistExecutor;
-import net.neoforged.neoforge.network.NetworkEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -24,26 +26,27 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class IrrigationUtils {
-    public static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerIrrigationPropagator(SimpleChannel channel) {
+    public static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerIrrigationPropagator(IPayloadRegistrar channel) {
         return DistExecutor.unsafeRunForDist(() -> () -> registerClientIrrigationPropagator(channel), () -> () -> registerServerIrrigationPropagator(channel));
     }
 
-    private static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerClientIrrigationPropagator(SimpleChannel channel) {
+    private static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerClientIrrigationPropagator(IPayloadRegistrar channel) {
         IrrigationClientPropagator client = new IrrigationClientPropagator();
-        ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity> server = new ServerPropagator<>(new Factory(channel), "irrigation");
+        ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity> server = new ServerPropagator<>(new Factory(), "irrigation");
 
-        channel.registerMessage(NetworkUtils.getMessageId(), MyLevelSyncMessage.class, MyLevelSyncMessage::encode, MyLevelSyncMessage::new, client::onSyncLevel);
-        channel.registerMessage(NetworkUtils.getMessageId(), MyNetworkUpdatedMessage.class, MyNetworkUpdatedMessage::encode, MyNetworkUpdatedMessage::new, client::onNetworkAddedOrUpdated);
-        channel.registerMessage(NetworkUtils.getMessageId(), MyNetworkRemoveMessage.class, MyNetworkRemoveMessage::encode, MyNetworkRemoveMessage::new, client::onNetworkRemoved);
+        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> handler.client(client::onSyncLevel));
+        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> handler.client(client::onNetworkAddedOrUpdated));
+        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> handler.client(client::onNetworkRemoved));
+
         return new YTechMod.DistHolder<>(client, server);
     }
 
-    private static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerServerIrrigationPropagator(SimpleChannel channel) {
-        ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity> server = new ServerPropagator<>(new Factory(channel), "irrigation");
+    private static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerServerIrrigationPropagator(IPayloadRegistrar channel) {
+        ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity> server = new ServerPropagator<>(new Factory(), "irrigation");
 
-        channel.registerMessage(NetworkUtils.getMessageId(), MyLevelSyncMessage.class, MyLevelSyncMessage::encode, MyLevelSyncMessage::new, (m, c) -> {});
-        channel.registerMessage(NetworkUtils.getMessageId(), MyNetworkUpdatedMessage.class, MyNetworkUpdatedMessage::encode, MyNetworkUpdatedMessage::new, (m, c) -> {});
-        channel.registerMessage(NetworkUtils.getMessageId(), MyNetworkRemoveMessage.class, MyNetworkRemoveMessage::encode, MyNetworkRemoveMessage::new, (m, c) -> {});
+        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> {});
+        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> {});
+        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> {});
         return new YTechMod.DistHolder<>(null, server);
     }
 
@@ -51,29 +54,26 @@ public class IrrigationUtils {
         public IrrigationClientPropagator() {
             super("irrigation");
         }
-        public void onSyncLevel(@NotNull IrrigationUtils.MyLevelSyncMessage msg, @NotNull NetworkEvent.Context context) {
-            context.enqueueWork(() -> syncLevel(msg.networkMap.entrySet().stream().map((entry) -> {
+        public void onSyncLevel(@NotNull IrrigationUtils.MyLevelSyncMessage msg, @NotNull PlayPayloadContext context) {
+            context.workHandler().execute(() -> syncLevel(msg.networkMap.entrySet().stream().map((entry) -> {
                 Payload payload = entry.getValue();
                 return new IrrigationClientNetwork(entry.getKey(), payload.amount, payload.capacity);
             }).collect(Collectors.toMap(CommonNetwork::getNetworkId, (b) -> b))));
-            context.setPacketHandled(true);
         }
 
-        public void onNetworkAddedOrUpdated(@NotNull IrrigationUtils.MyNetworkUpdatedMessage msg, @NotNull NetworkEvent.Context context) {
-            context.enqueueWork(() -> {
+        public void onNetworkAddedOrUpdated(@NotNull IrrigationUtils.MyNetworkUpdatedMessage msg, @NotNull PlayPayloadContext context) {
+            context.workHandler().execute(() -> {
                 IrrigationUtils.Payload payload = msg.payload;
                 addOrUpdateNetwork(new IrrigationClientNetwork(payload.networkId, payload.amount, payload.capacity));
             });
-            context.setPacketHandled(true);
         }
 
-        public void onNetworkRemoved(@NotNull IrrigationUtils.MyNetworkRemoveMessage msg, @NotNull NetworkEvent.Context context) {
-            context.enqueueWork(() -> deletedNetwork(msg.networkId));
-            context.setPacketHandled(true);
+        public void onNetworkRemoved(@NotNull IrrigationUtils.MyNetworkRemoveMessage msg, @NotNull PlayPayloadContext context) {
+            context.workHandler().execute(() -> deletedNetwork(msg.networkId));
         }
     }
 
-    private record Factory(@NotNull SimpleChannel channel) implements NetworkFactory<IrrigationServerNetwork, IIrrigationBlockEntity> {
+    private static class Factory implements NetworkFactory<IrrigationServerNetwork, IIrrigationBlockEntity> {
         @Override
         public @NotNull IrrigationServerNetwork createNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
             return new IrrigationServerNetwork(tag, networkId, onChange, onRemove);
@@ -86,25 +86,27 @@ public class IrrigationUtils {
 
         @Override
         public void sendRemoved(@NotNull PacketDistributor.PacketTarget target, int networkId) {
-            channel.send(target, new IrrigationUtils.MyNetworkRemoveMessage(networkId));
+            target.send(new IrrigationUtils.MyNetworkRemoveMessage(networkId));
         }
 
         @Override
         public void sendUpdated(@NotNull PacketDistributor.PacketTarget target, @NotNull IrrigationServerNetwork network) {
-            channel.send(target, new IrrigationUtils.MyNetworkUpdatedMessage(
+            target.send(new IrrigationUtils.MyNetworkUpdatedMessage(
                     new IrrigationUtils.Payload(network.getNetworkId(), network.getFluidHandler().getFluidAmount(), network.getFluidHandler().getCapacity())));
         }
 
         @Override
         public void sendLevelSync(@NotNull PacketDistributor.PacketTarget target, @NotNull Map<Integer, IrrigationServerNetwork> networkMap) {
-            channel.send(target, new IrrigationUtils.MyLevelSyncMessage(networkMap.entrySet().stream().map((entry) -> {
+            target.send(new IrrigationUtils.MyLevelSyncMessage(networkMap.entrySet().stream().map((entry) -> {
                 IrrigationServerNetwork network = entry.getValue();
                 return new IrrigationUtils.Payload(entry.getKey(), network.getFluidHandler().getFluidAmount(), network.getFluidHandler().getCapacity());
             }).collect(Collectors.toMap((a) -> a.networkId, (b) -> b))));
         }
     }
 
-    static class MyNetworkRemoveMessage extends NetworkRemovedMessage {
+    static class MyNetworkRemoveMessage extends NetworkRemovedMessage implements CustomPacketPayload {
+        private static final ResourceLocation ID = Utils.modLoc("irrigation_network_removed");
+
         public MyNetworkRemoveMessage(int networkId) {
             super(networkId);
         }
@@ -112,9 +114,21 @@ public class IrrigationUtils {
         public MyNetworkRemoveMessage(@NotNull FriendlyByteBuf buf) {
             super(buf);
         }
+
+        @Override
+        public void write(@NotNull FriendlyByteBuf friendlyByteBuf) {
+
+        }
+
+        @Override
+        @NotNull
+        public ResourceLocation id() {
+            return ID;
+        }
     }
 
-    static class MyNetworkUpdatedMessage extends NetworkAddedOrUpdatedMessage<IrrigationUtils.Payload> {
+    static class MyNetworkUpdatedMessage extends NetworkAddedOrUpdatedMessage<IrrigationUtils.Payload> implements CustomPacketPayload {
+        private static final ResourceLocation ID = Utils.modLoc("irrigation_network_updated");
 
         public MyNetworkUpdatedMessage(@NotNull IrrigationUtils.Payload payload) {
             super(payload);
@@ -124,16 +138,25 @@ public class IrrigationUtils {
             super(buf, (buffer) -> new IrrigationUtils.Payload(buffer.readInt(), buffer.readInt(), buffer.readInt()));
         }
 
-        public void encode(@NotNull FriendlyByteBuf buf) {
-            super.encode(buf, (buffer, payload) -> {
+        @Override
+        public void write(@NotNull FriendlyByteBuf buf) {
+            super.write(buf, (buffer, payload) -> {
                 buffer.writeInt(payload.networkId);
                 buffer.writeInt(payload.amount);
                 buffer.writeInt(payload.capacity);
             });
         }
+
+        @Override
+        @NotNull
+        public ResourceLocation id() {
+            return ID;
+        }
     }
 
-    static class MyLevelSyncMessage extends LevelSyncMessage<IrrigationUtils.Payload> {
+    static class MyLevelSyncMessage extends LevelSyncMessage<IrrigationUtils.Payload> implements CustomPacketPayload {
+        private static final ResourceLocation ID = Utils.modLoc("irrigation_level_sync");
+
         public MyLevelSyncMessage(@NotNull Map<Integer, IrrigationUtils.Payload> networkMap) {
             super(networkMap);
         }
@@ -142,12 +165,19 @@ public class IrrigationUtils {
             super(buf, (buffer) -> new IrrigationUtils.Payload(buffer.readInt(), buffer.readInt(), buffer.readInt()));
         }
 
-        public void encode(@NotNull FriendlyByteBuf buf) {
-            super.encode(buf, (buffer, payload) -> {
+        @Override
+        public void write(@NotNull FriendlyByteBuf buf) {
+            super.write(buf, (buffer, payload) -> {
                 buffer.writeInt(payload.networkId);
                 buffer.writeInt(payload.amount);
                 buffer.writeInt(payload.capacity);
             });
+        }
+
+        @Override
+        @NotNull
+        public ResourceLocation id() {
+            return ID;
         }
     }
 

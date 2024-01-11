@@ -46,7 +46,7 @@ issueTrackerURL="https://github.com/yanny7/ytech/issues" #optional
     # the modid of the dependency
     modId="neoforge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
+    type="required" #mandatory
     # The version range of the dependency
     versionRange="${neo_version_range}" #mandatory
     # An ordering relationship for the dependency.
@@ -58,7 +58,7 @@ issueTrackerURL="https://github.com/yanny7/ytech/issues" #optional
 # Here's another dependency
 [[dependencies.${mod_id}]]
     modId="minecraft"
-    mandatory=true
+    type="required" #mandatory
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="${minecraft_version_range}"
     ordering="AFTER"
