@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
@@ -81,12 +80,6 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     public AqueductBlock() {
         super(Properties.ofFullCopy(Blocks.TERRACOTTA));
         this.shapesCache = this.getShapeForEachState(AqueductBlock::calculateShape);
-    }
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new RuntimeException("Not implemented yet!");
     }
 
     @NotNull
