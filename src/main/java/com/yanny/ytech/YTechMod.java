@@ -13,11 +13,10 @@ import com.yanny.ytech.network.kinetic.KineticServerNetwork;
 import com.yanny.ytech.registration.Registration;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -36,8 +35,7 @@ public class YTechMod {
         CONFIGURATION_SPEC = pair.getValue();
     }
 
-    public YTechMod() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public YTechMod(IEventBus modEventBus) {
         Registration.init(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);
@@ -45,7 +43,9 @@ public class YTechMod {
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIGURATION_SPEC);
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> YTechMod.clientStuff(modEventBus));
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            YTechMod.clientStuff(modEventBus);
+        }
     }
 
     public static void clientStuff(final IEventBus modEventBus) {
