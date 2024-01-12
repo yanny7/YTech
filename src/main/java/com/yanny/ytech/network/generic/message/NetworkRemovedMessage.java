@@ -14,7 +14,7 @@ public abstract class NetworkRemovedMessage {
         this.networkId = buf.readInt();
     }
 
-    public void encode(@NotNull FriendlyByteBuf buf) {
+    public void write(@NotNull FriendlyByteBuf buf) {
         buf.writeInt(networkId);
     }
 }

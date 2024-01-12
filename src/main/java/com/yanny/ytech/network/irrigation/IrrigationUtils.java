@@ -28,31 +28,32 @@ import java.util.stream.Collectors;
 
 public class IrrigationUtils {
     public static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerIrrigationPropagator(IPayloadRegistrar channel) {
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            return registerClientIrrigationPropagator(channel);
-        } else {
-            return registerServerIrrigationPropagator(channel);
-        }
-    }
-
-    private static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerClientIrrigationPropagator(IPayloadRegistrar channel) {
-        IrrigationClientPropagator client = new IrrigationClientPropagator();
         ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity> server = new ServerPropagator<>(new Factory(), "irrigation");
+        IrrigationClientPropagator client;
 
-        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> handler.client(client::onSyncLevel));
-        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> handler.client(client::onNetworkAddedOrUpdated));
-        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> handler.client(client::onNetworkRemoved));
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            client = new IrrigationClientPropagator();
+        } else {
+            client = null;
+        }
+
+        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> handler.client((msg, ctx) -> {
+            if (client != null) {
+                client.onSyncLevel(msg, ctx);
+            }
+        }).server((msg, ctx) -> {}));
+        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> handler.client((msg, ctx) -> {
+            if (client != null) {
+                client.onNetworkAddedOrUpdated(msg, ctx);
+            }
+        }).server((msg, ctx) -> {}));
+        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> handler.client((msg, ctx) -> {
+            if (client != null) {
+                client.onNetworkRemoved(msg, ctx);
+            }
+        }).server((msg, ctx) -> {}));
 
         return new YTechMod.DistHolder<>(client, server);
-    }
-
-    private static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerServerIrrigationPropagator(IPayloadRegistrar channel) {
-        ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity> server = new ServerPropagator<>(new Factory(), "irrigation");
-
-        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> {});
-        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> {});
-        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> {});
-        return new YTechMod.DistHolder<>(null, server);
     }
 
     private static class IrrigationClientPropagator extends ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity> {
@@ -122,7 +123,7 @@ public class IrrigationUtils {
 
         @Override
         public void write(@NotNull FriendlyByteBuf friendlyByteBuf) {
-
+            super.write(friendlyByteBuf);
         }
 
         @Override

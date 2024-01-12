@@ -31,33 +31,32 @@ public class KineticUtils {
 
     @NotNull
     public static YTechMod.DistHolder<ClientPropagator<KineticClientNetwork, IKineticBlockEntity>, ServerPropagator<KineticServerNetwork, IKineticBlockEntity>> registerKineticPropagator(@NotNull IPayloadRegistrar channel) {
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            return registerClientKineticPropagator(channel);
-        } else {
-            return registerServerKineticPropagator(channel);
-        }
-    }
-
-    @NotNull
-    private static YTechMod.DistHolder<ClientPropagator<KineticClientNetwork, IKineticBlockEntity>, ServerPropagator<KineticServerNetwork, IKineticBlockEntity>> registerClientKineticPropagator(@NotNull IPayloadRegistrar channel) {
-        KineticClientPropagator client = new KineticClientPropagator();
         ServerPropagator<KineticServerNetwork, IKineticBlockEntity> server = new ServerPropagator<>(new Factory(), "kinetic");
+        KineticClientPropagator client;
 
-        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> handler.client(client::onSyncLevel));
-        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> handler.client(client::onNetworkAddedOrUpdated));
-        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> handler.client(client::onNetworkRemoved));
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            client = new KineticClientPropagator();
+        } else {
+            client = null;
+        }
+
+        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> handler.client((msg, ctx) -> {
+            if (client != null) {
+                client.onSyncLevel(msg, ctx);
+            }
+        }).server((msg, ctx) -> {}));
+        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> handler.client((msg, ctx) -> {
+            if (client != null) {
+                client.onNetworkAddedOrUpdated(msg, ctx);
+            }
+        }).server((msg, ctx) -> {}));
+        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> handler.client((msg, ctx) -> {
+            if (client != null) {
+                client.onNetworkRemoved(msg, ctx);
+            }
+        }).server((msg, ctx) -> {}));
 
         return new YTechMod.DistHolder<>(client, server);
-    }
-
-    @NotNull
-    private static YTechMod.DistHolder<ClientPropagator<KineticClientNetwork, IKineticBlockEntity>, ServerPropagator<KineticServerNetwork, IKineticBlockEntity>> registerServerKineticPropagator(@NotNull IPayloadRegistrar channel) {
-        ServerPropagator<KineticServerNetwork, IKineticBlockEntity> server = new ServerPropagator<>(new Factory(), "kinetic");
-
-        channel.play(MyLevelSyncMessage.ID, MyLevelSyncMessage::new, handler -> {});
-        channel.play(MyNetworkUpdatedMessage.ID, MyNetworkUpdatedMessage::new, handler -> {});
-        channel.play(MyNetworkRemoveMessage.ID, MyNetworkRemoveMessage::new, handler -> {});
-        return new YTechMod.DistHolder<>(null, server);
     }
 
     private static class KineticClientPropagator extends ClientPropagator<KineticClientNetwork, IKineticBlockEntity> {
@@ -126,7 +125,7 @@ public class KineticUtils {
 
         @Override
         public void write(@NotNull FriendlyByteBuf friendlyByteBuf) {
-
+            super.write(friendlyByteBuf);
         }
 
         @Override
