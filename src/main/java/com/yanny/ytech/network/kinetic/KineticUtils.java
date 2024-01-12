@@ -12,7 +12,8 @@ import com.yanny.ytech.network.generic.server.ServerPropagator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.fml.DistExecutor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.NetworkEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.simple.SimpleChannel;
@@ -28,7 +29,11 @@ public class KineticUtils {
 
     @NotNull
     public static YTechMod.DistHolder<ClientPropagator<KineticClientNetwork, IKineticBlockEntity>, ServerPropagator<KineticServerNetwork, IKineticBlockEntity>> registerKineticPropagator(@NotNull SimpleChannel channel) {
-        return DistExecutor.unsafeRunForDist(() -> () -> registerClientKineticPropagator(channel), () -> () -> registerServerKineticPropagator(channel));
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            return registerClientKineticPropagator(channel);
+        } else {
+            return registerServerKineticPropagator(channel);
+        }
     }
 
     @NotNull
