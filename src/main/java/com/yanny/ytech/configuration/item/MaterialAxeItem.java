@@ -12,8 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
-
 public class MaterialAxeItem extends AxeItem {
     @NotNull private final Holder.ItemHolder holder;
 

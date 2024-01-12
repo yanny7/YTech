@@ -9,8 +9,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
-
 public class MaterialPickaxeItem extends PickaxeItem {
     public MaterialPickaxeItem(@NotNull Holder.ItemHolder holder) {
         super(holder.material.getTier(), 1, -2.8f, new Properties());
