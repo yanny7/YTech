@@ -39,7 +39,6 @@ public class WaterWheelBlock extends KineticBlock {
         this.stressMultiplier = stressMultiplier;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {

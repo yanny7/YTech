@@ -103,7 +103,7 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
     }
 
     public record IngredientCount(Ingredient ingredient, int count) {
-        public static Codec<IngredientCount> CODEC = RecordCodecBuilder.create((ingredient) -> ingredient.group(
+        public static final Codec<IngredientCount> CODEC = RecordCodecBuilder.create((ingredient) -> ingredient.group(
                 Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((ingredientCount) -> ingredientCount.ingredient),
                 Codec.INT.fieldOf("count").forGetter((ingredientCount) -> ingredientCount.count)
         ).apply(ingredient, IngredientCount::new));
