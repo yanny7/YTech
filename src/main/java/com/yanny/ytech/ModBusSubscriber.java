@@ -155,7 +155,7 @@ public class ModBusSubscriber {
     @SubscribeEvent
     public static void onRegisterCap(@NotNull RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.FluidHandler.BLOCK, (level, pos, state, be, side) -> {
-            if (level != null && !level.isClientSide && be instanceof IrrigationBlockEntity irrigationBlockEntity) {
+            if (!level.isClientSide && be instanceof IrrigationBlockEntity irrigationBlockEntity) {
                 IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(irrigationBlockEntity);
 
                 if (network != null) {
