@@ -29,7 +29,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
     @Nullable private ItemStack recipeInputRight = ItemStack.EMPTY;
 
     public PrimitiveAlloySmelterBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(holder, blockEntityType, pos, blockState);
+        super(holder, blockEntityType, pos, blockState, AlloyingRecipe.RECIPE_TYPE);
     }
 
     @Override

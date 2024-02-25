@@ -36,6 +36,7 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     private static final int BASE_MAX_TEMPERATURE = 900;
     private static final int BASE_MIN_TEMPERATURE = 20;
 
+    private final RecipeType<?> recipeType;
     private int nrChimney = -1;
     private int burningTime = 0;
     private int leftBurningTime = 0;
@@ -44,8 +45,9 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     protected int smeltingTime = 0;
     protected int recipeTemperature = 0;
 
-    public AbstractPrimitiveMachineBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
+    public AbstractPrimitiveMachineBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState, RecipeType<?> recipeType) {
         super(holder, blockEntityType, pos, blockState);
+        this.recipeType = recipeType;
     }
 
     @Override
@@ -78,14 +80,14 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
             ItemStack fuel = itemStackHandler.getStackInSlot(getFuelSlot());
 
             if (!fuel.isEmpty() && ((hasItemsInInput() && isValidRecipeInInput()) || hasActiveRecipe())) {
-                leftBurningTime = burningTime = ForgeHooks.getBurnTime(fuel, RecipeType.BLASTING);
-                fuel.shrink(1);
+                leftBurningTime = burningTime = ForgeHooks.getBurnTime(fuel, recipeType);
                 isBurning = true;
 
-                if (fuel.isEmpty()) {
+                if (fuel.hasCraftingRemainingItem()) {
                     itemStackHandler.setStackInSlot(getFuelSlot(), fuel.getCraftingRemainingItem());
                 }
 
+                fuel.shrink(1);
                 setPoweredState(level, blockState, pos, true);
             } else {
                 setPoweredState(level, blockState, pos, false);
