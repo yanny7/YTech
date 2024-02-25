@@ -25,7 +25,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     @Nullable private ItemStack recipeInput = ItemStack.EMPTY;
 
     public PrimitiveSmelterBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(holder, blockEntityType, pos, blockState);
+        super(holder, blockEntityType, pos, blockState, SmeltingRecipe.RECIPE_TYPE);
     }
 
     @NotNull
