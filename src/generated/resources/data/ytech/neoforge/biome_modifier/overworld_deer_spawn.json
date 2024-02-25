@@ -5,6 +5,6 @@
     "type": "ytech:deer",
     "maxCount": 8,
     "minCount": 4,
-    "weight": 10
+    "weight": 15
   }
 }

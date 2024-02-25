@@ -132,7 +132,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.HELMET, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_helmet"))).toArray(TextureHolder[]::new),
             MaterialItemType::basicArmorModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerHelmetRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.IRON)),
     CHESTPLATE("chestplate", INameable.suffix("chestplate"), INameable.suffix("Chestplate"),
@@ -141,7 +141,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.CHESTPLATE, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_chestplate"))).toArray(TextureHolder[]::new),
             MaterialItemType::basicArmorModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerChestplateRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.IRON)),
     LEGGINGS("leggings", INameable.suffix("leggings"), INameable.suffix("Leggings"),
@@ -150,7 +150,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.LEGGINGS, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_leggings"))).toArray(TextureHolder[]::new),
             MaterialItemType::basicArmorModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerLeggingsRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.IRON)),
     BOOTS("boots", INameable.suffix("boots"), INameable.suffix("Boots"),
@@ -159,7 +159,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             (holder) -> new ArmorItem(Objects.requireNonNull(holder.material.armorMaterial), ArmorItem.Type.BOOTS, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc(material.key + "_boots"))).toArray(TextureHolder[]::new),
             MaterialItemType::basicArmorModelProvider,
-            IRecipe::noRecipe,
+            MaterialItemType::registerBootsRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.IRON)),
     ARROW("arrow", INameable.suffix("arrow"), INameable.suffix("Arrow"),
@@ -316,14 +316,14 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerIngotRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
                 .requires(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
                 .requires(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
@@ -372,6 +372,44 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
+    public static void registerHelmetRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+                .define('#', PLATE.itemTag.get(holder.material))
+                .pattern("###")
+                .pattern("# #")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    public static void registerChestplateRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+                .define('#', PLATE.itemTag.get(holder.material))
+                .pattern("# #")
+                .pattern("###")
+                .pattern("###")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    public static void registerLeggingsRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+                .define('#', PLATE.itemTag.get(holder.material))
+                .pattern("###")
+                .pattern("# #")
+                .pattern("# #")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    public static void registerBootsRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+                .define('#', PLATE.itemTag.get(holder.material))
+                .pattern("# #")
+                .pattern("# #")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
     public static void registerMortarAndPestleRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         if (holder.material == MaterialType.STONE) {
             ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
@@ -385,7 +423,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         } else {
             ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', INGOT.itemTag.get(holder.material))
-                    .define('#', PLATE.itemTag.get(holder.material))
+                    .define('#', Tags.Items.STONE)
                     .pattern(" I ")
                     .pattern("# #")
                     .pattern(" # ")

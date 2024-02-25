@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/iron"
+      "tag": "forge:stone"
     },
     "I": {
       "tag": "forge:ingots/iron"
