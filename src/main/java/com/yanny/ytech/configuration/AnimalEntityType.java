@@ -174,9 +174,31 @@ public enum AnimalEntityType {
     }
 
     private static void registerDeerBiomeTag(Holder.AnimalEntityHolder holder, BiomeTagsProvider provider) {
-        provider.tag(holder.object.biomeTag).add(Biomes.FOREST).add(Biomes.WINDSWEPT_FOREST).add(Biomes.OLD_GROWTH_BIRCH_FOREST)
-                .add(Biomes.BIRCH_FOREST).add(Biomes.DARK_FOREST).add(Biomes.OLD_GROWTH_PINE_TAIGA).add(Biomes.OLD_GROWTH_SPRUCE_TAIGA)
-                .add(Biomes.WOODED_BADLANDS).add(Biomes.FLOWER_FOREST).add(Biomes.CHERRY_GROVE).add(Biomes.GROVE).add(Biomes.SNOWY_TAIGA);
+        provider.tag(holder.object.biomeTag)
+                .add(Biomes.FOREST)
+                .add(Biomes.WINDSWEPT_FOREST)
+                .add(Biomes.OLD_GROWTH_BIRCH_FOREST)
+                .add(Biomes.BIRCH_FOREST)
+                .add(Biomes.DARK_FOREST)
+                .add(Biomes.OLD_GROWTH_PINE_TAIGA)
+                .add(Biomes.OLD_GROWTH_SPRUCE_TAIGA)
+                .add(Biomes.WOODED_BADLANDS)
+                .add(Biomes.FLOWER_FOREST)
+                .add(Biomes.CHERRY_GROVE)
+                .add(Biomes.GROVE)
+                .add(Biomes.SNOWY_TAIGA)
+                .add(Biomes.MEADOW)
+                .add(Biomes.SNOWY_SLOPES)
+                .add(Biomes.WINDSWEPT_HILLS)
+                .add(Biomes.TAIGA)
+                .add(Biomes.SPARSE_JUNGLE)
+                .add(Biomes.SWAMP)
+                .add(Biomes.PLAINS)
+                .add(Biomes.SUNFLOWER_PLAINS)
+                .add(Biomes.SNOWY_PLAINS)
+                .add(Biomes.ICE_SPIKES)
+                .add(Biomes.SAVANNA)
+        ;
     }
 
     interface AnimalEntityGetter {

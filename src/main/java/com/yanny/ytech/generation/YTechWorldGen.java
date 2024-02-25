@@ -102,7 +102,7 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
                     bootstrap.register(ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_deer_spawn")),
                             new BiomeModifiers.AddSpawnsBiomeModifier(
                                     biomeReg.getOrThrow(AnimalEntityType.DEER.biomeTag),
-                                    List.of(new MobSpawnSettings.SpawnerData(entityType(AnimalEntityType.DEER), 10, 4, 8))
+                                    List.of(new MobSpawnSettings.SpawnerData(entityType(AnimalEntityType.DEER), 15, 4, 8))
                             )
                     );
 

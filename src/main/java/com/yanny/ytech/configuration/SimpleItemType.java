@@ -253,7 +253,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             }),
     LAVA_CLAY_BUCKET("lava_clay_bucket", "Lava Clay Bucket",
             ItemTags.create(Utils.modLoc("lava_bucket")),
-            () -> new ClayBucketItem(() -> Fluids.LAVA, new Item.Properties().craftRemainder(item(CLAY_BUCKET)).stacksTo(1)),
+            LavaClayBucketItem::new,
             () -> clayBucketTexture(Utils.modItemLoc("bucket_overlay"), 0xF54D0C),
             SimpleItemType::clayBucketItemModelProvider,
             IRecipe::noRecipe, // take lava
