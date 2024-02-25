@@ -317,14 +317,14 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerIngotRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
                 .requires(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
                 .requires(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
