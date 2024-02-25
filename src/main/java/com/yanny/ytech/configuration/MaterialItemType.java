@@ -386,7 +386,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         } else {
             ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', INGOT.itemTag.get(holder.material))
-                    .define('#', PLATE.itemTag.get(holder.material))
+                    .define('#', Tags.Items.STONE)
                     .pattern(" I ")
                     .pattern("# #")
                     .pattern(" # ")
