@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration;
 
+import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.entity.SpearEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -11,7 +12,10 @@ import java.util.function.Consumer;
 public enum SimpleEntityType {
     SPEAR("spear", "Spear",
             (builder) -> builder.sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20),
-            SpearEntity::new)
+            SpearEntity::new),
+    GO_AROUND("go_around", "Go Around Entity",
+            (builder) -> builder.sized(0.1F, 0.1f).clientTrackingRange(10),
+            GoAroundEntity::new)
     ;
 
     @NotNull public final String key;

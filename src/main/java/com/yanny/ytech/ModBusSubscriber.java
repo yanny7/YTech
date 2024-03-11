@@ -1,9 +1,11 @@
 package com.yanny.ytech;
 
 import com.yanny.ytech.compatibility.TopCompatibility;
+import com.yanny.ytech.configuration.SimpleEntityType;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.IMenuBlock;
+import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.CustomRendererBakedModel;
@@ -17,6 +19,8 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -81,6 +85,7 @@ public class ModBusSubscriber {
         HOLDER.simpleEntities().forEach((type, holder) -> {
             switch (type) {
                 case SPEAR -> event.registerEntityRenderer(holder.entityType.get(), SpearRenderer::new);
+                case GO_AROUND -> event.registerEntityRenderer((EntityType<? extends GoAroundEntity>) holder.entityType.get(), GoAroundRenderer::new);
                 default -> throw new IllegalStateException("Missing simple entity renderer!");
             }
         });
@@ -98,6 +103,7 @@ public class ModBusSubscriber {
         HOLDER.simpleEntities().forEach((type, holder) -> {
             switch (type) {
                 case SPEAR -> event.registerLayerDefinition(SpearModel.LAYER_LOCATION, SpearModel::createLayer);
+                case GO_AROUND -> {}
                 default -> throw new IllegalStateException("Missing simple entity layer definitions!");
             }
         });
@@ -119,6 +125,7 @@ public class ModBusSubscriber {
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         Registration.HOLDER.entities().forEach((type, holder) -> event.put(holder.entityType.get(), holder.object.getAttributes()));
+        event.put((EntityType<? extends LivingEntity>) Registration.entityType(SimpleEntityType.GO_AROUND), GoAroundEntity.createAttributes().build());
     }
 
     @SubscribeEvent

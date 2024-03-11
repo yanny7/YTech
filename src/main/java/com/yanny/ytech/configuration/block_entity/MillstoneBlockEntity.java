@@ -1,39 +1,47 @@
 package com.yanny.ytech.configuration.block_entity;
 
+import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
-public class MillstoneBlockEntity extends BlockEntity implements BlockEntityTicker<MillstoneBlockEntity> {
+public class MillstoneBlockEntity extends BlockEntity {
+    private static final String TAG_INPUT = "input";
     private static final String TAG_RESULT = "result";
-    private static final String TAG_MILLING_TIME = "millingTime";
-    private static final String TAG_SPIN_TIMEOUT = "spinTimeout";
+    private static final String TAG_IS_MILLING = "isMilling";
+    private static final String TAG_IS_LEASHED = "isLeashed";
 
-    @Nullable private ItemStack result = null;
-    private int millingTime = -1;
-    private int spinTimeout = -1;
-    private int clientRotation = 0;
+    private ItemStack input = ItemStack.EMPTY;
+    private ItemStack result = ItemStack.EMPTY;
+    private boolean isMilling = false;
+    private boolean isLeashed = false;
+    private GoAroundEntity entity = null;
+    private final Random random = new Random();
 
     public MillstoneBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
         super(blockEntityType, pos, blockState);
@@ -42,26 +50,41 @@ public class MillstoneBlockEntity extends BlockEntity implements BlockEntityTick
     public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                    @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
+            if (!isLeashed) {
+                int x = pos.getX();
+                int y = pos.getY();
+                int z = pos.getZ();
+                List<Mob> mobList = level.getEntitiesOfClass(Mob.class, new AABB(x - 7.0, y - 7.0, z - 7.0, x + 7.0, y + 7.0, z + 7.0));
+
+                for (Mob mob : mobList) {
+                    if (mob.getLeashHolder() == player) {
+                        mob.dropLeash(true, false);
+                        GoAroundEntity mimic = new GoAroundEntity(mob, pos, level);
+                        level.addFreshEntity(mimic);
+                        mimic.startRiding(mob, true);
+                        break;
+                    }
+                }
+            }
+
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
-            if (result == null) {
+            if (result.isEmpty() && isLeashed && !holdingItemStack.isEmpty()) {
                 Optional<MillingRecipe> millingRecipe = level.getRecipeManager().getRecipeFor(MillingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-                    result = r.result().copy();
-                    millingTime = r.millingTime();
-                    spinTimeout = 10;
-                    player.setItemSlot(slot, holdingItemStack.copyWithCount(holdingItemStack.getCount() - 1));
-                    level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                    input = holdingItemStack.copyWithCount(holdingItemStack.getCount() - 1);
+                    result = r.result();
+                    isMilling = true;
+                    player.setItemSlot(slot, ItemStack.EMPTY);
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                 });
-            } else {
-                spinTimeout = 10;
+            }
 
-                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+            if (player.isCrouching() && player.getItemInHand(hand).isEmpty() && isLeashed && entity != null) {
+                entity.stopRiding();
             }
         }
 
@@ -69,46 +92,12 @@ public class MillstoneBlockEntity extends BlockEntity implements BlockEntityTick
     }
 
     @Override
-    public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull MillstoneBlockEntity blockEntity) {
-        if (!level.isClientSide) {
-            if (result != null && spinTimeout > 0) {
-                if (millingTime > 0) {
-                    millingTime--;
-                    spinTimeout--;
-
-                    if (spinTimeout == 0) {
-                        level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                        setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
-                    }
-                } else {
-                    Block.popResource(level, pos, result);
-                    result = null;
-                    millingTime = -1;
-                    spinTimeout = -1;
-
-                    level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                    setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
-                }
-            }
-        } else {
-            if (spinTimeout > 0 && millingTime > 0) {
-                clientRotation++;
-            }
-        }
-    }
-
-    @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-
-        if (tag.contains(TAG_RESULT)) {
-            result = ItemStack.of(tag.getCompound(TAG_RESULT));
-        } else {
-            result = null;
-        }
-
-        millingTime = tag.getInt(TAG_MILLING_TIME);
-        spinTimeout = tag.getInt(TAG_SPIN_TIMEOUT);
+        input = ItemStack.of(tag.getCompound(TAG_INPUT));
+        result = ItemStack.of(tag.getCompound(TAG_RESULT));
+        isMilling = tag.getBoolean(TAG_IS_MILLING);
+        isLeashed = tag.getBoolean(TAG_IS_LEASHED);
     }
 
     @NotNull
@@ -125,29 +114,62 @@ public class MillstoneBlockEntity extends BlockEntity implements BlockEntityTick
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public int getMillingTime() {
-        return millingTime;
+    public boolean isMilling() {
+        return isMilling;
     }
 
-    public int getSpinTimeout() {
-        return spinTimeout;
+    public void onFinished() {
+        if (level != null && !result.isEmpty()) {
+            Block.popResource(level, getBlockPos(), result.copy());
+
+            if (input.isEmpty()) {
+                isMilling = false;
+                result = ItemStack.EMPTY;
+            } else {
+                input.setCount(input.getCount() - 1);
+            }
+
+            level.playSound(null, getBlockPos(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F);
+            setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+        }
     }
 
-    public int getClientRotation() {
-        return clientRotation;
+    public void removeLeash() {
+        if (level != null) {
+            isLeashed = false;
+            entity = null;
+            isMilling = false;
+            setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+        }
+    }
+
+    public void setLeashed(@NotNull GoAroundEntity entity) {
+        if (level != null) {
+            this.entity = entity;
+            isLeashed = true;
+
+            if (!input.isEmpty() && !result.isEmpty()) {
+                isMilling = true;
+            }
+
+            setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+        }
+    }
+
+    public boolean isLeashed() {
+        return isLeashed;
+    }
+
+    public ItemStack getInputItem() {
+        return this.input;
     }
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putInt(TAG_MILLING_TIME, millingTime);
-        tag.putInt(TAG_SPIN_TIMEOUT, spinTimeout);
-
-        if (result != null) {
-            CompoundTag itemStack = new CompoundTag();
-
-            result.save(itemStack);
-            tag.put(TAG_RESULT, itemStack);
-        }
+        tag.put(TAG_INPUT, input.save(new CompoundTag()));
+        tag.put(TAG_RESULT, result.save(new CompoundTag()));
+        tag.putBoolean(TAG_IS_MILLING, isMilling);
+        tag.putBoolean(TAG_IS_LEASHED, isLeashed);
     }
 }

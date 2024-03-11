@@ -22,8 +22,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
@@ -77,18 +75,6 @@ public class MillstoneBlock extends Block implements EntityBlock {
             return new MillstoneBlockEntity(blockHolder.entityType.get(), pos, state);
         } else {
             throw new IllegalStateException("Invalid holder type!");
-        }
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return MillstoneBlock::createMillstoneTicker;
-    }
-
-    public static void createMillstoneTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
-        if (blockEntity instanceof MillstoneBlockEntity block) {
-            block.tick(level, pos, state, block);
         }
     }
 

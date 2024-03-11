@@ -50,8 +50,8 @@ public class TopCompatibility {
                             probeInfo.horizontal().text("Remaining: ").text(Integer.toString(Math.round(blockEntity.getDryingLeft() / 20f))).text("s");
                         } else if (entity instanceof IKineticBlockEntity blockEntity) {
                             addKineticInfo(probeInfo, blockEntity);
-                        } else if (entity instanceof MillstoneBlockEntity blockEntity && blockEntity.getMillingTime() >= 0) {
-                            probeInfo.horizontal().text("Remaining: ").text(Integer.toString(Math.round(blockEntity.getMillingTime() / 20f))).text("s");
+                        } else if (entity instanceof MillstoneBlockEntity blockEntity && !blockEntity.getInputItem().isEmpty()) {
+                            probeInfo.horizontal().item(blockEntity.getInputItem());
                         } else if (entity instanceof TanningRackBlockEntity blockEntity && blockEntity.getHitLeft() > 0) {
                             probeInfo.horizontal().text("Hit left: ").text(Integer.toString(blockEntity.getHitLeft())).text(" times");
                         } else if (entity instanceof AbstractPrimitiveMachineBlockEntity blockEntity) {
