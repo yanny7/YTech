@@ -23,7 +23,7 @@ public class CrusherBlock extends MachineBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         if (holder instanceof IEntityBlockHolder entityHolder) {
-            return new CrusherBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pPos, pState);
+            return new CrusherBlockEntity(holder, entityHolder.getBlockEntityType(), pPos, pState);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }

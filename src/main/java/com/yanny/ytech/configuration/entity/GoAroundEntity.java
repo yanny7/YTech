@@ -36,7 +36,7 @@ public class GoAroundEntity extends Mob implements IEntityAdditionalSpawnData {
     }
 
     public GoAroundEntity(@NotNull Mob mob, @NotNull BlockPos position, @NotNull Level level) {
-        super((EntityType<? extends Mob>) Registration.entityType(SimpleEntityType.GO_AROUND), level);
+        super(Registration.entityType(SimpleEntityType.GO_AROUND), level);
         this.position = position;
         millstoneBlockEntity = (MillstoneBlockEntity) level().getBlockEntity(position);
         this.setPos(mob.getX(), mob.getY(), mob.getZ());

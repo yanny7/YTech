@@ -64,7 +64,7 @@ public class WaterWheelBlock extends KineticBlock {
         Holder.BlockHolder blockHolder = Registration.HOLDER.blocks().get(MaterialBlockType.WATER_WHEEL).get(material);
 
         if (blockHolder instanceof Holder.EntityBlockHolder holder) {
-            return new WaterWheelBlockEntity(holder.entityType.get(), pos, blockState, stressMultiplier);
+            return new WaterWheelBlockEntity(holder.getBlockEntityType(), pos, blockState, stressMultiplier);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

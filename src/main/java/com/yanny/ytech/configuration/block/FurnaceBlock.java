@@ -22,7 +22,7 @@ public class FurnaceBlock extends MachineBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
         if (holder instanceof IEntityBlockHolder entityHolder) {
-            return new FurnaceBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pos, blockState);
+            return new FurnaceBlockEntity(holder, entityHolder.getBlockEntityType(), pos, blockState);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }

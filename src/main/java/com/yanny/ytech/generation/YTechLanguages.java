@@ -21,7 +21,7 @@ class YTechLanguages extends LanguageProvider {
         HOLDER.simpleItems().values().forEach(h -> add(h.item.get(), h.name));
         HOLDER.simpleBlocks().values().forEach(h -> add(h.block.get(), h.name));
         HOLDER.entities().values().forEach(h -> {
-            add(h.entityType.get(), h.name);
+            add(h.getEntityType(), h.name);
             add(h.spawnEgg.get(), h.name + " Spawn Egg");
         });
 

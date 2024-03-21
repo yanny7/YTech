@@ -44,7 +44,7 @@ public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock im
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState pState) {
         if (holder instanceof IEntityBlockHolder entityHolder) {
-            return new PrimitiveAlloySmelterBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pos, pState);
+            return new PrimitiveAlloySmelterBlockEntity(holder, entityHolder.getBlockEntityType(), pos, pState);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }

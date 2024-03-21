@@ -120,7 +120,7 @@ public enum AnimalEntityType {
     }
 
     private static Item spawnEggItem(@NotNull Holder.AnimalEntityHolder holder, int background, int highlight) {
-        return new ForgeSpawnEggItem(holder.entityType, background, highlight, new Item.Properties());
+        return new ForgeSpawnEggItem(holder::getEntityType, background, highlight, new Item.Properties());
     }
 
     private static void registerSpawnEggModel(@NotNull Holder.AnimalEntityHolder holder, @NotNull ItemModelProvider provider) {
@@ -135,7 +135,7 @@ public enum AnimalEntityType {
     private static void registerDeerDrops(Holder.AnimalEntityHolder holder, EntityLootSubProvider provider) {
         EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
 
-        provider.add(holder.entityType.get(), LootTable.lootTable()
+        provider.add(holder.getEntityType(), LootTable.lootTable()
                 .withPool(
                         LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))

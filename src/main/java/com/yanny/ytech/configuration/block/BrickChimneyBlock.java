@@ -64,7 +64,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new BrickChimneyBlockEntity(blockHolder.entityType.get(), pos, state);
+            return new BrickChimneyBlockEntity(blockHolder.getBlockEntityType(), pos, state);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

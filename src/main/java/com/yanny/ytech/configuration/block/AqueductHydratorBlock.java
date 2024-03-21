@@ -36,7 +36,7 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
         if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new AqueductHydratorBlockEntity(blockHolder.entityType.get(), pos, blockState);
+            return new AqueductHydratorBlockEntity(blockHolder.getBlockEntityType(), pos, blockState);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

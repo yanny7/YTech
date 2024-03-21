@@ -19,8 +19,6 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -50,12 +48,12 @@ public class ModBusSubscriber {
         event.enqueueWork(() -> {
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((blockHolder) -> {
                 if (blockHolder instanceof Holder.MenuEntityBlockHolder holder && holder.block.get() instanceof IMenuBlock menuBlock) {
-                    MenuScreens.register(holder.menuType.get(), menuBlock::getScreen);
+                    MenuScreens.register(holder.getMenuType(), menuBlock::getScreen);
                 }
             });
             HOLDER.simpleBlocks().values().forEach((blockHolder) -> {
                 if (blockHolder instanceof Holder.MenuEntitySimpleBlockHolder holder && holder.block.get() instanceof IMenuBlock menuBlock) {
-                    MenuScreens.register(holder.menuType.get(), menuBlock::getScreen);
+                    MenuScreens.register(holder.getMenuType(), menuBlock::getScreen);
                 }
             });
         });
@@ -67,31 +65,31 @@ public class ModBusSubscriber {
         HOLDER.simpleBlocks().forEach((blockType, blockHolder) -> {
             if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
                 switch (blockType) {
-                    case MILLSTONE -> event.registerBlockEntityRenderer(holder.entityType.get(), MillstoneRenderer::new);
-                    case BRONZE_ANVIL -> event.registerBlockEntityRenderer(holder.entityType.get(), BronzeAnvilRenderer::new);
-                    case AQUEDUCT -> event.registerBlockEntityRenderer(holder.entityType.get(), AqueductRenderer::new);
+                    case MILLSTONE -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), MillstoneRenderer::new);
+                    case BRONZE_ANVIL -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), BronzeAnvilRenderer::new);
+                    case AQUEDUCT -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), AqueductRenderer::new);
                 }
             }
         });
         HOLDER.blocks().forEach((blockType, map) -> map.forEach((material, blockHolder) -> {
             if (blockHolder instanceof Holder.EntityBlockHolder holder) {
                 switch (blockType) {
-                    case SHAFT, WATER_WHEEL -> event.registerBlockEntityRenderer(holder.entityType.get(), KineticRenderer::new);
-                    case DRYING_RACK -> event.registerBlockEntityRenderer(holder.entityType.get(), DryingRackRenderer::new);
-                    case TANNING_RACK -> event.registerBlockEntityRenderer(holder.entityType.get(), TanningRackRenderer::new);
+                    case SHAFT, WATER_WHEEL -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), KineticRenderer::new);
+                    case DRYING_RACK -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), DryingRackRenderer::new);
+                    case TANNING_RACK -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), TanningRackRenderer::new);
                 }
             }
         }));
         HOLDER.simpleEntities().forEach((type, holder) -> {
             switch (type) {
-                case SPEAR -> event.registerEntityRenderer(holder.entityType.get(), SpearRenderer::new);
-                case GO_AROUND -> event.registerEntityRenderer((EntityType<? extends GoAroundEntity>) holder.entityType.get(), GoAroundRenderer::new);
+                case SPEAR -> event.registerEntityRenderer(holder.getEntityType(), SpearRenderer::new);
+                case GO_AROUND -> event.registerEntityRenderer(holder.getEntityType(), GoAroundRenderer::new);
                 default -> throw new IllegalStateException("Missing simple entity renderer!");
             }
         });
         HOLDER.entities().forEach((type, holder) -> {
             switch (type) {
-                case DEER -> event.registerEntityRenderer(holder.entityType.get(), (context) -> new DeerRenderer<>(context, 0.5f));
+                case DEER -> event.registerEntityRenderer(holder.getEntityType(), (context) -> new DeerRenderer<>(context, 0.5f));
                 default -> throw new IllegalStateException("Missing entity renderer!");
             }
         });
@@ -124,13 +122,13 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        Registration.HOLDER.entities().forEach((type, holder) -> event.put(holder.entityType.get(), holder.object.getAttributes()));
-        event.put((EntityType<? extends LivingEntity>) Registration.entityType(SimpleEntityType.GO_AROUND), GoAroundEntity.createAttributes().build());
+        Registration.HOLDER.entities().forEach((type, holder) -> event.put(holder.getEntityType(), holder.object.getAttributes()));
+        event.put(Registration.entityType(SimpleEntityType.GO_AROUND), GoAroundEntity.createAttributes().build());
     }
 
     @SubscribeEvent
     public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event) {
-        Registration.HOLDER.entities().forEach((type, holder) -> event.register(holder.entityType.get(), holder.object.spawnPlacement,
+        Registration.HOLDER.entities().forEach((type, holder) -> event.register(holder.getEntityType(), holder.object.spawnPlacement,
                 holder.object.heightMapType, holder.object.spawnPredicate, SpawnPlacementRegisterEvent.Operation.OR));
     }
 

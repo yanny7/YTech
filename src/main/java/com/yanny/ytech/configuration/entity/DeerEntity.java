@@ -83,7 +83,7 @@ public class DeerEntity extends Animal {
     @NotNull
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherMob) {
-        return Objects.requireNonNull(holder.entityType.get().create(level));
+        return Objects.requireNonNull(holder.<AgeableMob>getEntityType().create(level));
     }
 
     @Override
