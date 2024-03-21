@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public record MillingRecipe(ResourceLocation id, Ingredient ingredient, int millingTime, ItemStack result) implements Recipe<Container> {
+public record MillingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<MillingRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
@@ -80,27 +80,24 @@ public record MillingRecipe(ResourceLocation id, Ingredient ingredient, int mill
         public MillingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
             Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
-            int millingTime = GsonHelper.getAsInt(serializedRecipe, "millingTime");
-            return new MillingRecipe(recipeId, ingredient, millingTime, result);
+            return new MillingRecipe(recipeId, ingredient, result);
         }
 
         @Override
         public @Nullable MillingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            int millingTime = buffer.readInt();
-            return new MillingRecipe(recipeId, ingredient, millingTime, result);
+            return new MillingRecipe(recipeId, ingredient, result);
         }
 
         @Override
         public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull MillingRecipe recipe) {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
-            buffer.writeInt(recipe.millingTime);
         }
     }
 
-    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int millingTime, @NotNull Item result,
+    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, @NotNull Item result,
                          @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
@@ -109,8 +106,6 @@ public record MillingRecipe(ResourceLocation id, Ingredient ingredient, int mill
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
             json.add("result", resultItemStack);
-
-            json.addProperty("millingTime", millingTime);
         }
 
         @NotNull
@@ -140,22 +135,20 @@ public record MillingRecipe(ResourceLocation id, Ingredient ingredient, int mill
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
-        private final int millingTime;
         private final Item result;
         private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
-        Builder(@NotNull Ingredient ingredient, int millingTime, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, @NotNull Item result) {
             this.ingredient = ingredient;
-            this.millingTime = millingTime;
             this.result = result;
         }
 
-        public static Builder milling(@NotNull TagKey<Item> input, int millingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), millingTime, result);
+        public static Builder milling(@NotNull TagKey<Item> input, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), result);
         }
 
-        public static Builder milling(@NotNull ItemLike input, int millingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), millingTime, result);
+        public static Builder milling(@NotNull ItemLike input, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), result);
         }
 
         @NotNull
@@ -182,7 +175,7 @@ public record MillingRecipe(ResourceLocation id, Ingredient ingredient, int mill
             ensureValid(recipeId);
             advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new MillingRecipe.Result(recipeId, ingredient, millingTime, result, advancement, recipeId.withPrefix("recipes/milling/")));
+            finishedRecipeConsumer.accept(new MillingRecipe.Result(recipeId, ingredient, result, advancement, recipeId.withPrefix("recipes/milling/")));
         }
 
         //Makes sure that this recipe is valid and obtainable.
