@@ -64,7 +64,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ItemTags.create(Utils.modLoc("millstones")),
             BlockTags.create(Utils.modLoc("millstones")),
             MillstoneBlock::new,
-            SimpleBlockType::simpleBlockItem,
+            (holder) -> SimpleBlockType.simpleDescrBlockItem(holder, List.of(Component.translatable("text.ytech.hover.millstone").withStyle(DARK_GRAY))),
             MillstoneBlock::textureHolder,
             MillstoneBlock::registerModel,
             ILootable::dropsSelfProvider,

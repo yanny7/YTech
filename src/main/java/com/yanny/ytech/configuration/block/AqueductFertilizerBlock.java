@@ -46,7 +46,7 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
     @Override
     public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
         if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new AqueductFertilizerBlockEntity(holder, blockHolder.entityType.get(), pos, blockState);
+            return new AqueductFertilizerBlockEntity(holder, blockHolder.getBlockEntityType(), pos, blockState);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

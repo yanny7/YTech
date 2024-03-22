@@ -28,7 +28,7 @@ public class AqueductFertilizerMenu extends AbstractContainerMenu {
 
     public AqueductFertilizerMenu(@NotNull Holder holder, int windowId, @NotNull Player player, @NotNull BlockPos pos,
                                   @NotNull MachineItemStackHandler itemStackHandler, @NotNull ContainerData data) {
-        super(Utils.getMenuEntityBlockHolder(holder).getMenuRegistry().get(), windowId);
+        super(Utils.getMenuEntityBlockHolder(holder).getMenuType(), windowId);
         block = Utils.getBlockHolder(holder).getBlockRegistry().get();
         this.pos = pos;
         containerData = data;

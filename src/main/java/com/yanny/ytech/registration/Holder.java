@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -61,8 +62,7 @@ public class Holder {
     }
 
     public static class EntitySimpleBlockHolder extends SimpleBlockHolder implements IEntityBlockHolder {
-        @NotNull public final Supplier<BlockEntityType<?>> entityType;
-
+        @NotNull private final Supplier<BlockEntityType<?>> entityType;
 
         public EntitySimpleBlockHolder(@NotNull SimpleBlockType product, @NotNull Function<SimpleBlockHolder, Supplier<Block>> blockSupplier,
                                        @NotNull Function<SimpleBlockHolder, Supplier<Item>> itemSupplier,
@@ -72,13 +72,13 @@ public class Holder {
         }
 
         @Override
-        public Supplier<BlockEntityType<?>> getEntityTypeRegistry() {
-            return entityType;
+        public <T extends BlockEntity> BlockEntityType<T> getBlockEntityType() {
+            return (BlockEntityType<T>) entityType.get();
         }
     }
 
     public static class MenuEntitySimpleBlockHolder extends EntitySimpleBlockHolder implements IMenuEntityBlockHolder {
-        public final Supplier<MenuType<? extends AbstractContainerMenu>> menuType;
+        private final Supplier<MenuType<? extends AbstractContainerMenu>> menuType;
 
         public MenuEntitySimpleBlockHolder(@NotNull SimpleBlockType product,
                                            @NotNull Function<SimpleBlockHolder, Supplier<Block>> blockSupplier,
@@ -90,8 +90,8 @@ public class Holder {
         }
 
         @Override
-        public Supplier<MenuType<? extends AbstractContainerMenu>> getMenuRegistry() {
-            return menuType;
+        public <T extends AbstractContainerMenu> MenuType<T> getMenuType() {
+            return (MenuType<T>) menuType.get();
         }
     }
 
@@ -142,7 +142,7 @@ public class Holder {
     }
 
     public static class EntityBlockHolder extends BlockHolder implements IEntityBlockHolder {
-        @NotNull public final Supplier<BlockEntityType<?>> entityType;
+        @NotNull private final Supplier<BlockEntityType<?>> entityType;
 
 
         public EntityBlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
@@ -154,13 +154,13 @@ public class Holder {
         }
 
         @Override
-        public Supplier<BlockEntityType<?>> getEntityTypeRegistry() {
-            return entityType;
+        public <T extends BlockEntity> BlockEntityType<T> getBlockEntityType() {
+            return (BlockEntityType<T>) entityType.get();
         }
     }
 
     public static class MenuEntityBlockHolder extends EntityBlockHolder implements IMenuEntityBlockHolder {
-        public final Supplier<MenuType<? extends AbstractContainerMenu>> menuType;
+        private final Supplier<MenuType<? extends AbstractContainerMenu>> menuType;
 
         public MenuEntityBlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
                                      @NotNull Function<BlockHolder, Supplier<Block>> blockSupplier,
@@ -171,9 +171,8 @@ public class Holder {
             this.menuType = menuType.apply(this);
         }
 
-        @Override
-        public Supplier<MenuType<? extends AbstractContainerMenu>> getMenuRegistry() {
-            return menuType;
+        public <T extends AbstractContainerMenu> MenuType<T> getMenuType() {
+            return (MenuType<T>) menuType.get();
         }
     }
 
@@ -198,18 +197,22 @@ public class Holder {
 
     public static class SimpleEntityHolder extends Holder {
         @NotNull public final SimpleEntityType object;
-        @NotNull public final Supplier<EntityType<? extends Entity>> entityType;
+        @NotNull private final Supplier<EntityType<? extends Entity>> entityType;
 
         SimpleEntityHolder(@NotNull SimpleEntityType object, @NotNull Function<SimpleEntityHolder, Supplier<EntityType<? extends Entity>>> typeSupplier) {
             super(object.key, object.name);
             this.object = object;
             this.entityType = typeSupplier.apply(this);
         }
+
+        public <T extends Entity> EntityType<T> getEntityType() {
+            return (EntityType<T>) entityType.get();
+        }
     }
 
     public static class AnimalEntityHolder extends Holder {
         @NotNull public final AnimalEntityType object;
-        @NotNull public final Supplier<EntityType<Animal>> entityType;
+        @NotNull private final Supplier<EntityType<Animal>> entityType;
         @NotNull public final Supplier<Item> spawnEgg;
 
         AnimalEntityHolder(@NotNull AnimalEntityType object, @NotNull Function<AnimalEntityHolder, Supplier<EntityType<Animal>>> typeSupplier,
@@ -218,6 +221,10 @@ public class Holder {
             this.object = object;
             this.entityType = typeSupplier.apply(this);
             this.spawnEgg = spawnEggSupplier.apply(this);
+        }
+
+        public <T extends Entity> EntityType<T> getEntityType() {
+            return (EntityType<T>) entityType.get();
         }
     }
 

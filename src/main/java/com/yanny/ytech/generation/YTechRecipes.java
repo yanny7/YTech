@@ -4,7 +4,6 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.*;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
@@ -16,8 +15,6 @@ import net.minecraft.world.item.crafting.TippedArrowRecipe;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.CompletableFuture;
-
 import static com.yanny.ytech.configuration.MaterialItemType.*;
 import static com.yanny.ytech.configuration.MaterialType.*;
 import static com.yanny.ytech.configuration.SimpleItemType.*;
@@ -25,8 +22,8 @@ import static com.yanny.ytech.registration.Registration.HOLDER;
 import static com.yanny.ytech.registration.Registration.item;
 
 class YTechRecipes extends RecipeProvider {
-    public YTechRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(output, lookupProvider);
+    public YTechRecipes(PackOutput output) {
+        super(output);
     }
 
     @Override

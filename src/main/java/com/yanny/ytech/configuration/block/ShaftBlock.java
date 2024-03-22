@@ -72,7 +72,7 @@ public class ShaftBlock extends KineticBlock {
         Holder.BlockHolder blockHolder = Registration.HOLDER.blocks().get(MaterialBlockType.SHAFT).get(material);
 
         if (blockHolder instanceof Holder.EntityBlockHolder holder) {
-            return new ShaftBlockEntity(holder.entityType.get(), pos, blockState, stressMultiplier);
+            return new ShaftBlockEntity(holder.getBlockEntityType(), pos, blockState, stressMultiplier);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

@@ -19,7 +19,7 @@ public class StoneCrusherBlock extends KineticMachineBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         if (holder instanceof IEntityBlockHolder entityHolder) {
-            return new StoneCrusherBlockEntity(holder, entityHolder.getEntityTypeRegistry().get(), pPos, pState);
+            return new StoneCrusherBlockEntity(holder, entityHolder.getBlockEntityType(), pPos, pState);
         } else {
             throw new IllegalStateException("Invalid holder type");
         }
