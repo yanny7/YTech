@@ -53,6 +53,7 @@ class YTechLanguages extends LanguageProvider {
         add("text.ytech.hover.aqueduct_fertilizer2", "Consumes %smB every %s tick(s)");
         add("text.ytech.hover.drying_rack1", "Works faster in dry biomes and slower in wet biomes");
         add("text.ytech.hover.drying_rack2", "Doesn't work during rain");
+        add("text.ytech.hover.millstone", "Use leashed animal on block as power source. Shift-right click with empty hand for disconnecting animal.");
 
         add("creativeTab.ytech.title", "YTech");
     }

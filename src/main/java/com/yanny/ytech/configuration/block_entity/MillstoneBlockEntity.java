@@ -58,7 +58,7 @@ public class MillstoneBlockEntity extends BlockEntity {
                 List<Mob> mobList = level.getEntitiesOfClass(Mob.class, new AABB(x - 7.0, y - 7.0, z - 7.0, x + 7.0, y + 7.0, z + 7.0));
 
                 for (Mob mob : mobList) {
-                    if (mob.getLeashHolder() == player) {
+                    if (mob.getLeashHolder() == player && mob.getPassengers().isEmpty()) {
                         mob.dropLeash(true, false);
                         GoAroundEntity mimic = new GoAroundEntity(mob, pos, level);
                         level.addFreshEntity(mimic);
@@ -140,6 +140,7 @@ public class MillstoneBlockEntity extends BlockEntity {
             isLeashed = false;
             entity = null;
             isMilling = false;
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
         }
     }
@@ -153,6 +154,7 @@ public class MillstoneBlockEntity extends BlockEntity {
                 isMilling = true;
             }
 
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
         }
     }
