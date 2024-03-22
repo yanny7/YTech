@@ -1,0 +1,9 @@
+{
+  "type": "ytech:milling",
+  "ingredient": {
+    "tag": "forge:raw_materials/copper"
+  },
+  "result": {
+    "item": "ytech:crushed_copper"
+  }
+}

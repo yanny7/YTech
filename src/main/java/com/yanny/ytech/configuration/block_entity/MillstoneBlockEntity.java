@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class MillstoneBlockEntity extends BlockEntity {
     private ItemStack result = ItemStack.EMPTY;
     private boolean isMilling = false;
     private boolean isLeashed = false;
-    private GoAroundEntity entity = null;
+    @Nullable private GoAroundEntity entity = null;
     private final Random random = new Random();
 
     public MillstoneBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
@@ -153,6 +154,12 @@ public class MillstoneBlockEntity extends BlockEntity {
             }
 
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
+        }
+    }
+
+    public void onRemove() {
+        if (entity != null) {
+            entity.stopRiding();
         }
     }
 

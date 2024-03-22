@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.item.*;
 import com.yanny.ytech.configuration.recipe.HammeringRecipe;
+import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -336,6 +337,9 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .requires(MORTAR_AND_PESTLE.groupTag)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(RAW_MATERIAL.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+        MillingRecipe.Builder.milling(RAW_MATERIAL.itemTag.get(holder.material), holder.item.get())
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(RAW_MATERIAL.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_from_milling"));
     }
 
     public static void registerPlateRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {

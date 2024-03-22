@@ -45,6 +45,7 @@ public class GoAroundEntity extends Mob implements IEntityAdditionalSpawnData {
         this.setYHeadRot(mob.getYHeadRot());
         this.setYBodyRot(mob.getVisualRotationYInDegrees());
         this.setPose(mob.getPose());
+        leashToMillstone();
         registerGoals();
     }
 

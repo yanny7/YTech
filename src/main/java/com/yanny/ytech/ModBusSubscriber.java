@@ -3,7 +3,6 @@ package com.yanny.ytech;
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SimpleEntityType;
 import com.yanny.ytech.configuration.SimpleItemType;
-import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.IMenuBlock;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.item.BasketItem;
@@ -116,7 +115,6 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerModel(@NotNull ModelEvent.RegisterAdditional event) {
-        event.register(Utils.modBlockLoc("millstone_upper_part"));
         event.register(SpearModel.MODEL_IN_HAND_LOCATION);
     }
 
