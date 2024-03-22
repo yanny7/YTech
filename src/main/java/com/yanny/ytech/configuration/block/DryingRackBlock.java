@@ -88,7 +88,7 @@ public class DryingRackBlock extends Block implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         if (holder instanceof Holder.EntityBlockHolder blockHolder) {
-            return new DryingRackBlockEntity(blockHolder.entityType.get(), pos, state);
+            return new DryingRackBlockEntity(blockHolder.getBlockEntityType(), pos, state);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

@@ -243,6 +243,7 @@
   "text.ytech.hover.drying_rack1": "Works faster in dry biomes and slower in wet biomes",
   "text.ytech.hover.drying_rack2": "Doesn't work during rain",
   "text.ytech.hover.grass_fibers": "Obtainable by breaking grass with",
+  "text.ytech.hover.millstone": "Use leashed animal on block as power source. Shift-right click with empty hand for disconnecting animal.",
   "text.ytech.hover.primitive_smelter": "Increase temperature by adding chimneys",
   "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint"
 }

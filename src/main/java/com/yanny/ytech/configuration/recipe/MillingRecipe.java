@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record MillingRecipe(Ingredient ingredient, int millingTime, ItemStack result) implements Recipe<Container> {
+public record MillingRecipe(Ingredient ingredient, ItemStack result) implements Recipe<Container> {
     public static final Serializer SERIALIZER = new Serializer();
     public static final RecipeType<MillingRecipe> RECIPE_TYPE = new RecipeType<>() {
         @Override
@@ -75,7 +75,6 @@ public record MillingRecipe(Ingredient ingredient, int millingTime, ItemStack re
     public static class Serializer implements RecipeSerializer<MillingRecipe> {
         private static final Codec<MillingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
                 Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((millingRecipe) -> millingRecipe.ingredient),
-                Codec.INT.fieldOf("millingTime").forGetter((millingRecipe) -> millingRecipe.millingTime),
                 ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((millingRecipe) -> millingRecipe.result)
         ).apply(recipe, MillingRecipe::new));
 
@@ -90,36 +89,32 @@ public record MillingRecipe(Ingredient ingredient, int millingTime, ItemStack re
         public MillingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            int millingTime = buffer.readInt();
-            return new MillingRecipe(ingredient, millingTime, result);
+            return new MillingRecipe(ingredient, result);
         }
 
         @Override
         public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull MillingRecipe recipe) {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
-            buffer.writeInt(recipe.millingTime);
         }
     }
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
-        private final int millingTime;
         private final Item result;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull Ingredient ingredient, int millingTime, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, @NotNull Item result) {
             this.ingredient = ingredient;
-            this.millingTime = millingTime;
             this.result = result;
         }
 
-        public static Builder milling(@NotNull TagKey<Item> input, int millingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), millingTime, result);
+        public static Builder milling(@NotNull TagKey<Item> input, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), result);
         }
 
-        public static Builder milling(@NotNull ItemLike input, int millingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), millingTime, result);
+        public static Builder milling(@NotNull ItemLike input, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), result);
         }
 
         @NotNull
@@ -149,7 +144,7 @@ public record MillingRecipe(Ingredient ingredient, int millingTime, ItemStack re
             this.criteria.forEach(builder::addCriterion);
             finishedRecipeConsumer.accept(
                     recipeId,
-                    new MillingRecipe(ingredient, millingTime, new ItemStack(result)),
+                    new MillingRecipe(ingredient, new ItemStack(result)),
                     builder.build(recipeId.withPrefix("recipes/milling/"))
             );
         }

@@ -50,7 +50,7 @@ public class AqueductValveBlock extends IrrigationBlock {
         Holder.SimpleBlockHolder blockHolder = Registration.HOLDER.simpleBlocks().get(SimpleBlockType.AQUEDUCT_VALVE);
 
         if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
-            return new AqueductValveBlockEntity(holder.entityType.get(), pos, blockState);
+            return new AqueductValveBlockEntity(holder.getBlockEntityType(), pos, blockState);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

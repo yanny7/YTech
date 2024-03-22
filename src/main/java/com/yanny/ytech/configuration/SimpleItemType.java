@@ -558,7 +558,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerFlourRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
-        MillingRecipe.Builder.milling(Tags.Items.CROPS_WHEAT, 20 * 5, holder.item.get())
+        MillingRecipe.Builder.milling(Tags.Items.CROPS_WHEAT, holder.item.get())
                 .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
