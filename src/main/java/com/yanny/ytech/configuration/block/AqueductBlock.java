@@ -153,7 +153,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         Holder.SimpleBlockHolder blockHolder = Registration.HOLDER.simpleBlocks().get(SimpleBlockType.AQUEDUCT);
 
         if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
-            return new AqueductBlockEntity(holder.entityType.get(), pos, blockState);
+            return new AqueductBlockEntity(holder.getBlockEntityType(), pos, blockState);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

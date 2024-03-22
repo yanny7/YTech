@@ -1,9 +1,9 @@
 {
   "type": "ytech:milling",
   "ingredient": {
-    "tag": "forge:crops/wheat"
+    "tag": "forge:raw_materials/iron"
   },
   "result": {
-    "item": "ytech:flour"
+    "item": "ytech:crushed_iron"
   }
 }

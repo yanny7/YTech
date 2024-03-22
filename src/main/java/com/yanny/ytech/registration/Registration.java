@@ -245,13 +245,13 @@ public class Registration {
     }
 
     @NotNull
-    public static EntityType<?> entityType(@NotNull AnimalEntityType type) {
-        return Objects.requireNonNull(HOLDER.entities().get(type), "Missing entity type " + type).entityType.get();
+    public static <T extends Entity> EntityType<T> entityType(@NotNull AnimalEntityType type) {
+        return Objects.requireNonNull(HOLDER.entities().get(type), "Missing entity type " + type).getEntityType();
     }
 
     @NotNull
-    public static EntityType<?> entityType(@NotNull SimpleEntityType type) {
-        return Objects.requireNonNull(HOLDER.simpleEntities().get(type), "Missing entity type " + type).entityType.get();
+    public static <T extends Entity> EntityType<T> entityType(@NotNull SimpleEntityType type) {
+        return Objects.requireNonNull(HOLDER.simpleEntities().get(type), "Missing entity type " + type).getEntityType();
     }
 
     private static Holder.BlockHolder registerBlock(MaterialBlockType blockType, MaterialType material) {

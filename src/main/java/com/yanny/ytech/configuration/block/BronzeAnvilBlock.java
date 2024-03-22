@@ -62,7 +62,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new BronzeAnvilBlockEntity(blockHolder.entityType.get(), pos, state);
+            return new BronzeAnvilBlockEntity(blockHolder.getBlockEntityType(), pos, state);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

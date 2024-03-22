@@ -21,7 +21,7 @@ class YTechLanguages extends LanguageProvider {
         HOLDER.simpleItems().values().forEach(h -> add(h.item.get(), h.name));
         HOLDER.simpleBlocks().values().forEach(h -> add(h.block.get(), h.name));
         HOLDER.entities().values().forEach(h -> {
-            add(h.entityType.get(), h.name);
+            add(h.getEntityType(), h.name);
             add(h.spawnEgg.get(), h.name + " Spawn Egg");
         });
 
@@ -53,6 +53,7 @@ class YTechLanguages extends LanguageProvider {
         add("text.ytech.hover.aqueduct_fertilizer2", "Consumes %smB every %s tick(s)");
         add("text.ytech.hover.drying_rack1", "Works faster in dry biomes and slower in wet biomes");
         add("text.ytech.hover.drying_rack2", "Doesn't work during rain");
+        add("text.ytech.hover.millstone", "Use leashed animal on block as power source. Shift-right click with empty hand for disconnecting animal.");
 
         add("creativeTab.ytech.title", "YTech");
     }
