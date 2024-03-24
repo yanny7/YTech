@@ -27,6 +27,7 @@ import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -35,10 +36,14 @@ import static com.yanny.ytech.registration.Registration.HOLDER;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusSubscriber {
+    @SubscribeEvent
+    public static void commonSetup(@NotNull FMLCommonSetupEvent event) {
+        TopCompatibility.register();
+    }
+
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
-        TopCompatibility.register();
         ItemProperties.register(Registration.item(SimpleItemType.BASKET), BasketItem.FILLED_PREDICATE,
                 (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
         ItemProperties.register(Registration.item(SimpleItemType.SPEAR), SpearItem.THROWING_PREDICATE,
