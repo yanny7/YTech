@@ -6,6 +6,7 @@ import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductValveBlockEntity;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.Holder;
@@ -15,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -123,7 +123,7 @@ public class AqueductValveBlock extends IrrigationBlock {
     }
 
     public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
                 .define('R', MaterialItemType.ROD.groupTag)
                 .define('H', MaterialItemType.HAMMER.groupTag)

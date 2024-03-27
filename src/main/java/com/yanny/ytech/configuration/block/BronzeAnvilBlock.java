@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +10,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -221,7 +221,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('B', MaterialBlockType.STORAGE_BLOCK.itemTag.get(MaterialType.BRONZE))
                 .define('I', MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE))
                 .pattern("BBB")

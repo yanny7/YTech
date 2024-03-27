@@ -5,11 +5,15 @@ import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockE
 import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -41,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -543,7 +546,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     }
 
     private static void registerReinforcedBricksRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .define('B', Items.BRICKS)
                 .define('P', Registration.item(MaterialItemType.PLATE, MaterialType.COPPER))
                 .define('#', Registration.item(MaterialItemType.BOLT, MaterialType.COPPER))
@@ -555,7 +558,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     }
 
     private static void registerTerracottaBricksRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .define('B', Items.TERRACOTTA)
                 .pattern("BB")
                 .pattern("BB")
@@ -564,7 +567,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     }
 
     private static void registerTerracottaBrickSlabRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 6)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 6)
                 .define('B', TERRACOTTA_BRICKS.itemTag)
                 .pattern("BBB")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
@@ -575,7 +578,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     }
 
     private static void registerTerracottaBrickStairsRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 4)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 4)
                 .define('B', TERRACOTTA_BRICKS.itemTag)
                 .pattern("B  ")
                 .pattern("BB ")

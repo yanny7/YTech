@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "group": "wooden_bolt",
   "ingredients": [
