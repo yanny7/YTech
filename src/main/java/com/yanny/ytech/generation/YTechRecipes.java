@@ -196,7 +196,7 @@ class YTechRecipes extends RecipeProvider {
         mcCookingRecipe(recipeConsumer, RecipeCategory.FOOD, BREAD_DOUGH, Items.BREAD, 0.1f, 200);
         mcCookingRecipe(recipeConsumer, RecipeCategory.MISC, UNFIRED_BRICK, Items.BRICK, 0.3f, 200);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Items.WOODEN_SHOVEL)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, Items.WOODEN_SHOVEL)
                 .define('#', WOODEN_PLATE.itemTag)
                 .define('S', Items.STICK)
                 .pattern("#")
@@ -204,7 +204,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("S")
                 .unlockedBy(getHasName(Items.STICK), has(Items.STICK))
                 .save(recipeConsumer, Utils.loc(Items.WOODEN_SHOVEL));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.CHEST)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, Items.CHEST)
                 .define('#', WOODEN_PLATE.itemTag)
                 .define('B', WOODEN_BOLT.itemTag)
                 .define('S', SAW.groupTag)
@@ -213,7 +213,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("B#B")
                 .unlockedBy(Utils.getHasName(), has(WOODEN_PLATE.itemTag))
                 .save(recipeConsumer, Utils.loc(Items.CHEST));
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_BOOTS)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_BOOTS)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -222,7 +222,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_BOOTS));
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_HELMET)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_HELMET)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -231,7 +231,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_HELMET));
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_LEGGINGS)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_LEGGINGS)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -240,7 +240,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_LEGGINGS));
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_CHESTPLATE)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_CHESTPLATE)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -249,7 +249,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LLL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_CHESTPLATE));
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.LEATHER_HORSE_ARMOR)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_HORSE_ARMOR)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', LEATHER_STRIPS.itemTag)
                 .define('L', Items.LEATHER)
@@ -258,7 +258,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("LSL")
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_HORSE_ARMOR));
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.BOW)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.BOW)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('S', Items.STICK)
                 .define('W', Items.STRING)
@@ -267,7 +267,7 @@ class YTechRecipes extends RecipeProvider {
                 .pattern(" SW")
                 .unlockedBy(getHasName(Items.STICK), has(Items.STICK))
                 .save(recipeConsumer, Utils.loc(Items.BOW));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BOWL)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, Items.BOWL)
                 .define('#', FLINT_KNIFE.itemTag)
                 .define('P', ItemTags.PLANKS)
                 .pattern("P#P")
@@ -332,7 +332,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcSplitBySawRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, 2)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, result, 2)
                 .requires(input)
                 .requires(SAW.groupTag)
                 .group(Utils.loc(result).getPath())
@@ -341,7 +341,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcSplitByAxeRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
                 .requires(AXE.groupTag)
                 .group(Utils.loc(result).getPath())
@@ -350,7 +350,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcSplitByHammerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item input, @NotNull Item result) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, result)
                 .requires(input)
                 .requires(HAMMER.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
@@ -358,7 +358,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcFenceRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
                 .define('P', planks)
@@ -372,7 +372,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcFenceGateRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
                 .define('B', WOODEN_BOLT.itemTag)
@@ -387,7 +387,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcDoorRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
                 .define('B', WOODEN_BOLT.itemTag)
@@ -401,7 +401,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcTrapdoorRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
                 .define('H', HAMMER.groupTag)
                 .define('W', SAW.groupTag)
                 .define('B', WOODEN_BOLT.itemTag)
@@ -415,7 +415,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcPressurePlateRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('W', SAW.groupTag)
                 .define('B', WOODEN_BOLT.itemTag)
                 .define('P', planks)
@@ -428,7 +428,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcButtonRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
                 .requires(SAW.groupTag)
                 .requires(planks)
                 .group("button")
@@ -437,7 +437,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcBedRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item wool, @NotNull Item result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('H', HAMMER.groupTag)
                 .define('S', SAW.groupTag)
                 .define('W', wool)
@@ -451,7 +451,7 @@ class YTechRecipes extends RecipeProvider {
     }
 
     private void mcBoatRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('H', HAMMER.groupTag)
                 .define('S', SAW.groupTag)
                 .define('F', FILE.groupTag)

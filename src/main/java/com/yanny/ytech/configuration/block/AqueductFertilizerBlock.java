@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.AqueductFertilizerBlockEntity;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
@@ -11,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -168,7 +168,7 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
     }
 
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.AQUEDUCT_HYDRATOR))
                 .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.BRONZE))
                 .define('S', MaterialItemType.PLATE.itemTag.get(MaterialType.BRONZE))

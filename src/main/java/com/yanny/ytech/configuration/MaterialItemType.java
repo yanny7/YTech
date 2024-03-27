@@ -1,17 +1,20 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.configuration.item.*;
+import com.yanny.ytech.configuration.item.MaterialArrowItem;
+import com.yanny.ytech.configuration.item.ToolItem;
 import com.yanny.ytech.configuration.recipe.HammeringRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
+import com.yanny.ytech.configuration.recipe.RemainingShapelessRecipe;
 import com.yanny.ytech.registration.Holder;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -86,46 +89,46 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     AXE("axe", INameable.suffix("axe"), INameable.suffix("Axe"),
             (material) -> ItemTags.create(Utils.modLoc("axes/" + material.key)),
             ItemTags.AXES,
-            MaterialAxeItem::new,
+            (holder) -> new AxeItem(holder.material.getTier(), 6.0f, -3.2f, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("axe/" + material.key))).toArray(TextureHolder[]::new),
             MaterialItemType::basicHandheldModelProvider,
-            MaterialAxeItem::registerRecipe,
+            MaterialItemType::registerAxeRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON)),
     PICKAXE("pickaxe", INameable.suffix("pickaxe"), INameable.suffix("Pickaxe"),
             (material) -> ItemTags.create(Utils.modLoc("pickaxes/" + material.key)),
             ItemTags.PICKAXES,
-            MaterialPickaxeItem::new,
+            (holder) -> new PickaxeItem(holder.material.getTier(), 1, -2.8f, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("pickaxe/" + material.key))).toArray(TextureHolder[]::new),
             MaterialItemType::basicHandheldModelProvider,
-            MaterialPickaxeItem::registerRecipe,
+            MaterialItemType::registerPickaxeRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.ANTLER), MaterialType.GOLD, MaterialType.IRON)),
     SHOVEL("shovel", INameable.suffix("shovel"), INameable.suffix("Shovel"),
             (material) -> ItemTags.create(Utils.modLoc("shovels/" + material.key)),
             ItemTags.SHOVELS,
-            MaterialShovelItem::new,
+            (holder) -> new ShovelItem(holder.material.getTier(), 1.5f, -3.0f, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("shovel/" + material.key))).toArray(TextureHolder[]::new),
             MaterialItemType::basicHandheldModelProvider,
-            MaterialShovelItem::registerRecipe,
+            MaterialItemType::registerShovelRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON)),
     HOE("hoe", INameable.suffix("hoe"), INameable.suffix("Hoe"),
             (material) -> ItemTags.create(Utils.modLoc("hoes/" + material.key)),
             ItemTags.HOES,
-            MaterialHoeItem::new,
+            (holder) -> new HoeItem(holder.material.getTier(), 0, -3.0f, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("hoe/" + material.key))).toArray(TextureHolder[]::new),
             MaterialItemType::basicHandheldModelProvider,
-            MaterialHoeItem::registerRecipe,
+            MaterialItemType::registerHoeRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON)),
     SWORD("sword", INameable.suffix("sword"), INameable.suffix("Sword"),
             (material) -> ItemTags.create(Utils.modLoc("swords/" + material.key)),
             ItemTags.SWORDS,
-            MaterialSwordItem::new,
+            (holder) -> new SwordItem(holder.material.getTier(), 3, -2.4f, new Item.Properties()),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("sword/" + material.key))).toArray(TextureHolder[]::new),
             MaterialItemType::basicHandheldModelProvider,
-            MaterialSwordItem::registerRecipe,
+            MaterialItemType::registerSwordRecipe,
             MaterialItemType::registerMaterialTag,
             Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON)),
     HELMET("helmet", INameable.suffix("helmet"), INameable.suffix("Helmet"),
@@ -318,21 +321,21 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerIngotRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
                 .requires(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get(), 9)
                 .requires(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     public static void registerCrushedRawMaterialRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get(), 1)
                 .requires(RAW_MATERIAL.itemTag.get(holder.material))
                 .requires(MORTAR_AND_PESTLE.groupTag)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(RAW_MATERIAL.itemTag.get(holder.material)))
@@ -343,7 +346,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerPlateRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', INGOT.itemTag.get(holder.material))
                 .define('H', HAMMER.groupTag)
                 .pattern("#")
@@ -358,7 +361,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerRodRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', INGOT.itemTag.get(holder.material))
                 .define('F', FILE.groupTag)
                 .pattern("#")
@@ -368,7 +371,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerBoltRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 2)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get(), 2)
                 .define('#', ROD.itemTag.get(holder.material))
                 .define('S', SAW.groupTag)
                 .pattern("# ")
@@ -378,7 +381,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerHelmetRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
                 .define('#', PLATE.itemTag.get(holder.material))
                 .pattern("###")
                 .pattern("# #")
@@ -387,7 +390,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerChestplateRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
                 .define('#', PLATE.itemTag.get(holder.material))
                 .pattern("# #")
                 .pattern("###")
@@ -397,7 +400,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerLeggingsRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
                 .define('#', PLATE.itemTag.get(holder.material))
                 .pattern("###")
                 .pattern("# #")
@@ -407,7 +410,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerBootsRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get(), 1)
                 .define('#', PLATE.itemTag.get(holder.material))
                 .pattern("# #")
                 .pattern("# #")
@@ -417,7 +420,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
     public static void registerMortarAndPestleRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         if (holder.material == MaterialType.STONE) {
-            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', Items.STICK)
                     .define('#', Tags.Items.STONE)
                     .pattern(" I ")
@@ -426,7 +429,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.STONE))
                     .save(recipeConsumer, Utils.modLoc(holder.key));
         } else {
-            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('I', INGOT.itemTag.get(holder.material))
                     .define('#', Tags.Items.STONE)
                     .pattern(" I ")
@@ -438,7 +441,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerSawRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
                 .define('S', Items.STICK)
                 .define('#', PLATE.itemTag.get(holder.material))
                 .pattern("S##")
@@ -448,7 +451,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
 
     public static void registerHammerRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
         if (holder.material == MaterialType.STONE) {
-            ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('S', Items.STICK)
                     .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
                     .define('#', Items.STONE)
@@ -458,7 +461,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
                     .save(recipeConsumer, Utils.modLoc(holder.key));
         } else {
-            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, holder.item.get())
                     .define('S', Items.STICK)
                     .define('#', MaterialBlockType.STORAGE_BLOCK.itemTag.get(holder.material))
                     .pattern(" # ")
@@ -470,12 +473,85 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     public static void registerFileRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
                 .define('#', PLATE.itemTag.get(holder.material))
                 .define('S', Items.STICK)
                 .pattern("#")
                 .pattern("S")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerAxeRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        switch (holder.material) {
+            case FLINT ->
+                    RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, holder.item.get())
+                            .requires(Items.STICK)
+                            .requires(Items.FLINT)
+                            .requires(SimpleItemType.GRASS_TWINE.itemTag)
+                            .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
+                            .save(recipeConsumer, Utils.modLoc(holder.key));
+            default -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
+                    .define('S', Items.STICK)
+                    .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))
+                    .pattern("##")
+                    .pattern("#S")
+                    .pattern(" S")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.PLATE.itemTag.get(holder.material)))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+        }
+    }
+
+    private static void registerPickaxeRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        switch (holder.material) {
+            case ANTLER -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, holder.item.get())
+                    .requires(SimpleItemType.ANTLER.itemTag)
+                    .requires(SimpleItemType.SHARP_FLINT.itemTag)
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.SHARP_FLINT.itemTag))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+            default -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
+                    .define('S', Items.STICK)
+                    .define('P', MaterialItemType.PLATE.itemTag.get(holder.material))
+                    .define('R', MaterialItemType.ROD.itemTag.get(holder.material))
+                    .define('#', MaterialItemType.INGOT.itemTag.get(holder.material))
+                    .pattern("P#R")
+                    .pattern(" S ")
+                    .pattern(" S ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.INGOT.itemTag.get(holder.material)))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+        }
+    }
+
+    private static void registerShovelRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
+                .define('S', Items.STICK)
+                .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))
+                .pattern("#")
+                .pattern("S")
+                .pattern("S")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerHoeRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
+                .define('S', Items.STICK)
+                .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))
+                .pattern("##")
+                .pattern(" S")
+                .pattern(" S")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.PLATE.itemTag.get(holder.material)))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerSwordRecipe(@NotNull Holder.ItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, holder.item.get())
+                .define('S', Items.STICK)
+                .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))
+                .pattern("#")
+                .pattern("#")
+                .pattern("S")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.PLATE.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

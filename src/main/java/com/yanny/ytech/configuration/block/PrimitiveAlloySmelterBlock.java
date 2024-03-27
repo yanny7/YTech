@@ -4,6 +4,7 @@ import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveAlloySmelterBlockEntity;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.configuration.screen.PrimitiveAlloySmelterScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.IEntityBlockHolder;
@@ -13,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -60,7 +60,7 @@ public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock im
     }
 
     public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('B', Items.BRICKS)
                 .define('S', SimpleBlockType.PRIMITIVE_SMELTER.itemTag)
                 .pattern("BBB")
