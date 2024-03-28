@@ -29,16 +29,4 @@ public class ToolItem extends TieredItem implements Vanishable {
 
         return true;
     }
-
-    @Override
-    public boolean hasCraftingRemainingItem(@NotNull ItemStack itemStack) {
-        return itemStack.getMaxDamage() - itemStack.getDamageValue() > 1;
-    }
-
-    @Override
-    public ItemStack getCraftingRemainingItem(@NotNull ItemStack itemStack) {
-        ItemStack result = itemStack.copy();
-        result.setDamageValue(itemStack.getDamageValue() + 1);
-        return result;
-    }
 }

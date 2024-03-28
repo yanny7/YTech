@@ -3,11 +3,11 @@ package com.yanny.ytech.configuration.item;
 import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.ArrowEntity;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,7 +41,7 @@ public class MaterialArrowItem extends ArrowItem {
     }
 
     public static void registerRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, holder.item.get())
                 .define('S', Items.STICK)
                 .define('F', Items.FEATHER)
                 .define('#', MaterialItemType.BOLT.itemTag.get(holder.material))
