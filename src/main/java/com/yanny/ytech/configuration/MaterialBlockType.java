@@ -4,6 +4,7 @@ import com.yanny.ytech.configuration.block.DryingRackBlock;
 import com.yanny.ytech.configuration.block.ShaftBlock;
 import com.yanny.ytech.configuration.block.TanningRackBlock;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
+import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -14,7 +15,6 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -427,7 +427,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     }
 
     private static void registerRawStorageBlockRecipe(Holder.BlockHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material))
                 .pattern("###").pattern("###").pattern("###")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material)))
@@ -435,7 +435,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     }
 
     private static void registerStorageBlockRecipe(Holder.BlockHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.block.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', MaterialItemType.INGOT.itemTag.get(holder.material))
                 .pattern("###").pattern("###").pattern("###")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.INGOT.itemTag.get(holder.material)))

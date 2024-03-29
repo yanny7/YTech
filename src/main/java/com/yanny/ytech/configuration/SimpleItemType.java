@@ -1,14 +1,14 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.item.*;
-import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
-import com.yanny.ytech.configuration.recipe.DryingRecipe;
-import com.yanny.ytech.configuration.recipe.MillingRecipe;
-import com.yanny.ytech.configuration.recipe.TanningRecipe;
+import com.yanny.ytech.configuration.recipe.*;
 import com.yanny.ytech.registration.Holder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -55,7 +55,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::registerSimpleTag),
     BRICK_MOLD("brick_mold", "Brick Mold",
             ItemTags.create(Utils.modLoc("brick_molds")),
-            BrickMoldItem::new,
+            () -> new Item(new Item.Properties().durability(256)),
             () -> basicTexture(Utils.modItemLoc("brick_mold")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerBrickMoldRecipe,
@@ -428,7 +428,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
 
     private static void registerGrassTwineRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
         Holder input = HOLDER.simpleItems().get(GRASS_FIBERS);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', GRASS_FIBERS.itemTag)
                 .pattern("##")
                 .pattern("##")
@@ -437,7 +437,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerBrickMoldRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', WOODEN_PLATE.itemTag)
                 .define('I', WOODEN_BOLT.itemTag)
                 .pattern("I#I")
@@ -448,7 +448,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerUnfiredBrickRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get(), 8)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get(), 8)
                 .define('#', BRICK_MOLD.itemTag)
                 .define('B', Items.CLAY_BALL)
                 .pattern("BBB")
@@ -459,13 +459,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerWoodenPlateRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get())
                 .requires(ItemTags.WOODEN_SLABS)
                 .requires(AXE.groupTag)
                 .group(holder.key)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.WOODEN_SLABS))
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_using_axe"));
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(ItemTags.WOODEN_SLABS)
                 .requires(SAW.groupTag)
                 .group(holder.key)
@@ -474,13 +474,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerWoodenBoltRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get())
                 .requires(Items.STICK)
                 .requires(AXE.groupTag)
                 .group(holder.key)
                 .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_using_axe"));
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get(), 2)
                 .requires(Items.STICK)
                 .requires(SAW.groupTag)
                 .group(holder.key)
@@ -496,7 +496,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerLeatherStripsRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get(), 4)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get(), 4)
                 .requires(Items.LEATHER)
                 .requires(SHARP_FLINT.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.LEATHER), RecipeProvider.has(Items.LEATHER))
@@ -510,7 +510,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerBasketRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', GRASS_TWINE.itemTag)
                 .pattern(" # ")
                 .pattern("###")
@@ -530,7 +530,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerFlintKnifeRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, holder.item.get())
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, holder.item.get())
                 .requires(Items.STICK)
                 .requires(Items.FLINT)
                 .requires(LEATHER_STRIPS.itemTag)
@@ -539,7 +539,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerSpearRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('T', LEATHER_STRIPS.itemTag)
                 .define('S', Items.FLINT)
                 .define('#', Items.STICK)
@@ -563,7 +563,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerUnfiredClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, holder.item.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
                 .define('#', Items.CLAY_BALL)
                 .pattern("# #")
                 .pattern("# #")
@@ -579,7 +579,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerBreadDoughRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, holder.item.get())
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get())
                 .requires(FLOUR.itemTag)
                 .requires(FLOUR.itemTag)
                 .requires(FLOUR.itemTag)

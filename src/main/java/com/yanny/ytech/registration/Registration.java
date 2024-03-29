@@ -121,6 +121,8 @@ public class Registration {
         RECIPE_SERIALIZERS.register("block_hit", () -> BlockHitRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("alloying", () -> AlloyingRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("hammering", () -> HammeringRecipe.SERIALIZER);
+        RECIPE_SERIALIZERS.register("remaining_shapeless_crafting", () -> RemainingShapelessRecipe.SERIALIZER);
+        RECIPE_SERIALIZERS.register("remaining_shaped_crafting", () -> RemainingShapedRecipe.SERIALIZER);
 
         GLM_CODECS.register("add_item", AddItemModifier.CODEC);
         GLM_CODECS.register("remove_item", ReplaceItemModifier.CODEC);
