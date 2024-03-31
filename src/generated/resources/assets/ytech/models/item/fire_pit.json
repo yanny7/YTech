@@ -1,0 +1,33 @@
+{
+  "parent": "ytech:block/fire_pit_base",
+  "display": {
+    "firstperson_lefthand": {
+      "translation": [
+        2.5,
+        4.75,
+        0
+      ]
+    },
+    "firstperson_righthand": {
+      "translation": [
+        2.5,
+        4.75,
+        0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "translation": [
+        0,
+        6.25,
+        -5.25
+      ]
+    },
+    "thirdperson_righthand": {
+      "translation": [
+        0,
+        6.25,
+        -5.25
+      ]
+    }
+  }
+}

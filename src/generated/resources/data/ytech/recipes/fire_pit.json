@@ -1,0 +1,17 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:cobblestone"
+    }
+  },
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "result": {
+    "item": "ytech:fire_pit"
+  },
+  "show_notification": true
+}

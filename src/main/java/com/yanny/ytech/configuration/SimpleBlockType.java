@@ -213,6 +213,17 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag,
             (holder, windowId, inv, pos, stack, data) -> new AqueductFertilizerMenu(holder, windowId, inv.player, pos, stack, data)),
+    FIRE_PIT(HolderType.BLOCK, "fire_pit", "Fire Pit",
+            ItemTags.create(Utils.modLoc("fire_pits")),
+            BlockTags.create(Utils.modLoc("fire_pits")),
+            FirePitBlock::new,
+            SimpleBlockType::firePitBlockItem,
+            FirePitBlock::getTexture,
+            FirePitBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            FirePitBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag)
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
@@ -477,6 +488,18 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_fertilizer1").withStyle(DARK_GRAY));
                 tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_fertilizer2",
                         CONFIGURATION.getHydratorDrainAmount(), CONFIGURATION.getHydratorDrainPerNthTick()).withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item firePitBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit2").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit3").withStyle(DARK_GRAY));
             }
         };
     }

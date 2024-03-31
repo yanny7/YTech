@@ -54,6 +54,9 @@ class YTechLanguages extends LanguageProvider {
         add("text.ytech.hover.drying_rack1", "Works faster in dry biomes and slower in wet biomes");
         add("text.ytech.hover.drying_rack2", "Doesn't work during rain");
         add("text.ytech.hover.millstone", "Use leashed animal on block as power source. Shift-right click with empty hand for disconnecting animal.");
+        add("text.ytech.hover.fire_pit1", "Right-click with burnable item to increase level by floor(log10(burnTime))");
+        add("text.ytech.hover.fire_pit2", "Each random tick is level decreased by 1");
+        add("text.ytech.hover.fire_pit3", "Rain have chance to extinguish fire");
 
         add("creativeTab.ytech.title", "YTech");
     }
