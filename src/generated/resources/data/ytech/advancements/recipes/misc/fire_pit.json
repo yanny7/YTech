@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cobblestone": {
+    "has_pebble": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:cobblestone"
+            "tag": "ytech:pebbles"
           }
         ]
       },
@@ -20,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_cobblestone",
+      "has_pebble",
       "has_the_recipe"
     ]
   ],

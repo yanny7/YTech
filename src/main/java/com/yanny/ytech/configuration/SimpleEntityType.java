@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
+import com.yanny.ytech.configuration.entity.PebbleEntity;
 import com.yanny.ytech.configuration.entity.SpearEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -15,7 +16,10 @@ public enum SimpleEntityType {
             SpearEntity::new),
     GO_AROUND("go_around", "Go Around Entity",
             (builder) -> builder.sized(0.1F, 0.1f).clientTrackingRange(10),
-            GoAroundEntity::new)
+            GoAroundEntity::new),
+    PEBBLE("pebble", "Pebble",
+            (builder) -> builder.sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10),
+            PebbleEntity::new),
     ;
 
     @NotNull public final String key;

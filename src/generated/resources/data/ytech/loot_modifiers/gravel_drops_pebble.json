@@ -1,0 +1,14 @@
+{
+  "type": "ytech:add_item",
+  "conditions": [
+    {
+      "chance": 0.2,
+      "condition": "minecraft:random_chance"
+    },
+    {
+      "block": "minecraft:gravel",
+      "condition": "minecraft:block_state_property"
+    }
+  ],
+  "item": "ytech:pebble"
+}

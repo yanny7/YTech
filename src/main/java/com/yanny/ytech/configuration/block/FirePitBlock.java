@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
+import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
@@ -21,7 +22,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -43,7 +43,6 @@ import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -163,7 +162,7 @@ public class FirePitBlock extends Block {
     @Nullable
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-        return defaultBlockState().setValue(LEVEL, 0).setValue(LIT, false);
+        return defaultBlockState().setValue(LEVEL, 2).setValue(LIT, false);
     }
 
     @SuppressWarnings("deprecation")
@@ -191,7 +190,7 @@ public class FirePitBlock extends Block {
                 new TextureHolder(-1, -1, Utils.mcBlockLoc("andesite")),
                 new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log")),
                 new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log_top")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("cobblestone"))
+                new TextureHolder(-1, -1, Utils.mcBlockLoc("smooth_basalt"))
         ).toArray(TextureHolder[]::new);
     }
 
@@ -525,21 +524,17 @@ public class FirePitBlock extends Block {
         builder.part().modelFile(logs_down).addModel().condition(LEVEL, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15).end();
         builder.part().modelFile(logs_up).addModel().condition(LEVEL, 9, 10, 11, 12, 13, 14, 15).end();
 
-        provider.itemModels().getBuilder(holder.key).parent(base)
-                .transforms()
-                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).translation(0, 6.25f, -5.25f).end()
-                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).translation(0, 6.25f, -5.25f).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).translation(2.5f, 4.75f, 0).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).translation(2.5f, 4.75f, 0).end()
-                .end();
+        provider.itemModels().getBuilder(holder.key).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
+                .texture("layer0", Utils.modItemLoc("fire_pit"));
     }
 
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> consumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('C', Tags.Items.COBBLESTONE)
-                .pattern("CC")
-                .pattern("CC")
-                .unlockedBy("has_cobblestone", RecipeProvider.has(Tags.Items.COBBLESTONE))
+                .define('S', Items.STICK)
+                .define('P', SimpleItemType.PEBBLE.itemTag)
+                .pattern("SS")
+                .pattern("PP")
+                .unlockedBy("has_pebble", RecipeProvider.has(SimpleItemType.PEBBLE.itemTag))
                 .save(consumer, Utils.modLoc(holder.key));
     }
 
