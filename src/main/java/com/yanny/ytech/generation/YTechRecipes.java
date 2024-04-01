@@ -274,6 +274,14 @@ class YTechRecipes extends RecipeProvider {
                 .pattern(" P ")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(Items.BOWL));
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, Items.CRAFTING_TABLE)
+                .define('$', ItemTags.AXES)
+                .define('F', Items.FLINT)
+                .define('P', ItemTags.PLANKS)
+                .pattern("$F")
+                .pattern("PP")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(Items.CRAFTING_TABLE));
 
         /*
          * MOD RECIPES

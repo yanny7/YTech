@@ -1,0 +1,23 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "$": {
+      "tag": "minecraft:axes"
+    },
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "$F",
+    "PP"
+  ],
+  "result": {
+    "item": "minecraft:crafting_table"
+  },
+  "show_notification": true
+}
