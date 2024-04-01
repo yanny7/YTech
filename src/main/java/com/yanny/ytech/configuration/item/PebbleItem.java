@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.item;
 
 import com.yanny.ytech.configuration.entity.PebbleEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -9,12 +10,24 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+import static net.minecraft.ChatFormatting.DARK_GRAY;
 
 public class PebbleItem extends Item {
     public PebbleItem() {
         super(new Properties());
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+        tooltipComponents.add(Component.translatable("text.ytech.hover.pebble").withStyle(DARK_GRAY));
     }
 
     @NotNull

@@ -40,7 +40,7 @@ class YTechLanguages extends LanguageProvider {
 
         add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint");
 
-        add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with");
+        add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");
         add("text.ytech.hover.primitive_smelter", "Increase temperature by adding chimneys");
         add("text.ytech.hover.chimney", "Increases temperature in smelter by %s °C");
         add("text.ytech.hover.aqueduct1", "Can hold %smB of water");
@@ -58,6 +58,7 @@ class YTechLanguages extends LanguageProvider {
         add("text.ytech.hover.fire_pit2", "Right-click with burnable item to increase level by floor(log10(burnTime))");
         add("text.ytech.hover.fire_pit3", "Each random tick is level decreased by 1");
         add("text.ytech.hover.fire_pit4", "Rain have chance to extinguish fire (50% chance on random tick)");
+        add("text.ytech.hover.pebble", "Drops from gravel (10% chance)");
 
         add("creativeTab.ytech.title", "YTech");
     }

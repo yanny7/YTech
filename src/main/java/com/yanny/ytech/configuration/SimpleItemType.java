@@ -10,7 +10,6 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -340,11 +339,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             @Override
             public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
                 super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-                        .append(CommonComponents.SPACE)
-                        .append(item(SHARP_FLINT).asItem().getDefaultInstance().getDisplayName())
-                );
+                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY));
             }
         };
     }
