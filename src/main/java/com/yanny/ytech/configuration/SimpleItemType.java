@@ -535,6 +535,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 200)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 600)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_campfire"));
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 100)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_smoker"));
     }
 
     private static void registerFlintKnifeRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
