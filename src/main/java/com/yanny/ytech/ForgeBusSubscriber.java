@@ -75,8 +75,7 @@ public class ForgeBusSubscriber {
     @SubscribeEvent
     public static void onServerStarting(@NotNull ServerStartingEvent event) {
         if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
-            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((block) ->
-                    setBlockRequireValidTool(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(block))));
+            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((tag) -> Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTag(tag).forEach(ForgeBusSubscriber::setBlockRequireValidTool));
         }
     }
 
@@ -130,9 +129,9 @@ public class ForgeBusSubscriber {
                 ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "f_60600_"); // requiresCorrectToolForDrops
             }
 
-            LOGGER.info("Set requiresCorrectToolForDrops on {}", block.getName());
+            LOGGER.info("Set requiresCorrectToolForDrops on {}", Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)));
         } catch (Exception e) {
-            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block " + block.getName().getString() + ": " + e.getMessage());
+            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block " + Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)) + ": " + e.getMessage());
         }
     }
 }
