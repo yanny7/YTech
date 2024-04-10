@@ -1,0 +1,156 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            8.0,
+            4.0,
+            12.0,
+            14.0
+          ]
+        },
+        "east": {
+          "texture": "#4",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "north": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            0.0,
+            0.0,
+            4.0,
+            10.0
+          ]
+        },
+        "south": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            12.0,
+            3.0,
+            16.0,
+            13.0
+          ]
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            6.0,
+            1.0,
+            10.0,
+            11.0
+          ]
+        },
+        "west": {
+          "texture": "#4",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        }
+      },
+      "from": [
+        5.75,
+        2,
+        8
+      ],
+      "to": [
+        10.75,
+        4,
+        10
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            9.0,
+            6.0,
+            13.0,
+            16.0
+          ]
+        },
+        "east": {
+          "rotation": 90,
+          "texture": "#4",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "north": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            5.0,
+            3.0,
+            9.0,
+            13.0
+          ]
+        },
+        "south": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            1.0,
+            4.0,
+            5.0,
+            14.0
+          ]
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#3",
+          "uv": [
+            9.0,
+            0.0,
+            13.0,
+            10.0
+          ]
+        },
+        "west": {
+          "rotation": 90,
+          "texture": "#4",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        }
+      },
+      "from": [
+        5,
+        2,
+        5.5
+      ],
+      "to": [
+        10,
+        4,
+        7.5
+      ]
+    }
+  ],
+  "textures": {
+    "3": "minecraft:block/oak_log",
+    "4": "minecraft:block/oak_log_top",
+    "particle": "minecraft:block/magma"
+  }
+}

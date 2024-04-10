@@ -34,6 +34,13 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
                 },
                 Registration.item(SimpleItemType.GRASS_FIBERS)
         ));
+        add("gravel_drops_pebble", new AddItemModifier(
+                new LootItemCondition[]{
+                        LootItemRandomChanceCondition.randomChance(0.2f).build(),
+                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRAVEL).build()
+                },
+                Registration.item(SimpleItemType.PEBBLE)
+        ));
 
         addReplaceLeatherByRawHide(EntityType.COW);
         addReplaceLeatherByRawHide(EntityType.HORSE);

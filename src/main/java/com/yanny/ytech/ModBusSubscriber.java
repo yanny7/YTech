@@ -13,6 +13,7 @@ import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -81,6 +82,7 @@ public class ModBusSubscriber {
             switch (type) {
                 case SPEAR -> event.registerEntityRenderer(holder.getEntityType(), SpearRenderer::new);
                 case GO_AROUND -> event.registerEntityRenderer(holder.getEntityType(), GoAroundRenderer::new);
+                case PEBBLE -> event.registerEntityRenderer(holder.getEntityType(), ThrownItemRenderer::new);
                 default -> throw new IllegalStateException("Missing simple entity renderer!");
             }
         });
@@ -98,7 +100,7 @@ public class ModBusSubscriber {
         HOLDER.simpleEntities().forEach((type, holder) -> {
             switch (type) {
                 case SPEAR -> event.registerLayerDefinition(SpearModel.LAYER_LOCATION, SpearModel::createLayer);
-                case GO_AROUND -> {}
+                case GO_AROUND, PEBBLE -> {}
                 default -> throw new IllegalStateException("Missing simple entity layer definitions!");
             }
         });

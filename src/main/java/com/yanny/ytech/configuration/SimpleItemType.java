@@ -10,7 +10,6 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -227,6 +226,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerBreadDoughRecipe,
             SimpleItemType::registerSimpleTag),
+    PEBBLE("pebble", "Pebble",
+            ItemTags.create(Utils.modLoc("pebbles")),
+            PebbleItem::new,
+            () -> basicTexture(Utils.modItemLoc("pebble")),
+            SimpleItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
+            SimpleItemType::registerSimpleTag),
     UNFIRED_CLAY_BUCKET("unfired_clay_bucket", "Unfired Clay Bucket",
             ItemTags.create(Utils.modLoc("unfired_clay_bucket")),
             SimpleItemType::simpleItem,
@@ -332,11 +338,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             @Override
             public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
                 super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-                        .append(CommonComponents.SPACE)
-                        .append(item(SHARP_FLINT).asItem().getDefaultInstance().getDisplayName())
-                );
+                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY));
             }
         };
     }
@@ -527,6 +529,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 200)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 600)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_campfire"));
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 100)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_smoker"));
     }
 
     private static void registerFlintKnifeRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
