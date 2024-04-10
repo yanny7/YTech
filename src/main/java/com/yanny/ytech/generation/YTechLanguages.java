@@ -59,6 +59,7 @@ class YTechLanguages extends LanguageProvider {
         add("text.ytech.hover.fire_pit3", "Each random tick is level decreased by 1");
         add("text.ytech.hover.fire_pit4", "Rain have chance to extinguish fire (50% chance on random tick)");
         add("text.ytech.hover.pebble", "Drops from gravel (10% chance)");
+        add("text.ytech.hover.grass_bed", "Doesn't set respawn point");
 
         add("creativeTab.ytech.title", "YTech");
     }

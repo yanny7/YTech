@@ -1,8 +1,10 @@
 package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.configuration.block.GrassBedBlock;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerSetSpawnEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -33,6 +36,15 @@ import java.util.Objects;
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeBusSubscriber {
     @NotNull private static final Logger LOGGER = LogUtils.getLogger();
+
+    @SubscribeEvent
+    public static void onPlayerSpawnSet(@NotNull PlayerSetSpawnEvent event) {
+        BlockPos pos = event.getNewSpawn();
+
+        if (pos != null && event.getEntity().level().getBlockState(pos).getBlock() instanceof GrassBedBlock) {
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public static void onLevelLoad(@NotNull LevelEvent.Load event) {

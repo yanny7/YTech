@@ -223,7 +223,18 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             ILootable::dropsSelfProvider,
             FirePitBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
-            SimpleBlockType::registerBlockTag)
+            SimpleBlockType::registerBlockTag),
+    GRASS_BED(HolderType.BLOCK, "grass_bed", "Grass Bed",
+            ItemTags.create(Utils.modLoc("grass_bed")),
+            BlockTags.BEDS,
+            holder -> new GrassBedBlock(),
+            SimpleBlockType::grassBedBlockItem,
+            GrassBedBlock::getTexture,
+            GrassBedBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            GrassBedBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
@@ -501,6 +512,16 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
                 tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit2").withStyle(DARK_GRAY));
                 tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit3").withStyle(DARK_GRAY));
                 tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit4").withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item grassBedBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_bed").withStyle(DARK_GRAY));
             }
         };
     }
