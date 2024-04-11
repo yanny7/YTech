@@ -233,8 +233,12 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
                 .from(0, 0, 13).to(16, 0, 19).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 0, 8).end()
                 .end()
                 .renderType("minecraft:cutout")
+                .texture("particle", textures[1])
                 .texture("0", textures[0])
                 .texture("1", textures[1]);
+
+        provider.itemModels().getBuilder(holder.key).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
+                .texture("layer0", Utils.modItemLoc("grass_bed"));
 
         provider.getVariantBuilder(holder.block.get())
                 .partialState().with(HORIZONTAL_FACING, Direction.NORTH).with(BED_PART, FOOT).setModels(ConfiguredModel.builder().modelFile(model).build())
