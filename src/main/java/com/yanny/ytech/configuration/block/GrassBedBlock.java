@@ -5,8 +5,10 @@ import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.IBlockHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -133,14 +135,17 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
     }
 
     public void playerWillDestroy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @NotNull Player pPlayer) {
-        if (!pLevel.isClientSide) {
+        if (!pLevel.isClientSide && pPlayer.isCreative()) {
             BedPart part = pState.getValue(PART);
-            BlockPos pos = pPos.relative(getNeighbourDirection(part, pState.getValue(FACING)));
-            BlockState blockState = pLevel.getBlockState(pos);
 
-            if (blockState.is(this)) {
-                pLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
-                pLevel.levelEvent(pPlayer, LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(blockState));
+            if (part == BedPart.FOOT) {
+                BlockPos blockPos = pPos.relative(getNeighbourDirection(part, pState.getValue(FACING)));
+                BlockState blockState = pLevel.getBlockState(blockPos);
+
+                if (blockState.is(this) && blockState.getValue(PART) == BedPart.HEAD) {
+                    pLevel.setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
+                    pLevel.levelEvent(pPlayer, LevelEvent.PARTICLES_DESTROY_BLOCK, blockPos, Block.getId(blockState));
+                }
             }
         }
 
@@ -249,6 +254,11 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
                 .partialState().with(HORIZONTAL_FACING, Direction.EAST).with(BED_PART, HEAD).setModels(ConfiguredModel.builder().modelFile(model).rotationY(270).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.SOUTH).with(BED_PART, HEAD).setModels(ConfiguredModel.builder().modelFile(model).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.WEST).with(BED_PART, HEAD).setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build());
+    }
+
+    public static void registerLootTable(@NotNull IBlockHolder holder, @NotNull BlockLootSubProvider provider) {
+        Block block = holder.getBlockRegistry().get();
+        provider.add(block, b -> provider.createSinglePropConditionTable(b, PART, HEAD));
     }
 
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {

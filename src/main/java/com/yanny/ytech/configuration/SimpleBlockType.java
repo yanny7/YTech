@@ -231,7 +231,7 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             SimpleBlockType::grassBedBlockItem,
             GrassBedBlock::getTexture,
             GrassBedBlock::registerModel,
-            ILootable::dropsSelfProvider,
+            GrassBedBlock::registerLootTable,
             GrassBedBlock::registerRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag),
