@@ -208,23 +208,20 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
                         case EAST -> faceBuilder.uvs(9, 2, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
                         case SOUTH -> faceBuilder.uvs(1, 2, 3, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
                         case WEST -> faceBuilder.uvs(9, 0, 11, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
-                        case UP -> faceBuilder.uvs(0, 0, 12, 14).texture("#1");
-                        case DOWN -> faceBuilder.uvs(0, 0, 12, 14).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 12, 14).texture("#1");
                     }
                 })
                 .from(2, 0, 0).to(14, 2, 14).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case UP -> faceBuilder.uvs(0, 4, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 4, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#0");
+                        case UP, DOWN -> faceBuilder.uvs(0, 4, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#0");
                     }
                 })
                 .from(13, 0, 0).to(19, 0, 16).rotation().angle(22.5f).axis(Direction.Axis.Z).origin(8, 0, 8).end()
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case UP -> faceBuilder.uvs(0, 4, 16, 10).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 4, 16, 10).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#0");
+                        case UP, DOWN -> faceBuilder.uvs(0, 4, 16, 10).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#0");
                     }
                 })
                 .from(-3, 0, -1).to(3, 0, 15).rotation().angle(-22.5f).axis(Direction.Axis.Z).origin(8, 0, 8).end()

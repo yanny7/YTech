@@ -1,5 +1,8 @@
 {
   "values": [
-    "ytech:spear"
+    "#ytech:spear/bronze",
+    "#ytech:spear/copper",
+    "#ytech:spear/flint",
+    "#ytech:spear/iron"
   ]
 }

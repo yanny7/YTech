@@ -98,6 +98,6 @@
   },
   "gui_light": "front",
   "textures": {
-    "particle": "ytech:item/spear"
+    "particle": "ytech:item/spear/bronze"
   }
 }

@@ -74,38 +74,30 @@
     "thirdperson_lefthand": {
       "rotation": [
         0,
-        60,
-        0
+        90,
+        180
       ],
       "translation": [
-        3,
+        8,
         17,
-        12
+        -7
       ]
     },
     "thirdperson_righthand": {
       "rotation": [
         0,
-        60,
-        0
+        90,
+        180
       ],
       "translation": [
-        11,
-        17,
-        -2
+        8,
+        -17,
+        9
       ]
     }
   },
   "gui_light": "front",
-  "overrides": [
-    {
-      "model": "ytech:item/spear_throwing",
-      "predicate": {
-        "ytech:throwing": 1.0
-      }
-    }
-  ],
   "textures": {
-    "particle": "ytech:item/spear"
+    "particle": "ytech:item/spear/copper"
   }
 }
