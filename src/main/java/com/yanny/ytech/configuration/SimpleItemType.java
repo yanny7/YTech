@@ -10,7 +10,6 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -206,13 +205,34 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerFlintKnifeRecipe,
             SimpleItemType::registerSimpleTag),
-    SPEAR("spear", "Spear",
+    /*FLINT_SPEAR("flint_spear", "Flint Spear",
             ItemTags.create(Utils.modLoc("spears")),
-            () -> new SpearItem(new Item.Properties().durability(20)),
+            () -> new SpearItem(SpearItem.SpearType.FLINT),
             () -> basicTexture(Utils.modItemLoc("spear")),
             SimpleItemType::spearItemModelProvider,
             SimpleItemType::registerSpearRecipe,
             SimpleItemType::registerSimpleTag),
+    COPPER_SPEAR("copper_spear", "Copper Spear",
+            ItemTags.create(Utils.modLoc("spears")),
+            () -> new SpearItem(SpearItem.SpearType.COPPER),
+            () -> basicTexture(Utils.modItemLoc("spear")),
+            SimpleItemType::spearItemModelProvider,
+            SimpleItemType::registerSpearRecipe,
+            SimpleItemType::registerSimpleTag),
+    BRONZE_SPEAR("bronze_spear", "Bronze Spear",
+            ItemTags.create(Utils.modLoc("spears")),
+            () -> new SpearItem(SpearItem.SpearType.BRONZE),
+            () -> basicTexture(Utils.modItemLoc("spear")),
+            SimpleItemType::spearItemModelProvider,
+            SimpleItemType::registerSpearRecipe,
+            SimpleItemType::registerSimpleTag),
+    IRON_SPEAR("iron_spear", "Iron Spear",
+            ItemTags.create(Utils.modLoc("spears")),
+            () -> new SpearItem(SpearItem.SpearType.IRON),
+            () -> basicTexture(Utils.modItemLoc("spear")),
+            SimpleItemType::spearItemModelProvider,
+            SimpleItemType::registerSpearRecipe,
+            SimpleItemType::registerSimpleTag),*/
     FLOUR("flour", "Flour",
             ItemTags.create(Utils.modLoc("flour")),
             SimpleItemType::simpleItem,
@@ -226,6 +246,13 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             () -> basicTexture(Utils.modItemLoc("bread_dough")),
             SimpleItemType::basicItemModelProvider,
             SimpleItemType::registerBreadDoughRecipe,
+            SimpleItemType::registerSimpleTag),
+    PEBBLE("pebble", "Pebble",
+            ItemTags.create(Utils.modLoc("pebbles")),
+            PebbleItem::new,
+            () -> basicTexture(Utils.modItemLoc("pebble")),
+            SimpleItemType::basicItemModelProvider,
+            IRecipe::noRecipe,
             SimpleItemType::registerSimpleTag),
     UNFIRED_CLAY_BUCKET("unfired_clay_bucket", "Unfired Clay Bucket",
             ItemTags.create(Utils.modLoc("unfired_clay_bucket")),
@@ -332,11 +359,7 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
             @Override
             public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
                 super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-                        .append(CommonComponents.SPACE)
-                        .append(item(SHARP_FLINT).asItem().getDefaultInstance().getDisplayName())
-                );
+                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY));
             }
         };
     }
@@ -360,43 +383,6 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
 
         builder.override().predicate(BasketItem.FILLED_PREDICATE, 0.0001f).model(model).end();
         builder.texture("layer0", textures[0]);
-    }
-
-    private static void spearItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-
-        provider.getBuilder(holder.key)
-                .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", textures[0]);
-
-        ItemModelBuilder throwing = provider.getBuilder(holder.key + "_throwing")
-                .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
-                .guiLight(BlockModel.GuiLight.FRONT)
-                .texture("particle", textures[0])
-                .transforms()
-                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 90, 180).translation(8, -17, 9).end()
-                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 90, 180).translation(8, 17, -7).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 17, 1).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 17, 1).end()
-                .transform(ItemDisplayContext.GUI).rotation(15, -25, -5).translation(2, 3, 0).scale(0.65F).end()
-                .transform(ItemDisplayContext.FIXED).rotation(0, 180, 0).translation(-2, 4, -5).scale(0.5F).end()
-                .transform(ItemDisplayContext.GROUND).translation(4, 4, 2).scale(0.25F).end()
-                .end();
-
-        provider.getBuilder(holder.key + "_in_hand")
-                .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
-                .guiLight(BlockModel.GuiLight.FRONT)
-                .texture("particle", textures[0])
-                .transforms()
-                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 60, 0).translation(11, 17, -2).end()
-                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 60, 0).translation(3, 17, 12).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 17, 1).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 17, 1).end()
-                .transform(ItemDisplayContext.GUI).rotation(15, -25, -5).translation(2, 3, 0).scale(0.65F).end()
-                .transform(ItemDisplayContext.FIXED).rotation(0, 180, 0).translation(-2, 4, -5).scale(0.5F).end()
-                .transform(ItemDisplayContext.GROUND).translation(4, 4, 2).scale(0.25F).end()
-                .end()
-                .override().predicate(SpearItem.THROWING_PREDICATE, 1).model(throwing).end();
     }
 
     private static void clayBucketItemModelProvider(@NotNull Holder.SimpleItemHolder holder, @NotNull ItemModelProvider provider) {
@@ -527,6 +513,12 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 200)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 600)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_campfire"));
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(item(VENISON)), RecipeCategory.FOOD, holder.item.get(), 0.35f, 100)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(VENISON.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_using_smoker"));
     }
 
     private static void registerFlintKnifeRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
@@ -535,18 +527,6 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
                 .requires(Items.FLINT)
                 .requires(LEATHER_STRIPS.itemTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
-    }
-
-    private static void registerSpearRecipe(Holder.SimpleItemHolder holder, RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
-                .define('T', LEATHER_STRIPS.itemTag)
-                .define('S', Items.FLINT)
-                .define('#', Items.STICK)
-                .pattern(" TS")
-                .pattern(" #T")
-                .pattern("#  ")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(LEATHER_STRIPS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

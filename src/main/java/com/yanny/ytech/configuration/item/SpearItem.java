@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.SpearEntity;
 import com.yanny.ytech.configuration.renderer.YTechRenderer;
@@ -38,18 +39,17 @@ import java.util.function.Consumer;
 
 public class SpearItem extends Item implements Vanishable {
     public static final ResourceLocation THROWING_PREDICATE = Utils.modLoc("throwing");
-    public static final int THROW_THRESHOLD_TIME = 10;
-    public static final float BASE_DAMAGE = 4.0F;
-    public static final float SHOOT_POWER = 2.5F;
+    private final SpearType spearType;
 
     @NotNull private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-    public SpearItem(@NotNull Item.Properties properties) {
-        super(properties);
+    public SpearItem(SpearType spearType) {
+        super(new Properties().durability(spearType.durability));
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", BASE_DAMAGE, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -3.5F, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", spearType.baseDamage, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", spearType.attackSpeed, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
+        this.spearType = spearType;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SpearItem extends Item implements Vanishable {
         if (entity instanceof Player player) {
             int throwTime = this.getUseDuration(stack) - timeLeft;
 
-            if (throwTime >= THROW_THRESHOLD_TIME) {
+            if (throwTime >= spearType.throwThreshold) {
                 int riptideLevel = EnchantmentHelper.getRiptide(stack);
 
                 if (riptideLevel <= 0 || player.isInWaterOrRain()) {
@@ -81,14 +81,14 @@ public class SpearItem extends Item implements Vanishable {
                         stack.hurtAndBreak(1, player, (playerEntity) -> playerEntity.broadcastBreakEvent(entity.getUsedItemHand()));
 
                         if (riptideLevel == 0) {
-                            SpearEntity spearEntity = new SpearEntity(level, player, stack);
+                            SpearEntity spearEntity = new SpearEntity(level, player, stack, spearType);
                             spearEntity.shootFromRotation(
                                     player,
                                     player.getXRot(),
                                     player.getYRot(),
                                     0.0F,
-                                    SHOOT_POWER + (float)riptideLevel * 0.5F,
-                                    1.5F
+                                    spearType.shootPower + (float)riptideLevel * 0.5F,
+                                    spearType.accuracy
                             );
 
                             if (player.getAbilities().instabuild) {
@@ -193,4 +193,5 @@ public class SpearItem extends Item implements Vanishable {
             }
         });
     }
+
 }

@@ -1,0 +1,19 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "P": {
+      "tag": "ytech:pebbles"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "SS",
+    "PP"
+  ],
+  "result": {
+    "item": "ytech:fire_pit"
+  }
+}

@@ -212,6 +212,61 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerStonePickaxeBlockTag,
             (holder, windowId, inv, pos, stack, data) -> new AqueductFertilizerMenu(holder, windowId, inv.player, pos, stack, data)),
+    FIRE_PIT(HolderType.BLOCK, "fire_pit", "Fire Pit",
+            ItemTags.create(Utils.modLoc("fire_pits")),
+            BlockTags.create(Utils.modLoc("fire_pits")),
+            FirePitBlock::new,
+            SimpleBlockType::firePitBlockItem,
+            FirePitBlock::getTexture,
+            FirePitBlock::registerModel,
+            ILootable::dropsSelfProvider,
+            FirePitBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
+    GRASS_BED(HolderType.BLOCK, "grass_bed", "Grass Bed",
+            ItemTags.create(Utils.modLoc("grass_bed")),
+            BlockTags.BEDS,
+            holder -> new GrassBedBlock(),
+            SimpleBlockType::grassBedBlockItem,
+            GrassBedBlock::getTexture,
+            GrassBedBlock::registerModel,
+            GrassBedBlock::registerLootTable,
+            GrassBedBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
+    THATCH(HolderType.BLOCK, "thatch", "Thatch",
+            ItemTags.create(Utils.modLoc("thatch")),
+            BlockTags.create(Utils.modLoc("thatch")),
+            (holder) -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)),
+            SimpleBlockType::simpleBlockItem,
+            () -> simpleTexture(Utils.modBlockLoc("thatch")),
+            SimpleBlockType::simpleBlockStateProvider,
+            ILootable::dropsSelfProvider,
+            SimpleBlockType::registerThatchBlockRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
+    THATCH_SLAB(HolderType.BLOCK, "thatch_slab", "Thatch Slab",
+            ItemTags.SLABS,
+            BlockTags.SLABS,
+            (holder) -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)),
+            SimpleBlockType::simpleBlockItem,
+            () -> simpleTexture(Utils.modBlockLoc("thatch")),
+            SimpleBlockType::registerSlabBlockState,
+            SimpleBlockType::registerSlabLootTable,
+            SimpleBlockType::registerThatchBlockSlabRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
+    THATCH_STAIRS(HolderType.BLOCK, "thatch_stairs", "Thatch Stairs",
+            ItemTags.STAIRS,
+            BlockTags.STAIRS,
+            (holder) -> new StairBlock(() -> Registration.block(THATCH).defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)),
+            SimpleBlockType::simpleBlockItem,
+            () -> simpleTexture(Utils.modBlockLoc("thatch")),
+            SimpleBlockType::registerStairsBlockState,
+            ILootable::dropsSelfProvider,
+            SimpleBlockType::registerThatchBlockStairsRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
             ItemTags.create(Utils.modLoc("furnaces")),
             BlockTags.create(Utils.modLoc("furnaces")),
@@ -480,6 +535,29 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         };
     }
 
+    private static Item firePitBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit2").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit3").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit4").withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item grassBedBlockItem(@NotNull Holder.SimpleBlockHolder holder) {
+        return new BlockItem(holder.block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_bed").withStyle(DARK_GRAY));
+            }
+        };
+    }
+
     private static void bottomTopBlockStateProvider(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures();
         BlockModelBuilder model = provider.models().cubeBottomTop(holder.key, textures[0], textures[1], textures[2]);
@@ -588,6 +666,33 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_stonecutting"));
+    }
+
+    private static void registerThatchBlockRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
+                .define('B', SimpleItemType.GRASS_FIBERS.itemTag)
+                .pattern("BB")
+                .pattern("BB")
+                .unlockedBy("has_thatch", RecipeProvider.has(SimpleItemType.GRASS_FIBERS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerThatchBlockSlabRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 6)
+                .define('B', THATCH.itemTag)
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(THATCH.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerThatchBlockStairsRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 4)
+                .define('B', THATCH.itemTag)
+                .pattern("B  ")
+                .pattern("BB ")
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(THATCH.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerSlabLootTable(Holder.SimpleBlockHolder holder, BlockLootSubProvider provider) {
