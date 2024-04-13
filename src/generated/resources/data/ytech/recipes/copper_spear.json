@@ -6,7 +6,7 @@
       "item": "minecraft:stick"
     },
     "S": {
-      "item": "minecraft:flint"
+      "tag": "ytech:plates/copper"
     },
     "T": {
       "tag": "ytech:leather_strips"
@@ -18,7 +18,7 @@
     "#  "
   ],
   "result": {
-    "item": "ytech:spear"
+    "item": "ytech:copper_spear"
   },
   "show_notification": true
 }

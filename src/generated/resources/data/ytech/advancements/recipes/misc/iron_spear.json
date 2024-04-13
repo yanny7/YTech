@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:spear"
+        "recipe": "ytech:iron_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "ytech:spear"
+      "ytech:iron_spear"
     ]
   },
   "sends_telemetry_event": false

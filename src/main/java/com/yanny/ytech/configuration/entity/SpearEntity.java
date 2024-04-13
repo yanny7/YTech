@@ -1,8 +1,7 @@
 package com.yanny.ytech.configuration.entity;
 
-import com.yanny.ytech.configuration.SimpleEntityType;
-import com.yanny.ytech.configuration.SimpleItemType;
-import com.yanny.ytech.configuration.item.SpearItem;
+import com.yanny.ytech.configuration.MaterialItemType;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,20 +34,25 @@ public class SpearEntity extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BOOLEAN);
     private static final String TAG_SPEAR = "Spear";
     private static final String TAG_DEALT_DAMAGE = "DealtDamage";
-    
-    private static ItemStack spearItem = new ItemStack(Registration.item(SimpleItemType.SPEAR));
+
+    private final SpearType spearType;
+    private ItemStack spearItem;
     private boolean dealtDamage;
     public int clientSideReturnSpearTickCount;
 
-    public SpearEntity(EntityType<? extends Entity> entityType, Level level) {
+    public SpearEntity(EntityType<? extends Entity> entityType, Level level, SpearType spearType) {
+        //noinspection unchecked
         super((EntityType<? extends AbstractArrow>) entityType, level);
+        spearItem = new ItemStack(Registration.item(MaterialItemType.SPEAR, spearType.materialType));
+        this.spearType = spearType;
     }
 
-    public SpearEntity(Level level, LivingEntity shooter, ItemStack stack) {
-        super(Registration.entityType(SimpleEntityType.SPEAR), shooter, level);
+    public SpearEntity(Level level, LivingEntity shooter, ItemStack stack, SpearType spearType) {
+        super(Registration.entityType(spearType.entityType), shooter, level);
         spearItem = stack.copy();
         entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
         entityData.set(ID_FOIL, stack.hasFoil());
+        this.spearType = spearType;
     }
 
     @Override
@@ -125,7 +129,7 @@ public class SpearEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float damage = SpearItem.BASE_DAMAGE;
+        float damage = spearType.baseDamage;
 
         if (entity instanceof LivingEntity livingentity) {
             damage += EnchantmentHelper.getDamageBonus(spearItem, livingentity.getMobType());

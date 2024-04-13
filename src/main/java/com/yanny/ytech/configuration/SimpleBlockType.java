@@ -230,8 +230,41 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
             SimpleBlockType::grassBedBlockItem,
             GrassBedBlock::getTexture,
             GrassBedBlock::registerModel,
-            ILootable::dropsSelfProvider,
+            GrassBedBlock::registerLootTable,
             GrassBedBlock::registerRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
+    THATCH(HolderType.BLOCK, "thatch", "Thatch",
+            ItemTags.create(Utils.modLoc("thatch")),
+            BlockTags.create(Utils.modLoc("thatch")),
+            (holder) -> new Block(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)),
+            SimpleBlockType::simpleBlockItem,
+            () -> simpleTexture(Utils.modBlockLoc("thatch")),
+            SimpleBlockType::simpleBlockStateProvider,
+            ILootable::dropsSelfProvider,
+            SimpleBlockType::registerThatchBlockRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
+    THATCH_SLAB(HolderType.BLOCK, "thatch_slab", "Thatch Slab",
+            ItemTags.SLABS,
+            BlockTags.SLABS,
+            (holder) -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)),
+            SimpleBlockType::simpleBlockItem,
+            () -> simpleTexture(Utils.modBlockLoc("thatch")),
+            SimpleBlockType::registerSlabBlockState,
+            SimpleBlockType::registerSlabLootTable,
+            SimpleBlockType::registerThatchBlockSlabRecipe,
+            SimpleBlockType::registerItemTag,
+            SimpleBlockType::registerBlockTag),
+    THATCH_STAIRS(HolderType.BLOCK, "thatch_stairs", "Thatch Stairs",
+            ItemTags.STAIRS,
+            BlockTags.STAIRS,
+            (holder) -> new StairBlock(() -> Registration.block(THATCH).defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)),
+            SimpleBlockType::simpleBlockItem,
+            () -> simpleTexture(Utils.modBlockLoc("thatch")),
+            SimpleBlockType::registerStairsBlockState,
+            ILootable::dropsSelfProvider,
+            SimpleBlockType::registerThatchBlockStairsRecipe,
             SimpleBlockType::registerItemTag,
             SimpleBlockType::registerBlockTag),
     /*STONE_FURNACE(HolderType.MENU_BLOCK, "stone_furnace", "Stone Furnace",
@@ -633,6 +666,33 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(TERRACOTTA_BRICKS.itemTag), RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(TERRACOTTA_BRICKS.itemTag))
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_stonecutting"));
+    }
+
+    private static void registerThatchBlockRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
+                .define('B', SimpleItemType.GRASS_FIBERS.itemTag)
+                .pattern("BB")
+                .pattern("BB")
+                .unlockedBy("has_thatch", RecipeProvider.has(SimpleItemType.GRASS_FIBERS.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerThatchBlockSlabRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 6)
+                .define('B', THATCH.itemTag)
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(THATCH.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
+    }
+
+    private static void registerThatchBlockStairsRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get(), 4)
+                .define('B', THATCH.itemTag)
+                .pattern("B  ")
+                .pattern("BB ")
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(THATCH.itemTag))
+                .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerSlabLootTable(Holder.SimpleBlockHolder holder, BlockLootSubProvider provider) {

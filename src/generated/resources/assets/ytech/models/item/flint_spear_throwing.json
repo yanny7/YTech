@@ -79,7 +79,7 @@
       ],
       "translation": [
         8,
-        17,
+        -17,
         -7
       ]
     },
@@ -98,6 +98,6 @@
   },
   "gui_light": "front",
   "textures": {
-    "particle": "ytech:item/spear"
+    "particle": "ytech:item/spear/flint"
   }
 }

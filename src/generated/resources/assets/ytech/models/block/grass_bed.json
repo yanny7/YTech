@@ -234,6 +234,7 @@
   "render_type": "minecraft:cutout",
   "textures": {
     "0": "ytech:block/dried_grass",
-    "1": "ytech:block/thatch"
+    "1": "ytech:block/thatch",
+    "particle": "ytech:block/thatch"
   }
 }

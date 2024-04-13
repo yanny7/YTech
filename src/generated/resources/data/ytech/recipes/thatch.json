@@ -1,0 +1,17 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "ytech:grass_fibers"
+    }
+  },
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "result": {
+    "item": "ytech:thatch"
+  },
+  "show_notification": true
+}

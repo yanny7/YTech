@@ -3,10 +3,10 @@ package com.yanny.ytech.configuration.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.entity.SpearEntity;
 import com.yanny.ytech.configuration.model.SpearModel;
-import net.minecraft.client.model.TridentModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -21,12 +21,11 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class SpearRenderer extends EntityRenderer<Entity> {
-    public static final ResourceLocation SPEAR_LOCATION = Utils.modLoc("textures/entity/spear.png");
-    private final TridentModel model;
+    private final SpearModel model;
 
-    public SpearRenderer(@NotNull EntityRendererProvider.Context context) {
+    public SpearRenderer(@NotNull EntityRendererProvider.Context context, ModelLayerLocation layerLocation) {
         super(context);
-        this.model = new TridentModel(context.bakeLayer(SpearModel.LAYER_LOCATION));
+        this.model = new SpearModel(context.bakeLayer(layerLocation));
     }
 
     public void render(@NotNull Entity entity, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
@@ -42,6 +41,6 @@ public class SpearRenderer extends EntityRenderer<Entity> {
 
     @NotNull
     public ResourceLocation getTextureLocation(@NotNull Entity entity) {
-        return SPEAR_LOCATION;
+        return SpearType.TEXTURE_LOCATION;
     }
 }

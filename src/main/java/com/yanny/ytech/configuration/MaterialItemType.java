@@ -1,12 +1,14 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.configuration.item.MaterialArrowItem;
+import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.item.ToolItem;
 import com.yanny.ytech.configuration.recipe.HammeringRecipe;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.configuration.recipe.RemainingShapelessRecipe;
 import com.yanny.ytech.registration.Holder;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -211,6 +213,15 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
             MaterialItemType::registerFileRecipe,
             MaterialItemType::registerMaterialTag,
             MaterialType.ALL_METALS),
+    SPEAR("spear", INameable.suffix("spear"), INameable.suffix("Spear"),
+            (material) -> ItemTags.create(Utils.modLoc("spear/" + material.key)),
+            ItemTags.create(Utils.modLoc("spears")),
+            (holder) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(holder.material)),
+            (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("spear/" + material.key))).toArray(TextureHolder[]::new),
+            MaterialItemType::spearItemModelProvider,
+            MaterialItemType::registerSpearRecipe,
+            MaterialItemType::registerMaterialTag,
+            Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT)),
     ;
 
     // inject vanilla item tags
@@ -482,15 +493,15 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     private static void registerAxeRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        switch (holder.material) {
-            case FLINT ->
-                    RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, holder.item.get())
-                            .requires(Items.STICK)
-                            .requires(Items.FLINT)
-                            .requires(SimpleItemType.GRASS_TWINE.itemTag)
-                            .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
-                            .save(recipeConsumer, Utils.modLoc(holder.key));
-            default -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
+        if (holder.material == MaterialType.FLINT) {
+            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, holder.item.get())
+                    .requires(Items.STICK)
+                    .requires(Items.FLINT)
+                    .requires(SimpleItemType.GRASS_TWINE.itemTag)
+                    .unlockedBy(RecipeProvider.getHasName(Items.STICK), RecipeProvider.has(Items.STICK))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+        } else {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('S', Items.STICK)
                     .define('#', MaterialItemType.PLATE.itemTag.get(holder.material))
                     .pattern("##")
@@ -502,13 +513,14 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     }
 
     private static void registerPickaxeRecipe(@NotNull Holder.ItemHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        switch (holder.material) {
-            case ANTLER -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, holder.item.get())
+        if (holder.material == MaterialType.ANTLER) {
+            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, holder.item.get())
                     .requires(SimpleItemType.ANTLER.itemTag)
                     .requires(SimpleItemType.SHARP_FLINT.itemTag)
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.SHARP_FLINT.itemTag))
                     .save(recipeConsumer, Utils.modLoc(holder.key));
-            default -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
+        } else {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, holder.item.get())
                     .define('S', Items.STICK)
                     .define('P', MaterialItemType.PLATE.itemTag.get(holder.material))
                     .define('R', MaterialItemType.ROD.itemTag.get(holder.material))
@@ -554,6 +566,30 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
+    private static void registerSpearRecipe(Holder.ItemHolder holder, RecipeOutput recipeConsumer) {
+        if (holder.material == MaterialType.FLINT) {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
+                    .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
+                    .define('S', Items.FLINT)
+                    .define('#', Items.STICK)
+                    .pattern(" TS")
+                    .pattern(" #T")
+                    .pattern("#  ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+        } else {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.item.get())
+                    .define('T', SimpleItemType.LEATHER_STRIPS.itemTag)
+                    .define('S', MaterialItemType.PLATE.itemTag.get(holder.material))
+                    .define('#', Items.STICK)
+                    .pattern(" TS")
+                    .pattern(" #T")
+                    .pattern("#  ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.LEATHER_STRIPS.itemTag))
+                    .save(recipeConsumer, Utils.modLoc(holder.key));
+        }
+    }
+
     private static void basicItemModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
@@ -570,6 +606,43 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
         ResourceLocation[] textures = holder.object.getTextures(holder.material);
         ItemModelBuilder builder = provider.getBuilder(holder.key).parent(new ModelFile.UncheckedModelFile("item/generated"));
         builder.texture("layer0", textures[0]);
+    }
+
+    private static void spearItemModelProvider(@NotNull Holder.ItemHolder holder, @NotNull ItemModelProvider provider) {
+        ResourceLocation[] textures = holder.object.getTextures(holder.material);
+
+        provider.getBuilder(holder.key)
+                .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", textures[0]);
+
+        ItemModelBuilder throwing = provider.getBuilder(holder.key + "_throwing")
+                .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+                .guiLight(BlockModel.GuiLight.FRONT)
+                .texture("particle", textures[0])
+                .transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 90, 180).translation(8, -17, 9).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 90, 180).translation(8, -17, -7).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 17, 1).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 17, 1).end()
+                .transform(ItemDisplayContext.GUI).rotation(15, -25, -5).translation(2, 3, 0).scale(0.65F).end()
+                .transform(ItemDisplayContext.FIXED).rotation(0, 180, 0).translation(-2, 4, -5).scale(0.5F).end()
+                .transform(ItemDisplayContext.GROUND).translation(4, 4, 2).scale(0.25F).end()
+                .end();
+
+        provider.getBuilder(holder.key + "_in_hand")
+                .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+                .guiLight(BlockModel.GuiLight.FRONT)
+                .texture("particle", textures[0])
+                .transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 60, 0).translation(11, 17, -2).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 60, 0).translation(3, 17, 12).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 17, 1).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 17, 1).end()
+                .transform(ItemDisplayContext.GUI).rotation(15, -25, -5).translation(2, 3, 0).scale(0.65F).end()
+                .transform(ItemDisplayContext.FIXED).rotation(0, 180, 0).translation(-2, 4, -5).scale(0.5F).end()
+                .transform(ItemDisplayContext.GROUND).translation(4, 4, 2).scale(0.25F).end()
+                .end()
+                .override().predicate(SpearItem.THROWING_PREDICATE, 1).model(throwing).end();
     }
 
     private static void registerMaterialTag(@NotNull Holder.ItemHolder holder, @NotNull ItemTagsProvider provider) {
