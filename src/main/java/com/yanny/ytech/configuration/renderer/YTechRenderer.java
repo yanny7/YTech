@@ -121,7 +121,8 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
 
     public void renderStatic(@NotNull ItemStack stack, @NotNull ItemDisplayContext displayContext, int packedLight, int packedOverlay,
                              @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, @Nullable Level pLevel, int seed) {
-        renderStatic(Minecraft.getInstance().player, stack, displayContext, false, poseStack, buffer, pLevel, packedLight, packedOverlay, seed);
+        boolean leftHand = displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+        renderStatic(Minecraft.getInstance().player, stack, displayContext, leftHand, poseStack, buffer, pLevel, packedLight, packedOverlay, seed);
     }
 
     public void renderStatic(@Nullable LivingEntity pEntity, @NotNull ItemStack stack, @NotNull ItemDisplayContext displayContext, 
