@@ -1,0 +1,240 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#1",
+          "uv": [
+            0.0,
+            0.0,
+            12.0,
+            14.0
+          ]
+        },
+        "east": {
+          "rotation": 90,
+          "texture": "#1",
+          "uv": [
+            9.0,
+            2.0,
+            11.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "minecraft:missingno"
+        },
+        "south": {
+          "rotation": 90,
+          "texture": "#1",
+          "uv": [
+            1.0,
+            2.0,
+            3.0,
+            14.0
+          ]
+        },
+        "up": {
+          "texture": "#1",
+          "uv": [
+            0.0,
+            0.0,
+            12.0,
+            14.0
+          ]
+        },
+        "west": {
+          "rotation": 90,
+          "texture": "#1",
+          "uv": [
+            9.0,
+            0.0,
+            11.0,
+            14.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        0,
+        0
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "rotation": 90,
+          "texture": "#0",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            10.0
+          ]
+        },
+        "east": {
+          "texture": "minecraft:missingno"
+        },
+        "north": {
+          "texture": "minecraft:missingno"
+        },
+        "south": {
+          "texture": "minecraft:missingno"
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#0",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            10.0
+          ]
+        },
+        "west": {
+          "texture": "minecraft:missingno"
+        }
+      },
+      "from": [
+        13,
+        0,
+        0
+      ],
+      "rotation": {
+        "angle": 22.5,
+        "axis": "z",
+        "origin": [
+          8,
+          0,
+          8
+        ]
+      },
+      "to": [
+        19,
+        0,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "rotation": 270,
+          "texture": "#0",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            10.0
+          ]
+        },
+        "east": {
+          "texture": "minecraft:missingno"
+        },
+        "north": {
+          "texture": "minecraft:missingno"
+        },
+        "south": {
+          "texture": "minecraft:missingno"
+        },
+        "up": {
+          "rotation": 270,
+          "texture": "#0",
+          "uv": [
+            0.0,
+            4.0,
+            16.0,
+            10.0
+          ]
+        },
+        "west": {
+          "texture": "minecraft:missingno"
+        }
+      },
+      "from": [
+        -3,
+        0,
+        -1
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "z",
+        "origin": [
+          8,
+          0,
+          8
+        ]
+      },
+      "to": [
+        3,
+        0,
+        15
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            3.0,
+            16.0,
+            9.0
+          ]
+        },
+        "east": {
+          "texture": "minecraft:missingno"
+        },
+        "north": {
+          "texture": "minecraft:missingno"
+        },
+        "south": {
+          "texture": "minecraft:missingno"
+        },
+        "up": {
+          "rotation": 180,
+          "texture": "#0",
+          "uv": [
+            0.0,
+            3.0,
+            16.0,
+            9.0
+          ]
+        },
+        "west": {
+          "texture": "minecraft:missingno"
+        }
+      },
+      "from": [
+        0,
+        0,
+        13
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "x",
+        "origin": [
+          8,
+          0,
+          8
+        ]
+      },
+      "to": [
+        16,
+        0,
+        19
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "0": "ytech:block/dried_grass",
+    "1": "ytech:block/thatch",
+    "particle": "ytech:block/thatch"
+  }
+}

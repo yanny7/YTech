@@ -3,7 +3,10 @@ package com.yanny.ytech.configuration.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.MaterialItemType;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -18,11 +21,25 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
 public class SpearModel extends Model {
-   @NotNull public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Utils.modLoc("spear"), "main");
-   @NotNull public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(YTechMod.MOD_ID, "spear", "inventory");
-   @NotNull public static final ModelResourceLocation MODEL_IN_HAND_LOCATION = new ModelResourceLocation(YTechMod.MOD_ID, "spear_in_hand", "inventory");
+   public static final Map<SpearType, ModelLayerLocation> LAYER_LOCATIONS = new HashMap<>();
+   public static final Map<SpearType, ModelResourceLocation> MODEL_LOCATIONS = new HashMap<>();
+   public static final Map<SpearType, ModelResourceLocation> MODEL_IN_HAND_LOCATIONS = new HashMap<>();
+
+   static {
+      for (SpearType type : SpearType.values()) {
+         String key = Registration.HOLDER.items().get(MaterialItemType.SPEAR).get(type.materialType).key;
+
+         LAYER_LOCATIONS.put(type, new ModelLayerLocation(Utils.modLoc(key), "main"));
+         MODEL_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key, "inventory"));
+         MODEL_IN_HAND_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key + "_in_hand", "inventory"));
+      }
+   }
+
    @NotNull private final ModelPart root;
 
    public SpearModel(@NotNull ModelPart root) {
@@ -31,17 +48,17 @@ public class SpearModel extends Model {
    }
 
    @NotNull
-   public static LayerDefinition createLayer() {
+   public static LayerDefinition createLayer(int xOffset, int yOffset) {
       MeshDefinition meshDefinition = new MeshDefinition();
       PartDefinition rootPart = meshDefinition.getRoot();
 
       PartDefinition polePart = rootPart.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0)
               .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 25.0F, 1.0F), PartPose.ZERO);
-      polePart.addOrReplaceChild("base", CubeListBuilder.create().texOffs(4, 0)
+      polePart.addOrReplaceChild("base", CubeListBuilder.create().texOffs(4 + xOffset, yOffset)
               .addBox(-1.5F, -1.0F, -0.5F, 3.0F, 1.0F, 1.0F), PartPose.ZERO);
-      polePart.addOrReplaceChild("tip", CubeListBuilder.create().texOffs(4, 2)
+      polePart.addOrReplaceChild("tip", CubeListBuilder.create().texOffs(4 + xOffset, 2 + yOffset)
               .addBox(-1.0F, -2.0F, -0.5F, 2.0F, 1.0F, 1.0F), PartPose.ZERO);
-      polePart.addOrReplaceChild("k", CubeListBuilder.create().texOffs(4, 4)
+      polePart.addOrReplaceChild("k", CubeListBuilder.create().texOffs(4 + xOffset, 4 + yOffset)
               .addBox(-0.5F, -3.0F, -0.5F, 1.0F, 1.0F, 1.0F), PartPose.ZERO);
 
       return LayerDefinition.create(meshDefinition, 32, 32);

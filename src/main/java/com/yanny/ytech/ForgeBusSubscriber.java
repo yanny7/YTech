@@ -1,8 +1,10 @@
 package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.configuration.block.GrassBedBlock;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
@@ -22,6 +24,7 @@ import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -33,6 +36,15 @@ import java.util.Objects;
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeBusSubscriber {
     @NotNull private static final Logger LOGGER = LogUtils.getLogger();
+
+    @SubscribeEvent
+    public static void onPlayerSpawnSet(@NotNull PlayerSetSpawnEvent event) {
+        BlockPos pos = event.getNewSpawn();
+
+        if (pos != null && event.getEntity().level().getBlockState(pos).getBlock() instanceof GrassBedBlock) {
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public static void onLevelLoad(@NotNull LevelEvent.Load event) {
@@ -63,8 +75,7 @@ public class ForgeBusSubscriber {
     @SubscribeEvent
     public static void onServerStarting(@NotNull ServerStartingEvent event) {
         if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
-            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((block) ->
-                    setBlockRequireValidTool(Objects.requireNonNull(BuiltInRegistries.BLOCK.get(block))));
+            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((tag) -> BuiltInRegistries.BLOCK.getTag(tag).ifPresent(block -> block.stream().forEach(blockHolder -> setBlockRequireValidTool(blockHolder.value()))));
         }
     }
 
@@ -118,9 +129,9 @@ public class ForgeBusSubscriber {
                 ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "requiresCorrectToolForDrops"); // requiresCorrectToolForDrops
             }
 
-            LOGGER.info("Set requiresCorrectToolForDrops on {}", block.getName());
+            LOGGER.info("Set requiresCorrectToolForDrops on {}", Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block)));
         } catch (Exception e) {
-            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block " + block.getName().getString() + ": " + e.getMessage());
+            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block " + Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block)) + ": " + e.getMessage());
         }
     }
 }

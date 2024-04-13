@@ -1,0 +1,16 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "ytech:thatch"
+    }
+  },
+  "pattern": [
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "item": "ytech:thatch_slab"
+  }
+}

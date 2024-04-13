@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_pebble": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "ytech:pebbles"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ytech:fire_pit"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_pebble"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ytech:fire_pit"
+    ]
+  }
+}

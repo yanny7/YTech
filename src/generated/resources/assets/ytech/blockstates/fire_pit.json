@@ -1,0 +1,36 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ytech:block/fire_pit_base"
+      },
+      "when": {
+        "lit": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/fire_pit_base_lit"
+      },
+      "when": {
+        "lit": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/fire_pit_logs_up"
+      },
+      "when": {
+        "level": "2|3|4|5|6|7|8|9|10|11|12|13|14|15"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/fire_pit_logs_down"
+      },
+      "when": {
+        "level": "9|10|11|12|13|14|15"
+      }
+    }
+  ]
+}
