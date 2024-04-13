@@ -4,13 +4,13 @@ import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SimpleEntityType;
 import com.yanny.ytech.configuration.SimpleItemType;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block.IMenuBlock;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.CustomRendererBakedModel;
 import com.yanny.ytech.configuration.model.DeerModel;
-import com.yanny.ytech.configuration.model.SpearModel;
 import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
@@ -18,6 +18,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,6 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.yanny.ytech.configuration.SpearType.BY_ENTITY_TYPE;
+import static com.yanny.ytech.configuration.model.SpearModel.*;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -90,7 +93,7 @@ public class ModBusSubscriber {
         HOLDER.simpleEntities().forEach((type, holder) -> {
             switch (type) {
                 case FLINT_SPEAR, COPPER_SPEAR, BRONZE_SPEAR, IRON_SPEAR ->
-                        event.registerEntityRenderer(holder.getEntityType(), context -> new SpearRenderer(context, SpearItem.SpearType.BY_ENTITY_TYPE.get(type).layerLocation));
+                        event.registerEntityRenderer(holder.getEntityType(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type))));
                 case GO_AROUND -> event.registerEntityRenderer(holder.getEntityType(), GoAroundRenderer::new);
                 case PEBBLE -> event.registerEntityRenderer(holder.getEntityType(), ThrownItemRenderer::new);
                 default -> throw new IllegalStateException("Missing simple entity renderer!");
@@ -109,10 +112,10 @@ public class ModBusSubscriber {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         HOLDER.simpleEntities().forEach((type, holder) -> {
             switch (type) {
-                case FLINT_SPEAR -> event.registerLayerDefinition(SpearItem.SpearType.BY_ENTITY_TYPE.get(type).layerLocation, () -> SpearModel.createLayer(0, 0));
-                case COPPER_SPEAR -> event.registerLayerDefinition(SpearItem.SpearType.BY_ENTITY_TYPE.get(type).layerLocation, () -> SpearModel.createLayer(0, 6));
-                case BRONZE_SPEAR -> event.registerLayerDefinition(SpearItem.SpearType.BY_ENTITY_TYPE.get(type).layerLocation, () -> SpearModel.createLayer(0, 12));
-                case IRON_SPEAR -> event.registerLayerDefinition(SpearItem.SpearType.BY_ENTITY_TYPE.get(type).layerLocation, () -> SpearModel.createLayer(0, 18));
+                case FLINT_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 0));
+                case COPPER_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 6));
+                case BRONZE_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 12));
+                case IRON_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 18));
                 case GO_AROUND, PEBBLE -> {}
                 default -> throw new IllegalStateException("Missing simple entity layer definitions!");
             }
@@ -128,8 +131,8 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerModel(@NotNull ModelEvent.RegisterAdditional event) {
-        for (SpearItem.SpearType spearType : SpearItem.SpearType.values()) {
-            event.register(spearType.modelInHandLocation);
+        for (SpearType spearType : SpearType.values()) {
+            event.register(MODEL_IN_HAND_LOCATIONS.get(spearType));
         }
     }
 
@@ -149,13 +152,14 @@ public class ModBusSubscriber {
     @SubscribeEvent
     public static void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
-        Stream.of(SpearItem.SpearType.values()).forEach(spearType -> {
-            BakedModel existingModel = modelRegistry.get(spearType.modelLocation);
+        Stream.of(SpearType.values()).forEach(spearType -> {
+            ModelResourceLocation modelLocation = MODEL_LOCATIONS.get(spearType);
+            BakedModel existingModel = modelRegistry.get(modelLocation);
 
             if (existingModel == null) {
                 throw new RuntimeException("Missing model for " + spearType);
             } else {
-                modelRegistry.put(spearType.modelLocation, new CustomRendererBakedModel(existingModel));
+                modelRegistry.put(modelLocation, new CustomRendererBakedModel(existingModel));
             }
         });
     }

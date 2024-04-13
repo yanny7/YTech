@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.configuration.MaterialItemType;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.SpearModel;
 import com.yanny.ytech.registration.Registration;
@@ -29,6 +30,8 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.yanny.ytech.configuration.model.SpearModel.*;
+
 @OnlyIn(Dist.CLIENT)
 public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
     @NotNull public static final BlockEntityWithoutLevelRenderer INSTANCE = new YTechRenderer();
@@ -36,7 +39,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
     @NotNull private final ItemModelShaper itemModelShaper;
     @NotNull private final ItemRenderer itemRenderer;
     @NotNull private final BakedModel missingModel;
-    private final Map<SpearItem.SpearType, SpearModel> spearModels = new HashMap<>();
+    private final Map<SpearType, SpearModel> spearModels = new HashMap<>();
 
     private YTechRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
@@ -44,8 +47,8 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
         itemRenderer = Minecraft.getInstance().getItemRenderer();
         missingModel = Minecraft.getInstance().getModelManager().getMissingModel();
 
-        for (SpearItem.SpearType type : SpearItem.SpearType.values()) {
-            spearModels.put(type, new SpearModel(Minecraft.getInstance().getEntityModels().bakeLayer(type.layerLocation)));
+        for (SpearType type : SpearType.values()) {
+            spearModels.put(type, new SpearModel(Minecraft.getInstance().getEntityModels().bakeLayer(LAYER_LOCATIONS.get(type))));
         }
     }
 
@@ -70,9 +73,9 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
             boolean is2dModel = displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.GROUND || displayContext == ItemDisplayContext.FIXED;
 
             if (is2dModel) {
-                for (SpearItem.SpearType spearType : spearModels.keySet()) {
+                for (SpearType spearType : spearModels.keySet()) {
                     if (stack.is(Registration.item(MaterialItemType.SPEAR, spearType.materialType))) {
-                        bakedModel = itemModelShaper.getModelManager().getModel(spearType.modelLocation);
+                        bakedModel = itemModelShaper.getModelManager().getModel(MODEL_LOCATIONS.get(spearType));
                         break;
                     }
                 }
@@ -81,11 +84,11 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
             bakedModel = bakedModel.applyTransform(displayContext, poseStack, leftHand);
             poseStack.translate(-0.5F, -0.5F, -0.5F);
 
-            for (Map.Entry<SpearItem.SpearType, SpearModel> entry : spearModels.entrySet()) {
+            for (Map.Entry<SpearType, SpearModel> entry : spearModels.entrySet()) {
                 if (stack.is(Registration.item(MaterialItemType.SPEAR, entry.getKey().materialType)) && !is2dModel) {
                     poseStack.pushPose();
                     poseStack.scale(1.0F, -1.0F, -1.0F);
-                    VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, entry.getValue().renderType(SpearItem.SpearType.TEXTURE_LOCATION), false, stack.hasFoil());
+                    VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, entry.getValue().renderType(SpearType.TEXTURE_LOCATION), false, stack.hasFoil());
                     entry.getValue().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
                     poseStack.popPose();
                 } else {
@@ -138,9 +141,9 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
     public BakedModel getModel(@NotNull ItemStack stack, @Nullable Level level, @Nullable LivingEntity pEntity, int seed) {
         BakedModel bakedModel = itemModelShaper.getItemModel(stack);
 
-        for (SpearItem.SpearType spearType : spearModels.keySet()) {
+        for (SpearType spearType : spearModels.keySet()) {
             if (stack.is(Registration.item(MaterialItemType.SPEAR, spearType.materialType))) {
-                bakedModel = itemModelShaper.getModelManager().getModel(spearType.modelInHandLocation);
+                bakedModel = itemModelShaper.getModelManager().getModel(MODEL_IN_HAND_LOCATIONS.get(spearType));
             }
         }
 

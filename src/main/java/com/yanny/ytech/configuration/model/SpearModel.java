@@ -2,7 +2,13 @@ package com.yanny.ytech.configuration.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.MaterialItemType;
+import com.yanny.ytech.configuration.SpearType;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.Registration;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -10,12 +16,30 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
 public class SpearModel extends Model {
+   public static final Map<SpearType, ModelLayerLocation> LAYER_LOCATIONS = new HashMap<>();
+   public static final Map<SpearType, ModelResourceLocation> MODEL_LOCATIONS = new HashMap<>();
+   public static final Map<SpearType, ModelResourceLocation> MODEL_IN_HAND_LOCATIONS = new HashMap<>();
+
+   static {
+      for (SpearType type : SpearType.values()) {
+         String key = Registration.HOLDER.items().get(MaterialItemType.SPEAR).get(type.materialType).key;
+
+         LAYER_LOCATIONS.put(type, new ModelLayerLocation(Utils.modLoc(key), "main"));
+         MODEL_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key, "inventory"));
+         MODEL_IN_HAND_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key + "_in_hand", "inventory"));
+      }
+   }
+
    @NotNull private final ModelPart root;
 
    public SpearModel(@NotNull ModelPart root) {

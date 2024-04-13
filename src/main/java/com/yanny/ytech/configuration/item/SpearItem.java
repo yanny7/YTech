@@ -2,17 +2,11 @@ package com.yanny.ytech.configuration.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.MaterialItemType;
-import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.SimpleEntityType;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.SpearEntity;
 import com.yanny.ytech.configuration.renderer.YTechRenderer;
-import com.yanny.ytech.registration.Registration;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -41,8 +35,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class SpearItem extends Item implements Vanishable {
@@ -202,49 +194,4 @@ public class SpearItem extends Item implements Vanishable {
         });
     }
 
-    public enum SpearType {
-        FLINT(MaterialType.FLINT, SimpleEntityType.FLINT_SPEAR, 20, 4.0f, -3.5f, 2.0f, 1.5f, 10),
-        COPPER(MaterialType.COPPER, SimpleEntityType.COPPER_SPEAR, 40, 4.5f, -3.4f, 2.1f, 1.3f, 10),
-        BRONZE(MaterialType.BRONZE, SimpleEntityType.BRONZE_SPEAR, 80, 5.0f, -3.3F, 2.3f, 1.2f, 10),
-        IRON(MaterialType.IRON, SimpleEntityType.IRON_SPEAR, 160, 6.0f, -3.2F, 2.5f, 1.1f, 10),
-        ;
-
-        public static final ResourceLocation TEXTURE_LOCATION = Utils.modLoc("textures/entity/spear.png");
-        public static final Map<SimpleEntityType, SpearType> BY_ENTITY_TYPE = new HashMap<>();
-        public static final Map<MaterialType, SpearType> BY_MATERIAL_TYPE = new HashMap<>();
-
-        static {
-            for (SpearType spearType : SpearType.values()) {
-                BY_ENTITY_TYPE.put(spearType.entityType, spearType);
-                BY_MATERIAL_TYPE.put(spearType.materialType, spearType);
-            }
-        }
-
-        public final MaterialType materialType;
-        public final SimpleEntityType entityType;
-        public final int durability;
-        public final float baseDamage;
-        public final float attackSpeed;
-        public final float shootPower;
-        public final float accuracy;
-        public final int throwThreshold;
-        public final ModelLayerLocation layerLocation;
-        public final ModelResourceLocation modelLocation;
-        public final ModelResourceLocation modelInHandLocation;
-
-        SpearType(MaterialType materialType, SimpleEntityType entityType, int durability, float baseDamage, float attackSpeed, float shootPower, float accuracy, int throwThreshold) {
-            String key = Registration.HOLDER.items().get(MaterialItemType.SPEAR).get(materialType).key;
-            this.materialType = materialType;
-            this.entityType = entityType;
-            this.durability = durability;
-            this.baseDamage = baseDamage;
-            this.attackSpeed = attackSpeed;
-            this.shootPower = shootPower;
-            this.accuracy = accuracy;
-            this.throwThreshold = throwThreshold;
-            layerLocation = new ModelLayerLocation(Utils.modLoc(key), "main");
-            modelLocation = new ModelResourceLocation(YTechMod.MOD_ID, key, "inventory");
-            modelInHandLocation = new ModelResourceLocation(YTechMod.MOD_ID, key + "_in_hand", "inventory");
-        }
-    }
 }

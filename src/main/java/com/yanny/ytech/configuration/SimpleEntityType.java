@@ -3,7 +3,6 @@ package com.yanny.ytech.configuration;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.entity.PebbleEntity;
 import com.yanny.ytech.configuration.entity.SpearEntity;
-import com.yanny.ytech.configuration.item.SpearItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -14,16 +13,16 @@ import java.util.function.Consumer;
 public enum SimpleEntityType {
     FLINT_SPEAR("flint_spear", "Flint Spear",
             (builder) -> builder.sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20),
-            (entityType, level) -> new SpearEntity(entityType, level, SpearItem.SpearType.FLINT)),
+            (entityType, level) -> new SpearEntity(entityType, level, SpearType.FLINT)),
     COPPER_SPEAR("copper_spear", "Copper Spear",
             (builder) -> builder.sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20),
-            (entityType, level) -> new SpearEntity(entityType, level, SpearItem.SpearType.COPPER)),
+            (entityType, level) -> new SpearEntity(entityType, level, SpearType.COPPER)),
     BRONZE_SPEAR("bronze_spear", "Bronze Spear",
             (builder) -> builder.sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20),
-            (entityType, level) -> new SpearEntity(entityType, level, SpearItem.SpearType.BRONZE)),
+            (entityType, level) -> new SpearEntity(entityType, level, SpearType.BRONZE)),
     IRON_SPEAR("iron_spear", "Iron Spear",
             (builder) -> builder.sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20),
-            (entityType, level) -> new SpearEntity(entityType, level, SpearItem.SpearType.IRON)),
+            (entityType, level) -> new SpearEntity(entityType, level, SpearType.IRON)),
     GO_AROUND("go_around", "Go Around Entity",
             (builder) -> builder.sized(0.1F, 0.1f).clientTrackingRange(10),
             GoAroundEntity::new),

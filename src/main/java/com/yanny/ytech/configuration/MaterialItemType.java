@@ -217,7 +217,7 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
     SPEAR("spear", INameable.suffix("spear"), INameable.suffix("Spear"),
             (material) -> ItemTags.create(Utils.modLoc("spear/" + material.key)),
             ItemTags.create(Utils.modLoc("spears")),
-            (holder) -> new SpearItem(SpearItem.SpearType.BY_MATERIAL_TYPE.get(holder.material)),
+            (holder) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(holder.material)),
             (material) -> List.of(new TextureHolder(-1, -1, Utils.modItemLoc("spear/" + material.key))).toArray(TextureHolder[]::new),
             MaterialItemType::spearItemModelProvider,
             MaterialItemType::registerSpearRecipe,

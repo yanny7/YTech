@@ -3,8 +3,8 @@ package com.yanny.ytech.configuration.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.entity.SpearEntity;
-import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.SpearModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,6 +41,6 @@ public class SpearRenderer extends EntityRenderer<Entity> {
 
     @NotNull
     public ResourceLocation getTextureLocation(@NotNull Entity entity) {
-        return SpearItem.SpearType.TEXTURE_LOCATION;
+        return SpearType.TEXTURE_LOCATION;
     }
 }
