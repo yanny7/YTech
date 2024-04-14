@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:crops/wheat"
+      "tag": "ytech:antlers"
     },
     {
       "tag": "ytech:mortar_and_pestles"
     }
   ],
   "result": {
-    "item": "ytech:flour"
+    "count": 2,
+    "item": "minecraft:bone_meal"
   }
 }

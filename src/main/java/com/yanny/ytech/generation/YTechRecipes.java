@@ -282,6 +282,15 @@ class YTechRecipes extends RecipeProvider {
                 .pattern("PP")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(Items.CRAFTING_TABLE));
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, Items.BONE_MEAL)
+                .requires(Items.BONE)
+                .requires(MORTAR_AND_PESTLE.groupTag)
+                .unlockedBy(RecipeProvider.getHasName(Items.BONE), RecipeProvider.has(Items.BONE))
+                .save(recipeConsumer, Utils.loc(Items.BONE_MEAL));
+        MillingRecipe.Builder.milling(Items.BONE, Items.BONE_MEAL, 2)
+                .bonusChance(0.2f)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(Items.BONE))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.BONE_MEAL).getPath() + "_from_milling"));
 
         /*
          * MOD RECIPES
@@ -299,6 +308,8 @@ class YTechRecipes extends RecipeProvider {
         blockHitRecipe(recipeConsumer, Items.FLINT, Tags.Items.STONE, item(SHARP_FLINT));
 
         dryingRecipe(recipeConsumer, Items.KELP, Items.DRIED_KELP, 1200);
+
+        crushingRecipe(recipeConsumer, SimpleItemType.ANTLER.itemTag, Items.BONE_MEAL, 2, "_from_" + SimpleItemType.ANTLER.key);
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -516,5 +527,17 @@ class YTechRecipes extends RecipeProvider {
                 .tool(Ingredient.of(HAMMER.groupTag))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath()));
+    }
+
+    private void crushingRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result, int count, String suffix) {
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, result, count)
+                .requires(input)
+                .requires(MORTAR_AND_PESTLE.groupTag)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + suffix));
+        MillingRecipe.Builder.milling(input, result, count + 1)
+                .bonusChance(0.2f)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + suffix + "_from_milling"));
     }
 }

@@ -87,7 +87,7 @@ public class MillstoneBlock extends Block implements EntityBlock {
     public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                  @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof  MillstoneBlockEntity millstone) {
-            return millstone.onUse(state, level, pos, player, hand, hitResult);
+            return millstone.onUse(level, pos, player, hand);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

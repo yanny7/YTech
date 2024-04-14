@@ -3,13 +3,13 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:crops/wheat"
+      "item": "minecraft:bone"
     },
     {
       "tag": "ytech:mortar_and_pestles"
     }
   ],
   "result": {
-    "item": "ytech:flour"
+    "item": "minecraft:bone_meal"
   }
 }

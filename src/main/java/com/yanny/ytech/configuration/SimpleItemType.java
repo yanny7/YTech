@@ -537,9 +537,15 @@ public enum SimpleItemType implements ISimpleModel<Holder.SimpleItemHolder, Item
     }
 
     private static void registerFlourRecipe(Holder.SimpleItemHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
-        MillingRecipe.Builder.milling(Tags.Items.CROPS_WHEAT, holder.item.get())
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, holder.item.get())
+                .requires(Tags.Items.CROPS_WHEAT)
+                .requires(MORTAR_AND_PESTLE.groupTag)
                 .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
+        MillingRecipe.Builder.milling(Tags.Items.CROPS_WHEAT, holder.item.get(), 2)
+                .bonusChance(0.5f)
+                .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
+                .save(recipeConsumer, Utils.modLoc(holder.key + "_from_milling"));
     }
 
     private static void registerUnfiredClayBucketRecipe(@NotNull Holder.SimpleItemHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {

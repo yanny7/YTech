@@ -2,10 +2,10 @@
   "type": "ytech:milling",
   "bonusChance": 0.5,
   "ingredient": {
-    "tag": "forge:raw_materials/iron"
+    "tag": "forge:crops/wheat"
   },
   "result": {
-    "count": 1,
-    "item": "ytech:crushed_iron"
+    "count": 2,
+    "item": "ytech:flour"
   }
 }

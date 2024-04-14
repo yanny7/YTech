@@ -351,7 +351,8 @@ public enum MaterialItemType implements INameable, IMaterialModel<Holder.ItemHol
                 .requires(MORTAR_AND_PESTLE.groupTag)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(RAW_MATERIAL.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
-        MillingRecipe.Builder.milling(RAW_MATERIAL.itemTag.get(holder.material), holder.item.get())
+        MillingRecipe.Builder.milling(RAW_MATERIAL.itemTag.get(holder.material), holder.item.get(), 1)
+                .bonusChance(0.5f)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(RAW_MATERIAL.itemTag.get(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key + "_from_milling"));
     }
