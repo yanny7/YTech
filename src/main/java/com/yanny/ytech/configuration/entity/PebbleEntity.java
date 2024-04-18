@@ -1,8 +1,8 @@
 package com.yanny.ytech.configuration.entity;
 
 import com.yanny.ytech.configuration.SimpleEntityType;
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -29,7 +29,7 @@ public class PebbleEntity extends ThrowableItemProjectile {
     @NotNull
     @Override
     protected Item getDefaultItem() {
-        return Registration.item(SimpleItemType.PEBBLE);
+        return YTechItems.PEBBLE.get();
     }
 
     private ParticleOptions getParticle() {

@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.recipe.HammeringRecipe;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.ItemStackHandler;
@@ -29,8 +29,8 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
 
     @NotNull protected final ItemStackHandler itemStackHandler;
 
-    public BronzeAnvilBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(blockEntityType, pos, blockState);
+    public BronzeAnvilBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YTechBlockEntityTypes.BRONZE_ANVIL.get(), pos, blockState);
         itemStackHandler = new ItemStackHandler(1) {
             @Override
             protected void onContentsChanged(int slot) {

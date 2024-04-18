@@ -41,7 +41,7 @@ import static com.yanny.ytech.configuration.MaterialType.*;
 import static com.yanny.ytech.registration.Registration.block;
 import static com.yanny.ytech.registration.Registration.entityType;
 
-public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
+public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
     private static final ResourceKey<ConfiguredFeature<?, ?>> CASSITERITE_ORE_FEATURE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Utils.modLoc("cassiterite_ore"));
     private static final ResourceKey<ConfiguredFeature<?, ?>> GALENA_ORE_FEATURE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Utils.modLoc("galena_ore"));
     private static final ResourceKey<ConfiguredFeature<?, ?>> GOLD_SAND_DEPOSIT_FEATURE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Utils.modLoc("gold_sand_deposit"));
@@ -60,7 +60,7 @@ public class YTechWorldGen extends DatapackBuiltinEntriesProvider {
 
     private static final TagMatchTest STONE_ORE_REPLACEABLE = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
 
-    public YTechWorldGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public YTechDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, getRegistrySet(), Set.of(YTechMod.MOD_ID));
     }
 

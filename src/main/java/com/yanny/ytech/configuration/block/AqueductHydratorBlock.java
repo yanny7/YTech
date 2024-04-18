@@ -1,10 +1,14 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.SimpleBlockType;
+import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductHydratorBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -138,9 +142,9 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
-                .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.COPPER))
-                .define('S', MaterialItemType.PLATE.itemTag.get(MaterialType.COPPER))
-                .define('H', MaterialItemType.HAMMER.groupTag)
+                .define('R', YTechItemTags.RODS.of(MaterialType.COPPER))
+                .define('S', YTechItemTags.PLATES.of(MaterialType.COPPER))
+                .define('H', YTechItemTags.HAMMERS.tag)
                 .pattern("#R#")
                 .pattern("SHS")
                 .pattern("#R#")

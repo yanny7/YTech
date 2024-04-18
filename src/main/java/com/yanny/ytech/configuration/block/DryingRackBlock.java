@@ -1,9 +1,13 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.MaterialBlockType;
+import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.DryingRackBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -177,9 +181,9 @@ public class DryingRackBlock extends Block implements EntityBlock {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                     .define('W', Utils.getLogFromMaterial(holder.material))
                     .define('S', Items.STICK)
-                    .define('T', SimpleItemType.GRASS_TWINE.itemTag)
-                    .define('F', MaterialItemType.AXE.itemTag.get(MaterialType.FLINT))
-                    .define('B', SimpleItemType.WOODEN_BOLT.itemTag)
+                    .define('T', YTechItemTags.GRASS_TWINES)
+                    .define('F', YTechItemTags.AXES.tag)
+                    .define('B', YTechItemTags.BOLTS.of(MaterialType.WOODEN))
                     .pattern("TST")
                     .pattern("BFB")
                     .pattern("W W")

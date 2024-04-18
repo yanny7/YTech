@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class GeneralUtils {
@@ -26,5 +27,9 @@ public class GeneralUtils {
     @NotNull
     public static <T, U> Stream<Map.Entry<T, U>> sortedStreamMap(@NotNull HashMap<T, U> map, @NotNull Comparator<Map.Entry<T, U>> comparator) {
         return map.entrySet().stream().sorted(comparator);
+    }
+
+    public static <T> Stream<T> sortedStreamSet(@NotNull Set<T> set, Comparator<T> comparator) {
+        return set.stream().sorted(comparator);
     }
 }

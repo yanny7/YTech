@@ -13,8 +13,8 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
-class YTechFluidTags extends FluidTagsProvider {
-    public YTechFluidTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
+class YTechFluidTagsProvider extends FluidTagsProvider {
+    public YTechFluidTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
         super(packOutput, completableFuture, YTechMod.MOD_ID, existingFileHelper);
     }
 

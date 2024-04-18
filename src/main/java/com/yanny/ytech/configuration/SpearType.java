@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration;
 
-import com.yanny.ytech.registration.Registration;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -34,7 +33,6 @@ public enum SpearType {
     public final int throwThreshold;
 
     SpearType(MaterialType materialType, SimpleEntityType entityType, int durability, float baseDamage, float attackSpeed, float shootPower, float accuracy, int throwThreshold) {
-        String key = Registration.HOLDER.items().get(MaterialItemType.SPEAR).get(materialType).key;
         this.materialType = materialType;
         this.entityType = entityType;
         this.durability = durability;

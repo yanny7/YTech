@@ -8,6 +8,7 @@ import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -54,17 +55,6 @@ import static net.minecraft.ChatFormatting.DARK_GRAY;
 
 public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, BlockStateProvider>, ILootable<Holder.SimpleBlockHolder, BlockLootSubProvider>,
         IRecipe<Holder.SimpleBlockHolder>, IMenu, IItemTag<Holder.SimpleBlockHolder>, IBlockTag<Holder.SimpleBlockHolder> {
-    BRONZE_ANVIL(HolderType.ENTITY_BLOCK, "bronze_anvil", "Bronze Anvil",
-            ItemTags.ANVIL,
-            BlockTags.ANVIL,
-            BronzeAnvilBlock::new,
-            SimpleBlockType::simpleBlockItem,
-            BronzeAnvilBlock::textureHolder,
-            BronzeAnvilBlock::registerModel,
-            ILootable::dropsSelfProvider,
-            BronzeAnvilBlock::registerRecipe,
-            SimpleBlockType::registerItemTag,
-            SimpleBlockType::registerStonePickaxeBlockTag),
     MILLSTONE(HolderType.ENTITY_BLOCK, "millstone", "Millstone",
             ItemTags.create(Utils.modLoc("millstones")),
             BlockTags.create(Utils.modLoc("millstones")),
@@ -627,8 +617,8 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
     private static void registerReinforcedBricksRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
                 .define('B', Items.BRICKS)
-                .define('P', Registration.item(MaterialItemType.PLATE, MaterialType.COPPER))
-                .define('#', Registration.item(MaterialItemType.BOLT, MaterialType.COPPER))
+                .define('P', YTechItemTags.PLATES.of(MaterialType.COPPER))
+                .define('#', YTechItemTags.BOLTS.of(MaterialType.COPPER))
                 .pattern("#P#")
                 .pattern("PBP")
                 .pattern("#P#")
@@ -671,10 +661,10 @@ public enum SimpleBlockType implements ISimpleModel<Holder.SimpleBlockHolder, Bl
 
     private static void registerThatchBlockRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, holder.block.get())
-                .define('B', SimpleItemType.GRASS_FIBERS.itemTag)
+                .define('B', YTechItemTags.GRASS_FIBERS)
                 .pattern("BB")
                 .pattern("BB")
-                .unlockedBy("has_thatch", RecipeProvider.has(SimpleItemType.GRASS_FIBERS.itemTag))
+                .unlockedBy("has_thatch", RecipeProvider.has(YTechItemTags.GRASS_FIBERS))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

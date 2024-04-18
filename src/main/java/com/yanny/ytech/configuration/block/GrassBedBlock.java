@@ -1,11 +1,11 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.IBlockHolder;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -260,11 +260,11 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
 
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('G', SimpleItemType.GRASS_FIBERS.itemTag)
+                .define('G', YTechItemTags.GRASS_FIBERS)
                 .pattern("GGG")
                 .pattern("GGG")
                 .pattern("GGG")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleItemType.GRASS_FIBERS.itemTag))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.GRASS_FIBERS))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 }

@@ -3,7 +3,7 @@ package com.yanny.ytech.configuration;
 import com.google.gson.JsonPrimitive;
 import com.yanny.ytech.configuration.entity.DeerEntity;
 import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
@@ -140,7 +140,7 @@ public enum AnimalEntityType {
                         LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
                                 .add(
-                                        LootItem.lootTableItem(Registration.item(SimpleItemType.RAW_HIDE))
+                                        LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                                 .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                 )
@@ -149,7 +149,7 @@ public enum AnimalEntityType {
                         LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
                                 .add(
-                                        LootItem.lootTableItem(Registration.item(SimpleItemType.VENISON))
+                                        LootItem.lootTableItem(YTechItems.VENISON.get())
                                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
                                                 .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
                                                 .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
@@ -159,7 +159,7 @@ public enum AnimalEntityType {
                         LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
                                 .add(
-                                        LootItem.lootTableItem(Registration.item(SimpleItemType.ANTLER))
+                                        LootItem.lootTableItem(YTechItems.ANTLER.get())
                                                 .when(
                                                         LootItemEntityPropertyCondition.hasProperties(
                                                                 LootContext.EntityTarget.THIS,

@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-class YTechAdvancements extends ForgeAdvancementProvider {
-    public YTechAdvancements(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
+class YTechAdvancementProvider extends ForgeAdvancementProvider {
+    public YTechAdvancementProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
         super(output, registries, existingFileHelper, getSubProviders());
     }
 

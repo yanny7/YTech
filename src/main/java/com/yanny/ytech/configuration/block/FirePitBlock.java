@@ -1,10 +1,10 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -531,10 +531,10 @@ public class FirePitBlock extends Block {
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> consumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('S', Items.STICK)
-                .define('P', SimpleItemType.PEBBLE.itemTag)
+                .define('P', YTechItemTags.PEBBLES)
                 .pattern("SS")
                 .pattern("PP")
-                .unlockedBy("has_pebble", RecipeProvider.has(SimpleItemType.PEBBLE.itemTag))
+                .unlockedBy("has_pebble", RecipeProvider.has(YTechItemTags.PEBBLES))
                 .save(consumer, Utils.modLoc(holder.key));
     }
 

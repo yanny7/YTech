@@ -1,11 +1,15 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.SimpleBlockType;
+import com.yanny.ytech.configuration.TextureHolder;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductFertilizerBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -170,11 +174,11 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.AQUEDUCT_HYDRATOR))
-                .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.BRONZE))
-                .define('S', MaterialItemType.PLATE.itemTag.get(MaterialType.BRONZE))
-                .define('B', MaterialItemType.BOLT.itemTag.get(MaterialType.BRONZE))
-                .define('H', MaterialItemType.HAMMER.groupTag)
-                .define('F', MaterialItemType.FILE.groupTag)
+                .define('R', YTechItemTags.RODS.of(MaterialType.BRONZE))
+                .define('S', YTechItemTags.PLATES.of(MaterialType.BRONZE))
+                .define('B', YTechItemTags.BOLTS.of(MaterialType.BRONZE))
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('F', YTechItemTags.FILES.tag)
                 .define('C', Tags.Items.CHESTS)
                 .pattern("HCF")
                 .pattern("S#S")

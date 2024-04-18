@@ -1,10 +1,10 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.loot_modifier.AddItemModifier;
 import com.yanny.ytech.loot_modifier.ReplaceItemModifier;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItemTags;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -19,8 +19,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 
-public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
-    public YTechGlobalLootModifier(PackOutput output) {
+public class YTechGlobalLootModifierProvider extends GlobalLootModifierProvider {
+    public YTechGlobalLootModifierProvider(PackOutput output) {
         super(output, YTechMod.MOD_ID);
     }
 
@@ -29,17 +29,17 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
         add("grass_drops_fibers", new AddItemModifier(
                 new LootItemCondition[] {
                         LootItemRandomChanceCondition.randomChance(0.1f).build(),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(SimpleItemType.SHARP_FLINT.itemTag)).build(),
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(YTechItemTags.SHARP_FLINTS)).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRASS).build()
                 },
-                Registration.item(SimpleItemType.GRASS_FIBERS)
+                YTechItems.GRASS_FIBERS.get()
         ));
         add("gravel_drops_pebble", new AddItemModifier(
                 new LootItemCondition[]{
                         LootItemRandomChanceCondition.randomChance(0.2f).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GRAVEL).build()
                 },
-                Registration.item(SimpleItemType.PEBBLE)
+                YTechItems.PEBBLE.get()
         ));
 
         addReplaceLeatherByRawHide(EntityType.COW);
@@ -59,7 +59,7 @@ public class YTechGlobalLootModifier extends GlobalLootModifierProvider {
                                 EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityType)).build()).build()
                 },
                 Items.LEATHER,
-                Registration.item(SimpleItemType.RAW_HIDE)
+                YTechItems.RAW_HIDE.get()
         ));
     }
 }

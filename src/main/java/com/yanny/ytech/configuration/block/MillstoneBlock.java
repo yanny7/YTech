@@ -1,11 +1,11 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -183,7 +183,7 @@ public class MillstoneBlock extends Block implements EntityBlock {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('W', ItemTags.LOGS)
                 .define('S', Items.SMOOTH_STONE_SLAB)
-                .define('F', SimpleItemType.SHARP_FLINT.itemTag)
+                .define('F', YTechItemTags.SHARP_FLINTS)
                 .pattern("WF")
                 .pattern("S ")
                 .pattern("S ")

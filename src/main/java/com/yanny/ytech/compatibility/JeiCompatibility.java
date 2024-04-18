@@ -2,9 +2,8 @@ package com.yanny.ytech.compatibility;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.compatibility.jei.*;
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -45,7 +44,7 @@ public class JeiCompatibility implements IModPlugin {
             registration.addRecipes(AlloyingRecipeCategory.RECIPE_TYPE, AlloyingRecipeCategory.getRecipes(level.getRecipeManager()));
             registration.addRecipes(HammeringRecipeCategory.RECIPE_TYPE, HammeringRecipeCategory.getRecipes(level.getRecipeManager()));
 
-            registration.addItemStackInfo(Registration.item(SimpleItemType.GRASS_FIBERS).getDefaultInstance(), Component.translatable("text.ytech.info.grass_fibers"));
+            registration.addItemStackInfo(YTechItems.GRASS_FIBERS.get().getDefaultInstance(), Component.translatable("text.ytech.info.grass_fibers"));
         } else {
             LOGGER.warn("JEI integration was not loaded! Level is null!");
         }

@@ -13,8 +13,8 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
-class YTechBiomeTags extends BiomeTagsProvider {
-    public YTechBiomeTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+class YTechBiomeTagsProvider extends BiomeTagsProvider {
+    public YTechBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, YTechMod.MOD_ID, existingFileHelper);
     }
 

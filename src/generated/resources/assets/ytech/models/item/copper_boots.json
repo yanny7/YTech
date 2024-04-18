@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ytech:item/copper_boots"
+    "layer0": "ytech:item/boots/copper"
   }
 }

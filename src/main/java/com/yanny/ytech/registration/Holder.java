@@ -26,17 +26,6 @@ public class Holder {
         this.name = name;
     }
 
-    public static class SimpleItemHolder extends Holder {
-        @NotNull public final SimpleItemType object;
-        @NotNull public final RegistryObject<Item> item;
-
-        SimpleItemHolder(@NotNull SimpleItemType object, @NotNull RegistryObject<Item> item) {
-            super(object.key, object.name);
-            this.object = object;
-            this.item = item;
-        }
-    }
-
     public static class SimpleBlockHolder extends Holder implements IBlockHolder {
         @NotNull public final SimpleBlockType object;
         @NotNull public final RegistryObject<Block> block;
@@ -105,15 +94,6 @@ public class Holder {
             );
             this.object = object;
             this.material = material;
-        }
-    }
-
-    public static class ItemHolder extends MaterialHolder<MaterialItemType> {
-        @NotNull public final RegistryObject<Item> item;
-
-        public ItemHolder(@NotNull MaterialItemType product, @NotNull MaterialType materialHolder, @NotNull Function<ItemHolder, RegistryObject<Item>> item) {
-            super(product, materialHolder);
-            this.item = item.apply(this);
         }
     }
 
@@ -233,15 +213,6 @@ public class Holder {
 
     private static <U extends INameable> String langTransformer(@NotNull U product, @NotNull MaterialType material, boolean isKey) {
         if (material == MaterialType.GOLD) {
-            if (product instanceof MaterialItemType type) {
-                switch (type) {
-                    case CRUSHED_MATERIAL -> {
-                    }
-                    default -> {
-                        return (isKey ? material.key : material.name) + "en";
-                    }
-                }
-            }
             if (product instanceof MaterialBlockType type) {
                 switch (type) {
                     default -> {

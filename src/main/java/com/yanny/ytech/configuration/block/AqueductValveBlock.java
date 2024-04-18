@@ -1,7 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
@@ -11,6 +10,7 @@ import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -126,9 +126,9 @@ public class AqueductValveBlock extends IrrigationBlock {
     public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
                 .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
-                .define('R', MaterialItemType.ROD.groupTag)
-                .define('H', MaterialItemType.HAMMER.groupTag)
-                .define('S', MaterialItemType.SAW.groupTag)
+                .define('R', YTechItemTags.RODS.tag)
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('S', YTechItemTags.SAWS.tag)
                 .pattern("###")
                 .pattern("HRS")
                 .pattern("###")

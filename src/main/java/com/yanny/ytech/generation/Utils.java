@@ -9,11 +9,6 @@ import java.util.Map;
 
 class Utils {
     @NotNull
-    static Comparator<Map.Entry<MaterialType, Holder.ItemHolder>> itemComparator() {
-        return Comparator.comparing(h -> h.getValue().object.id + h.getKey());
-    }
-
-    @NotNull
     static Comparator<Map.Entry<MaterialType, Holder.BlockHolder>> blockComparator() {
         return Comparator.comparing(h -> h.getValue().object.id + h.getKey());
     }

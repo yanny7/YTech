@@ -1,9 +1,7 @@
 package com.yanny.ytech;
 
 import com.yanny.ytech.compatibility.TopCompatibility;
-import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SimpleEntityType;
-import com.yanny.ytech.configuration.SimpleItemType;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block.IMenuBlock;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
@@ -14,6 +12,8 @@ import com.yanny.ytech.configuration.model.DeerModel;
 import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.registration.Holder;
 import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -49,10 +49,10 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
-        ItemProperties.register(Registration.item(SimpleItemType.BASKET), BasketItem.FILLED_PREDICATE,
+        ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
                 (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
 
-        HOLDER.items().get(MaterialItemType.SPEAR).forEach((material, holder) -> ItemProperties.register(holder.item.get(), SpearItem.THROWING_PREDICATE,
+        YTechItems.SPEARS.items().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
 
         event.enqueueWork(() -> {
@@ -72,11 +72,12 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerEntityRenderer(@NotNull EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.BRONZE_ANVIL.get(), BronzeAnvilRenderer::new);
+
         HOLDER.simpleBlocks().forEach((blockType, blockHolder) -> {
             if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
                 switch (blockType) {
                     case MILLSTONE -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), MillstoneRenderer::new);
-                    case BRONZE_ANVIL -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), BronzeAnvilRenderer::new);
                     case AQUEDUCT -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), AqueductRenderer::new);
                 }
             }

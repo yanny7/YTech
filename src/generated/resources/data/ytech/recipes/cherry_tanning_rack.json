@@ -7,7 +7,7 @@
       "tag": "ytech:bolts/wooden"
     },
     "F": {
-      "tag": "ytech:axes/flint"
+      "tag": "minecraft:axes"
     },
     "S": {
       "item": "minecraft:stick"

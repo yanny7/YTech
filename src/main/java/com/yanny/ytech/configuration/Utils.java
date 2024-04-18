@@ -1,15 +1,16 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -40,6 +41,16 @@ public class Utils {
     @NotNull
     public static ResourceLocation modLoc(@NotNull String path) {
         return  new ResourceLocation(YTechMod.MOD_ID, path);
+    }
+
+    @NotNull
+    public static ResourceLocation modLoc(@NotNull Item item) {
+        return modLoc(loc(item).getPath());
+    }
+
+    @NotNull
+    public static ResourceLocation modLoc(@NotNull RegistryObject<?> object) {
+        return modLoc(object.getId().getPath());
     }
 
     @NotNull
@@ -74,9 +85,17 @@ public class Utils {
         return new ResourceLocation(loc.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + loc.getPath());
     }
 
+    public static String getId(RegistryObject<?> object) {
+        return object.getId().getPath();
+    }
+
     @NotNull
-    public static String getHasItem(Holder holder) {
-        return "has_" + holder.key;
+    public static String getHasItem(TagKey<Item> item) {
+        return "has_" + item.location().getPath();
+    }
+
+    public static String getHasItem(RegistryObject<?> item) {
+        return "has_" + getId(item);
     }
 
     @NotNull

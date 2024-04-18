@@ -3,10 +3,9 @@ package com.yanny.ytech.configuration.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -32,7 +31,7 @@ public class SpearModel extends Model {
 
    static {
       for (SpearType type : SpearType.values()) {
-         String key = Registration.HOLDER.items().get(MaterialItemType.SPEAR).get(type.materialType).key;
+         String key = Utils.getId(YTechItems.SPEARS.of(type.materialType));
 
          LAYER_LOCATIONS.put(type, new ModelLayerLocation(Utils.modLoc(key), "main"));
          MODEL_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key, "inventory"));

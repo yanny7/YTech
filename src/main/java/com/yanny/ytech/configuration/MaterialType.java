@@ -1,7 +1,7 @@
 package com.yanny.ytech.configuration;
 
 import com.google.common.base.Suppliers;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -23,15 +23,13 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.yanny.ytech.configuration.MaterialItemType.INGOT;
-
 public enum MaterialType {
     //solid elements
     COPPER(new Builder("copper", "Copper", ToolType.PICKAXE)
             .color(0xB87333).temp(1085, 2562)
             .effect(MobEffects.MOVEMENT_SLOWDOWN, 100, 1)
             .armor(10, 7, 0, 0, new int[]{1, 2, 4, 1})
-            .tier(160, 5.0F, 0.5F, 10, () -> INGOT)),
+            .tier(160, 5.0F, 0.5F, 10, () -> YTechItemTags.INGOTS)),
     GOLD(new Builder("gold", "Gold", ToolType.PICKAXE)
             .color(0xFFDF00).temp(1064, 2856)
             .armor(ArmorMaterials.GOLD)
@@ -43,10 +41,10 @@ public enum MaterialType {
             .tier(() -> Tiers.IRON)), // 250, 6.0F, 2.0F, 14
     LEAD(new Builder("lead", "Lead", ToolType.PICKAXE)
             .color(0x5C6274).temp(327, 1749)
-            .tier(16, 3.0F, 3.0F, 21, () -> INGOT)),
+            .tier(16, 3.0F, 3.0F, 21, () -> YTechItemTags.INGOTS)),
     TIN(new Builder("tin", "Tin", ToolType.PICKAXE)
             .color(0x808080).temp(232, 2602)
-            .tier(15, 10.0F, -1.0F, 16, () -> INGOT)),
+            .tier(15, 10.0F, -1.0F, 16, () -> YTechItemTags.INGOTS)),
 
     //fluid elements
     MERCURY(new Builder("mercury", "Mercury", Tiers.WOOD, ToolType.PICKAXE).color(0xDBCECA)),
@@ -56,13 +54,14 @@ public enum MaterialType {
             .color(0xD89940).temp(913, 2300)
             .effect(MobEffects.MOVEMENT_SLOWDOWN, 100, 2)
             .armor(19, 10, 0, 0, new int[]{2, 3, 5, 2})
-            .tier(200, 32.0F, 1.5F, 15, () -> INGOT)),
+            .tier(200, 32.0F, 1.5F, 15, () -> YTechItemTags.INGOTS)),
 
     //ores
     CASSITERITE(new Builder("cassiterite", "Cassiterite", Tiers.STONE, ToolType.PICKAXE).color(0x3D3D3D).temp(1127)),
     GALENA(new Builder("galena", "Galena", Tiers.WOOD, ToolType.PICKAXE).color(0x8493A8).temp(1114)),
 
     //woods
+    WOODEN(new Builder("wooden", "Wooden", Tiers.WOOD, ToolType.AXE).group("wooden")),
     ACACIA_WOOD(new Builder("acacia", "Acacia", Tiers.WOOD, ToolType.AXE).group("wooden")),
     BIRCH_WOOD(new Builder("birch", "Birch", Tiers.WOOD, ToolType.AXE).group("wooden")),
     CHERRY_WOOD(new Builder("cherry", "Cherry", Tiers.WOOD, ToolType.AXE).group("wooden")),
@@ -221,7 +220,7 @@ public enum MaterialType {
                 @NotNull
                 @Override
                 public Ingredient getRepairIngredient() {
-                    return Ingredient.of(Registration.item(INGOT, material));
+                    return Ingredient.of(YTechItemTags.INGOTS.of(material));
                 }
 
                 @NotNull
@@ -258,7 +257,7 @@ public enum MaterialType {
             return this;
         }
 
-        Builder tier(int uses, float speed, float dmg, int e, Supplier<MaterialItemType> repairItem) {
+        Builder tier(int uses, float speed, float dmg, int e, Supplier<YTechItemTags.MaterialTag> repairItem) {
             this.tierFactory = (material) -> Suppliers.memoize(() -> new YTechTier() {
                 private final TagKey<Block> needsTool = BlockTags.create(Utils.modLoc("needs_" + material.key + "_tool"));
 
@@ -290,7 +289,7 @@ public enum MaterialType {
                 @NotNull
                 @Override
                 public Ingredient getRepairIngredient() {
-                    return Ingredient.of(repairItem.get().itemTag.get(material));
+                    return Ingredient.of(repairItem.get().of(material));
                 }
 
                 @NotNull

@@ -1,8 +1,8 @@
 package com.yanny.ytech.configuration.entity;
 
-import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -43,7 +43,7 @@ public class SpearEntity extends AbstractArrow {
     public SpearEntity(EntityType<? extends Entity> entityType, Level level, SpearType spearType) {
         //noinspection unchecked
         super((EntityType<? extends AbstractArrow>) entityType, level);
-        spearItem = new ItemStack(Registration.item(MaterialItemType.SPEAR, spearType.materialType));
+        spearItem = new ItemStack(YTechItems.SPEARS.of(spearType.materialType).get());
         this.spearType = spearType;
     }
 

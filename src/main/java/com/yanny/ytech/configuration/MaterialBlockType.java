@@ -6,7 +6,8 @@ import com.yanny.ytech.configuration.block.TanningRackBlock;
 import com.yanny.ytech.configuration.block.WaterWheelBlock;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItemTags;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -392,7 +393,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
     }
 
     private static void oreLootProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider) {
-        provider.add(holder.block.get(), block -> provider.createOreDrop(block, Registration.item(MaterialItemType.RAW_MATERIAL, holder.material)));
+        provider.add(holder.block.get(), block -> provider.createOreDrop(block, YTechItems.RAW_MATERIALS.of(holder.material).get()));
     }
 
     private static void depositLootProvider(@NotNull Holder.BlockHolder holder, @NotNull BlockLootSubProvider provider, @NotNull Item baseItem) {
@@ -419,7 +420,7 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
                                         .setRolls(ConstantValue.exactly(1.0F))
                                         .when(hasSilkTouch.invert())
                                         .add(
-                                                LootItem.lootTableItem(Registration.item(MaterialItemType.CRUSHED_MATERIAL, holder.material))
+                                                LootItem.lootTableItem(YTechItems.CRUSHED_MATERIALS.of(holder.material).get())
                                                         .when(LootItemRandomChanceCondition.randomChance(0.25F))
                                                         .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 2))
                                         )
@@ -429,17 +430,17 @@ public enum MaterialBlockType implements INameable, IMaterialModel<Holder.BlockH
 
     private static void registerRawStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material))
+                .define('#', YTechItemTags.RAW_MATERIALS.of(holder.material))
                 .pattern("###").pattern("###").pattern("###")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.RAW_MATERIAL.itemTag.get(holder.material)))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.RAW_MATERIALS.of(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 
     private static void registerStorageBlockRecipe(Holder.BlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', MaterialItemType.INGOT.itemTag.get(holder.material))
+                .define('#', YTechItemTags.INGOTS.of(holder.material))
                 .pattern("###").pattern("###").pattern("###")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.INGOT.itemTag.get(holder.material)))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.of(holder.material)))
                 .save(recipeConsumer, Utils.modLoc(holder.key));
     }
 

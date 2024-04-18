@@ -73,12 +73,6 @@ public class Registration {
             }
         }
 
-        for (MaterialItemType itemObject : MaterialItemType.values()) {
-            for (MaterialType material : itemObject.materials) {
-                HOLDER.items().computeIfAbsent(itemObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, itemObject,
-                        (object) -> new Holder.ItemHolder(object, material, (holder) -> ITEMS.register(holder.key, () -> holder.object.getItem(holder)))));
-            }
-        }
         for (MaterialBlockType blockObject : MaterialBlockType.values()) {
             for (MaterialType material : blockObject.materials) {
                 HOLDER.blocks().computeIfAbsent(blockObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, blockObject,
@@ -92,9 +86,6 @@ public class Registration {
             }
         }
 
-        for (SimpleItemType type : SimpleItemType.values()) {
-            HOLDER.simpleItems().put(type, new Holder.SimpleItemHolder(type, ITEMS.register(type.key, type.itemGetter)));
-        }
         for (SimpleBlockType type : SimpleBlockType.values()) {
             HOLDER.simpleBlocks().put(type, registerBlock(type));
         }
@@ -129,6 +120,9 @@ public class Registration {
     }
 
     public static void init(IEventBus eventBus) {
+        YTechItems.register(eventBus);
+        YTechBlocks.register(eventBus);
+        YTechBlockEntityTypes.register(eventBus);
         BLOCKS.register(eventBus);
         ITEMS.register(eventBus);
         FLUIDS.register(eventBus);
@@ -144,10 +138,9 @@ public class Registration {
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == TAB.getKey()) {
-            GeneralUtils.mapToStream(HOLDER.items()).forEach((holder) -> event.accept(holder.item));
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
-            HOLDER.simpleItems().values().forEach(h -> event.accept(h.item.get()));
+            YTechItems.getRegisteredItems().forEach((object) -> event.accept(object.get()));
             HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
             HOLDER.entities().values().forEach(h -> event.accept(h.spawnEgg.get()));
         }
@@ -158,49 +151,16 @@ public class Registration {
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
-        HOLDER.simpleItems().values().forEach((h) -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
+        event.register((i, t) -> t == 1 ? 0xF54D0C : 0xFFFFFFFF, YTechItems.LAVA_CLAY_BUCKET.get());
+        event.register((i, t) -> t == 1 ? 0x0C4DF5 : 0xFFFFFFFF, YTechItems.WATER_CLAY_BUCKET.get());
         HOLDER.simpleBlocks().values().forEach((h) -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
-        GeneralUtils.mapToStream(HOLDER.items()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.item.get()));
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
     }
 
     @NotNull
-    public static Item item(@NotNull SimpleItemType type) {
-        return Objects.requireNonNull(HOLDER.simpleItems().get(type), "Missing item type " + type).item.get();
-    }
-
-    @NotNull
     public static Item item(@NotNull SimpleBlockType type) {
         return Objects.requireNonNull(HOLDER.simpleBlocks().get(type), "Missing item type " + type).block.get().asItem();
-    }
-
-    @NotNull
-    public static Item item(@NotNull MaterialItemType type, @NotNull MaterialType material) {
-        Item item = null;
-
-        switch (type) {
-            case INGOT -> {
-                switch (material) {
-                    case COPPER -> item = Items.COPPER_INGOT;
-                    case GOLD -> item = Items.GOLD_INGOT;
-                    case IRON -> item = Items.IRON_INGOT;
-                }
-            }
-            case RAW_MATERIAL -> {
-                switch (material) {
-                    case COPPER -> item = Items.RAW_COPPER;
-                    case GOLD -> item = Items.RAW_GOLD;
-                    case IRON -> item = Items.RAW_IRON;
-                }
-            }
-        }
-
-        if (item != null) {
-            return item;
-        }
-
-        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.items().get(type), "Missing item type " + type).get(material), "Missing material " + material).item.get();
     }
 
     @NotNull
@@ -373,10 +333,6 @@ public class Registration {
 
     private static <U extends INameable & IMaterialModel<?, ?>> int getTintColor(Holder.MaterialHolder<U> h, int t) {
         return h.object.getTintColors(h.material).getOrDefault(t, 0xFFFFFFFF);
-    }
-
-    private static int getTintColor(Holder.SimpleItemHolder h, int t) {
-        return h.object.getTintColors().getOrDefault(t, 0xFFFFFFFF);
     }
 
     private static int getTintColor(Holder.SimpleBlockHolder h, int t) {
