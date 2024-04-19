@@ -41,7 +41,25 @@ public class YTechItemTags {
     public static final TagKey<Item> VENISON = create("venison");
     public static final TagKey<Item> WATER_BUCKETS = create("water_buckets");
 
-    public static final TagKey<Item> BRONZE_ANVIL = create(YTechBlockTags.BRONZE_ANVIL);
+    public static final TagKey<Item> AQUEDUCTS = create(YTechBlockTags.AQUEDUCTS);
+    public static final TagKey<Item> AQUEDUCT_FERTILIZERS = create(YTechBlockTags.AQUEDUCT_FERTILIZERS);
+    public static final TagKey<Item> AQUEDUCT_HYDRATORS = create(YTechBlockTags.AQUEDUCT_HYDRATORS);
+    public static final TagKey<Item> AQUEDUCT_VALVES = create(YTechBlockTags.AQUEDUCT_VALVES);
+    public static final TagKey<Item> BRICK_CHIMNEYS = create(YTechBlockTags.BRICK_CHIMNEYS);
+    public static final TagKey<Item> BRONZE_ANVILS = create(YTechBlockTags.BRONZE_ANVILS);
+    public static final TagKey<Item> FIRE_PITS = create(YTechBlockTags.FIRE_PITS);
+    public static final TagKey<Item> GRASS_BEDS = create(YTechBlockTags.GRASS_BEDS);
+    public static final TagKey<Item> MILLSTONES = create(YTechBlockTags.MILLSTONES);
+    public static final TagKey<Item> PRIMITIVE_ALLOY_SMELTERS = create(YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
+    public static final TagKey<Item> PRIMITIVE_SMELTERS = create(YTechBlockTags.PRIMITIVE_SMELTERS);
+    public static final TagKey<Item> REINFORCED_BRICKS = create(YTechBlockTags.REINFORCED_BRICKS);
+    public static final TagKey<Item> REINFORCED_BRICK_CHIMNEYS = create(YTechBlockTags.REINFORCED_BRICK_CHIMNEYS);
+    public static final TagKey<Item> TERRACOTTA_BRICKS = create(YTechBlockTags.TERRACOTTA_BRICKS);
+    public static final TagKey<Item> TERRACOTTA_BRICK_SLABS = create(YTechBlockTags.TERRACOTTA_BRICK_SLABS);
+    public static final TagKey<Item> TERRACOTTA_BRICK_STAIRS = create(YTechBlockTags.TERRACOTTA_BRICK_STAIRS);
+    public static final TagKey<Item> THATCH = create(YTechBlockTags.THATCH);
+    public static final TagKey<Item> THATCH_SLABS = create(YTechBlockTags.THATCH_SLABS);
+    public static final TagKey<Item> THATCH_STAIRS = create(YTechBlockTags.THATCH_STAIRS);
 
     public static final MaterialTag ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
     public static final MaterialTag AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);

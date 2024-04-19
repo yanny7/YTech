@@ -3,7 +3,6 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block_entity.AqueductConsumerBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,14 +30,10 @@ import java.util.List;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public abstract class AqueductConsumerBlock extends IrrigationBlock {
-    protected final Holder.SimpleBlockHolder holder;
-
-    public AqueductConsumerBlock(Holder.SimpleBlockHolder holder) {
+    public AqueductConsumerBlock() {
         super(Properties.copy(Blocks.TERRACOTTA));
-        this.holder = holder;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {

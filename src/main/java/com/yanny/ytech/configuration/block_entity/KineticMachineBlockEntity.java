@@ -2,7 +2,6 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -19,8 +18,8 @@ public abstract class KineticMachineBlockEntity extends MachineBlockEntity imple
 
     protected int networkId = -1;
 
-    public KineticMachineBlockEntity(Holder holder, BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState) {
-        super(holder, entityType, pos, blockState);
+    public KineticMachineBlockEntity(BlockEntityType<? extends BlockEntity> entityType, BlockPos pos, BlockState blockState) {
+        super(entityType, pos, blockState);
     }
 
     /***********************

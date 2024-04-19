@@ -1,14 +1,12 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductFertilizerBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
@@ -46,17 +44,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IMenuBlock {
-    public AqueductFertilizerBlock(Holder.SimpleBlockHolder holder) {
-        super(holder);
-    }
-
     @Override
     public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new AqueductFertilizerBlockEntity(holder, blockHolder.getBlockEntityType(), pos, blockState);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new AqueductFertilizerBlockEntity(pos, blockState);
     }
 
     @SuppressWarnings("deprecation")
@@ -99,9 +89,14 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
         ).toArray(TextureHolder[]::new);
     }
 
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile base = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        ResourceLocation fertilizerTexture = Utils.modBlockLoc("aqueduct/aqueduct_fertilizer");
+        ResourceLocation valveTexture = Utils.modBlockLoc("aqueduct/aqueduct_valve");
+        ResourceLocation bricksTexture = Utils.modBlockLoc("terracotta_bricks");
+        ResourceLocation invisibleTexture = Utils.modBlockLoc("invisible");
+        ResourceLocation workingTexture = Utils.modBlockLoc("aqueduct/aqueduct_fertilizer_working");
+        String name = Utils.getId(YTechBlocks.AQUEDUCT_FERTILIZER);
+        ModelFile base = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -114,10 +109,10 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
-                .texture("0", textures[0])
-                .texture("2", textures[2])
-                .texture("particle", textures[0]);
-        ModelFile waterlogged = provider.models().getBuilder(holder.key + "_waterlogged")
+                .texture("0", fertilizerTexture)
+                .texture("2", bricksTexture)
+                .texture("particle", fertilizerTexture);
+        ModelFile waterlogged = provider.models().getBuilder(name + "_waterlogged")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -130,10 +125,10 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
-                .texture("2", textures[2])
-                .texture("4", textures[4])
-                .texture("particle", textures[0]);
-        ModelFile overlay = provider.models().getBuilder(holder.key + "_overlay")
+                .texture("2", bricksTexture)
+                .texture("4", workingTexture)
+                .texture("particle", fertilizerTexture);
+        ModelFile overlay = provider.models().getBuilder(name + "_overlay")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     if (Objects.requireNonNull(direction) == Direction.NORTH) {
@@ -144,9 +139,9 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
                 .renderType("minecraft:cutout")
-                .texture("1", textures[1])
-                .texture("3", textures[3]);
-        ModelFile inventory = provider.models().getBuilder(holder.key + "_inventory")
+                .texture("1", valveTexture)
+                .texture("3", invisibleTexture);
+        ModelFile inventory = provider.models().getBuilder(name + "_inventory")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -159,21 +154,21 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
-                .texture("0", textures[0])
-                .texture("1", textures[1])
-                .texture("particle", textures[0]);
+                .texture("0", fertilizerTexture)
+                .texture("1", valveTexture)
+                .texture("particle", fertilizerTexture);
 
-        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(holder.block.get());
+        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.AQUEDUCT_FERTILIZER.get());
         builder.part().modelFile(base).addModel().condition(BlockStateProperties.WATERLOGGED, false).end();
         builder.part().modelFile(waterlogged).addModel().condition(BlockStateProperties.WATERLOGGED, true).end();
         PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(overlay).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
 
-        provider.itemModels().getBuilder(holder.key).parent(inventory);
+        provider.itemModels().getBuilder(name).parent(inventory);
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', Registration.item(SimpleBlockType.AQUEDUCT_HYDRATOR))
+    public static void registerRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT_FERTILIZER.get())
+                .define('#', YTechItemTags.AQUEDUCT_HYDRATORS)
                 .define('R', YTechItemTags.RODS.of(MaterialType.BRONZE))
                 .define('S', YTechItemTags.PLATES.of(MaterialType.BRONZE))
                 .define('B', YTechItemTags.BOLTS.of(MaterialType.BRONZE))
@@ -183,7 +178,7 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
                 .pattern("HCF")
                 .pattern("S#S")
                 .pattern("RBR")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.TERRACOTTA_BRICKS.itemTag))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.AQUEDUCT_FERTILIZER));
     }
 }

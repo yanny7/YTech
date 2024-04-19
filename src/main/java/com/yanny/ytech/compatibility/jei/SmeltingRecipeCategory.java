@@ -1,10 +1,9 @@
 package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlocks;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -26,8 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
-
 public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
     public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "smelting", SmeltingRecipe.class);
 
@@ -39,7 +36,7 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
     public SmeltingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 138, 82, 62);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(SimpleBlockType.PRIMITIVE_SMELTER)));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.PRIMITIVE_SMELTER.get()));
         localizedName = Component.translatable("gui.ytech.category.smelting");
     }
 
@@ -90,8 +87,8 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.PRIMITIVE_SMELTER).block.get()), RECIPE_TYPE, RecipeTypes.FUELING);
-        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.BRICK_CHIMNEY).block.get()), RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.REINFORCED_BRICK_CHIMNEY).block.get()), RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.PRIMITIVE_SMELTER.get()), RECIPE_TYPE, RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.BRICK_CHIMNEY.get()), RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.REINFORCED_BRICK_CHIMNEY.get()), RECIPE_TYPE);
     }
 }

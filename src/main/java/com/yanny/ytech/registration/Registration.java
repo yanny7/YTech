@@ -86,10 +86,6 @@ public class Registration {
             }
         }
 
-        for (SimpleBlockType type : SimpleBlockType.values()) {
-            HOLDER.simpleBlocks().put(type, registerBlock(type));
-        }
-
         for (SimpleEntityType type : SimpleEntityType.values()) {
             HOLDER.simpleEntities().put(type, registerSimpleEntity(type));
         }
@@ -123,6 +119,7 @@ public class Registration {
         YTechItems.register(eventBus);
         YTechBlocks.register(eventBus);
         YTechBlockEntityTypes.register(eventBus);
+        YTechMenuTypes.register(eventBus);
         BLOCKS.register(eventBus);
         ITEMS.register(eventBus);
         FLUIDS.register(eventBus);
@@ -141,7 +138,6 @@ public class Registration {
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
             YTechItems.getRegisteredItems().forEach((object) -> event.accept(object.get()));
-            HOLDER.simpleBlocks().values().forEach(h -> event.accept(h.block.get()));
             HOLDER.entities().values().forEach(h -> event.accept(h.spawnEgg.get()));
         }
     }
@@ -153,29 +149,14 @@ public class Registration {
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((i, t) -> t == 1 ? 0xF54D0C : 0xFFFFFFFF, YTechItems.LAVA_CLAY_BUCKET.get());
         event.register((i, t) -> t == 1 ? 0x0C4DF5 : 0xFFFFFFFF, YTechItems.WATER_CLAY_BUCKET.get());
-        HOLDER.simpleBlocks().values().forEach((h) -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
+
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
     }
 
     @NotNull
-    public static Item item(@NotNull SimpleBlockType type) {
-        return Objects.requireNonNull(HOLDER.simpleBlocks().get(type), "Missing item type " + type).block.get().asItem();
-    }
-
-    @NotNull
     public static Item item(@NotNull MaterialBlockType type, @NotNull MaterialType material) {
         return Objects.requireNonNull(Objects.requireNonNull(HOLDER.blocks().get(type), "Missing item type " + type).get(material), "Missing material " + material).block.get().asItem();
-    }
-
-    @NotNull
-    public static Item bucket(@NotNull MaterialFluidType type, @NotNull MaterialType material) {
-        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.fluids().get(type), "Missing bucket type " + type).get(material), "Missing material " + material).bucket.get();
-    }
-
-    @NotNull
-    public static Block block(@NotNull SimpleBlockType type) {
-        return Objects.requireNonNull(HOLDER.simpleBlocks().get(type), "Missing item type " + type).block.get();
     }
 
     @NotNull
@@ -224,14 +205,6 @@ public class Registration {
         };
     }
 
-    private static Holder.SimpleBlockHolder registerBlock(SimpleBlockType blockType) {
-        return switch (blockType.type) {
-            case BLOCK -> new Holder.SimpleBlockHolder(blockType, Registration::registerBlock, Registration::registerItem);
-            case ENTITY_BLOCK -> new Holder.EntitySimpleBlockHolder(blockType, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity);
-            case MENU_BLOCK -> new Holder.MenuEntitySimpleBlockHolder(blockType, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
-        };
-    }
-
     private static Holder.SimpleEntityHolder registerSimpleEntity(SimpleEntityType type) {
         return new Holder.SimpleEntityHolder(type, Registration::registerSimpleEntityType);
     }
@@ -268,29 +241,12 @@ public class Registration {
         return ITEMS.register(holder.key, () -> holder.object.getItem(holder));
     }
 
-    private static RegistryObject<Block> registerBlock(Holder.SimpleBlockHolder holder) {
-        return BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
-    }
-
-    private static RegistryObject<Item> registerItem(Holder.SimpleBlockHolder holder) {
-        return ITEMS.register(holder.key, () -> holder.object.getItem(holder));
-    }
-
     private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder) {
         return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
                 Objects.requireNonNull(((EntityBlock) holder.block.get()).newBlockEntity(pos, blockState)), holder.block.get()).build(null));
     }
 
-    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.SimpleBlockHolder holder) {
-        return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
-                Objects.requireNonNull(((EntityBlock) holder.block.get()).newBlockEntity(pos, blockState)), holder.block.get()).build(null));
-    }
-
     private static RegistryObject<MenuType<?>> registerMenuBlockEntity(Holder.BlockHolder holder) {
-        return MENU_TYPES.register(holder.key, () -> IForgeMenuType.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
-    }
-
-    private static RegistryObject<MenuType<?>> registerMenuBlockEntity(Holder.SimpleBlockHolder holder) {
         return MENU_TYPES.register(holder.key, () -> IForgeMenuType.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
     }
 
@@ -319,7 +275,7 @@ public class Registration {
     }
 
     private static RegistryObject<CreativeModeTab> registerCreativeTab() {
-        Supplier<ItemStack> iconSupplier = () -> new ItemStack(item(SimpleBlockType.PRIMITIVE_SMELTER));
+        Supplier<ItemStack> iconSupplier = () -> new ItemStack(YTechBlocks.PRIMITIVE_SMELTER.get());
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().title(Component.translatable("creativeTab.ytech.title")).icon(iconSupplier).build());
     }
 
@@ -333,10 +289,6 @@ public class Registration {
 
     private static <U extends INameable & IMaterialModel<?, ?>> int getTintColor(Holder.MaterialHolder<U> h, int t) {
         return h.object.getTintColors(h.material).getOrDefault(t, 0xFFFFFFFF);
-    }
-
-    private static int getTintColor(Holder.SimpleBlockHolder h, int t) {
-        return h.object.getTintColors().getOrDefault(t, 0xFFFFFFFF);
     }
 
     private static Object getTierObject(@NotNull Tier tier) {

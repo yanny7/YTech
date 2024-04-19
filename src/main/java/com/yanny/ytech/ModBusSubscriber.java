@@ -10,10 +10,7 @@ import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.CustomRendererBakedModel;
 import com.yanny.ytech.configuration.model.DeerModel;
 import com.yanny.ytech.configuration.renderer.*;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
-import com.yanny.ytech.registration.YTechBlockEntityTypes;
-import com.yanny.ytech.registration.YTechItems;
+import com.yanny.ytech.registration.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -51,18 +48,15 @@ public class ModBusSubscriber {
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
         ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
                 (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
-
         YTechItems.SPEARS.items().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
 
         event.enqueueWork(() -> {
+            MenuScreens.register(YTechMenuTypes.PRIMITIVE_ALLOY_SMELTER.get(), ((IMenuBlock) YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get())::getScreen);
+            MenuScreens.register(YTechMenuTypes.PRIMITIVE_SMELTER.get(), ((IMenuBlock) YTechBlocks.PRIMITIVE_SMELTER.get())::getScreen);
+
             GeneralUtils.mapToStream(HOLDER.blocks()).forEach((blockHolder) -> {
                 if (blockHolder instanceof Holder.MenuEntityBlockHolder holder && holder.block.get() instanceof IMenuBlock menuBlock) {
-                    MenuScreens.register(holder.getMenuType(), menuBlock::getScreen);
-                }
-            });
-            HOLDER.simpleBlocks().values().forEach((blockHolder) -> {
-                if (blockHolder instanceof Holder.MenuEntitySimpleBlockHolder holder && holder.block.get() instanceof IMenuBlock menuBlock) {
                     MenuScreens.register(holder.getMenuType(), menuBlock::getScreen);
                 }
             });
@@ -72,16 +66,10 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerEntityRenderer(@NotNull EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.AQUEDUCT_FERTILIZER.get(), AqueductRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.BRONZE_ANVIL.get(), BronzeAnvilRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.MILLSTONE.get(), MillstoneRenderer::new);
 
-        HOLDER.simpleBlocks().forEach((blockType, blockHolder) -> {
-            if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
-                switch (blockType) {
-                    case MILLSTONE -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), MillstoneRenderer::new);
-                    case AQUEDUCT -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), AqueductRenderer::new);
-                }
-            }
-        });
         HOLDER.blocks().forEach((blockType, map) -> map.forEach((material, blockHolder) -> {
             if (blockHolder instanceof Holder.EntityBlockHolder holder) {
                 switch (blockType) {

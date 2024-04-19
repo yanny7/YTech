@@ -3,8 +3,7 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.IBlockHolder;
+import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,7 +12,6 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -199,9 +197,9 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
         ).toArray(TextureHolder[]::new);
     }
 
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile model = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        String name = Utils.getId(YTechBlocks.GRASS_BED);
+        ModelFile model = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -235,14 +233,14 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
                 .from(0, 0, 13).to(16, 0, 19).rotation().angle(-22.5f).axis(Direction.Axis.X).origin(8, 0, 8).end()
                 .end()
                 .renderType("minecraft:cutout")
-                .texture("particle", textures[1])
-                .texture("0", textures[0])
-                .texture("1", textures[1]);
+                .texture("particle", Utils.modBlockLoc("thatch"))
+                .texture("0", Utils.modBlockLoc("dried_grass"))
+                .texture("1", Utils.modBlockLoc("thatch"));
 
-        provider.itemModels().getBuilder(holder.key).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
+        provider.itemModels().getBuilder(name).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
                 .texture("layer0", Utils.modItemLoc("grass_bed"));
 
-        provider.getVariantBuilder(holder.block.get())
+        provider.getVariantBuilder(YTechBlocks.GRASS_BED.get())
                 .partialState().with(HORIZONTAL_FACING, Direction.NORTH).with(BED_PART, FOOT).setModels(ConfiguredModel.builder().modelFile(model).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.EAST).with(BED_PART, FOOT).setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.SOUTH).with(BED_PART, FOOT).setModels(ConfiguredModel.builder().modelFile(model).rotationY(180).build())
@@ -253,18 +251,17 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
                 .partialState().with(HORIZONTAL_FACING, Direction.WEST).with(BED_PART, HEAD).setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build());
     }
 
-    public static void registerLootTable(@NotNull IBlockHolder holder, @NotNull BlockLootSubProvider provider) {
-        Block block = holder.getBlockRegistry().get();
-        provider.add(block, b -> provider.createSinglePropConditionTable(b, PART, HEAD));
+    public static void registerLootTable(@NotNull BlockLootSubProvider provider) {
+        provider.add(YTechBlocks.GRASS_BED.get(), b -> provider.createSinglePropConditionTable(b, PART, HEAD));
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
+    public static void registerRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.GRASS_BED.get())
                 .define('G', YTechItemTags.GRASS_FIBERS)
                 .pattern("GGG")
                 .pattern("GGG")
                 .pattern("GGG")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.GRASS_FIBERS))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.GRASS_BED));
     }
 }

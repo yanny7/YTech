@@ -1,12 +1,10 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.IEntityBlockHolder;
+import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,25 +26,16 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
 public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock implements IMenuBlock {
-    public PrimitiveSmelterBlock(Holder holder) {
-        super(holder);
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState pState) {
-        if (holder instanceof IEntityBlockHolder entityHolder) {
-            return new PrimitiveSmelterBlockEntity(holder, entityHolder.getBlockEntityType(), pos, pState);
-        } else {
-            throw new IllegalStateException("Invalid holder type");
-        }
+        return new PrimitiveSmelterBlockEntity(pos, pState);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -58,27 +47,15 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
         return (AbstractContainerScreen<AbstractContainerMenu>)screen;
     }
 
-    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', Items.FURNACE)
-                .define('B', Items.BRICKS)
-                .pattern("BBB")
-                .pattern("B#B")
-                .pattern("BBB")
-                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
-    }
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        ResourceLocation casing = Utils.modBlockLoc("bricks");
+        ResourceLocation top = Utils.modBlockLoc("machine/primitive_smelter_top");
+        ResourceLocation face = Utils.modBlockLoc("machine/primitive_smelter_front");
+        ResourceLocation facePowered = Utils.modBlockLoc("machine/primitive_smelter_front_powered");
+        BlockModelBuilder model = provider.models().cube(Utils.getId(YTechBlocks.PRIMITIVE_SMELTER), casing, top, face, casing, casing, casing).texture("particle", casing);
+        BlockModelBuilder modelPowered = provider.models().cube(Utils.getId(YTechBlocks.PRIMITIVE_SMELTER) + "_powered", casing, top, facePowered, casing, casing, casing).texture("particle", casing);
 
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ResourceLocation casing = textures[0];
-        ResourceLocation top = textures[1];
-        ResourceLocation face = textures[2];
-        ResourceLocation facePowered = textures[3];
-        BlockModelBuilder model = provider.models().cube(holder.key, casing, top, face, casing, casing, casing).texture("particle", casing);
-        BlockModelBuilder modelPowered = provider.models().cube(holder.key + "_powered", casing, top, facePowered, casing, casing, casing).texture("particle", casing);
-
-        provider.getVariantBuilder(holder.block.get())
+        provider.getVariantBuilder(YTechBlocks.PRIMITIVE_SMELTER.get())
                 .partialState().with(HORIZONTAL_FACING, Direction.NORTH).with(POWERED, false).setModels(ConfiguredModel.builder().modelFile(model).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.EAST).with(POWERED, false).setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.SOUTH).with(POWERED, false).setModels(ConfiguredModel.builder().modelFile(model).rotationY(180).build())
@@ -87,15 +64,17 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock impleme
                 .partialState().with(HORIZONTAL_FACING, Direction.EAST).with(POWERED, true).setModels(ConfiguredModel.builder().modelFile(modelPowered).rotationY(90).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.SOUTH).with(POWERED, true).setModels(ConfiguredModel.builder().modelFile(modelPowered).rotationY(180).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.WEST).with(POWERED, true).setModels(ConfiguredModel.builder().modelFile(modelPowered).rotationY(270).build());
-        provider.itemModels().getBuilder(holder.key).parent(model);
+        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.PRIMITIVE_SMELTER)).parent(model);
     }
 
-    public static TextureHolder[] textureHolder() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("bricks")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_top")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("machine/primitive_smelter_front_powered"))
-        ).toArray(TextureHolder[]::new);
+    public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.PRIMITIVE_SMELTER.get())
+                .define('#', Items.FURNACE)
+                .define('B', Items.BRICKS)
+                .pattern("BBB")
+                .pattern("B#B")
+                .pattern("BBB")
+                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.PRIMITIVE_SMELTER));
     }
 }

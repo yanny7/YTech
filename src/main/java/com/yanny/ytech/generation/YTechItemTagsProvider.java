@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static com.yanny.ytech.registration.Registration.HOLDER;
@@ -59,8 +58,25 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.VENISON).add(YTechItems.VENISON.get());
         tag(YTechItemTags.WATER_BUCKETS).add(Items.WATER_BUCKET, YTechItems.WATER_CLAY_BUCKET.get());
 
-        tag(YTechItemTags.BRONZE_ANVIL).add(YTechItems.BRONZE_ANVIL.get());
-        tag(ItemTags.ANVIL).add(YTechItems.BRONZE_ANVIL.get());
+        tag(YTechItemTags.AQUEDUCTS).add(YTechItems.AQUEDUCT.get());
+        tag(YTechItemTags.AQUEDUCT_FERTILIZERS).add(YTechItems.AQUEDUCT_FERTILIZER.get());
+        tag(YTechItemTags.AQUEDUCT_HYDRATORS).add(YTechItems.AQUEDUCT_HYDRATOR.get());
+        tag(YTechItemTags.AQUEDUCT_VALVES).add(YTechItems.AQUEDUCT_VALVE.get());
+        tag(YTechItemTags.BRICK_CHIMNEYS).add(YTechItems.BRICK_CHIMNEY.get());
+        tag(YTechItemTags.BRONZE_ANVILS).add(YTechItems.BRONZE_ANVIL.get());
+        tag(YTechItemTags.FIRE_PITS).add(YTechItems.FIRE_PIT.get());
+        tag(YTechItemTags.GRASS_BEDS).add(YTechItems.GRASS_BED.get());
+        tag(YTechItemTags.MILLSTONES).add(YTechItems.MILLSTONE.get());
+        tag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS).add(YTechItems.PRIMITIVE_ALLOY_SMELTER.get());
+        tag(YTechItemTags.PRIMITIVE_SMELTERS).add(YTechItems.PRIMITIVE_SMELTER.get());
+        tag(YTechItemTags.REINFORCED_BRICKS).add(YTechItems.REINFORCED_BRICKS.get());
+        tag(YTechItemTags.REINFORCED_BRICK_CHIMNEYS).add(YTechItems.REINFORCED_BRICK_CHIMNEY.get());
+        tag(YTechItemTags.TERRACOTTA_BRICKS).add(YTechItems.TERRACOTTA_BRICKS.get());
+        tag(YTechItemTags.TERRACOTTA_BRICK_SLABS).add(YTechItems.TERRACOTTA_BRICK_SLAB.get());
+        tag(YTechItemTags.TERRACOTTA_BRICK_STAIRS).add(YTechItems.TERRACOTTA_BRICK_STAIRS.get());
+        tag(YTechItemTags.THATCH).add(YTechItems.THATCH.get());
+        tag(YTechItemTags.THATCH_SLABS).add(YTechItems.THATCH_SLAB.get());
+        tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
 
         materialTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         materialTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
@@ -85,7 +101,11 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         materialTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
         materialTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
 
-        GeneralUtils.sortedStreamMap(HOLDER.simpleBlocks(), Map.Entry.comparingByKey()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
+        tag(ItemTags.ANVIL).add(YTechItems.BRONZE_ANVIL.get());
+        tag(ItemTags.BEDS).add(YTechItems.GRASS_BED.get());
+        tag(ItemTags.SLABS).add(YTechItems.TERRACOTTA_BRICK_SLAB.get(), YTechItems.THATCH_SLAB.get());
+        tag(ItemTags.STAIRS).add(YTechItems.TERRACOTTA_BRICK_STAIRS.get(), YTechItems.THATCH_STAIRS.get());
+
         GeneralUtils.sortedStreamMapOfMap(HOLDER.blocks(), Utils.blockComparator()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
 
         Arrays.stream(GenericItemTags.values()).forEach((type) -> type.registerTags(this));

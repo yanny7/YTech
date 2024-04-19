@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
 import com.yanny.ytech.configuration.item.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -21,6 +22,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
+
+import static com.yanny.ytech.YTechMod.CONFIGURATION;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
 
 public class YTechItems {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YTechMod.MOD_ID);
@@ -40,7 +44,7 @@ public class YTechItems {
     public static final RegistryObject<Item> DRIED_SALMON = ITEMS.register("dried_salmon", () -> foodItem(4, 0.5f));
     public static final RegistryObject<Item> DRIED_VENISON = ITEMS.register("dried_venison", () -> foodItem(5, 0.7f));
     public static final RegistryObject<Item> FLOUR = ITEMS.register("flour", YTechItems::simpleItem);
-    public static final RegistryObject<Item> GRASS_FIBERS = ITEMS.register("grass_fibers", GrassItem::new);
+    public static final RegistryObject<Item> GRASS_FIBERS = ITEMS.register("grass_fibers", () -> descriptionItem(List.of(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY))));
     public static final RegistryObject<Item> GRASS_TWINE = ITEMS.register("grass_twine", YTechItems::simpleItem);
     public static final RegistryObject<Item> IRON_BLOOM = ITEMS.register("iron_bloom", YTechItems::simpleItem);
     public static final RegistryObject<Item> LAVA_CLAY_BUCKET = ITEMS.register("lava_clay_bucket", LavaClayBucketItem::new);
@@ -53,7 +57,25 @@ public class YTechItems {
     public static final RegistryObject<Item> VENISON = ITEMS.register("venison", () -> foodItem(2, 0.3f));
     public static final RegistryObject<Item> WATER_CLAY_BUCKET = ITEMS.register("water_clay_bucket", () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 
+    public static final RegistryObject<Item> AQUEDUCT = ITEMS.register("aqueduct", YTechItems::aqueductBlockItem);
+    public static final RegistryObject<Item> AQUEDUCT_FERTILIZER = ITEMS.register("aqueduct_fertilizer", YTechItems::aqueductFertilizerBlockItem);
+    public static final RegistryObject<Item> AQUEDUCT_HYDRATOR = ITEMS.register("aqueduct_hydrator", YTechItems::aqueductHydratorBlockItem);
+    public static final RegistryObject<Item> AQUEDUCT_VALVE = ITEMS.register("aqueduct_valve", YTechItems::aqueductValveBlockItem);
+    public static final RegistryObject<Item> BRICK_CHIMNEY = ITEMS.register("brick_chimney", () -> descriptionItem(YTechBlocks.BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> BRONZE_ANVIL = ITEMS.register("bronze_anvil", () -> blockItem(YTechBlocks.BRONZE_ANVIL));
+    public static final RegistryObject<Item> FIRE_PIT = ITEMS.register("fire_pit", YTechItems::firePitBlockItem);
+    public static final RegistryObject<Item> GRASS_BED = ITEMS.register("grass_bed", YTechItems::grassBedBlockItem);
+    public static final RegistryObject<Item> MILLSTONE = ITEMS.register("millstone", () -> descriptionItem(YTechBlocks.MILLSTONE, List.of(Component.translatable("text.ytech.hover.millstone").withStyle(DARK_GRAY))));
+    public static final RegistryObject<Item> PRIMITIVE_ALLOY_SMELTER = ITEMS.register("primitive_alloy_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_ALLOY_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
+    public static final RegistryObject<Item> PRIMITIVE_SMELTER = ITEMS.register("primitive_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
+    public static final RegistryObject<Item> REINFORCED_BRICKS = ITEMS.register("reinforced_bricks", () -> blockItem(YTechBlocks.REINFORCED_BRICKS));
+    public static final RegistryObject<Item> REINFORCED_BRICK_CHIMNEY = ITEMS.register("reinforced_brick_chimney", () -> descriptionItem(YTechBlocks.REINFORCED_BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))));
+    public static final RegistryObject<Item> TERRACOTTA_BRICKS = ITEMS.register("terracotta_bricks", () -> blockItem(YTechBlocks.TERRACOTTA_BRICKS));
+    public static final RegistryObject<Item> TERRACOTTA_BRICK_SLAB = ITEMS.register("terracotta_brick_slab", () -> blockItem(YTechBlocks.TERRACOTTA_BRICK_SLAB));
+    public static final RegistryObject<Item> TERRACOTTA_BRICK_STAIRS = ITEMS.register("terracotta_brick_stairs", () -> blockItem(YTechBlocks.TERRACOTTA_BRICK_STAIRS));
+    public static final RegistryObject<Item> THATCH = ITEMS.register("thatch", () -> blockItem(YTechBlocks.THATCH));
+    public static final RegistryObject<Item> THATCH_SLAB = ITEMS.register("thatch_slab", () -> blockItem(YTechBlocks.THATCH_SLAB));
+    public static final RegistryObject<Item> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> blockItem(YTechBlocks.THATCH_STAIRS));
 
     public static final MaterialItem ARROWS = new MaterialItem("arrow", GroupLocation.SUFFIX, MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
     public static final MaterialItem AXES = new AxeMaterialItem();
@@ -140,6 +162,26 @@ public class YTechItems {
 
     private static Item foodItem(int nutrition, float saturation) {
         return new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(nutrition).saturationMod(saturation).build()));
+    }
+
+    private static Item descriptionItem(@NotNull List<Component> description) {
+        return new Item(new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.addAll(description);
+            }
+        };
+    }
+
+    private static Item descriptionItem(RegistryObject<Block> block, @NotNull List<Component> description) {
+        return new BlockItem(block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.addAll(description);
+            }
+        };
     }
 
     public static class MaterialItem {
@@ -289,21 +331,77 @@ public class YTechItems {
         }
     }
 
-    private static class GrassItem extends Item {
-        public GrassItem() {
-            super(new Item.Properties());
-        }
+    private static Item aqueductBlockItem() {
+        return new BlockItem(YTechBlocks.AQUEDUCT.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct1", CONFIGURATION.getBaseFluidStoragePerBlock()).withStyle(DARK_GRAY));
 
-        @Override
-        public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
-            super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-            pTooltipComponents.add(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY));
-
-        }
+                if (CONFIGURATION.shouldRainingFillAqueduct()) {
+                    tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct2",
+                            CONFIGURATION.getRainingFillAmount(), CONFIGURATION.getRainingFillPerNthTick()).withStyle(DARK_GRAY));
+                }
+            }
+        };
     }
 
-    public enum GroupLocation {
-        PREFIX,
-        SUFFIX
+    private static Item aqueductFertilizerBlockItem() {
+        return new BlockItem(YTechBlocks.AQUEDUCT_FERTILIZER.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_fertilizer1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_fertilizer2",
+                        CONFIGURATION.getHydratorDrainAmount(), CONFIGURATION.getHydratorDrainPerNthTick()).withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item aqueductHydratorBlockItem() {
+        return new BlockItem(YTechBlocks.AQUEDUCT_HYDRATOR.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_hydrator1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_hydrator2",
+                        CONFIGURATION.getHydratorDrainAmount(), CONFIGURATION.getHydratorDrainPerNthTick()).withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item aqueductValveBlockItem() {
+        return new BlockItem(YTechBlocks.AQUEDUCT_VALVE.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_valve1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct_valve2",
+                        CONFIGURATION.getValveFillAmount(), CONFIGURATION.getValveFillPerNthTick()).withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item firePitBlockItem() {
+        return new BlockItem(YTechBlocks.FIRE_PIT.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit1").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit2").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit3").withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.fire_pit4").withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item grassBedBlockItem() {
+        return new BlockItem(YTechBlocks.GRASS_BED.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.grass_bed").withStyle(DARK_GRAY));
+            }
+        };
     }
 }

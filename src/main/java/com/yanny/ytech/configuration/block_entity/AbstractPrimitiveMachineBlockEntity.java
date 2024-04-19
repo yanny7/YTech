@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block_entity;
 
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -45,8 +44,8 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     protected int smeltingTime = 0;
     protected int recipeTemperature = 0;
 
-    public AbstractPrimitiveMachineBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState, RecipeType<?> recipeType) {
-        super(holder, blockEntityType, pos, blockState);
+    public AbstractPrimitiveMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState, RecipeType<?> recipeType) {
+        super(blockEntityType, pos, blockState);
         this.recipeType = recipeType;
     }
 

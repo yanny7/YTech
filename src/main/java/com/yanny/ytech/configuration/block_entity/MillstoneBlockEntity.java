@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -45,8 +45,8 @@ public class MillstoneBlockEntity extends BlockEntity {
     @Nullable private GoAroundEntity entity = null;
     private final Random random = new Random();
 
-    public MillstoneBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(blockEntityType, pos, blockState);
+    public MillstoneBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YTechBlockEntityTypes.MILLSTONE.get(), pos, blockState);
     }
 
     public InteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand) {

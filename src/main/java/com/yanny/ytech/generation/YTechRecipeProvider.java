@@ -4,8 +4,9 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.block.BronzeAnvilBlock;
+import com.yanny.ytech.configuration.block.*;
 import com.yanny.ytech.configuration.recipe.*;
+import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.data.PackOutput;
@@ -34,7 +35,6 @@ class YTechRecipeProvider extends RecipeProvider {
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
-        HOLDER.simpleBlocks().values().forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
 
         /*
          * MODIFIED VANILLA RECIPES
@@ -333,7 +333,25 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.SPEARS.entries().forEach((entry) -> registerSpearRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.SWORDS.entries().forEach((entry) -> registerSwordRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
 
+        AqueductBlock.registerRecipe(recipeConsumer);
+        AqueductFertilizerBlock.registerRecipe(recipeConsumer);
+        AqueductHydratorBlock.registerRecipe(recipeConsumer);
+        AqueductValveBlock.registerRecipe(recipeConsumer);
+        BrickChimneyBlock.registerRecipe(recipeConsumer);
         BronzeAnvilBlock.registerRecipe(recipeConsumer);
+        FirePitBlock.registerRecipe(recipeConsumer);
+        GrassBedBlock.registerRecipe(recipeConsumer);
+        MillstoneBlock.registerRecipe(recipeConsumer);
+        PrimitiveAlloySmelterBlock.registerRecipe(recipeConsumer);
+        PrimitiveSmelterBlock.registerRecipe(recipeConsumer);
+        registerReinforcedBricksRecipe(recipeConsumer);
+        ReinforcedBrickChimneyBlock.registerRecipe(recipeConsumer);
+        registerTerracottaBricksRecipe(recipeConsumer);
+        registerTerracottaBrickSlabRecipe(recipeConsumer);
+        registerTerracottaBrickStairsRecipe(recipeConsumer);
+        registerThatchBlockRecipe(recipeConsumer);
+        registerThatchBlockSlabRecipe(recipeConsumer);
+        registerThatchBlockStairsRecipe(recipeConsumer);
 
         alloyingRecipe(recipeConsumer, YTechItemTags.INGOTS.of(COPPER), 9, YTechItemTags.INGOTS.of(TIN), 1, YTechItems.INGOTS.of(BRONZE).get(), 10, Math.max(COPPER.meltingTemp, TIN.meltingTemp), 200);
 
@@ -1039,5 +1057,77 @@ class YTechRecipeProvider extends RecipeProvider {
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.of(material)))
                     .save(recipeConsumer, Utils.modLoc(item));
         }
+    }
+
+    private static void registerReinforcedBricksRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.REINFORCED_BRICKS.get())
+                .define('B', Items.BRICKS)
+                .define('P', YTechItemTags.PLATES.of(MaterialType.COPPER))
+                .define('#', YTechItemTags.BOLTS.of(MaterialType.COPPER))
+                .pattern("#P#")
+                .pattern("PBP")
+                .pattern("#P#")
+                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.REINFORCED_BRICKS));
+    }
+
+    private static void registerTerracottaBricksRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICKS.get())
+                .define('B', Items.TERRACOTTA)
+                .pattern("BB")
+                .pattern("BB")
+                .unlockedBy(RecipeProvider.getHasName(Items.TERRACOTTA), RecipeProvider.has(Items.TERRACOTTA))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.TERRACOTTA_BRICKS));
+    }
+
+    private static void registerTerracottaBrickSlabRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICK_SLAB.get(), 6)
+                .define('B', YTechItemTags.TERRACOTTA_BRICKS)
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.TERRACOTTA_BRICK_SLAB));
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(YTechItemTags.TERRACOTTA_BRICKS), RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICK_SLAB.get(), 2)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(Utils.getId(YTechBlocks.TERRACOTTA_BRICK_SLAB) + "_stonecutting"));
+    }
+
+    private static void registerTerracottaBrickStairsRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICK_STAIRS.get(), 4)
+                .define('B', YTechItemTags.TERRACOTTA_BRICKS)
+                .pattern("B  ")
+                .pattern("BB ")
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.TERRACOTTA_BRICK_STAIRS));
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(YTechItemTags.TERRACOTTA_BRICKS), RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICK_STAIRS.get())
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(Utils.getId(YTechBlocks.TERRACOTTA_BRICK_STAIRS) + "_stonecutting"));
+    }
+
+    private static void registerThatchBlockRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.THATCH.get())
+                .define('B', YTechItemTags.GRASS_FIBERS)
+                .pattern("BB")
+                .pattern("BB")
+                .unlockedBy("has_thatch", RecipeProvider.has(YTechItemTags.GRASS_FIBERS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.THATCH));
+    }
+
+    private static void registerThatchBlockSlabRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.THATCH_SLAB.get(), 6)
+                .define('B', YTechItemTags.THATCH)
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.THATCH))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.THATCH_SLAB));
+    }
+
+    private static void registerThatchBlockStairsRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.THATCH_STAIRS.get(), 4)
+                .define('B', YTechItemTags.THATCH)
+                .pattern("B  ")
+                .pattern("BB ")
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.THATCH))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.THATCH_STAIRS));
     }
 }

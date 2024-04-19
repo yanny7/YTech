@@ -1,17 +1,15 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -38,7 +36,6 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class MillstoneBlock extends Block implements EntityBlock {
@@ -47,14 +44,11 @@ public class MillstoneBlock extends Block implements EntityBlock {
             Shapes.box(6/16.0, 0.5, 6/16.0, 10/16.0, 1.0, 10/16.0)
     );
 
-    private final Holder.SimpleBlockHolder holder;
-
-    public MillstoneBlock(Holder.SimpleBlockHolder holder) {
+    public MillstoneBlock() {
         super(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.STONE)
                 .requiresCorrectToolForDrops()
                 .strength(3.5F));
-        this.holder = holder;
     }
 
     @SuppressWarnings("deprecation")
@@ -74,11 +68,7 @@ public class MillstoneBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new MillstoneBlockEntity(blockHolder.getBlockEntityType(), pos, state);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new MillstoneBlockEntity(pos, state);
     }
 
     @SuppressWarnings("deprecation")
@@ -109,18 +99,8 @@ public class MillstoneBlock extends Block implements EntityBlock {
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
-    public static TextureHolder[] textureHolder() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("smooth_stone_slab_side")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("smooth_stone")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log_top")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log"))
-        ).toArray(TextureHolder[]::new);
-    }
-
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile model = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        ModelFile model = provider.models().getBuilder(Utils.getId(YTechBlocks.MILLSTONE))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -170,17 +150,17 @@ public class MillstoneBlock extends Block implements EntityBlock {
                     }
                 })
                 .from(6, 8, 6).to(10, 16, 10).end()
-                .texture("particle", textures[0])
-                .texture("side", textures[0])
-                .texture("slab", textures[1])
-                .texture("middle", textures[2])
-                .texture("top", textures[3]);
-        provider.getVariantBuilder(holder.block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-        provider.itemModels().getBuilder(holder.key).parent(model);
+                .texture("particle", Utils.mcBlockLoc("smooth_stone_slab_side"))
+                .texture("side", Utils.mcBlockLoc("smooth_stone_slab_side"))
+                .texture("slab", Utils.mcBlockLoc("smooth_stone"))
+                .texture("middle", Utils.mcBlockLoc("oak_log_top"))
+                .texture("top", Utils.mcBlockLoc("oak_log"));
+        provider.getVariantBuilder(YTechBlocks.MILLSTONE.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
+        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.MILLSTONE)).parent(model);
     }
 
-    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
+    public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.MILLSTONE.get())
                 .define('W', ItemTags.LOGS)
                 .define('S', Items.SMOOTH_STONE_SLAB)
                 .define('F', YTechItemTags.SHARP_FLINTS)
@@ -188,6 +168,6 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .pattern("S ")
                 .pattern("S ")
                 .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.MILLSTONE));
     }
 }

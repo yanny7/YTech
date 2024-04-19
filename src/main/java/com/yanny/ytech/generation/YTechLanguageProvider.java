@@ -4,6 +4,7 @@ import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.AdvancementType;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.registration.GroupLocation;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.data.PackOutput;
@@ -52,7 +53,25 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.VENISON, "Venison");
         addItem(YTechItems.WATER_CLAY_BUCKET, "Water Clay Bucket");
 
+        addBlock(YTechBlocks.AQUEDUCT, "Aqueduct");
+        addBlock(YTechBlocks.AQUEDUCT_FERTILIZER, "Aqueduct Fertilizer");
+        addBlock(YTechBlocks.AQUEDUCT_HYDRATOR, "Aqueduct Hydrator");
+        addBlock(YTechBlocks.AQUEDUCT_VALVE, "Aqueduct Valve");
+        addBlock(YTechBlocks.BRICK_CHIMNEY, "Brick Chimney");
         addBlock(YTechBlocks.BRONZE_ANVIL, "Bronze Anvil");
+        addBlock(YTechBlocks.FIRE_PIT, "Fire Pit");
+        addBlock(YTechBlocks.GRASS_BED, "Grass Bed");
+        addBlock(YTechBlocks.MILLSTONE, "Millstone");
+        addBlock(YTechBlocks.PRIMITIVE_ALLOY_SMELTER, "Primitive Alloy Smelter");
+        addBlock(YTechBlocks.PRIMITIVE_SMELTER, "Primitive Smelter");
+        addBlock(YTechBlocks.REINFORCED_BRICKS, "Reinforced Bricks");
+        addBlock(YTechBlocks.REINFORCED_BRICK_CHIMNEY, "Reinforced Brick Chimney");
+        addBlock(YTechBlocks.TERRACOTTA_BRICKS, "Terracotta Bricks");
+        addBlock(YTechBlocks.TERRACOTTA_BRICK_SLAB, "Terracotta Brick Slab");
+        addBlock(YTechBlocks.TERRACOTTA_BRICK_STAIRS, "Terracotta Brick Stairs");
+        addBlock(YTechBlocks.THATCH, "Thatch");
+        addBlock(YTechBlocks.THATCH_SLAB, "Thatch Slab");
+        addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
 
         addMaterialItem(YTechItems.ARROWS, "Arrow");
         addMaterialItem(YTechItems.AXES, "Axe", YTechLanguageProvider::goldIronFilter);
@@ -79,7 +98,6 @@ class YTechLanguageProvider extends LanguageProvider {
 
         GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> add(h.block.get(), h.name));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> add(h.bucket.get(), h.name));
-        HOLDER.simpleBlocks().values().forEach(h -> add(h.block.get(), h.name));
         HOLDER.entities().values().forEach(h -> {
             add(h.getEntityType(), h.name);
             add(h.spawnEgg.get(), h.name + " Spawn Egg");
@@ -143,11 +161,11 @@ class YTechLanguageProvider extends LanguageProvider {
     private static String getName(String name, YTechItems.MaterialItem item, MaterialType material) {
         String materialName = material.name;
 
-        if (material == MaterialType.GOLD && item.getGroupLocation() == YTechItems.GroupLocation.SUFFIX) {
+        if (material == MaterialType.GOLD && item.getGroupLocation() == GroupLocation.SUFFIX) {
             materialName += "en";
         }
 
-        if (item.getGroupLocation() == YTechItems.GroupLocation.SUFFIX) {
+        if (item.getGroupLocation() == GroupLocation.SUFFIX) {
             return materialName + " " + name;
         } else {
             return name + " " + materialName;

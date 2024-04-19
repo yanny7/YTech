@@ -1,14 +1,18 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
+import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +32,19 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
 
     @Nullable private ItemStack recipeInputRight = ItemStack.EMPTY;
 
-    public PrimitiveAlloySmelterBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(holder, blockEntityType, pos, blockState, AlloyingRecipe.RECIPE_TYPE);
+    public PrimitiveAlloySmelterBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YTechBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER.get(), pos, blockState, AlloyingRecipe.RECIPE_TYPE);
+    }
+
+    @Override
+    public @NotNull Component getDisplayName() {
+        return Component.translatable("block.ytech.primitive_alloy_smelter");
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int windowId, @NotNull Inventory inventory, @NotNull Player player) {
+        return new PrimitiveAlloySmelterContainerMenu(windowId, inventory.player, worldPosition, itemStackHandler, containerData);
     }
 
     @Override

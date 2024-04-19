@@ -1,9 +1,8 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,7 +45,6 @@ import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LEVEL;
@@ -54,11 +52,9 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class FirePitBlock extends Block {
     private static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 2/16.0, 1);
-    Holder.SimpleBlockHolder holder;
 
-    public FirePitBlock(Holder.SimpleBlockHolder holder) {
+    public FirePitBlock() {
         super(Properties.copy(Blocks.STONE).sound(SoundType.WOOD).noOcclusion().hasPostProcess(FirePitBlock::always).lightLevel(FirePitBlock::getLightLevel));
-        this.holder = holder;
     }
 
     @SuppressWarnings("deprecation")
@@ -184,19 +180,14 @@ public class FirePitBlock extends Block {
         }
     }
 
-    public static TextureHolder[] getTexture() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("magma")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("andesite")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log_top")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("smooth_basalt"))
-        ).toArray(TextureHolder[]::new);
-    }
-
-    public static void registerModel(Holder.SimpleBlockHolder holder, BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile base_lit = provider.models().getBuilder(holder.key + "_base_lit")
+    public static void registerModel(BlockStateProvider provider) {
+        ResourceLocation magmaTexture = Utils.mcBlockLoc("magma");
+        ResourceLocation andesiteTexture = Utils.mcBlockLoc("andesite");
+        ResourceLocation logTexture = Utils.mcBlockLoc("oak_log");
+        ResourceLocation logTopTexture = Utils.mcBlockLoc("oak_log_top");
+        ResourceLocation basaltTexture = Utils.mcBlockLoc("smooth_basalt");
+        String name = Utils.getId(YTechBlocks.FIRE_PIT);
+        ModelFile base_lit = provider.models().getBuilder(name + "_base_lit")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -326,10 +317,10 @@ public class FirePitBlock extends Block {
                 })
                 .from(3, 0.01f, 3).to(13, 0.01f, 13).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 0.01f, 8).end()
                 .end()
-                .texture("particle", textures[0])
-                .texture("0", textures[0])
-                .texture("2", textures[1]);
-        ModelFile base = provider.models().getBuilder(holder.key + "_base")
+                .texture("particle", magmaTexture)
+                .texture("0", magmaTexture)
+                .texture("2", andesiteTexture);
+        ModelFile base = provider.models().getBuilder(name + "_base")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -459,10 +450,10 @@ public class FirePitBlock extends Block {
                 })
                 .from(3, 0.01f, 3).to(13, 0.01f, 13).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 0.01f, 8).end()
                 .end()
-                .texture("particle", textures[4])
-                .texture("0", textures[4])
-                .texture("2", textures[1]);
-        ModelFile logs_down = provider.models().getBuilder(holder.key + "_logs_up")
+                .texture("particle", basaltTexture)
+                .texture("0", basaltTexture)
+                .texture("2", andesiteTexture);
+        ModelFile logs_down = provider.models().getBuilder(name + "_logs_up")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -486,10 +477,10 @@ public class FirePitBlock extends Block {
                     }
                 })
                 .from(5.25f, 0, 5).to(7.25f, 2, 11).end()
-                .texture("particle", textures[0])
-                .texture("3", textures[2])
-                .texture("4", textures[3]);
-        ModelFile logs_up = provider.models().getBuilder(holder.key + "_logs_down")
+                .texture("particle", magmaTexture)
+                .texture("3", logTexture)
+                .texture("4", logTopTexture);
+        ModelFile logs_up = provider.models().getBuilder(name + "_logs_down")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -513,29 +504,29 @@ public class FirePitBlock extends Block {
                     }
                 })
                 .from(5, 2, 5.5f).to(10, 4, 7.5f).end()
-                .texture("particle", textures[0])
-                .texture("3", textures[2])
-                .texture("4", textures[3]);
+                .texture("particle", magmaTexture)
+                .texture("3", logTexture)
+                .texture("4", logTopTexture);
 
-        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(holder.block.get());
+        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.FIRE_PIT.get());
 
         builder.part().modelFile(base).addModel().condition(LIT, false).end();
         builder.part().modelFile(base_lit).addModel().condition(LIT, true).end();
         builder.part().modelFile(logs_down).addModel().condition(LEVEL, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15).end();
         builder.part().modelFile(logs_up).addModel().condition(LEVEL, 9, 10, 11, 12, 13, 14, 15).end();
 
-        provider.itemModels().getBuilder(holder.key).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
+        provider.itemModels().getBuilder(name).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
                 .texture("layer0", Utils.modItemLoc("fire_pit"));
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, Consumer<FinishedRecipe> consumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
+    public static void registerRecipe(Consumer<FinishedRecipe> consumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.FIRE_PIT.get())
                 .define('S', Items.STICK)
                 .define('P', YTechItemTags.PEBBLES)
                 .pattern("SS")
                 .pattern("PP")
                 .unlockedBy("has_pebble", RecipeProvider.has(YTechItemTags.PEBBLES))
-                .save(consumer, Utils.modLoc(holder.key));
+                .save(consumer, Utils.modLoc(YTechBlocks.FIRE_PIT));
     }
 
     private static boolean always(BlockState s, BlockGetter g, BlockPos p) {

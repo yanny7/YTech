@@ -22,7 +22,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.yanny.ytech.configuration.MaterialBlockType.DRYING_RACK;
-import static com.yanny.ytech.configuration.SimpleBlockType.*;
 import static com.yanny.ytech.configuration.Utils.getHasName;
 import static com.yanny.ytech.configuration.Utils.modLoc;
 import static com.yanny.ytech.registration.Registration.block;
@@ -48,11 +47,11 @@ public enum AdvancementType {
             .display(block(DRYING_RACK, MaterialType.OAK_WOOD), FrameType.CHALLENGE, "Sunny Day", "Create all dried foods.")
             .hasAllTags(YTechItemTags.DRIED_BEEFS, YTechItemTags.DRIED_CHICKENS, YTechItemTags.DRIED_CODS, YTechItemTags.DRIED_MUTTONS, YTechItemTags.DRIED_PORKCHOP, YTechItemTags.DRIED_RABBITS, YTechItemTags.DRIED_SALMONS, YTechItemTags.DRIED_VENISON)),
     SMELTER_TIME(new Builder(AdvancementType.STONE_AGE_GROUP, "smelter_time").parent(() -> FIRST_STEPS.advancement)
-            .display(block(PRIMITIVE_SMELTER), FrameType.TASK, "Smelter Time", "Craft smelter and some chimneys to be able melt crushed ore.")
-            .hasOneOfTags(PRIMITIVE_SMELTER.itemTag)),
+            .display(YTechBlocks.PRIMITIVE_SMELTER.get(), FrameType.TASK, "Smelter Time", "Craft smelter and some chimneys to be able melt crushed ore.")
+            .hasOneOfTags(YTechItemTags.PRIMITIVE_SMELTERS)),
     IRRIGATION_SYSTEM(new Builder(AdvancementType.STONE_AGE_GROUP, "irrigation_system").parent(() -> FIRST_STEPS.advancement)
-            .display(block(AQUEDUCT), FrameType.TASK, "Irrigation System", "Craft aqueduct for long distance water transportation.")
-            .hasOneOfTags(AQUEDUCT.itemTag)),
+            .display(YTechBlocks.AQUEDUCT.get(), FrameType.TASK, "Irrigation System", "Craft aqueduct for long distance water transportation.")
+            .hasOneOfTags(YTechItemTags.AQUEDUCTS)),
     BETTER_THAN_NOTHING(new Builder(AdvancementType.STONE_AGE_GROUP, "better_than_nothing").parent(() -> GRASS_HUNT.advancement)
             .display(YTechItems.KNIVES.of(MaterialType.FLINT).get(), FrameType.TASK, "Better Than Nothing", "Craft flint knife.")
             .hasOneOfTags(YTechItemTags.KNIVES.of(MaterialType.FLINT))),
@@ -84,8 +83,8 @@ public enum AdvancementType {
             .display(Items.GOLD_INGOT, FrameType.TASK, "In Gold We Trust", "Smelt gold ingot.")
             .hasOneOfTags(YTechItemTags.INGOTS.of(MaterialType.GOLD))),
     ALLOY_SMELTER(new Builder(AdvancementType.STONE_AGE_GROUP, "alloy_smelter").parent(() -> COPPER.advancement)
-            .display(block(PRIMITIVE_ALLOY_SMELTER), FrameType.TASK, "Alloy Smelter", "Craft the alloy smelter and raise the temperature.")
-            .hasOneOfTags(PRIMITIVE_ALLOY_SMELTER.itemTag)),
+            .display(YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get(), FrameType.TASK, "Alloy Smelter", "Craft the alloy smelter and raise the temperature.")
+            .hasOneOfTags(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS)),
     COPPER_ARMOR(new Builder(AdvancementType.STONE_AGE_GROUP, "copper_armor").parent(() -> COPPER.advancement)
             .display(YTechItems.CHESTPLATES.of(MaterialType.COPPER).get(), FrameType.GOAL, "Copper Armor", "Craft all pieces of copper armor.")
             .hasAllTags(YTechItemTags.HELMETS.of(MaterialType.COPPER), YTechItemTags.CHESTPLATES.of(MaterialType.COPPER), YTechItemTags.LEGGINGS.of(MaterialType.COPPER), YTechItemTags.BOOTS.of(MaterialType.COPPER))),
@@ -98,10 +97,10 @@ public enum AdvancementType {
             .hasOneOfTags(YTechItemTags.INGOTS.of(MaterialType.BRONZE))),
     HIT_HARD(new Builder(AdvancementType.BRONZE_AGE_GROUP, "hit_hard").parent(() -> BRONZE_AGE.advancement)
             .display(YTechBlocks.BRONZE_ANVIL.get(), FrameType.TASK, "Hit Hard", "Craft bronze anvil.")
-            .hasOneOfTags(YTechItemTags.BRONZE_ANVIL)),
+            .hasOneOfTags(YTechItemTags.BRONZE_ANVILS)),
     FERTILIZING_CROPS(new Builder(AdvancementType.BRONZE_AGE_GROUP, "fertilizing_crops").parent(() -> HIT_HARD.advancement)
-            .display(block(AQUEDUCT_FERTILIZER), FrameType.TASK, "Fertilizing Crops", "Craft aqueduct fertilizer.")
-            .hasOneOfTags(AQUEDUCT_FERTILIZER.itemTag)),
+            .display(YTechBlocks.AQUEDUCT_FERTILIZER.get(), FrameType.TASK, "Fertilizing Crops", "Craft aqueduct fertilizer.")
+            .hasOneOfTags(YTechItemTags.AQUEDUCT_FERTILIZERS)),
     BRONZE_ARMOR(new Builder(AdvancementType.STONE_AGE_GROUP, "bronze_armor").parent(() -> BRONZE_AGE.advancement)
             .display(YTechItems.CHESTPLATES.of(MaterialType.BRONZE).get(), FrameType.GOAL, "Bronze Armor", "Craft all pieces of bronze armor.")
             .hasAllTags(YTechItemTags.HELMETS.of(MaterialType.BRONZE), YTechItemTags.CHESTPLATES.of(MaterialType.BRONZE), YTechItemTags.LEGGINGS.of(MaterialType.BRONZE), YTechItemTags.BOOTS.of(MaterialType.BRONZE))),
@@ -109,8 +108,8 @@ public enum AdvancementType {
             .display(YTechItems.PICKAXES.of(MaterialType.BRONZE).get(), FrameType.GOAL, "Bronze Tools", "Craft all bronze tools.")
             .hasAllTags(YTechItemTags.PICKAXES.of(MaterialType.BRONZE), YTechItemTags.AXES.of(MaterialType.BRONZE), YTechItemTags.SHOVELS.of(MaterialType.BRONZE), YTechItemTags.SWORDS.of(MaterialType.BRONZE))),
     MORE_AND_MORE(new Builder(AdvancementType.BRONZE_AGE_GROUP, "more_and_more").parent(() -> BRONZE_AGE.advancement)
-            .display(block(REINFORCED_BRICK_CHIMNEY), FrameType.TASK, "More and More", "Craft reinforced brick chimney.")
-            .hasOneOfTags(REINFORCED_BRICK_CHIMNEY.itemTag)),
+            .display(YTechBlocks.REINFORCED_BRICK_CHIMNEY.get(), FrameType.TASK, "More and More", "Craft reinforced brick chimney.")
+            .hasOneOfTags(YTechItemTags.REINFORCED_BRICK_CHIMNEYS)),
     BLOOMBERG(new Builder(AdvancementType.BRONZE_AGE_GROUP, "bloomberg").parent(() -> MORE_AND_MORE.advancement)
             .display(YTechItems.IRON_BLOOM.get(), FrameType.TASK, "Bloomberg", "Smelt iron with charcoal to create iron bloom.")
             .hasOneOfTags(YTechItemTags.IRON_BLOOMS)),

@@ -3,8 +3,8 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.GenericItemTags;
 import com.yanny.ytech.configuration.MachineItemStackHandler;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.IBlockHolder;
+import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -19,8 +19,6 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.FarmBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,12 +29,10 @@ public class AqueductFertilizerBlockEntity extends AqueductHydratorBlockEntity i
 
     @NotNull protected final MachineItemStackHandler itemStackHandler;
     @NotNull protected final ContainerData containerData;
-    @NotNull private final Holder holder;
     private int fertilizer = 0;
 
-    public AqueductFertilizerBlockEntity(@NotNull Holder holder, @NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
-        super(entityType, pos, blockState);
-        this.holder = holder;
+    public AqueductFertilizerBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
+        super(YTechBlockEntityTypes.AQUEDUCT_FERTILIZER.get(), pos, blockState);
         itemStackHandler = createItemStackHandler();
         containerData = createContainerData();
     }
@@ -110,17 +106,13 @@ public class AqueductFertilizerBlockEntity extends AqueductHydratorBlockEntity i
     @NotNull
     @Override
     public Component getDisplayName() {
-        return Component.translatable(holder.name);
+        return Component.translatable("block.ytech.aqueduct_fertilizer");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pPlayerInventory, @NotNull Player pPlayer) {
-        if (holder instanceof IBlockHolder blockHolder) {
-            return blockHolder.getMenu().getContainerMenu(holder, pContainerId, pPlayerInventory, worldPosition, itemStackHandler, createContainerData());
-        } else {
-            throw new IllegalStateException("Invalid holder type");
-        }
+        return new AqueductFertilizerMenu(pContainerId, pPlayer, worldPosition, itemStackHandler, createContainerData());
     }
 
     @NotNull

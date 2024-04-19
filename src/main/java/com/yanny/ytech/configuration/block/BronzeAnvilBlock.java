@@ -215,6 +215,6 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .pattern(" I ")
                 .pattern("III")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.of(MaterialType.BRONZE)))
-                .save(recipeConsumer, Utils.modLoc(Utils.getId(YTechBlocks.BRONZE_ANVIL)));
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.BRONZE_ANVIL));
     }
 }

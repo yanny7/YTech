@@ -26,63 +26,6 @@ public class Holder {
         this.name = name;
     }
 
-    public static class SimpleBlockHolder extends Holder implements IBlockHolder {
-        @NotNull public final SimpleBlockType object;
-        @NotNull public final RegistryObject<Block> block;
-        @NotNull public final RegistryObject<Item> item;
-
-        SimpleBlockHolder(@NotNull SimpleBlockType object, @NotNull Function<SimpleBlockHolder, RegistryObject<Block>> blockSupplier,
-                          @NotNull Function<SimpleBlockHolder, RegistryObject<Item>> itemSupplier) {
-            super(object.key, object.name);
-            this.object = object;
-            this.block = blockSupplier.apply(this);
-            this.item = itemSupplier.apply(this);
-        }
-
-        @Override
-        public @NotNull RegistryObject<Block> getBlockRegistry() {
-            return block;
-        }
-
-        @Override
-        public @NotNull IMenu getMenu() {
-            return object;
-        }
-    }
-
-    public static class EntitySimpleBlockHolder extends SimpleBlockHolder implements IEntityBlockHolder {
-        @NotNull private final RegistryObject<BlockEntityType<? extends BlockEntity>> entityType;
-
-        public EntitySimpleBlockHolder(@NotNull SimpleBlockType product, @NotNull Function<SimpleBlockHolder, RegistryObject<Block>> blockSupplier,
-                                       @NotNull Function<SimpleBlockHolder, RegistryObject<Item>> itemSupplier,
-                                       @NotNull Function<EntitySimpleBlockHolder, RegistryObject<BlockEntityType<?>>> entityType) {
-            super(product, blockSupplier, itemSupplier);
-            this.entityType = entityType.apply(this);
-        }
-
-        @Override
-        public <T extends BlockEntity> BlockEntityType<T> getBlockEntityType() {
-            return (BlockEntityType<T>) entityType.get();
-        }
-    }
-
-    public static class MenuEntitySimpleBlockHolder extends EntitySimpleBlockHolder implements IMenuEntityBlockHolder {
-        private final RegistryObject<MenuType<? extends AbstractContainerMenu>> menuType;
-
-        public MenuEntitySimpleBlockHolder(@NotNull SimpleBlockType product,
-                                           @NotNull Function<SimpleBlockHolder, RegistryObject<Block>> blockSupplier,
-                                           @NotNull Function<SimpleBlockHolder, RegistryObject<Item>> itemSupplier,
-                                           @NotNull Function<EntitySimpleBlockHolder, RegistryObject<BlockEntityType<?>>> entityTypeSupplier,
-                                           @NotNull Function<MenuEntitySimpleBlockHolder, RegistryObject<MenuType<? extends AbstractContainerMenu>>> menuType) {
-            super(product, blockSupplier, itemSupplier, entityTypeSupplier);
-            this.menuType = menuType.apply(this);
-        }
-
-        public <T extends AbstractContainerMenu> MenuType<T> getMenuType() {
-            return (MenuType<T>) menuType.get();
-        }
-    }
-
     public static class MaterialHolder<U extends INameable & IMaterialModel<?, ?>> extends Holder {
         @NotNull public final U object;
         @NotNull public final MaterialType material;

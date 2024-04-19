@@ -2,32 +2,25 @@ package com.yanny.ytech.configuration.container;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.block_entity.IMenuBlockEntity;
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class MachineContainerMenu extends AbstractContainerMenu {
-    protected final Block block;
+public class MachineContainerMenu<T extends AbstractContainerMenu> extends AbstractContainerMenu {
     protected final BlockPos pos;
     @NotNull protected final ItemStackHandler itemStackHandler;
     @NotNull protected final IMenuBlockEntity blockEntity;
     @NotNull protected final ContainerData containerData;
     private final int inputSlots;
 
-    public MachineContainerMenu(@NotNull Holder holder, int windowId, @NotNull Player player, @NotNull BlockPos pos,
+    public MachineContainerMenu(MenuType<T> menuType, int windowId, @NotNull Player player, @NotNull BlockPos pos,
                                 @NotNull MachineItemStackHandler itemStackHandler, @NotNull ContainerData data) {
-        super(Utils.getMenuEntityBlockHolder(holder).getMenuType(), windowId);
-        block = Utils.getBlockHolder(holder).getBlockRegistry().get();
+        super(menuType, windowId);
         this.pos = pos;
         containerData = data;
         blockEntity = Utils.getMachineBlockEntity(player, pos);
@@ -86,7 +79,7 @@ public class MachineContainerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return stillValid(ContainerLevelAccess.create(player.level(), pos), player, block);
+        return stillValid(ContainerLevelAccess.create(player.level(), pos), player, player.level().getBlockState(pos).getBlock());
     }
 
     @NotNull

@@ -7,11 +7,10 @@ import java.util.HashMap;
 public record RegistrationHolder(
         HashMap<MaterialBlockType, HashMap<MaterialType, Holder.BlockHolder>> blocks,
         HashMap<MaterialFluidType, HashMap<MaterialType, Holder.FluidHolder>> fluids,
-        HashMap<SimpleBlockType, Holder.SimpleBlockHolder> simpleBlocks,
         HashMap<SimpleEntityType, Holder.SimpleEntityHolder> simpleEntities,
         HashMap<AnimalEntityType, Holder.AnimalEntityHolder> entities
 ) {
     public RegistrationHolder() {
-        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 }
