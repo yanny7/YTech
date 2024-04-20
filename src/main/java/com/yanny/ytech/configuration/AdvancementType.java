@@ -21,10 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.yanny.ytech.configuration.MaterialBlockType.DRYING_RACK;
 import static com.yanny.ytech.configuration.Utils.getHasName;
 import static com.yanny.ytech.configuration.Utils.modLoc;
-import static com.yanny.ytech.registration.Registration.block;
 import static net.minecraft.world.item.Items.FLINT;
 
 public enum AdvancementType {
@@ -44,7 +42,7 @@ public enum AdvancementType {
             .display(Items.LEATHER, FrameType.TASK, "Leathercraft", "Process raw hide to create leather.")
             .hasOneOfItems(Items.LEATHER)),
     SUNNY_DAY(new Builder(AdvancementType.STONE_AGE_GROUP, "sunny_day").parent(() -> FIRST_STEPS.advancement)
-            .display(block(DRYING_RACK, MaterialType.OAK_WOOD), FrameType.CHALLENGE, "Sunny Day", "Create all dried foods.")
+            .display(YTechItems.DRYING_RACKS.of(MaterialType.OAK_WOOD).get(), FrameType.CHALLENGE, "Sunny Day", "Create all dried foods.")
             .hasAllTags(YTechItemTags.DRIED_BEEFS, YTechItemTags.DRIED_CHICKENS, YTechItemTags.DRIED_CODS, YTechItemTags.DRIED_MUTTONS, YTechItemTags.DRIED_PORKCHOP, YTechItemTags.DRIED_RABBITS, YTechItemTags.DRIED_SALMONS, YTechItemTags.DRIED_VENISON)),
     SMELTER_TIME(new Builder(AdvancementType.STONE_AGE_GROUP, "smelter_time").parent(() -> FIRST_STEPS.advancement)
             .display(YTechBlocks.PRIMITIVE_SMELTER.get(), FrameType.TASK, "Smelter Time", "Craft smelter and some chimneys to be able melt crushed ore.")

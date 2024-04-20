@@ -2,6 +2,7 @@ package com.yanny.ytech.registration;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.NameHolder;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
@@ -77,28 +78,38 @@ public class YTechItems {
     public static final RegistryObject<Item> THATCH_SLAB = ITEMS.register("thatch_slab", () -> blockItem(YTechBlocks.THATCH_SLAB));
     public static final RegistryObject<Item> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> blockItem(YTechBlocks.THATCH_STAIRS));
 
-    public static final MaterialItem ARROWS = new MaterialItem("arrow", GroupLocation.SUFFIX, MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
+    public static final MaterialItem ARROWS = new MaterialItem("arrow", NameHolder.suffix("arrow"), MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
     public static final MaterialItem AXES = new AxeMaterialItem();
-    public static final MaterialItem BOLTS = new MaterialItem("bolt", GroupLocation.SUFFIX, Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> simpleItem());
+    public static final MaterialItem BOLTS = new MaterialItem("bolt", NameHolder.suffix("bolt"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> simpleItem());
     public static final MaterialItem BOOTS = new BootsMaterialItem();
     public static final MaterialItem CHESTPLATES = new ChestplatesMaterialItem();
-    public static final MaterialItem CRUSHED_MATERIALS = new MaterialItem("crushed_material", "crushed", GroupLocation.PREFIX, MaterialType.ALL_ORES, (type) -> simpleItem());
-    public static final MaterialItem FILES = new MaterialItem("file", GroupLocation.SUFFIX, MaterialType.ALL_METALS, (type) -> simpleItem());
-    public static final MaterialItem HAMMERS = new MaterialItem("hammer", GroupLocation.SUFFIX, Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> simpleItem());
+    public static final MaterialItem CRUSHED_MATERIALS = new MaterialItem("crushed_material", NameHolder.prefix("crushed"), MaterialType.ALL_ORES, (type) -> simpleItem());
+    public static final MaterialItem FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> simpleItem());
+    public static final MaterialItem HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> simpleItem());
     public static final MaterialItem HELMETS = new HelmetMaterialItem();
     public static final MaterialItem HOES = new HoeMaterialItem();
     public static final MaterialItem INGOTS = new IngotMaterialItem();
-    public static final MaterialItem KNIVES = new MaterialItem("knife", GroupLocation.SUFFIX, EnumSet.of(MaterialType.FLINT), YTechItems::knifeItem);
+    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), EnumSet.of(MaterialType.FLINT), YTechItems::knifeItem);
     public static final MaterialItem LEGGINGS = new LeggingsMaterialItem();
-    public static final MaterialItem MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", GroupLocation.SUFFIX, Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
+    public static final MaterialItem MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
     public static final MaterialItem PICKAXES = new PickaxeMaterialItem();
-    public static final MaterialItem PLATES = new MaterialItem("plate", GroupLocation.SUFFIX, Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> simpleItem());
+    public static final MaterialItem PLATES = new MaterialItem("plate", NameHolder.suffix("plate"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> simpleItem());
     public static final MaterialItem RAW_MATERIALS = new RawMaterialItem();
-    public static final MaterialItem RODS = new MaterialItem("rod", GroupLocation.SUFFIX, MaterialType.ALL_METALS, (type) -> simpleItem());
-    public static final MaterialItem SAWS = new MaterialItem("saw", GroupLocation.SUFFIX, MaterialType.ALL_METALS, (type) -> simpleItem());
+    public static final MaterialItem RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
+    public static final MaterialItem SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> simpleItem());
     public static final MaterialItem SHOVELS = new ShovelMaterialItem();
-    public static final MaterialItem SPEARS = new MaterialItem("spear", GroupLocation.SUFFIX, Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
+    public static final MaterialItem SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
     public static final MaterialItem SWORDS = new SwordMaterialItem();
+
+    public static final MaterialItem DEEPSLATE_ORES = new DeepslateOreMaterialItem();
+    public static final MaterialItem DRYING_RACKS = new MaterialItem(YTechBlocks.DRYING_RACKS, YTechItems::dryingRackBlockItem);
+    public static final MaterialItem GRAVEL_DEPOSITS = new MaterialItem(YTechBlocks.GRAVEL_DEPOSITS, YTechItems::blockItem);
+    public static final MaterialItem NETHER_ORES = new NetherOreMaterialItem();
+    public static final MaterialItem RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialItem();
+    public static final MaterialItem SAND_DEPOSITS = new MaterialItem(YTechBlocks.SAND_DEPOSITS, YTechItems::blockItem);
+    public static final MaterialItem STONE_ORES = new StoneOreMaterialItem();
+    public static final MaterialItem STORAGE_BLOCKS = new StorageBlockMaterialItem();
+    public static final MaterialItem TANNING_RACKS = new MaterialItem(YTechBlocks.TANNING_RACKS, YTechItems::blockItem);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
@@ -186,33 +197,36 @@ public class YTechItems {
 
     public static class MaterialItem {
         protected final String group;
-        protected final GroupLocation groupLocation;
         protected final Map<MaterialType, RegistryObject<Item>> items;
 
-        public MaterialItem(String group, GroupLocation groupLocation, EnumSet<MaterialType> materialTypes, Function<MaterialType, Item> itemSupplier) {
-            this(group, group, groupLocation, materialTypes, itemSupplier);
-        }
-
-        public MaterialItem(String group, String groupShort, GroupLocation groupLocation, EnumSet<MaterialType> materialTypes, Function<MaterialType, Item> itemSupplier) {
+        public MaterialItem(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Function<MaterialType, Item> itemSupplier) {
             this.group = group;
-            this.groupLocation = groupLocation;
             items = new HashMap<>();
             materialTypes.forEach((type) -> {
-                String key;
+                String key = nameHolder.prefix() != null ? nameHolder.prefix() + "_" : "";
 
-                if (groupLocation == GroupLocation.PREFIX) {
-                    key = groupShort + "_" + type.key;
+                if (type.key.equals("gold") && nameHolder.prefix() == null) {
+                    key += "golden";
                 } else {
-                    if (type.key.equals("gold")) {
-                        key = "golden";
-                    } else {
-                        key = type.key;
-                    }
-
-                    key += "_" + groupShort;
+                    key += type.key;
                 }
 
+                key += nameHolder.suffix() != null ? "_" + nameHolder.suffix() : "";
                 items.put(type, ITEMS.register(key, () -> itemSupplier.apply(type)));
+            });
+        }
+
+        public MaterialItem(YTechBlocks.MaterialBlock block, Function<RegistryObject<Block>, Item> itemSupplier) {
+            this(block, EnumSet.noneOf(MaterialType.class), itemSupplier);
+        }
+
+        public MaterialItem(YTechBlocks.MaterialBlock block, EnumSet<MaterialType> exclude, Function<RegistryObject<Block>, Item> itemSupplier) {
+            this.group = block.getGroup();
+            items = new HashMap<>();
+            block.entries().stream().filter((entry) -> !exclude.contains(entry.getKey())).forEach((entry) -> {
+                MaterialType type = entry.getKey();
+                RegistryObject<Block> object = entry.getValue();
+                items.put(type, ITEMS.register(Utils.getId(object), () -> itemSupplier.apply(object)));
             });
         }
 
@@ -235,15 +249,11 @@ public class YTechItems {
         public String getGroup() {
             return group;
         }
-
-        public GroupLocation getGroupLocation() {
-            return groupLocation;
-        }
     }
 
     private static class AxeMaterialItem extends MaterialItem {
         public AxeMaterialItem() {
-            super("axe", GroupLocation.SUFFIX, Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON), YTechItems::axeItem);
+            super("axe", NameHolder.suffix("axe"), Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), MaterialType.GOLD, MaterialType.IRON), YTechItems::axeItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_AXE), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_AXE), ForgeRegistries.ITEMS));
         }
@@ -251,7 +261,7 @@ public class YTechItems {
 
     private static class BootsMaterialItem extends MaterialItem {
         public BootsMaterialItem() {
-            super("boots", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::bootsItem);
+            super("boots", NameHolder.suffix("boots"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::bootsItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_BOOTS), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_BOOTS), ForgeRegistries.ITEMS));
         }
@@ -259,7 +269,7 @@ public class YTechItems {
 
     private static class ChestplatesMaterialItem extends MaterialItem {
         public ChestplatesMaterialItem() {
-            super("chestplate", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::chestplateItem);
+            super("chestplate", NameHolder.suffix("chestplate"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::chestplateItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_CHESTPLATE), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_CHESTPLATE), ForgeRegistries.ITEMS));
         }
@@ -267,7 +277,7 @@ public class YTechItems {
 
     private static class HelmetMaterialItem extends MaterialItem {
         public HelmetMaterialItem() {
-            super("helmet", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::helmetItem);
+            super("helmet", NameHolder.suffix("helmet"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::helmetItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_HELMET), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_HELMET), ForgeRegistries.ITEMS));
         }
@@ -275,7 +285,7 @@ public class YTechItems {
 
     private static class HoeMaterialItem extends MaterialItem {
         public HoeMaterialItem() {
-            super("hoe", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::hoeItem);
+            super("hoe", NameHolder.suffix("hoe"), Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::hoeItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_HOE), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_HOE), ForgeRegistries.ITEMS));
         }
@@ -283,7 +293,7 @@ public class YTechItems {
 
     private static class IngotMaterialItem extends MaterialItem {
         public IngotMaterialItem() {
-            super("ingot", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_METALS, MaterialType.VANILLA_METALS), (type) -> simpleItem());
+            super("ingot", NameHolder.suffix("ingot"), Utils.exclude(MaterialType.ALL_METALS, MaterialType.VANILLA_METALS), (type) -> simpleItem());
             items.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.COPPER_INGOT), ForgeRegistries.ITEMS));
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLD_INGOT), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_INGOT), ForgeRegistries.ITEMS));
@@ -292,7 +302,7 @@ public class YTechItems {
 
     private static class LeggingsMaterialItem extends MaterialItem {
         public LeggingsMaterialItem() {
-            super("leggings", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::leggingsItem);
+            super("leggings", NameHolder.suffix("leggings"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::leggingsItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_LEGGINGS), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_LEGGINGS), ForgeRegistries.ITEMS));
         }
@@ -300,7 +310,7 @@ public class YTechItems {
 
     private static class PickaxeMaterialItem extends MaterialItem {
         public PickaxeMaterialItem() {
-            super("pickaxe", GroupLocation.SUFFIX, Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.ANTLER), MaterialType.GOLD, MaterialType.IRON), YTechItems::pickaxeItem);
+            super("pickaxe", NameHolder.suffix("pickaxe"), Utils.exclude(Utils.merge(MaterialType.ALL_METALS, MaterialType.ANTLER), MaterialType.GOLD, MaterialType.IRON), YTechItems::pickaxeItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_PICKAXE), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_PICKAXE), ForgeRegistries.ITEMS));
         }
@@ -308,7 +318,7 @@ public class YTechItems {
 
     private static class RawMaterialItem extends MaterialItem {
         public RawMaterialItem() {
-            super("raw_material", "raw", GroupLocation.PREFIX, Utils.exclude(MaterialType.ALL_ORES, MaterialType.VANILLA_METALS), (type) -> simpleItem());
+            super("raw_material", NameHolder.prefix("raw"), Utils.exclude(MaterialType.ALL_ORES, MaterialType.VANILLA_METALS), (type) -> simpleItem());
             items.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_COPPER), ForgeRegistries.ITEMS));
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_GOLD), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_IRON), ForgeRegistries.ITEMS));
@@ -317,7 +327,7 @@ public class YTechItems {
 
     private static class ShovelMaterialItem extends MaterialItem {
         public ShovelMaterialItem() {
-            super("shovel", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::shovelItem);
+            super("shovel", NameHolder.suffix("shovel"), Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::shovelItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_SHOVEL), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_SHOVEL), ForgeRegistries.ITEMS));
         }
@@ -325,9 +335,52 @@ public class YTechItems {
 
     private static class SwordMaterialItem extends MaterialItem {
         public SwordMaterialItem() {
-            super("sword", GroupLocation.SUFFIX, Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::swordItem);
+            super("sword", NameHolder.suffix("sword"), Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::swordItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_SWORD), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_SWORD), ForgeRegistries.ITEMS));
+        }
+    }
+
+    private static class DeepslateOreMaterialItem extends MaterialItem {
+        public DeepslateOreMaterialItem() {
+            super(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS, YTechItems::blockItem);
+            items.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.DEEPSLATE_COPPER_ORE), ForgeRegistries.ITEMS));
+            items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.DEEPSLATE_GOLD_ORE), ForgeRegistries.ITEMS));
+            items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.DEEPSLATE_IRON_ORE), ForgeRegistries.ITEMS));
+        }
+    }
+
+    private static class NetherOreMaterialItem extends MaterialItem {
+        public NetherOreMaterialItem() {
+            super(YTechBlocks.NETHER_ORES, EnumSet.of(MaterialType.GOLD), YTechItems::blockItem);
+            items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.NETHER_GOLD_ORE), ForgeRegistries.ITEMS));
+        }
+    }
+
+    private static class RawStorageBlockMaterialItem extends MaterialItem {
+        public RawStorageBlockMaterialItem() {
+            super(YTechBlocks.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS, YTechItems::blockItem);
+            items.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_COPPER_BLOCK), ForgeRegistries.ITEMS));
+            items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_GOLD_BLOCK), ForgeRegistries.ITEMS));
+            items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_IRON_BLOCK), ForgeRegistries.ITEMS));
+        }
+    }
+
+    private static class StoneOreMaterialItem extends MaterialItem {
+        public StoneOreMaterialItem() {
+            super(YTechBlocks.STONE_ORES, MaterialType.VANILLA_METALS, YTechItems::blockItem);
+            items.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.COPPER_ORE), ForgeRegistries.ITEMS));
+            items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLD_ORE), ForgeRegistries.ITEMS));
+            items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_ORE), ForgeRegistries.ITEMS));
+        }
+    }
+
+    private static class StorageBlockMaterialItem extends MaterialItem {
+        public StorageBlockMaterialItem() {
+            super(YTechBlocks.STORAGE_BLOCKS, MaterialType.VANILLA_METALS, YTechItems::blockItem);
+            items.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.COPPER_BLOCK), ForgeRegistries.ITEMS));
+            items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLD_BLOCK), ForgeRegistries.ITEMS));
+            items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_BLOCK), ForgeRegistries.ITEMS));
         }
     }
 
@@ -401,6 +454,20 @@ public class YTechItems {
             public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
                 super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
                 tooltipComponents.add(Component.translatable("text.ytech.hover.grass_bed").withStyle(DARK_GRAY));
+            }
+        };
+    }
+
+    private static Item dryingRackBlockItem(RegistryObject<Block> block) {
+        return new BlockItem(block.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+                super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+                tooltipComponents.add(Component.translatable("text.ytech.hover.drying_rack1").withStyle(DARK_GRAY));
+
+                if (CONFIGURATION.noDryingDuringRain()) {
+                    tooltipComponents.add(Component.translatable("text.ytech.hover.drying_rack2").withStyle(DARK_GRAY));
+                }
             }
         };
     }

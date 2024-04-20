@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class YTechItemTags {
     public static final TagKey<Item> ANTLERS = create("antlers");
@@ -71,18 +72,36 @@ public class YTechItemTags {
     public static final MaterialTag HAMMERS = new MaterialTag("hammers", YTechItems.HAMMERS);
     public static final MaterialTag HELMETS = new MaterialTag("helmets", Tags.Items.ARMORS_HELMETS, YTechItems.HELMETS);
     public static final MaterialTag HOES = new MaterialTag("hoes", ItemTags.HOES, YTechItems.HOES);
-    public static final MaterialTag INGOTS = new IngotMaterialTag("ingots", "forge", Tags.Items.INGOTS, YTechItems.INGOTS);
+    public static final MaterialTag INGOTS = new IngotMaterialTag();
     public static final MaterialTag KNIVES = new MaterialTag("knives", YTechItems.KNIVES);
     public static final MaterialTag MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", YTechItems.MORTAR_AND_PESTLES);
     public static final MaterialTag LEGGINGS = new MaterialTag("leggings", Tags.Items.ARMORS_LEGGINGS, YTechItems.LEGGINGS);
     public static final MaterialTag PICKAXES = new MaterialTag("pickaxes", ItemTags.PICKAXES, YTechItems.PICKAXES);
     public static final MaterialTag PLATES = new MaterialTag("plates", YTechItems.PLATES);
-    public static final MaterialTag RAW_MATERIALS = new RawMaterialTag("raw_materials", "forge", Tags.Items.RAW_MATERIALS, YTechItems.RAW_MATERIALS);
+    public static final MaterialTag RAW_MATERIALS = new RawMaterialTag();
     public static final MaterialTag RODS = new MaterialTag("rods", YTechItems.RODS);
     public static final MaterialTag SAWS = new MaterialTag("saws", YTechItems.SAWS);
     public static final MaterialTag SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
     public static final MaterialTag SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
     public static final MaterialTag SWORDS = new MaterialTag("swords", ItemTags.SWORDS, YTechItems.SWORDS);
+
+    public static final MaterialTag DEEPSLATE_ORES = new DeepslateOreMaterialTag();
+    public static final MaterialTag DRYING_RACKS = new MaterialTag(YTechBlockTags.DRYING_RACKS);
+    public static final MaterialTag GRAVEL_DEPOSITS = new MaterialTag(YTechBlockTags.GRAVEL_DEPOSITS);
+    public static final MaterialTag NETHER_ORES = new NetherOreMaterialTag();
+    public static final MaterialTag RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialTag();
+    public static final MaterialTag SAND_DEPOSITS = new MaterialTag(YTechBlockTags.SAND_DEPOSITS);
+    public static final MaterialTag STONE_ORES = new StoneOreMaterialTag();
+    public static final MaterialTag STORAGE_BLOCKS = new StorageBlockMaterialTag();
+    public static final MaterialTag TANNING_RACKS = new MaterialTag(YTechBlockTags.TANNING_RACKS);
+
+    private static TagKey<Item> create(String name) {
+        return ItemTags.create(Utils.modLoc(name));
+    }
+
+    private static TagKey<Item> create(TagKey<Block> block) {
+        return ItemTags.create(block.location());
+    }
 
     public static class MaterialTag {
         public final TagKey<Item> tag;
@@ -104,14 +123,26 @@ public class YTechItemTags {
             this(name, namespace, tag, EnumSet.copyOf(item.materials()));
         }
 
-        public MaterialTag(String name, String namespace, TagKey<Item> tag, EnumSet<MaterialType> item) {
+        public MaterialTag(YTechBlockTags.MaterialTag materialTag) {
+            this(materialTag.getName(), materialTag.getNamespace(), create(materialTag.tag), EnumSet.copyOf(materialTag.tags.keySet()), materialTag.materialNameSupplier);
+        }
+
+        public MaterialTag(YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> materials) {
+            this(materialTag.getName(), materialTag.getNamespace(), create(materialTag.tag), materials, materialTag.materialNameSupplier);
+        }
+
+        public MaterialTag(String name, String namespace, TagKey<Item> tag, EnumSet<MaterialType> materials) {
+            this(name, namespace, tag, materials, (type) -> type.key);
+        }
+
+        public MaterialTag(String name, String namespace, TagKey<Item> tag, EnumSet<MaterialType> materials, Function<MaterialType, String> materialNameSupplier) {
             this.tag = tag;
             tags = new HashMap<>();
-            item.forEach((type) -> tags.put(type, ItemTags.create(new ResourceLocation(namespace, name + "/" + type.key))));
+            materials.forEach((type) -> tags.put(type, ItemTags.create(new ResourceLocation(namespace, name + "/" + materialNameSupplier.apply(type)))));
         }
 
         public TagKey<Item> of(MaterialType material) {
-            return Objects.requireNonNull(tags.get(material));
+            return Objects.requireNonNull(tags.get(material), material.key);
         }
 
         public Collection<TagKey<Item>> values() {
@@ -120,8 +151,8 @@ public class YTechItemTags {
     }
 
     private static class IngotMaterialTag extends MaterialTag {
-        public IngotMaterialTag(String name, String namespace, TagKey<Item> tag, YTechItems.MaterialItem item) {
-            super(name, namespace, tag, Utils.exclude(EnumSet.copyOf(item.materials()), MaterialType.VANILLA_METALS));
+        public IngotMaterialTag() {
+            super("ingots", "forge", Tags.Items.INGOTS, YTechItems.INGOTS);
             tags.put(MaterialType.COPPER, Tags.Items.INGOTS_COPPER);
             tags.put(MaterialType.GOLD, Tags.Items.INGOTS_GOLD);
             tags.put(MaterialType.IRON, Tags.Items.INGOTS_IRON);
@@ -129,19 +160,54 @@ public class YTechItemTags {
     }
 
     private static class RawMaterialTag extends MaterialTag {
-        public RawMaterialTag(String name, String namespace, TagKey<Item> tag, YTechItems.MaterialItem item) {
-            super(name, namespace, tag, Utils.exclude(EnumSet.copyOf(item.materials()), MaterialType.VANILLA_METALS));
+        public RawMaterialTag() {
+            super("raw_materials", "forge", Tags.Items.RAW_MATERIALS, YTechItems.RAW_MATERIALS);
             tags.put(MaterialType.COPPER, Tags.Items.RAW_MATERIALS_COPPER);
             tags.put(MaterialType.GOLD, Tags.Items.RAW_MATERIALS_GOLD);
             tags.put(MaterialType.IRON, Tags.Items.RAW_MATERIALS_IRON);
         }
     }
 
-    private static TagKey<Item> create(String name) {
-        return ItemTags.create(Utils.modLoc(name));
+    private static class DeepslateOreMaterialTag extends MaterialTag {
+        public DeepslateOreMaterialTag() {
+            super(YTechBlockTags.DEEPSLATE_ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.DEEPSLATE_ORES.materials()), MaterialType.VANILLA_METALS));
+            tags.put(MaterialType.COPPER, Tags.Items.ORES_COPPER);
+            tags.put(MaterialType.GOLD, Tags.Items.ORES_GOLD);
+            tags.put(MaterialType.IRON, Tags.Items.ORES_IRON);
+        }
     }
 
-    private static TagKey<Item> create(TagKey<Block> block) {
-        return ItemTags.create(block.location());
+    private static class NetherOreMaterialTag extends MaterialTag {
+        public NetherOreMaterialTag() {
+            super(YTechBlockTags.NETHER_ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.NETHER_ORES.materials()), MaterialType.GOLD));
+            tags.put(MaterialType.GOLD, Tags.Items.ORES_GOLD);
+        }
+    }
+
+    private static class RawStorageBlockMaterialTag extends MaterialTag {
+        public RawStorageBlockMaterialTag() {
+            super(YTechBlockTags.RAW_STORAGE_BLOCKS, Utils.exclude(EnumSet.copyOf(YTechBlocks.RAW_STORAGE_BLOCKS.materials()), MaterialType.VANILLA_METALS));
+            tags.put(MaterialType.COPPER, Tags.Items.STORAGE_BLOCKS_RAW_COPPER);
+            tags.put(MaterialType.GOLD, Tags.Items.STORAGE_BLOCKS_RAW_GOLD);
+            tags.put(MaterialType.IRON, Tags.Items.STORAGE_BLOCKS_RAW_IRON);
+        }
+    }
+
+    private static class StoneOreMaterialTag extends MaterialTag {
+        public StoneOreMaterialTag() {
+            super(YTechBlockTags.STONE_ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.STONE_ORES.materials()), MaterialType.VANILLA_METALS));
+            tags.put(MaterialType.COPPER, Tags.Items.ORES_COPPER);
+            tags.put(MaterialType.GOLD, Tags.Items.ORES_GOLD);
+            tags.put(MaterialType.IRON, Tags.Items.ORES_IRON);
+        }
+    }
+
+    private static class StorageBlockMaterialTag extends MaterialTag {
+        public StorageBlockMaterialTag() {
+            super(YTechBlockTags.STORAGE_BLOCKS, Utils.exclude(EnumSet.copyOf(YTechBlocks.STORAGE_BLOCKS.materials()), MaterialType.VANILLA_METALS));
+            tags.put(MaterialType.COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
+            tags.put(MaterialType.GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
+            tags.put(MaterialType.IRON, Tags.Items.STORAGE_BLOCKS_IRON);
+        }
     }
 }

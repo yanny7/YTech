@@ -64,7 +64,6 @@ public class YTechMod {
     }
 
     public static void clientStuff(final IEventBus modEventBus) {
-        modEventBus.addListener(Registration::addBlockColors);
         modEventBus.addListener(Registration::addItemColors);
     }
 

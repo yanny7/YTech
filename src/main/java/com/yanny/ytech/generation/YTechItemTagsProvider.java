@@ -10,18 +10,20 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechItemTagsProvider extends ItemTagsProvider {
     public YTechItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tagLookup, @Nullable ExistingFileHelper existingFileHelper) {
@@ -101,12 +103,23 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         materialTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
         materialTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
 
+        materialOreTag(YTechItems.DEEPSLATE_ORES, YTechItemTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
+        materialTag(YTechItems.DRYING_RACKS, YTechItemTags.DRYING_RACKS);
+        materialTag(YTechItems.GRAVEL_DEPOSITS, YTechItemTags.GRAVEL_DEPOSITS);
+        materialOreTag(YTechItems.NETHER_ORES, YTechItemTags.NETHER_ORES, EnumSet.of(MaterialType.GOLD));
+        materialTag(YTechItems.RAW_STORAGE_BLOCKS, YTechItemTags.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
+        materialTag(YTechItems.SAND_DEPOSITS, YTechItemTags.SAND_DEPOSITS);
+        materialOreTag(YTechItems.STONE_ORES, YTechItemTags.STONE_ORES, MaterialType.VANILLA_METALS);
+        materialTag(YTechItems.STORAGE_BLOCKS, YTechItemTags.STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
+        materialTag(YTechItems.TANNING_RACKS, YTechItemTags.TANNING_RACKS);
+
         tag(ItemTags.ANVIL).add(YTechItems.BRONZE_ANVIL.get());
         tag(ItemTags.BEDS).add(YTechItems.GRASS_BED.get());
+        tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(filteredMaterials(YTechItems.DEEPSLATE_ORES, MaterialType.VANILLA_METALS));
+        tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(filteredMaterials(YTechItems.NETHER_ORES, EnumSet.of(MaterialType.GOLD)));
+        tag(Tags.Items.ORES_IN_GROUND_STONE).add(filteredMaterials(YTechItems.STONE_ORES, MaterialType.VANILLA_METALS));
         tag(ItemTags.SLABS).add(YTechItems.TERRACOTTA_BRICK_SLAB.get(), YTechItems.THATCH_SLAB.get());
         tag(ItemTags.STAIRS).add(YTechItems.TERRACOTTA_BRICK_STAIRS.get(), YTechItems.THATCH_STAIRS.get());
-
-        GeneralUtils.sortedStreamMapOfMap(HOLDER.blocks(), Utils.blockComparator()).forEach((entry) -> entry.getValue().object.registerTag(entry.getValue(), this));
 
         Arrays.stream(GenericItemTags.values()).forEach((type) -> type.registerTags(this));
     }
@@ -125,5 +138,28 @@ class YTechItemTagsProvider extends ItemTagsProvider {
                 tag(materialTag.tag).addTag(materialTag.of(material));
             }
         });
+    }
+
+    private void materialOreTag(YTechItems.MaterialItem materialItem, YTechItemTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
+        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+            MaterialType material = entry.getKey();
+
+            if (!excludeMaterials.contains(material)) {
+                RegistryObject<Item> item = entry.getValue();
+
+                tag(materialTag.of(material)).add(item.get());
+                tag(materialTag.tag).add(item.get());
+
+                switch (material) {
+                    case IRON -> tag(ItemTags.IRON_ORES).add(item.get().asItem());
+                    case COPPER -> tag(ItemTags.COPPER_ORES).add(item.get().asItem());
+                    case GOLD -> tag(ItemTags.GOLD_ORES).add(item.get().asItem());
+                }
+            }
+        });
+    }
+
+    private static Item[] filteredMaterials(YTechItems.MaterialItem item, EnumSet<MaterialType> exclude) {
+        return item.entries().stream().filter((entry) -> !exclude.contains(entry.getKey())).sorted(Comparator.comparing(t -> t.getKey().key)).map(Map.Entry::getValue).map(RegistryObject::get).toArray(Item[]::new);
     }
 }

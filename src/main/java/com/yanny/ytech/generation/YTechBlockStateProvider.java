@@ -1,7 +1,7 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.*;
 import com.yanny.ytech.registration.YTechBlocks;
@@ -19,7 +19,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
+import java.util.EnumSet;
 
 class YTechBlockStateProvider extends BlockStateProvider {
     public YTechBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -48,7 +48,15 @@ class YTechBlockStateProvider extends BlockStateProvider {
         registerSlabBlockState(this, YTechBlocks.THATCH_SLAB, Utils.getId(YTechBlocks.THATCH));
         registerStairsBlockState(this, YTechBlocks.THATCH_STAIRS, Utils.getId(YTechBlocks.THATCH));
 
-        GeneralUtils.mapToStream(HOLDER.blocks()).forEach((m) -> m.object.registerModel(m, this));
+        registerMaterialBlockState(this, "deepslate_ore", YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
+        YTechBlocks.DRYING_RACKS.entries().forEach((entry) -> DryingRackBlock.registerModel(this, entry.getValue(), entry.getKey()));
+        registerMaterialBlockState(this, "gravel_deposit", YTechBlocks.GRAVEL_DEPOSITS);
+        registerMaterialBlockState(this, "nether_ore", YTechBlocks.NETHER_ORES, EnumSet.of(MaterialType.GOLD));
+        registerMaterialBlockState(this, "raw_storage", YTechBlocks.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
+        registerMaterialBlockState(this, "sand_deposit", YTechBlocks.SAND_DEPOSITS);
+        registerMaterialBlockState(this, "ore", YTechBlocks.STONE_ORES, MaterialType.VANILLA_METALS);
+        registerMaterialBlockState(this, "storage", YTechBlocks.STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
+        YTechBlocks.TANNING_RACKS.entries().forEach((entry) -> TanningRackBlock.registerModel(this, entry.getValue(), entry.getKey()));
     }
 
     private static void reinforcedBricksBlockState(@NotNull BlockStateProvider provider) {
@@ -88,5 +96,29 @@ class YTechBlockStateProvider extends BlockStateProvider {
 
         provider.stairsBlock((StairBlock)block.get(), stairs, stairsInner, stairsOuter);
         provider.itemModels().getBuilder(name).parent(stairs);
+    }
+
+    private static void registerMaterialBlockState(@NotNull BlockStateProvider provider, String group, YTechBlocks.MaterialBlock materialBlock) {
+        materialBlock.entries().forEach((entry) -> {
+            RegistryObject<Block> block = entry.getValue();
+            BlockModelBuilder model = provider.models().cubeAll(Utils.getId(block), Utils.modBlockLoc(group + "/" + entry.getKey().key));
+
+            model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").cullface(direction).tintindex(0));
+            provider.getVariantBuilder(block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
+            provider.itemModels().getBuilder(Utils.getId(block)).parent(model);
+        });
+    }
+
+    private static void registerMaterialBlockState(@NotNull BlockStateProvider provider, String group, YTechBlocks.MaterialBlock materialBlock, EnumSet<MaterialType> exclude) {
+        materialBlock.entries().forEach((entry) -> {
+            if (!exclude.contains(entry.getKey())) {
+                RegistryObject<Block> block = entry.getValue();
+                BlockModelBuilder model = provider.models().cubeAll(Utils.getId(block), Utils.modBlockLoc(group + "/" + entry.getKey().key));
+
+                model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").cullface(direction).tintindex(0));
+                provider.getVariantBuilder(block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
+                provider.itemModels().getBuilder(Utils.getId(block)).parent(model);
+            }
+        });
     }
 }

@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
@@ -209,7 +208,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.BRONZE_ANVIL.get())
-                .define('B', MaterialBlockType.STORAGE_BLOCK.itemTag.get(MaterialType.BRONZE))
+                .define('B', YTechItemTags.STORAGE_BLOCKS.of(MaterialType.BRONZE))
                 .define('I', YTechItemTags.INGOTS.of(MaterialType.BRONZE))
                 .pattern("BBB")
                 .pattern(" I ")

@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -16,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.ItemStackHandler;
@@ -35,8 +35,8 @@ public class TanningRackBlockEntity extends BlockEntity {
     @Nullable private ItemStack result = null;
     private int hitLeft = -1;
 
-    public TanningRackBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(blockEntityType, pos, blockState);
+    public TanningRackBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YTechBlockEntityTypes.TANNING_RACK.get(), pos, blockState);
         this.items = new ItemStackHandler(1) {
             @Override
             public int getSlotLimit(int slot) {

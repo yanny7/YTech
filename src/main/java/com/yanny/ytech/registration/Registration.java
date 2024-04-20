@@ -18,8 +18,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -27,7 +25,6 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.TierSortingRegistry;
-import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -73,12 +70,6 @@ public class Registration {
             }
         }
 
-        for (MaterialBlockType blockObject : MaterialBlockType.values()) {
-            for (MaterialType material : blockObject.materials) {
-                HOLDER.blocks().computeIfAbsent(blockObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, blockObject,
-                        (blockType) -> registerBlock(blockType, material)));
-            }
-        }
         for (MaterialFluidType fluidObject : MaterialFluidType.values()) {
             for (MaterialType material : fluidObject.materials) {
                 HOLDER.fluids().computeIfAbsent(fluidObject, (p) -> new HashMap<>()).compute(material, (k, v) -> uniqueKey(v, fluidObject,
@@ -135,56 +126,17 @@ public class Registration {
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == TAB.getKey()) {
-            GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> event.accept(holder.block));
             GeneralUtils.mapToStream(HOLDER.fluids()).forEach((holder) -> event.accept(holder.bucket));
             YTechItems.getRegisteredItems().forEach((object) -> event.accept(object.get()));
             HOLDER.entities().values().forEach(h -> event.accept(h.spawnEgg.get()));
         }
     }
 
-    public static void addBlockColors(RegisterColorHandlersEvent.Block event) {
-        GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((b, g, p, t) -> getTintColor(h, t), h.block.get()));
-    }
-
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((i, t) -> t == 1 ? 0xF54D0C : 0xFFFFFFFF, YTechItems.LAVA_CLAY_BUCKET.get());
         event.register((i, t) -> t == 1 ? 0x0C4DF5 : 0xFFFFFFFF, YTechItems.WATER_CLAY_BUCKET.get());
 
-        GeneralUtils.mapToStream(HOLDER.blocks()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.block.get()));
         GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> event.register((i, t) -> getTintColor(h, t), h.bucket.get()));
-    }
-
-    @NotNull
-    public static Item item(@NotNull MaterialBlockType type, @NotNull MaterialType material) {
-        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.blocks().get(type), "Missing item type " + type).get(material), "Missing material " + material).block.get().asItem();
-    }
-
-    @NotNull
-    public static Block block(@NotNull MaterialBlockType type, @NotNull MaterialType material) {
-        Block block = null;
-
-        switch (type) {
-            case STORAGE_BLOCK -> {
-                switch (material) {
-                    case COPPER -> block = Blocks.COPPER_BLOCK;
-                    case GOLD -> block = Blocks.GOLD_BLOCK;
-                    case IRON -> block = Blocks.IRON_BLOCK;
-                }
-            }
-            case RAW_STORAGE_BLOCK -> {
-                switch (material) {
-                    case COPPER -> block = Blocks.RAW_COPPER_BLOCK;
-                    case GOLD -> block = Blocks.RAW_GOLD_BLOCK;
-                    case IRON -> block = Blocks.RAW_IRON_BLOCK;
-                }
-            }
-        }
-
-        if (block != null) {
-            return block;
-        }
-
-        return Objects.requireNonNull(Objects.requireNonNull(HOLDER.blocks().get(type), "Missing item type " + type).get(material), "Missing material " + material).block.get();
     }
 
     @NotNull
@@ -195,14 +147,6 @@ public class Registration {
     @NotNull
     public static <T extends Entity> EntityType<T> entityType(@NotNull SimpleEntityType type) {
         return Objects.requireNonNull(HOLDER.simpleEntities().get(type), "Missing entity type " + type).getEntityType();
-    }
-
-    private static Holder.BlockHolder registerBlock(MaterialBlockType blockType, MaterialType material) {
-        return switch (blockType.type) {
-            case BLOCK -> new Holder.BlockHolder(blockType, material, Registration::registerBlock, Registration::registerItem);
-            case ENTITY_BLOCK -> new Holder.EntityBlockHolder(blockType, material, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity);
-            case MENU_BLOCK -> new Holder.MenuEntityBlockHolder(blockType, material, Registration::registerBlock, Registration::registerItem, Registration::registerBlockEntity, Registration::registerMenuBlockEntity);
-        };
     }
 
     private static Holder.SimpleEntityHolder registerSimpleEntity(SimpleEntityType type) {
@@ -231,23 +175,6 @@ public class Registration {
             holder.object.entityTypeBuilder.accept(builder);
             return builder.build(holder.key);
         });
-    }
-
-    private static RegistryObject<Block> registerBlock(Holder.BlockHolder holder) {
-        return BLOCKS.register(holder.key, () -> holder.object.getBlock(holder));
-    }
-
-    private static RegistryObject<Item> registerItem(Holder.BlockHolder holder) {
-        return ITEMS.register(holder.key, () -> holder.object.getItem(holder));
-    }
-
-    private static RegistryObject<BlockEntityType<?>> registerBlockEntity(Holder.BlockHolder holder) {
-        return BLOCK_ENTITY_TYPES.register(holder.key, () -> BlockEntityType.Builder.of((pos, blockState) ->
-                Objects.requireNonNull(((EntityBlock) holder.block.get()).newBlockEntity(pos, blockState)), holder.block.get()).build(null));
-    }
-
-    private static RegistryObject<MenuType<?>> registerMenuBlockEntity(Holder.BlockHolder holder) {
-        return MENU_TYPES.register(holder.key, () -> IForgeMenuType.create((windowId, inv, data) -> holder.object.getContainerMenu(holder, windowId, inv, data.readBlockPos())));
     }
 
     private static Holder.FluidHolder registerFluid(MaterialFluidType fluidObject, MaterialType material) {

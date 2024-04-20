@@ -1,12 +1,10 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.DryingRackBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,12 +12,12 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -40,21 +38,18 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class DryingRackBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(7/16.0, 0, 0, 9/16.0, 1, 1);
 
-    private final Holder.BlockHolder holder;
-
-    public DryingRackBlock(Holder.BlockHolder holder) {
+    public DryingRackBlock() {
         super(Properties.copy(Blocks.OAK_PLANKS));
-        this.holder = holder;
     }
 
     @Override
@@ -92,11 +87,7 @@ public class DryingRackBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        if (holder instanceof Holder.EntityBlockHolder blockHolder) {
-            return new DryingRackBlockEntity(blockHolder.getBlockEntityType(), pos, state);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new DryingRackBlockEntity(pos, state);
     }
 
     @Nullable
@@ -133,9 +124,8 @@ public class DryingRackBlock extends Block implements EntityBlock {
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
-    public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures(holder.material);
-        ModelFile model = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider, @NotNull RegistryObject<Block> block, MaterialType material) {
+        ModelFile model = provider.models().getBuilder(Utils.getId(block))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -170,16 +160,16 @@ public class DryingRackBlock extends Block implements EntityBlock {
                     }
                 })
                 .from(2, 13, 8).to(14, 15, 8).end()
-                .texture("particle", textures[0])
-                .texture("2", textures[0])
-                .texture("4", textures[1]);
-        provider.horizontalBlock(holder.block.get(), model);
-        provider.itemModels().getBuilder(holder.key).parent(model);
+                .texture("particle", Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log"))
+                .texture("2", Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log"))
+                .texture("4", Utils.modBlockLoc("horizontal_rope"));
+        provider.horizontalBlock(block.get(), model);
+        provider.itemModels().getBuilder(Utils.getId(block)).parent(model);
     }
 
-    public static void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                    .define('W', Utils.getLogFromMaterial(holder.material))
+    public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
+                    .define('W', Utils.getLogFromMaterial(material))
                     .define('S', Items.STICK)
                     .define('T', YTechItemTags.GRASS_TWINES)
                     .define('F', YTechItemTags.AXES.tag)
@@ -187,14 +177,9 @@ public class DryingRackBlock extends Block implements EntityBlock {
                     .pattern("TST")
                     .pattern("BFB")
                     .pattern("W W")
-                    .group(MaterialBlockType.DRYING_RACK.id + "_" + holder.material.group)
+                    .group(YTechBlocks.DRYING_RACKS.getGroup() + "_" + material.group)
                     .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                    .save(recipeConsumer, Utils.modLoc(holder.key));
-    }
-
-    public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("horizontal_rope"))).toArray(TextureHolder[]::new);
+                    .save(recipeConsumer, Utils.modLoc(item));
     }
 
     private static void createDryingRackTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {

@@ -54,12 +54,6 @@ public class ModBusSubscriber {
         event.enqueueWork(() -> {
             MenuScreens.register(YTechMenuTypes.PRIMITIVE_ALLOY_SMELTER.get(), ((IMenuBlock) YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get())::getScreen);
             MenuScreens.register(YTechMenuTypes.PRIMITIVE_SMELTER.get(), ((IMenuBlock) YTechBlocks.PRIMITIVE_SMELTER.get())::getScreen);
-
-            GeneralUtils.mapToStream(HOLDER.blocks()).forEach((blockHolder) -> {
-                if (blockHolder instanceof Holder.MenuEntityBlockHolder holder && holder.block.get() instanceof IMenuBlock menuBlock) {
-                    MenuScreens.register(holder.getMenuType(), menuBlock::getScreen);
-                }
-            });
         });
     }
 
@@ -69,16 +63,9 @@ public class ModBusSubscriber {
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.AQUEDUCT_FERTILIZER.get(), AqueductRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.BRONZE_ANVIL.get(), BronzeAnvilRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.MILLSTONE.get(), MillstoneRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.DRYING_RACK.get(), DryingRackRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.TANNING_RACK.get(), TanningRackRenderer::new);
 
-        HOLDER.blocks().forEach((blockType, map) -> map.forEach((material, blockHolder) -> {
-            if (blockHolder instanceof Holder.EntityBlockHolder holder) {
-                switch (blockType) {
-                    case SHAFT, WATER_WHEEL -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), KineticRenderer::new);
-                    case DRYING_RACK -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), DryingRackRenderer::new);
-                    case TANNING_RACK -> event.registerBlockEntityRenderer(holder.getBlockEntityType(), TanningRackRenderer::new);
-                }
-            }
-        }));
         HOLDER.simpleEntities().forEach((type, holder) -> {
             switch (type) {
                 case FLINT_SPEAR, COPPER_SPEAR, BRONZE_SPEAR, IRON_SPEAR ->

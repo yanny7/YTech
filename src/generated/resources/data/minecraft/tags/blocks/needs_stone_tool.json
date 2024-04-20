@@ -1,5 +1,6 @@
 {
   "values": [
+    "ytech:nether_copper_ore",
     "ytech:aqueduct",
     "ytech:aqueduct_fertilizer",
     "ytech:aqueduct_hydrator",
@@ -13,10 +14,6 @@
     "ytech:reinforced_brick_chimney",
     "ytech:terracotta_bricks",
     "ytech:terracotta_brick_slab",
-    "ytech:terracotta_brick_stairs",
-    "ytech:cassiterite_gravel_deposit",
-    "ytech:nether_copper_ore",
-    "ytech:raw_cassiterite_block",
-    "ytech:cassiterite_sand_deposit"
+    "ytech:terracotta_brick_stairs"
   ]
 }

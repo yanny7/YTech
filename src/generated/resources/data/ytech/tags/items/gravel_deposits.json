@@ -1,6 +1,6 @@
 {
   "values": [
-    "#forge:gravel_deposits/cassiterite",
-    "#forge:gravel_deposits/gold"
+    "#ytech:gravel_deposits/cassiterite",
+    "#ytech:gravel_deposits/gold"
   ]
 }

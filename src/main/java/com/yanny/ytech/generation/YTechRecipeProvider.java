@@ -1,7 +1,5 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.GeneralUtils;
-import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.*;
@@ -25,7 +23,6 @@ import java.util.EnumSet;
 import java.util.function.Consumer;
 
 import static com.yanny.ytech.configuration.MaterialType.*;
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechRecipeProvider extends RecipeProvider {
     public YTechRecipeProvider(PackOutput output) {
@@ -34,8 +31,6 @@ class YTechRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        GeneralUtils.mapToStream(HOLDER.blocks()).forEach((holder) -> holder.object.registerRecipe(holder, recipeConsumer));
-
         /*
          * MODIFIED VANILLA RECIPES
          */
@@ -352,6 +347,11 @@ class YTechRecipeProvider extends RecipeProvider {
         registerThatchBlockRecipe(recipeConsumer);
         registerThatchBlockSlabRecipe(recipeConsumer);
         registerThatchBlockStairsRecipe(recipeConsumer);
+
+        YTechItems.DRYING_RACKS.entries().forEach((entry) -> DryingRackBlock.registerRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
+        YTechItems.RAW_STORAGE_BLOCKS.entries().forEach((entry) -> registerRawStorageBlockRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
+        YTechItems.STORAGE_BLOCKS.entries().forEach((entry) -> registerStorageBlockRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
+        YTechItems.TANNING_RACKS.entries().forEach((entry) -> TanningRackBlock.registerRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
 
         alloyingRecipe(recipeConsumer, YTechItemTags.INGOTS.of(COPPER), 9, YTechItemTags.INGOTS.of(TIN), 1, YTechItems.INGOTS.of(BRONZE).get(), 10, Math.max(COPPER.meltingTemp, TIN.meltingTemp), 200);
 
@@ -855,11 +855,11 @@ class YTechRecipeProvider extends RecipeProvider {
         } else {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, item.get())
                     .define('S', Items.STICK)
-                    .define('#', MaterialBlockType.STORAGE_BLOCK.itemTag.get(material))
+                    .define('#', YTechItemTags.STORAGE_BLOCKS.of(material))
                     .pattern(" # ")
                     .pattern(" S#")
                     .pattern("S  ")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(material)))
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.STORAGE_BLOCKS.of(material)))
                     .save(recipeConsumer, Utils.modLoc(item));
         }
     }
@@ -891,8 +891,8 @@ class YTechRecipeProvider extends RecipeProvider {
     public static void registerIngotRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
         if (!VANILLA_METALS.contains(material)) {
             RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, item.get(), 9)
-                    .requires(MaterialBlockType.STORAGE_BLOCK.itemTag.get(material))
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.STORAGE_BLOCK.itemTag.get(material)))
+                    .requires(YTechItemTags.STORAGE_BLOCKS.of(material))
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.STORAGE_BLOCKS.of(material)))
                     .save(recipeConsumer, Utils.modLoc(item));
         }
     }
@@ -984,8 +984,8 @@ class YTechRecipeProvider extends RecipeProvider {
     public static void registerRawMaterialRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
         if (!VANILLA_METALS.contains(material)) {
             RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, item.get(), 9)
-                    .requires(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(material))
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialBlockType.RAW_STORAGE_BLOCK.itemTag.get(material)))
+                    .requires(YTechItemTags.RAW_STORAGE_BLOCKS.of(material))
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.RAW_STORAGE_BLOCKS.of(material)))
                     .save(recipeConsumer, Utils.modLoc(item));
         }
     }
@@ -1129,5 +1129,25 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("BBB")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.THATCH))
                 .save(recipeConsumer, Utils.modLoc(YTechBlocks.THATCH_STAIRS));
+    }
+
+    private static void registerRawStorageBlockRecipe(Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
+        if (!VANILLA_METALS.contains(material)) {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
+                    .define('#', YTechItemTags.RAW_MATERIALS.of(material))
+                    .pattern("###").pattern("###").pattern("###")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.RAW_MATERIALS.of(material)))
+                    .save(recipeConsumer, Utils.modLoc(item));
+        }
+    }
+
+    private static void registerStorageBlockRecipe(Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
+        if (!VANILLA_METALS.contains(material)) {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
+                    .define('#', YTechItemTags.INGOTS.of(material))
+                    .pattern("###").pattern("###").pattern("###")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.of(material)))
+                    .save(recipeConsumer, Utils.modLoc(item));
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.yanny.ytech.generation;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.AnimalEntityType;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -36,9 +37,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import static com.yanny.ytech.configuration.MaterialBlockType.*;
 import static com.yanny.ytech.configuration.MaterialType.*;
-import static com.yanny.ytech.registration.Registration.block;
 import static com.yanny.ytech.registration.Registration.entityType;
 
 public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
@@ -77,12 +76,12 @@ public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
     private static RegistrySetBuilder getRegistrySet() {
         return new RegistrySetBuilder()
                 .add(Registries.CONFIGURED_FEATURE, bootstrap -> {
-                    bootstrap.register(CASSITERITE_ORE_FEATURE, oreConfiguration(block(STONE_ORE, CASSITERITE), 16));
-                    bootstrap.register(GALENA_ORE_FEATURE, oreConfiguration(block(STONE_ORE, GALENA), 8));
-                    bootstrap.register(GOLD_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(block(SAND_DEPOSIT, GOLD), 1, 3, 2));
-                    bootstrap.register(GOLD_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(block(GRAVEL_DEPOSIT, GOLD), 1, 2, 2));
-                    bootstrap.register(CASSITERITE_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(block(SAND_DEPOSIT, CASSITERITE), 2, 5, 2));
-                    bootstrap.register(CASSITERITE_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(block(GRAVEL_DEPOSIT, CASSITERITE), 2, 4, 2));
+                    bootstrap.register(CASSITERITE_ORE_FEATURE, oreConfiguration(YTechBlocks.STONE_ORES.of(CASSITERITE).get(), 16));
+                    bootstrap.register(GALENA_ORE_FEATURE, oreConfiguration(YTechBlocks.STONE_ORES.of(GALENA).get(), 8));
+                    bootstrap.register(GOLD_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(YTechBlocks.SAND_DEPOSITS.of(GOLD).get(), 1, 3, 2));
+                    bootstrap.register(GOLD_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(YTechBlocks.GRAVEL_DEPOSITS.of(GOLD).get(), 1, 2, 2));
+                    bootstrap.register(CASSITERITE_SAND_DEPOSIT_FEATURE, sandDiskConfiguration(YTechBlocks.SAND_DEPOSITS.of(CASSITERITE).get(), 2, 5, 2));
+                    bootstrap.register(CASSITERITE_GRAVEL_DEPOSIT_FEATURE, gravelDiskConfiguration(YTechBlocks.GRAVEL_DEPOSITS.of(CASSITERITE).get(), 2, 4, 2));
                 })
                 .add(Registries.PLACED_FEATURE, bootstrap -> {
                     HolderGetter<ConfiguredFeature<?, ?>> configured = bootstrap.lookup(Registries.CONFIGURED_FEATURE);

@@ -2,11 +2,10 @@ package com.yanny.ytech.registration;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.NameHolder;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class YTechBlocks {
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
@@ -39,6 +38,16 @@ public class YTechBlocks {
     public static final RegistryObject<Block> THATCH_SLAB = registerSlab("thatch_slab", Blocks.HAY_BLOCK);
     public static final RegistryObject<Block> THATCH_STAIRS = registerStairs("thatch_stairs", YTechBlocks.THATCH, Blocks.HAY_BLOCK);
 
+    public static final MaterialBlock DEEPSLATE_ORES = new DeepslateOreMaterialBlock();
+    public static final MaterialBlock DRYING_RACKS = new MaterialBlock("drying_rack", NameHolder.suffix("drying_rack"), MaterialType.ALL_WOODS, DryingRackBlock::new);
+    public static final MaterialBlock GRAVEL_DEPOSITS = new MaterialBlock("gravel_deposit", NameHolder.suffix("gravel_deposit"), MaterialType.ALL_DEPOSIT_ORES, () -> new GravelBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)));
+    public static final MaterialBlock NETHER_ORES = new NetherOreMaterialBlock();
+    public static final MaterialBlock RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialBlock();
+    public static final MaterialBlock SAND_DEPOSITS = new MaterialBlock("sand_deposit", NameHolder.suffix("sand_deposit"), MaterialType.ALL_DEPOSIT_ORES, () -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)));
+    public static final MaterialBlock STONE_ORES = new StoneOreMaterialBlock();
+    public static final MaterialBlock STORAGE_BLOCKS = new StorageBlockMaterialBlock();
+    public static final MaterialBlock TANNING_RACKS = new MaterialBlock("tanning_rack", NameHolder.suffix("tanning_rack"), MaterialType.ALL_WOODS, TanningRackBlock::new);
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }
@@ -57,33 +66,24 @@ public class YTechBlocks {
 
     public static class MaterialBlock {
         protected final String group;
-        protected final GroupLocation groupLocation;
+        protected final NameHolder nameHolder;
         protected final Map<MaterialType, RegistryObject<Block>> blocks;
 
-        public MaterialBlock(String group, GroupLocation groupLocation, EnumSet<MaterialType> materialTypes, Function<MaterialType, Block> blockSupplier) {
-            this(group, group, groupLocation, materialTypes, blockSupplier);
-        }
-
-        public MaterialBlock(String group, String groupShort, GroupLocation groupLocation, EnumSet<MaterialType> materialTypes, Function<MaterialType, Block> itemSupplier) {
+        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Supplier<Block> itemSupplier) {
             this.group = group;
-            this.groupLocation = groupLocation;
+            this.nameHolder = nameHolder;
             blocks = new HashMap<>();
             materialTypes.forEach((type) -> {
-                String key;
+                String key = nameHolder.prefix() != null ? nameHolder.prefix() + "_" : "";
 
-                if (groupLocation == GroupLocation.PREFIX) {
-                    key = groupShort + "_" + type.key;
+                if (type.key.equals("gold") && nameHolder.prefix() == null) {
+                    key += "golden";
                 } else {
-                    if (type.key.equals("gold")) {
-                        key = "golden";
-                    } else {
-                        key = type.key;
-                    }
-
-                    key += "_" + groupShort;
+                    key += type.key;
                 }
 
-                blocks.put(type, BLOCKS.register(key, () -> itemSupplier.apply(type)));
+                key += nameHolder.suffix() != null ? "_" + nameHolder.suffix() : "";
+                blocks.put(type, BLOCKS.register(key, itemSupplier));
             });
         }
 
@@ -91,7 +91,7 @@ public class YTechBlocks {
             return Objects.requireNonNull(blocks.get(material));
         }
 
-        public Collection<RegistryObject<Block>> items() {
+        public Collection<RegistryObject<Block>> blocks() {
             return blocks.values();
         }
 
@@ -106,9 +106,48 @@ public class YTechBlocks {
         public String getGroup() {
             return group;
         }
+    }
 
-        public GroupLocation getGroupLocation() {
-            return groupLocation;
+    private static class DeepslateOreMaterialBlock extends MaterialBlock {
+        public DeepslateOreMaterialBlock() {
+            super("deepslate_ore", NameHolder.both("deepslate", "ore"), Utils.exclude(MaterialType.ALL_ORES, MaterialType.VANILLA_METALS), () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)));
+            blocks.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.DEEPSLATE_COPPER_ORE), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.DEEPSLATE_GOLD_ORE), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.DEEPSLATE_IRON_ORE), ForgeRegistries.BLOCKS));
+        }
+    }
+
+    private static class NetherOreMaterialBlock extends MaterialBlock {
+        public NetherOreMaterialBlock() {
+            super("nether_ore", NameHolder.both("nether", "ore"), Utils.exclude(MaterialType.ALL_ORES, MaterialType.GOLD), () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHER_GOLD_ORE)));
+            blocks.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.NETHER_GOLD_ORE), ForgeRegistries.BLOCKS));
+        }
+    }
+
+    private static class RawStorageBlockMaterialBlock extends MaterialBlock {
+        public RawStorageBlockMaterialBlock() {
+            super("storage_block", NameHolder.both("raw", "block"), Utils.exclude(MaterialType.ALL_ORES, MaterialType.VANILLA_METALS), () -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)));
+            blocks.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.RAW_COPPER_BLOCK), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.RAW_GOLD_BLOCK), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.RAW_IRON_BLOCK), ForgeRegistries.BLOCKS));
+        }
+    }
+
+    private static class StoneOreMaterialBlock extends MaterialBlock {
+        public StoneOreMaterialBlock() {
+            super("stone_ore", NameHolder.suffix("ore"), Utils.exclude(MaterialType.ALL_ORES, MaterialType.VANILLA_METALS), () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)));
+            blocks.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.COPPER_ORE), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.GOLD_ORE), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.IRON_ORE), ForgeRegistries.BLOCKS));
+        }
+    }
+
+    private static class StorageBlockMaterialBlock extends MaterialBlock {
+        public StorageBlockMaterialBlock() {
+            super("storage_block", NameHolder.suffix("block"), Utils.exclude(MaterialType.ALL_METALS, MaterialType.VANILLA_METALS), () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+            blocks.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.COPPER_BLOCK), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.GOLD_BLOCK), ForgeRegistries.BLOCKS));
+            blocks.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.BLOCKS.getKey(Blocks.IRON_BLOCK), ForgeRegistries.BLOCKS));
         }
     }
 }

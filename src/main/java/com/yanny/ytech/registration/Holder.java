@@ -4,12 +4,8 @@ import com.yanny.ytech.configuration.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.RegistryObject;
@@ -27,8 +23,10 @@ public class Holder {
     }
 
     public static class MaterialHolder<U extends INameable & IMaterialModel<?, ?>> extends Holder {
-        @NotNull public final U object;
-        @NotNull public final MaterialType material;
+        @NotNull
+        public final U object;
+        @NotNull
+        public final MaterialType material;
 
         MaterialHolder(@NotNull U object, @NotNull MaterialType material) {
             super(
@@ -37,64 +35,6 @@ public class Holder {
             );
             this.object = object;
             this.material = material;
-        }
-    }
-
-    public static class BlockHolder extends MaterialHolder<MaterialBlockType> implements IBlockHolder {
-        @NotNull public final RegistryObject<Block> block;
-        @NotNull public final RegistryObject<Item> item;
-
-        public BlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
-                           @NotNull Function<BlockHolder, RegistryObject<Block>> blockSupplier,
-                           @NotNull Function<BlockHolder, RegistryObject<Item>> itemSupplier) {
-            super(product, materialHolder);
-            this.block = blockSupplier.apply(this);
-            this.item = itemSupplier.apply(this);
-        }
-
-        @Override
-        public @NotNull RegistryObject<Block> getBlockRegistry() {
-            return block;
-        }
-
-        @Override
-        public @NotNull IMenu getMenu() {
-            return object;
-        }
-    }
-
-    public static class EntityBlockHolder extends BlockHolder implements IEntityBlockHolder {
-        @NotNull private final RegistryObject<BlockEntityType<?>> entityType;
-
-
-        public EntityBlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
-                                 @NotNull Function<BlockHolder, RegistryObject<Block>> blockSupplier,
-                                 @NotNull Function<BlockHolder, RegistryObject<Item>> itemSupplier,
-                                 @NotNull Function<EntityBlockHolder, RegistryObject<BlockEntityType<?>>> entityType) {
-            super(product, materialHolder, blockSupplier, itemSupplier);
-            this.entityType = entityType.apply(this);
-        }
-
-        @Override
-        public <T extends BlockEntity> BlockEntityType<T> getBlockEntityType() {
-            return (BlockEntityType<T>) entityType.get();
-        }
-    }
-
-    public static class MenuEntityBlockHolder extends EntityBlockHolder implements IMenuEntityBlockHolder {
-        private final RegistryObject<MenuType<? extends AbstractContainerMenu>> menuType;
-
-        public MenuEntityBlockHolder(@NotNull MaterialBlockType product, @NotNull MaterialType materialHolder,
-                                     @NotNull Function<BlockHolder, RegistryObject<Block>> blockSupplier,
-                                     @NotNull Function<BlockHolder, RegistryObject<Item>> itemSupplier,
-                                     @NotNull Function<EntityBlockHolder, RegistryObject<BlockEntityType<?>>> entityTypeSupplier,
-                                     @NotNull Function<MenuEntityBlockHolder, RegistryObject<MenuType<? extends AbstractContainerMenu>>> menuType) {
-            super(product, materialHolder, blockSupplier, itemSupplier, entityTypeSupplier);
-            this.menuType = menuType.apply(this);
-        }
-
-        public <T extends AbstractContainerMenu> MenuType<T> getMenuType() {
-            return (MenuType<T>) menuType.get();
         }
     }
 
@@ -156,13 +96,6 @@ public class Holder {
 
     private static <U extends INameable> String langTransformer(@NotNull U product, @NotNull MaterialType material, boolean isKey) {
         if (material == MaterialType.GOLD) {
-            if (product instanceof MaterialBlockType type) {
-                switch (type) {
-                    default -> {
-                        return (isKey ? material.key : material.name) + "en";
-                    }
-                }
-            }
         }
 
         return isKey ? material.key : material.name;

@@ -1,11 +1,10 @@
 package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.MaterialBlockType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -26,8 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
-
 public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
     public static final RecipeType<DryingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "drying", DryingRecipe.class);
 
@@ -39,7 +36,7 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
     public DryingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 0, 82, 34);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(MaterialBlockType.DRYING_RACK, MaterialType.OAK_WOOD)));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.TANNING_RACKS.of(MaterialType.OAK_WOOD).get()));
         localizedName = Component.translatable("gui.ytech.category.drying");
     }
 
@@ -87,6 +84,6 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        HOLDER.blocks().get(MaterialBlockType.DRYING_RACK).forEach((material, holder) -> registration.addRecipeCatalyst(new ItemStack(holder.block.get()), RECIPE_TYPE));
+        YTechItems.DRYING_RACKS.items().forEach((item) -> registration.addRecipeCatalyst(new ItemStack(item.get()), RECIPE_TYPE));
     }
 }
