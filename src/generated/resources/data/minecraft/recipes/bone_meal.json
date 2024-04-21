@@ -1,0 +1,15 @@
+{
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "tag": "ytech:mortar_and_pestles"
+    }
+  ],
+  "result": {
+    "item": "minecraft:bone_meal"
+  }
+}

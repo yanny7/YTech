@@ -1,7 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvents;
@@ -18,9 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
 public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
-
-    public AbstractPrimitiveMachineBlock(Holder holder) {
-        super(holder, BlockBehaviour.Properties.of()
+    public AbstractPrimitiveMachineBlock() {
+        super(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_RED)
                 .requiresCorrectToolForDrops()
                 .strength(3.5F)

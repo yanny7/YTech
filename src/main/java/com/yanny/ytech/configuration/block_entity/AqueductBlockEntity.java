@@ -3,19 +3,18 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block.AqueductBlock;
 import com.yanny.ytech.network.irrigation.NetworkType;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class AqueductBlockEntity extends IrrigationBlockEntity {
 
-    public AqueductBlockEntity(@NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
-        super(entityType, pos, blockState, ((AqueductBlock)blockState.getBlock()).getValidNeighbors(blockState, pos));
+    public AqueductBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
+        super(YTechBlockEntityTypes.AQUEDUCT.get(), pos, blockState, ((AqueductBlock)blockState.getBlock()).getValidNeighbors(blockState, pos));
     }
 
     @Override

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "item": "ytech:aqueduct_hydrator"
+      "tag": "ytech:aqueduct_hydrators"
     },
     "B": {
       "tag": "ytech:bolts/bronze"

@@ -1,9 +1,6 @@
 package com.yanny.ytech.configuration.container;
 
 import com.yanny.ytech.configuration.block_entity.IMenuBlockEntity;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.IBlockHolder;
-import com.yanny.ytech.registration.IMenuEntityBlockHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -14,21 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 public class Utils {
-    public static IMenuEntityBlockHolder getMenuEntityBlockHolder(Holder holder) {
-        if (holder instanceof IMenuEntityBlockHolder entityHolder) {
-            return entityHolder;
-        } else {
-            throw new IllegalStateException("Invalid holder type");
-        }
-    }
-
-    public static IBlockHolder getBlockHolder(Holder holder) {
-        if (holder instanceof IBlockHolder entityHolder) {
-            return entityHolder;
-        } else {
-            throw new IllegalStateException("Invalid holder type");
-        }
-    }
 
     public static IMenuBlockEntity getMachineBlockEntity(@NotNull Player player, @NotNull BlockPos pos) {
         LevelAccessor level = player.level();

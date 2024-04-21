@@ -1,5 +1,6 @@
 {
   "type": "ytech:milling",
+  "bonusChance": 0.5,
   "ingredient": {
     "tag": "forge:raw_materials/galena"
   },

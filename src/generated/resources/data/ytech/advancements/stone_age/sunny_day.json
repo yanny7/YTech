@@ -41,11 +41,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_item_dried_porkchops": {
+    "has_item_dried_pork_chops": {
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_porkchops"
+            "tag": "ytech:dried_pork_chops"
           }
         ]
       },
@@ -110,7 +110,7 @@
       "has_item_dried_muttons"
     ],
     [
-      "has_item_dried_porkchops"
+      "has_item_dried_pork_chops"
     ],
     [
       "has_item_dried_rabbits"

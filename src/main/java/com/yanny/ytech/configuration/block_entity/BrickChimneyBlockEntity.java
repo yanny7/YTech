@@ -3,12 +3,12 @@ package com.yanny.ytech.configuration.block_entity;
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.ReinforcedBrickChimneyBlock;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,8 +24,8 @@ public class BrickChimneyBlockEntity extends BlockEntity {
     @Nullable private BlockPos masterPos = null;
     private int heightIndex = -1;
 
-    public BrickChimneyBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(blockEntityType, pos, blockState);
+    public BrickChimneyBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YTechBlockEntityTypes.BRICK_CHIMNEY.get(), pos, blockState);
     }
 
     @Override

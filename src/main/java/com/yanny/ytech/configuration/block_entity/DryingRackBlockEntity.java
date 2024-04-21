@@ -2,6 +2,8 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -40,8 +41,8 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
     @Nullable private ItemStack result = null;
     private int dryingLeft = -1;
 
-    public DryingRackBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(blockEntityType, pos, blockState);
+    public DryingRackBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YTechBlockEntityTypes.DRYING_RACK.get(), pos, blockState);
         this.items = new ItemStackHandler(1) {
             @Override
             public int getSlotLimit(int slot) {
@@ -57,7 +58,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             ItemStack dryingItem = items.getStackInSlot(0);
 
             if (dryingItem.isEmpty()) {
-                Optional<RecipeHolder<DryingRecipe>> dryingRecipe = level.getRecipeManager().getRecipeFor(DryingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<RecipeHolder<DryingRecipe>> dryingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.DRYING.get(), new SimpleContainer(holdingItemStack), level);
 
                 dryingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;

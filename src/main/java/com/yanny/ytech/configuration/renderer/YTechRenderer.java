@@ -2,11 +2,10 @@ package com.yanny.ytech.configuration.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.SpearModel;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -74,7 +73,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
 
             if (is2dModel) {
                 for (SpearType spearType : spearModels.keySet()) {
-                    if (stack.is(Registration.item(MaterialItemType.SPEAR, spearType.materialType))) {
+                    if (stack.is(YTechItems.SPEARS.of(spearType.materialType).get())) {
                         bakedModel = itemModelShaper.getModelManager().getModel(MODEL_LOCATIONS.get(spearType));
                         break;
                     }
@@ -85,7 +84,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
             poseStack.translate(-0.5F, -0.5F, -0.5F);
 
             for (Map.Entry<SpearType, SpearModel> entry : spearModels.entrySet()) {
-                if (stack.is(Registration.item(MaterialItemType.SPEAR, entry.getKey().materialType)) && !is2dModel) {
+                if (stack.is(YTechItems.SPEARS.of(entry.getKey().materialType).get()) && !is2dModel) {
                     poseStack.pushPose();
                     poseStack.scale(1.0F, -1.0F, -1.0F);
                     VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, entry.getValue().renderType(SpearType.TEXTURE_LOCATION), false, stack.hasFoil());
@@ -142,7 +141,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
         BakedModel bakedModel = itemModelShaper.getItemModel(stack);
 
         for (SpearType spearType : spearModels.keySet()) {
-            if (stack.is(Registration.item(MaterialItemType.SPEAR, spearType.materialType))) {
+            if (stack.is(YTechItems.SPEARS.of(spearType.materialType).get())) {
                 bakedModel = itemModelShaper.getModelManager().getModel(MODEL_IN_HAND_LOCATIONS.get(spearType));
             }
         }

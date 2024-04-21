@@ -1,8 +1,7 @@
 package com.yanny.ytech.configuration.entity;
 
-import com.yanny.ytech.configuration.MaterialItemType;
 import com.yanny.ytech.configuration.SpearType;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -43,12 +42,12 @@ public class SpearEntity extends AbstractArrow {
     public SpearEntity(EntityType<? extends Entity> entityType, Level level, SpearType spearType) {
         //noinspection unchecked
         super((EntityType<? extends AbstractArrow>) entityType, level, ItemStack.EMPTY);
-        spearItem = new ItemStack(Registration.item(MaterialItemType.SPEAR, spearType.materialType));
+        spearItem = new ItemStack(YTechItems.SPEARS.of(spearType.materialType).get());
         this.spearType = spearType;
     }
 
     public SpearEntity(Level level, LivingEntity shooter, ItemStack stack, SpearType spearType) {
-        super(Registration.entityType(spearType.entityType), shooter, level, stack);
+        super(spearType.entityType.get(), shooter, level, stack);
         spearItem = stack.copy();
         entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
         entityData.set(ID_FOIL, stack.hasFoil());

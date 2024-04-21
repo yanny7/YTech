@@ -1,21 +1,23 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.TanningRackBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -34,20 +36,17 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class TanningRackBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(7/16.0, 0, 0, 9/16.0, 1, 1);
 
-    private final Holder.BlockHolder holder;
-
-    public TanningRackBlock(Holder.BlockHolder holder) {
+    public TanningRackBlock() {
         super(Properties.ofFullCopy(Blocks.OAK_PLANKS));
-        this.holder = holder;
     }
 
     @Override
@@ -85,11 +84,7 @@ public class TanningRackBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        if (holder instanceof Holder.EntityBlockHolder blockHolder) {
-            return new TanningRackBlockEntity(blockHolder.getBlockEntityType(), pos, state);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new TanningRackBlockEntity(pos, state);
     }
 
     @SuppressWarnings("deprecation")
@@ -116,21 +111,18 @@ public class TanningRackBlock extends Block implements EntityBlock {
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
-    public static void registerModel(@NotNull Holder.BlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures(holder.material);
-        ModelFile model = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider, @NotNull DeferredBlock<Block> block, MaterialType material) {
+        ModelFile model = provider.models().getBuilder(Utils.getId(block))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
                     }
                 })
                 .from(2, 13, 8).to(14, 15, 8).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
                     }
                 })
                 .from(2, 1, 8).to(14, 3, 8).end()
@@ -156,30 +148,25 @@ public class TanningRackBlock extends Block implements EntityBlock {
                     }
                 })
                 .from(14, 0, 7).to(16, 16, 9).end()
-                .texture("particle", textures[0])
-                .texture("3", textures[0])
-                .texture("2", textures[1]);
-        provider.horizontalBlock(holder.block.get(), model);
-        provider.itemModels().getBuilder(holder.key).parent(model);
+                .texture("particle", Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log"))
+                .texture("3", Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log"))
+                .texture("2", Utils.modBlockLoc("horizontal_rope"));
+        provider.horizontalBlock(block.get(), model);
+        provider.itemModels().getBuilder(Utils.getId(block)).parent(model);
     }
 
-    public static void registerRecipe(@NotNull Holder.BlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                    .define('W', Utils.getLogFromMaterial(holder.material))
+    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
+                    .define('W', Utils.getLogFromMaterial(material))
                     .define('S', Items.STICK)
-                    .define('T', SimpleItemType.GRASS_TWINE.itemTag)
-                    .define('F', MaterialItemType.AXE.itemTag.get(MaterialType.FLINT))
-                    .define('B', SimpleItemType.WOODEN_BOLT.itemTag)
+                    .define('T', YTechItemTags.GRASS_TWINES)
+                    .define('F', YTechItemTags.AXES.tag)
+                    .define('B', YTechItemTags.BOLTS.of(MaterialType.WOODEN))
                     .pattern("TST")
                     .pattern("BFB")
                     .pattern("WSW")
-                    .group(MaterialBlockType.TANNING_RACK.id + "_" + holder.material.group)
+                    .group(YTechBlocks.TANNING_RACKS.getGroup() + "_" + material.group)
                     .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                    .save(recipeConsumer, Utils.modLoc(holder.key));
-    }
-
-    public static TextureHolder[] getTexture(MaterialType material) {
-        return List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("horizontal_rope"))).toArray(TextureHolder[]::new);
+                    .save(recipeConsumer, Utils.modLoc(item));
     }
 }

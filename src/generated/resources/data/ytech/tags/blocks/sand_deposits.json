@@ -1,6 +1,6 @@
 {
   "values": [
-    "#forge:sand_deposits/cassiterite",
-    "#forge:sand_deposits/gold"
+    "#ytech:sand_deposits/cassiterite",
+    "#ytech:sand_deposits/gold"
   ]
 }

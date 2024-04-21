@@ -1,0 +1,11 @@
+{
+  "type": "ytech:milling",
+  "bonusChance": 0.5,
+  "ingredient": {
+    "tag": "forge:crops/wheat"
+  },
+  "result": {
+    "count": 2,
+    "item": "ytech:flour"
+  }
+}

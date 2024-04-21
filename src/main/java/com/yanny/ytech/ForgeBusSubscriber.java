@@ -2,7 +2,7 @@ package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
-import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -51,10 +51,8 @@ public class ForgeBusSubscriber {
         LevelAccessor levelAccessor = event.getLevel();
 
         if (levelAccessor instanceof ServerLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.server().onLevelLoad(level);
             YTechMod.IRRIGATION_PROPAGATOR.server().onLevelLoad(level);
         } else if (levelAccessor instanceof ClientLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.client().onLevelLoad(level);
             YTechMod.IRRIGATION_PROPAGATOR.client().onLevelLoad(level);
         }
     }
@@ -64,10 +62,8 @@ public class ForgeBusSubscriber {
         LevelAccessor levelAccessor = event.getLevel();
 
         if (levelAccessor instanceof ServerLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.server().onLevelUnload(level);
             YTechMod.IRRIGATION_PROPAGATOR.server().onLevelUnload(level);
         } else if (levelAccessor instanceof ClientLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.client().onLevelUnload(level);
             YTechMod.IRRIGATION_PROPAGATOR.client().onLevelUnload(level);
         }
     }
@@ -81,7 +77,6 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onPlayerLogIn(@NotNull PlayerEvent.PlayerLoggedInEvent event) {
-        YTechMod.KINETIC_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
         YTechMod.IRRIGATION_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
     }
 
@@ -92,14 +87,12 @@ public class ForgeBusSubscriber {
         }
 
         if (event.phase == TickEvent.Phase.END && event.side == LogicalSide.SERVER && event.level instanceof ServerLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.server().tick(level);
             YTechMod.IRRIGATION_PROPAGATOR.server().tick(level);
         }
     }
 
     @SubscribeEvent
     public static void onChunkWatch(@NotNull ChunkWatchEvent.Watch event) {
-        YTechMod.KINETIC_PROPAGATOR.server().onChunkWatch(event.getLevel(), event.getPlayer(), event.getChunk());
         YTechMod.IRRIGATION_PROPAGATOR.server().onChunkWatch(event.getLevel(), event.getPlayer(), event.getChunk());
     }
 
@@ -113,7 +106,7 @@ public class ForgeBusSubscriber {
             Direction direction = event.getFace();
 
             if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
-                level.getRecipeManager().getRecipeFor(BlockHitRecipe.RECIPE_TYPE, new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
                     Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
                     heldItem.shrink(1);
                 });

@@ -2,7 +2,7 @@ package com.yanny.ytech.configuration.container;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.block_entity.AqueductFertilizerBlockEntity;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,6 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class AqueductFertilizerMenu extends AbstractContainerMenu {
-    protected final Block block;
     protected final BlockPos pos;
     @NotNull
     protected final ItemStackHandler itemStackHandler;
@@ -26,10 +25,9 @@ public class AqueductFertilizerMenu extends AbstractContainerMenu {
     @NotNull protected final ContainerData containerData;
     private final int inputSlots;
 
-    public AqueductFertilizerMenu(@NotNull Holder holder, int windowId, @NotNull Player player, @NotNull BlockPos pos,
+    public AqueductFertilizerMenu(int windowId, @NotNull Player player, @NotNull BlockPos pos,
                                   @NotNull MachineItemStackHandler itemStackHandler, @NotNull ContainerData data) {
-        super(Utils.getMenuEntityBlockHolder(holder).getMenuType(), windowId);
-        block = Utils.getBlockHolder(holder).getBlockRegistry().get();
+        super(YTechMenuTypes.AQUEDUCT_FERTILIZER.get(), windowId);
         this.pos = pos;
         containerData = data;
         blockEntity = getAqueductFertilizerBlockEntity(player, pos);
@@ -88,7 +86,7 @@ public class AqueductFertilizerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return stillValid(ContainerLevelAccess.create(player.level(), pos), player, block);
+        return stillValid(ContainerLevelAccess.create(player.level(), pos), player, player.level().getBlockState(pos).getBlock());
     }
 
     @NotNull

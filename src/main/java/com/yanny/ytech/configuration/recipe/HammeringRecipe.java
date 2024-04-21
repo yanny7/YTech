@@ -2,7 +2,8 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -30,14 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack result) implements Recipe<Container> {
-    public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<HammeringRecipe> RECIPE_TYPE = new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Utils.modLoc("hammering").toString();
-        }
-    };
-
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         return ingredient.test(container.getItem(0));
@@ -63,13 +56,13 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.HAMMERING.get();
     }
 
     @NotNull
     @Override
     public RecipeType<?> getType() {
-        return RECIPE_TYPE;
+        return YTechRecipeTypes.HAMMERING.get();
     }
 
     public static class Serializer implements RecipeSerializer<HammeringRecipe> {

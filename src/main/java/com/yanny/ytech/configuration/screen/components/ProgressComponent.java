@@ -10,10 +10,6 @@ public class ProgressComponent extends LeftRightAnimationComponent {
     @NotNull private final Supplier<Integer> progressGetter;
     @NotNull private final Supplier<Boolean> animationRendering;
 
-    public ProgressComponent(int x, int y, @NotNull Supplier<Integer> progressGetter) {
-        this(x, y, progressGetter, () -> true);
-    }
-
     public ProgressComponent(int x, int y, @NotNull Supplier<Integer> progressGetter, @NotNull Supplier<Boolean> animationRendering) {
         super(x, y, 22, 16, 0, 166, 22, 166);
         this.progressGetter = progressGetter;

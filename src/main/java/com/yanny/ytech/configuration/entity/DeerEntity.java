@@ -2,7 +2,7 @@ package com.yanny.ytech.configuration.entity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,20 +28,15 @@ import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public class DeerEntity extends Animal {
     private static final EntityDataAccessor<Boolean> DATA_HAS_ANTLERS_ID = SynchedEntityData.defineId(DeerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final String TAG_HAS_ANTLERS = "HasAntlers";
     private static final String TAG_MORE_WHEAT_TICKS = "MoreWheatTicks";
-
-    @NotNull private final Holder.AnimalEntityHolder holder;
     private int moreWheatTicks;
     private boolean hasAntlers;
 
-    public DeerEntity(@NotNull Holder.AnimalEntityHolder holder, @NotNull EntityType<? extends Animal> entityType, @NotNull Level level) {
+    public DeerEntity(@NotNull EntityType<? extends Animal> entityType, @NotNull Level level) {
         super(entityType, level);
-        this.holder = holder;
     }
 
     @Override
@@ -81,10 +76,9 @@ public class DeerEntity extends Animal {
         super.onSyncedDataUpdated(key);
     }
 
-    @NotNull
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherMob) {
-        return Objects.requireNonNull(holder.<AgeableMob>getEntityType().create(level));
+        return YTechEntityTypes.DEER.get().create(level);
     }
 
     @Override
