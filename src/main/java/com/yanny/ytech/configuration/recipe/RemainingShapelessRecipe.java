@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.NonNullList;
@@ -22,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RemainingShapelessRecipe extends ShapelessRecipe {
-    public static final Serializer SERIALIZER = new Serializer();
     private static final RandomSource RANDOM = RandomSource.create();
 
     public RemainingShapelessRecipe(String p_249640_, CraftingBookCategory p_249390_, ItemStack p_252071_, NonNullList<Ingredient> p_250689_) {
@@ -60,7 +60,7 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.REMAINING_SHAPELESS.get();
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapelessRecipe> {

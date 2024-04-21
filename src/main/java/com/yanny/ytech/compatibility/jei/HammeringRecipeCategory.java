@@ -1,10 +1,10 @@
 package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.HammeringRecipe;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -32,7 +32,7 @@ public class HammeringRecipeCategory implements IRecipeCategory<HammeringRecipe>
     public HammeringRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 86, 82, 52);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(SimpleBlockType.BRONZE_ANVIL)));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.BRONZE_ANVIL.get()));
         localizedName = Component.translatable("gui.ytech.category.hammering");
     }
 
@@ -68,10 +68,10 @@ public class HammeringRecipeCategory implements IRecipeCategory<HammeringRecipe>
     }
 
     public static List<HammeringRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(HammeringRecipe.RECIPE_TYPE).stream().map(RecipeHolder::value).toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.HAMMERING.get()).stream().map(RecipeHolder::value).toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(Registration.block(SimpleBlockType.BRONZE_ANVIL)), RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.BRONZE_ANVIL.get()), RECIPE_TYPE);
     }
 }

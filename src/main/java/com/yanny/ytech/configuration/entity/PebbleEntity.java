@@ -1,8 +1,7 @@
 package com.yanny.ytech.configuration.entity;
 
-import com.yanny.ytech.configuration.SimpleEntityType;
-import com.yanny.ytech.configuration.SimpleItemType;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechEntityTypes;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,18 +17,18 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class PebbleEntity extends ThrowableItemProjectile {
-    public PebbleEntity(EntityType<? extends Entity> entityType, Level level) {
-        super((EntityType<? extends ThrowableItemProjectile>) entityType, level);
+    public PebbleEntity(EntityType<PebbleEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
     public PebbleEntity(Level level, LivingEntity shooter) {
-        super(Registration.entityType(SimpleEntityType.PEBBLE), shooter, level);
+        super(YTechEntityTypes.PEBBLE.get(), shooter, level);
     }
 
     @NotNull
     @Override
     protected Item getDefaultItem() {
-        return Registration.item(SimpleItemType.PEBBLE);
+        return YTechItems.PEBBLE.get();
     }
 
     private ParticleOptions getParticle() {

@@ -3,6 +3,7 @@ package com.yanny.ytech.compatibility.jei;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -67,7 +68,7 @@ public class BlockHitRecipeCategory implements IRecipeCategory<BlockHitRecipe> {
     }
 
     public static List<BlockHitRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(BlockHitRecipe.RECIPE_TYPE).stream().map(RecipeHolder::value).toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.BLOCK_HIT.get()).stream().map(RecipeHolder::value).toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {

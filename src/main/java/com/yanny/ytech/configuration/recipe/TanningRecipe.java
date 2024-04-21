@@ -2,7 +2,8 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -21,7 +22,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,14 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<Container> {
-    public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<TanningRecipe> RECIPE_TYPE = new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Utils.modLoc("tanning").toString();
-        }
-    };
-
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         return ingredient.test(container.getItem(0));
@@ -63,13 +55,13 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.TANNING.get();
     }
 
     @NotNull
     @Override
     public RecipeType<?> getType() {
-        return RECIPE_TYPE;
+        return YTechRecipeTypes.TANNING.get();
     }
 
     public static class Serializer implements RecipeSerializer<TanningRecipe> {
@@ -119,10 +111,6 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
         }
 
         public static Builder tanning(@NotNull TagKey<Item> input, int hitCount, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), hitCount, result);
-        }
-
-        public static Builder tanning(@NotNull ItemLike input, int hitCount, @NotNull Item result) {
             return new Builder(Ingredient.of(input), hitCount, result);
         }
 

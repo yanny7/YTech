@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block_entity;
 
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,8 +43,8 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     protected int smeltingTime = 0;
     protected int recipeTemperature = 0;
 
-    public AbstractPrimitiveMachineBlockEntity(Holder holder, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState, RecipeType<?> recipeType) {
-        super(holder, blockEntityType, pos, blockState);
+    public AbstractPrimitiveMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState, RecipeType<?> recipeType) {
+        super(blockEntityType, pos, blockState);
         this.recipeType = recipeType;
     }
 
@@ -80,7 +78,7 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
             ItemStack fuel = itemStackHandler.getStackInSlot(getFuelSlot());
 
             if (!fuel.isEmpty() && ((hasItemsInInput() && isValidRecipeInInput()) || hasActiveRecipe())) {
-                leftBurningTime = burningTime = CommonHooks.getBurnTime(fuel, RecipeType.BLASTING);
+                leftBurningTime = burningTime = fuel.getBurnTime(recipeType);
                 isBurning = true;
 
                 if (fuel.hasCraftingRemainingItem()) {

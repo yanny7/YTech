@@ -2,7 +2,7 @@
   "type": "ytech:drying",
   "dryingTime": 1200,
   "ingredient": {
-    "item": "ytech:venison"
+    "tag": "ytech:venison"
   },
   "result": {
     "item": "ytech:dried_venison"

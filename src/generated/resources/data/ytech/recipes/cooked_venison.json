@@ -4,7 +4,7 @@
   "cookingtime": 200,
   "experience": 0.35,
   "ingredient": {
-    "item": "ytech:venison"
+    "tag": "ytech:venison"
   },
   "result": "ytech:cooked_venison"
 }

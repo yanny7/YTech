@@ -1,15 +1,13 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.SimpleBlockType;
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -150,13 +148,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        Holder.SimpleBlockHolder blockHolder = Registration.HOLDER.simpleBlocks().get(SimpleBlockType.AQUEDUCT);
-
-        if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
-            return new AqueductBlockEntity(holder.getBlockEntityType(), pos, blockState);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new AqueductBlockEntity(pos, blockState);
     }
 
     @NotNull
@@ -267,58 +259,47 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getNormal())).toList();
     }
 
-    @NotNull
-    public static TextureHolder[] getTexture() {
-        return List.of(new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks"))).toArray(TextureHolder[]::new);
-    }
-
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile base = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        ResourceLocation bricks = Utils.modBlockLoc("terracotta_bricks");
+        String name = Utils.getId(YTechBlocks.AQUEDUCT);
+        ModelFile base = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case EAST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
                     }
                 })
                 .from(0, 0, 0).to(16, 2, 16).end()
-                .texture("particle", textures[0])
-                .texture("0", textures[0]);
-        ModelFile side = provider.models().getBuilder(holder.key + "_side")
+                .texture("particle", bricks)
+                .texture("0", bricks);
+        ModelFile side = provider.models().getBuilder(name + "_side")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0");
+                        case NORTH, SOUTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0");
                         case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0");
                         case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
                         case UP -> faceBuilder.uvs(2, 0, 14, 2).texture("#0");
                     }
                 })
                 .from(2, 2, 0).to(14, 16, 2).end()
-                .texture("particle", textures[0])
-                .texture("0", textures[0]);
-        ModelFile edge = provider.models().getBuilder(holder.key + "_edge")
+                .texture("particle", bricks)
+                .texture("0", bricks);
+        ModelFile edge = provider.models().getBuilder(name + "_edge")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
-                        case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
+                        case NORTH, EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
+                        case SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
                         case UP -> faceBuilder.uvs(0, 0, 2, 2).texture("#0");
                     }
                 })
                 .from(0, 2, 0).to(2, 16, 2).end()
-                .texture("particle", textures[0])
-                .texture("0", textures[0]);
+                .texture("particle", bricks)
+                .texture("0", bricks);
 
-        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(holder.block.get()).part().modelFile(base).addModel().end();
+        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.AQUEDUCT.get()).part().modelFile(base).addModel().end();
 
         PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(side).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.NORTH)).addModel().condition(NORTH_WEST, true).end();
@@ -326,24 +307,19 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.SOUTH)).addModel().condition(SOUTH_EAST, true).end();
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.WEST)).addModel().condition(SOUTH_WEST, true).end();
 
-        ModelFile itemModel = provider.models().getBuilder(holder.key + "_inventory")
+        ModelFile itemModel = provider.models().getBuilder(name + "_inventory")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case EAST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
                     }
                 })
                 .from(0, 0, 0).to(16, 2, 16).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
                         case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
                         case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
                         case UP -> faceBuilder.uvs(0, 0, 16, 2).texture("#0");
                     }
@@ -351,28 +327,27 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
                 .from(0, 2, 0).to(16, 16, 2).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
                         case EAST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 14).texture("#0");
                         case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
                         case UP -> faceBuilder.uvs(0, 0, 16, 2).texture("#0");
                     }
                 })
                 .from(0, 2, 14).to(16, 16, 16).end()
-                .texture("particle", textures[0])
-                .texture("0", textures[0]);
+                .texture("particle", bricks)
+                .texture("0", bricks);
 
-        provider.itemModels().getBuilder(holder.key).parent(itemModel);
+        provider.itemModels().getBuilder(name).parent(itemModel);
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
+    public static void registerRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT.get())
+                .define('#', YTechItemTags.TERRACOTTA_BRICKS)
                 .pattern("# #")
                 .pattern("# #")
                 .pattern("###")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.TERRACOTTA_BRICKS.itemTag))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.AQUEDUCT));
     }
 
     private static boolean hasSide(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BooleanProperty property) {

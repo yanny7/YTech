@@ -1,16 +1,16 @@
 package com.yanny.ytech.configuration.container;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import org.jetbrains.annotations.NotNull;
 
-public class PrimitiveAlloySmelterContainerMenu extends MachineContainerMenu {
-    public PrimitiveAlloySmelterContainerMenu(@NotNull Holder holder, int windowId, @NotNull Player player, @NotNull BlockPos pos,
+public class PrimitiveAlloySmelterContainerMenu extends MachineContainerMenu<PrimitiveAlloySmelterContainerMenu> {
+    public PrimitiveAlloySmelterContainerMenu(int windowId, @NotNull Player player, @NotNull BlockPos pos,
                                               @NotNull MachineItemStackHandler itemStackHandler, @NotNull ContainerData data) {
-        super(holder, windowId, player, pos, itemStackHandler, data);
+        super(YTechMenuTypes.PRIMITIVE_ALLOY_SMELTER.get(), windowId, player, pos, itemStackHandler, data);
     }
 
     public int getFuelLeft() {

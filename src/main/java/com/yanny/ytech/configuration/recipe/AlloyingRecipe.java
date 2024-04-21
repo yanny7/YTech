@@ -2,7 +2,8 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -32,14 +33,6 @@ import java.util.stream.Stream;
 
 public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingredient2,
                              int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
-    public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<AlloyingRecipe> RECIPE_TYPE = new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Utils.modLoc("alloying").toString();
-        }
-    };
-
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         return matchesFully(container.getItem(0), container.getItem(1), false);
@@ -65,13 +58,13 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.ALLOYING.get();
     }
 
     @NotNull
     @Override
     public RecipeType<?> getType() {
-        return RECIPE_TYPE;
+        return YTechRecipeTypes.ALLOYING.get();
     }
 
     public int getInput1Count() {
@@ -170,11 +163,6 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
             this.smeltingTime = smeltingTime;
             this.result = result;
             this.count = count;
-        }
-
-        public static Builder alloying(@NotNull ItemStack input1, @NotNull ItemStack input2, int minTemperature, int smeltingTime,
-                                       @NotNull Item result, int count) {
-            return new Builder(Ingredient.of(input1), input1.getCount(), Ingredient.of(input2), input2.getCount(), minTemperature, smeltingTime, result, count);
         }
 
         public static Builder alloying(@NotNull TagKey<Item> input1, int count1, @NotNull TagKey<Item> input2, int count2, int minTemperature,

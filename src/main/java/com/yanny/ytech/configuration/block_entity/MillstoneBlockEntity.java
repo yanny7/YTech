@@ -2,6 +2,8 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,10 +23,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,22 +35,23 @@ import java.util.Random;
 public class MillstoneBlockEntity extends BlockEntity {
     private static final String TAG_INPUT = "input";
     private static final String TAG_RESULT = "result";
+    private static final String TAG_BONUS_CHANCE = "bonusChance";
     private static final String TAG_IS_MILLING = "isMilling";
     private static final String TAG_IS_LEASHED = "isLeashed";
 
     private ItemStack input = ItemStack.EMPTY;
     private ItemStack result = ItemStack.EMPTY;
+    private float bonusChance = 0f;
     private boolean isMilling = false;
     private boolean isLeashed = false;
     @Nullable private GoAroundEntity entity = null;
     private final Random random = new Random();
 
-    public MillstoneBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(blockEntityType, pos, blockState);
+    public MillstoneBlockEntity(BlockPos pos, BlockState blockState) {
+        super(YTechBlockEntityTypes.MILLSTONE.get(), pos, blockState);
     }
 
-    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public InteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand) {
         if (!level.isClientSide) {
             if (!isLeashed) {
                 int x = pos.getX();
@@ -72,13 +73,14 @@ public class MillstoneBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (result.isEmpty() && isLeashed && !holdingItemStack.isEmpty()) {
-                Optional<RecipeHolder<MillingRecipe>> millingRecipe = level.getRecipeManager().getRecipeFor(MillingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<RecipeHolder<MillingRecipe>> millingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.MILLING.get(), new SimpleContainer(holdingItemStack), level);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
                     input = holdingItemStack.copyWithCount(holdingItemStack.getCount() - 1);
                     result = r.value().result();
+                    bonusChance = r.value().bonusChance();
                     isMilling = true;
                     player.setItemSlot(slot, ItemStack.EMPTY);
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
@@ -98,6 +100,7 @@ public class MillstoneBlockEntity extends BlockEntity {
         super.load(tag);
         input = ItemStack.of(tag.getCompound(TAG_INPUT));
         result = ItemStack.of(tag.getCompound(TAG_RESULT));
+        bonusChance = tag.getFloat(TAG_BONUS_CHANCE);
         isMilling = tag.getBoolean(TAG_IS_MILLING);
         isLeashed = tag.getBoolean(TAG_IS_LEASHED);
     }
@@ -123,6 +126,10 @@ public class MillstoneBlockEntity extends BlockEntity {
     public void onFinished() {
         if (level != null && !result.isEmpty()) {
             Block.popResource(level, getBlockPos(), result.copy());
+
+            if (random.nextFloat() < bonusChance) {
+                Block.popResource(level, getBlockPos(), result.copyWithCount(1));
+            }
 
             if (input.isEmpty()) {
                 isMilling = false;
@@ -179,6 +186,7 @@ public class MillstoneBlockEntity extends BlockEntity {
         super.saveAdditional(tag);
         tag.put(TAG_INPUT, input.save(new CompoundTag()));
         tag.put(TAG_RESULT, result.save(new CompoundTag()));
+        tag.putFloat(TAG_BONUS_CHANCE, bonusChance);
         tag.putBoolean(TAG_IS_MILLING, isMilling);
         tag.putBoolean(TAG_IS_LEASHED, isLeashed);
     }

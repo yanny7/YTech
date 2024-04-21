@@ -9,20 +9,19 @@ public class DataGeneration {
     public static void generate(@NotNull GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
-        YTechBlockTags blockTags = new YTechBlockTags(packOutput, event.getLookupProvider(), event.getExistingFileHelper());
+        YTechBlockTagsProvider blockTags = new YTechBlockTagsProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper());
 
-        generator.addProvider(event.includeClient(), new YTechBlockStates(packOutput, event.getExistingFileHelper()));
-        generator.addProvider(event.includeClient(), new YTechItemModels(packOutput, event.getExistingFileHelper()));
-        generator.addProvider(event.includeClient(), new YTechLanguages(packOutput, "en_us"));
+        generator.addProvider(event.includeClient(), new YTechBlockStateProvider(packOutput, event.getExistingFileHelper()));
+        generator.addProvider(event.includeClient(), new YTechItemModelsProvider(packOutput, event.getExistingFileHelper()));
+        generator.addProvider(event.includeClient(), new YTechLanguageProvider(packOutput, "en_us"));
         generator.addProvider(event.includeServer(), blockTags);
-        generator.addProvider(event.includeServer(), new YTechFluidTags(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
-        generator.addProvider(event.includeServer(), new YTechItemTags(packOutput, event.getLookupProvider(), blockTags.contentsGetter(), event.getExistingFileHelper()));
-        generator.addProvider(event.includeServer(), new YTechBiomeTags(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
-        generator.addProvider(event.includeServer(), new YTechRecipes(packOutput));
-        generator.addProvider(event.includeServer(), new YTechLootTables(packOutput));
-        generator.addProvider(event.includeServer(), new YTechGlobalLootModifier(packOutput));
-        generator.addProvider(event.includeServer(), new YTechWorldGen(packOutput, event.getLookupProvider()));
-        generator.addProvider(event.includeServer(), new YTechAdvancements(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
-        generator.addProvider(event.includeServer(), new YTechDataMap(packOutput, event.getLookupProvider()));
+        generator.addProvider(event.includeServer(), new YTechItemTagsProvider(packOutput, event.getLookupProvider(), blockTags.contentsGetter(), event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(), new YTechBiomeTagsProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(), new YTechRecipeProvider(packOutput));
+        generator.addProvider(event.includeServer(), new YTechLootTableProvider(packOutput));
+        generator.addProvider(event.includeServer(), new YTechGlobalLootModifierProvider(packOutput));
+        generator.addProvider(event.includeServer(), new YTechDatapackProvider(packOutput, event.getLookupProvider()));
+        generator.addProvider(event.includeServer(), new YTechAdvancementProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(), new YTechDataMapProvider(packOutput, event.getLookupProvider()));
     }
 }

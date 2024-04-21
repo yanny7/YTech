@@ -4,14 +4,14 @@ import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
@@ -52,21 +53,14 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     private static final VoxelShape X_AXIS_AABB = Shapes.or(BASE, X_LEG1, X_LEG2, X_TOP);
     private static final VoxelShape Z_AXIS_AABB = Shapes.or(BASE, Z_LEG1, Z_LEG2, Z_TOP);
 
-    private final Holder.SimpleBlockHolder holder;
-
-    public BronzeAnvilBlock(Holder.SimpleBlockHolder holder) {
+    public BronzeAnvilBlock() {
         super(Properties.ofFullCopy(Blocks.ANVIL));
-        this.holder = holder;
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new BronzeAnvilBlockEntity(blockHolder.getBlockEntityType(), pos, state);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new BronzeAnvilBlockEntity(pos, state);
     }
 
     @SuppressWarnings("deprecation")
@@ -168,25 +162,13 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
         return state.getMapColor(level, pos).col;
     }
 
-    public static TextureHolder[] textureHolder() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("bronze_anvil")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("bronze_anvil_top"))
-        ).toArray(TextureHolder[]::new);
-    }
-
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile model = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        ModelFile model = provider.models().getBuilder(Utils.getId(YTechBlocks.BRONZE_ANVIL))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case EAST -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case WEST -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case UP -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
-                        case DOWN -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
                     }
                 })
                 .from(2, 0, 2).to(14, 4, 14).end()
@@ -202,39 +184,35 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .from(4, 4, 3).to(12, 5, 13).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(6, 6, 10, 11).texture("#1");
-                        case EAST -> faceBuilder.uvs(4, 6, 12, 11).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(6, 6, 10, 11).texture("#1");
-                        case WEST -> faceBuilder.uvs(4, 6, 12, 11).texture("#1");
+                        case NORTH, SOUTH -> faceBuilder.uvs(6, 6, 10, 11).texture("#1");
+                        case EAST, WEST -> faceBuilder.uvs(4, 6, 12, 11).texture("#1");
                     }
                 })
                 .from(6, 5, 4).to(10, 10, 12).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
-                        case EAST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
-                        case WEST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
+                        case NORTH, SOUTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case EAST, WEST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
                         case UP -> faceBuilder.uvs(3, 0, 13, 16).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 1, 16, 11).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
                     }
                 })
                 .from(3, 10, 0).to(13, 16, 16).end()
-                .texture("particle", textures[0])
-                .texture("1", textures[0])
-                .texture("2", textures[1]);
-        provider.horizontalBlock(holder.block.get(), model);
-        provider.itemModels().getBuilder(holder.key).parent(model);
+                .texture("particle", Utils.modBlockLoc("bronze_anvil"))
+                .texture("1", Utils.modBlockLoc("bronze_anvil"))
+                .texture("2", Utils.modBlockLoc("bronze_anvil_top"));
+        provider.horizontalBlock(YTechBlocks.BRONZE_ANVIL.get(), model);
+        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.BRONZE_ANVIL)).parent(model);
     }
 
-    public static void registerRecipe(@NotNull Holder.SimpleBlockHolder holder, @NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('B', MaterialBlockType.STORAGE_BLOCK.itemTag.get(MaterialType.BRONZE))
-                .define('I', MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE))
+    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.BRONZE_ANVIL.get())
+                .define('B', YTechItemTags.STORAGE_BLOCKS.of(MaterialType.BRONZE))
+                .define('I', YTechItemTags.INGOTS.of(MaterialType.BRONZE))
                 .pattern("BBB")
                 .pattern(" I ")
                 .pattern("III")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(MaterialItemType.INGOT.itemTag.get(MaterialType.BRONZE)))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.of(MaterialType.BRONZE)))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.BRONZE_ANVIL));
     }
 }

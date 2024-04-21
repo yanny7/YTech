@@ -4,8 +4,6 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block_entity.*;
 import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
-import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticServerNetwork;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -48,8 +46,6 @@ public class TopCompatibility {
                             probeInfo.horizontal().item(blockEntity.getItemStackHandler().getStackInSlot(0));
                         } else if (entity instanceof DryingRackBlockEntity blockEntity && blockEntity.getDryingLeft() >= 0) {
                             probeInfo.horizontal().text("Remaining: ").text(Integer.toString(Math.round(blockEntity.getDryingLeft() / 20f))).text("s");
-                        } else if (entity instanceof IKineticBlockEntity blockEntity) {
-                            addKineticInfo(probeInfo, blockEntity);
                         } else if (entity instanceof MillstoneBlockEntity blockEntity && !blockEntity.getInputItem().isEmpty()) {
                             probeInfo.horizontal().item(blockEntity.getInputItem());
                         } else if (entity instanceof TanningRackBlockEntity blockEntity && blockEntity.getHitLeft() > 0) {
@@ -63,19 +59,6 @@ public class TopCompatibility {
                 }
             });
             return null;
-        }
-    }
-
-    private static void addKineticInfo(IProbeInfo probeInfo, IKineticBlockEntity blockEntity) {
-        switch (blockEntity.getNetworkType()) {
-            case PROVIDER -> probeInfo.horizontal().text("Producing: ").text(Integer.toString(blockEntity.getStress())).text(" units");
-            case CONSUMER -> probeInfo.horizontal().text("Consuming: ").text(Integer.toString(blockEntity.getStress())).text(" units");
-        }
-
-        KineticServerNetwork network = YTechMod.KINETIC_PROPAGATOR.server().getNetwork(blockEntity);
-
-        if (network != null) {
-            probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getStress())).text("/").text(Integer.toString(network.getStressCapacity()));
         }
     }
 

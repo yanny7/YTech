@@ -13,7 +13,6 @@ public class AqueductFertilizerScreen extends AbstractScreen<AqueductFertilizerM
 
     @Override
     public AbstractScreenHandler<AqueductFertilizerMenu> getScreenHandler() {
-        return new AbstractScreenHandler.Builder<AqueductFertilizerMenu>(menu.getBlockEntity().getItemStackHandler())
-                .build();
+        return new AbstractScreenHandler.Builder<AqueductFertilizerMenu>(menu.getBlockEntity().getItemStackHandler()).build();
     }
 }

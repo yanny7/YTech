@@ -1,10 +1,10 @@
 package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.SimpleBlockType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -28,8 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.yanny.ytech.registration.Registration.HOLDER;
-
 public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
     public static final RecipeType<AlloyingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "alloying", AlloyingRecipe.class);
 
@@ -41,7 +39,7 @@ public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
     public AlloyingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 82, 0, 92, 62);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.block(SimpleBlockType.PRIMITIVE_ALLOY_SMELTER)));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get()));
         localizedName = Component.translatable("gui.ytech.category.alloying");
     }
 
@@ -89,12 +87,12 @@ public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
     }
 
     public static List<AlloyingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(AlloyingRecipe.RECIPE_TYPE).stream().map(RecipeHolder::value).toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.ALLOYING.get()).stream().map(RecipeHolder::value).toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.PRIMITIVE_ALLOY_SMELTER).block.get()), RECIPE_TYPE, RecipeTypes.FUELING);
-        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.BRICK_CHIMNEY).block.get()), RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(HOLDER.simpleBlocks().get(SimpleBlockType.REINFORCED_BRICK_CHIMNEY).block.get()), RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get()), RECIPE_TYPE, RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.BRICK_CHIMNEY.get()), RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.REINFORCED_BRICK_CHIMNEY.get()), RECIPE_TYPE);
     }
 }

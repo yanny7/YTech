@@ -1,15 +1,17 @@
 package com.yanny.ytech.configuration;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.registration.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -17,11 +19,6 @@ import java.util.EnumSet;
 import java.util.Objects;
 
 public class Utils {
-    @NotNull
-    public static ResourceLocation forgeLoc(@NotNull String path) {
-        return new ResourceLocation("forge", path);
-    }
-
     @NotNull
     public static ResourceLocation mcLoc(@NotNull String path) {
         return new ResourceLocation(path);
@@ -40,6 +37,16 @@ public class Utils {
     @NotNull
     public static ResourceLocation modLoc(@NotNull String path) {
         return  new ResourceLocation(YTechMod.MOD_ID, path);
+    }
+
+    @NotNull
+    public static ResourceLocation modLoc(@NotNull Item item) {
+        return modLoc(loc(item).getPath());
+    }
+
+    @NotNull
+    public static ResourceLocation modLoc(@NotNull DeferredHolder<?, ?> object) {
+        return modLoc(object.getId().getPath());
     }
 
     @NotNull
@@ -68,15 +75,17 @@ public class Utils {
         return new ResourceLocation(loc.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + loc.getPath());
     }
 
-    @NotNull
-    public static ResourceLocation blockLoc(@NotNull Item item) {
-        ResourceLocation loc = loc(item);
-        return new ResourceLocation(loc.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + loc.getPath());
+    public static String getId(DeferredHolder<?, ?> object) {
+        return object.getId().getPath();
     }
 
     @NotNull
-    public static String getHasItem(Holder holder) {
-        return "has_" + holder.key;
+    public static String getHasItem(TagKey<Item> item) {
+        return "has_" + item.location().getPath();
+    }
+
+    public static String getHasItem(DeferredHolder<?, ?> item) {
+        return "has_" + getId(item);
     }
 
     @NotNull
@@ -85,12 +94,18 @@ public class Utils {
     }
 
     @NotNull
-    public static Block getLogFromMaterial(MaterialType material) {
-        if (MaterialType.ALL_WOODS.contains(material)) {
-            return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(material.key + "_log")));
-        } else {
-            throw new IllegalStateException("Not wood type provided!");
-        }
+    public static TagKey<Item> getLogFromMaterial(MaterialType material) {
+        return switch (material) {
+            case ACACIA_WOOD -> ItemTags.ACACIA_LOGS;
+            case BIRCH_WOOD -> ItemTags.BIRCH_LOGS;
+            case CHERRY_WOOD -> ItemTags.CHERRY_LOGS;
+            case DARK_OAK_WOOD -> ItemTags.DARK_OAK_LOGS;
+            case JUNGLE_WOOD -> ItemTags.JUNGLE_LOGS;
+            case MANGROVE_WOOD -> ItemTags.MANGROVE_LOGS;
+            case OAK_WOOD -> ItemTags.OAK_LOGS;
+            case SPRUCE_WOOD -> ItemTags.SPRUCE_LOGS;
+            default -> throw new IllegalStateException("Not wood type provided!");
+        };
     }
 
     @NotNull
@@ -105,16 +120,6 @@ public class Utils {
     @NotNull
     public static BlockPos loadBlockPos(@NotNull CompoundTag tag) {
         return new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
-    }
-
-    @SafeVarargs
-    @NotNull
-    public static <E extends Enum<E>> EnumSet<E> merge(@NotNull EnumSet<E> first, @NotNull EnumSet<E> ...list) {
-        EnumSet<E> copy = first.clone();
-        for (EnumSet<E> e : list) {
-            copy.addAll(e);
-        }
-        return copy;
     }
 
     @SafeVarargs

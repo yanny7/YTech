@@ -3,13 +3,13 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "ytech:copper_bolt"
+      "tag": "ytech:bolts/copper"
     },
     "B": {
       "item": "minecraft:bricks"
     },
     "P": {
-      "item": "ytech:copper_plate"
+      "tag": "ytech:plates/copper"
     }
   },
   "pattern": [

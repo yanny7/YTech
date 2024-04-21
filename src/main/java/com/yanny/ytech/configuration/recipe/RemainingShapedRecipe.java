@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.NonNullList;
@@ -21,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RemainingShapedRecipe extends ShapedRecipe {
-    public static final Serializer SERIALIZER = new Serializer();
     private static final RandomSource RANDOM = RandomSource.create();
 
     public RemainingShapedRecipe(String group, CraftingBookCategory category, ShapedRecipePattern pattern, ItemStack result, boolean showNotification) {
@@ -59,7 +59,7 @@ public class RemainingShapedRecipe extends ShapedRecipe {
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.REMAINING_SHAPED.get();
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapedRecipe> {

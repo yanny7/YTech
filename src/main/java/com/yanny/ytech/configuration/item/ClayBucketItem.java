@@ -1,7 +1,6 @@
 package com.yanny.ytech.configuration.item;
 
-import com.yanny.ytech.configuration.SimpleItemType;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -72,9 +71,9 @@ public class ClayBucketItem extends BucketItem {
 
                         if (!pickedItemStack.isEmpty()) {
                             if (pickedItemStack.is(Items.WATER_BUCKET)) {
-                                pickedItemStack = new ItemStack(Registration.item(SimpleItemType.WATER_CLAY_BUCKET));
+                                pickedItemStack = new ItemStack(YTechItems.WATER_CLAY_BUCKET.get());
                             } else if (pickedItemStack.is(Items.LAVA_BUCKET)) {
-                                pickedItemStack = new ItemStack(Registration.item(SimpleItemType.LAVA_CLAY_BUCKET));
+                                pickedItemStack = new ItemStack(YTechItems.LAVA_CLAY_BUCKET.get());
                             } else {
                                 return InteractionResultHolder.fail(itemInHand);
                             }
@@ -119,6 +118,6 @@ public class ClayBucketItem extends BucketItem {
 
     @NotNull
     public static ItemStack getEmptySuccessItem(@NotNull ItemStack bucketItemStack, Player player) {
-        return !player.getAbilities().instabuild ? new ItemStack(Registration.item(SimpleItemType.CLAY_BUCKET)) : bucketItemStack;
+        return !player.getAbilities().instabuild ? new ItemStack(YTechItems.CLAY_BUCKET.get()) : bucketItemStack;
     }
 }

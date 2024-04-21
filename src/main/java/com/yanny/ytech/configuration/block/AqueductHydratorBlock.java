@@ -1,16 +1,17 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductHydratorBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -23,80 +24,52 @@ import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 
 public class AqueductHydratorBlock extends AqueductConsumerBlock {
-    public AqueductHydratorBlock(Holder.SimpleBlockHolder holder) {
-        super(holder);
-    }
-
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        if (holder instanceof Holder.EntitySimpleBlockHolder blockHolder) {
-            return new AqueductHydratorBlockEntity(blockHolder.getBlockEntityType(), pos, blockState);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new AqueductHydratorBlockEntity(YTechBlockEntityTypes.AQUEDUCT_HYDRATOR.get(), pos, blockState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> entityType) {
         if (!level.isClientSide) {
-            return AqueductConsumerBlock::createAqueductConsumerTicker;
+            return (level1, pos, state1, blockEntity) -> AqueductConsumerBlock.createAqueductConsumerTicker(level1, blockEntity);
         } else {
             return null;
         }
     }
 
-    @NotNull
-    public static TextureHolder[] getTexture() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_hydrator")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_valve")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("invisible")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_hydrator_working"))
-        ).toArray(TextureHolder[]::new);
-    }
-
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile base = provider.models().getBuilder(holder.key)
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        String name = Utils.getId(YTechBlocks.AQUEDUCT_HYDRATOR);
+        ModelFile base = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
-                .texture("0", textures[0])
-                .texture("2", textures[2])
-                .texture("particle", textures[0]);
-        ModelFile waterlogged = provider.models().getBuilder(holder.key + "_waterlogged")
+                .texture("0", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"))
+                .texture("2", Utils.modBlockLoc("terracotta_bricks"))
+                .texture("particle", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"));
+        ModelFile waterlogged = provider.models().getBuilder(name + "_waterlogged")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#4");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#4");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#4");
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
-                .texture("2", textures[2])
-                .texture("4", textures[4])
-                .texture("particle", textures[0]);
-        ModelFile overlay = provider.models().getBuilder(holder.key + "_overlay")
+                .texture("2", Utils.modBlockLoc("terracotta_bricks"))
+                .texture("4", Utils.modBlockLoc("aqueduct/aqueduct_hydrator_working"))
+                .texture("particle", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"));
+        ModelFile overlay = provider.models().getBuilder(name + "_overlay")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     if (Objects.requireNonNull(direction) == Direction.NORTH) {
@@ -107,43 +80,39 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
                 .renderType("minecraft:cutout")
-                .texture("1", textures[1])
-                .texture("3", textures[3]);
-        ModelFile inventory = provider.models().getBuilder(holder.key + "_inventory")
+                .texture("1", Utils.modBlockLoc("aqueduct/aqueduct_valve"))
+                .texture("3", Utils.modBlockLoc("invisible"));
+        ModelFile inventory = provider.models().getBuilder(name + "_inventory")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case EAST -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
-                .texture("0", textures[0])
-                .texture("1", textures[1])
-                .texture("particle", textures[0]);
+                .texture("0", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"))
+                .texture("1", Utils.modBlockLoc("aqueduct/aqueduct_valve"))
+                .texture("particle", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"));
 
-        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(holder.block.get());
+        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.AQUEDUCT_HYDRATOR.get());
         builder.part().modelFile(base).addModel().condition(BlockStateProperties.WATERLOGGED, false).end();
         builder.part().modelFile(waterlogged).addModel().condition(BlockStateProperties.WATERLOGGED, true).end();
         PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(overlay).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
 
-        provider.itemModels().getBuilder(holder.key).parent(inventory);
+        provider.itemModels().getBuilder(name).parent(inventory);
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
-                .define('R', MaterialItemType.ROD.itemTag.get(MaterialType.COPPER))
-                .define('S', MaterialItemType.PLATE.itemTag.get(MaterialType.COPPER))
-                .define('H', MaterialItemType.HAMMER.groupTag)
+    public static void registerRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT_HYDRATOR.get())
+                .define('#', YTechItemTags.TERRACOTTA_BRICKS)
+                .define('R', YTechItemTags.RODS.of(MaterialType.COPPER))
+                .define('S', YTechItemTags.PLATES.of(MaterialType.COPPER))
+                .define('H', YTechItemTags.HAMMERS.tag)
                 .pattern("#R#")
                 .pattern("SHS")
                 .pattern("#R#")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.TERRACOTTA_BRICKS.itemTag))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.AQUEDUCT_HYDRATOR));
     }
 }
