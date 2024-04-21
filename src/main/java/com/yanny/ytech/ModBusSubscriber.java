@@ -1,7 +1,6 @@
 package com.yanny.ytech;
 
 import com.yanny.ytech.compatibility.TopCompatibility;
-import com.yanny.ytech.configuration.SimpleEntityType;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block.IMenuBlock;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
@@ -32,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.yanny.ytech.configuration.SpearType.BY_ENTITY_TYPE;
 import static com.yanny.ytech.configuration.model.SpearModel.*;
 import static com.yanny.ytech.registration.Registration.HOLDER;
 
@@ -66,15 +64,13 @@ public class ModBusSubscriber {
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.DRYING_RACK.get(), DryingRackRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TANNING_RACK.get(), TanningRackRenderer::new);
 
-        HOLDER.simpleEntities().forEach((type, holder) -> {
-            switch (type) {
-                case FLINT_SPEAR, COPPER_SPEAR, BRONZE_SPEAR, IRON_SPEAR ->
-                        event.registerEntityRenderer(holder.getEntityType(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type))));
-                case GO_AROUND -> event.registerEntityRenderer(holder.getEntityType(), GoAroundRenderer::new);
-                case PEBBLE -> event.registerEntityRenderer(holder.getEntityType(), ThrownItemRenderer::new);
-                default -> throw new IllegalStateException("Missing simple entity renderer!");
-            }
-        });
+        event.registerEntityRenderer(YTechEntityTypes.FLINT_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.FLINT)));
+        event.registerEntityRenderer(YTechEntityTypes.COPPER_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.COPPER)));
+        event.registerEntityRenderer(YTechEntityTypes.BRONZE_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.BRONZE)));
+        event.registerEntityRenderer(YTechEntityTypes.IRON_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.IRON)));
+        event.registerEntityRenderer(YTechEntityTypes.PEBBLE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.GO_AROUND.get(), GoAroundRenderer::new);
+
         HOLDER.entities().forEach((type, holder) -> {
             switch (type) {
                 case DEER -> event.registerEntityRenderer(holder.getEntityType(), (context) -> new DeerRenderer<>(context, 0.5f));
@@ -86,16 +82,11 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        HOLDER.simpleEntities().forEach((type, holder) -> {
-            switch (type) {
-                case FLINT_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 0));
-                case COPPER_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 6));
-                case BRONZE_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 12));
-                case IRON_SPEAR -> event.registerLayerDefinition(LAYER_LOCATIONS.get(BY_ENTITY_TYPE.get(type)), () -> createLayer(0, 18));
-                case GO_AROUND, PEBBLE -> {}
-                default -> throw new IllegalStateException("Missing simple entity layer definitions!");
-            }
-        });
+        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.FLINT), () -> createLayer(0, 0));
+        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.COPPER), () -> createLayer(0, 6));
+        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.BRONZE), () -> createLayer(0, 12));
+        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.IRON), () -> createLayer(0, 18));
+
         HOLDER.entities().forEach((type, holder) -> {
             switch (type) {
                 case DEER -> event.registerLayerDefinition(DeerModel.LAYER_LOCATION, DeerModel::createBodyLayer);
@@ -115,7 +106,7 @@ public class ModBusSubscriber {
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         Registration.HOLDER.entities().forEach((type, holder) -> event.put(holder.getEntityType(), holder.object.getAttributes()));
-        event.put(Registration.entityType(SimpleEntityType.GO_AROUND), GoAroundEntity.createAttributes().build());
+        event.put(YTechEntityTypes.GO_AROUND.get(), GoAroundEntity.createAttributes().build());
     }
 
     @SubscribeEvent

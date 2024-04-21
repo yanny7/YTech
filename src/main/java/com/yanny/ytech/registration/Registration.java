@@ -77,9 +77,6 @@ public class Registration {
             }
         }
 
-        for (SimpleEntityType type : SimpleEntityType.values()) {
-            HOLDER.simpleEntities().put(type, registerSimpleEntity(type));
-        }
         for (AnimalEntityType type : AnimalEntityType.values()) {
             HOLDER.entities().put(type, registerAnimalEntity(type));
         }
@@ -111,6 +108,7 @@ public class Registration {
         YTechBlocks.register(eventBus);
         YTechBlockEntityTypes.register(eventBus);
         YTechMenuTypes.register(eventBus);
+        YTechEntityTypes.register(eventBus);
         BLOCKS.register(eventBus);
         ITEMS.register(eventBus);
         FLUIDS.register(eventBus);
@@ -144,29 +142,12 @@ public class Registration {
         return Objects.requireNonNull(HOLDER.entities().get(type), "Missing entity type " + type).getEntityType();
     }
 
-    @NotNull
-    public static <T extends Entity> EntityType<T> entityType(@NotNull SimpleEntityType type) {
-        return Objects.requireNonNull(HOLDER.simpleEntities().get(type), "Missing entity type " + type).getEntityType();
-    }
-
-    private static Holder.SimpleEntityHolder registerSimpleEntity(SimpleEntityType type) {
-        return new Holder.SimpleEntityHolder(type, Registration::registerSimpleEntityType);
-    }
-
     private static Holder.AnimalEntityHolder registerAnimalEntity(AnimalEntityType type) {
         return new Holder.AnimalEntityHolder(type, Registration::registerEntityType, Registration::registerSpawnEgg);
     }
 
     private static RegistryObject<Item> registerSpawnEgg(Holder.AnimalEntityHolder holder) {
         return ITEMS.register(holder.key + "_spawn_egg", () -> holder.object.getSpawnEgg(holder));
-    }
-
-    private static RegistryObject<EntityType<? extends Entity>> registerSimpleEntityType(Holder.SimpleEntityHolder holder) {
-        return ENTITY_TYPES.register(holder.key, () -> {
-            EntityType.Builder<Entity> builder = EntityType.Builder.of(holder.object::getEntity, MobCategory.MISC);
-            holder.object.entityTypeBuilder.accept(builder);
-            return builder.build(holder.key);
-        });
     }
 
     private static RegistryObject<EntityType<Animal>> registerEntityType(Holder.AnimalEntityHolder holder) {

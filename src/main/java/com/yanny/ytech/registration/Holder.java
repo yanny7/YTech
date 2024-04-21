@@ -57,21 +57,6 @@ public class Holder {
         }
     }
 
-    public static class SimpleEntityHolder extends Holder {
-        @NotNull public final SimpleEntityType object;
-        @NotNull private final RegistryObject<EntityType<? extends Entity>> entityType;
-
-        SimpleEntityHolder(@NotNull SimpleEntityType object, @NotNull Function<SimpleEntityHolder, RegistryObject<EntityType<? extends Entity>>> typeSupplier) {
-            super(object.key, object.name);
-            this.object = object;
-            this.entityType = typeSupplier.apply(this);
-        }
-
-        public <T extends Entity> EntityType<T> getEntityType() {
-            return (EntityType<T>) entityType.get();
-        }
-    }
-
     public static class AnimalEntityHolder extends Holder {
         @NotNull public final AnimalEntityType object;
         @NotNull private final RegistryObject<EntityType<Animal>> entityType;
