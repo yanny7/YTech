@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.NonNullList;
@@ -29,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RemainingShapedRecipe extends ShapedRecipe {
-    public static final Serializer SERIALIZER = new Serializer();
     private static final RandomSource RANDOM = RandomSource.create();
 
     public RemainingShapedRecipe(ShapedRecipe recipe) {
@@ -63,7 +63,7 @@ public class RemainingShapedRecipe extends ShapedRecipe {
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.REMAINING_SHAPED.get();
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapedRecipe> {
@@ -107,7 +107,7 @@ public class RemainingShapedRecipe extends ShapedRecipe {
         @NotNull
         @Override
         public RecipeSerializer<?> type() {
-            return SERIALIZER;
+            return YTechRecipeSerializers.REMAINING_SHAPED.get();
         }
     }
 

@@ -5,6 +5,8 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
@@ -30,14 +32,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
-    public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Utils.modLoc("smelting").toString();
-        }
-    };
-
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         return ingredient.test(container.getItem(0));
@@ -63,13 +57,13 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.SMELTING.get();
     }
 
     @NotNull
     @Override
     public RecipeType<?> getType() {
-        return RECIPE_TYPE;
+        return YTechRecipeTypes.SMELTING.get();
     }
 
     public static class Serializer implements RecipeSerializer<SmeltingRecipe> {
@@ -129,7 +123,7 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
         @NotNull
         @Override
         public RecipeSerializer<?> type() {
-            return SERIALIZER;
+            return YTechRecipeSerializers.SMELTING.get();
         }
 
         @NotNull

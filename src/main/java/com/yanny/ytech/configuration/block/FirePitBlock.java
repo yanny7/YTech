@@ -1,10 +1,9 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.SimpleItemType;
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.registration.Holder;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,17 +46,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LEVEL;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 public class FirePitBlock extends Block {
     private static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 2/16.0, 1);
-    Holder.SimpleBlockHolder holder;
 
-    public FirePitBlock(Holder.SimpleBlockHolder holder) {
+    public FirePitBlock() {
         super(Properties.copy(Blocks.STONE).sound(SoundType.WOOD).noOcclusion().hasPostProcess(FirePitBlock::always).lightLevel(FirePitBlock::getLightLevel));
-        this.holder = holder;
     }
 
     @SuppressWarnings("deprecation")
@@ -183,24 +181,18 @@ public class FirePitBlock extends Block {
         }
     }
 
-    public static TextureHolder[] getTexture() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("magma")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("andesite")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("oak_log_top")),
-                new TextureHolder(-1, -1, Utils.mcBlockLoc("smooth_basalt"))
-        ).toArray(TextureHolder[]::new);
-    }
-
-    public static void registerModel(Holder.SimpleBlockHolder holder, BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
-        ModelFile base_lit = provider.models().getBuilder(holder.key + "_base_lit")
+    public static void registerModel(BlockStateProvider provider) {
+        ResourceLocation magmaTexture = Utils.mcBlockLoc("magma");
+        ResourceLocation andesiteTexture = Utils.mcBlockLoc("andesite");
+        ResourceLocation logTexture = Utils.mcBlockLoc("oak_log");
+        ResourceLocation logTopTexture = Utils.mcBlockLoc("oak_log_top");
+        ResourceLocation basaltTexture = Utils.mcBlockLoc("smooth_basalt");
+        String name = Utils.getId(YTechBlocks.FIRE_PIT);
+        ModelFile base_lit = provider.models().getBuilder(name + "_base_lit")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case NORTH, EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case SOUTH -> faceBuilder.uvs(3, 0, 5, 1).texture("#2");
                         case WEST -> faceBuilder.uvs(2, 1, 4, 2).texture("#2");
                         case UP -> faceBuilder.uvs(11, 2, 13, 4).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
@@ -211,10 +203,7 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
                     }
@@ -223,10 +212,8 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case UP -> faceBuilder.uvs(10, 6, 13, 8).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 0, 3, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
                     }
@@ -235,10 +222,8 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 6, 3, 8).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
                     }
@@ -247,12 +232,9 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case UP -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
                     }
                 })
                 .from(6.63173f, 0, 0.83883f).to(9.63173f, 1, 2.83883f).rotation().angle(0).axis(Direction.Axis.Y).origin(8.13173f, 0.5f, 1.83883f).end()
@@ -284,9 +266,7 @@ public class FirePitBlock extends Block {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 4, 2, 6).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
+                        case EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
                         case UP -> faceBuilder.uvs(4, 9, 6, 11).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
                         case DOWN -> faceBuilder.uvs(7, 8, 9, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
                     }
@@ -319,21 +299,19 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case UP -> faceBuilder.uvs(0, 0, 10, 10).texture("#0").emissivity(15, 8);
-                        case DOWN -> faceBuilder.uvs(0, 0, 10, 10).texture("#0").emissivity(15, 8);
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 10, 10).texture("#0").emissivity(15, 8);
                     }
                 })
                 .from(3, 0.01f, 3).to(13, 0.01f, 13).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 0.01f, 8).end()
                 .end()
-                .texture("particle", textures[0])
-                .texture("0", textures[0])
-                .texture("2", textures[1]);
-        ModelFile base = provider.models().getBuilder(holder.key + "_base")
+                .texture("particle", magmaTexture)
+                .texture("0", magmaTexture)
+                .texture("2", andesiteTexture);
+        ModelFile base = provider.models().getBuilder(name + "_base")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case NORTH, EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case SOUTH -> faceBuilder.uvs(3, 0, 5, 1).texture("#2");
                         case WEST -> faceBuilder.uvs(2, 1, 4, 2).texture("#2");
                         case UP -> faceBuilder.uvs(11, 2, 13, 4).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
@@ -344,10 +322,7 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
                     }
@@ -356,10 +331,8 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case UP -> faceBuilder.uvs(10, 6, 13, 8).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 0, 3, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
                     }
@@ -368,10 +341,8 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 6, 3, 8).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
                     }
@@ -380,12 +351,9 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case UP -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
                     }
                 })
                 .from(6.63173f, 0, 0.83883f).to(9.63173f, 1, 2.83883f).rotation().angle(0).axis(Direction.Axis.Y).origin(8.13173f, 0.5f, 1.83883f).end()
@@ -417,9 +385,7 @@ public class FirePitBlock extends Block {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 4, 2, 6).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
+                        case EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
                         case UP -> faceBuilder.uvs(4, 9, 6, 11).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
                         case DOWN -> faceBuilder.uvs(7, 8, 9, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
                     }
@@ -452,22 +418,20 @@ public class FirePitBlock extends Block {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case UP -> faceBuilder.uvs(0, 0, 10, 10).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 10, 10).texture("#0");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 10, 10).texture("#0");
                     }
                 })
                 .from(3, 0.01f, 3).to(13, 0.01f, 13).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 0.01f, 8).end()
                 .end()
-                .texture("particle", textures[4])
-                .texture("0", textures[4])
-                .texture("2", textures[1]);
-        ModelFile logs_down = provider.models().getBuilder(holder.key + "_logs_up")
+                .texture("particle", basaltTexture)
+                .texture("0", basaltTexture)
+                .texture("2", andesiteTexture);
+        ModelFile logs_down = provider.models().getBuilder(name + "_logs_up")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#4");
+                        case NORTH, SOUTH -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#4");
                         case EAST -> faceBuilder.uvs(9, 4, 13, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
-                        case SOUTH -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#4");
                         case WEST -> faceBuilder.uvs(2, 0, 6, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case UP -> faceBuilder.uvs(0, 0, 4, 10).texture("#3");
                         case DOWN -> faceBuilder.uvs(1, 3, 5, 13).texture("#3");
@@ -476,26 +440,24 @@ public class FirePitBlock extends Block {
                 .from(8.25f, 0, 4.25f).to(10.25f, 2, 10.25f).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#4");
+                        case NORTH, SOUTH -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#4");
                         case EAST -> faceBuilder.uvs(4, 5, 8, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
-                        case SOUTH -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#4");
                         case WEST -> faceBuilder.uvs(0, 2, 4, 12).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case UP -> faceBuilder.uvs(7, 5, 11, 15).texture("#3");
                         case DOWN -> faceBuilder.uvs(2, 6, 6, 16).texture("#3");
                     }
                 })
                 .from(5.25f, 0, 5).to(7.25f, 2, 11).end()
-                .texture("particle", textures[0])
-                .texture("3", textures[2])
-                .texture("4", textures[3]);
-        ModelFile logs_up = provider.models().getBuilder(holder.key + "_logs_down")
+                .texture("particle", magmaTexture)
+                .texture("3", logTexture)
+                .texture("4", logTopTexture);
+        ModelFile logs_up = provider.models().getBuilder(name + "_logs_down")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 0, 4, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
-                        case EAST -> faceBuilder.uvs(5, 5, 11, 11).texture("#4");
+                        case EAST, WEST -> faceBuilder.uvs(5, 5, 11, 11).texture("#4");
                         case SOUTH -> faceBuilder.uvs(12, 3, 16, 13).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
-                        case WEST -> faceBuilder.uvs(5, 5, 11, 11).texture("#4");
                         case UP -> faceBuilder.uvs(6, 1, 10, 11).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case DOWN -> faceBuilder.uvs(8, 4, 12, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                     }
@@ -504,37 +466,36 @@ public class FirePitBlock extends Block {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(5, 3, 9, 13).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
-                        case EAST -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#4");
+                        case EAST, WEST -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#4");
                         case SOUTH -> faceBuilder.uvs(1, 4, 5, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
-                        case WEST -> faceBuilder.uvs(5, 5, 11, 11).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#4");
                         case UP -> faceBuilder.uvs(9, 0, 13, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case DOWN -> faceBuilder.uvs(9, 6, 13, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                     }
                 })
                 .from(5, 2, 5.5f).to(10, 4, 7.5f).end()
-                .texture("particle", textures[0])
-                .texture("3", textures[2])
-                .texture("4", textures[3]);
+                .texture("particle", magmaTexture)
+                .texture("3", logTexture)
+                .texture("4", logTopTexture);
 
-        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(holder.block.get());
+        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.FIRE_PIT.get());
 
         builder.part().modelFile(base).addModel().condition(LIT, false).end();
         builder.part().modelFile(base_lit).addModel().condition(LIT, true).end();
         builder.part().modelFile(logs_down).addModel().condition(LEVEL, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15).end();
         builder.part().modelFile(logs_up).addModel().condition(LEVEL, 9, 10, 11, 12, 13, 14, 15).end();
 
-        provider.itemModels().getBuilder(holder.key).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
+        provider.itemModels().getBuilder(name).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
                 .texture("layer0", Utils.modItemLoc("fire_pit"));
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput consumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
+    public static void registerRecipe(RecipeOutput consumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.FIRE_PIT.get())
                 .define('S', Items.STICK)
-                .define('P', SimpleItemType.PEBBLE.itemTag)
+                .define('P', YTechItemTags.PEBBLES)
                 .pattern("SS")
                 .pattern("PP")
-                .unlockedBy("has_pebble", RecipeProvider.has(SimpleItemType.PEBBLE.itemTag))
-                .save(consumer, Utils.modLoc(holder.key));
+                .unlockedBy("has_pebble", RecipeProvider.has(YTechItemTags.PEBBLES))
+                .save(consumer, Utils.modLoc(YTechBlocks.FIRE_PIT));
     }
 
     private static boolean always(BlockState s, BlockGetter g, BlockPos p) {

@@ -5,6 +5,8 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
@@ -29,15 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public record MillingRecipe(Ingredient ingredient, ItemStack result) implements Recipe<Container> {
-    public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<MillingRecipe> RECIPE_TYPE = new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Utils.modLoc("milling").toString();
-        }
-    };
-
+public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonusChance) implements Recipe<Container> {
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         return ingredient.test(container.getItem(0));
@@ -63,13 +57,13 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result) implements 
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.MILLING.get();
     }
 
     @NotNull
     @Override
     public RecipeType<?> getType() {
-        return RECIPE_TYPE;
+        return YTechRecipeTypes.MILLING.get();
     }
 
     public static class Serializer implements RecipeSerializer<MillingRecipe> {
@@ -82,7 +76,8 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result) implements 
                             } else {
                                 return ItemStack.matches(stack, new ItemStack(stack.getItem())) ? Either.left(stack.getItem()) : Either.right(stack);
                             }
-                        }).fieldOf("result").forGetter((millingRecipe) -> millingRecipe.result)
+                        }).fieldOf("result").forGetter((millingRecipe) -> millingRecipe.result),
+                Codec.FLOAT.fieldOf("bonusChance").forGetter((smeltingRecipe) -> smeltingRecipe.bonusChance)
         ).apply(recipe, MillingRecipe::new));
 
         @Override
@@ -96,17 +91,18 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result) implements 
         public MillingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            return new MillingRecipe(ingredient, result);
+            float bonusChance = buffer.readFloat();
+            return new MillingRecipe(ingredient, result, bonusChance);
         }
-
         @Override
         public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull MillingRecipe recipe) {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
+            buffer.writeFloat(recipe.bonusChance);
         }
     }
 
-    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, @NotNull Item result,
+    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, @NotNull Item result, int count, float bonusChance,
                          @NotNull AdvancementHolder advancementHolder) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
@@ -114,7 +110,9 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result) implements 
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
+            resultItemStack.addProperty("count", count);
             json.add("result", resultItemStack);
+            json.addProperty("bonusChance", bonusChance);
         }
 
         @NotNull
@@ -126,26 +124,34 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result) implements 
         @NotNull
         @Override
         public RecipeSerializer<?> type() {
-            return SERIALIZER;
+            return YTechRecipeSerializers.MILLING.get();
         }
     }
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
         private final Item result;
+        private final int count;
+        private float bonusChance = 0.0f;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull Ingredient ingredient, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, @NotNull Item result, int count) {
             this.ingredient = ingredient;
             this.result = result;
+            this.count = count;
         }
 
-        public static Builder milling(@NotNull TagKey<Item> input, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), result);
+        public static Builder milling(@NotNull TagKey<Item> input, @NotNull Item result, int count) {
+            return new Builder(Ingredient.of(input), result, count);
         }
 
-        public static Builder milling(@NotNull ItemLike input, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), result);
+        public static Builder milling(@NotNull ItemLike input, @NotNull Item result, int count) {
+            return new Builder(Ingredient.of(input), result, count);
+        }
+
+        public RecipeBuilder bonusChance(float bonusChance) {
+            this.bonusChance = bonusChance;
+            return this;
         }
 
         @NotNull
@@ -173,7 +179,7 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result) implements 
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
             this.criteria.forEach(builder::addCriterion);
-            finishedRecipeConsumer.accept(new MillingRecipe.Result(recipeId, ingredient, result, builder.build(recipeId.withPrefix("recipes/milling/"))));
+            finishedRecipeConsumer.accept(new MillingRecipe.Result(recipeId, ingredient, result, count, bonusChance, builder.build(recipeId.withPrefix("recipes/milling/"))));
         }
 
         //Makes sure that this recipe is valid and obtainable.

@@ -7,7 +7,7 @@
       "tag": "ytech:bolts/wooden"
     },
     "F": {
-      "tag": "ytech:axes/flint"
+      "tag": "minecraft:axes"
     },
     "S": {
       "item": "minecraft:stick"
@@ -16,7 +16,7 @@
       "tag": "ytech:grass_twines"
     },
     "W": {
-      "item": "minecraft:birch_log"
+      "tag": "minecraft:birch_logs"
     }
   },
   "pattern": [

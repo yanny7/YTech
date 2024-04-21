@@ -1,8 +1,14 @@
 {
-  "type": "ytech:milling",
-  "ingredient": {
-    "tag": "forge:crops/wheat"
-  },
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:crops/wheat"
+    },
+    {
+      "tag": "ytech:mortar_and_pestles"
+    }
+  ],
   "result": {
     "item": "ytech:flour"
   }

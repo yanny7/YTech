@@ -3,16 +3,16 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "ytech:flour"
+      "tag": "ytech:flours"
     },
     {
-      "tag": "ytech:flour"
+      "tag": "ytech:flours"
     },
     {
-      "tag": "ytech:flour"
+      "tag": "ytech:flours"
     },
     {
-      "tag": "ytech:water_bucket"
+      "tag": "ytech:water_buckets"
     }
   ],
   "result": {

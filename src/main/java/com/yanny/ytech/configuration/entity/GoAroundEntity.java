@@ -1,9 +1,8 @@
 package com.yanny.ytech.configuration.entity;
 
-import com.yanny.ytech.configuration.SimpleEntityType;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
 import com.yanny.ytech.configuration.goal.GoAround;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -31,12 +30,12 @@ public class GoAroundEntity extends Mob implements IEntityAdditionalSpawnData {
     @Nullable private BlockPos position = null;
     @Nullable private MillstoneBlockEntity millstoneBlockEntity;
 
-    public GoAroundEntity(EntityType<? extends Entity> entityType, Level pLevel) {
-        super((EntityType<? extends Mob>) entityType, pLevel);
+    public GoAroundEntity(EntityType<GoAroundEntity> entityType, Level pLevel) {
+        super(entityType, pLevel);
     }
 
     public GoAroundEntity(@NotNull Mob mob, @NotNull BlockPos position, @NotNull Level level) {
-        super(Registration.entityType(SimpleEntityType.GO_AROUND), level);
+        super(YTechEntityTypes.GO_AROUND.get(), level);
         this.position = position;
         millstoneBlockEntity = (MillstoneBlockEntity) level().getBlockEntity(position);
         this.setPos(mob.getX(), mob.getY(), mob.getZ());

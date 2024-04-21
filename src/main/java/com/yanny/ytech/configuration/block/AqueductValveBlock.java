@@ -1,16 +1,13 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.MaterialItemType;
-import com.yanny.ytech.configuration.SimpleBlockType;
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductValveBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
-import com.yanny.ytech.registration.Holder;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -47,13 +44,7 @@ public class AqueductValveBlock extends IrrigationBlock {
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        Holder.SimpleBlockHolder blockHolder = Registration.HOLDER.simpleBlocks().get(SimpleBlockType.AQUEDUCT_VALVE);
-
-        if (blockHolder instanceof Holder.EntitySimpleBlockHolder holder) {
-            return new AqueductValveBlockEntity(holder.getBlockEntityType(), pos, blockState);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
-        }
+        return new AqueductValveBlockEntity(pos, blockState);
     }
 
     @NotNull
@@ -105,33 +96,28 @@ public class AqueductValveBlock extends IrrigationBlock {
         stateBuilder.add(HORIZONTAL_FACING);
     }
 
-    @NotNull
-    public static TextureHolder[] getTexture() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_valve")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks"))
-        ).toArray(TextureHolder[]::new);
-    }
+    public static void registerModel(@NotNull BlockStateProvider provider) {
+        ResourceLocation valveTexture = Utils.modBlockLoc("aqueduct/aqueduct_valve");
+        ResourceLocation bricksTexture = Utils.modBlockLoc("terracotta_bricks");
+        String name = Utils.getId(YTechBlocks.AQUEDUCT_VALVE);
 
-    public static void registerModel(@NotNull Holder.SimpleBlockHolder holder, @NotNull BlockStateProvider provider) {
-        ResourceLocation[] textures = holder.object.getTextures();
         ModelFile model = provider.models()
-                .cube(holder.key, textures[1], textures[1], textures[1], textures[1], textures[0], textures[0])
-                .texture("particle", textures[0]);
-        provider.horizontalBlock(holder.block.get(), model);
-        provider.itemModels().getBuilder(holder.key).parent(model);
+                .cube(name, bricksTexture, bricksTexture, bricksTexture, bricksTexture, valveTexture, valveTexture)
+                .texture("particle", valveTexture);
+        provider.horizontalBlock(YTechBlocks.AQUEDUCT_VALVE.get(), model);
+        provider.itemModels().getBuilder(name).parent(model);
     }
 
-    public static void registerRecipe(Holder.SimpleBlockHolder holder, RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, holder.block.get())
-                .define('#', Registration.item(SimpleBlockType.TERRACOTTA_BRICKS))
-                .define('R', MaterialItemType.ROD.groupTag)
-                .define('H', MaterialItemType.HAMMER.groupTag)
-                .define('S', MaterialItemType.SAW.groupTag)
+    public static void registerRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT_VALVE.get())
+                .define('#', YTechItemTags.TERRACOTTA_BRICKS)
+                .define('R', YTechItemTags.RODS.tag)
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('S', YTechItemTags.SAWS.tag)
                 .pattern("###")
                 .pattern("HRS")
                 .pattern("###")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(SimpleBlockType.TERRACOTTA_BRICKS.itemTag))
-                .save(recipeConsumer, Utils.modLoc(holder.key));
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechBlocks.AQUEDUCT_VALVE));
     }
 }

@@ -5,6 +5,8 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.RegistryAccess;
@@ -30,14 +32,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack result) implements Recipe<Container> {
-    public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<BlockHitRecipe> RECIPE_TYPE = new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Utils.modLoc("block_hit").toString();
-        }
-    };
-
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         return ingredient.test(container.getItem(0)) && block.test(container.getItem(1));
@@ -63,13 +57,13 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.BLOCK_HIT.get();
     }
 
     @NotNull
     @Override
     public RecipeType<?> getType() {
-        return RECIPE_TYPE;
+        return YTechRecipeTypes.BLOCK_HIT.get();
     }
 
     public static class Serializer implements RecipeSerializer<BlockHitRecipe> {
@@ -130,7 +124,7 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
         @NotNull
         @Override
         public RecipeSerializer<?> type() {
-            return SERIALIZER;
+            return YTechRecipeSerializers.BLOCK_HIT.get();
         }
     }
 
@@ -146,15 +140,7 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
             this.result = result;
         }
 
-        public static Builder blockUse(@NotNull TagKey<Item> input, TagKey<Item> block, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), Ingredient.of(block), result);
-        }
-
         public static Builder blockUse(@NotNull ItemLike input, TagKey<Item> block, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), Ingredient.of(block), result);
-        }
-
-        public static Builder blockUse(@NotNull ItemLike input, ItemLike block, @NotNull Item result) {
             return new Builder(Ingredient.of(input), Ingredient.of(block), result);
         }
 

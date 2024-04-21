@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class DeerRenderer<T extends Animal> extends MobRenderer<T, DeerModel<T>> {
-    public DeerRenderer(@NotNull EntityRendererProvider.Context context, float shadowRadius) {
-        super(context, new DeerModel<>(context.bakeLayer(DeerModel.LAYER_LOCATION)), shadowRadius);
+    public DeerRenderer(@NotNull EntityRendererProvider.Context context) {
+        super(context, new DeerModel<>(context.bakeLayer(DeerModel.LAYER_LOCATION)), 0.5f);
     }
 
     @NotNull
