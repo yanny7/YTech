@@ -117,15 +117,13 @@ public class TanningRackBlock extends Block implements EntityBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
                     }
                 })
                 .from(2, 13, 8).to(14, 15, 8).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
+                        case NORTH, SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#2");
                     }
                 })
                 .from(2, 1, 8).to(14, 3, 8).end()

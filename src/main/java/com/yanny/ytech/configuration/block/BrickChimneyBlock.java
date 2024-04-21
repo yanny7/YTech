@@ -75,12 +75,8 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(3, 0, 13, 16).texture("#0");
-                        case EAST -> faceBuilder.uvs(3, 0, 13, 16).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(3, 0, 13, 16).texture("#0");
-                        case WEST -> faceBuilder.uvs(3, 0, 13, 16).texture("#0");
-                        case UP -> faceBuilder.uvs(3, 3, 13, 13).texture("#1");
-                        case DOWN -> faceBuilder.uvs(3, 3, 13, 13).texture("#1");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(3, 0, 13, 16).texture("#0");
+                        case UP, DOWN -> faceBuilder.uvs(3, 3, 13, 13).texture("#1");
                     }
                 })
                 .from(3, 0, 3).to(13, 16, 13).end()

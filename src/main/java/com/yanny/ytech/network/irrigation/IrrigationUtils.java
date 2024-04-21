@@ -12,7 +12,8 @@ import com.yanny.ytech.network.generic.server.ServerPropagator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -26,7 +27,11 @@ import java.util.stream.Collectors;
 
 public class IrrigationUtils {
     public static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerIrrigationPropagator(SimpleChannel channel) {
-        return DistExecutor.unsafeRunForDist(() -> () -> registerClientIrrigationPropagator(channel), () -> () -> registerServerIrrigationPropagator(channel));
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            return registerClientIrrigationPropagator(channel);
+        } else {
+            return registerServerIrrigationPropagator(channel);
+        }
     }
 
     private static YTechMod.DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> registerClientIrrigationPropagator(SimpleChannel channel) {

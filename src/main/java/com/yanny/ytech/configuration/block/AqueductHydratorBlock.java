@@ -38,7 +38,7 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> entityType) {
         if (!level.isClientSide) {
-            return AqueductConsumerBlock::createAqueductConsumerTicker;
+            return (level1, pos, state1, blockEntity) -> AqueductConsumerBlock.createAqueductConsumerTicker(level1, blockEntity);
         } else {
             return null;
         }
@@ -50,12 +50,8 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
@@ -66,12 +62,8 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case EAST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#4");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#4");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#4");
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
@@ -95,12 +87,8 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case EAST -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()

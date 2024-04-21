@@ -10,10 +10,6 @@ public class FireComponent extends BottomUpAnimationComponent {
     @NotNull private final Supplier<Integer> progressGetter;
     @NotNull private final Supplier<Boolean> animationRendering;
 
-    public FireComponent(int x, int y, @NotNull Supplier<Integer> progressGetter) {
-        this(x, y, progressGetter, () -> true);
-    }
-
     public FireComponent(int x, int y, @NotNull Supplier<Integer> progressGetter, @NotNull Supplier<Boolean> animationRendering) {
         super(x, y, 14, 14, 44, 166, 58, 166);
         this.progressGetter = progressGetter;

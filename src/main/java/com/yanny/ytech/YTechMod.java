@@ -9,10 +9,6 @@ import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationUtils;
-import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
-import com.yanny.ytech.network.kinetic.KineticClientNetwork;
-import com.yanny.ytech.network.kinetic.KineticServerNetwork;
-import com.yanny.ytech.network.kinetic.KineticUtils;
 import com.yanny.ytech.registration.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -29,7 +25,6 @@ import org.apache.commons.lang3.tuple.Pair;
 @Mod(YTechMod.MOD_ID)
 public class YTechMod {
     public static final String MOD_ID = "ytech";
-    public static final DistHolder<ClientPropagator<KineticClientNetwork, IKineticBlockEntity>, ServerPropagator<KineticServerNetwork, IKineticBlockEntity>> KINETIC_PROPAGATOR;
     public static final DistHolder<ClientPropagator<IrrigationClientNetwork, IIrrigationBlockEntity>, ServerPropagator<IrrigationServerNetwork, IIrrigationBlockEntity>> IRRIGATION_PROPAGATOR;
     public static final YTechConfigSpec CONFIGURATION;
 
@@ -47,7 +42,6 @@ public class YTechMod {
 
         CONFIGURATION = pair.getKey();
         CONFIGURATION_SPEC = pair.getValue();
-        KINETIC_PROPAGATOR = KineticUtils.registerKineticPropagator(channel);
         IRRIGATION_PROPAGATOR = IrrigationUtils.registerIrrigationPropagator(channel);
     }
 

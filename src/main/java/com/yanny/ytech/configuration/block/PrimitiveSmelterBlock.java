@@ -3,23 +3,16 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
-import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
 import com.yanny.ytech.registration.YTechBlocks;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -31,20 +24,11 @@ import java.util.function.Consumer;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock implements IMenuBlock {
+public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState pState) {
         return new PrimitiveSmelterBlockEntity(pos, pState);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    @NotNull
-    public AbstractContainerScreen<AbstractContainerMenu> getScreen(@NotNull AbstractContainerMenu container, @NotNull Inventory inventory, @NotNull Component title) {
-        AbstractContainerScreen<?> screen = new PrimitiveSmelterScreen(container, inventory, title);
-        //noinspection unchecked
-        return (AbstractContainerScreen<AbstractContainerMenu>)screen;
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {

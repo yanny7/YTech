@@ -143,15 +143,7 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
             this.result = result;
         }
 
-        public static Builder blockUse(@NotNull TagKey<Item> input, TagKey<Item> block, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), Ingredient.of(block), result);
-        }
-
         public static Builder blockUse(@NotNull ItemLike input, TagKey<Item> block, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), Ingredient.of(block), result);
-        }
-
-        public static Builder blockUse(@NotNull ItemLike input, ItemLike block, @NotNull Item result) {
             return new Builder(Ingredient.of(input), Ingredient.of(block), result);
         }
 

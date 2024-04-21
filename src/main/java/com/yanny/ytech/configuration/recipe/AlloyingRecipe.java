@@ -215,11 +215,6 @@ public record AlloyingRecipe(ResourceLocation id, Ingredient ingredient1, int co
             this.count = count;
         }
 
-        public static Builder alloying(@NotNull ItemStack input1, @NotNull ItemStack input2, int minTemperature, int smeltingTime,
-                                       @NotNull Item result, int count) {
-            return new Builder(Ingredient.of(input1), input1.getCount(), Ingredient.of(input2), input2.getCount(), minTemperature, smeltingTime, result, count);
-        }
-
         public static Builder alloying(@NotNull TagKey<Item> input1, int count1, @NotNull TagKey<Item> input2, int count2, int minTemperature,
                                        int smeltingTime, @NotNull Item result, int count) {
             return new Builder(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(input1))), count1,

@@ -128,7 +128,7 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
         stateBuilder.add(EAST).add(WEST).add(SOUTH).add(NORTH).add(WATERLOGGED);
     }
 
-    protected static void createAqueductConsumerTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
+    protected static void createAqueductConsumerTicker(@NotNull Level level, @NotNull BlockEntity blockEntity) {
         if (blockEntity instanceof AqueductConsumerBlockEntity block) {
             block.tick((ServerLevel) level);
         }

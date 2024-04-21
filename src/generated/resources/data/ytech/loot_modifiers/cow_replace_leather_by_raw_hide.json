@@ -1,5 +1,5 @@
 {
-  "type": "ytech:remove_item",
+  "type": "ytech:replace_item",
   "conditions": [
     {
       "condition": "minecraft:entity_properties",

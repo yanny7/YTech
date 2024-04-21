@@ -20,7 +20,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -150,10 +149,6 @@ public record TanningRecipe(ResourceLocation id, Ingredient ingredient, Ingredie
         }
 
         public static Builder tanning(@NotNull TagKey<Item> input, int hitCount, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), hitCount, result);
-        }
-
-        public static Builder tanning(@NotNull ItemLike input, int hitCount, @NotNull Item result) {
             return new Builder(Ingredient.of(input), hitCount, result);
         }
 

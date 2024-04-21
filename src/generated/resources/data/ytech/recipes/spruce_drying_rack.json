@@ -16,7 +16,7 @@
       "tag": "ytech:grass_twines"
     },
     "W": {
-      "item": "minecraft:spruce_log"
+      "tag": "minecraft:spruce_logs"
     }
   },
   "pattern": [

@@ -58,10 +58,6 @@ public class YTechBlockTags {
             this(name, create(name), block);
         }
 
-        public MaterialTag(String name, String namespace, YTechBlocks.MaterialBlock block) {
-            this(name, namespace, create(name), block);
-        }
-
         public MaterialTag(String name, TagKey<Block> tag, YTechBlocks.MaterialBlock block) {
             this(name, YTechMod.MOD_ID, tag, block);
         }

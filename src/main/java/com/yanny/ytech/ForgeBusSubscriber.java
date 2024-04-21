@@ -51,10 +51,8 @@ public class ForgeBusSubscriber {
         LevelAccessor levelAccessor = event.getLevel();
 
         if (levelAccessor instanceof ServerLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.server().onLevelLoad(level);
             YTechMod.IRRIGATION_PROPAGATOR.server().onLevelLoad(level);
         } else if (levelAccessor instanceof ClientLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.client().onLevelLoad(level);
             YTechMod.IRRIGATION_PROPAGATOR.client().onLevelLoad(level);
         }
     }
@@ -64,10 +62,8 @@ public class ForgeBusSubscriber {
         LevelAccessor levelAccessor = event.getLevel();
 
         if (levelAccessor instanceof ServerLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.server().onLevelUnload(level);
             YTechMod.IRRIGATION_PROPAGATOR.server().onLevelUnload(level);
         } else if (levelAccessor instanceof ClientLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.client().onLevelUnload(level);
             YTechMod.IRRIGATION_PROPAGATOR.client().onLevelUnload(level);
         }
     }
@@ -81,7 +77,6 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onPlayerLogIn(@NotNull PlayerEvent.PlayerLoggedInEvent event) {
-        YTechMod.KINETIC_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
         YTechMod.IRRIGATION_PROPAGATOR.server().onPlayerLogIn(event.getEntity());
     }
 
@@ -92,14 +87,12 @@ public class ForgeBusSubscriber {
         }
 
         if (event.phase == TickEvent.Phase.END && event.side == LogicalSide.SERVER && event.level instanceof ServerLevel level) {
-            YTechMod.KINETIC_PROPAGATOR.server().tick(level);
             YTechMod.IRRIGATION_PROPAGATOR.server().tick(level);
         }
     }
 
     @SubscribeEvent
     public static void onChunkWatch(@NotNull ChunkWatchEvent.Watch event) {
-        YTechMod.KINETIC_PROPAGATOR.server().onChunkWatch(event.getLevel(), event.getPlayer(), event.getChunk());
         YTechMod.IRRIGATION_PROPAGATOR.server().onChunkWatch(event.getLevel(), event.getPlayer(), event.getChunk());
     }
 

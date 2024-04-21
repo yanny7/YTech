@@ -2,7 +2,6 @@ package com.yanny.ytech;
 
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SpearType;
-import com.yanny.ytech.configuration.block.IMenuBlock;
 import com.yanny.ytech.configuration.entity.DeerEntity;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.item.BasketItem;
@@ -10,7 +9,13 @@ import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.CustomRendererBakedModel;
 import com.yanny.ytech.configuration.model.DeerModel;
 import com.yanny.ytech.configuration.renderer.*;
-import com.yanny.ytech.registration.*;
+import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
+import com.yanny.ytech.configuration.screen.PrimitiveAlloySmelterScreen;
+import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechEntityTypes;
+import com.yanny.ytech.registration.YTechItems;
+import com.yanny.ytech.registration.YTechMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -53,8 +58,9 @@ public class ModBusSubscriber {
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
 
         event.enqueueWork(() -> {
-            MenuScreens.register(YTechMenuTypes.PRIMITIVE_ALLOY_SMELTER.get(), ((IMenuBlock) YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get())::getScreen);
-            MenuScreens.register(YTechMenuTypes.PRIMITIVE_SMELTER.get(), ((IMenuBlock) YTechBlocks.PRIMITIVE_SMELTER.get())::getScreen);
+            MenuScreens.register(YTechMenuTypes.AQUEDUCT_FERTILIZER.get(), AqueductFertilizerScreen::new);
+            MenuScreens.register(YTechMenuTypes.PRIMITIVE_ALLOY_SMELTER.get(), PrimitiveAlloySmelterScreen::new);
+            MenuScreens.register(YTechMenuTypes.PRIMITIVE_SMELTER.get(), PrimitiveSmelterScreen::new);
         });
     }
 

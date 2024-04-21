@@ -104,38 +104,26 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 16, 2).texture("#side");
-                        case EAST -> faceBuilder.uvs(0, 0, 16, 2).texture("#side");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 2).texture("#side");
-                        case WEST -> faceBuilder.uvs(0, 0, 16, 2).texture("#side");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 2).texture("#side");
                         case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#slab");
                     }
                 })
                 .from(0, 6, 0).to(16, 8, 16).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 6, 16, 8).texture("#side");
-                        case EAST -> faceBuilder.uvs(0, 6, 16, 8).texture("#side");
-                        case SOUTH -> faceBuilder.uvs(0, 6, 16, 8).texture("#side");
-                        case WEST -> faceBuilder.uvs(0, 6, 16, 8).texture("#side");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 6, 16, 8).texture("#side");
                     }
                 })
                 .from(0, 4, 0).to(16, 6, 16).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 8, 16, 10).texture("#side");
-                        case EAST -> faceBuilder.uvs(0, 8, 16, 10).texture("#side");
-                        case SOUTH -> faceBuilder.uvs(0, 8, 16, 10).texture("#side");
-                        case WEST -> faceBuilder.uvs(0, 8, 16, 10).texture("#side");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 8, 16, 10).texture("#side");
                     }
                 })
                 .from(0, 2, 0).to(16, 4, 16).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#side");
-                        case EAST -> faceBuilder.uvs(0, 14, 16, 16).texture("#side");
-                        case SOUTH -> faceBuilder.uvs(0, 14, 16, 16).texture("#side");
-                        case WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#side");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#side");
                         case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("slab");
                     }
                 })

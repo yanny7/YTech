@@ -160,12 +160,8 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case EAST -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case WEST -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case UP -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
-                        case DOWN -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
                     }
                 })
                 .from(2, 0, 2).to(14, 4, 14).end()
@@ -181,19 +177,15 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .from(4, 4, 3).to(12, 5, 13).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(6, 6, 10, 11).texture("#1");
-                        case EAST -> faceBuilder.uvs(4, 6, 12, 11).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(6, 6, 10, 11).texture("#1");
-                        case WEST -> faceBuilder.uvs(4, 6, 12, 11).texture("#1");
+                        case NORTH, SOUTH -> faceBuilder.uvs(6, 6, 10, 11).texture("#1");
+                        case EAST, WEST -> faceBuilder.uvs(4, 6, 12, 11).texture("#1");
                     }
                 })
                 .from(6, 5, 4).to(10, 10, 12).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
-                        case EAST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
-                        case WEST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
+                        case NORTH, SOUTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case EAST, WEST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
                         case UP -> faceBuilder.uvs(3, 0, 13, 16).texture("#2");
                         case DOWN -> faceBuilder.uvs(0, 1, 16, 11).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
                     }

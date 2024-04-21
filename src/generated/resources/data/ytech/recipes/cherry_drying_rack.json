@@ -16,7 +16,7 @@
       "tag": "ytech:grass_twines"
     },
     "W": {
-      "item": "minecraft:cherry_log"
+      "tag": "minecraft:cherry_logs"
     }
   },
   "pattern": [

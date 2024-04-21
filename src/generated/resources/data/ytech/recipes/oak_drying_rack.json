@@ -16,7 +16,7 @@
       "tag": "ytech:grass_twines"
     },
     "W": {
-      "item": "minecraft:oak_log"
+      "tag": "minecraft:oak_logs"
     }
   },
   "pattern": [

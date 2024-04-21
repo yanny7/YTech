@@ -2,7 +2,6 @@ package com.yanny.ytech.generation;
 
 import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.GenericItemTags;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
@@ -19,7 +18,6 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Map;
@@ -80,6 +78,8 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_SLABS).add(YTechItems.THATCH_SLAB.get());
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
 
+        tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);
+
         materialTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         materialTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         materialTag(YTechItems.BOLTS, YTechItemTags.BOLTS);
@@ -120,8 +120,6 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.ORES_IN_GROUND_STONE).add(filteredMaterials(YTechItems.STONE_ORES, MaterialType.VANILLA_METALS));
         tag(ItemTags.SLABS).add(YTechItems.TERRACOTTA_BRICK_SLAB.get(), YTechItems.THATCH_SLAB.get());
         tag(ItemTags.STAIRS).add(YTechItems.TERRACOTTA_BRICK_STAIRS.get(), YTechItems.THATCH_STAIRS.get());
-
-        Arrays.stream(GenericItemTags.values()).forEach((type) -> type.registerTags(this));
     }
 
     private void materialTag(YTechItems.MaterialItem materialItem, YTechItemTags.MaterialTag materialTag) {

@@ -42,6 +42,8 @@ public class YTechItemTags {
     public static final TagKey<Item> VENISON = create("venison");
     public static final TagKey<Item> WATER_BUCKETS = create("water_buckets");
 
+    public static final TagKey<Item> FERTILIZER = create("fertilizer");
+
     public static final TagKey<Item> AQUEDUCTS = create(YTechBlockTags.AQUEDUCTS);
     public static final TagKey<Item> AQUEDUCT_FERTILIZERS = create(YTechBlockTags.AQUEDUCT_FERTILIZERS);
     public static final TagKey<Item> AQUEDUCT_HYDRATORS = create(YTechBlockTags.AQUEDUCT_HYDRATORS);

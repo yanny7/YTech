@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
@@ -93,12 +94,18 @@ public class Utils {
     }
 
     @NotNull
-    public static Block getLogFromMaterial(MaterialType material) {
-        if (MaterialType.ALL_WOODS.contains(material)) {
-            return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(material.key + "_log")));
-        } else {
-            throw new IllegalStateException("Not wood type provided!");
-        }
+    public static TagKey<Item> getLogFromMaterial(MaterialType material) {
+        return switch (material) {
+            case ACACIA_WOOD -> ItemTags.ACACIA_LOGS;
+            case BIRCH_WOOD -> ItemTags.BIRCH_LOGS;
+            case CHERRY_WOOD -> ItemTags.CHERRY_LOGS;
+            case DARK_OAK_WOOD -> ItemTags.DARK_OAK_LOGS;
+            case JUNGLE_WOOD -> ItemTags.JUNGLE_LOGS;
+            case MANGROVE_WOOD -> ItemTags.MANGROVE_LOGS;
+            case OAK_WOOD -> ItemTags.OAK_LOGS;
+            case SPRUCE_WOOD -> ItemTags.SPRUCE_LOGS;
+            default -> throw new IllegalStateException("Not wood type provided!");
+        };
     }
 
     @NotNull

@@ -34,12 +34,8 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(1, 0, 15, 16).texture("#0");
-                        case EAST -> faceBuilder.uvs(1, 0, 15, 16).texture("#0");
-                        case SOUTH -> faceBuilder.uvs(1, 0, 15, 16).texture("#0");
-                        case WEST -> faceBuilder.uvs(1, 0, 15, 16).texture("#0");
-                        case UP -> faceBuilder.uvs(1, 1, 15, 15).texture("#1");
-                        case DOWN -> faceBuilder.uvs(1, 1, 15, 15).texture("#1");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(1, 0, 15, 16).texture("#0");
+                        case UP, DOWN -> faceBuilder.uvs(1, 1, 15, 15).texture("#1");
                     }
                 })
                 .from(1, 0, 1).to(15, 16, 15).end()

@@ -1,10 +1,10 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.GenericItemTags;
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -123,7 +123,7 @@ public class AqueductFertilizerBlockEntity extends AqueductHydratorBlockEntity i
     @NotNull
     public  MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
-                .addInputSlot(80, 32, (itemStackHandler, slot, itemStack) -> itemStack.is(GenericItemTags.FERTILIZER.tag))
+                .addInputSlot(80, 32, (itemStackHandler, slot, itemStack) -> itemStack.is(YTechItemTags.FERTILIZER))
                 .setOnChangeListener(this::setChanged)
                 .build();
     }
