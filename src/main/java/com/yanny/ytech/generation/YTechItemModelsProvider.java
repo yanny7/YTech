@@ -1,6 +1,5 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
@@ -19,8 +18,6 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
-
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechItemModelsProvider extends ItemModelProvider {
     public YTechItemModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -58,6 +55,8 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.UNFIRED_CLAY_BUCKET);
         simpleItem(YTechItems.VENISON);
 
+        spawnEggModel(YTechItems.DEER_SPAWN_EGG);
+
         materialItem(YTechItems.ARROWS, "item/generated");
         vanillaMaterialItem(YTechItems.AXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         materialItem(YTechItems.BOLTS, "item/generated");
@@ -80,9 +79,6 @@ class YTechItemModelsProvider extends ItemModelProvider {
         vanillaMaterialItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         spearItem();
         vanillaMaterialItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
-
-        GeneralUtils.mapToStream(HOLDER.fluids()).forEach((fluid) -> fluid.object.registerModel(fluid, this));
-        HOLDER.entities().values().forEach((entity) -> entity.object.registerModel(entity, this));
     }
 
     private void simpleItem(RegistryObject<Item> item) {
@@ -161,5 +157,9 @@ class YTechItemModelsProvider extends ItemModelProvider {
                     .end()
                     .override().predicate(SpearItem.THROWING_PREDICATE, 1).model(throwing).end();
         });
+    }
+
+    private void spawnEggModel(RegistryObject<Item> item) {
+        getBuilder(Utils.getId(item)).parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
     }
 }

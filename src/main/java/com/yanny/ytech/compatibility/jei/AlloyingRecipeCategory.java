@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -86,7 +87,7 @@ public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
     }
 
     public static List<AlloyingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(AlloyingRecipe.RECIPE_TYPE).stream().toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.ALLOYING.get()).stream().toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {

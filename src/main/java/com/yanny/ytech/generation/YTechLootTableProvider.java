@@ -1,12 +1,13 @@
 package com.yanny.ytech.generation;
 
+import com.google.gson.JsonPrimitive;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
+import com.yanny.ytech.configuration.entity.DeerEntity;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItems;
-import net.minecraft.advancements.critereon.EnchantmentPredicate;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.EntityLootSubProvider;
@@ -17,15 +18,21 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,8 +40,6 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechLootTableProvider extends LootTableProvider {
     public YTechLootTableProvider(PackOutput packOutput) {
@@ -175,7 +180,7 @@ class YTechLootTableProvider extends LootTableProvider {
 
         @Override
         public void generate() {
-            HOLDER.entities().values().forEach(h -> h.object.registerLoot(h, this));
+            registerDeerLootTable(this);
         }
     }
 
@@ -197,5 +202,45 @@ class YTechLootTableProvider extends LootTableProvider {
 
     private static void registerMaterialLootTable(YTechBlocks.MaterialBlock block, Consumer<RegistryObject<Block>> loot) {
         block.entries().forEach((entry) -> loot.accept(entry.getValue()));
+    }
+
+    private static void registerDeerLootTable(EntityLootSubProvider provider) {
+        EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+
+        provider.add(YTechEntityTypes.DEER.get(), LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(
+                                        LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                )
+                )
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(
+                                        LootItem.lootTableItem(YTechItems.VENISON.get())
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                                .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
+                                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                )
+                )
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(
+                                        LootItem.lootTableItem(YTechItems.ANTLER.get())
+                                                .when(
+                                                        LootItemEntityPropertyCondition.hasProperties(
+                                                                LootContext.EntityTarget.THIS,
+                                                                EntityPredicate.Builder.entity().nbt(NbtPredicate.fromJson(new JsonPrimitive(DeerEntity.hasAntlersStr())))
+                                                        )
+                                                )
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                )
+                )
+        );
     }
 }

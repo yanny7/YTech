@@ -13,15 +13,15 @@ import com.yanny.ytech.network.kinetic.IKineticBlockEntity;
 import com.yanny.ytech.network.kinetic.KineticClientNetwork;
 import com.yanny.ytech.network.kinetic.KineticServerNetwork;
 import com.yanny.ytech.network.kinetic.KineticUtils;
-import com.yanny.ytech.registration.Registration;
+import com.yanny.ytech.registration.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.commons.lang3.tuple.Pair;
@@ -53,14 +53,25 @@ public class YTechMod {
 
     public YTechMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        Registration.init(modEventBus);
+
+        YTechItems.register(modEventBus);
+        YTechBlocks.register(modEventBus);
+        YTechBlockEntityTypes.register(modEventBus);
+        YTechMenuTypes.register(modEventBus);
+        YTechEntityTypes.register(modEventBus);
+        YTechRecipeTypes.register(modEventBus);
+        YTechRecipeSerializers.register(modEventBus);
+        YTechGLMCodecs.register(modEventBus);
+        YTechCreativeTabs.register(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIGURATION_SPEC);
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> YTechMod.clientStuff(modEventBus));
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            YTechMod.clientStuff(modEventBus);
+        }
     }
 
     public static void clientStuff(final IEventBus modEventBus) {

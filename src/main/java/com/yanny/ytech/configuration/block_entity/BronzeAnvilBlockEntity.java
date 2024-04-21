@@ -1,7 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
-import com.yanny.ytech.configuration.recipe.HammeringRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -46,7 +46,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
             ItemStack hammeringItem = itemStackHandler.getStackInSlot(0);
 
             if (hammeringItem.isEmpty()) {
-                level.getRecipeManager().getRecipeFor(HammeringRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level).ifPresent((recipe) -> {
+                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SimpleContainer(holdingItemStack), level).ifPresent((recipe) -> {
                     itemStackHandler.setStackInSlot(SLOT_INPUT, holdingItemStack.split(holdingItemStack.getMaxStackSize()));
                     setChanged(level, pos, Blocks.AIR.defaultBlockState());
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
@@ -61,7 +61,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                 } else {
-                    level.getRecipeManager().getRecipeFor(HammeringRecipe.RECIPE_TYPE, new SimpleContainer(hammeringItem), level).ifPresent((recipe) -> {
+                    level.getRecipeManager().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SimpleContainer(hammeringItem), level).ifPresent((recipe) -> {
                         if (recipe.tool().test(holdingItemStack)) {
                             hammeringItem.split(1);
                             holdingItemStack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));

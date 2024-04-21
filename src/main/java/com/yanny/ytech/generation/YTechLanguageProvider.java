@@ -1,11 +1,11 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.AdvancementType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.NameHolder;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
@@ -16,8 +16,6 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.function.Predicate;
-
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 class YTechLanguageProvider extends LanguageProvider {
     public YTechLanguageProvider(PackOutput output, String locale) {
@@ -53,6 +51,8 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.UNFIRED_CLAY_BUCKET, "Unfired Clay Bucket");
         addItem(YTechItems.VENISON, "Venison");
         addItem(YTechItems.WATER_CLAY_BUCKET, "Water Clay Bucket");
+
+        addItem(YTechItems.DEER_SPAWN_EGG, "Deer Spawn Egg");
 
         addBlock(YTechBlocks.AQUEDUCT, "Aqueduct");
         addBlock(YTechBlocks.AQUEDUCT_FERTILIZER, "Aqueduct Fertilizer");
@@ -107,11 +107,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addStorageBlockLanguage(YTechBlocks.STORAGE_BLOCKS, "Block of");
         addMaterialBlock(YTechBlocks.TANNING_RACKS, NameHolder.suffix("Tanning Rack"));
 
-        GeneralUtils.mapToStream(HOLDER.fluids()).forEach(h -> add(h.bucket.get(), h.name));
-        HOLDER.entities().values().forEach(h -> {
-            add(h.getEntityType(), h.name);
-            add(h.spawnEgg.get(), h.name + " Spawn Egg");
-        });
+        addEntityType(YTechEntityTypes.DEER, "Deer");
 
         for (AdvancementType type : AdvancementType.values()) {
             add(type.titleId(), type.title());

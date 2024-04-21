@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.registration.YTechItems;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -80,7 +81,7 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
     }
 
     public static List<DryingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(DryingRecipe.RECIPE_TYPE).stream().toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.DRYING.get()).stream().toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {

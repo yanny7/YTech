@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.YTechItems;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -77,7 +78,7 @@ public class TanningRecipeCategory implements IRecipeCategory<TanningRecipe> {
     }
 
     public static List<TanningRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(TanningRecipe.RECIPE_TYPE).stream().toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.TANNING.get()).stream().toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {

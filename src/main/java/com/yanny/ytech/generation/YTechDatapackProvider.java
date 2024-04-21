@@ -1,9 +1,10 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.AnimalEntityType;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechBiomeTags;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechEntityTypes;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -38,7 +39,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import static com.yanny.ytech.configuration.MaterialType.*;
-import static com.yanny.ytech.registration.Registration.entityType;
 
 public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
     private static final ResourceKey<ConfiguredFeature<?, ?>> CASSITERITE_ORE_FEATURE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Utils.modLoc("cassiterite_ore"));
@@ -100,8 +100,8 @@ public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
 
                     bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_deer_spawn")),
                             new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
-                                    biomeReg.getOrThrow(AnimalEntityType.DEER.biomeTag),
-                                    List.of(new MobSpawnSettings.SpawnerData(entityType(AnimalEntityType.DEER), 15, 4, 8))
+                                    biomeReg.getOrThrow(YTechBiomeTags.DEER_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.DEER.get(), 15, 4, 8))
                             )
                     );
 

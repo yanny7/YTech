@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -56,7 +57,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             ItemStack dryingItem = items.getStackInSlot(0);
 
             if (dryingItem.isEmpty()) {
-                Optional<DryingRecipe> dryingRecipe = level.getRecipeManager().getRecipeFor(DryingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<DryingRecipe> dryingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.DRYING.get(), new SimpleContainer(holdingItemStack), level);
 
                 dryingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;

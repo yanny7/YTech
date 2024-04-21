@@ -3,6 +3,7 @@ package com.yanny.ytech;
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block.IMenuBlock;
+import com.yanny.ytech.configuration.entity.DeerEntity;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.item.SpearItem;
@@ -16,6 +17,9 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -32,7 +36,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.yanny.ytech.configuration.model.SpearModel.*;
-import static com.yanny.ytech.registration.Registration.HOLDER;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusSubscriber {
@@ -70,29 +73,17 @@ public class ModBusSubscriber {
         event.registerEntityRenderer(YTechEntityTypes.IRON_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.IRON)));
         event.registerEntityRenderer(YTechEntityTypes.PEBBLE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.GO_AROUND.get(), GoAroundRenderer::new);
-
-        HOLDER.entities().forEach((type, holder) -> {
-            switch (type) {
-                case DEER -> event.registerEntityRenderer(holder.getEntityType(), (context) -> new DeerRenderer<>(context, 0.5f));
-                default -> throw new IllegalStateException("Missing entity renderer!");
-            }
-        });
+        event.registerEntityRenderer(YTechEntityTypes.DEER.get(), DeerRenderer::new);
     }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.FLINT), () -> createLayer(0, 0));
-        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.COPPER), () -> createLayer(0, 6));
         event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.BRONZE), () -> createLayer(0, 12));
+        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.COPPER), () -> createLayer(0, 6));
+        event.registerLayerDefinition(DeerModel.LAYER_LOCATION, DeerModel::createBodyLayer);
+        event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.FLINT), () -> createLayer(0, 0));
         event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.IRON), () -> createLayer(0, 18));
-
-        HOLDER.entities().forEach((type, holder) -> {
-            switch (type) {
-                case DEER -> event.registerLayerDefinition(DeerModel.LAYER_LOCATION, DeerModel::createBodyLayer);
-                default -> throw new IllegalStateException("Missing entity layer definitions!");
-            }
-        });
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -105,14 +96,13 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        Registration.HOLDER.entities().forEach((type, holder) -> event.put(holder.getEntityType(), holder.object.getAttributes()));
+        event.put(YTechEntityTypes.DEER.get(), DeerEntity.createAttributes().build());
         event.put(YTechEntityTypes.GO_AROUND.get(), GoAroundEntity.createAttributes().build());
     }
 
     @SubscribeEvent
     public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event) {
-        Registration.HOLDER.entities().forEach((type, holder) -> event.register(holder.getEntityType(), holder.object.spawnPlacement,
-                holder.object.heightMapType, holder.object.spawnPredicate, SpawnPlacementRegisterEvent.Operation.OR));
+        event.register(YTechEntityTypes.DEER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
     }
 
     @OnlyIn(Dist.CLIENT)

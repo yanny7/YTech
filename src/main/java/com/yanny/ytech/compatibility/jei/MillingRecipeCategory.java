@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -87,7 +88,7 @@ public class MillingRecipeCategory implements IRecipeCategory<MillingRecipe> {
     }
 
     public static List<MillingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(MillingRecipe.RECIPE_TYPE).stream().toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.MILLING.get()).stream().toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {

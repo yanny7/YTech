@@ -1,7 +1,7 @@
 package com.yanny.ytech.registration;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.IMenu2;
+import com.yanny.ytech.configuration.IMenu;
 import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
@@ -25,7 +25,7 @@ public class YTechMenuTypes {
         MENU_TYPES.register(eventBus);
     }
 
-    private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> register(String name, IMenu2<T> menu) {
+    private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> register(String name, IMenu<T> menu) {
         return MENU_TYPES.register(name, () -> IForgeMenuType.create((windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
             return menu.getContainerMenu(windowId, inv, pos);

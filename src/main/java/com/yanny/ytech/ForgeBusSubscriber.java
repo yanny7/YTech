@@ -2,7 +2,7 @@ package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
-import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -113,7 +113,7 @@ public class ForgeBusSubscriber {
             Direction direction = event.getFace();
 
             if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
-                level.getRecipeManager().getRecipeFor(BlockHitRecipe.RECIPE_TYPE, new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
                     Block.popResourceFromFace(level, event.getPos(), direction, recipe.result().copy());
                     heldItem.shrink(1);
                 });

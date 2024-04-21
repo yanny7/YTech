@@ -1,6 +1,5 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
@@ -187,14 +186,6 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
     @Override
     public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
         return false;
-    }
-
-    @NotNull
-    public static TextureHolder[] getTexture() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("dried_grass")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("thatch"))
-        ).toArray(TextureHolder[]::new);
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {

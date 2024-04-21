@@ -2,6 +2,8 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
@@ -26,14 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 public record MillingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result, float bonusChance) implements Recipe<Container> {
-    public static final Serializer SERIALIZER = new Serializer();
-    public static final RecipeType<MillingRecipe> RECIPE_TYPE = new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Utils.modLoc("milling").toString();
-        }
-    };
-
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         return ingredient.test(container.getItem(0));
@@ -65,13 +59,13 @@ public record MillingRecipe(ResourceLocation id, Ingredient ingredient, ItemStac
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.MILLING.get();
     }
 
     @NotNull
     @Override
     public RecipeType<?> getType() {
-        return RECIPE_TYPE;
+        return YTechRecipeTypes.MILLING.get();
     }
 
     public static class Serializer implements RecipeSerializer<MillingRecipe> {
@@ -121,7 +115,7 @@ public record MillingRecipe(ResourceLocation id, Ingredient ingredient, ItemStac
         @NotNull
         @Override
         public RecipeSerializer<?> getType() {
-            return SERIALIZER;
+            return YTechRecipeSerializers.MILLING.get();
         }
 
         @NotNull

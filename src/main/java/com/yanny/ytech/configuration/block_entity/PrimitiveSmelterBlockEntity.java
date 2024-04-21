@@ -2,8 +2,8 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
-import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,7 +29,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     @Nullable private ItemStack recipeInput = ItemStack.EMPTY;
 
     public PrimitiveSmelterBlockEntity(BlockPos pos, BlockState blockState) {
-        super(YTechBlockEntityTypes.PRIMITIVE_SMELTER.get(), pos, blockState, SmeltingRecipe.RECIPE_TYPE);
+        super(YTechBlockEntityTypes.PRIMITIVE_SMELTER.get(), pos, blockState, YTechRecipeTypes.SMELTING.get());
     }
 
     @Override
@@ -106,7 +106,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
         if (level != null) {
             ItemStack input = itemStackHandler.getStackInSlot(SLOT_INPUT);
 
-            level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(input), level).ifPresent((r) -> {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(input), level).ifPresent((r) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
                 if (r.minTemperature() <= temperature && (result.isEmpty() || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount()))) {
@@ -124,7 +124,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
         if (level != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(recipeInput), level).ifPresent((r) -> {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(recipeInput), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.result().copy());
                 } else {
@@ -139,7 +139,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     protected boolean isValidRecipeInInput() {
         if (level != null) {
             ItemStack itemStack = itemStackHandler.getStackInSlot(SLOT_INPUT);
-            return level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(itemStack), level).isPresent();
+            return level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(itemStack), level).isPresent();
         }
 
         return false;
@@ -147,7 +147,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
 
     private boolean canInput(@NotNull MachineItemStackHandler itemStackHandler, int slot, @NotNull ItemStack itemStack) {
         if (level != null) {
-            return level.getRecipeManager().getRecipeFor(SmeltingRecipe.RECIPE_TYPE, new SimpleContainer(itemStack), level).isPresent();
+            return level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(itemStack), level).isPresent();
         } else {
             return false;
         }

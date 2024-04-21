@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -83,7 +84,7 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
     }
 
     public static List<SmeltingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
-        return recipeManager.getAllRecipesFor(SmeltingRecipe.RECIPE_TYPE).stream().toList();
+        return recipeManager.getAllRecipesFor(YTechRecipeTypes.SMELTING.get()).stream().toList();
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {

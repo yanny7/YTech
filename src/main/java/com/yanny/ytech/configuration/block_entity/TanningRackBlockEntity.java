@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -52,7 +53,7 @@ public class TanningRackBlockEntity extends BlockEntity {
             ItemStack tanningItem = items.getStackInSlot(0);
 
             if (tanningItem.isEmpty()) {
-                Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.TANNING.get(), new SimpleContainer(holdingItemStack), level);
 
                 tanningRecipe.ifPresent((recipe) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
@@ -65,7 +66,7 @@ public class TanningRackBlockEntity extends BlockEntity {
                 });
             } else {
                 if (result != null) {
-                    Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(TanningRecipe.RECIPE_TYPE, new SimpleContainer(items.getStackInSlot(0)), level);
+                    Optional<TanningRecipe> tanningRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.TANNING.get(), new SimpleContainer(items.getStackInSlot(0)), level);
 
                     tanningRecipe.ifPresent((recipe) -> {
                         if (recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack)) {

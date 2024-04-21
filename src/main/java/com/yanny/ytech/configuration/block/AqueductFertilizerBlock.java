@@ -1,7 +1,6 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.TextureHolder;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductFertilizerBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
@@ -39,7 +38,6 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -76,17 +74,6 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock implements IM
         AbstractContainerScreen<?> screen = new AqueductFertilizerScreen(container, inventory, title);
         //noinspection unchecked
         return (AbstractContainerScreen<AbstractContainerMenu>)screen;
-    }
-
-    @NotNull
-    public static TextureHolder[] getTexture() {
-        return List.of(
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_fertilizer")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_valve")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("terracotta_bricks")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("invisible")),
-                new TextureHolder(-1, -1, Utils.modBlockLoc("aqueduct/aqueduct_fertilizer_working"))
-        ).toArray(TextureHolder[]::new);
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {

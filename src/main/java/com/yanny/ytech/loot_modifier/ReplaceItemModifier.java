@@ -3,6 +3,7 @@ package com.yanny.ytech.loot_modifier;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.registration.YTechGLMCodecs;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -45,6 +46,6 @@ public class ReplaceItemModifier extends LootModifier {
 
     @Override
     public Codec<? extends IGlobalLootModifier> codec() {
-        return CODEC.get();
+        return YTechGLMCodecs.REPLACE_ITEM.get();
     }
 }

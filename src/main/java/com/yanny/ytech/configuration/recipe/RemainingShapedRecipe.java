@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -24,7 +25,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class RemainingShapedRecipe extends ShapedRecipe {
-    public static final Serializer SERIALIZER = new Serializer();
     private static final RandomSource RANDOM = RandomSource.create();
 
     public RemainingShapedRecipe(ShapedRecipe recipe) {
@@ -58,7 +58,7 @@ public class RemainingShapedRecipe extends ShapedRecipe {
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return YTechRecipeSerializers.REMAINING_SHAPED.get();
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapedRecipe> {
@@ -90,7 +90,7 @@ public class RemainingShapedRecipe extends ShapedRecipe {
         @NotNull
         @Override
         public RecipeSerializer<?> getType() {
-            return SERIALIZER;
+            return YTechRecipeSerializers.REMAINING_SHAPED.get();
         }
     }
 

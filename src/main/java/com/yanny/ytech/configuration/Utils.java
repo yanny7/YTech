@@ -19,11 +19,6 @@ import java.util.Objects;
 
 public class Utils {
     @NotNull
-    public static ResourceLocation forgeLoc(@NotNull String path) {
-        return new ResourceLocation("forge", path);
-    }
-
-    @NotNull
     public static ResourceLocation mcLoc(@NotNull String path) {
         return new ResourceLocation(path);
     }
@@ -79,12 +74,6 @@ public class Utils {
         return new ResourceLocation(loc.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + loc.getPath());
     }
 
-    @NotNull
-    public static ResourceLocation blockLoc(@NotNull Item item) {
-        ResourceLocation loc = loc(item);
-        return new ResourceLocation(loc.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + loc.getPath());
-    }
-
     public static String getId(RegistryObject<?> object) {
         return object.getId().getPath();
     }
@@ -124,16 +113,6 @@ public class Utils {
     @NotNull
     public static BlockPos loadBlockPos(@NotNull CompoundTag tag) {
         return new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
-    }
-
-    @SafeVarargs
-    @NotNull
-    public static <E extends Enum<E>> EnumSet<E> merge(@NotNull EnumSet<E> first, @NotNull EnumSet<E> ...list) {
-        EnumSet<E> copy = first.clone();
-        for (EnumSet<E> e : list) {
-            copy.addAll(e);
-        }
-        return copy;
     }
 
     @SafeVarargs

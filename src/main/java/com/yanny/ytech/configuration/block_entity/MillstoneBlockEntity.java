@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.configuration.entity.GoAroundEntity;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -71,7 +72,7 @@ public class MillstoneBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (result.isEmpty() && isLeashed && !holdingItemStack.isEmpty()) {
-                Optional<MillingRecipe> millingRecipe = level.getRecipeManager().getRecipeFor(MillingRecipe.RECIPE_TYPE, new SimpleContainer(holdingItemStack), level);
+                Optional<MillingRecipe> millingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.MILLING.get(), new SimpleContainer(holdingItemStack), level);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
