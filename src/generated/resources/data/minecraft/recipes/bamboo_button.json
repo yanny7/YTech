@@ -1,6 +1,6 @@
 {
   "type": "ytech:remaining_shapeless_crafting",
-  "category": "building",
+  "category": "redstone",
   "group": "button",
   "ingredients": [
     {

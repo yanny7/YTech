@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:knives/flint"
+      "tag": "ytech:knives"
     },
     "S": {
       "item": "minecraft:stick"

@@ -1,9 +1,9 @@
 {
   "type": "ytech:remaining_shaped_crafting",
-  "category": "equipment",
+  "category": "misc",
   "key": {
     "#": {
-      "tag": "ytech:knives/flint"
+      "tag": "ytech:knives"
     },
     "L": {
       "item": "minecraft:leather"

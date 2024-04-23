@@ -1,6 +1,6 @@
 {
   "type": "ytech:remaining_shaped_crafting",
-  "category": "building",
+  "category": "redstone",
   "group": "fence_gate",
   "key": {
     "B": {
