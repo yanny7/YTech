@@ -101,7 +101,7 @@ public class MillstoneBlock extends Block implements EntityBlock {
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
-        ModelFile model = provider.models().getBuilder(Utils.getId(YTechBlocks.MILLSTONE))
+        ModelFile model = provider.models().getBuilder(Utils.getPath(YTechBlocks.MILLSTONE))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -145,7 +145,7 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .texture("middle", Utils.mcBlockLoc("oak_log_top"))
                 .texture("top", Utils.mcBlockLoc("oak_log"));
         provider.getVariantBuilder(YTechBlocks.MILLSTONE.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.MILLSTONE)).parent(model);
+        provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.MILLSTONE)).parent(model);
     }
 
     public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {

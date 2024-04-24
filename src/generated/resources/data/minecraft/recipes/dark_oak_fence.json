@@ -1,7 +1,7 @@
 {
   "type": "ytech:remaining_shaped_crafting",
-  "category": "building",
-  "group": "fence",
+  "category": "misc",
+  "group": "wooden_fence",
   "key": {
     "H": {
       "tag": "ytech:hammers"

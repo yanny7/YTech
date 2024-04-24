@@ -5,14 +5,17 @@
     "#": {
       "tag": "ytech:plates/tin"
     },
+    "H": {
+      "tag": "ytech:hammers"
+    },
     "S": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "#",
-    "#",
-    "S"
+    "# ",
+    "# ",
+    "SH"
   ],
   "result": {
     "item": "ytech:tin_sword"

@@ -1,0 +1,20 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "tag": "ytech:leather_strips"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "LL ",
+    "LS ",
+    "  L"
+  ],
+  "result": {
+    "item": "minecraft:lead"
+  }
+}

@@ -67,7 +67,7 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
         ResourceLocation bricksTexture = Utils.modBlockLoc("terracotta_bricks");
         ResourceLocation invisibleTexture = Utils.modBlockLoc("invisible");
         ResourceLocation workingTexture = Utils.modBlockLoc("aqueduct/aqueduct_fertilizer_working");
-        String name = Utils.getId(YTechBlocks.AQUEDUCT_FERTILIZER);
+        String name = Utils.getPath(YTechBlocks.AQUEDUCT_FERTILIZER);
         ModelFile base = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {

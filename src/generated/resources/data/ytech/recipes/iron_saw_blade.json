@@ -1,0 +1,20 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "tag": "ytech:plates/iron"
+    }
+  },
+  "pattern": [
+    " P ",
+    "PHP",
+    " P "
+  ],
+  "result": {
+    "item": "ytech:iron_saw_blade"
+  }
+}
