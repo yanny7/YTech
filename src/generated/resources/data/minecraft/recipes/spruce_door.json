@@ -1,7 +1,7 @@
 {
   "type": "ytech:remaining_shaped_crafting",
   "category": "redstone",
-  "group": "door",
+  "group": "wooden_door",
   "key": {
     "B": {
       "tag": "ytech:bolts/wooden"

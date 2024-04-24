@@ -37,8 +37,8 @@ public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock {
         ResourceLocation top = Utils.modBlockLoc("machine/primitive_smelter_top");
         ResourceLocation face = Utils.modBlockLoc("machine/primitive_alloy_smelter_front");
         ResourceLocation facePowered = Utils.modBlockLoc("machine/primitive_alloy_smelter_front_powered");
-        BlockModelBuilder model = provider.models().cube(Utils.getId(YTechBlocks.PRIMITIVE_ALLOY_SMELTER), casing, top, face, casing, casing, casing).texture("particle", casing);
-        BlockModelBuilder modelPowered = provider.models().cube(Utils.getId(YTechBlocks.PRIMITIVE_ALLOY_SMELTER) + "_powered", casing, top, facePowered, casing, casing, casing).texture("particle", casing);
+        BlockModelBuilder model = provider.models().cube(Utils.getPath(YTechBlocks.PRIMITIVE_ALLOY_SMELTER), casing, top, face, casing, casing, casing).texture("particle", casing);
+        BlockModelBuilder modelPowered = provider.models().cube(Utils.getPath(YTechBlocks.PRIMITIVE_ALLOY_SMELTER) + "_powered", casing, top, facePowered, casing, casing, casing).texture("particle", casing);
 
         provider.getVariantBuilder(YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get())
                 .partialState().with(HORIZONTAL_FACING, Direction.NORTH).with(POWERED, false).setModels(ConfiguredModel.builder().modelFile(model).build())
@@ -49,7 +49,7 @@ public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock {
                 .partialState().with(HORIZONTAL_FACING, Direction.EAST).with(POWERED, true).setModels(ConfiguredModel.builder().modelFile(modelPowered).rotationY(90).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.SOUTH).with(POWERED, true).setModels(ConfiguredModel.builder().modelFile(modelPowered).rotationY(180).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.WEST).with(POWERED, true).setModels(ConfiguredModel.builder().modelFile(modelPowered).rotationY(270).build());
-        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.PRIMITIVE_ALLOY_SMELTER)).parent(model);
+        provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.PRIMITIVE_ALLOY_SMELTER)).parent(model);
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {

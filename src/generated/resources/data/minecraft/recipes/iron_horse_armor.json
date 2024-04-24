@@ -1,0 +1,27 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:hammers"
+    },
+    "L": {
+      "tag": "ytech:plates/iron"
+    },
+    "S": {
+      "tag": "ytech:leather_strips"
+    },
+    "X": {
+      "item": "minecraft:saddle"
+    }
+  },
+  "pattern": [
+    "L#L",
+    "LXL",
+    "LSL"
+  ],
+  "result": {
+    "item": "minecraft:iron_horse_armor"
+  },
+  "show_notification": true
+}

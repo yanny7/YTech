@@ -10,11 +10,14 @@
     },
     "S": {
       "tag": "ytech:leather_strips"
+    },
+    "X": {
+      "item": "minecraft:saddle"
     }
   },
   "pattern": [
     "L#L",
-    "LLL",
+    "LXL",
     "LSL"
   ],
   "result": {

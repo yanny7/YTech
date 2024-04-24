@@ -30,7 +30,7 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
-        ModelFile model = provider.models().getBuilder(Utils.getId(YTechBlocks.REINFORCED_BRICK_CHIMNEY))
+        ModelFile model = provider.models().getBuilder(Utils.getPath(YTechBlocks.REINFORCED_BRICK_CHIMNEY))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -43,7 +43,7 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
                 .texture("0", Utils.modBlockLoc("reinforced_bricks"))
                 .texture("1", Utils.modBlockLoc("machine/primitive_smelter_top"));
         provider.getVariantBuilder(YTechBlocks.REINFORCED_BRICK_CHIMNEY.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.REINFORCED_BRICK_CHIMNEY)).parent(model);
+        provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.REINFORCED_BRICK_CHIMNEY)).parent(model);
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
@@ -53,6 +53,6 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
                 .pattern("# #")
                 .pattern(" # ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.REINFORCED_BRICKS))
-                .save(recipeConsumer, Utils.modLoc(Utils.getId(YTechBlocks.REINFORCED_BRICK_CHIMNEY)));
+                .save(recipeConsumer, Utils.modLoc(Utils.getPath(YTechBlocks.REINFORCED_BRICK_CHIMNEY)));
     }
 }

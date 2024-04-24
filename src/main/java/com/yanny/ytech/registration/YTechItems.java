@@ -230,7 +230,7 @@ public class YTechItems {
             block.entries().stream().filter((entry) -> !exclude.contains(entry.getKey())).forEach((entry) -> {
                 MaterialType type = entry.getKey();
                 RegistryObject<Block> object = entry.getValue();
-                items.put(type, ITEMS.register(Utils.getId(object), () -> itemSupplier.apply(object)));
+                items.put(type, ITEMS.register(Utils.getPath(object), () -> itemSupplier.apply(object)));
             });
         }
 

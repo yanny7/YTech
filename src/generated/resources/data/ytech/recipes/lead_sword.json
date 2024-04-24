@@ -5,14 +5,17 @@
     "#": {
       "tag": "ytech:plates/lead"
     },
+    "H": {
+      "tag": "ytech:hammers"
+    },
     "S": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "#",
-    "#",
-    "S"
+    "# ",
+    "# ",
+    "SH"
   ],
   "result": {
     "item": "ytech:lead_sword"

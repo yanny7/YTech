@@ -5,6 +5,9 @@
     "#": {
       "tag": "forge:ingots/bronze"
     },
+    "H": {
+      "tag": "ytech:hammers"
+    },
     "P": {
       "tag": "ytech:plates/bronze"
     },
@@ -17,7 +20,7 @@
   },
   "pattern": [
     "P#R",
-    " S ",
+    " SH",
     " S "
   ],
   "result": {

@@ -1,7 +1,7 @@
 {
   "type": "ytech:remaining_shaped_crafting",
   "category": "redstone",
-  "group": "trapdoor",
+  "group": "wooden_trapdoor",
   "key": {
     "B": {
       "tag": "ytech:bolts/wooden"

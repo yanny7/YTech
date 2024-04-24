@@ -1,0 +1,21 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/iron"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    }
+  },
+  "pattern": [
+    "###",
+    "#H#",
+    "# #"
+  ],
+  "result": {
+    "item": "minecraft:iron_leggings"
+  },
+  "show_notification": true
+}

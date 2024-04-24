@@ -1,7 +1,7 @@
 {
   "type": "ytech:remaining_shaped_crafting",
   "category": "redstone",
-  "group": "pressure_plate",
+  "group": "wooden_pressure_plate",
   "key": {
     "B": {
       "tag": "ytech:bolts/wooden"

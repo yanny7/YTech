@@ -1,7 +1,7 @@
 {
   "type": "ytech:remaining_shaped_crafting",
   "category": "redstone",
-  "group": "fence_gate",
+  "group": "wooden_fence_gate",
   "key": {
     "B": {
       "tag": "ytech:bolts/wooden"

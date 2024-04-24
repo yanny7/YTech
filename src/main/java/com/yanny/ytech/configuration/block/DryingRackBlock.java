@@ -125,7 +125,7 @@ public class DryingRackBlock extends Block implements EntityBlock {
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider, @NotNull RegistryObject<Block> block, MaterialType material) {
-        ModelFile model = provider.models().getBuilder(Utils.getId(block))
+        ModelFile model = provider.models().getBuilder(Utils.getPath(block))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -162,7 +162,7 @@ public class DryingRackBlock extends Block implements EntityBlock {
                 .texture("2", Utils.modBlockLoc("wood/dark_bottom_" + material.key + "_log"))
                 .texture("4", Utils.modBlockLoc("horizontal_rope"));
         provider.horizontalBlock(block.get(), model);
-        provider.itemModels().getBuilder(Utils.getId(block)).parent(model);
+        provider.itemModels().getBuilder(Utils.getPath(block)).parent(model);
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {

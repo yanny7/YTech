@@ -189,7 +189,7 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
-        String name = Utils.getId(YTechBlocks.GRASS_BED);
+        String name = Utils.getPath(YTechBlocks.GRASS_BED);
         ModelFile model = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {

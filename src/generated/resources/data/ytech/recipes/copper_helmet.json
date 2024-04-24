@@ -1,14 +1,17 @@
 {
   "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
+  "category": "equipment",
   "key": {
     "#": {
       "tag": "ytech:plates/copper"
+    },
+    "H": {
+      "tag": "ytech:hammers"
     }
   },
   "pattern": [
     "###",
-    "# #"
+    "#H#"
   ],
   "result": {
     "item": "ytech:copper_helmet"

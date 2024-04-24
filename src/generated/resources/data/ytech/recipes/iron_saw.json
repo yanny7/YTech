@@ -5,12 +5,16 @@
     "#": {
       "tag": "ytech:plates/iron"
     },
+    "H": {
+      "tag": "ytech:hammers"
+    },
     "S": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "S##"
+    "S##",
+    "H  "
   ],
   "result": {
     "item": "ytech:iron_saw"

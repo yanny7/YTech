@@ -1,7 +1,7 @@
 {
   "type": "ytech:remaining_shapeless_crafting",
   "category": "redstone",
-  "group": "button",
+  "group": "wooden_button",
   "ingredients": [
     {
       "tag": "ytech:saws"

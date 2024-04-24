@@ -100,7 +100,7 @@ public class AqueductValveBlock extends IrrigationBlock {
     public static void registerModel(@NotNull BlockStateProvider provider) {
         ResourceLocation valveTexture = Utils.modBlockLoc("aqueduct/aqueduct_valve");
         ResourceLocation bricksTexture = Utils.modBlockLoc("terracotta_bricks");
-        String name = Utils.getId(YTechBlocks.AQUEDUCT_VALVE);
+        String name = Utils.getPath(YTechBlocks.AQUEDUCT_VALVE);
 
         ModelFile model = provider.models()
                 .cube(name, bricksTexture, bricksTexture, bricksTexture, bricksTexture, valveTexture, valveTexture)
