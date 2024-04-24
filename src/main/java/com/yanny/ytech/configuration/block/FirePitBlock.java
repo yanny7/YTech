@@ -187,7 +187,7 @@ public class FirePitBlock extends Block {
         ResourceLocation logTexture = Utils.mcBlockLoc("oak_log");
         ResourceLocation logTopTexture = Utils.mcBlockLoc("oak_log_top");
         ResourceLocation basaltTexture = Utils.mcBlockLoc("smooth_basalt");
-        String name = Utils.getId(YTechBlocks.FIRE_PIT);
+        String name = Utils.getPath(YTechBlocks.FIRE_PIT);
         ModelFile base_lit = provider.models().getBuilder(name + "_base_lit")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {

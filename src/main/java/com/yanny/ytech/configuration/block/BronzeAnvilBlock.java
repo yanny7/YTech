@@ -157,7 +157,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
-        ModelFile model = provider.models().getBuilder(Utils.getId(YTechBlocks.BRONZE_ANVIL))
+        ModelFile model = provider.models().getBuilder(Utils.getPath(YTechBlocks.BRONZE_ANVIL))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -196,7 +196,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .texture("1", Utils.modBlockLoc("bronze_anvil"))
                 .texture("2", Utils.modBlockLoc("bronze_anvil_top"));
         provider.horizontalBlock(YTechBlocks.BRONZE_ANVIL.get(), model);
-        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.BRONZE_ANVIL)).parent(model);
+        provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.BRONZE_ANVIL)).parent(model);
     }
 
     public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {

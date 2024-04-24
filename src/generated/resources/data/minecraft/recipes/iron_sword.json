@@ -1,0 +1,24 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/iron"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "# ",
+    "# ",
+    "SH"
+  ],
+  "result": {
+    "item": "minecraft:iron_sword"
+  },
+  "show_notification": true
+}

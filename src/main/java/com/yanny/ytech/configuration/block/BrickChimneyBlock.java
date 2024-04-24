@@ -72,7 +72,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
-        ModelFile model = provider.models().getBuilder(Utils.getId(YTechBlocks.BRICK_CHIMNEY))
+        ModelFile model = provider.models().getBuilder(Utils.getPath(YTechBlocks.BRICK_CHIMNEY))
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -85,7 +85,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
                 .texture("0", Utils.modBlockLoc("bricks"))
                 .texture("1", Utils.modBlockLoc("machine/primitive_smelter_top"));
         provider.getVariantBuilder(YTechBlocks.BRICK_CHIMNEY.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-        provider.itemModels().getBuilder(Utils.getId(YTechBlocks.BRICK_CHIMNEY)).parent(model);
+        provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.BRICK_CHIMNEY)).parent(model);
     }
 
     public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {

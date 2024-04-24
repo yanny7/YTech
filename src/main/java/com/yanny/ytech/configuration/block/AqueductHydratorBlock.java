@@ -44,7 +44,7 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
-        String name = Utils.getId(YTechBlocks.AQUEDUCT_HYDRATOR);
+        String name = Utils.getPath(YTechBlocks.AQUEDUCT_HYDRATOR);
         ModelFile base = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {

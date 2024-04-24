@@ -1,0 +1,20 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/gold"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    }
+  },
+  "pattern": [
+    "#H#",
+    "# #"
+  ],
+  "result": {
+    "item": "minecraft:golden_boots"
+  },
+  "show_notification": true
+}

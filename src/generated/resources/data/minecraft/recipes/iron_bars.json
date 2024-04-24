@@ -1,0 +1,17 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "ytech:rods/iron"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "CCC"
+  ],
+  "result": {
+    "item": "minecraft:iron_bars"
+  },
+  "show_notification": true
+}

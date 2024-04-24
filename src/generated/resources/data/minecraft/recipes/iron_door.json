@@ -1,0 +1,24 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/iron"
+    },
+    "C": {
+      "tag": "ytech:plates/iron"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    }
+  },
+  "pattern": [
+    "CCH",
+    "CCB",
+    "CC "
+  ],
+  "result": {
+    "item": "minecraft:iron_door"
+  },
+  "show_notification": true
+}

@@ -31,7 +31,7 @@ public class SpearModel extends Model {
 
    static {
       for (SpearType type : SpearType.values()) {
-         String key = Utils.getId(YTechItems.SPEARS.of(type.materialType));
+         String key = Utils.getPath(YTechItems.SPEARS.of(type.materialType));
 
          LAYER_LOCATIONS.put(type, new ModelLayerLocation(Utils.modLoc(key), "main"));
          MODEL_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key, "inventory"));

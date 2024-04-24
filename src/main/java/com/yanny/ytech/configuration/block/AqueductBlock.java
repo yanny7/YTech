@@ -261,7 +261,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
         ResourceLocation bricks = Utils.modBlockLoc("terracotta_bricks");
-        String name = Utils.getId(YTechBlocks.AQUEDUCT);
+        String name = Utils.getPath(YTechBlocks.AQUEDUCT);
         ModelFile base = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
