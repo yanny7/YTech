@@ -93,6 +93,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addMaterialItem(YTechItems.RAW_MATERIALS, NameHolder.prefix("Raw"), YTechLanguageProvider::vanillaMaterialsFilter);
         addMaterialItem(YTechItems.RODS, NameHolder.suffix("Rod"));
         addMaterialItem(YTechItems.SAWS, NameHolder.suffix("Saw"));
+        addMaterialItem(YTechItems.SAW_BLADES, NameHolder.suffix("Saw Blade"));
         addMaterialItem(YTechItems.SHOVELS, NameHolder.suffix("Shovel"), YTechLanguageProvider::goldIronFilter);
         addMaterialItem(YTechItems.SPEARS, NameHolder.suffix("Spear"));
         addMaterialItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::goldIronFilter);

@@ -76,6 +76,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         vanillaMaterialItem(YTechItems.RAW_MATERIALS, MaterialType.VANILLA_METALS, "item/generated");
         materialItem(YTechItems.RODS, "item/generated");
         materialItem(YTechItems.SAWS, "item/handheld");
+        materialItem(YTechItems.SAW_BLADES, "item/generated");
         vanillaMaterialItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         spearItem();
         vanillaMaterialItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");

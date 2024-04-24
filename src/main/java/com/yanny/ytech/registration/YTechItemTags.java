@@ -83,6 +83,7 @@ public class YTechItemTags {
     public static final MaterialTag RAW_MATERIALS = new RawMaterialTag();
     public static final MaterialTag RODS = new MaterialTag("rods", YTechItems.RODS);
     public static final MaterialTag SAWS = new MaterialTag("saws", YTechItems.SAWS);
+    public static final MaterialTag SAW_BLADES = new MaterialTag("saw_blades", YTechItems.SAW_BLADES);
     public static final MaterialTag SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
     public static final MaterialTag SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
     public static final MaterialTag SWORDS = new MaterialTag("swords", ItemTags.SWORDS, YTechItems.SWORDS);

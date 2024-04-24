@@ -100,6 +100,7 @@ public class YTechItems {
     public static final MaterialItem RAW_MATERIALS = new RawMaterialItem();
     public static final MaterialItem RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
     public static final MaterialItem SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> simpleItem());
+    public static final MaterialItem SAW_BLADES = new MaterialItem("saw_blade", NameHolder.suffix("saw_blade"), EnumSet.of(MaterialType.IRON), (type) -> simpleItem());
     public static final MaterialItem SHOVELS = new ShovelMaterialItem();
     public static final MaterialItem SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
     public static final MaterialItem SWORDS = new SwordMaterialItem();
