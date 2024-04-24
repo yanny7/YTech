@@ -1,0 +1,24 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/iron"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "tag": "ytech:plates/iron"
+    }
+  },
+  "pattern": [
+    "HB ",
+    "PPP",
+    "PPP"
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:iron_trapdoor"
+  }
+}

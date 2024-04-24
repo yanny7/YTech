@@ -76,6 +76,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         vanillaMaterialItem(YTechItems.RAW_MATERIALS, MaterialType.VANILLA_METALS, "item/generated");
         materialItem(YTechItems.RODS, "item/generated");
         materialItem(YTechItems.SAWS, "item/handheld");
+        materialItem(YTechItems.SAW_BLADES, "item/generated");
         vanillaMaterialItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         spearItem();
         vanillaMaterialItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
@@ -103,17 +104,17 @@ class YTechItemModelsProvider extends ItemModelProvider {
     }
 
     private void basketItem() {
-        ItemModelBuilder builder = getBuilder(Utils.getId(YTechItems.BASKET)).parent(new ModelFile.UncheckedModelFile("item/generated"));
-        ModelFile model = getBuilder(Utils.getId(YTechItems.BASKET) + "_filled")
+        ItemModelBuilder builder = getBuilder(Utils.getPath(YTechItems.BASKET)).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        ModelFile model = getBuilder(Utils.getPath(YTechItems.BASKET) + "_filled")
                 .parent(builder)
-                .texture("layer0", Utils.modItemLoc(Utils.getId(YTechItems.BASKET) + "_filled"));
+                .texture("layer0", Utils.modItemLoc(Utils.getPath(YTechItems.BASKET) + "_filled"));
 
         builder.override().predicate(BasketItem.FILLED_PREDICATE, 0.0001f).model(model).end();
-        builder.texture("layer0", Utils.modItemLoc(Utils.getId(YTechItems.BASKET)));
+        builder.texture("layer0", Utils.modItemLoc(Utils.getPath(YTechItems.BASKET)));
     }
 
     private void clayBucketItem(@NotNull DeferredItem<Item> item) {
-        ItemModelBuilder builder = getBuilder(Utils.getId(item)).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        ItemModelBuilder builder = getBuilder(Utils.getPath(item)).parent(new ModelFile.UncheckedModelFile("item/generated"));
         builder.texture("layer0", Utils.modItemLoc("clay_bucket"));
         builder.texture("layer1", Utils.modItemLoc("bucket_overlay"));
     }
@@ -124,11 +125,11 @@ class YTechItemModelsProvider extends ItemModelProvider {
             MaterialType material = entry.getKey();
             String texture = Utils.modItemLoc(YTechItems.SPEARS.getGroup() + "/" + material.key).getPath();
 
-            getBuilder(Utils.getId(item))
+            getBuilder(Utils.getPath(item))
                     .parent(new ModelFile.UncheckedModelFile("item/generated"))
                     .texture("layer0", texture);
 
-            ItemModelBuilder throwing = getBuilder(Utils.getId(item) + "_throwing")
+            ItemModelBuilder throwing = getBuilder(Utils.getPath(item) + "_throwing")
                     .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
                     .guiLight(BlockModel.GuiLight.FRONT)
                     .texture("particle", texture)
@@ -142,7 +143,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
                     .transform(ItemDisplayContext.GROUND).translation(4, 4, 2).scale(0.25F).end()
                     .end();
 
-            getBuilder(Utils.getId(item) + "_in_hand")
+            getBuilder(Utils.getPath(item) + "_in_hand")
                     .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
                     .guiLight(BlockModel.GuiLight.FRONT)
                     .texture("particle", texture)
@@ -160,6 +161,6 @@ class YTechItemModelsProvider extends ItemModelProvider {
     }
 
     private void spawnEggModel(DeferredItem<Item> item) {
-        getBuilder(Utils.getId(item)).parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
+        getBuilder(Utils.getPath(item)).parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
     }
 }

@@ -1,0 +1,29 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "I": {
+      "tag": "ytech:rods/iron"
+    },
+    "K": {
+      "tag": "ytech:knives"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "S": {
+      "tag": "ytech:leather_strips"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "LSL",
+    "HIK"
+  ],
+  "result": {
+    "item": "minecraft:saddle"
+  }
+}

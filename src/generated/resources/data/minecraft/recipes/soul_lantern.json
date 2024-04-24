@@ -1,0 +1,23 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "ytech:rods"
+    },
+    "P": {
+      "tag": "ytech:plates"
+    },
+    "T": {
+      "item": "minecraft:soul_torch"
+    }
+  },
+  "pattern": [
+    " P ",
+    "ITI",
+    " P "
+  ],
+  "result": {
+    "item": "minecraft:soul_lantern"
+  }
+}

@@ -1,14 +1,17 @@
 {
   "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
+  "category": "equipment",
   "key": {
     "#": {
       "tag": "ytech:plates/bronze"
+    },
+    "H": {
+      "tag": "ytech:hammers"
     }
   },
   "pattern": [
     "###",
-    "# #"
+    "#H#"
   ],
   "result": {
     "item": "ytech:bronze_helmet"

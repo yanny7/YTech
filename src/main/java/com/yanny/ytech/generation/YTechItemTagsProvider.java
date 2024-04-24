@@ -99,6 +99,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         materialTag(YTechItems.RAW_MATERIALS, YTechItemTags.RAW_MATERIALS, MaterialType.VANILLA_METALS);
         materialTag(YTechItems.RODS, YTechItemTags.RODS);
         materialTag(YTechItems.SAWS, YTechItemTags.SAWS);
+        materialTag(YTechItems.SAW_BLADES, YTechItemTags.SAW_BLADES);
         materialTag(YTechItems.SHOVELS, YTechItemTags.SHOVELS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         materialTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
         materialTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));

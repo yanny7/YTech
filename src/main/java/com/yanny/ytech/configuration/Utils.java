@@ -75,7 +75,7 @@ public class Utils {
         return new ResourceLocation(loc.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + loc.getPath());
     }
 
-    public static String getId(DeferredHolder<?, ?> object) {
+    public static String getPath(DeferredHolder<?, ?> object) {
         return object.getId().getPath();
     }
 
@@ -85,7 +85,7 @@ public class Utils {
     }
 
     public static String getHasItem(DeferredHolder<?, ?> item) {
-        return "has_" + getId(item);
+        return "has_" + getPath(item);
     }
 
     @NotNull

@@ -1,0 +1,29 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/iron"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "tag": "ytech:plates/iron"
+    },
+    "R": {
+      "tag": "ytech:rods/iron"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "P#R",
+    " SH",
+    " S "
+  ],
+  "result": {
+    "item": "minecraft:iron_pickaxe"
+  }
+}

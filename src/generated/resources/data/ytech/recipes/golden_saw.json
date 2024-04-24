@@ -5,12 +5,16 @@
     "#": {
       "tag": "ytech:plates/gold"
     },
+    "H": {
+      "tag": "ytech:hammers"
+    },
     "S": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "S##"
+    "S##",
+    "H  "
   ],
   "result": {
     "item": "ytech:golden_saw"

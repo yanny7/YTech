@@ -1,0 +1,29 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/gold"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "P": {
+      "tag": "ytech:plates/gold"
+    },
+    "R": {
+      "tag": "ytech:rods/gold"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "P#R",
+    " SH",
+    " S "
+  ],
+  "result": {
+    "item": "minecraft:golden_pickaxe"
+  }
+}

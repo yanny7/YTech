@@ -1,0 +1,23 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "  S",
+    " ST",
+    "S B"
+  ],
+  "result": {
+    "item": "minecraft:fishing_rod"
+  }
+}

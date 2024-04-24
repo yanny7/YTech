@@ -42,11 +42,11 @@ class YTechBlockStateProvider extends BlockStateProvider {
         reinforcedBricksBlockState(this);
         ReinforcedBrickChimneyBlock.registerModel(this);
         registerSimpleBlockState(this, YTechBlocks.TERRACOTTA_BRICKS);
-        registerSlabBlockState(this, YTechBlocks.TERRACOTTA_BRICK_SLAB, Utils.getId(YTechBlocks.TERRACOTTA_BRICKS));
-        registerStairsBlockState(this, YTechBlocks.TERRACOTTA_BRICK_STAIRS, Utils.getId(YTechBlocks.TERRACOTTA_BRICKS));
+        registerSlabBlockState(this, YTechBlocks.TERRACOTTA_BRICK_SLAB, Utils.getPath(YTechBlocks.TERRACOTTA_BRICKS));
+        registerStairsBlockState(this, YTechBlocks.TERRACOTTA_BRICK_STAIRS, Utils.getPath(YTechBlocks.TERRACOTTA_BRICKS));
         registerSimpleBlockState(this, YTechBlocks.THATCH);
-        registerSlabBlockState(this, YTechBlocks.THATCH_SLAB, Utils.getId(YTechBlocks.THATCH));
-        registerStairsBlockState(this, YTechBlocks.THATCH_STAIRS, Utils.getId(YTechBlocks.THATCH));
+        registerSlabBlockState(this, YTechBlocks.THATCH_SLAB, Utils.getPath(YTechBlocks.THATCH));
+        registerStairsBlockState(this, YTechBlocks.THATCH_STAIRS, Utils.getPath(YTechBlocks.THATCH));
 
         registerMaterialBlockState(this, "deepslate_ore", YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         YTechBlocks.DRYING_RACKS.entries().forEach((entry) -> DryingRackBlock.registerModel(this, entry.getValue(), entry.getKey()));
@@ -60,7 +60,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
     }
 
     private static void reinforcedBricksBlockState(@NotNull BlockStateProvider provider) {
-        String name = Utils.getId(YTechBlocks.REINFORCED_BRICKS);
+        String name = Utils.getPath(YTechBlocks.REINFORCED_BRICKS);
         BlockModelBuilder model = provider.models().cubeBottomTop(name, Utils.modBlockLoc("reinforced_bricks"), Utils.blockLoc(Blocks.BRICKS), Utils.blockLoc(Blocks.BRICKS));
 
         provider.getVariantBuilder(YTechBlocks.REINFORCED_BRICKS.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
@@ -68,7 +68,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
     }
 
     private static void registerSimpleBlockState(@NotNull BlockStateProvider provider, DeferredBlock<Block> block) {
-        String name = Utils.getId(block);
+        String name = Utils.getPath(block);
         BlockModelBuilder model = provider.models().cubeAll(name, Utils.modBlockLoc(name));
 
         provider.getVariantBuilder(block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
@@ -76,7 +76,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
     }
 
     private static void registerSlabBlockState(BlockStateProvider provider, DeferredBlock<Block> block, String texture) {
-        String name = Utils.getId(block);
+        String name = Utils.getPath(block);
         ModelFile bottom = provider.models().slab(name, Utils.modBlockLoc(texture), Utils.modBlockLoc(texture), Utils.modBlockLoc(texture));
         ModelFile top = provider.models().slabTop(name + "_top", Utils.modBlockLoc(texture), Utils.modBlockLoc(texture), Utils.modBlockLoc(texture));
         ModelFile doubleSlab = provider.models().cubeAll(name + "_double", Utils.modBlockLoc(texture));
@@ -89,7 +89,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
     }
 
     private static void registerStairsBlockState(BlockStateProvider provider, DeferredBlock<Block> block, String texture) {
-        String name = Utils.getId(block);
+        String name = Utils.getPath(block);
         ModelFile stairs = provider.models().stairs(name, Utils.modBlockLoc(texture), Utils.modBlockLoc(texture), Utils.modBlockLoc(texture));
         ModelFile stairsInner = provider.models().stairsInner(name + "_inner", Utils.modBlockLoc(texture), Utils.modBlockLoc(texture), Utils.modBlockLoc(texture));
         ModelFile stairsOuter = provider.models().stairsOuter(name + "_outer", Utils.modBlockLoc(texture), Utils.modBlockLoc(texture), Utils.modBlockLoc(texture));
@@ -101,11 +101,11 @@ class YTechBlockStateProvider extends BlockStateProvider {
     private static void registerMaterialBlockState(@NotNull BlockStateProvider provider, String group, YTechBlocks.MaterialBlock materialBlock) {
         materialBlock.entries().forEach((entry) -> {
             DeferredBlock<Block> block = entry.getValue();
-            BlockModelBuilder model = provider.models().cubeAll(Utils.getId(block), Utils.modBlockLoc(group + "/" + entry.getKey().key));
+            BlockModelBuilder model = provider.models().cubeAll(Utils.getPath(block), Utils.modBlockLoc(group + "/" + entry.getKey().key));
 
             model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").cullface(direction).tintindex(0));
             provider.getVariantBuilder(block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-            provider.itemModels().getBuilder(Utils.getId(block)).parent(model);
+            provider.itemModels().getBuilder(Utils.getPath(block)).parent(model);
         });
     }
 
@@ -113,11 +113,11 @@ class YTechBlockStateProvider extends BlockStateProvider {
         materialBlock.entries().forEach((entry) -> {
             if (!exclude.contains(entry.getKey())) {
                 DeferredBlock<Block> block = entry.getValue();
-                BlockModelBuilder model = provider.models().cubeAll(Utils.getId(block), Utils.modBlockLoc(group + "/" + entry.getKey().key));
+                BlockModelBuilder model = provider.models().cubeAll(Utils.getPath(block), Utils.modBlockLoc(group + "/" + entry.getKey().key));
 
                 model.element().allFaces((direction, faceBuilder) -> faceBuilder.texture("#all").cullface(direction).tintindex(0));
                 provider.getVariantBuilder(block.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
-                provider.itemModels().getBuilder(Utils.getId(block)).parent(model);
+                provider.itemModels().getBuilder(Utils.getPath(block)).parent(model);
             }
         });
     }

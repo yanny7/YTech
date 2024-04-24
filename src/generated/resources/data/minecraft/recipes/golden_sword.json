@@ -1,0 +1,23 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/gold"
+    },
+    "H": {
+      "tag": "ytech:hammers"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "# ",
+    "# ",
+    "SH"
+  ],
+  "result": {
+    "item": "minecraft:golden_sword"
+  }
+}
