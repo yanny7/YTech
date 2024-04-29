@@ -11,6 +11,7 @@
     "CCC"
   ],
   "result": {
-    "item": "minecraft:iron_bars"
+    "count": 1,
+    "id": "minecraft:iron_bars"
   }
 }

@@ -5,6 +5,7 @@
     "item": "minecraft:cod"
   },
   "result": {
-    "item": "ytech:dried_cod"
+    "count": 1,
+    "id": "ytech:dried_cod"
   }
 }

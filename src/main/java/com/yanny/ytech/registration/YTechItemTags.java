@@ -43,6 +43,7 @@ public class YTechItemTags {
     public static final TagKey<Item> WATER_BUCKETS = create("water_buckets");
 
     public static final TagKey<Item> FERTILIZER = create("fertilizer");
+    public static final TagKey<Item> DEER_FOOD = create("deer_food");
 
     public static final TagKey<Item> AQUEDUCTS = create(YTechBlockTags.AQUEDUCTS);
     public static final TagKey<Item> AQUEDUCT_FERTILIZERS = create(YTechBlockTags.AQUEDUCT_FERTILIZERS);
@@ -67,17 +68,17 @@ public class YTechItemTags {
     public static final MaterialTag ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
     public static final MaterialTag AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
     public static final MaterialTag BOLTS = new MaterialTag("bolts", YTechItems.BOLTS);
-    public static final MaterialTag BOOTS = new MaterialTag("boots", Tags.Items.ARMORS_BOOTS, YTechItems.BOOTS);
-    public static final MaterialTag CHESTPLATES = new MaterialTag("chestplates", Tags.Items.ARMORS_CHESTPLATES, YTechItems.CHESTPLATES);
-    public static final MaterialTag CRUSHED_MATERIALS = new MaterialTag("crushed_materials", "forge", YTechItems.CRUSHED_MATERIALS);
+    public static final MaterialTag BOOTS = new MaterialTag("boots", ItemTags.FOOT_ARMOR, YTechItems.BOOTS);
+    public static final MaterialTag CHESTPLATES = new MaterialTag("chestplates", ItemTags.CHEST_ARMOR, YTechItems.CHESTPLATES);
+    public static final MaterialTag CRUSHED_MATERIALS = new MaterialTag("crushed_materials", "c", YTechItems.CRUSHED_MATERIALS);
     public static final MaterialTag FILES = new MaterialTag("files", YTechItems.FILES);
     public static final MaterialTag HAMMERS = new MaterialTag("hammers", YTechItems.HAMMERS);
-    public static final MaterialTag HELMETS = new MaterialTag("helmets", Tags.Items.ARMORS_HELMETS, YTechItems.HELMETS);
+    public static final MaterialTag HELMETS = new MaterialTag("helmets", ItemTags.HEAD_ARMOR, YTechItems.HELMETS);
     public static final MaterialTag HOES = new MaterialTag("hoes", ItemTags.HOES, YTechItems.HOES);
     public static final MaterialTag INGOTS = new IngotMaterialTag();
     public static final MaterialTag KNIVES = new MaterialTag("knives", YTechItems.KNIVES);
     public static final MaterialTag MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", YTechItems.MORTAR_AND_PESTLES);
-    public static final MaterialTag LEGGINGS = new MaterialTag("leggings", Tags.Items.ARMORS_LEGGINGS, YTechItems.LEGGINGS);
+    public static final MaterialTag LEGGINGS = new MaterialTag("leggings", ItemTags.LEG_ARMOR, YTechItems.LEGGINGS);
     public static final MaterialTag PICKAXES = new MaterialTag("pickaxes", ItemTags.PICKAXES, YTechItems.PICKAXES);
     public static final MaterialTag PLATES = new MaterialTag("plates", YTechItems.PLATES);
     public static final MaterialTag RAW_MATERIALS = new RawMaterialTag();
@@ -155,7 +156,7 @@ public class YTechItemTags {
 
     private static class IngotMaterialTag extends MaterialTag {
         public IngotMaterialTag() {
-            super("ingots", "forge", Tags.Items.INGOTS, YTechItems.INGOTS);
+            super("ingots", "c", Tags.Items.INGOTS, YTechItems.INGOTS);
             tags.put(MaterialType.COPPER, Tags.Items.INGOTS_COPPER);
             tags.put(MaterialType.GOLD, Tags.Items.INGOTS_GOLD);
             tags.put(MaterialType.IRON, Tags.Items.INGOTS_IRON);
@@ -164,7 +165,7 @@ public class YTechItemTags {
 
     private static class RawMaterialTag extends MaterialTag {
         public RawMaterialTag() {
-            super("raw_materials", "forge", Tags.Items.RAW_MATERIALS, YTechItems.RAW_MATERIALS);
+            super("raw_materials", "c", Tags.Items.RAW_MATERIALS, YTechItems.RAW_MATERIALS);
             tags.put(MaterialType.COPPER, Tags.Items.RAW_MATERIALS_COPPER);
             tags.put(MaterialType.GOLD, Tags.Items.RAW_MATERIALS_GOLD);
             tags.put(MaterialType.IRON, Tags.Items.RAW_MATERIALS_IRON);

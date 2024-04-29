@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
@@ -9,9 +10,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -46,10 +47,10 @@ public class RemainingShapedRecipe extends ShapedRecipe {
                 ItemStack result = item.copy();
                 list.set(i, result);
 
-                if (result.hurt(1, RANDOM, null)) {
+                result.hurtAndBreak(1, RANDOM, null, () -> {
                     result.shrink(1);
                     result.setDamageValue(0);
-                }
+                });
             }
         }
 
@@ -63,32 +64,38 @@ public class RemainingShapedRecipe extends ShapedRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapedRecipe> {
-        private final ShapedRecipe.Serializer serializer = new ShapedRecipe.Serializer();
-        private static final Codec<RemainingShapedRecipe> CODEC = RecordCodecBuilder.create(
+        private static final MapCodec<RemainingShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 (instance) -> instance.group(
-                        ExtraCodecs.strictOptionalField(Codec.STRING, "group", "").forGetter(ShapedRecipe::getGroup),
+                        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::getGroup),
                         CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(ShapedRecipe::category),
                         ShapedRecipePattern.MAP_CODEC.forGetter((recipe) -> recipe.pattern),
-                        ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((p_311730_) -> p_311730_.getResultItem(null)),
-                        ExtraCodecs.strictOptionalField(Codec.BOOL, "show_notification", true).forGetter(ShapedRecipe::showNotification)
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((p_311730_) -> p_311730_.getResultItem(null)),
+                        Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(ShapedRecipe::showNotification)
                 ).apply(instance, RemainingShapedRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, RemainingShapedRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
         );
 
         @NotNull
         @Override
-        public Codec<RemainingShapedRecipe> codec() {
+        public MapCodec<RemainingShapedRecipe> codec() {
             return CODEC;
         }
 
         @NotNull
         @Override
-        public RemainingShapedRecipe fromNetwork(@NotNull FriendlyByteBuf friendlyByteBuf) {
-            return new RemainingShapedRecipe(serializer.fromNetwork(friendlyByteBuf));
+        public StreamCodec<RegistryFriendlyByteBuf, RemainingShapedRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buf, @NotNull RemainingShapedRecipe recipe) {
-            serializer.toNetwork(buf, recipe);
+        @NotNull
+        private static RemainingShapedRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf friendlyByteBuf) {
+            return new RemainingShapedRecipe(ShapedRecipe.Serializer.fromNetwork(friendlyByteBuf));
+        }
+
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buf, @NotNull RemainingShapedRecipe recipe) {
+            ShapedRecipe.Serializer.toNetwork(buf, recipe);
         }
     }
 

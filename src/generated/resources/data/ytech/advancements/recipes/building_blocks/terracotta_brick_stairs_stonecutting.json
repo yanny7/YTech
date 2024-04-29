@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:terracotta_bricks"
+            "items": "#ytech:terracotta_bricks"
           }
         ]
       },

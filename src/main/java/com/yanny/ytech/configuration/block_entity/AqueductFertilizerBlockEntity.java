@@ -6,6 +6,7 @@ import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -38,12 +39,12 @@ public class AqueductFertilizerBlockEntity extends AqueductHydratorBlockEntity i
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
         fertilizer = tag.getInt(TAG_FERTILIZER);
 
         if (tag.contains(TAG_ITEMS)) {
-            itemStackHandler.deserializeNBT(tag.getCompound(TAG_ITEMS));
+            itemStackHandler.deserializeNBT(provider, tag.getCompound(TAG_ITEMS));
         }
     }
 
@@ -144,10 +145,10 @@ public class AqueductFertilizerBlockEntity extends AqueductHydratorBlockEntity i
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
         tag.putInt(TAG_FERTILIZER, fertilizer);
-        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
+        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT(provider));
     }
 
     private boolean useFertilizer() {

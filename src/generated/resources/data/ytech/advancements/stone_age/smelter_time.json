@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:primitive_smelters"
+            "items": "#ytech:primitive_smelters"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.smelter_time"
     },
     "icon": {
-      "item": "ytech:primitive_smelter"
+      "count": 1,
+      "id": "ytech:primitive_smelter"
     },
     "show_toast": false,
     "title": {

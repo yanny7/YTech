@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/lead"
+            "items": "#c:ingots/lead"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.take_the_lead"
     },
     "icon": {
-      "item": "ytech:lead_ingot"
+      "count": 1,
+      "id": "ytech:lead_ingot"
     },
     "show_toast": false,
     "title": {

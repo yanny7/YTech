@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:ingots/bronze"
+      "tag": "c:ingots/bronze"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -24,6 +24,7 @@
     " S "
   ],
   "result": {
-    "item": "ytech:bronze_pickaxe"
+    "count": 1,
+    "id": "ytech:bronze_pickaxe"
   }
 }

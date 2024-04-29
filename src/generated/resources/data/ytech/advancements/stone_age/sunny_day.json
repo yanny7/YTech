@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_beefs"
+            "items": "#ytech:dried_beefs"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_chickens"
+            "items": "#ytech:dried_chickens"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_cods"
+            "items": "#ytech:dried_cods"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_muttons"
+            "items": "#ytech:dried_muttons"
           }
         ]
       },
@@ -45,7 +45,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_pork_chops"
+            "items": "#ytech:dried_pork_chops"
           }
         ]
       },
@@ -55,7 +55,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_rabbits"
+            "items": "#ytech:dried_rabbits"
           }
         ]
       },
@@ -65,7 +65,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_salmons"
+            "items": "#ytech:dried_salmons"
           }
         ]
       },
@@ -75,7 +75,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:dried_venison"
+            "items": "#ytech:dried_venison"
           }
         ]
       },
@@ -89,7 +89,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "ytech:oak_drying_rack"
+      "count": 1,
+      "id": "ytech:oak_drying_rack"
     },
     "show_toast": false,
     "title": {

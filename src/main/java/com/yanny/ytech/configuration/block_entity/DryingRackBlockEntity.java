@@ -6,12 +6,13 @@ import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -51,8 +52,8 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
         };
     }
 
-    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
             ItemStack dryingItem = items.getStackInSlot(0);
@@ -77,7 +78,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
@@ -107,15 +108,15 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (tag.contains(TAG_ITEMS)) {
-            items.deserializeNBT(tag.getCompound(TAG_ITEMS));
+            items.deserializeNBT(provider, tag.getCompound(TAG_ITEMS));
         }
 
         if (tag.contains(TAG_RESULT)) {
-            result = ItemStack.of(tag.getCompound(TAG_RESULT));
+            result = ItemStack.parseOptional(provider, tag.getCompound(TAG_RESULT));
         } else {
             result = null;
         }
@@ -125,9 +126,9 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
 
     @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
         return tag;
     }
 
@@ -146,16 +147,13 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put(TAG_ITEMS, items.serializeNBT());
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put(TAG_ITEMS, items.serializeNBT(provider));
         tag.putInt(TAG_DRYING_LEFT, dryingLeft);
 
         if (result != null) {
-            CompoundTag itemStack = new CompoundTag();
-
-            result.save(itemStack);
-            tag.put(TAG_RESULT, itemStack);
+            tag.put(TAG_RESULT, result.save(provider));
         }
     }
 }

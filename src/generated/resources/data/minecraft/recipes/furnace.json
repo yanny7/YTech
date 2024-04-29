@@ -21,6 +21,7 @@
     "CCC"
   ],
   "result": {
-    "item": "minecraft:furnace"
+    "count": 1,
+    "id": "minecraft:furnace"
   }
 }

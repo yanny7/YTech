@@ -1,9 +1,9 @@
 {
   "values": [
-    "#forge:crushed_materials/cassiterite",
-    "#forge:crushed_materials/copper",
-    "#forge:crushed_materials/galena",
-    "#forge:crushed_materials/gold",
-    "#forge:crushed_materials/iron"
+    "#c:crushed_materials/cassiterite",
+    "#c:crushed_materials/copper",
+    "#c:crushed_materials/galena",
+    "#c:crushed_materials/gold",
+    "#c:crushed_materials/iron"
   ]
 }

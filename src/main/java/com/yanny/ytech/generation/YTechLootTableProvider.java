@@ -9,6 +9,7 @@ import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.EntityLootSubProvider;
@@ -38,13 +39,14 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 class YTechLootTableProvider extends LootTableProvider {
-    public YTechLootTableProvider(PackOutput packOutput) {
-        super(packOutput, Collections.emptySet(), getSubProviders());
+    public YTechLootTableProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
+        super(packOutput, Collections.emptySet(), getSubProviders(), registries);
     }
 
     private static List<SubProviderEntry> getSubProviders() {
@@ -142,8 +144,12 @@ class YTechLootTableProvider extends LootTableProvider {
         }
 
         private void depositLootProvider(DeferredBlock<Block> object, MaterialType material, @NotNull Item baseItem) {
-            LootItemCondition.Builder hasSilkTouch = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(
-                    new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
+            LootItemCondition.Builder hasSilkTouch = MatchTool.toolMatches(
+                    ItemPredicate.Builder.item().withSubPredicate(
+                            ItemSubPredicates.ENCHANTMENTS,
+                            ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))))
+                    )
+            );
 
             add(
                     object.get(),
@@ -167,7 +173,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             .add(
                                                     LootItem.lootTableItem(YTechItems.CRUSHED_MATERIALS.of(material).get())
                                                             .when(LootItemRandomChanceCondition.randomChance(0.25F))
-                                                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 2))
+                                                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE, 2))
                                             )
                             )
             );

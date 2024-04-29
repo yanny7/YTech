@@ -19,6 +19,7 @@
     "BBB"
   ],
   "result": {
-    "item": "minecraft:warped_pressure_plate"
+    "count": 1,
+    "id": "minecraft:warped_pressure_plate"
   }
 }

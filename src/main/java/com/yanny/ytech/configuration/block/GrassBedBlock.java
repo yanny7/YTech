@@ -13,7 +13,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
@@ -64,73 +64,72 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @org.jetbrains.annotations.Nullable Entity player) {
+    public boolean isBed(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @Nullable Entity player) {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public InteractionResult use(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
-        if (pLevel.isClientSide) {
-            return InteractionResult.CONSUME;
+    protected ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+                                              @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (level.isClientSide) {
+            return ItemInteractionResult.CONSUME;
         } else {
-            if (pState.getValue(PART) != HEAD) {
-                pPos = pPos.relative(pState.getValue(FACING));
-                pState = pLevel.getBlockState(pPos);
+            if (state.getValue(PART) != HEAD) {
+                pos = pos.relative(state.getValue(FACING));
+                state = level.getBlockState(pos);
 
-                if (!pState.is(this)) {
-                    return InteractionResult.CONSUME;
+                if (!state.is(this)) {
+                    return ItemInteractionResult.CONSUME;
                 }
             }
 
-            if (!canSetSpawn(pLevel)) {
-                pLevel.removeBlock(pPos, false);
-                BlockPos pos = pPos.relative(pState.getValue(FACING).getOpposite());
+            if (!canSetSpawn(level)) {
+                level.removeBlock(pos, false);
+                BlockPos relative = pos.relative(state.getValue(FACING).getOpposite());
 
-                if (pLevel.getBlockState(pos).is(this)) {
-                    pLevel.removeBlock(pos, false);
+                if (level.getBlockState(relative).is(this)) {
+                    level.removeBlock(relative, false);
                 }
 
-                Vec3 center = pPos.getCenter();
-                pLevel.explode(null, pLevel.damageSources().badRespawnPointExplosion(center), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK);
-                return InteractionResult.SUCCESS;
-            } else if (pState.getValue(OCCUPIED)) {
-                if (!this.kickVillagerOutOfBed(pLevel, pPos)) {
-                    pPlayer.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
+                Vec3 center = pos.getCenter();
+                level.explode(null, level.damageSources().badRespawnPointExplosion(center), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK);
+                return ItemInteractionResult.SUCCESS;
+            } else if (state.getValue(OCCUPIED)) {
+                if (!this.kickVillagerOutOfBed(level, pos)) {
+                    player.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
                 }
 
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }  else {
-                pPlayer.startSleepInBed(pPos).ifLeft((sleepingProblem) -> {
+                player.startSleepInBed(pos).ifLeft((sleepingProblem) -> {
                     if (sleepingProblem.getMessage() != null) {
-                        pPlayer.displayClientMessage(sleepingProblem.getMessage(), true);
+                        player.displayClientMessage(sleepingProblem.getMessage(), true);
                     }
                 });
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
     }
 
-    private boolean kickVillagerOutOfBed(Level pLevel, BlockPos pPos) {
-        List<Villager> villagers = pLevel.getEntitiesOfClass(Villager.class, new AABB(pPos), LivingEntity::isSleeping);
+    private boolean kickVillagerOutOfBed(Level level, BlockPos pos) {
+        List<Villager> villagers = level.getEntitiesOfClass(Villager.class, new AABB(pos), LivingEntity::isSleeping);
 
         if (villagers.isEmpty()) {
             return false;
         } else {
-            villagers.get(0).stopSleeping();
+            villagers.getFirst().stopSleeping();
             return true;
         }
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public BlockState updateShape(BlockState pState, @NotNull Direction pFacing, @NotNull BlockState pFacingState, @NotNull LevelAccessor pLevel, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pFacingPos) {
-        if (pFacing == getNeighbourDirection(pState.getValue(PART), pState.getValue(FACING))) {
-            return pFacingState.is(this) && pFacingState.getValue(PART) != pState.getValue(PART) ? pState.setValue(OCCUPIED, pFacingState.getValue(OCCUPIED)) : Blocks.AIR.defaultBlockState();
+    public BlockState updateShape(BlockState state, @NotNull Direction pFacing, @NotNull BlockState pFacingState, @NotNull LevelAccessor level, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pFacingPos) {
+        if (pFacing == getNeighbourDirection(state.getValue(PART), state.getValue(FACING))) {
+            return pFacingState.is(this) && pFacingState.getValue(PART) != state.getValue(PART) ? state.setValue(OCCUPIED, pFacingState.getValue(OCCUPIED)) : Blocks.AIR.defaultBlockState();
         } else {
-            return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+            return super.updateShape(state, pFacing, pFacingState, level, pCurrentPos, pFacingPos);
         }
     }
 
@@ -140,22 +139,22 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
 
     @NotNull
     @Override
-    public BlockState playerWillDestroy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @NotNull Player pPlayer) {
-        if (!pLevel.isClientSide && pPlayer.isCreative()) {
-            BedPart part = pState.getValue(PART);
+    public BlockState playerWillDestroy(Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
+        if (!level.isClientSide && player.isCreative()) {
+            BedPart part = state.getValue(PART);
 
             if (part == BedPart.FOOT) {
-                BlockPos blockPos = pPos.relative(getNeighbourDirection(part, pState.getValue(FACING)));
-                BlockState blockState = pLevel.getBlockState(blockPos);
+                BlockPos blockPos = pos.relative(getNeighbourDirection(part, state.getValue(FACING)));
+                BlockState blockState = level.getBlockState(blockPos);
 
                 if (blockState.is(this) && blockState.getValue(PART) == BedPart.HEAD) {
-                    pLevel.setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
-                    pLevel.levelEvent(pPlayer, LevelEvent.PARTICLES_DESTROY_BLOCK, blockPos, Block.getId(blockState));
+                    level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
+                    level.levelEvent(player, LevelEvent.PARTICLES_DESTROY_BLOCK, blockPos, Block.getId(blockState));
                 }
             }
         }
 
-        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Nullable
@@ -167,10 +166,9 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
         return level.getBlockState(relative).canBeReplaced(pContext) && level.getWorldBorder().isWithinBounds(relative) ? this.defaultBlockState().setValue(FACING, direction).setValue(PART, FOOT).setValue(OCCUPIED, false) : null;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext pContext) {
         return BASE;
     }
 
@@ -180,20 +178,19 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
-        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+        super.setPlacedBy(level, pos, state, pPlacer, pStack);
 
-        if (!pLevel.isClientSide) {
-            BlockPos pos = pPos.relative(pState.getValue(FACING));
-            pLevel.setBlock(pos, pState.setValue(PART, HEAD), Block.UPDATE_ALL);
-            pLevel.blockUpdated(pPos, Blocks.AIR);
-            pState.updateNeighbourShapes(pLevel, pPos, Block.UPDATE_ALL);
+        if (!level.isClientSide) {
+            BlockPos relative = pos.relative(state.getValue(FACING));
+            level.setBlock(relative, state.setValue(PART, HEAD), Block.UPDATE_ALL);
+            level.blockUpdated(pos, Blocks.AIR);
+            state.updateNeighbourShapes(level, pos, Block.UPDATE_ALL);
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
+    protected boolean isPathfindable(@NotNull BlockState state, @NotNull PathComputationType type) {
         return false;
     }
 

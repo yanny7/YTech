@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:venison"
+            "items": "#ytech:venison"
           }
         ]
       },

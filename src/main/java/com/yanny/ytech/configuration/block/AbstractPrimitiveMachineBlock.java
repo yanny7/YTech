@@ -25,7 +25,6 @@ public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
                 .lightLevel((state) -> state.getValue(POWERED) ? 13 : 0));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {

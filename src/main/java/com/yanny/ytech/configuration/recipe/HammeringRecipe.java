@@ -1,6 +1,6 @@
 package com.yanny.ytech.configuration.recipe;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -9,10 +9,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -38,7 +39,7 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -49,7 +50,7 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
         return result;
     }
 
@@ -66,32 +67,41 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
     }
 
     public static class Serializer implements RecipeSerializer<HammeringRecipe> {
-        private static final Codec<HammeringRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((hammeringRecipe) -> hammeringRecipe.ingredient),
-                Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter((hammeringRecipe) -> hammeringRecipe.tool),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((hammeringRecipe) -> hammeringRecipe.result)
-        ).apply(recipe, HammeringRecipe::new));
+        private static final MapCodec<HammeringRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((hammeringRecipe) -> hammeringRecipe.ingredient),
+                        Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter((hammeringRecipe) -> hammeringRecipe.tool),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((hammeringRecipe) -> hammeringRecipe.result)
+                ).apply(instance, HammeringRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, HammeringRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
         @Override
         @NotNull
-        public Codec<HammeringRecipe> codec() {
+        public MapCodec<HammeringRecipe> codec() {
             return CODEC;
         }
 
-        @Override
         @NotNull
-        public HammeringRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            Ingredient tool = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, HammeringRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @NotNull
+        private static HammeringRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
+            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            Ingredient tool = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             return new HammeringRecipe(ingredient, tool, result);
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull HammeringRecipe recipe) {
-            recipe.ingredient.toNetwork(buffer);
-            recipe.tool.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull HammeringRecipe recipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tool);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
         }
     }
 

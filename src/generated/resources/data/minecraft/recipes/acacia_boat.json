@@ -25,6 +25,7 @@
     "PPP"
   ],
   "result": {
-    "item": "minecraft:acacia_boat"
+    "count": 1,
+    "id": "minecraft:acacia_boat"
   }
 }

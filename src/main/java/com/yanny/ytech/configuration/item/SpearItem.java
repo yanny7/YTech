@@ -1,13 +1,14 @@
 package com.yanny.ytech.configuration.item;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.SpearEntity;
 import com.yanny.ytech.configuration.renderer.YTechRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -17,38 +18,41 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.Vanishable;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.common.ToolAction;
+import net.neoforged.neoforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.function.Consumer;
 
-public class SpearItem extends Item implements Vanishable {
+public class SpearItem extends Item implements ProjectileItem {
     public static final ResourceLocation THROWING_PREDICATE = Utils.modLoc("throwing");
     private final SpearType spearType;
 
-    @NotNull private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-
     public SpearItem(SpearType spearType) {
-        super(new Properties().durability(spearType.durability));
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", spearType.baseDamage, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", spearType.attackSpeed, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = builder.build();
+        super(new Properties()
+                .durability(spearType.durability)
+                .attributes(createAttributes(spearType))
+                .component(DataComponents.TOOL, createToolProperties()));
         this.spearType = spearType;
     }
 
@@ -78,7 +82,7 @@ public class SpearItem extends Item implements Vanishable {
 
                 if (riptideLevel <= 0 || player.isInWaterOrRain()) {
                     if (!level.isClientSide) {
-                        stack.hurtAndBreak(1, player, (playerEntity) -> playerEntity.broadcastBreakEvent(entity.getUsedItemHand()));
+                        stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
 
                         if (riptideLevel == 0) {
                             SpearEntity spearEntity = new SpearEntity(level, player, stack, spearType);
@@ -91,7 +95,7 @@ public class SpearItem extends Item implements Vanishable {
                                     spearType.accuracy
                             );
 
-                            if (player.getAbilities().instabuild) {
+                            if (player.hasInfiniteMaterials()) {
                                 spearEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                             }
 
@@ -147,7 +151,7 @@ public class SpearItem extends Item implements Vanishable {
     public InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
 
-        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
+        if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
             return InteractionResultHolder.fail(itemstack);
         } else if (EnchantmentHelper.getRiptide(itemstack) > 0 && !player.isInWaterOrRain()) {
             return InteractionResultHolder.fail(itemstack);
@@ -159,24 +163,8 @@ public class SpearItem extends Item implements Vanishable {
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, (player) -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
         return true;
-    }
-
-    @Override
-    public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity livingEntity) {
-        if ((double)state.getDestroySpeed(level, pos) != 0.0D) {
-            stack.hurtAndBreak(2, livingEntity, (player) -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-        }
-
-        return true;
-    }
-
-    @SuppressWarnings("deprecation")
-    @NotNull
-    @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot equipmentSlot) {
-        return equipmentSlot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 
     @Override
@@ -184,9 +172,18 @@ public class SpearItem extends Item implements Vanishable {
         return 1;
     }
 
+    @NotNull
+    @Override
+    public Projectile asProjectile(@NotNull Level level, @NotNull Position position, @NotNull ItemStack itemStack, @NotNull Direction direction) {
+        SpearEntity spearEntity = new SpearEntity(SpearType.BY_MATERIAL_TYPE.get(spearType.materialType).entityType.get(), level, spearType);
+        spearEntity.pickup = AbstractArrow.Pickup.ALLOWED;
+        return spearEntity;
+    }
+
     @Override
     public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
+            @NotNull
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 return YTechRenderer.INSTANCE;
@@ -194,4 +191,27 @@ public class SpearItem extends Item implements Vanishable {
         });
     }
 
+    @Override
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ToolAction toolAction) {
+        return ToolActions.DEFAULT_TRIDENT_ACTIONS.contains(toolAction);
+    }
+
+    private static Tool createToolProperties() {
+        return new Tool(List.of(), 1.0F, 2);
+    }
+
+    private static ItemAttributeModifiers createAttributes(SpearType spearType) {
+        return ItemAttributeModifiers.builder()
+                .add(
+                        Attributes.ATTACK_DAMAGE,
+                        new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", spearType.baseDamage, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND
+                )
+                .add(
+                        Attributes.ATTACK_SPEED,
+                        new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", spearType.attackSpeed, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND
+                )
+                .build();
+    }
 }

@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/lead"
+      "tag": "c:storage_blocks/lead"
     }
   ],
   "result": {
     "count": 9,
-    "item": "ytech:lead_ingot"
+    "id": "ytech:lead_ingot"
   }
 }

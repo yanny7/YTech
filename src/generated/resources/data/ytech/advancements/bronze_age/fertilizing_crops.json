@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:aqueduct_fertilizers"
+            "items": "#ytech:aqueduct_fertilizers"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.bronze_age.description.fertilizing_crops"
     },
     "icon": {
-      "item": "ytech:aqueduct_fertilizer"
+      "count": 1,
+      "id": "ytech:aqueduct_fertilizer"
     },
     "show_toast": false,
     "title": {

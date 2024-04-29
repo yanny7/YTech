@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.inventory.ContainerData;
@@ -24,11 +25,11 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (tag.contains(TAG_ITEMS)) {
-            itemStackHandler.deserializeNBT(tag.getCompound(TAG_ITEMS));
+            itemStackHandler.deserializeNBT(provider, tag.getCompound(TAG_ITEMS));
         }
     }
 
@@ -51,9 +52,9 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
+    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT(provider));
     }
 
     @NotNull abstract public MachineItemStackHandler createItemStackHandler();

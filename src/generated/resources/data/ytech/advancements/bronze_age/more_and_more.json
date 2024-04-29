@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:reinforced_brick_chimneys"
+            "items": "#ytech:reinforced_brick_chimneys"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.bronze_age.description.more_and_more"
     },
     "icon": {
-      "item": "ytech:reinforced_brick_chimney"
+      "count": 1,
+      "id": "ytech:reinforced_brick_chimney"
     },
     "show_toast": false,
     "title": {

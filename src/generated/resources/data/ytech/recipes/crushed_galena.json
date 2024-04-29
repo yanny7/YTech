@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:raw_materials/galena"
+      "tag": "c:raw_materials/galena"
     },
     {
       "tag": "ytech:mortar_and_pestles"
     }
   ],
   "result": {
-    "item": "ytech:crushed_galena"
+    "count": 1,
+    "id": "ytech:crushed_galena"
   }
 }

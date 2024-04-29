@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.item;
 
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.entity.ArrowEntity;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +25,7 @@ public class MaterialArrowItem extends ArrowItem {
     @Override
     public AbstractArrow createArrow(@NotNull Level level, @NotNull ItemStack stack, @NotNull LivingEntity shooter) {
         ArrowEntity arrow = new ArrowEntity(level, shooter, stack.getItem());
-        Triple<MobEffect, Integer, Integer> effect = material.effect;
+        Triple<Holder<MobEffect>, Integer, Integer> effect = material.effect;
 
         if (effect != null) {
             arrow.addEffect(new MobEffectInstance(effect.getLeft(), effect.getMiddle(), effect.getRight()));

@@ -9,7 +9,7 @@
       "tag": "ytech:bolts/bronze"
     },
     "C": {
-      "tag": "forge:chests"
+      "tag": "c:chests"
     },
     "F": {
       "tag": "ytech:files"
@@ -30,6 +30,7 @@
     "RBR"
   ],
   "result": {
-    "item": "ytech:aqueduct_fertilizer"
+    "count": 1,
+    "id": "ytech:aqueduct_fertilizer"
   }
 }

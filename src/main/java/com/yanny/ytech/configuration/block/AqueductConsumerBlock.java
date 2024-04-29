@@ -64,7 +64,6 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
         return state;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState,
@@ -82,7 +81,6 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
         return state;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock,
                                 @NotNull BlockPos neighborPos, boolean movedByPiston) {
@@ -111,7 +109,6 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public FluidState getFluidState(@NotNull BlockState state) {
@@ -119,7 +116,8 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
     }
 
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       boolean willHarvest, @NotNull FluidState fluid) {
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, Fluids.EMPTY.defaultFluidState()); // prevent fluid spawning after block break
     }
 

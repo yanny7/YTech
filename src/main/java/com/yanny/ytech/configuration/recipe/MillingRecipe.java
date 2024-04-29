@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -9,10 +10,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -38,7 +40,7 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonus
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -49,7 +51,7 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonus
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
         return result;
     }
 
@@ -66,30 +68,40 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonus
     }
 
     public static class Serializer implements RecipeSerializer<MillingRecipe> {
-        private static final Codec<MillingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((millingRecipe) -> millingRecipe.ingredient),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((millingRecipe) -> millingRecipe.result),
-                Codec.FLOAT.fieldOf("bonusChance").forGetter((smeltingRecipe) -> smeltingRecipe.bonusChance)
-        ).apply(recipe, MillingRecipe::new));
+        private static final MapCodec<MillingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((millingRecipe) -> millingRecipe.ingredient),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((millingRecipe) -> millingRecipe.result),
+                        Codec.FLOAT.fieldOf("bonusChance").forGetter((smeltingRecipe) -> smeltingRecipe.bonusChance)
+                ).apply(instance, MillingRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, MillingRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
         @Override
         @NotNull
-        public Codec<MillingRecipe> codec() {
+        public MapCodec<MillingRecipe> codec() {
             return CODEC;
         }
 
-        @Override
         @NotNull
-        public MillingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, MillingRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @NotNull
+        private static MillingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
+            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             float bonusChance = buffer.readFloat();
             return new MillingRecipe(ingredient, result, bonusChance);
         }
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull MillingRecipe recipe) {
-            recipe.ingredient.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull MillingRecipe recipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeFloat(recipe.bonusChance);
         }
     }

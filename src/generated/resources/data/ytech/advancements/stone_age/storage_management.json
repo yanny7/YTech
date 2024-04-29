@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:baskets"
+            "items": "#ytech:baskets"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.storage_management"
     },
     "icon": {
-      "item": "ytech:basket"
+      "count": 1,
+      "id": "ytech:basket"
     },
     "show_toast": false,
     "title": {

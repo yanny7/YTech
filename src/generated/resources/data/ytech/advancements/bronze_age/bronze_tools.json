@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:axes/bronze"
+            "items": "#ytech:axes/bronze"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:pickaxes/bronze"
+            "items": "#ytech:pickaxes/bronze"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:shovels/bronze"
+            "items": "#ytech:shovels/bronze"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:swords/bronze"
+            "items": "#ytech:swords/bronze"
           }
         ]
       },
@@ -49,8 +49,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "ytech:bronze_pickaxe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:bronze_pickaxe"
     },
     "show_toast": false,
     "title": {

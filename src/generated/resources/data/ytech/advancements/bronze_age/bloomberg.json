@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:iron_blooms"
+            "items": "#ytech:iron_blooms"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.bronze_age.description.bloomberg"
     },
     "icon": {
-      "item": "ytech:iron_bloom"
+      "count": 1,
+      "id": "ytech:iron_bloom"
     },
     "show_toast": false,
     "title": {

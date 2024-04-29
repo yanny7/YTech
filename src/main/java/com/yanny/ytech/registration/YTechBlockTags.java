@@ -98,7 +98,7 @@ public class YTechBlockTags {
 
     private static class DeepslateOreMaterialTag extends MaterialTag {
         public DeepslateOreMaterialTag() {
-            super("ores", "forge", Tags.Blocks.ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.DEEPSLATE_ORES.materials()), MaterialType.VANILLA_METALS));
+            super("ores", "c", Tags.Blocks.ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.DEEPSLATE_ORES.materials()), MaterialType.VANILLA_METALS));
             tags.put(MaterialType.COPPER, Tags.Blocks.ORES_COPPER);
             tags.put(MaterialType.GOLD, Tags.Blocks.ORES_GOLD);
             tags.put(MaterialType.IRON, Tags.Blocks.ORES_IRON);
@@ -107,14 +107,14 @@ public class YTechBlockTags {
 
     private static class NetherOreMaterialTag extends MaterialTag {
         public NetherOreMaterialTag() {
-            super("ores", "forge", Tags.Blocks.ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.NETHER_ORES.materials()), MaterialType.GOLD));
+            super("ores", "c", Tags.Blocks.ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.NETHER_ORES.materials()), MaterialType.GOLD));
             tags.put(MaterialType.GOLD, Tags.Blocks.ORES_GOLD);
         }
     }
 
     private static class RawStorageBlockMaterialTag extends MaterialTag {
         public RawStorageBlockMaterialTag() {
-            super("storage_blocks", "forge", Tags.Blocks.STORAGE_BLOCKS, Utils.exclude(EnumSet.copyOf(YTechBlocks.RAW_STORAGE_BLOCKS.materials()), MaterialType.VANILLA_METALS), (type) -> "raw_" + type.key);
+            super("storage_blocks", "c", Tags.Blocks.STORAGE_BLOCKS, Utils.exclude(EnumSet.copyOf(YTechBlocks.RAW_STORAGE_BLOCKS.materials()), MaterialType.VANILLA_METALS), (type) -> "raw_" + type.key);
             tags.put(MaterialType.COPPER, Tags.Blocks.STORAGE_BLOCKS_RAW_COPPER);
             tags.put(MaterialType.GOLD, Tags.Blocks.STORAGE_BLOCKS_RAW_GOLD);
             tags.put(MaterialType.IRON, Tags.Blocks.STORAGE_BLOCKS_RAW_IRON);
@@ -123,7 +123,7 @@ public class YTechBlockTags {
 
     private static class StoneOreMaterialTag extends MaterialTag {
         public StoneOreMaterialTag() {
-            super("ores", "forge", Tags.Blocks.ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.STONE_ORES.materials()), MaterialType.VANILLA_METALS));
+            super("ores", "c", Tags.Blocks.ORES, Utils.exclude(EnumSet.copyOf(YTechBlocks.STONE_ORES.materials()), MaterialType.VANILLA_METALS));
             tags.put(MaterialType.COPPER, Tags.Blocks.ORES_COPPER);
             tags.put(MaterialType.GOLD, Tags.Blocks.ORES_GOLD);
             tags.put(MaterialType.IRON, Tags.Blocks.ORES_IRON);
@@ -132,7 +132,7 @@ public class YTechBlockTags {
 
     private static class StorageBlockMaterialTag extends MaterialTag {
         public StorageBlockMaterialTag() {
-            super("storage_blocks", "forge", Tags.Blocks.STORAGE_BLOCKS, Utils.exclude(EnumSet.copyOf(YTechBlocks.STORAGE_BLOCKS.materials()), MaterialType.VANILLA_METALS));
+            super("storage_blocks", "c", Tags.Blocks.STORAGE_BLOCKS, Utils.exclude(EnumSet.copyOf(YTechBlocks.STORAGE_BLOCKS.materials()), MaterialType.VANILLA_METALS));
             tags.put(MaterialType.COPPER, Tags.Blocks.STORAGE_BLOCKS_COPPER);
             tags.put(MaterialType.GOLD, Tags.Blocks.STORAGE_BLOCKS_GOLD);
             tags.put(MaterialType.IRON, Tags.Blocks.STORAGE_BLOCKS_IRON);

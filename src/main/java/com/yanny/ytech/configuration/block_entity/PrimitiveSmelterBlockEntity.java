@@ -6,6 +6,7 @@ import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
@@ -55,12 +56,12 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (level == null || !level.isClientSide) { // server side
             if (tag.contains(TAG_RECIPE_INPUT)) {
-                recipeInput = ItemStack.of(tag.getCompound(TAG_RECIPE_INPUT));
+                recipeInput = ItemStack.parseOptional(provider, tag.getCompound(TAG_RECIPE_INPUT));
             } else {
                 recipeInput = null;
             }
@@ -78,14 +79,14 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
 
         if (level == null || !level.isClientSide) {
             if (recipeInput != null) {
                 CompoundTag itemStack = new CompoundTag();
 
-                recipeInput.save(itemStack);
+                recipeInput.save(provider, itemStack);
                 tag.put(TAG_RECIPE_INPUT, itemStack);
             }
         }
@@ -110,7 +111,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 SmeltingRecipe r = recipe.value();
 
-                if (r.minTemperature() <= temperature && (result.isEmpty() || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount()))) {
+                if (r.minTemperature() <= temperature && (result.isEmpty() || (ItemStack.isSameItemSameComponents(result, r.result()) && result.getMaxStackSize() > result.getCount()))) {
                     recipeInput = input.split(1);
                     leftSmelting = smeltingTime = r.smeltingTime();
                     recipeTemperature = r.minTemperature();

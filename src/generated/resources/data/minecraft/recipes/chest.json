@@ -18,6 +18,7 @@
     "B#B"
   ],
   "result": {
-    "item": "minecraft:chest"
+    "count": 1,
+    "id": "minecraft:chest"
   }
 }

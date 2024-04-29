@@ -1,6 +1,16 @@
 {
   "values": [
+    "ytech:deepslate_cassiterite_ore",
+    "ytech:deepslate_galena_ore",
+    "ytech:nether_cassiterite_ore",
     "ytech:nether_copper_ore",
+    "ytech:nether_galena_ore",
+    "ytech:nether_iron_ore",
+    "ytech:cassiterite_ore",
+    "ytech:galena_ore",
+    "ytech:bronze_block",
+    "ytech:lead_block",
+    "ytech:tin_block",
     "ytech:aqueduct",
     "ytech:aqueduct_fertilizer",
     "ytech:aqueduct_hydrator",

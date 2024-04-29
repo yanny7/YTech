@@ -1,11 +1,12 @@
 {
   "type": "ytech:smelting",
   "ingredient": {
-    "tag": "forge:crushed_materials/cassiterite"
+    "tag": "c:crushed_materials/cassiterite"
   },
   "minTemp": 1127,
   "result": {
-    "item": "ytech:tin_ingot"
+    "count": 1,
+    "id": "ytech:tin_ingot"
   },
   "smeltingTime": 200
 }

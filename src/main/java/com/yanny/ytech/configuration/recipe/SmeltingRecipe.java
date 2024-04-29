@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -9,10 +10,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -38,7 +40,7 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -49,7 +51,7 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
         return result;
     }
 
@@ -66,33 +68,42 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
     }
 
     public static class Serializer implements RecipeSerializer<SmeltingRecipe> {
-        private static final Codec<SmeltingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((smeltingRecipe) -> smeltingRecipe.ingredient),
-                Codec.INT.fieldOf("minTemp").forGetter((smeltingRecipe) -> smeltingRecipe.minTemperature),
-                Codec.INT.fieldOf("smeltingTime").forGetter((smeltingRecipe) -> smeltingRecipe.smeltingTime),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((smeltingRecipe) -> smeltingRecipe.result)
-        ).apply(recipe, SmeltingRecipe::new));
+        private static final MapCodec<SmeltingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((smeltingRecipe) -> smeltingRecipe.ingredient),
+                        Codec.INT.fieldOf("minTemp").forGetter((smeltingRecipe) -> smeltingRecipe.minTemperature),
+                        Codec.INT.fieldOf("smeltingTime").forGetter((smeltingRecipe) -> smeltingRecipe.smeltingTime),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((smeltingRecipe) -> smeltingRecipe.result)
+                ).apply(instance, SmeltingRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, SmeltingRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
         @Override
         @NotNull
-        public SmeltingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+        public MapCodec<SmeltingRecipe> codec() {
+            return CODEC;
+        }
+
+        @NotNull
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, SmeltingRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @NotNull
+        private static SmeltingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
+            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             int minTemperature = buffer.readInt();
             int dryingTime = buffer.readInt();
             return new SmeltingRecipe(ingredient, minTemperature, dryingTime, result);
         }
 
-        @Override
-        @NotNull
-        public Codec<SmeltingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull SmeltingRecipe recipe) {
-            recipe.ingredient.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull SmeltingRecipe recipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeInt(recipe.minTemperature);
             buffer.writeInt(recipe.smeltingTime);
         }

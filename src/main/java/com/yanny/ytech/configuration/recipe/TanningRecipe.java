@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -9,10 +10,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -37,7 +39,7 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -48,7 +50,7 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
         return result;
     }
 
@@ -65,34 +67,43 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
     }
 
     public static class Serializer implements RecipeSerializer<TanningRecipe> {
-        private static final Codec<TanningRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((tanningRecipe) -> tanningRecipe.ingredient),
-                Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter((tanningRecipe) -> tanningRecipe.tool),
-                Codec.INT.fieldOf("hitCount").forGetter((tanningRecipe) -> tanningRecipe.hitCount),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((tanningRecipe) -> tanningRecipe.result)
-        ).apply(recipe, TanningRecipe::new));
+        private static final MapCodec<TanningRecipe> CODEC = RecordCodecBuilder.mapCodec((recipe) ->
+                recipe.group(
+                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((tanningRecipe) -> tanningRecipe.ingredient),
+                        Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter((tanningRecipe) -> tanningRecipe.tool),
+                        Codec.INT.fieldOf("hitCount").forGetter((tanningRecipe) -> tanningRecipe.hitCount),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((tanningRecipe) -> tanningRecipe.result)
+                ).apply(recipe, TanningRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, TanningRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
         @Override
         @NotNull
-        public Codec<TanningRecipe> codec() {
+        public MapCodec<TanningRecipe> codec() {
             return CODEC;
         }
 
-        @Override
         @NotNull
-        public TanningRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            Ingredient tool = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, TanningRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @NotNull
+        private static TanningRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
+            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            Ingredient tool = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             int hitCount = buffer.readInt();
             return new TanningRecipe(ingredient, tool, hitCount, result);
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull TanningRecipe recipe) {
-            recipe.ingredient.toNetwork(buffer);
-            recipe.tool.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull TanningRecipe recipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tool);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeInt(recipe.hitCount);
         }
     }

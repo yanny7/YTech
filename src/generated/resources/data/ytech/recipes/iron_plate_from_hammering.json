@@ -1,10 +1,11 @@
 {
   "type": "ytech:hammering",
   "ingredient": {
-    "tag": "forge:ingots/iron"
+    "tag": "c:ingots/iron"
   },
   "result": {
-    "item": "ytech:iron_plate"
+    "count": 1,
+    "id": "ytech:iron_plate"
   },
   "tool": {
     "tag": "ytech:hammers"

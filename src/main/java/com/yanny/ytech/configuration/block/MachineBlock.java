@@ -3,9 +3,6 @@ package com.yanny.ytech.configuration.block;
 import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.configuration.block_entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,18 +18,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public abstract class MachineBlock extends BaseEntityBlock {
     public MachineBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     public RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;
@@ -71,12 +66,11 @@ public abstract class MachineBlock extends BaseEntityBlock {
                 .setValue(BlockStateProperties.POWERED, false);
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult trace) {
+    public InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult trace) {
         if (!level.isClientSide) {
-            player.openMenu(getMenuProvider(state, level, pos), pos);
+            player.openMenu(Objects.requireNonNull(getMenuProvider(state, level, pos)), pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

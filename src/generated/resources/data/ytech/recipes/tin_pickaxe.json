@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:ingots/tin"
+      "tag": "c:ingots/tin"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -24,6 +24,7 @@
     " S "
   ],
   "result": {
-    "item": "ytech:tin_pickaxe"
+    "count": 1,
+    "id": "ytech:tin_pickaxe"
   }
 }

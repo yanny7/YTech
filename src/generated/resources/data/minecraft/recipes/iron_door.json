@@ -18,6 +18,7 @@
     "CC "
   ],
   "result": {
-    "item": "minecraft:iron_door"
+    "count": 1,
+    "id": "minecraft:iron_door"
   }
 }

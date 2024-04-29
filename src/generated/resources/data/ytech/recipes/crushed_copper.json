@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:raw_materials/copper"
+      "tag": "c:raw_materials/copper"
     },
     {
       "tag": "ytech:mortar_and_pestles"
     }
   ],
   "result": {
-    "item": "ytech:crushed_copper"
+    "count": 1,
+    "id": "ytech:crushed_copper"
   }
 }

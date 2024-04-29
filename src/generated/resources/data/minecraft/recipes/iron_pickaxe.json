@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -24,6 +24,7 @@
     " S "
   ],
   "result": {
-    "item": "minecraft:iron_pickaxe"
+    "count": 1,
+    "id": "minecraft:iron_pickaxe"
   }
 }

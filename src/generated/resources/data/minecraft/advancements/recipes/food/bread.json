@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:bread_doughs"
+            "items": "#ytech:bread_doughs"
           }
         ]
       },

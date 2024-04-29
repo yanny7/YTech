@@ -1,6 +1,6 @@
 package com.yanny.ytech.network.generic.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class NetworkRemovedMessage {
@@ -10,11 +10,11 @@ public abstract class NetworkRemovedMessage {
         this.networkId = networkId;
     }
 
-    public NetworkRemovedMessage(@NotNull FriendlyByteBuf buf) {
+    public NetworkRemovedMessage(@NotNull RegistryFriendlyByteBuf buf) {
         this.networkId = buf.readInt();
     }
 
-    public void write(@NotNull FriendlyByteBuf buf) {
+    protected void write(@NotNull RegistryFriendlyByteBuf buf) {
         buf.writeInt(networkId);
     }
 }

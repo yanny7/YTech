@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -65,8 +66,8 @@ public abstract class IrrigationBlockEntity extends BlockEntity implements IIrri
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (tag.contains(NETWORK_ID)) {
             networkId = tag.getInt(NETWORK_ID);
@@ -90,15 +91,15 @@ public abstract class IrrigationBlockEntity extends BlockEntity implements IIrri
 
     @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
         tag.putInt(NETWORK_ID, networkId);
         return tag;
     }
 
     @Override
-    public void handleUpdateTag(@NotNull CompoundTag tag) {
-        super.handleUpdateTag(tag);
+    public void handleUpdateTag(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.handleUpdateTag(tag, provider);
         networkId = tag.getInt(NETWORK_ID);
     }
 
@@ -113,8 +114,8 @@ public abstract class IrrigationBlockEntity extends BlockEntity implements IIrri
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
         tag.putInt(NETWORK_ID, networkId);
     }
 }

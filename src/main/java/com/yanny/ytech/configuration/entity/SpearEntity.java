@@ -4,7 +4,6 @@ import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -31,33 +30,29 @@ import javax.annotation.Nullable;
 public class SpearEntity extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final String TAG_SPEAR = "Spear";
     private static final String TAG_DEALT_DAMAGE = "DealtDamage";
 
     private final SpearType spearType;
-    private ItemStack spearItem;
     private boolean dealtDamage;
     public int clientSideReturnSpearTickCount;
 
     public SpearEntity(EntityType<SpearEntity> entityType, Level level, SpearType spearType) {
-        super(entityType, level, ItemStack.EMPTY);
-        spearItem = new ItemStack(YTechItems.SPEARS.of(spearType.materialType).get());
+        super(entityType, level, YTechItems.SPEARS.of(spearType.materialType).get().getDefaultInstance());
         this.spearType = spearType;
     }
 
     public SpearEntity(Level level, LivingEntity shooter, ItemStack stack, SpearType spearType) {
         super(spearType.entityType.get(), shooter, level, stack);
-        spearItem = stack.copy();
         entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
         entityData.set(ID_FOIL, stack.hasFoil());
         this.spearType = spearType;
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(ID_LOYALTY, (byte)0);
-        entityData.define(ID_FOIL, false);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ID_LOYALTY, (byte)0);
+        builder.define(ID_FOIL, false);
     }
 
     @Override
@@ -110,8 +105,8 @@ public class SpearEntity extends AbstractArrow {
 
     @NotNull
     @Override
-    protected ItemStack getPickupItem() {
-        return spearItem.copy();
+    protected ItemStack getDefaultPickupItem() {
+        return getPickupItemStackOrigin();
     }
 
     public boolean isFoil() {
@@ -130,7 +125,7 @@ public class SpearEntity extends AbstractArrow {
         float damage = spearType.baseDamage;
 
         if (entity instanceof LivingEntity livingentity) {
-            damage += EnchantmentHelper.getDamageBonus(spearItem, livingentity.getMobType());
+            damage += EnchantmentHelper.getDamageBonus(getDefaultPickupItem(), livingentity.getType());
         }
 
         Entity owner = getOwner();
@@ -176,7 +171,7 @@ public class SpearEntity extends AbstractArrow {
     }
 
     public boolean isChanneling() {
-        return EnchantmentHelper.hasChanneling(spearItem);
+        return EnchantmentHelper.hasChanneling(getDefaultPickupItem());
     }
 
     @Override
@@ -200,20 +195,13 @@ public class SpearEntity extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-
-        if (tag.contains(TAG_SPEAR, Tag.TAG_COMPOUND)) {
-            spearItem = ItemStack.of(tag.getCompound(TAG_SPEAR));
-        }
-
         dealtDamage = tag.getBoolean(TAG_DEALT_DAMAGE);
-        entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(spearItem));
+        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.getPickupItemStackOrigin()));
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-
-        tag.put(TAG_SPEAR, spearItem.save(new CompoundTag()));
         tag.putBoolean(TAG_DEALT_DAMAGE, dealtDamage);
     }
 

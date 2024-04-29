@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/lead"
+      "tag": "c:ingots/lead"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -15,6 +15,7 @@
     "H"
   ],
   "result": {
-    "item": "ytech:lead_plate"
+    "count": 1,
+    "id": "ytech:lead_plate"
   }
 }

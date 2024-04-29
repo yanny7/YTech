@@ -1,6 +1,7 @@
 package com.yanny.ytech.network.generic.message;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -13,11 +14,11 @@ public abstract class NetworkAddedOrUpdatedMessage<T> {
         this.payload = payload;
     }
 
-    public NetworkAddedOrUpdatedMessage(@NotNull FriendlyByteBuf buf, Function<FriendlyByteBuf, T> valueReader) {
+    public NetworkAddedOrUpdatedMessage(@NotNull RegistryFriendlyByteBuf buf, Function<FriendlyByteBuf, T> valueReader) {
         this.payload = valueReader.apply(buf);
     }
 
-    public void write(@NotNull FriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
+    protected void write(@NotNull RegistryFriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
         valueWriter.accept(buf, payload);
     }
 }

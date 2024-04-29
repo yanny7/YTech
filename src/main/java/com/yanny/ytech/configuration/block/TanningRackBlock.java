@@ -15,9 +15,10 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -65,7 +66,6 @@ public class TanningRackBlock extends Block implements EntityBlock {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public VoxelShape getShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
@@ -74,7 +74,6 @@ public class TanningRackBlock extends Block implements EntityBlock {
         return (direction == Direction.EAST || direction == Direction.WEST) ? SHAPE_NORTH_SOUTH : SHAPE_EAST_WEST;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState state) {
@@ -87,19 +86,17 @@ public class TanningRackBlock extends Block implements EntityBlock {
         return new TanningRackBlockEntity(pos, state);
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                 @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof  TanningRackBlockEntity tanningRack) {
+    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                           @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (level.getBlockEntity(pos) instanceof TanningRackBlockEntity tanningRack) {
             return tanningRack.onUse(state, level, pos, player, hand, hitResult);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {

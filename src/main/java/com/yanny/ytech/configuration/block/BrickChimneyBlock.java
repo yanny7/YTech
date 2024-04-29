@@ -26,9 +26,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class BrickChimneyBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(3/16.0, 0, 3/16.0, 13/16.0, 1, 13/16.0);
 
@@ -41,14 +38,12 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public VoxelShape getShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
         return SHAPE;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState state) {
@@ -61,7 +56,6 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
         return new BrickChimneyBlockEntity(pos, state);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
         if (!level.isClientSide && !state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof  BrickChimneyBlockEntity blockEntity) {

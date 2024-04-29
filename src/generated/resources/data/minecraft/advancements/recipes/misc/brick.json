@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:unfired_bricks"
+            "items": "#ytech:unfired_bricks"
           }
         ]
       },

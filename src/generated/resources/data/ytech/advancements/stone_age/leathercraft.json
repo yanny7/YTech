@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather"
-            ]
+            "items": "minecraft:leather"
           }
         ]
       },
@@ -20,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.leathercraft"
     },
     "icon": {
-      "item": "minecraft:leather"
+      "count": 1,
+      "id": "minecraft:leather"
     },
     "show_toast": false,
     "title": {

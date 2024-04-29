@@ -7,6 +7,7 @@ import com.yanny.ytech.configuration.recipe.*;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
@@ -19,13 +20,13 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.EnumSet;
+import java.util.concurrent.CompletableFuture;
 
 import static com.yanny.ytech.configuration.MaterialType.*;
 
 class YTechRecipeProvider extends RecipeProvider {
-    public YTechRecipeProvider(PackOutput output) {
-        super(output);
+    public YTechRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
     }
 
     @Override
@@ -472,7 +473,7 @@ class YTechRecipeProvider extends RecipeProvider {
 
         hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, Items.IRON_INGOT);
 
-        registerBlockHitRecipe(recipeConsumer, Items.FLINT, Tags.Items.STONE, YTechItems.SHARP_FLINT.get());
+        registerBlockHitRecipe(recipeConsumer, Items.FLINT, Tags.Items.STONES, YTechItems.SHARP_FLINT.get());
 
         registerDryingRecipe(recipeConsumer, Items.BEEF, YTechItems.DRIED_BEEF);
         registerDryingRecipe(recipeConsumer, Items.CHICKEN, YTechItems.DRIED_CHICKEN);
@@ -1044,16 +1045,16 @@ class YTechRecipeProvider extends RecipeProvider {
         if (material == MaterialType.STONE) {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
                     .define('I', Items.STICK)
-                    .define('#', Tags.Items.STONE)
+                    .define('#', Tags.Items.STONES)
                     .pattern(" I ")
                     .pattern("# #")
                     .pattern(" # ")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.STONE))
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.STONES))
                     .save(recipeConsumer, item.getId());
         } else {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
                     .define('I', YTechItemTags.INGOTS.of(material))
-                    .define('#', Tags.Items.STONE)
+                    .define('#', Tags.Items.STONES)
                     .pattern(" I ")
                     .pattern("# #")
                     .pattern(" # ")

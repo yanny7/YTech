@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
@@ -10,9 +11,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -47,10 +48,10 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
                 ItemStack result = item.copy();
                 list.set(i, result);
 
-                if (result.hurt(1, RANDOM, null)) {
+                result.hurtAndBreak(1, RANDOM, null, () -> {
                     result.shrink(1);
                     result.setDamageValue(0);
-                }
+                });
             }
         }
 
@@ -64,11 +65,10 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapelessRecipe> {
-        private final ShapelessRecipe.Serializer serializer = new ShapelessRecipe.Serializer();
-        private static final Codec<RemainingShapelessRecipe> CODEC = RecordCodecBuilder.create(
-                (instance) -> instance.group(ExtraCodecs.strictOptionalField(Codec.STRING, "group", "").forGetter(ShapelessRecipe::getGroup),
+        private static final MapCodec<RemainingShapelessRecipe> CODEC = RecordCodecBuilder.mapCodec(
+                (instance) -> instance.group(Codec.STRING.optionalFieldOf("group", "").forGetter(ShapelessRecipe::getGroup),
                         CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter((recipe) -> recipe.category),
-                        ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((recipe) -> recipe.result),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((recipe) -> recipe.result),
                         Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(
                                 (ingredients) -> {
                                     Ingredient[] aingredient = ingredients.toArray(Ingredient[]::new);
@@ -84,22 +84,29 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
                                 DataResult::success).forGetter(ShapelessRecipe::getIngredients)
                 ).apply(instance, RemainingShapelessRecipe::new)
         );
+        private static final StreamCodec<RegistryFriendlyByteBuf, RemainingShapelessRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
         @NotNull
         @Override
-        public Codec<RemainingShapelessRecipe> codec() {
+        public MapCodec<RemainingShapelessRecipe> codec() {
             return CODEC;
         }
 
         @NotNull
         @Override
-        public RemainingShapelessRecipe fromNetwork(@NotNull FriendlyByteBuf friendlyByteBuf) {
-            return new RemainingShapelessRecipe(serializer.fromNetwork(friendlyByteBuf));
+        public StreamCodec<RegistryFriendlyByteBuf, RemainingShapelessRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buf, @NotNull RemainingShapelessRecipe recipe) {
-            serializer.toNetwork(buf, recipe);
+        @NotNull
+        private static RemainingShapelessRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf friendlyByteBuf) {
+            return new RemainingShapelessRecipe(ShapelessRecipe.Serializer.fromNetwork(friendlyByteBuf));
+        }
+
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buf, @NotNull RemainingShapelessRecipe recipe) {
+            ShapelessRecipe.Serializer.toNetwork(buf, recipe);
         }
     }
 

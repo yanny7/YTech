@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "ytech:basket"
+    "count": 1,
+    "id": "ytech:basket"
   }
 }

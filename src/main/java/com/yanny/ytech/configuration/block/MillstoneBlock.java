@@ -13,7 +13,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -36,9 +36,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class MillstoneBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.or(
             Shapes.box(0, 0, 0, 1, 0.5, 1),
@@ -52,14 +49,12 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .strength(3.5F));
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public VoxelShape getShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
         return SHAPE;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState state) {
@@ -72,11 +67,10 @@ public class MillstoneBlock extends Block implements EntityBlock {
         return new MillstoneBlockEntity(pos, state);
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                 @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                           @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof  MillstoneBlockEntity millstone) {
             return millstone.onUse(level, pos, player, hand);
         } else {
@@ -84,7 +78,6 @@ public class MillstoneBlock extends Block implements EntityBlock {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {

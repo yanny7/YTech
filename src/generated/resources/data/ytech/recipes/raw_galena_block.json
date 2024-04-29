@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:raw_materials/galena"
+      "tag": "c:raw_materials/galena"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "ytech:raw_galena_block"
+    "count": 1,
+    "id": "ytech:raw_galena_block"
   }
 }

@@ -18,22 +18,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.LogicalSide;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = YTechMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ForgeBusSubscriber {
     @NotNull private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -81,12 +80,15 @@ public class ForgeBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onLevelTick(@NotNull TickEvent.LevelTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && event.side == LogicalSide.SERVER && event.level instanceof ServerLevel level) {
-            YTechMod.IRRIGATION_PROPAGATOR.server().getNetworks(level).values().forEach((network) -> network.tick((ServerLevel) event.level));
+    public static void onLevelPreTick(@NotNull LevelTickEvent.Pre event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            YTechMod.IRRIGATION_PROPAGATOR.server().getNetworks(level).values().forEach((network) -> network.tick(level));
         }
+    }
 
-        if (event.phase == TickEvent.Phase.END && event.side == LogicalSide.SERVER && event.level instanceof ServerLevel level) {
+    @SubscribeEvent
+    public static void onLevelPostTick(@NotNull LevelTickEvent.Post event) {
+        if (event.getLevel() instanceof ServerLevel level) {
             YTechMod.IRRIGATION_PROPAGATOR.server().tick(level);
         }
     }

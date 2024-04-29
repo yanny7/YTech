@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:storage_blocks/gold"
+      "tag": "c:storage_blocks/gold"
     },
     "S": {
       "item": "minecraft:stick"
@@ -15,6 +15,7 @@
     "S  "
   ],
   "result": {
-    "item": "ytech:golden_hammer"
+    "count": 1,
+    "id": "ytech:golden_hammer"
   }
 }

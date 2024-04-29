@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:plates/wooden"
+            "items": "#ytech:plates/wooden"
           }
         ]
       },

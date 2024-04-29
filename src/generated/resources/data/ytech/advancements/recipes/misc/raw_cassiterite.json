@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:storage_blocks/raw_cassiterite"
+            "items": "#c:storage_blocks/raw_cassiterite"
           }
         ]
       },

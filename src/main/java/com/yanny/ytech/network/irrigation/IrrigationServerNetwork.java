@@ -5,6 +5,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.server.ServerNetwork;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
@@ -42,10 +43,11 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     @NotNull private final FluidTank fluidHandler;
     private int inflow = 0;
 
-    public IrrigationServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
+    public IrrigationServerNetwork(@NotNull CompoundTag tag, int networkId, @NotNull Consumer<Integer> onChange,
+                                   @NotNull BiConsumer<Integer, ChunkPos> onRemove, HolderLookup.Provider provider) {
         super(networkId, onChange, onRemove);
         fluidHandler = createFluidTank(networkId);
-        load(tag);
+        load(tag, provider);
     }
 
     public IrrigationServerNetwork(int networkId, @NotNull Consumer<Integer> onChange, @NotNull BiConsumer<Integer, ChunkPos> onRemove) {
@@ -70,8 +72,8 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     @Override
-    protected void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    protected void load(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.load(tag, provider);
 
         if (tag.contains(TAG_PROVIDERS) && tag.getTagType(TAG_PROVIDERS) != 0) {
             tag.getList(TAG_PROVIDERS, ListTag.TAG_COMPOUND).forEach((t) ->
@@ -88,7 +90,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         }
         if (tag.contains(TAG_FLUID_TANK) && tag.getTagType(TAG_FLUID_TANK) != 0) {
             fluidHandler.setCapacity(storages.size() * YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock());
-            fluidHandler.readFromNBT(tag.getCompound(TAG_FLUID_TANK));
+            fluidHandler.readFromNBT(provider, tag.getCompound(TAG_FLUID_TANK));
         }
 
         inflow = providers.values().stream().mapToInt(Integer::intValue).sum();
@@ -97,8 +99,8 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     @NotNull
     @Override
-    protected CompoundTag save() {
-        CompoundTag tag = super.save();
+    protected CompoundTag save(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.save(provider);
         ListTag providersTag = new ListTag();
         ListTag consumersTag = new ListTag();
         ListTag storagesTag = new ListTag();
@@ -129,7 +131,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         tag.put(TAG_CONSUMERS, consumersTag);
         tag.put(TAG_STORAGES, storagesTag);
         tag.put(TAG_FILLED_BY_RAIN, filledByRainTag);
-        tag.put(TAG_FLUID_TANK, fluidHandler.writeToNBT(new CompoundTag()));
+        tag.put(TAG_FLUID_TANK, fluidHandler.writeToNBT(provider, new CompoundTag()));
         return tag;
     }
 

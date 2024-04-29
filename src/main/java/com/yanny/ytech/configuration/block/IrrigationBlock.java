@@ -37,7 +37,6 @@ public abstract class IrrigationBlock extends BaseEntityBlock {
         super(properties);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(@NotNull BlockState oldBlockState, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newBlockState, boolean movedByPiston) {
         if (!level.isClientSide) {

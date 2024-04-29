@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -130,12 +131,12 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (level == null || !level.isClientSide) { // server side
             if (tag.contains(TAG_ITEMS)) {
-                itemStackHandler.deserializeNBT(tag.getCompound(TAG_ITEMS));
+                itemStackHandler.deserializeNBT(provider, tag.getCompound(TAG_ITEMS));
             }
 
             // Try to load if exists, otherwise load in onLoad method
@@ -156,8 +157,8 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
 
     @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
         tag.putInt(TAG_NR_CHIMNEY, nrChimney);
         return tag;
     }
@@ -225,11 +226,11 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
 
         if (level == null || !level.isClientSide) {
-            tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
+            tag.put(TAG_ITEMS, itemStackHandler.serializeNBT(provider));
             tag.putInt(TAG_NR_CHIMNEY, nrChimney);
             tag.putInt(TAG_BURNING_TIME, burningTime);
             tag.putInt(TAG_LEFT_BURNING, leftBurningTime);

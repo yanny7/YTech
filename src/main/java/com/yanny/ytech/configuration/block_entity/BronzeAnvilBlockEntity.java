@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -10,7 +11,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+
+import static net.minecraft.world.entity.LivingEntity.getSlotForHand;
 
 public class BronzeAnvilBlockEntity extends BlockEntity {
     private static final String TAG_ITEMS = "items";
@@ -39,8 +42,8 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
         };
     }
 
-    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
             ItemStack hammeringItem = itemStackHandler.getStackInSlot(0);
@@ -64,7 +67,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
                     level.getRecipeManager().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SimpleContainer(hammeringItem), level).ifPresent((recipe) -> {
                         if (recipe.value().tool().test(holdingItemStack)) {
                             hammeringItem.split(1);
-                            holdingItemStack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
+                            holdingItemStack.hurtAndBreak(1, player, getSlotForHand(hand));
                             level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
                             Block.popResourceFromFace(level, pos, hitResult.getDirection(), recipe.value().result().copy());
                             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
@@ -75,23 +78,23 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (tag.contains(TAG_ITEMS)) {
-            itemStackHandler.deserializeNBT(tag.getCompound(TAG_ITEMS));
+            itemStackHandler.deserializeNBT(provider, tag.getCompound(TAG_ITEMS));
         }
     }
 
     @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
         return tag;
     }
 
@@ -107,8 +110,8 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT());
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT(provider));
     }
 }

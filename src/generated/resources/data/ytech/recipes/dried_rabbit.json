@@ -5,6 +5,7 @@
     "item": "minecraft:rabbit"
   },
   "result": {
-    "item": "ytech:dried_rabbit"
+    "count": 1,
+    "id": "ytech:dried_rabbit"
   }
 }

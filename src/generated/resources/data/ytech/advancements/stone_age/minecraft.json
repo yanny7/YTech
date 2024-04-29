@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:pickaxes/antler"
+            "items": "#ytech:pickaxes/antler"
           }
         ]
       },
@@ -18,8 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.minecraft"
     },
     "icon": {
-      "item": "ytech:antler_pickaxe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:antler_pickaxe"
     },
     "show_toast": false,
     "title": {

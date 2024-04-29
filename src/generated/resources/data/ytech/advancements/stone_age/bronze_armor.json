@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:boots/bronze"
+            "items": "#ytech:boots/bronze"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:chestplates/bronze"
+            "items": "#ytech:chestplates/bronze"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:helmets/bronze"
+            "items": "#ytech:helmets/bronze"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:leggings/bronze"
+            "items": "#ytech:leggings/bronze"
           }
         ]
       },
@@ -49,8 +49,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "ytech:bronze_chestplate",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:bronze_chestplate"
     },
     "show_toast": false,
     "title": {

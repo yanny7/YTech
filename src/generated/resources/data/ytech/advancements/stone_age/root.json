@@ -4,9 +4,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:flint"
-            ]
+            "items": "minecraft:flint"
           }
         ]
       },
@@ -20,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.root"
     },
     "icon": {
-      "item": "minecraft:flint"
+      "count": 1,
+      "id": "minecraft:flint"
     },
     "show_toast": false,
     "title": {

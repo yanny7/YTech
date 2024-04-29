@@ -25,6 +25,7 @@
     "PPP"
   ],
   "result": {
-    "item": "minecraft:mangrove_boat"
+    "count": 1,
+    "id": "minecraft:mangrove_boat"
   }
 }

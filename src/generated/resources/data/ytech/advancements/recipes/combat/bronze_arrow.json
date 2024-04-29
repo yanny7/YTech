@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:bolts/bronze"
+            "items": "#ytech:bolts/bronze"
           }
         ]
       },

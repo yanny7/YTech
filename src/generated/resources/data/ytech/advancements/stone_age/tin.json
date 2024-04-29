@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/tin"
+            "items": "#c:ingots/tin"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.tin"
     },
     "icon": {
-      "item": "ytech:tin_ingot"
+      "count": 1,
+      "id": "ytech:tin_ingot"
     },
     "show_toast": false,
     "title": {

@@ -16,7 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +54,6 @@ public class FirePitBlock extends Block {
         super(Properties.ofFullCopy(Blocks.STONE).sound(SoundType.WOOD).noOcclusion().hasPostProcess(FirePitBlock::always).lightLevel(FirePitBlock::getLightLevel));
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
@@ -71,7 +70,6 @@ public class FirePitBlock extends Block {
         stateBuilder.add(LIT).add(LEVEL);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return SHAPE;
@@ -105,7 +103,6 @@ public class FirePitBlock extends Block {
         return state.getValue(LIT);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (state.getValue(LEVEL) > 0) {
@@ -121,10 +118,9 @@ public class FirePitBlock extends Block {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
+    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (level instanceof ServerLevel serverLevel) {
             if (!state.getValue(LIT) && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.STICK) && player.getItemInHand(InteractionHand.OFF_HAND).is(Items.STICK)) {
                 player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
@@ -137,7 +133,7 @@ public class FirePitBlock extends Block {
                     level.playSound(null, pos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0f, 0.8F + player.getRandom().nextFloat() * 0.4F);
                 }
 
-                return InteractionResult.sidedSuccess(serverLevel.isClientSide);
+                return ItemInteractionResult.sidedSuccess(serverLevel.isClientSide);
             }
 
             ItemStack itemStack = player.getItemInHand(hand);
@@ -149,7 +145,7 @@ public class FirePitBlock extends Block {
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable
@@ -158,7 +154,6 @@ public class FirePitBlock extends Block {
         return defaultBlockState().setValue(LEVEL, 2).setValue(LIT, false);
     }
 
-    @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (state.getValue(LIT) && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entity)) {
             entity.hurt(level.damageSources().inFire(), state.getValue(LEVEL) / 15f);
@@ -167,7 +162,6 @@ public class FirePitBlock extends Block {
         super.entityInside(state, level, pos, entity);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onProjectileHit(@NotNull Level level, @NotNull BlockState state, @NotNull BlockHitResult hit, @NotNull Projectile projectile) {
         BlockPos pos = hit.getBlockPos();

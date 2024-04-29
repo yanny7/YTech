@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:ingots/copper"
+      "tag": "c:ingots/copper"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -24,6 +24,7 @@
     " S "
   ],
   "result": {
-    "item": "ytech:copper_pickaxe"
+    "count": 1,
+    "id": "ytech:copper_pickaxe"
   }
 }

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "F": {
       "tag": "ytech:files"
@@ -14,6 +14,7 @@
     "F"
   ],
   "result": {
-    "item": "ytech:golden_rod"
+    "count": 1,
+    "id": "ytech:golden_rod"
   }
 }

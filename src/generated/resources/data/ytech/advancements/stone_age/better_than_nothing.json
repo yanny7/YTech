@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:knives/flint"
+            "items": "#ytech:knives/flint"
           }
         ]
       },
@@ -18,8 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.better_than_nothing"
     },
     "icon": {
-      "item": "ytech:flint_knife",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:flint_knife"
     },
     "show_toast": false,
     "title": {

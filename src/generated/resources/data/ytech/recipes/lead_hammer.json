@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:storage_blocks/lead"
+      "tag": "c:storage_blocks/lead"
     },
     "S": {
       "item": "minecraft:stick"
@@ -15,6 +15,7 @@
     "S  "
   ],
   "result": {
-    "item": "ytech:lead_hammer"
+    "count": 1,
+    "id": "ytech:lead_hammer"
   }
 }

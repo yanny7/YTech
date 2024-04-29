@@ -22,6 +22,7 @@
     "PPP"
   ],
   "result": {
-    "item": "minecraft:red_bed"
+    "count": 1,
+    "id": "minecraft:red_bed"
   }
 }

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/copper"
+      "tag": "c:ingots/copper"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -15,6 +15,7 @@
     "H"
   ],
   "result": {
-    "item": "ytech:copper_plate"
+    "count": 1,
+    "id": "ytech:copper_plate"
   }
 }

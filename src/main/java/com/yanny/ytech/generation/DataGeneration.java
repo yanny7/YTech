@@ -17,9 +17,9 @@ public class DataGeneration {
         generator.addProvider(event.includeServer(), blockTags);
         generator.addProvider(event.includeServer(), new YTechItemTagsProvider(packOutput, event.getLookupProvider(), blockTags.contentsGetter(), event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new YTechBiomeTagsProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
-        generator.addProvider(event.includeServer(), new YTechRecipeProvider(packOutput));
-        generator.addProvider(event.includeServer(), new YTechLootTableProvider(packOutput));
-        generator.addProvider(event.includeServer(), new YTechGlobalLootModifierProvider(packOutput));
+        generator.addProvider(event.includeServer(), new YTechRecipeProvider(packOutput, event.getLookupProvider()));
+        generator.addProvider(event.includeServer(), new YTechLootTableProvider(packOutput, event.getLookupProvider()));
+        generator.addProvider(event.includeServer(), new YTechGlobalLootModifierProvider(packOutput, event.getLookupProvider()));
         generator.addProvider(event.includeServer(), new YTechDatapackProvider(packOutput, event.getLookupProvider()));
         generator.addProvider(event.includeServer(), new YTechAdvancementProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new YTechDataMapProvider(packOutput, event.getLookupProvider()));

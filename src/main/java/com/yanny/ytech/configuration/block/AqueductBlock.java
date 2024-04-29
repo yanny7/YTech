@@ -86,7 +86,6 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         return RenderShape.MODEL;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
@@ -122,7 +121,6 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         return state;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState,
@@ -196,10 +194,9 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
-        if (!(entity instanceof LivingEntity) || entity.getFeetBlockState().is(this)) {
+        if (!(entity instanceof LivingEntity) || entity.getInBlockState().is(this)) {
             if (level.getBlockEntity(pos) instanceof AqueductBlockEntity aqueductBlockEntity) {
                 double multiplier = 0.5;
 
@@ -230,9 +227,8 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull PathComputationType type) {
+    protected boolean isPathfindable(@NotNull BlockState state, @NotNull PathComputationType type) {
         return false;
     }
 
@@ -246,7 +242,6 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (level.getBlockEntity(pos) instanceof AqueductBlockEntity blockEntity) {

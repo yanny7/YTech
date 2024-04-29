@@ -46,7 +46,7 @@ public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
                 poseStack.translate(0, -12.0/16.0 + (network.getAmount() / (float)network.getCapacity()) * (12.0/16.0), 0);
                 PoseStack.Pose pose = poseStack.last();
 
-                VertexConsumer builder = new FluidVertexConsumer(buffer, water.getFluidState(), pose.pose(), pose.normal());
+                VertexConsumer builder = new FluidVertexConsumer(buffer, water.getFluidState(), pose);
                 Minecraft.getInstance().getBlockRenderer().renderLiquid(BlockPos.ZERO, level, builder, water, water.getFluidState());
 
                 poseStack.popPose();

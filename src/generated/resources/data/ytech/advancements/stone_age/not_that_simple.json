@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:axes/flint"
+            "items": "#ytech:axes/flint"
           }
         ]
       },
@@ -18,8 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.not_that_simple"
     },
     "icon": {
-      "item": "ytech:flint_axe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:flint_axe"
     },
     "show_toast": false,
     "title": {

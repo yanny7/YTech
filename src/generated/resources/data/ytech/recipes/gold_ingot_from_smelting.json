@@ -1,11 +1,12 @@
 {
   "type": "ytech:smelting",
   "ingredient": {
-    "tag": "forge:crushed_materials/gold"
+    "tag": "c:crushed_materials/gold"
   },
   "minTemp": 1064,
   "result": {
-    "item": "minecraft:gold_ingot"
+    "count": 1,
+    "id": "minecraft:gold_ingot"
   },
   "smeltingTime": 200
 }

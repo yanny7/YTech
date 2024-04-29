@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:bronze_anvils"
+            "items": "#ytech:bronze_anvils"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.bronze_age.description.hit_hard"
     },
     "icon": {
-      "item": "ytech:bronze_anvil"
+      "count": 1,
+      "id": "ytech:bronze_anvil"
     },
     "show_toast": false,
     "title": {

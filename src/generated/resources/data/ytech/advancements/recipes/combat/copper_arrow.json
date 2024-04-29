@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:bolts/copper"
+            "items": "#ytech:bolts/copper"
           }
         ]
       },

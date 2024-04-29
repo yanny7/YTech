@@ -1,6 +1,6 @@
 package com.yanny.ytech.configuration.recipe;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -9,10 +9,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -38,7 +39,7 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -49,7 +50,7 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
         return result;
     }
 
@@ -66,32 +67,41 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
     }
 
     public static class Serializer implements RecipeSerializer<BlockHitRecipe> {
-        private static final Codec<BlockHitRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((blockHitRecipe) -> blockHitRecipe.ingredient),
-                Ingredient.CODEC_NONEMPTY.fieldOf("block").forGetter((blockHitRecipe) -> blockHitRecipe.block),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((blockHitRecipe) -> blockHitRecipe.result)
-        ).apply(recipe, BlockHitRecipe::new));
+        private static final MapCodec<BlockHitRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((blockHitRecipe) -> blockHitRecipe.ingredient),
+                        Ingredient.CODEC_NONEMPTY.fieldOf("block").forGetter((blockHitRecipe) -> blockHitRecipe.block),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((blockHitRecipe) -> blockHitRecipe.result)
+                ).apply(instance, BlockHitRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, BlockHitRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
         @Override
         @NotNull
-        public Codec<BlockHitRecipe> codec() {
+        public MapCodec<BlockHitRecipe> codec() {
             return CODEC;
         }
 
-        @Override
         @NotNull
-        public BlockHitRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            Ingredient block = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, BlockHitRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @NotNull
+        private static BlockHitRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
+            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            Ingredient block = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             return new BlockHitRecipe(ingredient, block, result);
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull BlockHitRecipe recipe) {
-            recipe.ingredient.toNetwork(buffer);
-            recipe.block.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull BlockHitRecipe recipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.block);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
         }
     }
 

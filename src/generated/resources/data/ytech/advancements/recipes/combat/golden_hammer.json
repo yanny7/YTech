@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:storage_blocks/gold"
+            "items": "#c:storage_blocks/gold"
           }
         ]
       },

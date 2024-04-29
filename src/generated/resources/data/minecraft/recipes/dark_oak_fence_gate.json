@@ -26,6 +26,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "minecraft:dark_oak_fence_gate"
+    "id": "minecraft:dark_oak_fence_gate"
   }
 }

@@ -64,7 +64,6 @@ public class AqueductValveBlock extends IrrigationBlock {
         return defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getClockWise());
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock,
                                 @NotNull BlockPos neighborPos, boolean movedByPiston) {

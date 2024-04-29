@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_boots"
-            ]
+            "items": "minecraft:leather_boots"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_chestplate"
-            ]
+            "items": "minecraft:leather_chestplate"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_helmet"
-            ]
+            "items": "minecraft:leather_helmet"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather_leggings"
-            ]
+            "items": "minecraft:leather_leggings"
           }
         ]
       },
@@ -57,8 +49,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "minecraft:leather_chestplate",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minecraft:leather_chestplate"
     },
     "show_toast": false,
     "title": {

@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:stone"
+      "tag": "c:stones"
     },
     "I": {
       "item": "minecraft:stick"
@@ -15,6 +15,7 @@
     " # "
   ],
   "result": {
-    "item": "ytech:stone_mortar_and_pestle"
+    "count": 1,
+    "id": "ytech:stone_mortar_and_pestle"
   }
 }

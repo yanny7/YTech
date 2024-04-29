@@ -3,6 +3,7 @@ package com.yanny.ytech.network.generic.server;
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import com.yanny.ytech.network.generic.common.NetworkFactory;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -13,7 +14,6 @@ import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -40,12 +40,12 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
     @NotNull private final String networkName;
 
     ServerLevelData(@NotNull CompoundTag tag, @NotNull ResourceLocation levelId, @NotNull MinecraftServer server,
-                    @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
+                    @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName, @NotNull HolderLookup.Provider provider) {
         this.levelId = levelId;
         this.server = server;
         this.networkName = networkName;
         this.networkFactory = networkFactory;
-        load(tag);
+        load(tag, provider);
     }
 
     ServerLevelData(@NotNull ResourceLocation levelId, @NotNull MinecraftServer server, @NotNull NetworkFactory<T, O> networkFactory, @NotNull String networkName) {
@@ -57,14 +57,14 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
 
     @NotNull
     @Override
-    public CompoundTag save(@NotNull CompoundTag tag) {
+    public CompoundTag save(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
         ListTag list = new ListTag();
         AtomicInteger index = new AtomicInteger();
 
         networkMap.forEach((networkId, network) -> {
             CompoundTag itemHolder = new CompoundTag();
             itemHolder.putInt(TAG_NETWORK_ID, networkId);
-            itemHolder.put(TAG_NETWORK, network.save());
+            itemHolder.put(TAG_NETWORK, network.save(provider));
             list.add(index.getAndIncrement(), itemHolder);
         });
         tag.put(TAG_NETWORKS, list);
@@ -93,7 +93,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                     networkMap.put(network.getNetworkId(), network);
                     resultNetwork = network;
                 } else if (networks.size() == 1) {
-                    resultNetwork = networks.get(0);
+                    resultNetwork = networks.getFirst();
 
                     if (!resultNetwork.canAttach(blockEntity)) {
                         LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
@@ -104,7 +104,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                     ArrayList<T> distinctNetworks = networks.stream().filter(distinctByKey(T::getNetworkId)).collect(Collectors.toCollection(ArrayList::new));
 
                     if (distinctNetworks.size() == 1) {
-                        resultNetwork = distinctNetworks.get(0);
+                        resultNetwork = distinctNetworks.getFirst();
 
                         if (!resultNetwork.canAttach(blockEntity)) {
                             LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
@@ -112,7 +112,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                             return;
                         }
                     } else {
-                        T network = distinctNetworks.remove(0);
+                        T network = distinctNetworks.removeFirst();
 
                         if (!network.canAttach(blockEntity) || !distinctNetworks.stream().allMatch((n) -> n.canAttach(blockEntity) && n.canAttach(network))) {
                             LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
@@ -121,7 +121,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                         }
 
                         do {
-                            T toRemove = distinctNetworks.remove(0);
+                            T toRemove = distinctNetworks.removeFirst();
 
                             network.appendNetwork(toRemove, level);
                             networkMap.remove(toRemove.getNetworkId());
@@ -129,7 +129,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                                     .map((chunkPos) -> level.getChunkSource().chunkMap.getPlayers(chunkPos, false))
                                     .flatMap(Collection::stream)
                                     .collect(Collectors.toSet())
-                                    .forEach((player) -> networkFactory.sendRemoved(PacketDistributor.PLAYER.with(player), toRemove.getNetworkId()));
+                                    .forEach((player) -> networkFactory.sendRemoved(player, toRemove.getNetworkId()));
                         } while (!distinctNetworks.isEmpty());
 
                         resultNetwork = network;
@@ -200,7 +200,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                         .map((chunkPos) -> chunkCache.chunkMap.getPlayers(chunkPos, false))
                         .flatMap(Collection::stream)
                         .collect(Collectors.toSet())
-                        .forEach((player) -> networkFactory.sendUpdated(PacketDistributor.PLAYER.with(player), network));
+                        .forEach((player) -> networkFactory.sendUpdated(player, network));
                 network.setClean();
             }
         });
@@ -226,7 +226,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
         if (level != null) {
             networkMap.remove(networkId);
             level.getChunkSource().chunkMap.getPlayers(chunkPos, false)
-                    .forEach((player) -> networkFactory.sendRemoved(PacketDistributor.PLAYER.with(player), networkId));
+                    .forEach((player) -> networkFactory.sendRemoved(player, networkId));
             setDirty();
         }
     }
@@ -259,14 +259,14 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
         throw new IllegalStateException("Can't generate new ID for network!");
     }
 
-    private void load(@NotNull CompoundTag tag) {
+    private void load(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
         if (tag.contains(TAG_NETWORKS)) {
             ListTag list = tag.getList(TAG_NETWORKS, CompoundTag.TAG_COMPOUND);
 
             list.forEach((listItem) -> {
                 CompoundTag itemHolder = (CompoundTag) listItem;
                 int networkId = itemHolder.getInt(TAG_NETWORK_ID);
-                networkMap.put(networkId, networkFactory.createNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, this::onChange, this::onRemove));
+                networkMap.put(networkId, networkFactory.createNetwork(itemHolder.getCompound(TAG_NETWORK), networkId, this::onChange, this::onRemove, provider));
             });
 
             LOGGER.debug("[{}] Loaded {} networks", networkName, networkMap.size());

@@ -3,12 +3,14 @@ package com.yanny.ytech.configuration.entity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.yanny.ytech.registration.YTechEntityTypes;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -41,10 +44,10 @@ public class DeerEntity extends Animal {
 
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType reason,
-                                        @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag) {
+                                        @Nullable SpawnGroupData spawnData) {
         hasAntlers = random.nextBoolean();
         entityData.set(DATA_HAS_ANTLERS_ID, hasAntlers);
-        return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        return super.finalizeSpawn(level, difficulty, reason, spawnData);
     }
 
     @Override
@@ -62,9 +65,9 @@ public class DeerEntity extends Animal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(DATA_HAS_ANTLERS_ID, false);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_HAS_ANTLERS_ID, false);
     }
 
     @Override
@@ -106,6 +109,11 @@ public class DeerEntity extends Animal {
         moreWheatTicks = tag.getInt(TAG_MORE_WHEAT_TICKS);
         hasAntlers = tag.getBoolean(TAG_HAS_ANTLERS);
         entityData.set(DATA_HAS_ANTLERS_ID, hasAntlers);
+    }
+
+    @Override
+    public boolean isFood(@NotNull ItemStack itemStack) {
+        return itemStack.is(YTechItemTags.DEER_FOOD);
     }
 
     public boolean hasAntler() {

@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:storage_blocks/bronze"
+      "tag": "c:storage_blocks/bronze"
     },
     "S": {
       "item": "minecraft:stick"
@@ -15,6 +15,7 @@
     "S  "
   ],
   "result": {
-    "item": "ytech:bronze_hammer"
+    "count": 1,
+    "id": "ytech:bronze_hammer"
   }
 }

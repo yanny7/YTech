@@ -1,14 +1,14 @@
 package com.yanny.ytech.configuration.entity;
 
-import com.google.common.collect.Sets;
+import com.mojang.logging.LogUtils;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,34 +16,45 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.util.Objects;
-import java.util.Set;
 
 public class ArrowEntity extends AbstractArrow {
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final int NO_EFFECT_COLOR = -1;
     private static final EntityDataAccessor<Integer> ID_EFFECT_COLOR = SynchedEntityData.defineId(ArrowEntity.class, EntityDataSerializers.INT);
     private static final byte EVENT_POTION_PUFF = 0;
 
-    private final Set<MobEffectInstance> effects = Sets.newHashSet();
-    private String arrowType;
-    private Potion potion = Potions.EMPTY;
-    private boolean fixedColor;
+    private PotionContents potionContents = PotionContents.EMPTY;
 
     public ArrowEntity(@NotNull Level level, @NotNull LivingEntity shooter, @NotNull Item arrowType) {
         super(EntityType.ARROW, shooter, level, arrowType.getDefaultInstance());
-        this.arrowType = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(arrowType)).toString();
+        this.updateColor();
+    }
+
+    private PotionContents getPotionContents() {
+        return potionContents;
+    }
+
+    private void setPotionContents(PotionContents contents) {
+        potionContents = contents;
+        this.updateColor();
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ID_EFFECT_COLOR, NO_EFFECT_COLOR);
+    protected void setPickupItemStack(@NotNull ItemStack stack) {
+        super.setPickupItemStack(stack);
+        this.updateColor();
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ID_EFFECT_COLOR, NO_EFFECT_COLOR);
     }
 
     @Override
@@ -64,47 +75,16 @@ public class ArrowEntity extends AbstractArrow {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-
-        if (this.potion != Potions.EMPTY) {
-            tag.putString("Potion", Objects.requireNonNull(BuiltInRegistries.POTION.getKey(this.potion)).toString());
-        }
-
-        if (this.fixedColor) {
-            tag.putInt("Color", this.getColor());
-        }
-
-        if (!this.effects.isEmpty()) {
-            ListTag list = new ListTag();
-
-            for(MobEffectInstance mobeffectinstance : this.effects) {
-                list.add(mobeffectinstance.save(new CompoundTag()));
-            }
-
-            tag.put("CustomPotionEffects", list);
-        }
-
-        tag.putString("Type", arrowType);
+        tag.put("effect", Objects.requireNonNull(DataComponents.POTION_CONTENTS.codec()).encodeStart(this.registryAccess().createSerializationContext(NbtOps.INSTANCE), potionContents).getOrThrow());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-
-        if (tag.contains("Potion", 8)) {
-            this.potion = PotionUtils.getPotion(tag);
+        if (tag.contains("effect")) {
+            setPotionContents(Objects.requireNonNull(DataComponents.POTION_CONTENTS.codec()).parse(registryAccess().createSerializationContext(NbtOps.INSTANCE), tag.get("effect"))
+                    .resultOrPartial(p_330102_ -> LOGGER.error("Tried to load invalid item: '{}'", p_330102_)).orElse(PotionContents.EMPTY));
         }
-
-        for(MobEffectInstance mobeffectinstance : PotionUtils.getCustomEffects(tag)) {
-            this.addEffect(mobeffectinstance);
-        }
-
-        if (tag.contains("Color", 99)) {
-            this.setFixedColor(tag.getInt("Color"));
-        } else {
-            this.updateColor();
-        }
-
-        arrowType = tag.getString("Type");
     }
 
     @Override
@@ -113,12 +93,20 @@ public class ArrowEntity extends AbstractArrow {
             int i = this.getColor();
 
             if (i != NO_EFFECT_COLOR) {
-                double d0 = (double)(i >> 16 & 255) / 255.0D;
-                double d1 = (double)(i >> 8 & 255) / 255.0D;
-                double d2 = (double)(i & 255) / 255.0D;
+                float d0 = (i >> 16 & 255) / 255.0F;
+                float d1 = (i >> 8 & 255) / 255.0F;
+                float d2 = (i & 255) / 255.0F;
 
                 for(int j = 0; j < 20; ++j) {
-                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
+                    this.level().addParticle(
+                            ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, d0, d1, d2),
+                            this.getRandomX(0.5D),
+                            this.getRandomY(),
+                            this.getRandomZ(0.5D),
+                            d0,
+                            d1,
+                            d2
+                    );
                 }
             }
         } else {
@@ -131,40 +119,44 @@ public class ArrowEntity extends AbstractArrow {
     }
 
     public void addEffect(@NotNull MobEffectInstance mobEffectInstance) {
-        this.effects.add(mobEffectInstance);
-        this.getEntityData().set(ID_EFFECT_COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.effects)));
+        this.setPotionContents(this.getPotionContents().withEffectAdded(mobEffectInstance));
     }
 
     @Override
     protected void doPostHurtEffects(@NotNull LivingEntity living) {
         super.doPostHurtEffects(living);
         Entity entity = this.getEffectSource();
+        PotionContents potionContents = this.getPotionContents();
 
-        for(MobEffectInstance effect : this.potion.getEffects()) {
-            living.addEffect(new MobEffectInstance(effect.getEffect(), Math.max(effect.mapDuration((duration) -> duration / 8), 1),
-                    effect.getAmplifier(), effect.isAmbient(), effect.isVisible()), entity);
+        if (potionContents.potion().isPresent()) {
+            for (MobEffectInstance mobEffectInstance : potionContents.potion().get().value().getEffects()) {
+                living.addEffect(
+                        new MobEffectInstance(
+                                mobEffectInstance.getEffect(),
+                                Math.max(mobEffectInstance.mapDuration(duration -> duration / 8), 1),
+                                mobEffectInstance.getAmplifier(),
+                                mobEffectInstance.isAmbient(),
+                                mobEffectInstance.isVisible()
+                        ),
+                        entity
+                );
+            }
         }
 
-        if (!this.effects.isEmpty()) {
-            for(MobEffectInstance mobEffectInstance : this.effects) {
-                living.addEffect(mobEffectInstance, entity);
-            }
+        for (MobEffectInstance mobEffectInstance : potionContents.customEffects()) {
+            living.addEffect(mobEffectInstance, entity);
         }
     }
 
     @NotNull
     @Override
-    protected ItemStack getPickupItem() {
-        return new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(arrowType)));
+    protected ItemStack getDefaultPickupItem() {
+        return getPickupItemStackOrigin();
     }
 
     private void updateColor() {
-        this.fixedColor = false;
-        if (this.potion == Potions.EMPTY && this.effects.isEmpty()) {
-            this.entityData.set(ID_EFFECT_COLOR, NO_EFFECT_COLOR);
-        } else {
-            this.entityData.set(ID_EFFECT_COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.effects)));
-        }
+        PotionContents potioncontents = this.getPotionContents();
+        this.entityData.set(ID_EFFECT_COLOR, potioncontents.equals(PotionContents.EMPTY) ? -1 : potioncontents.getColor());
     }
 
     private void makeParticle(int particleAmount) {
@@ -175,13 +167,16 @@ public class ArrowEntity extends AbstractArrow {
             double d2 = (double)(i & 255) / 255.0D;
 
             for(int j = 0; j < particleAmount; ++j) {
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
+                this.level().addParticle(
+                        ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, i),
+                        this.getRandomX(0.5D),
+                        this.getRandomY(),
+                        this.getRandomZ(0.5D),
+                        d0,
+                        d1,
+                        d2
+                );
             }
         }
-    }
-
-    private void setFixedColor(int fixedColor) {
-        this.fixedColor = true;
-        this.entityData.set(ID_EFFECT_COLOR, fixedColor);
     }
 }

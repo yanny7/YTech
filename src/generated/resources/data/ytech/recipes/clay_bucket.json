@@ -6,5 +6,8 @@
   "ingredient": {
     "tag": "ytech:unfired_clay_buckets"
   },
-  "result": "ytech:clay_bucket"
+  "result": {
+    "count": 1,
+    "id": "ytech:clay_bucket"
+  }
 }

@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:ingots/lead"
+      "tag": "c:ingots/lead"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -24,6 +24,7 @@
     " S "
   ],
   "result": {
-    "item": "ytech:lead_pickaxe"
+    "count": 1,
+    "id": "ytech:lead_pickaxe"
   }
 }

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:thatch"
+            "items": "#ytech:thatch"
           }
         ]
       },

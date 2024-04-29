@@ -22,6 +22,7 @@
     "PPW"
   ],
   "result": {
-    "item": "minecraft:oak_door"
+    "count": 1,
+    "id": "minecraft:oak_door"
   }
 }

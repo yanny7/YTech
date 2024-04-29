@@ -8,7 +8,6 @@ import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -142,10 +141,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
             if (!excludeMaterials.contains(material)) {
                 tag(materialTag.of(material)).add(materialItem.of(material).get());
                 tag(materialTag.tag).addTag(materialTag.of(material));
-
-                if (material.getTier().getTag() != null) {
-                    tag(material.getTier().getTag()).add(entry.getValue().get());
-                }
+                tag(BlockTags.NEEDS_STONE_TOOL).add(entry.getValue().get());
             }
         });
     }
@@ -159,12 +155,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
                 tag(materialTag.of(material)).add(block.get());
                 tag(materialTag.tag).add(block.get());
-                // ore must be mineable with lesser tier as material tier
-                TagKey<Block> tierTag = com.yanny.ytech.configuration.Utils.getPreviousTier(material.getTier()).getTag();
-
-                if (tierTag != null) {
-                    tag(tierTag).add(block.get());
-                }
+                tag(BlockTags.NEEDS_STONE_TOOL).add(entry.getValue().get());
 
                 switch (material) {
                     case IRON -> tag(BlockTags.IRON_ORES).add(block.get());

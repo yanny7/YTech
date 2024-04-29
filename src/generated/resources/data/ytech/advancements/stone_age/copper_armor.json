@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:boots/copper"
+            "items": "#ytech:boots/copper"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:chestplates/copper"
+            "items": "#ytech:chestplates/copper"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:helmets/copper"
+            "items": "#ytech:helmets/copper"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:leggings/copper"
+            "items": "#ytech:leggings/copper"
           }
         ]
       },
@@ -49,8 +49,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "ytech:copper_chestplate",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:copper_chestplate"
     },
     "show_toast": false,
     "title": {

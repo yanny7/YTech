@@ -20,6 +20,7 @@
     "SSS"
   ],
   "result": {
-    "item": "minecraft:stonecutter"
+    "count": 1,
+    "id": "minecraft:stonecutter"
   }
 }

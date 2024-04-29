@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:raw_hides"
+            "items": "#ytech:raw_hides"
           }
         ]
       },

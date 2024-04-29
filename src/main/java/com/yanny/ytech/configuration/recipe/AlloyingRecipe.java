@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -9,10 +10,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -40,7 +42,7 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -51,7 +53,7 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
         return result;
     }
 
@@ -100,45 +102,57 @@ public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingred
                 Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((ingredientCount) -> ingredientCount.ingredient),
                 Codec.INT.fieldOf("count").forGetter((ingredientCount) -> ingredientCount.count)
         ).apply(ingredient, IngredientCount::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, IngredientCount> STREAM_CODEC = StreamCodec.of(
+                (buffer, ingredient) -> {
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient.ingredient);
+                    buffer.writeInt(ingredient.count);
+                },
+                (buffer) -> new IngredientCount(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer), buffer.readInt())
+        );
     }
 
     public static class Serializer implements RecipeSerializer<AlloyingRecipe> {
-        private static final Codec<AlloyingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                IngredientCount.CODEC.fieldOf("ingredient1").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient1),
-                IngredientCount.CODEC.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
-                Codec.INT.fieldOf("minTemp").forGetter((alloyingRecipe) -> alloyingRecipe.minTemperature),
-                Codec.INT.fieldOf("smeltingTime").forGetter((alloyingRecipe) -> alloyingRecipe.smeltingTime),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((alloyingRecipe) -> alloyingRecipe.result)
-        ).apply(recipe, AlloyingRecipe::new));
+        private static final MapCodec<AlloyingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        IngredientCount.CODEC.fieldOf("ingredient1").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient1),
+                        IngredientCount.CODEC.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
+                        Codec.INT.fieldOf("minTemp").forGetter((alloyingRecipe) -> alloyingRecipe.minTemperature),
+                        Codec.INT.fieldOf("smeltingTime").forGetter((alloyingRecipe) -> alloyingRecipe.smeltingTime),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((alloyingRecipe) -> alloyingRecipe.result)
+                ).apply(instance, AlloyingRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, AlloyingRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
-        @Override
         @NotNull
-        public Codec<AlloyingRecipe> codec() {
+        @Override
+        public MapCodec<AlloyingRecipe> codec() {
             return CODEC;
         }
 
-        @Override
         @NotNull
-        public AlloyingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
-            Ingredient ingredient1 = Ingredient.fromNetwork(buffer);
-            Ingredient ingredient2 = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
-            int minTemperature = buffer.readInt();
-            int smeltingTime = buffer.readInt();
-            int count1 = buffer.readInt();
-            int count2 = buffer.readInt();
-            return new AlloyingRecipe(new IngredientCount(ingredient1, count1), new IngredientCount(ingredient2, count2), minTemperature, smeltingTime, result);
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, AlloyingRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull AlloyingRecipe recipe) {
-            recipe.ingredient1.ingredient.toNetwork(buffer);
-            recipe.ingredient2.ingredient.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+        @NotNull
+        private static AlloyingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
+            IngredientCount ingredient1 = IngredientCount.STREAM_CODEC.decode(buffer);
+            IngredientCount ingredient2 = IngredientCount.STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
+            int minTemperature = buffer.readInt();
+            int smeltingTime = buffer.readInt();
+            return new AlloyingRecipe(ingredient1, ingredient2, minTemperature, smeltingTime, result);
+        }
+
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull AlloyingRecipe recipe) {
+            IngredientCount.STREAM_CODEC.encode(buffer, recipe.ingredient1);
+            IngredientCount.STREAM_CODEC.encode(buffer, recipe.ingredient2);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeInt(recipe.minTemperature);
             buffer.writeInt(recipe.smeltingTime);
-            buffer.writeInt(recipe.ingredient1.count);
-            buffer.writeInt(recipe.ingredient1.count);
         }
     }
 

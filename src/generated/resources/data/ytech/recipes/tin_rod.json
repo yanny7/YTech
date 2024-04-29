@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/tin"
+      "tag": "c:ingots/tin"
     },
     "F": {
       "tag": "ytech:files"
@@ -14,6 +14,7 @@
     "F"
   ],
   "result": {
-    "item": "ytech:tin_rod"
+    "count": 1,
+    "id": "ytech:tin_rod"
   }
 }

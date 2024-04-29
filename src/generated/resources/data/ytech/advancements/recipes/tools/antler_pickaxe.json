@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:sharp_flints"
+            "items": "#ytech:sharp_flints"
           }
         ]
       },

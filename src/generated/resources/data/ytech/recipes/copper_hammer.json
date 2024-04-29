@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:storage_blocks/copper"
+      "tag": "c:storage_blocks/copper"
     },
     "S": {
       "item": "minecraft:stick"
@@ -15,6 +15,7 @@
     "S  "
   ],
   "result": {
-    "item": "ytech:copper_hammer"
+    "count": 1,
+    "id": "ytech:copper_hammer"
   }
 }

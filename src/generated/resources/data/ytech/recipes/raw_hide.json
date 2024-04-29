@@ -5,7 +5,8 @@
     "tag": "ytech:raw_hides"
   },
   "result": {
-    "item": "minecraft:leather"
+    "count": 1,
+    "id": "minecraft:leather"
   },
   "tool": {
     "tag": "ytech:sharp_flints"

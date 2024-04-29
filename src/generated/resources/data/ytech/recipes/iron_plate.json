@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "H": {
       "tag": "ytech:hammers"
@@ -15,6 +15,7 @@
     "H"
   ],
   "result": {
-    "item": "ytech:iron_plate"
+    "count": 1,
+    "id": "ytech:iron_plate"
   }
 }

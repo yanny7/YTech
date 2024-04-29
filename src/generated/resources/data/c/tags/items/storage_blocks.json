@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#c:storage_blocks/raw_cassiterite",
+    "#c:storage_blocks/raw_galena",
+    "#c:storage_blocks/bronze",
+    "#c:storage_blocks/lead",
+    "#c:storage_blocks/tin"
+  ]
+}

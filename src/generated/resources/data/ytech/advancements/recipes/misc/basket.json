@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:grass_twines"
+            "items": "#ytech:grass_twines"
           }
         ]
       },

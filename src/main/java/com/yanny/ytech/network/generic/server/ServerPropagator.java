@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -61,7 +60,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         LOGGER.debug("[{}][onLevelLoad] Preparing propagators for {}", networkName, id);
         levelMap.put(id, level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(
                 () -> new ServerLevelData<>(id, level.getServer(), networkFactory, networkName),
-                (tag) -> new ServerLevelData<>(tag, id, level.getServer(), networkFactory, networkName)
+                (tag, provider) -> new ServerLevelData<>(tag, id, level.getServer(), networkFactory, networkName, provider)
         ), YTechMod.MOD_ID + "_" + networkName));
         LOGGER.debug("[{}][onLevelLoad] Prepared propagators for {}", networkName, id);
     }
@@ -77,7 +76,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
     public void onPlayerLogIn(@NotNull Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             LOGGER.debug("[{}][onPlayerLogIn] Connecting player {}", networkName, serverPlayer);
-            networkFactory.sendLevelSync(PacketDistributor.PLAYER.with(serverPlayer), levelMap.get(NetworkUtils.getLevelId(serverPlayer.level())).getNetworks());
+            networkFactory.sendLevelSync(serverPlayer, levelMap.get(NetworkUtils.getLevelId(serverPlayer.level())).getNetworks());
         }
     }
 
@@ -126,7 +125,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
         if (serverLevelData != null) {
             serverLevelData.getNetworks().values().stream()
                     .filter((network) -> network.getChunks().contains(chunk.getPos()))
-                    .forEach((network) -> networkFactory.sendUpdated(PacketDistributor.PLAYER.with(player), network));
+                    .forEach((network) -> networkFactory.sendUpdated(player, network));
         } else {
             LOGGER.warn("[{}][onChunkWatch] No networks defined for level {}", networkName, level);
         }

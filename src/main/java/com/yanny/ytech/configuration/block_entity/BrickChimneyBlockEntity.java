@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.ReinforcedBrickChimneyBlock;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -29,8 +30,8 @@ public class BrickChimneyBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (tag.contains(TAG_MASTER_POSITION)) {
             masterPos = Utils.loadBlockPos(tag.getCompound(TAG_MASTER_POSITION));
@@ -111,8 +112,8 @@ public class BrickChimneyBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
 
         if (masterPos != null) {
             tag.put(TAG_MASTER_POSITION, Utils.saveBlockPos(masterPos));

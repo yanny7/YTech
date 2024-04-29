@@ -8,6 +8,7 @@ import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
@@ -18,10 +19,11 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 public class YTechGlobalLootModifierProvider extends GlobalLootModifierProvider {
-    public YTechGlobalLootModifierProvider(PackOutput output) {
-        super(output, YTechMod.MOD_ID);
+    public YTechGlobalLootModifierProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, YTechMod.MOD_ID);
     }
 
     @Override

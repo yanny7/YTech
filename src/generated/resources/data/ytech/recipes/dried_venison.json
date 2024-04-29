@@ -5,6 +5,7 @@
     "tag": "ytech:venison"
   },
   "result": {
-    "item": "ytech:dried_venison"
+    "count": 1,
+    "id": "ytech:dried_venison"
   }
 }

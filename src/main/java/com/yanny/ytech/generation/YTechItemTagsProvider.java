@@ -79,6 +79,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
 
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);
+        tag(YTechItemTags.DEER_FOOD).add(Items.APPLE, Items.CARROT, Items.WHEAT);
 
         materialTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         materialTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));

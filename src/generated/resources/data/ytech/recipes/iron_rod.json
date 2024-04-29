@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "F": {
       "tag": "ytech:files"
@@ -14,6 +14,7 @@
     "F"
   ],
   "result": {
-    "item": "ytech:iron_rod"
+    "count": 1,
+    "id": "ytech:iron_rod"
   }
 }

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/iron"
+            "items": "#c:ingots/iron"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.bronze_age.description.iron_man"
     },
     "icon": {
-      "item": "minecraft:iron_ingot"
+      "count": 1,
+      "id": "minecraft:iron_ingot"
     },
     "show_toast": false,
     "title": {

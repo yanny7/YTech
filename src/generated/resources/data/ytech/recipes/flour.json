@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:crops/wheat"
+      "tag": "c:crops/wheat"
     },
     {
       "tag": "ytech:mortar_and_pestles"
     }
   ],
   "result": {
-    "item": "ytech:flour"
+    "count": 1,
+    "id": "ytech:flour"
   }
 }

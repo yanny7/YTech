@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/bronze"
+      "tag": "c:storage_blocks/bronze"
     }
   ],
   "result": {
     "count": 9,
-    "item": "ytech:bronze_ingot"
+    "id": "ytech:bronze_ingot"
   }
 }

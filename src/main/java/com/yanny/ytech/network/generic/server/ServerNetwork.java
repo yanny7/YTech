@@ -6,6 +6,7 @@ import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.generic.common.CommonNetwork;
 import com.yanny.ytech.network.generic.common.INetworkBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.ChunkPos;
@@ -41,7 +42,7 @@ public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INe
 
     protected abstract boolean canAttach(@NotNull N network);
 
-    protected void load(@NotNull CompoundTag tag) {
+    protected void load(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
         if (tag.contains(TAG_CHUNK_MAP) && tag.getTagType(TAG_CHUNK_MAP) != 0) {
             tag.getList(TAG_CHUNK_MAP, ListTag.TAG_COMPOUND).forEach((t) -> {
                 Set<BlockPos> blockPosSet = new HashSet<>();
@@ -53,7 +54,7 @@ public abstract class ServerNetwork<N extends ServerNetwork<N, O>, O extends INe
     }
 
     @NotNull
-    protected CompoundTag save() {
+    protected CompoundTag save(@NotNull HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
         ListTag chunksTag = new ListTag();
 

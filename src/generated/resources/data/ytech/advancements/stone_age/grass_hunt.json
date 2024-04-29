@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:grass_fibers"
+            "items": "#ytech:grass_fibers"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.grass_hunt"
     },
     "icon": {
-      "item": "ytech:grass_fibers"
+      "count": 1,
+      "id": "ytech:grass_fibers"
     },
     "show_toast": false,
     "title": {

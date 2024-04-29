@@ -3,19 +3,19 @@
   "ingredient1": {
     "count": 9,
     "ingredient": {
-      "tag": "forge:ingots/copper"
+      "tag": "c:ingots/copper"
     }
   },
   "ingredient2": {
     "count": 1,
     "ingredient": {
-      "tag": "forge:ingots/tin"
+      "tag": "c:ingots/tin"
     }
   },
   "minTemp": 1085,
   "result": {
     "count": 10,
-    "item": "ytech:bronze_ingot"
+    "id": "ytech:bronze_ingot"
   },
   "smeltingTime": 200
 }

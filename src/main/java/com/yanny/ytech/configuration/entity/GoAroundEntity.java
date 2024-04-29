@@ -6,7 +6,7 @@ import com.yanny.ytech.registration.YTechEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -132,7 +132,7 @@ public class GoAroundEntity extends Mob implements IEntityWithComplexSpawn {
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf friendlyByteBuf) {
+    public void writeSpawnData(RegistryFriendlyByteBuf friendlyByteBuf) {
         friendlyByteBuf.writeBoolean(position != null);
 
         if (position != null) {
@@ -145,7 +145,7 @@ public class GoAroundEntity extends Mob implements IEntityWithComplexSpawn {
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf friendlyByteBuf) {
+    public void readSpawnData(RegistryFriendlyByteBuf friendlyByteBuf) {
         if (friendlyByteBuf.readBoolean()) {
             this.position = new BlockPos(friendlyByteBuf.readInt(), friendlyByteBuf.readInt(), friendlyByteBuf.readInt());
         } else {

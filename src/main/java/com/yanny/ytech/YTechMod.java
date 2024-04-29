@@ -10,7 +10,7 @@ import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -31,7 +31,7 @@ public class YTechMod {
         CONFIGURATION_SPEC = pair.getValue();
     }
 
-    public YTechMod(IEventBus modEventBus) {
+    public YTechMod(IEventBus modEventBus, ModContainer container) {
         YTechItems.register(modEventBus);
         YTechBlocks.register(modEventBus);
         YTechBlockEntityTypes.register(modEventBus);
@@ -41,11 +41,13 @@ public class YTechMod {
         YTechRecipeSerializers.register(modEventBus);
         YTechGLMCodecs.register(modEventBus);
         YTechCreativeTabs.register(modEventBus);
+        YTechArmorMaterials.register(modEventBus);
+        YTechDataComponentTypes.register(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIGURATION_SPEC);
+        container.registerConfig(ModConfig.Type.COMMON, CONFIGURATION_SPEC);
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             YTechMod.clientStuff(modEventBus);

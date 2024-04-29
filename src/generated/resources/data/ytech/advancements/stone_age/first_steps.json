@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:sharp_flints"
+            "items": "#ytech:sharp_flints"
           }
         ]
       },
@@ -18,8 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.first_steps"
     },
     "icon": {
-      "item": "ytech:sharp_flint",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:sharp_flint"
     },
     "show_toast": false,
     "title": {

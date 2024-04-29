@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -9,10 +10,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -38,7 +40,7 @@ public record DryingRecipe(Ingredient ingredient, int dryingTime, ItemStack resu
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -49,7 +51,7 @@ public record DryingRecipe(Ingredient ingredient, int dryingTime, ItemStack resu
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
         return result;
     }
 
@@ -66,31 +68,40 @@ public record DryingRecipe(Ingredient ingredient, int dryingTime, ItemStack resu
     }
 
     public static class Serializer implements RecipeSerializer<DryingRecipe> {
-        private static final Codec<DryingRecipe> CODEC = RecordCodecBuilder.create((recipe) -> recipe.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((dryingRecipe) -> dryingRecipe.ingredient),
-                Codec.INT.fieldOf("dryingTime").forGetter((dryingRecipe) -> dryingRecipe.dryingTime),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter((dryingRecipe) -> dryingRecipe.result)
-        ).apply(recipe, DryingRecipe::new));
+        private static final MapCodec<DryingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((dryingRecipe) -> dryingRecipe.ingredient),
+                        Codec.INT.fieldOf("dryingTime").forGetter((dryingRecipe) -> dryingRecipe.dryingTime),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((dryingRecipe) -> dryingRecipe.result)
+                ).apply(instance, DryingRecipe::new)
+        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork, Serializer::fromNetwork
+        );
 
         @Override
         @NotNull
-        public Codec<DryingRecipe> codec() {
+        public MapCodec<DryingRecipe> codec() {
             return CODEC;
         }
 
-        @Override
         @NotNull
-        public DryingRecipe fromNetwork(@NotNull FriendlyByteBuf buffer) {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @NotNull
+        private static DryingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
+            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             int dryingTime = buffer.readInt();
             return new DryingRecipe(ingredient, dryingTime, result);
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull DryingRecipe recipe) {
-            recipe.ingredient.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull DryingRecipe recipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeInt(recipe.dryingTime);
         }
     }

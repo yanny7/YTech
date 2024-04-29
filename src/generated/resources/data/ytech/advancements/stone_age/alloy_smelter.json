@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:primitive_alloy_smelters"
+            "items": "#ytech:primitive_alloy_smelters"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.alloy_smelter"
     },
     "icon": {
-      "item": "ytech:primitive_alloy_smelter"
+      "count": 1,
+      "id": "ytech:primitive_alloy_smelter"
     },
     "show_toast": false,
     "title": {

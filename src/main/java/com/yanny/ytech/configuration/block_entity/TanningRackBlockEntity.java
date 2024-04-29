@@ -4,14 +4,16 @@ import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -47,8 +49,8 @@ public class TanningRackBlockEntity extends BlockEntity {
         };
     }
 
-    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
             ItemStack tanningItem = items.getStackInSlot(0);
@@ -71,7 +73,7 @@ public class TanningRackBlockEntity extends BlockEntity {
 
                     tanningRecipe.ifPresent((recipe) -> {
                         if (recipe.value().tool().isEmpty() || recipe.value().tool().test(holdingItemStack)) {
-                            player.getItemInHand(hand).hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
+                            player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
                             hitLeft--;
 
                             if (hitLeft == 0) {
@@ -93,19 +95,19 @@ public class TanningRackBlockEntity extends BlockEntity {
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (tag.contains(TAG_ITEMS)) {
-            items.deserializeNBT(tag.getCompound(TAG_ITEMS));
+            items.deserializeNBT(provider, tag.getCompound(TAG_ITEMS));
         }
 
         if (tag.contains(TAG_RESULT)) {
-            result = ItemStack.of(tag.getCompound(TAG_RESULT));
+            result = ItemStack.parseOptional(provider, tag.getCompound(TAG_RESULT));
         } else {
             result = null;
         }
@@ -115,9 +117,9 @@ public class TanningRackBlockEntity extends BlockEntity {
 
     @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
         return tag;
     }
 
@@ -136,15 +138,15 @@ public class TanningRackBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put(TAG_ITEMS, items.serializeNBT());
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put(TAG_ITEMS, items.serializeNBT(provider));
         tag.putInt(TAG_HIT_LEFT, hitLeft);
 
         if (result != null) {
             CompoundTag itemStack = new CompoundTag();
 
-            result.save(itemStack);
+            result.save(provider, itemStack);
             tag.put(TAG_RESULT, itemStack);
         }
     }

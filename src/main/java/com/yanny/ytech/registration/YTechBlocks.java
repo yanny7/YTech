@@ -62,7 +62,7 @@ public class YTechBlocks {
     }
 
     private static DeferredBlock<Block> registerStairs(String name, DeferredBlock<Block> baseBlock, BlockBehaviour behaviour) {
-        return BLOCKS.register(name, () -> new StairBlock(() -> baseBlock.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(behaviour)));
+        return BLOCKS.register(name, () -> new StairBlock(baseBlock.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(behaviour)));
     }
 
     public static class MaterialBlock {

@@ -6,5 +6,8 @@
   "ingredient": {
     "tag": "ytech:bread_doughs"
   },
-  "result": "minecraft:bread"
+  "result": {
+    "count": 1,
+    "id": "minecraft:bread"
+  }
 }

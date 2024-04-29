@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:raw_materials/cassiterite"
+      "tag": "c:raw_materials/cassiterite"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "ytech:raw_cassiterite_block"
+    "count": 1,
+    "id": "ytech:raw_cassiterite_block"
   }
 }

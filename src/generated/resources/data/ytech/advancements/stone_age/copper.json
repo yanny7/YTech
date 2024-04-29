@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/copper"
+            "items": "#c:ingots/copper"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.copper"
     },
     "icon": {
-      "item": "minecraft:copper_ingot"
+      "count": 1,
+      "id": "minecraft:copper_ingot"
     },
     "show_toast": false,
     "title": {

@@ -3,7 +3,7 @@
   "ingredient1": {
     "count": 1,
     "ingredient": {
-      "tag": "forge:crushed_materials/iron"
+      "tag": "c:crushed_materials/iron"
     }
   },
   "ingredient2": {
@@ -14,7 +14,8 @@
   },
   "minTemp": 1250,
   "result": {
-    "item": "ytech:iron_bloom"
+    "count": 1,
+    "id": "ytech:iron_bloom"
   },
   "smeltingTime": 200
 }

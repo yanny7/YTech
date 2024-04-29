@@ -6,6 +6,7 @@ import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
@@ -59,18 +60,18 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
 
         if (level == null || !level.isClientSide) { // server side
             if (tag.contains(TAG_RECIPE_INPUT_LEFT)) {
-                recipeInputLeft = ItemStack.of(tag.getCompound(TAG_RECIPE_INPUT_LEFT));
+                recipeInputLeft = ItemStack.parseOptional(provider, tag.getCompound(TAG_RECIPE_INPUT_LEFT));
             } else {
                 recipeInputLeft = null;
             }
 
             if (tag.contains(TAG_RECIPE_INPUT_RIGHT)) {
-                recipeInputRight = ItemStack.of(tag.getCompound(TAG_RECIPE_INPUT_RIGHT));
+                recipeInputRight = ItemStack.parseOptional(provider, tag.getCompound(TAG_RECIPE_INPUT_RIGHT));
             } else {
                 recipeInputRight = null;
             }
@@ -83,21 +84,21 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
 
         if (level == null || !level.isClientSide) {
             if (recipeInputLeft != null) {
                 CompoundTag itemStack = new CompoundTag();
 
-                recipeInputLeft.save(itemStack);
+                recipeInputLeft.save(provider, itemStack);
                 tag.put(TAG_RECIPE_INPUT_LEFT, itemStack);
             }
 
             if (recipeInputRight != null) {
                 CompoundTag itemStack = new CompoundTag();
 
-                recipeInputRight.save(itemStack);
+                recipeInputRight.save(provider, itemStack);
                 tag.put(TAG_RECIPE_INPUT_RIGHT, itemStack);
             }
         }
@@ -124,7 +125,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
                 AlloyingRecipe r = recipe.value();
 
                 if (r.minTemperature() <= temperature && (result.isEmpty()
-                        || (ItemStack.isSameItemSameTags(result, r.result()) && result.getMaxStackSize() > result.getCount() + r.result().getCount()))) {
+                        || (ItemStack.isSameItemSameComponents(result, r.result()) && result.getMaxStackSize() > result.getCount() + r.result().getCount()))) {
                     if (r.matchesIngredient1(inputLeft, false) && r.matchesIngredient2(inputRight, false)) {
                         recipeInputLeft = inputLeft.split(r.getInput1Count());
                         recipeInputRight = inputRight.split(r.getInput2Count());

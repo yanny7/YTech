@@ -1,6 +1,7 @@
 package com.yanny.ytech.network.generic.message;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -14,11 +15,11 @@ public abstract class LevelSyncMessage<T> {
         this.networkMap = networkMap;
     }
 
-    public LevelSyncMessage(@NotNull FriendlyByteBuf buf, Function<FriendlyByteBuf, T> valueReader) {
+    public LevelSyncMessage(@NotNull RegistryFriendlyByteBuf buf, Function<FriendlyByteBuf, T> valueReader) {
         networkMap = buf.readMap(FriendlyByteBuf::readInt, valueReader::apply);
     }
 
-    public void write(@NotNull FriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
+    protected void write(@NotNull RegistryFriendlyByteBuf buf, BiConsumer<FriendlyByteBuf, T> valueWriter) {
         buf.writeMap(networkMap, FriendlyByteBuf::writeInt, valueWriter::accept);
     }
 }

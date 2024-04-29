@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.block.AqueductValveBlock;
 import com.yanny.ytech.network.irrigation.NetworkType;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
@@ -22,8 +23,8 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
         flow = tag.getInt(TAG_FLOW);
     }
 
@@ -34,9 +35,9 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
 
     @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
         return tag;
     }
 
@@ -61,8 +62,8 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
         tag.putInt(TAG_FLOW, flow);
     }
 

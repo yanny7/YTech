@@ -1,11 +1,12 @@
 {
   "type": "ytech:smelting",
   "ingredient": {
-    "tag": "forge:crushed_materials/galena"
+    "tag": "c:crushed_materials/galena"
   },
   "minTemp": 1114,
   "result": {
-    "item": "ytech:lead_ingot"
+    "count": 1,
+    "id": "ytech:lead_ingot"
   },
   "smeltingTime": 200
 }

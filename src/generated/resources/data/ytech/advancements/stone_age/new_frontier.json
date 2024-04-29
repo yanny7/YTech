@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/bronze"
+            "items": "#c:ingots/bronze"
           }
         ]
       },
@@ -19,7 +19,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "ytech:bronze_ingot"
+      "count": 1,
+      "id": "ytech:bronze_ingot"
     },
     "show_toast": false,
     "title": {

@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:crops/wheat"
+            "items": "#c:crops/wheat"
           }
         ]
       },

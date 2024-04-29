@@ -4,7 +4,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/bronze"
+            "items": "#c:ingots/bronze"
           }
         ]
       },
@@ -18,8 +18,8 @@
       "translate": "advancements.ytech.bronze_age.description.root"
     },
     "icon": {
-      "item": "ytech:bronze_axe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "ytech:bronze_axe"
     },
     "show_toast": false,
     "title": {

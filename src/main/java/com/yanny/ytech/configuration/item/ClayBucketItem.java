@@ -27,11 +27,9 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Supplier;
-
 public class ClayBucketItem extends BucketItem {
-    public ClayBucketItem(Supplier<? extends Fluid> supplier, Properties builder) {
-        super(supplier, builder);
+    public ClayBucketItem(Fluid fluid, Properties builder) {
+        super(fluid, builder);
     }
 
     @NotNull
@@ -60,7 +58,8 @@ public class ClayBucketItem extends BucketItem {
                     // allow only water and lava pickup
                     if (!blockState.hasProperty(BlockStateProperties.WATERLOGGED)) {
                         if (blockState.getBlock() instanceof LiquidBlock liquidBlock) {
-                            if (!liquidBlock.getFluid().isSame(Fluids.WATER) && !liquidBlock.getFluid().isSame(Fluids.LAVA)) {
+                            //FIXME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            /*if (!liquidBlock.getFluid().isSame(Fluids.WATER) && !liquidBlock.getFluid().isSame(Fluids.LAVA))*/ {
                                 return InteractionResultHolder.fail(itemInHand);
                             }
                         }

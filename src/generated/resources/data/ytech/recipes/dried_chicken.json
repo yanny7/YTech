@@ -5,6 +5,7 @@
     "item": "minecraft:chicken"
   },
   "result": {
-    "item": "ytech:dried_chicken"
+    "count": 1,
+    "id": "ytech:dried_chicken"
   }
 }

@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:raw_materials/gold"
+      "tag": "c:raw_materials/gold"
     },
     {
       "tag": "ytech:mortar_and_pestles"
     }
   ],
   "result": {
-    "item": "ytech:crushed_gold"
+    "count": 1,
+    "id": "ytech:crushed_gold"
   }
 }

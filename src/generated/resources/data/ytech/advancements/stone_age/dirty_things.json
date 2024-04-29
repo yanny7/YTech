@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:wooden_shovel"
-            ]
+            "items": "minecraft:wooden_shovel"
           }
         ]
       },
@@ -20,8 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.dirty_things"
     },
     "icon": {
-      "item": "minecraft:wooden_shovel",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minecraft:wooden_shovel"
     },
     "show_toast": false,
     "title": {

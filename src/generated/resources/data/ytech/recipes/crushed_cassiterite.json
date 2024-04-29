@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:raw_materials/cassiterite"
+      "tag": "c:raw_materials/cassiterite"
     },
     {
       "tag": "ytech:mortar_and_pestles"
     }
   ],
   "result": {
-    "item": "ytech:crushed_cassiterite"
+    "count": 1,
+    "id": "ytech:crushed_cassiterite"
   }
 }

@@ -6,5 +6,8 @@
   "ingredient": {
     "tag": "ytech:venison"
   },
-  "result": "ytech:cooked_venison"
+  "result": {
+    "count": 1,
+    "id": "ytech:cooked_venison"
+  }
 }

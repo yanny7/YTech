@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:leather_strips"
+            "items": "#ytech:leather_strips"
           }
         ]
       },

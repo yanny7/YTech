@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:ingots/bronze"
+      "tag": "c:ingots/bronze"
     },
     "F": {
       "tag": "ytech:files"
@@ -14,6 +14,7 @@
     "F"
   ],
   "result": {
-    "item": "ytech:bronze_rod"
+    "count": 1,
+    "id": "ytech:bronze_rod"
   }
 }

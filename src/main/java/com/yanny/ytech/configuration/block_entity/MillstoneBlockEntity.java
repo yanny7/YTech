@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.recipe.MillingRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -12,7 +13,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -51,7 +52,7 @@ public class MillstoneBlockEntity extends BlockEntity {
         super(YTechBlockEntityTypes.MILLSTONE.get(), pos, blockState);
     }
 
-    public InteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand) {
+    public ItemInteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand) {
         if (!level.isClientSide) {
             if (!isLeashed) {
                 int x = pos.getX();
@@ -92,14 +93,14 @@ public class MillstoneBlockEntity extends BlockEntity {
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
-        input = ItemStack.of(tag.getCompound(TAG_INPUT));
-        result = ItemStack.of(tag.getCompound(TAG_RESULT));
+    public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        input = ItemStack.parseOptional(provider, tag.getCompound(TAG_INPUT));
+        result = ItemStack.parseOptional(provider, tag.getCompound(TAG_RESULT));
         bonusChance = tag.getFloat(TAG_BONUS_CHANCE);
         isMilling = tag.getBoolean(TAG_IS_MILLING);
         isLeashed = tag.getBoolean(TAG_IS_LEASHED);
@@ -107,9 +108,9 @@ public class MillstoneBlockEntity extends BlockEntity {
 
     @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
         return tag;
     }
 
@@ -182,10 +183,10 @@ public class MillstoneBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put(TAG_INPUT, input.save(new CompoundTag()));
-        tag.put(TAG_RESULT, result.save(new CompoundTag()));
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put(TAG_INPUT, input.save(provider, new CompoundTag()));
+        tag.put(TAG_RESULT, result.save(provider, new CompoundTag()));
         tag.putFloat(TAG_BONUS_CHANCE, bonusChance);
         tag.putBoolean(TAG_IS_MILLING, isMilling);
         tag.putBoolean(TAG_IS_LEASHED, isLeashed);

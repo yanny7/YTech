@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:antlers"
+            "items": "#ytech:antlers"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.ytech.stone_age.description.run_forest_run"
     },
     "icon": {
-      "item": "ytech:antler"
+      "count": 1,
+      "id": "ytech:antler"
     },
     "show_toast": false,
     "title": {

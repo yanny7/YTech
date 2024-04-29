@@ -18,9 +18,6 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
     private static final VoxelShape SHAPE = Shapes.box(1/16.0, 0, 1/16.0, 15/16.0, 1, 15/16.0);
 
