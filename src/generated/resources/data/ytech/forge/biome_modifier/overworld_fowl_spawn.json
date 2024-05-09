@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#ytech:fowl_native_biome",
+  "spawners": {
+    "type": "ytech:fowl",
+    "maxCount": 6,
+    "minCount": 2,
+    "weight": 10
+  }
+}

@@ -51,8 +51,10 @@ public class YTechItems {
     public static final RegistryObject<Item> IRON_BLOOM = ITEMS.register("iron_bloom", YTechItems::simpleItem);
     public static final RegistryObject<Item> LAVA_CLAY_BUCKET = ITEMS.register("lava_clay_bucket", LavaClayBucketItem::new);
     public static final RegistryObject<Item> LEATHER_STRIPS = ITEMS.register("leather_strips", YTechItems::simpleItem);
+    public static final RegistryObject<Item> MAMMOTH_TUSK = ITEMS.register("mammoth_tusk", YTechItems::simpleItem);
     public static final RegistryObject<Item> PEBBLE = ITEMS.register("pebble", PebbleItem::new);
     public static final RegistryObject<Item> RAW_HIDE = ITEMS.register("raw_hide", YTechItems::simpleItem);
+    public static final RegistryObject<Item> RHINO_HORN = ITEMS.register("rhino_horn", YTechItems::simpleItem);
     public static final RegistryObject<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolItem(Tiers.WOOD));
     public static final RegistryObject<Item> UNFIRED_BRICK = ITEMS.register("unfired_brick", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_CLAY_BUCKET = ITEMS.register("unfired_clay_bucket", YTechItems::simpleItem);
@@ -79,7 +81,14 @@ public class YTechItems {
     public static final RegistryObject<Item> THATCH_SLAB = ITEMS.register("thatch_slab", () -> blockItem(YTechBlocks.THATCH_SLAB));
     public static final RegistryObject<Item> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> blockItem(YTechBlocks.THATCH_STAIRS));
 
+    public static final RegistryObject<Item> AUROCHS_SPAWN_EGG = ITEMS.register("aurochs_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.AUROCHS, 0x4688f5, 0xE03C83, new Item.Properties()));
     public static final RegistryObject<Item> DEER_SPAWN_EGG = ITEMS.register("deer_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.DEER, 0x664825, 0xE09C53, new Item.Properties()));
+    public static final RegistryObject<Item> FOWL_SPAWN_EGG = ITEMS.register("fowl_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.FOWL, 0xc6484b, 0xedde9d, new Item.Properties()));
+    public static final RegistryObject<Item> MOUFLON_SPAWN_EGG = ITEMS.register("mouflon_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.MOUFLON, 0x064aeb, 0xa13bb6, new Item.Properties()));
+    public static final RegistryObject<Item> SABER_TOOTH_TIGER_SPAWN_EGG = ITEMS.register("saber_tooth_tiger_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.SABER_TOOTH_TIGER, 0xa52a80, 0x9194c2, new Item.Properties()));
+    public static final RegistryObject<Item> WILD_BOAR_SPAWN_EGG = ITEMS.register("wild_boar_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.WILD_BOAR, 0xf4f7d7, 0x560a59, new Item.Properties()));
+    public static final RegistryObject<Item> WOOLLY_MAMMOTH_SPAWN_EGG = ITEMS.register("woolly_mammoth_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.WOOLLY_MAMMOTH, 0x8a4a71, 0x6cc8ab, new Item.Properties()));
+    public static final RegistryObject<Item> WOOLLY_RHINO_SPAWN_EGG = ITEMS.register("woolly_rhino_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.WOOLLY_RHINO, 0x04b53a, 0x2f7415, new Item.Properties()));
 
     public static final MaterialItem ARROWS = new MaterialItem("arrow", NameHolder.suffix("arrow"), MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
     public static final MaterialItem AXES = new AxeMaterialItem();

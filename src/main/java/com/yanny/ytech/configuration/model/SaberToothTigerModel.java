@@ -1,0 +1,82 @@
+package com.yanny.ytech.configuration.model;
+
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.entity.SaberToothTigerEntity;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+
+@OnlyIn(Dist.CLIENT)
+public class SaberToothTigerModel extends EntityModel<SaberToothTigerEntity> {
+    @NotNull public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Utils.modLoc("saber_tooth_tiger"), "main");
+
+    @NotNull private final ModelPart head;
+    @NotNull private final ModelPart body;
+    @NotNull private final ModelPart fl_foot;
+    @NotNull private final ModelPart bl_foot;
+    @NotNull private final ModelPart fr_foot;
+    @NotNull private final ModelPart br_foot;
+
+    public SaberToothTigerModel(@NotNull ModelPart root) {
+        super(RenderType::entityCutoutNoCull);
+        this.head = root.getChild("head");
+        this.body = root.getChild("body");
+        this.fl_foot = root.getChild("fl_foot");
+        this.bl_foot = root.getChild("bl_foot");
+        this.fr_foot = root.getChild("fr_foot");
+        this.br_foot = root.getChild("br_foot");
+    }
+
+    @Override
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packetLight, int packetOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
+        parts().forEach((modelPart) -> modelPart.render(poseStack, vertexConsumer, packetLight, packetOverlay, pRed, pGreen, pBlue, pAlpha));
+    }
+
+    @Override
+    public void setupAnim(@NotNull SaberToothTigerEntity entity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+        this.head.xRot = pHeadPitch * ((float)Math.PI / 180F);
+        this.head.yRot = pNetHeadYaw * ((float)Math.PI / 180F);
+        this.fl_foot.xRot = Mth.cos(pLimbSwing * 0.6662F) * 1.4F * pLimbSwingAmount;
+        this.bl_foot.xRot = Mth.cos(pLimbSwing * 0.6662F + (float)Math.PI) * 1.4F * pLimbSwingAmount;
+        this.fr_foot.xRot = Mth.cos(pLimbSwing * 0.6662F + (float)Math.PI) * 1.4F * pLimbSwingAmount;
+        this.br_foot.xRot = Mth.cos(pLimbSwing * 0.6662F) * 1.4F * pLimbSwingAmount;
+    }
+
+    @NotNull
+    private Iterable<ModelPart> parts() {
+        return ImmutableList.of(head, body, fl_foot, bl_foot, fr_foot, br_foot);
+    }
+
+    @NotNull
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 14).addBox(-5.0F, -17.0F, -10.0F, 10.0F, 9.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+        body.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-1.0F, -6.0F, -5.0F, 8.0F, 12.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-3.0F, -13.0F, 5.0F, 1.5708F, 0.0F, 0.0F));
+        partdefinition.addOrReplaceChild("bl_foot", CubeListBuilder.create().texOffs(52, 21).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 8.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(2.5F, 16.0F, 9.5F));
+        partdefinition.addOrReplaceChild("br_foot", CubeListBuilder.create().texOffs(52, 21).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 8.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.5F, 16.0F, 9.5F));
+        partdefinition.addOrReplaceChild("fr_foot", CubeListBuilder.create().texOffs(52, 21).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 8.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.5F, 16.0F, -8.5F));
+        partdefinition.addOrReplaceChild("fl_foot", CubeListBuilder.create().texOffs(52, 21).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 8.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(3.5F, 16.0F, -8.5F));
+
+        PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -2.0F, -6.0F, 8.0F, 7.0F, 6.0F, new CubeDeformation(0.0F))
+                .texOffs(24, 0).addBox(-2.5F, 1.0F, -8.0F, 5.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 8.0F, -10.0F));
+
+        head.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 0).addBox(-0.25F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 0).addBox(-3.75F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.5F, 3.0F, -8.0F, 0.2182F, 0.0F, 0.0F));
+        head.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(39, 21).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 3.0F, -6.0F, 0.1309F, 0.0F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+}

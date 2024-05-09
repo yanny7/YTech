@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#ytech:saber_tooth_tiger_native_biome",
+  "spawners": {
+    "type": "ytech:saber_tooth_tiger",
+    "maxCount": 3,
+    "minCount": 1,
+    "weight": 6
+  }
+}

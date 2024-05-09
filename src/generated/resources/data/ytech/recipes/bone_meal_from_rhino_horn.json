@@ -1,0 +1,16 @@
+{
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "ytech:rhino_horns"
+    },
+    {
+      "tag": "ytech:mortar_and_pestles"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "item": "minecraft:bone_meal"
+  }
+}

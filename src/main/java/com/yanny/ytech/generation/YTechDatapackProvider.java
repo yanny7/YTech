@@ -98,10 +98,52 @@ public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
                     final HolderGetter<Biome> biomeReg = bootstrap.lookup(Registries.BIOME);
                     final HolderGetter<PlacedFeature> featureReg = bootstrap.lookup(Registries.PLACED_FEATURE);
 
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_aurochs_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.AUROCHS_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.AUROCHS.get(), 10, 2, 6))
+                            )
+                    );
                     bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_deer_spawn")),
                             new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                                     biomeReg.getOrThrow(YTechBiomeTags.DEER_BIOMES),
                                     List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.DEER.get(), 15, 4, 8))
+                            )
+                    );
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_fowl_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.FOWL_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.FOWL.get(), 10, 2, 6))
+                            )
+                    );
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_mouflon_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.MOUFLON_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.MOUFLON.get(), 10, 2, 6))
+                            )
+                    );
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_saber_tooth_tiger_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.SABER_TOOTH_TIGER_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.SABER_TOOTH_TIGER.get(), 6, 1, 3))
+                            )
+                    );
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_wild_boar_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.WILD_BOAR_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.WILD_BOAR.get(), 10, 2, 6))
+                            )
+                    );
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_woolly_mammoth_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.WOOLLY_MAMMOTH_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.WOOLLY_MAMMOTH.get(), 6, 2, 6))
+                            )
+                    );
+                    bootstrap.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_woolly_rhino_spawn")),
+                            new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.WOOLLY_RHINO_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.WOOLLY_RHINO.get(), 6, 2, 6))
                             )
                     );
 

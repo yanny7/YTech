@@ -48,14 +48,23 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.GRASS_TWINE);
         simpleItem(YTechItems.IRON_BLOOM);
         simpleItem(YTechItems.LEATHER_STRIPS);
+        simpleItem(YTechItems.MAMMOTH_TUSK);
         simpleItem(YTechItems.PEBBLE);
         simpleItem(YTechItems.RAW_HIDE);
+        simpleItem(YTechItems.RHINO_HORN);
         simpleItem(YTechItems.SHARP_FLINT);
         simpleItem(YTechItems.UNFIRED_BRICK);
         simpleItem(YTechItems.UNFIRED_CLAY_BUCKET);
         simpleItem(YTechItems.VENISON);
 
+        spawnEggModel(YTechItems.AUROCHS_SPAWN_EGG);
         spawnEggModel(YTechItems.DEER_SPAWN_EGG);
+        spawnEggModel(YTechItems.FOWL_SPAWN_EGG);
+        spawnEggModel(YTechItems.MOUFLON_SPAWN_EGG);
+        spawnEggModel(YTechItems.SABER_TOOTH_TIGER_SPAWN_EGG);
+        spawnEggModel(YTechItems.WILD_BOAR_SPAWN_EGG);
+        spawnEggModel(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG);
+        spawnEggModel(YTechItems.WOOLLY_RHINO_SPAWN_EGG);
 
         materialItem(YTechItems.ARROWS, "item/generated");
         vanillaMaterialItem(YTechItems.AXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");

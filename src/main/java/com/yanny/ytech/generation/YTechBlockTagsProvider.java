@@ -10,6 +10,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -47,6 +48,11 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.THATCH).add(YTechBlocks.THATCH.get());
         tag(YTechBlockTags.THATCH_SLABS).add(YTechBlocks.THATCH_SLAB.get());
         tag(YTechBlockTags.THATCH_STAIRS).add(YTechBlocks.THATCH_STAIRS.get());
+
+        tag(YTechBlockTags.AUROCHS_RAID_BLOCKS).add(Blocks.WHEAT);
+        tag(YTechBlockTags.DEER_RAID_BLOCKS).add(Blocks.WHEAT);
+        tag(YTechBlockTags.FOWL_RAID_BLOCKS).add(Blocks.BEETROOTS);
+        tag(YTechBlockTags.MOUFLON_RAID_BLOCKS).add(Blocks.WHEAT, Blocks.BEETROOTS, Blocks.PUMPKIN_STEM, Blocks.ATTACHED_PUMPKIN_STEM, Blocks.MELON_STEM, Blocks.ATTACHED_MELON_STEM);
 
         materialOreTag(YTechBlocks.DEEPSLATE_ORES, YTechBlockTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         materialTag(YTechBlocks.DRYING_RACKS, YTechBlockTags.DRYING_RACKS);

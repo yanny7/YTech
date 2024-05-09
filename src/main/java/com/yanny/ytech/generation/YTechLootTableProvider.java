@@ -180,7 +180,207 @@ class YTechLootTableProvider extends LootTableProvider {
 
         @Override
         public void generate() {
-            registerDeerLootTable(this);
+            registerAurochsLootTable();
+            registerDeerLootTable();
+            registerFowlLootTable();
+            registerMouflonLootTable();
+            registerSaberToothTigerLootTable();
+            registerWildBoarLootTable();
+            registerWoollyMammothLootTable();
+            registerWoollyRhinoLootTable();
+        }
+
+        private void registerAurochsLootTable() {
+            EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+
+            add(YTechEntityTypes.AUROCHS.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(Items.BEEF)
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                                    .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerDeerLootTable() {
+            EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+
+            add(YTechEntityTypes.DEER.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.VENISON.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                                    .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.ANTLER.get())
+                                                    .when(
+                                                            LootItemEntityPropertyCondition.hasProperties(
+                                                                    LootContext.EntityTarget.THIS,
+                                                                    EntityPredicate.Builder.entity().nbt(NbtPredicate.fromJson(new JsonPrimitive(DeerEntity.hasAntlersStr())))
+                                                            )
+                                                    )
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerFowlLootTable() {
+            EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+
+            add(YTechEntityTypes.FOWL.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(Items.FEATHER)
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(Items.CHICKEN)
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerMouflonLootTable() {
+            EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+
+            add(YTechEntityTypes.MOUFLON.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(Items.MUTTON)
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                                    .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerSaberToothTigerLootTable() {
+            add(YTechEntityTypes.SABER_TOOTH_TIGER.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerWildBoarLootTable() {
+            EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+
+            add(YTechEntityTypes.WILD_BOAR.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(Items.PORKCHOP)
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                                    .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerWoollyMammothLootTable() {
+            add(YTechEntityTypes.WOOLLY_MAMMOTH.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 6.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.MAMMOTH_TUSK.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerWoollyRhinoLootTable() {
+            add(YTechEntityTypes.WOOLLY_RHINO.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(YTechItems.RHINO_HORN.get())
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+            );
         }
     }
 
@@ -202,45 +402,5 @@ class YTechLootTableProvider extends LootTableProvider {
 
     private static void registerMaterialLootTable(YTechBlocks.MaterialBlock block, Consumer<RegistryObject<Block>> loot) {
         block.entries().forEach((entry) -> loot.accept(entry.getValue()));
-    }
-
-    private static void registerDeerLootTable(EntityLootSubProvider provider) {
-        EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
-
-        provider.add(YTechEntityTypes.DEER.get(), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
-                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                                )
-                )
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(YTechItems.VENISON.get())
-                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
-                                                .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
-                                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                                )
-                )
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(YTechItems.ANTLER.get())
-                                                .when(
-                                                        LootItemEntityPropertyCondition.hasProperties(
-                                                                LootContext.EntityTarget.THIS,
-                                                                EntityPredicate.Builder.entity().nbt(NbtPredicate.fromJson(new JsonPrimitive(DeerEntity.hasAntlersStr())))
-                                                        )
-                                                )
-                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                )
-                )
-        );
     }
 }
