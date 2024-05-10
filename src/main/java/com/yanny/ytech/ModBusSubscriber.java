@@ -3,12 +3,10 @@ package com.yanny.ytech;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
 import com.yanny.ytech.configuration.data_component.BasketContents;
-import com.yanny.ytech.configuration.entity.DeerEntity;
-import com.yanny.ytech.configuration.entity.GoAroundEntity;
+import com.yanny.ytech.configuration.entity.*;
 import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.item.SpearItem;
-import com.yanny.ytech.configuration.model.CustomRendererBakedModel;
-import com.yanny.ytech.configuration.model.DeerModel;
+import com.yanny.ytech.configuration.model.*;
 import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
 import com.yanny.ytech.configuration.screen.PrimitiveAlloySmelterScreen;
@@ -21,9 +19,14 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -89,7 +92,15 @@ public class ModBusSubscriber {
         event.registerEntityRenderer(YTechEntityTypes.IRON_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.IRON)));
         event.registerEntityRenderer(YTechEntityTypes.PEBBLE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.GO_AROUND.get(), GoAroundRenderer::new);
+
+        event.registerEntityRenderer(YTechEntityTypes.AUROCHS.get(), AurochsRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.DEER.get(), DeerRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.FOWL.get(), FowlRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.MOUFLON.get(), MouflonRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SaberToothTigerRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.WILD_BOAR.get(), WildBoarRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.WOOLLY_MAMMOTH.get(), WoollyMammothRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.WOOLLY_RHINO.get(), WoollyRhinoRenderer::new);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -97,9 +108,17 @@ public class ModBusSubscriber {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.BRONZE), () -> createLayer(0, 12));
         event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.COPPER), () -> createLayer(0, 6));
-        event.registerLayerDefinition(DeerModel.LAYER_LOCATION, DeerModel::createBodyLayer);
         event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.FLINT), () -> createLayer(0, 0));
         event.registerLayerDefinition(LAYER_LOCATIONS.get(SpearType.IRON), () -> createLayer(0, 18));
+
+        event.registerLayerDefinition(AurochsModel.LAYER_LOCATION, AurochsModel::createBodyLayer);
+        event.registerLayerDefinition(DeerModel.LAYER_LOCATION, DeerModel::createBodyLayer);
+        event.registerLayerDefinition(FowlModel.LAYER_LOCATION, FowlModel::createBodyLayer);
+        event.registerLayerDefinition(MouflonModel.LAYER_LOCATION, MouflonModel::createBodyLayer);
+        event.registerLayerDefinition(SaberToothTigerModel.LAYER_LOCATION, SaberToothTigerModel::createBodyLayer);
+        event.registerLayerDefinition(WildBoarModel.LAYER_LOCATION, WildBoarModel::createBodyLayer);
+        event.registerLayerDefinition(WoollyMammothModel.LAYER_LOCATION, WoollyMammothModel::createBodyLayer);
+        event.registerLayerDefinition(WoollyRhinoModel.LAYER_LOCATION, WoollyRhinoModel::createBodyLayer);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -112,13 +131,32 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+        event.put(YTechEntityTypes.AUROCHS.get(), AurochsEntity.createAttributes().build());
         event.put(YTechEntityTypes.DEER.get(), DeerEntity.createAttributes().build());
+        event.put(YTechEntityTypes.FOWL.get(),  FowlEntity.createAttributes().build());
         event.put(YTechEntityTypes.GO_AROUND.get(), GoAroundEntity.createAttributes().build());
+        event.put(YTechEntityTypes.MOUFLON.get(), MouflonEntity.createAttributes().build());
+        event.put(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SaberToothTigerEntity.createAttributes().build());
+        event.put(YTechEntityTypes.WILD_BOAR.get(), WildBoarEntity.createAttributes().build());
+        event.put(YTechEntityTypes.WOOLLY_MAMMOTH.get(), WoollyMammothEntity.createAttributes().build());
+        event.put(YTechEntityTypes.WOOLLY_RHINO.get(), WoollyRhinoEntity.createAttributes().build());
     }
 
     @SubscribeEvent
     public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event) {
-        event.register(YTechEntityTypes.DEER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.WORLD_SURFACE, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.AUROCHS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.DEER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.FOWL.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.MOUFLON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.WILD_BOAR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.WOOLLY_MAMMOTH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.WOOLLY_RHINO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+
+        event.register(EntityType.CHICKEN, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(EntityType.COW, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(EntityType.PIG, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(EntityType.SHEEP, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -157,5 +195,9 @@ public class ModBusSubscriber {
         final PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);
 
         YTechMod.IRRIGATION_PROPAGATOR = IrrigationUtils.registerIrrigationPropagator(registrar);
+    }
+
+    public static boolean removeAnimalPredicate(EntityType<? extends Animal> pAnimal, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+        return false;
     }
 }

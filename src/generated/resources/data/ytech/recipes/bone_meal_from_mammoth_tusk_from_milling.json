@@ -1,0 +1,11 @@
+{
+  "type": "ytech:milling",
+  "bonusChance": 0.2,
+  "ingredient": {
+    "tag": "ytech:mammoth_tusks"
+  },
+  "result": {
+    "count": 8,
+    "id": "minecraft:bone_meal"
+  }
+}

@@ -50,8 +50,10 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.IRON_BLOOMS).add(YTechItems.IRON_BLOOM.get());
         tag(YTechItemTags.LAVA_BUCKETS).add(Items.LAVA_BUCKET, YTechItems.LAVA_CLAY_BUCKET.get());
         tag(YTechItemTags.LEATHER_STRIPS).add(YTechItems.LEATHER_STRIPS.get());
+        tag(YTechItemTags.MAMMOTH_TUSKS).add(YTechItems.MAMMOTH_TUSK.get());
         tag(YTechItemTags.PEBBLES).add(YTechItems.PEBBLE.get());
         tag(YTechItemTags.RAW_HIDES).add(YTechItems.RAW_HIDE.get());
+        tag(YTechItemTags.RHINO_HORNS).add(YTechItems.RHINO_HORN.get());
         tag(YTechItemTags.SHARP_FLINTS).add(YTechItems.SHARP_FLINT.get());
         tag(YTechItemTags.UNFIRED_BRICKS).add(YTechItems.UNFIRED_BRICK.get());
         tag(YTechItemTags.UNFIRED_CLAY_BUCKETS).add(YTechItems.UNFIRED_CLAY_BUCKET.get());
@@ -80,6 +82,19 @@ class YTechItemTagsProvider extends ItemTagsProvider {
 
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);
         tag(YTechItemTags.DEER_FOOD).add(Items.APPLE, Items.CARROT, Items.WHEAT);
+
+        tag(YTechItemTags.AUROCHS_FOOD).add(Items.WHEAT);
+        tag(YTechItemTags.AUROCHS_TEMP_ITEMS).add(Items.WHEAT);
+        tag(YTechItemTags.DEER_TEMP_ITEMS).add(Items.WHEAT);
+        tag(YTechItemTags.FOWL_FOOD).addTag(Tags.Items.SEEDS);
+        tag(YTechItemTags.FOWL_TEMP_ITEMS).addTag(Tags.Items.SEEDS);
+        tag(YTechItemTags.MOUFLON_FOOD).add(Items.WHEAT);
+        tag(YTechItemTags.MOUFLON_TEMP_ITEMS).add(Items.WHEAT);
+        tag(YTechItemTags.SABER_TOOTH_TIGER_TEMP_ITEMS).add(Items.BEEF, Items.CHICKEN, Items.COD, Items.MUTTON, Items.PORKCHOP, Items.RABBIT, Items.SALMON).addTag(YTechItemTags.VENISON);
+        tag(YTechItemTags.WILD_BOAR_FOOD).add(Items.CARROT, Items.POTATO, Items.APPLE);
+        tag(YTechItemTags.WILD_BOAR_TEMP_ITEMS).add(Items.CARROT, Items.POTATO, Items.APPLE);
+        tag(YTechItemTags.WOOLLY_MAMMOTH_TEMP_ITEMS).add(Items.CARROT, Items.APPLE);
+        tag(YTechItemTags.WOOLLY_RHINO_TEMP_ITEMS).add(Items.WHEAT);
 
         materialTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         materialTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));

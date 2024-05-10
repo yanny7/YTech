@@ -46,15 +46,24 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.IRON_BLOOM, "Iron Bloom");
         addItem(YTechItems.LAVA_CLAY_BUCKET, "Lava Clay Bucket");
         addItem(YTechItems.LEATHER_STRIPS, "Leather Strips");
+        addItem(YTechItems.MAMMOTH_TUSK, "Mammoth Tusk");
         addItem(YTechItems.PEBBLE, "Pebble");
         addItem(YTechItems.RAW_HIDE, "Raw Hide");
+        addItem(YTechItems.RHINO_HORN, "Rhino Horn");
         addItem(YTechItems.SHARP_FLINT, "Sharp Flint");
         addItem(YTechItems.UNFIRED_BRICK, "Unfired Brick");
         addItem(YTechItems.UNFIRED_CLAY_BUCKET, "Unfired Clay Bucket");
         addItem(YTechItems.VENISON, "Venison");
         addItem(YTechItems.WATER_CLAY_BUCKET, "Water Clay Bucket");
 
+        addItem(YTechItems.AUROCHS_SPAWN_EGG, "Aurochs Spawn Egg");
         addItem(YTechItems.DEER_SPAWN_EGG, "Deer Spawn Egg");
+        addItem(YTechItems.FOWL_SPAWN_EGG, "Fowl Spawn Egg");
+        addItem(YTechItems.MOUFLON_SPAWN_EGG, "Mouflon Spawn Egg");
+        addItem(YTechItems.SABER_TOOTH_TIGER_SPAWN_EGG, "Saber-Toothed Tiger Spawn Egg");
+        addItem(YTechItems.WILD_BOAR_SPAWN_EGG, "Wild Boar Spawn Egg");
+        addItem(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG, "Woolly Mammoth Spawn Egg");
+        addItem(YTechItems.WOOLLY_RHINO_SPAWN_EGG, "Woolly Rhino Spawn Egg");
 
         addBlock(YTechBlocks.AQUEDUCT, "Aqueduct");
         addBlock(YTechBlocks.AQUEDUCT_FERTILIZER, "Aqueduct Fertilizer");
@@ -110,7 +119,14 @@ class YTechLanguageProvider extends LanguageProvider {
         addStorageBlockLanguage(YTechBlocks.STORAGE_BLOCKS, "Block of");
         addMaterialBlock(YTechBlocks.TANNING_RACKS, NameHolder.suffix("Tanning Rack"));
 
+        addEntityType(YTechEntityTypes.AUROCHS, "Aurochs");
         addEntityType(YTechEntityTypes.DEER, "Deer");
+        addEntityType(YTechEntityTypes.FOWL, "Fowl");
+        addEntityType(YTechEntityTypes.MOUFLON, "Mouflon");
+        addEntityType(YTechEntityTypes.SABER_TOOTH_TIGER, "Saber-Toothed Tiger");
+        addEntityType(YTechEntityTypes.WILD_BOAR, "Wild Boar");
+        addEntityType(YTechEntityTypes.WOOLLY_MAMMOTH, "Woolly Mammoth");
+        addEntityType(YTechEntityTypes.WOOLLY_RHINO, "Woolly Rhino");
 
         for (YtechAdvancementType type : YtechAdvancementType.values()) {
             add(type.titleId(), type.title());

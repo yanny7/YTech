@@ -34,8 +34,10 @@ public class YTechItemTags {
     public static final TagKey<Item> IRON_BLOOMS = create("iron_blooms");
     public static final TagKey<Item> LAVA_BUCKETS = create("lava_buckets");
     public static final TagKey<Item> LEATHER_STRIPS = create("leather_strips");
+    public static final TagKey<Item> MAMMOTH_TUSKS = create("mammoth_tusks");
     public static final TagKey<Item> PEBBLES = create("pebbles");
     public static final TagKey<Item> RAW_HIDES = create("raw_hides");
+    public static final TagKey<Item> RHINO_HORNS = create("rhino_horns");
     public static final TagKey<Item> SHARP_FLINTS = create("sharp_flints");
     public static final TagKey<Item> UNFIRED_BRICKS = create("unfired_bricks");
     public static final TagKey<Item> UNFIRED_CLAY_BUCKETS = create("unfired_clay_buckets");
@@ -44,6 +46,19 @@ public class YTechItemTags {
 
     public static final TagKey<Item> FERTILIZER = create("fertilizer");
     public static final TagKey<Item> DEER_FOOD = create("deer_food");
+
+    public static final TagKey<Item> AUROCHS_FOOD = create("aurochs_food");
+    public static final TagKey<Item> AUROCHS_TEMP_ITEMS = create("aurochs_temp_items");
+    public static final TagKey<Item> DEER_TEMP_ITEMS = create("deer_temp_items");
+    public static final TagKey<Item> FOWL_FOOD = create("fowl_food");
+    public static final TagKey<Item> FOWL_TEMP_ITEMS = create("fowl_temp_items");
+    public static final TagKey<Item> MOUFLON_FOOD = create("mouflon_food");
+    public static final TagKey<Item> MOUFLON_TEMP_ITEMS = create("mouflon_temp_items");
+    public static final TagKey<Item> SABER_TOOTH_TIGER_TEMP_ITEMS = create("saber_tooth_tiger_temp_items");
+    public static final TagKey<Item> WILD_BOAR_FOOD = create("wild_boar_food");
+    public static final TagKey<Item> WILD_BOAR_TEMP_ITEMS = create("wild_boar_temp_items");
+    public static final TagKey<Item> WOOLLY_MAMMOTH_TEMP_ITEMS = create("woolly_mammoth_temp_items");
+    public static final TagKey<Item> WOOLLY_RHINO_TEMP_ITEMS = create("woolly_rhino_temp_items");
 
     public static final TagKey<Item> AQUEDUCTS = create(YTechBlockTags.AQUEDUCTS);
     public static final TagKey<Item> AQUEDUCT_FERTILIZERS = create(YTechBlockTags.AQUEDUCT_FERTILIZERS);

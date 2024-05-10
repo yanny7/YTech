@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#ytech:aurochs_native_biome",
+  "spawners": {
+    "type": "ytech:aurochs",
+    "maxCount": 6,
+    "minCount": 2,
+    "weight": 10
+  }
+}

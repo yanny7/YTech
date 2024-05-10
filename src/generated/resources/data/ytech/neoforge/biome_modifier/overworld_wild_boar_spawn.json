@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#ytech:wild_boar_native_biome",
+  "spawners": {
+    "type": "ytech:wild_boar",
+    "maxCount": 6,
+    "minCount": 2,
+    "weight": 10
+  }
+}

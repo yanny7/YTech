@@ -38,6 +38,9 @@ public class YTechConfigSpec {
     @NotNull private final ModConfigSpec.ConfigValue<Integer> fertilizerDuration;
     @NotNull private final ModConfigSpec.ConfigValue<Integer> applyFertilizerChance;
 
+    private final ModConfigSpec.ConfigValue<Integer> minBreedingGenerations;
+    private final ModConfigSpec.DoubleValue domesticChance;
+
     public YTechConfigSpec(@NotNull ModConfigSpec.Builder builder) {
         builder.push("general");
             makeBlocksRequireValidTool = builder.comment("If mod can change behaviour of specified blocks to require valid tool for harvesting")
@@ -87,6 +90,11 @@ public class YTechConfigSpec {
                         .worldRestart().defineInRange("applyFertilizerChance", 60, 1, Integer.MAX_VALUE);
             builder.pop();
         builder.pop();
+        builder.push("wildAnimalsBreeding");
+            minBreedingGenerations = builder.comment("Minimum generations for domestic animal breeding result")
+                    .worldRestart().defineInRange("minBreedingGenerations", 3, 1, Integer.MAX_VALUE);
+            domesticChance = builder.comment("Chance for domestic animal breeding result, multiplied by each generation after minBreedingGenerations")
+                    .worldRestart().defineInRange("domesticChance", 0.2, Double.MIN_NORMAL, 1.0);
     }
 
     public boolean shouldRequireValidTool() {
@@ -156,6 +164,14 @@ public class YTechConfigSpec {
 
     public int getApplyFertilizerChance() {
         return applyFertilizerChance.get();
+    }
+
+    public int getMinBreedingGenerations() {
+        return minBreedingGenerations.get();
+    }
+
+    public double getDomesticChance() {
+        return domesticChance.get();
     }
 
     @NotNull
