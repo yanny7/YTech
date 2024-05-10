@@ -35,7 +35,7 @@ public class ClayBucketItem extends BucketItem {
     @NotNull
     public InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
-        BlockHitResult blockHitResult = getPlayerPOVHitResult(level, player, getFluid() == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
+        BlockHitResult blockHitResult = getPlayerPOVHitResult(level, player, content == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
         InteractionResultHolder<ItemStack> interactionResult = EventHooks.onBucketUse(player, level, itemInHand, blockHitResult);
 
         if (interactionResult != null) {
@@ -52,7 +52,7 @@ public class ClayBucketItem extends BucketItem {
             BlockPos relativePos = blockPos.relative(direction);
 
             if (level.mayInteract(player, blockPos) && player.mayUseItemAt(relativePos, direction, itemInHand)) {
-                if (getFluid() == Fluids.EMPTY) {
+                if (content == Fluids.EMPTY) {
                     BlockState blockState = level.getBlockState(blockPos);
 
                     // allow only water and lava pickup
