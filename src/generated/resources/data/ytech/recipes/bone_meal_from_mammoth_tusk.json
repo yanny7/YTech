@@ -1,0 +1,16 @@
+{
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "ytech:mammoth_tusks"
+    },
+    {
+      "tag": "ytech:mortar_and_pestles"
+    }
+  ],
+  "result": {
+    "count": 5,
+    "item": "minecraft:bone_meal"
+  }
+}
