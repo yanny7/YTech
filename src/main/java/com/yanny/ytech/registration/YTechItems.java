@@ -53,8 +53,10 @@ public class YTechItems {
     public static final DeferredItem<Item> IRON_BLOOM = ITEMS.registerSimpleItem("iron_bloom");
     public static final DeferredItem<Item> LAVA_CLAY_BUCKET = ITEMS.register("lava_clay_bucket", LavaClayBucketItem::new);
     public static final DeferredItem<Item> LEATHER_STRIPS = ITEMS.registerSimpleItem("leather_strips");
+    public static final DeferredItem<Item> MAMMOTH_TUSK = ITEMS.register("mammoth_tusk", YTechItems::simpleItem);
     public static final DeferredItem<Item> PEBBLE = ITEMS.register("pebble", PebbleItem::new);
     public static final DeferredItem<Item> RAW_HIDE = ITEMS.registerSimpleItem("raw_hide");
+    public static final DeferredItem<Item> RHINO_HORN = ITEMS.register("rhino_horn", YTechItems::simpleItem);
     public static final DeferredItem<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolItem(Tiers.WOOD));
     public static final DeferredItem<Item> UNFIRED_BRICK = ITEMS.registerSimpleItem("unfired_brick");
     public static final DeferredItem<Item> UNFIRED_CLAY_BUCKET = ITEMS.registerSimpleItem("unfired_clay_bucket");
@@ -81,7 +83,14 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> THATCH_SLAB = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_SLAB);
     public static final DeferredItem<BlockItem> THATCH_STAIRS = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_STAIRS);
 
+    public static final DeferredItem<Item> AUROCHS_SPAWN_EGG = ITEMS.register("aurochs_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.AUROCHS, 0x4688f5, 0xE03C83, new Item.Properties()));
     public static final DeferredItem<Item> DEER_SPAWN_EGG = ITEMS.register("deer_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.DEER, 0x664825, 0xE09C53, new Item.Properties()));
+    public static final DeferredItem<Item> FOWL_SPAWN_EGG = ITEMS.register("fowl_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.FOWL, 0xc6484b, 0xedde9d, new Item.Properties()));
+    public static final DeferredItem<Item> MOUFLON_SPAWN_EGG = ITEMS.register("mouflon_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.MOUFLON, 0x064aeb, 0xa13bb6, new Item.Properties()));
+    public static final DeferredItem<Item> SABER_TOOTH_TIGER_SPAWN_EGG = ITEMS.register("saber_tooth_tiger_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.SABER_TOOTH_TIGER, 0xa52a80, 0x9194c2, new Item.Properties()));
+    public static final DeferredItem<Item> WILD_BOAR_SPAWN_EGG = ITEMS.register("wild_boar_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WILD_BOAR, 0xf4f7d7, 0x560a59, new Item.Properties()));
+    public static final DeferredItem<Item> WOOLLY_MAMMOTH_SPAWN_EGG = ITEMS.register("woolly_mammoth_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_MAMMOTH, 0x8a4a71, 0x6cc8ab, new Item.Properties()));
+    public static final DeferredItem<Item> WOOLLY_RHINO_SPAWN_EGG = ITEMS.register("woolly_rhino_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_RHINO, 0x04b53a, 0x2f7415, new Item.Properties()));
 
     public static final MaterialItem ARROWS = new MaterialItem("arrow", NameHolder.suffix("arrow"), MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
     public static final MaterialItem AXES = new AxeMaterialItem();
