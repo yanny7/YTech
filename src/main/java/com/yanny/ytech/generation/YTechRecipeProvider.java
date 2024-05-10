@@ -486,6 +486,8 @@ class YTechRecipeProvider extends RecipeProvider {
         registerDryingRecipe(recipeConsumer, YTechItemTags.VENISON, YTechItems.DRIED_VENISON);
 
         crushingRecipe(recipeConsumer, YTechItemTags.ANTLERS, Items.BONE_MEAL, 2, "_from_" + Utils.getPath(YTechItems.ANTLER));
+        crushingRecipe(recipeConsumer, YTechItemTags.MAMMOTH_TUSKS, Items.BONE_MEAL, 5, "_from_" + Utils.getPath(YTechItems.MAMMOTH_TUSK));
+        crushingRecipe(recipeConsumer, YTechItemTags.RHINO_HORNS, Items.BONE_MEAL, 3, "_from_" + Utils.getPath(YTechItems.RHINO_HORN));
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -737,7 +739,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .requires(YTechItemTags.MORTAR_AND_PESTLES.tag)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + suffix));
-        MillingRecipe.Builder.milling(input, result, count + 1)
+        MillingRecipe.Builder.milling(input, result, count + (int)Math.ceil(count / 2.0))
                 .bonusChance(0.2f)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + suffix + "_from_milling"));

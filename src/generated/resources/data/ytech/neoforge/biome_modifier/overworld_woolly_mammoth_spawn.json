@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#ytech:woolly_mammoth_native_biome",
+  "spawners": {
+    "type": "ytech:woolly_mammoth",
+    "maxCount": 6,
+    "minCount": 2,
+    "weight": 6
+  }
+}
