@@ -58,8 +58,7 @@ public class ClayBucketItem extends BucketItem {
                     // allow only water and lava pickup
                     if (!blockState.hasProperty(BlockStateProperties.WATERLOGGED)) {
                         if (blockState.getBlock() instanceof LiquidBlock liquidBlock) {
-                            //FIXME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            /*if (!liquidBlock.getFluid().isSame(Fluids.WATER) && !liquidBlock.getFluid().isSame(Fluids.LAVA))*/ {
+                            if (!liquidBlock.fluid.isSame(Fluids.WATER) && !liquidBlock.fluid.isSame(Fluids.LAVA)) {
                                 return InteractionResultHolder.fail(itemInHand);
                             }
                         }
