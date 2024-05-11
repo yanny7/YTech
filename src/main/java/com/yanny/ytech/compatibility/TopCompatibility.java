@@ -2,10 +2,15 @@ package com.yanny.ytech.compatibility;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block_entity.*;
+import com.yanny.ytech.configuration.entity.AurochsEntity;
+import com.yanny.ytech.configuration.entity.FowlEntity;
+import com.yanny.ytech.configuration.entity.MouflonEntity;
+import com.yanny.ytech.configuration.entity.WildBoarEntity;
 import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -54,6 +59,27 @@ public class TopCompatibility {
                             addPrimitiveSmelterInfo(probeInfo, blockEntity);
                         } else if (entity instanceof IIrrigationBlockEntity blockEntity) {
                             addIrrigationInfo(probeInfo, blockEntity);
+                        }
+                    }
+                }
+            });
+            probe.registerEntityProvider(new IProbeInfoEntityProvider() {
+                @Override
+                public String getID() {
+                    return YTechMod.MOD_ID;
+                }
+
+                @Override
+                public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, Player player, Level level, Entity entity, IProbeHitEntityData iProbeHitEntityData) {
+                    if (!level.isClientSide) {
+                        if (entity instanceof AurochsEntity aurochsEntity) {
+                            iProbeInfo.horizontal().text("Generation: " + aurochsEntity.getGeneration());
+                        } else if (entity instanceof MouflonEntity mouflonEntity) {
+                            iProbeInfo.horizontal().text("Generation: " + mouflonEntity.getGeneration());
+                        } else if (entity instanceof FowlEntity fowlEntity) {
+                            iProbeInfo.horizontal().text("Generation: " + fowlEntity.getGeneration());
+                        } else if (entity instanceof WildBoarEntity wildBoarEntity) {
+                            iProbeInfo.horizontal().text("Generation: " + wildBoarEntity.getGeneration());
                         }
                     }
                 }
