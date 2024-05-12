@@ -185,6 +185,7 @@ class YTechLootTableProvider extends LootTableProvider {
             registerFowlLootTable();
             registerMouflonLootTable();
             registerSaberToothTigerLootTable();
+            registerTerrorBirdLootTable();
             registerWildBoarLootTable();
             registerWoollyMammothLootTable();
             registerWoollyRhinoLootTable();
@@ -316,6 +317,32 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+            );
+        }
+
+        private void registerTerrorBirdLootTable() {
+            EntityPredicate.Builder entityOnFire = EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build());
+
+            add(YTechEntityTypes.TERROR_BIRD.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(Items.FEATHER)
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F)))
+                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                    )
+                    )
+                    .withPool(
+                            LootPool.lootPool()
+                                    .setRolls(ConstantValue.exactly(1.0F))
+                                    .add(
+                                            LootItem.lootTableItem(Items.CHICKEN)
+                                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
+                                                    .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
                                                     .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )

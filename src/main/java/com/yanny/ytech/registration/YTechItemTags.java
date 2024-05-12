@@ -54,6 +54,7 @@ public class YTechItemTags {
     public static final TagKey<Item> MOUFLON_FOOD = create("mouflon_food");
     public static final TagKey<Item> MOUFLON_TEMP_ITEMS = create("mouflon_temp_items");
     public static final TagKey<Item> SABER_TOOTH_TIGER_TEMP_ITEMS = create("saber_tooth_tiger_temp_items");
+    public static final TagKey<Item> TERROR_BIRD_TEMP_ITEMS = create("terror_bird_temp_items");
     public static final TagKey<Item> WILD_BOAR_FOOD = create("wild_boar_food");
     public static final TagKey<Item> WILD_BOAR_TEMP_ITEMS = create("wild_boar_temp_items");
     public static final TagKey<Item> WOOLLY_MAMMOTH_TEMP_ITEMS = create("woolly_mammoth_temp_items");
