@@ -33,6 +33,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -53,6 +54,11 @@ import static com.yanny.ytech.configuration.model.SpearModel.*;
 @EventBusSubscriber(modid = YTechMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ModBusSubscriber {
     private static final String PROTOCOL_VERSION = "1";
+
+    @SubscribeEvent
+    public static void commonSetup(@NotNull FMLCommonSetupEvent event) {
+        TopCompatibility.register();
+    }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
