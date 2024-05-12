@@ -114,9 +114,9 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    /*implementation project.dependencies.create("mcjty.theoneprobe:theoneprobe:1.20.4_neo-${top_version}") {
+    implementation project.dependencies.create("mcjty.theoneprobe:theoneprobe:1.20.5_neo-${top_version}") {
         transitive = false
-    }*/
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
