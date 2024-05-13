@@ -90,6 +90,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.MOUFLON_FOOD).add(Items.WHEAT);
         tag(YTechItemTags.MOUFLON_TEMP_ITEMS).add(Items.WHEAT);
         tag(YTechItemTags.SABER_TOOTH_TIGER_TEMP_ITEMS).add(Items.BEEF, Items.CHICKEN, Items.COD, Items.MUTTON, Items.PORKCHOP, Items.RABBIT, Items.SALMON).addTag(YTechItemTags.VENISON);
+        tag(YTechItemTags.TERROR_BIRD_TEMP_ITEMS).add(Items.BEEF, Items.CHICKEN, Items.COD, Items.MUTTON, Items.PORKCHOP, Items.RABBIT, Items.SALMON).addTag(YTechItemTags.VENISON);
         tag(YTechItemTags.WILD_BOAR_FOOD).add(Items.CARROT, Items.POTATO, Items.APPLE);
         tag(YTechItemTags.WILD_BOAR_TEMP_ITEMS).add(Items.CARROT, Items.POTATO, Items.APPLE);
         tag(YTechItemTags.WOOLLY_MAMMOTH_TEMP_ITEMS).add(Items.CARROT, Items.APPLE);
