@@ -14,6 +14,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -151,10 +152,11 @@ public class FowlEntity extends WildAnimalEntity implements IRaidGarden {
         goalSelector.addGoal(3, new FollowParentGoal(this, 1.25D));
         goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.2D, 2.2D));
         goalSelector.addGoal(4, new AvoidEntityGoal<>(this, SaberToothTigerEntity.class, 8.0F, 2.2D, 2.2D));
-        goalSelector.addGoal(4, new RaidGardenGoal<>(this, YTechBlockTags.FOWL_RAID_BLOCKS));
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Wolf.class, 10.0F, 2.2D, 2.2D));
+        goalSelector.addGoal(5, new RaidGardenGoal<>(this, YTechBlockTags.FOWL_RAID_BLOCKS));
+        goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

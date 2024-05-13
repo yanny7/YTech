@@ -61,6 +61,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.FOWL_SPAWN_EGG, "Fowl Spawn Egg");
         addItem(YTechItems.MOUFLON_SPAWN_EGG, "Mouflon Spawn Egg");
         addItem(YTechItems.SABER_TOOTH_TIGER_SPAWN_EGG, "Saber-Toothed Tiger Spawn Egg");
+        addItem(YTechItems.TERROR_BIRD_SPAWN_EGG, "Terror Bird Spawn Egg");
         addItem(YTechItems.WILD_BOAR_SPAWN_EGG, "Wild Boar Spawn Egg");
         addItem(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG, "Woolly Mammoth Spawn Egg");
         addItem(YTechItems.WOOLLY_RHINO_SPAWN_EGG, "Woolly Rhino Spawn Egg");
@@ -124,6 +125,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addEntityType(YTechEntityTypes.FOWL, "Fowl");
         addEntityType(YTechEntityTypes.MOUFLON, "Mouflon");
         addEntityType(YTechEntityTypes.SABER_TOOTH_TIGER, "Saber-Toothed Tiger");
+        addEntityType(YTechEntityTypes.TERROR_BIRD, "Terror Bird");
         addEntityType(YTechEntityTypes.WILD_BOAR, "Wild Boar");
         addEntityType(YTechEntityTypes.WOOLLY_MAMMOTH, "Woolly Mammoth");
         addEntityType(YTechEntityTypes.WOOLLY_RHINO, "Woolly Rhino");

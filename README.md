@@ -1,21 +1,24 @@
 # YTech
 
-is tech mod based on real life, increasing difficulty on early game.
+brings you to Stone Age, increasing difficulty on early game by forcing you to use primitive technology for progression.
 
-It modifies vanilla recipes for early game items, forcing tools on some blocks and adding new tools, items and blocks to help you with progression.
+Also, vanilla mobs like cows, pigs, sheep and chickens are replaced by their wild ancestors.
 
-This mod is in development. Expect bugs, unfinished and half-baked progression tree.
+Vanilla recipes for early game items are modified, forcing tools on some blocks and adding new tools, items and blocks to help you with progression.
 
 Currently mod covers
 - Stone age
 - Bronze age
 - Beginning of iron age (crafting iron ingot is final step right now)
 
-All bugs report on [github](https://github.com/yanny7/ytech).
+All bugs report on [GitHub](https://github.com/yanny7/ytech).
 
 Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/HauMDpbkNN):
 
-> **Hints**
+**For more information check [wiki](https://github.com/yanny7/YTech/wiki)**
+
+## Hints
+
 > - You can't mine wood and dirt without correct tool
 > - Your first goal is to find flint and hit stone with it
 > - Grass fibers can be obtained by breaking grass with sharp flint
@@ -26,3 +29,8 @@ Ideas for expanding implemented ages or for next ages can be shared on [discord]
 > - Using reinforced chimney you can increase height up to 8 blocks, with 4 of each chimney
 > - In rivers, you can find sand and gravel deposits with cassiterite (tin) and gold
 > - It's recommended to use JEI
+> - You have to breed wild animals to get their domesticated versions
+>   - Aurochs -> Cow
+>   - Mouflon -> Sheep
+>   - Fowl -> Chicken
+>   - Wild Boar -> Pig
