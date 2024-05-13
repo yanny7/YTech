@@ -128,6 +128,12 @@ public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
                                     List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.SABER_TOOTH_TIGER.get(), 6, 1, 3))
                             )
                     );
+                    bootstrap.register(ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_terror_bird_spawn")),
+                            new BiomeModifiers.AddSpawnsBiomeModifier(
+                                    biomeReg.getOrThrow(YTechBiomeTags.TERROR_BIRD_BIOMES),
+                                    List.of(new MobSpawnSettings.SpawnerData(YTechEntityTypes.TERROR_BIRD.get(), 8, 1, 2))
+                            )
+                    );
                     bootstrap.register(ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Utils.modLoc("overworld_wild_boar_spawn")),
                             new BiomeModifiers.AddSpawnsBiomeModifier(
                                     biomeReg.getOrThrow(YTechBiomeTags.WILD_BOAR_BIOMES),

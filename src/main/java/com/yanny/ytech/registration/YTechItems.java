@@ -88,6 +88,7 @@ public class YTechItems {
     public static final DeferredItem<Item> FOWL_SPAWN_EGG = ITEMS.register("fowl_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.FOWL, 0xc6484b, 0xedde9d, new Item.Properties()));
     public static final DeferredItem<Item> MOUFLON_SPAWN_EGG = ITEMS.register("mouflon_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.MOUFLON, 0x064aeb, 0xa13bb6, new Item.Properties()));
     public static final DeferredItem<Item> SABER_TOOTH_TIGER_SPAWN_EGG = ITEMS.register("saber_tooth_tiger_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.SABER_TOOTH_TIGER, 0xa52a80, 0x9194c2, new Item.Properties()));
+    public static final DeferredItem<Item> TERROR_BIRD_SPAWN_EGG = ITEMS.register("terror_bird_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.TERROR_BIRD, 0x759ac0, 0xc19452, new Item.Properties()));
     public static final DeferredItem<Item> WILD_BOAR_SPAWN_EGG = ITEMS.register("wild_boar_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WILD_BOAR, 0xf4f7d7, 0x560a59, new Item.Properties()));
     public static final DeferredItem<Item> WOOLLY_MAMMOTH_SPAWN_EGG = ITEMS.register("woolly_mammoth_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_MAMMOTH, 0x8a4a71, 0x6cc8ab, new Item.Properties()));
     public static final DeferredItem<Item> WOOLLY_RHINO_SPAWN_EGG = ITEMS.register("woolly_rhino_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_RHINO, 0x04b53a, 0x2f7415, new Item.Properties()));
