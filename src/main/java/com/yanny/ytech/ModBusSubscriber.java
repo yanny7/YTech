@@ -26,6 +26,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -105,6 +106,7 @@ public class ModBusSubscriber {
         event.registerEntityRenderer(YTechEntityTypes.FOWL.get(), FowlRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.MOUFLON.get(), MouflonRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SaberToothTigerRenderer::new);
+        event.registerEntityRenderer(YTechEntityTypes.TERROR_BIRD.get(), TerrorBirdRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.WILD_BOAR.get(), WildBoarRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.WOOLLY_MAMMOTH.get(), WoollyMammothRenderer::new);
         event.registerEntityRenderer(YTechEntityTypes.WOOLLY_RHINO.get(), WoollyRhinoRenderer::new);
@@ -123,6 +125,7 @@ public class ModBusSubscriber {
         event.registerLayerDefinition(FowlModel.LAYER_LOCATION, FowlModel::createBodyLayer);
         event.registerLayerDefinition(MouflonModel.LAYER_LOCATION, MouflonModel::createBodyLayer);
         event.registerLayerDefinition(SaberToothTigerModel.LAYER_LOCATION, SaberToothTigerModel::createBodyLayer);
+        event.registerLayerDefinition(TerrorBirdModel.LAYER_LOCATION, TerrorBirdModel::createBodyLayer);
         event.registerLayerDefinition(WildBoarModel.LAYER_LOCATION, WildBoarModel::createBodyLayer);
         event.registerLayerDefinition(WoollyMammothModel.LAYER_LOCATION, WoollyMammothModel::createBodyLayer);
         event.registerLayerDefinition(WoollyRhinoModel.LAYER_LOCATION, WoollyRhinoModel::createBodyLayer);
@@ -144,6 +147,7 @@ public class ModBusSubscriber {
         event.put(YTechEntityTypes.GO_AROUND.get(), GoAroundEntity.createAttributes().build());
         event.put(YTechEntityTypes.MOUFLON.get(), MouflonEntity.createAttributes().build());
         event.put(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SaberToothTigerEntity.createAttributes().build());
+        event.put(YTechEntityTypes.TERROR_BIRD.get(), TerrorBirdEntity.createAttributes().build());
         event.put(YTechEntityTypes.WILD_BOAR.get(), WildBoarEntity.createAttributes().build());
         event.put(YTechEntityTypes.WOOLLY_MAMMOTH.get(), WoollyMammothEntity.createAttributes().build());
         event.put(YTechEntityTypes.WOOLLY_RHINO.get(), WoollyRhinoEntity.createAttributes().build());
@@ -156,6 +160,7 @@ public class ModBusSubscriber {
         event.register(YTechEntityTypes.FOWL.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(YTechEntityTypes.MOUFLON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(YTechEntityTypes.TERROR_BIRD.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(YTechEntityTypes.WILD_BOAR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(YTechEntityTypes.WOOLLY_MAMMOTH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(YTechEntityTypes.WOOLLY_RHINO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);

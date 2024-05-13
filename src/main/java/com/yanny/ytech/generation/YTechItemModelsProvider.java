@@ -62,6 +62,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         spawnEggModel(YTechItems.FOWL_SPAWN_EGG);
         spawnEggModel(YTechItems.MOUFLON_SPAWN_EGG);
         spawnEggModel(YTechItems.SABER_TOOTH_TIGER_SPAWN_EGG);
+        spawnEggModel(YTechItems.TERROR_BIRD_SPAWN_EGG);
         spawnEggModel(YTechItems.WILD_BOAR_SPAWN_EGG);
         spawnEggModel(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG);
         spawnEggModel(YTechItems.WOOLLY_RHINO_SPAWN_EGG);
