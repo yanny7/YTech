@@ -5,6 +5,7 @@
 - Adder Terror Bird
 - Saber-Toothed Tiger and Terror Bird attacks villagers
 - Fowl and Mouflon scared of wolf
+- Added animal sounds
 
 ## [0.3.0]
 
