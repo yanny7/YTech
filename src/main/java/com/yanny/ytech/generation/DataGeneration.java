@@ -14,6 +14,7 @@ public class DataGeneration {
         generator.addProvider(event.includeClient(), new YTechBlockStateProvider(packOutput, event.getExistingFileHelper()));
         generator.addProvider(event.includeClient(), new YTechItemModelsProvider(packOutput, event.getExistingFileHelper()));
         generator.addProvider(event.includeClient(), new YTechLanguageProvider(packOutput, "en_us"));
+        generator.addProvider(event.includeClient(), new YTechSoundDefinitionProvider(packOutput, event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), blockTags);
         generator.addProvider(event.includeServer(), new YTechItemTagsProvider(packOutput, event.getLookupProvider(), blockTags.contentsGetter(), event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new YTechBiomeTagsProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
