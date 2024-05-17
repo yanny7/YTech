@@ -1,7 +1,10 @@
 package com.yanny.ytech.configuration.entity;
 
 import com.yanny.ytech.registration.YTechItemTags;
+import com.yanny.ytech.registration.YTechSoundEvents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -39,7 +42,20 @@ public class SaberToothTigerEntity extends Animal {
         return false;
     }
 
-    //FIXME SOUNDS
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return YTechSoundEvents.SABER_TOOTH_TIGER_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return YTechSoundEvents.SABER_TOOTH_TIGER_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return YTechSoundEvents.SABER_TOOTH_TIGER_DEATH.get();
+    }
 
     @Override
     protected void registerGoals() {
