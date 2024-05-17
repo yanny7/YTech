@@ -143,6 +143,19 @@ class YTechLanguageProvider extends LanguageProvider {
         add("gui.ytech.category.alloying", "Alloying");
         add("gui.ytech.category.hammering", "Hammering");
 
+        add("sound.ytech.saber_tooth_tiger.ambient", "Saber-Toothed Tiger Roars");
+        add("sound.ytech.saber_tooth_tiger.hurt", "Saber-Toothed Tiger Hurts");
+        add("sound.ytech.saber_tooth_tiger.death", "Saber-Toothed Tiger Dies");
+        add("sound.ytech.terror_bird.ambient", "Terror Bird Clucks");
+        add("sound.ytech.terror_bird.hurt", "Terror Bird Hurts");
+        add("sound.ytech.terror_bird.death", "Terror Bird Dies");
+        add("sound.ytech.woolly_mammoth.ambient", "Woolly Mammoth Trumpets");
+        add("sound.ytech.woolly_mammoth.hurt", "Woolly Mammoth Hurts");
+        add("sound.ytech.woolly_mammoth.death", "Woolly Mammoth Dies");
+        add("sound.ytech.woolly_rhino.ambient", "Woolly Rhino Grunts");
+        add("sound.ytech.woolly_rhino.hurt", "Woolly Rhino Hurts");
+        add("sound.ytech.woolly_rhino.death", "Woolly Rhino Dies");
+
         add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint");
 
         add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");

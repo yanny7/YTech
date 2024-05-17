@@ -1,7 +1,10 @@
 package com.yanny.ytech.configuration.entity;
 
 import com.yanny.ytech.registration.YTechItemTags;
+import com.yanny.ytech.registration.YTechSoundEvents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -46,7 +49,20 @@ public class WoollyRhinoEntity extends WildDangerousEntity {
         return false;
     }
 
-    //FIXME SOUNDS
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return YTechSoundEvents.WOOLLY_RHINO_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return YTechSoundEvents.WOOLLY_RHINO_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return YTechSoundEvents.WOOLLY_RHINO_DEATH.get();
+    }
 
     @Override
     protected void registerGoals() {

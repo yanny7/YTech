@@ -1,0 +1,114 @@
+{
+  "entity.saber_tooth_tiger.ambient": {
+    "sounds": [
+      {
+        "name": "ytech:entity/saber_tooth_tiger/ambient",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.saber_tooth_tiger.ambient"
+  },
+  "entity.saber_tooth_tiger.death": {
+    "sounds": [
+      {
+        "name": "ytech:entity/saber_tooth_tiger/death",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.saber_tooth_tiger.death"
+  },
+  "entity.saber_tooth_tiger.hurt": {
+    "sounds": [
+      {
+        "name": "ytech:entity/saber_tooth_tiger/hurt",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.saber_tooth_tiger.hurt"
+  },
+  "entity.terror_bird.ambient": {
+    "sounds": [
+      {
+        "name": "ytech:entity/terror_bird/ambient",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.terror_bird.ambient"
+  },
+  "entity.terror_bird.death": {
+    "sounds": [
+      {
+        "name": "ytech:entity/terror_bird/death",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.terror_bird.death"
+  },
+  "entity.terror_bird.hurt": {
+    "sounds": [
+      {
+        "name": "ytech:entity/terror_bird/hurt",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.terror_bird.hurt"
+  },
+  "entity.woolly_mammoth.ambient": {
+    "sounds": [
+      {
+        "name": "ytech:entity/woolly_mammoth/ambient",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.woolly_mammoth.ambient"
+  },
+  "entity.woolly_mammoth.death": {
+    "sounds": [
+      {
+        "name": "ytech:entity/woolly_mammoth/death",
+        "volume": 0.25
+      }
+    ],
+    "subtitle": "sound.ytech.woolly_mammoth.death"
+  },
+  "entity.woolly_mammoth.hurt": {
+    "sounds": [
+      {
+        "name": "ytech:entity/woolly_mammoth/hurt",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.woolly_mammoth.hurt"
+  },
+  "entity.woolly_rhino.ambient": {
+    "sounds": [
+      {
+        "name": "ytech:entity/woolly_rhino/ambient1",
+        "volume": 0.5
+      },
+      {
+        "name": "ytech:entity/woolly_rhino/ambient2",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.woolly_rhino.ambient"
+  },
+  "entity.woolly_rhino.death": {
+    "sounds": [
+      {
+        "name": "ytech:entity/woolly_rhino/death",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.woolly_rhino.death"
+  },
+  "entity.woolly_rhino.hurt": {
+    "sounds": [
+      {
+        "name": "ytech:entity/woolly_rhino/hurt",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sound.ytech.woolly_rhino.hurt"
+  }
+}

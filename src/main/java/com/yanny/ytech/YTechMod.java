@@ -41,6 +41,7 @@ public class YTechMod {
         YTechRecipeSerializers.register(modEventBus);
         YTechGLMCodecs.register(modEventBus);
         YTechCreativeTabs.register(modEventBus);
+        YTechSoundEvents.register(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);
