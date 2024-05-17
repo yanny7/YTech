@@ -1,8 +1,8 @@
 # YTech Changelog
 
-## []
+## [0.3.2]
 
-- Fixed Tools without durability
+- Fixed some tools doesn't have durability
 
 ## [0.3.1]
 
