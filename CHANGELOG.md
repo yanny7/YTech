@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed Tools without durability
+
 ## [0.3.1]
 
 - Adder Terror Bird
