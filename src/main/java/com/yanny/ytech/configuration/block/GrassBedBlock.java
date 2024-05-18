@@ -248,11 +248,12 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
 
     public static void registerRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.GRASS_BED.get())
-                .define('G', YTechItemTags.GRASS_FIBERS)
+                .define('G', YTechItemTags.THATCH_SLABS)
+                .define('S', YTechItemTags.GRASS_FIBERS)
+                .pattern("SSS")
                 .pattern("GGG")
                 .pattern("GGG")
-                .pattern("GGG")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.GRASS_FIBERS))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.THATCH_SLABS))
                 .save(recipeConsumer, Utils.modLoc(YTechBlocks.GRASS_BED));
     }
 }

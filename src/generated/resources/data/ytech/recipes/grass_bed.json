@@ -3,11 +3,14 @@
   "category": "misc",
   "key": {
     "G": {
+      "tag": "ytech:thatch_slabs"
+    },
+    "S": {
       "tag": "ytech:grass_fibers"
     }
   },
   "pattern": [
-    "GGG",
+    "SSS",
     "GGG",
     "GGG"
   ],
