@@ -984,7 +984,7 @@ class YTechRecipeProvider extends RecipeProvider {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
                     .define('S', Items.STICK)
                     .define('T', YTechItemTags.LEATHER_STRIPS)
-                    .define('#', Items.STONE)
+                    .define('#', YTechItemTags.PEBBLES)
                     .pattern(" #T")
                     .pattern(" S#")
                     .pattern("S  ")
@@ -1254,8 +1254,9 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void registerThatchBlockRecipe(RecipeOutput recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.THATCH.get())
                 .define('B', YTechItemTags.GRASS_FIBERS)
-                .pattern("BB")
-                .pattern("BB")
+                .pattern("BBB")
+                .pattern("BBB")
+                .pattern("BBB")
                 .unlockedBy("has_thatch", RecipeProvider.has(YTechItemTags.GRASS_FIBERS))
                 .save(recipeConsumer, YTechBlocks.THATCH.getId());
     }
