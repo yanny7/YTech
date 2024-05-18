@@ -7,8 +7,9 @@
     }
   },
   "pattern": [
-    "BB",
-    "BB"
+    "BBB",
+    "BBB",
+    "BBB"
   ],
   "result": {
     "item": "ytech:thatch"
