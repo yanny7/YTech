@@ -1,5 +1,10 @@
 # YTech Changelog
 
+## [0.3.3]
+
+- Fixed broken recipes for Thatch and Stone Hammer and changed recipe for grass bed
+
+
 ## [0.3.2]
 
 - Fixed some tools doesn't have durability
