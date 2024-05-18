@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "item": "minecraft:stone"
+      "tag": "ytech:pebbles"
     },
     "S": {
       "item": "minecraft:stick"
