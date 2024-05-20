@@ -69,6 +69,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.FIRE_PITS).add(YTechItems.FIRE_PIT.get());
         tag(YTechItemTags.GRASS_BEDS).add(YTechItems.GRASS_BED.get());
         tag(YTechItemTags.MILLSTONES).add(YTechItems.MILLSTONE.get());
+        tag(YTechItemTags.POTTERS_WHEELS).add(YTechItems.POTTERY_WHEEL.get());
         tag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS).add(YTechItems.PRIMITIVE_ALLOY_SMELTER.get());
         tag(YTechItemTags.PRIMITIVE_SMELTERS).add(YTechItems.PRIMITIVE_SMELTER.get());
         tag(YTechItemTags.REINFORCED_BRICKS).add(YTechItems.REINFORCED_BRICKS.get());

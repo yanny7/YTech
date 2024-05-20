@@ -18,6 +18,7 @@ public class YTechRecipeTypes {
     public static final RegistryObject<RecipeType<DryingRecipe>> DRYING = create("drying");
     public static final RegistryObject<RecipeType<HammeringRecipe>> HAMMERING = create("hammering");
     public static final RegistryObject<RecipeType<MillingRecipe>> MILLING = create("milling");
+    public static final RegistryObject<RecipeType<PotteryRecipe>> POTTERY = create("pottery");
     public static final RegistryObject<RecipeType<SmeltingRecipe>> SMELTING = create("smelting");
     public static final RegistryObject<RecipeType<TanningRecipe>> TANNING = create("tanning");
 

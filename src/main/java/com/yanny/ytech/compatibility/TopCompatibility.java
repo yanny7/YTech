@@ -59,6 +59,8 @@ public class TopCompatibility {
                             addPrimitiveSmelterInfo(probeInfo, blockEntity);
                         } else if (entity instanceof IIrrigationBlockEntity blockEntity) {
                             addIrrigationInfo(probeInfo, blockEntity);
+                        } else if (entity instanceof PottersWheelBlockEntity blockEntity) {
+                            probeInfo.horizontal().item(blockEntity.getItem());
                         }
                     }
                 }

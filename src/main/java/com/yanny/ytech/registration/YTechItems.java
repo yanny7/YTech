@@ -70,6 +70,7 @@ public class YTechItems {
     public static final RegistryObject<Item> FIRE_PIT = ITEMS.register("fire_pit", YTechItems::firePitBlockItem);
     public static final RegistryObject<Item> GRASS_BED = ITEMS.register("grass_bed", YTechItems::grassBedBlockItem);
     public static final RegistryObject<Item> MILLSTONE = ITEMS.register("millstone", () -> descriptionItem(YTechBlocks.MILLSTONE, List.of(Component.translatable("text.ytech.hover.millstone").withStyle(DARK_GRAY))));
+    public static final RegistryObject<Item> POTTERY_WHEEL = ITEMS.register("potters_wheel", () -> descriptionItem(YTechBlocks.POTTERS_WHEEL, List.of(Component.translatable("text.ytech.hover.potters_wheel1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.potters_wheel2").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> PRIMITIVE_ALLOY_SMELTER = ITEMS.register("primitive_alloy_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_ALLOY_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> PRIMITIVE_SMELTER = ITEMS.register("primitive_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> REINFORCED_BRICKS = ITEMS.register("reinforced_bricks", () -> blockItem(YTechBlocks.REINFORCED_BRICKS));

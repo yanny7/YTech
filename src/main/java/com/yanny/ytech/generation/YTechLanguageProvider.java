@@ -73,6 +73,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.FIRE_PIT, "Fire Pit");
         addBlock(YTechBlocks.GRASS_BED, "Grass Bed");
         addBlock(YTechBlocks.MILLSTONE, "Millstone");
+        addBlock(YTechBlocks.POTTERS_WHEEL, "Potter's Wheel");
         addBlock(YTechBlocks.PRIMITIVE_ALLOY_SMELTER, "Primitive Alloy Smelter");
         addBlock(YTechBlocks.PRIMITIVE_SMELTER, "Primitive Smelter");
         addBlock(YTechBlocks.REINFORCED_BRICKS, "Reinforced Bricks");
@@ -140,6 +141,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("gui.ytech.category.block_hit", "Block Hit");
         add("gui.ytech.category.alloying", "Alloying");
         add("gui.ytech.category.hammering", "Hammering");
+        add("gui.ytech.category.pottery", "Pottery");
 
         add("sound.ytech.saber_tooth_tiger.ambient", "Saber-Toothed Tiger Roars");
         add("sound.ytech.saber_tooth_tiger.hurt", "Saber-Toothed Tiger Hurts");
@@ -176,6 +178,8 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.fire_pit4", "Rain have chance to extinguish fire (50% chance on random tick)");
         add("text.ytech.hover.pebble", "Drops from gravel (10% chance)");
         add("text.ytech.hover.grass_bed", "Doesn't set respawn point");
+        add("text.ytech.hover.potters_wheel1", "Right-click with Clay Ball or Clay Block to add clay. Right-click with empty hand to get result");
+        add("text.ytech.hover.potters_wheel2", "Right-click while sneaking to get all clay back");
 
         add("creativeTab.ytech.title", "YTech");
     }

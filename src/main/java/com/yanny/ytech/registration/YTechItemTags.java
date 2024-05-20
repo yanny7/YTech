@@ -69,6 +69,7 @@ public class YTechItemTags {
     public static final TagKey<Item> FIRE_PITS = create(YTechBlockTags.FIRE_PITS);
     public static final TagKey<Item> GRASS_BEDS = create(YTechBlockTags.GRASS_BEDS);
     public static final TagKey<Item> MILLSTONES = create(YTechBlockTags.MILLSTONES);
+    public static final TagKey<Item> POTTERS_WHEELS = create(YTechBlockTags.POTTERS_WHEELS);
     public static final TagKey<Item> PRIMITIVE_ALLOY_SMELTERS = create(YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
     public static final TagKey<Item> PRIMITIVE_SMELTERS = create(YTechBlockTags.PRIMITIVE_SMELTERS);
     public static final TagKey<Item> REINFORCED_BRICKS = create(YTechBlockTags.REINFORCED_BRICKS);

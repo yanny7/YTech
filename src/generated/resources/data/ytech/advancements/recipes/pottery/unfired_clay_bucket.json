@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_clay_ball": {
+    "has_item": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_clay_ball",
+      "has_item",
       "has_the_recipe"
     ]
   ],
