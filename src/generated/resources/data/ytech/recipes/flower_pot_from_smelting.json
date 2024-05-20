@@ -1,0 +1,12 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "ytech:unfired_flower_pots"
+  },
+  "minTemp": 1000,
+  "result": {
+    "count": 1,
+    "id": "minecraft:flower_pot"
+  },
+  "smeltingTime": 200
+}

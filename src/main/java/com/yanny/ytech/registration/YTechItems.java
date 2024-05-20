@@ -58,6 +58,8 @@ public class YTechItems {
     public static final DeferredItem<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolItem(Tiers.WOOD));
     public static final DeferredItem<Item> UNFIRED_BRICK = ITEMS.registerSimpleItem("unfired_brick");
     public static final DeferredItem<Item> UNFIRED_CLAY_BUCKET = ITEMS.registerSimpleItem("unfired_clay_bucket");
+    public static final DeferredItem<Item> UNFIRED_DECORATED_POT = ITEMS.registerSimpleItem("unfired_decoration_pot");
+    public static final DeferredItem<Item> UNFIRED_FLOWER_POT = ITEMS.registerSimpleItem("unfired_flower_pot");
     public static final DeferredItem<Item> VENISON = ITEMS.register("venison", () -> foodItem(2, 0.3f));
     public static final DeferredItem<Item> WATER_CLAY_BUCKET = ITEMS.register("water_clay_bucket", () -> new ClayBucketItem(Fluids.WATER, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 
@@ -70,6 +72,7 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> FIRE_PIT = ITEMS.register("fire_pit", YTechItems::firePitBlockItem);
     public static final DeferredItem<BlockItem> GRASS_BED = ITEMS.register("grass_bed", YTechItems::grassBedBlockItem);
     public static final DeferredItem<BlockItem> MILLSTONE = ITEMS.register("millstone", () -> descriptionItem(YTechBlocks.MILLSTONE, List.of(Component.translatable("text.ytech.hover.millstone").withStyle(DARK_GRAY))));
+    public static final DeferredItem<BlockItem> POTTERY_WHEEL = ITEMS.register("potters_wheel", () -> descriptionItem(YTechBlocks.POTTERS_WHEEL, List.of(Component.translatable("text.ytech.hover.potters_wheel1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.potters_wheel2").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> PRIMITIVE_ALLOY_SMELTER = ITEMS.register("primitive_alloy_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_ALLOY_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> PRIMITIVE_SMELTER = ITEMS.register("primitive_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> REINFORCED_BRICKS = ITEMS.registerSimpleBlockItem(YTechBlocks.REINFORCED_BRICKS);

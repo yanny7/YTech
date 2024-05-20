@@ -41,6 +41,8 @@ public class YTechItemTags {
     public static final TagKey<Item> SHARP_FLINTS = create("sharp_flints");
     public static final TagKey<Item> UNFIRED_BRICKS = create("unfired_bricks");
     public static final TagKey<Item> UNFIRED_CLAY_BUCKETS = create("unfired_clay_buckets");
+    public static final TagKey<Item> UNFIRED_DECORATED_POTS = create("unfired_decorated_pots");
+    public static final TagKey<Item> UNFIRED_FLOWER_POTS = create("unfired_flower_pots");
     public static final TagKey<Item> VENISON = create("venison");
     public static final TagKey<Item> WATER_BUCKETS = create("water_buckets");
 
@@ -70,6 +72,7 @@ public class YTechItemTags {
     public static final TagKey<Item> FIRE_PITS = create(YTechBlockTags.FIRE_PITS);
     public static final TagKey<Item> GRASS_BEDS = create(YTechBlockTags.GRASS_BEDS);
     public static final TagKey<Item> MILLSTONES = create(YTechBlockTags.MILLSTONES);
+    public static final TagKey<Item> POTTERS_WHEELS = create(YTechBlockTags.POTTERS_WHEELS);
     public static final TagKey<Item> PRIMITIVE_ALLOY_SMELTERS = create(YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
     public static final TagKey<Item> PRIMITIVE_SMELTERS = create(YTechBlockTags.PRIMITIVE_SMELTERS);
     public static final TagKey<Item> REINFORCED_BRICKS = create(YTechBlockTags.REINFORCED_BRICKS);

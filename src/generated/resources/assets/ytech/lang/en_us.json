@@ -94,6 +94,7 @@
   "block.ytech.nether_iron_ore": "Nether Iron Ore",
   "block.ytech.oak_drying_rack": "Oak Drying Rack",
   "block.ytech.oak_tanning_rack": "Oak Tanning Rack",
+  "block.ytech.potters_wheel": "Potter's Wheel",
   "block.ytech.primitive_alloy_smelter": "Primitive Alloy Smelter",
   "block.ytech.primitive_smelter": "Primitive Smelter",
   "block.ytech.raw_cassiterite_block": "Block of Raw Cassiterite",
@@ -124,6 +125,7 @@
   "gui.ytech.category.drying": "Drying",
   "gui.ytech.category.hammering": "Hammering",
   "gui.ytech.category.milling": "Milling",
+  "gui.ytech.category.pottery": "Pottery",
   "gui.ytech.category.smelting": "Smelting",
   "gui.ytech.category.tanning": "Tanning",
   "item.ytech.antler": "Antler",
@@ -252,6 +254,8 @@
   "item.ytech.tin_sword": "Tin Sword",
   "item.ytech.unfired_brick": "Unfired Brick",
   "item.ytech.unfired_clay_bucket": "Unfired Clay Bucket",
+  "item.ytech.unfired_decoration_pot": "Unfired Decorated Pot",
+  "item.ytech.unfired_flower_pot": "Unfired Flower Pot",
   "item.ytech.venison": "Venison",
   "item.ytech.water_clay_bucket": "Water Clay Bucket",
   "item.ytech.wild_boar_spawn_egg": "Wild Boar Spawn Egg",
@@ -290,6 +294,8 @@
   "text.ytech.hover.grass_fibers": "Obtainable by breaking grass with Sharp Flint (10% chance)",
   "text.ytech.hover.millstone": "Use leashed animal on block as power source. Shift-right click with empty hand for disconnecting animal.",
   "text.ytech.hover.pebble": "Drops from gravel (10% chance)",
+  "text.ytech.hover.potters_wheel1": "Right-click with Clay Ball or Clay Block to add clay. Right-click with empty hand to get result",
+  "text.ytech.hover.potters_wheel2": "Right-click while sneaking to get all clay back",
   "text.ytech.hover.primitive_smelter": "Increase temperature by adding chimneys",
   "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint"
 }

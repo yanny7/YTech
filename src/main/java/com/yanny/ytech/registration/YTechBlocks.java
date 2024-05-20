@@ -28,6 +28,7 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> FIRE_PIT = BLOCKS.register("fire_pit", FirePitBlock::new);
     public static final DeferredBlock<Block> GRASS_BED = BLOCKS.register("grass_bed", GrassBedBlock::new);
     public static final DeferredBlock<Block> MILLSTONE = BLOCKS.register("millstone", MillstoneBlock::new);
+    public static final DeferredBlock<Block> POTTERS_WHEEL = BLOCKS.register("potters_wheel", PottersWheelBlock::new);
     public static final DeferredBlock<Block> PRIMITIVE_ALLOY_SMELTER = BLOCKS.register("primitive_alloy_smelter", PrimitiveAlloySmelterBlock::new);
     public static final DeferredBlock<Block> PRIMITIVE_SMELTER = BLOCKS.register("primitive_smelter", PrimitiveSmelterBlock::new);
     public static final DeferredBlock<Block> REINFORCED_BRICKS = registerBlock("reinforced_bricks", Blocks.BRICKS);

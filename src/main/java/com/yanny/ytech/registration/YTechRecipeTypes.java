@@ -18,6 +18,7 @@ public class YTechRecipeTypes {
     public static final DeferredHolder<RecipeType<?>, RecipeType<DryingRecipe>> DRYING = create("drying");
     public static final DeferredHolder<RecipeType<?>, RecipeType<HammeringRecipe>> HAMMERING = create("hammering");
     public static final DeferredHolder<RecipeType<?>, RecipeType<MillingRecipe>> MILLING = create("milling");
+    public static final DeferredHolder<RecipeType<?>, RecipeType<PotteryRecipe>> POTTERY = create("pottery");
     public static final DeferredHolder<RecipeType<?>, RecipeType<SmeltingRecipe>> SMELTING = create("smelting");
     public static final DeferredHolder<RecipeType<?>, RecipeType<TanningRecipe>> TANNING = create("tanning");
 
