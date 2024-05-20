@@ -404,7 +404,6 @@ class YTechRecipeProvider extends RecipeProvider {
         registerBasketRecipe(recipeConsumer);
         registerBreadDoughRecipe(recipeConsumer);
         registerBrickMoldRecipe(recipeConsumer);
-        registerClayBucketRecipe(recipeConsumer);
         registerCookedVenisonRecipe(recipeConsumer);
         registerFlourRecipe(recipeConsumer);
         registerGrassTwineRecipe(recipeConsumer);
@@ -469,6 +468,9 @@ class YTechRecipeProvider extends RecipeProvider {
         smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.of(GOLD), Items.GOLD_INGOT, GOLD.meltingTemp, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.of(CASSITERITE), YTechItems.INGOTS.of(TIN).get(), CASSITERITE.meltingTemp, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.of(GALENA), YTechItems.INGOTS.of(LEAD).get(), GALENA.meltingTemp, 200);
+        smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_CLAY_BUCKETS, YTechItems.CLAY_BUCKET.get(), 1000, 200);
+        smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_DECORATED_POTS, Items.DECORATED_POT, 1000, 200);
+        smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_FLOWER_POTS, Items.FLOWER_POT, 1000, 200);
 
         hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, Items.IRON_INGOT);
 
@@ -488,7 +490,9 @@ class YTechRecipeProvider extends RecipeProvider {
         crushingRecipe(recipeConsumer, YTechItemTags.MAMMOTH_TUSKS, Items.BONE_MEAL, 5, "_from_" + Utils.getPath(YTechItems.MAMMOTH_TUSK));
         crushingRecipe(recipeConsumer, YTechItemTags.RHINO_HORNS, Items.BONE_MEAL, 3, "_from_" + Utils.getPath(YTechItems.RHINO_HORN));
 
+        potteryRecipe(recipeConsumer, 2, YTechItems.UNFIRED_FLOWER_POT);
         potteryRecipe(recipeConsumer, 3, YTechItems.UNFIRED_CLAY_BUCKET);
+        potteryRecipe(recipeConsumer, 4, YTechItems.UNFIRED_DECORATED_POT);
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -516,6 +520,8 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.RAW_IRON);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.IRON_ORE);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
+
+        removeVanillaRecipe(recipeConsumer, Items.FLOWER_POT);
     }
 
     private void removeVanillaRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item item) {
@@ -857,12 +863,6 @@ class YTechRecipeProvider extends RecipeProvider {
                 .bonusChance(0.5f)
                 .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
                 .save(recipeConsumer, Utils.modLoc(Utils.getPath(YTechItems.FLOUR) + "_from_milling"));
-    }
-
-    private static void registerClayBucketRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(YTechItemTags.UNFIRED_CLAY_BUCKETS), RecipeCategory.MISC, YTechItems.CLAY_BUCKET.get(), 0.35f, 200)
-                .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
-                .save(recipeConsumer, YTechItems.CLAY_BUCKET.getId());
     }
 
     private static void registerBreadDoughRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {

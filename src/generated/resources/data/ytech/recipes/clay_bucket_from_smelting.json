@@ -1,0 +1,11 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "ytech:unfired_clay_buckets"
+  },
+  "minTemp": 1000,
+  "result": {
+    "item": "ytech:clay_bucket"
+  },
+  "smeltingTime": 200
+}

@@ -57,6 +57,8 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.SHARP_FLINTS).add(YTechItems.SHARP_FLINT.get());
         tag(YTechItemTags.UNFIRED_BRICKS).add(YTechItems.UNFIRED_BRICK.get());
         tag(YTechItemTags.UNFIRED_CLAY_BUCKETS).add(YTechItems.UNFIRED_CLAY_BUCKET.get());
+        tag(YTechItemTags.UNFIRED_FLOWER_POTS).add(YTechItems.UNFIRED_FLOWER_POT.get());
+        tag(YTechItemTags.UNFIRED_DECORATED_POTS).add(YTechItems.UNFIRED_DECORATED_POT.get());
         tag(YTechItemTags.VENISON).add(YTechItems.VENISON.get());
         tag(YTechItemTags.WATER_BUCKETS).add(Items.WATER_BUCKET, YTechItems.WATER_CLAY_BUCKET.get());
 

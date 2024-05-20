@@ -51,6 +51,8 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.SHARP_FLINT, "Sharp Flint");
         addItem(YTechItems.UNFIRED_BRICK, "Unfired Brick");
         addItem(YTechItems.UNFIRED_CLAY_BUCKET, "Unfired Clay Bucket");
+        addItem(YTechItems.UNFIRED_DECORATED_POT, "Unfired Decorated Pot");
+        addItem(YTechItems.UNFIRED_FLOWER_POT, "Unfired Flower Pot");
         addItem(YTechItems.VENISON, "Venison");
         addItem(YTechItems.WATER_CLAY_BUCKET, "Water Clay Bucket");
 
