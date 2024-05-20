@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_clay_ball": {
+    "has_item": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:clay_ball"
-            ]
+            "tag": "ytech:unfired_flower_pots"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:clay_bucket"
+        "recipe": "ytech:flower_pot_from_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_clay_ball"
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
-      "ytech:clay_bucket"
+      "ytech:flower_pot_from_smelting"
     ]
   },
   "sends_telemetry_event": false
