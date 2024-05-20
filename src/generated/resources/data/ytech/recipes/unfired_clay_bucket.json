@@ -1,16 +1,6 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
-  "key": {
-    "#": {
-      "item": "minecraft:clay_ball"
-    }
-  },
-  "pattern": [
-    "# #",
-    "# #",
-    " # "
-  ],
+  "type": "ytech:pottery",
+  "count": 3,
   "result": {
     "item": "ytech:unfired_clay_bucket"
   }

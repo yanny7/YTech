@@ -1,0 +1,11 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "ytech:unfired_decorated_pots"
+  },
+  "minTemp": 1000,
+  "result": {
+    "item": "minecraft:decorated_pot"
+  },
+  "smeltingTime": 200
+}

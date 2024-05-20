@@ -22,6 +22,7 @@ public class YTechBlockTags {
     public static final TagKey<Block> FIRE_PITS = create("fire_pits");
     public static final TagKey<Block> GRASS_BEDS = create("grass_beds");
     public static final TagKey<Block> MILLSTONES = create("millstones");
+    public static final TagKey<Block> POTTERS_WHEELS = create("potters_wheels");
     public static final TagKey<Block> PRIMITIVE_ALLOY_SMELTERS = create("primitive_alloy_smelters");
     public static final TagKey<Block> PRIMITIVE_SMELTERS = create("primitive_smelters");
     public static final TagKey<Block> REINFORCED_BRICKS = create("reinforced_bricks");

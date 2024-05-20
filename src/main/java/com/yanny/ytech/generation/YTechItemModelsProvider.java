@@ -7,6 +7,7 @@ import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -55,6 +56,8 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.SHARP_FLINT);
         simpleItem(YTechItems.UNFIRED_BRICK);
         simpleItem(YTechItems.UNFIRED_CLAY_BUCKET);
+        decoratedPotItem();
+        simpleItem(YTechItems.UNFIRED_FLOWER_POT);
         simpleItem(YTechItems.VENISON);
 
         spawnEggModel(YTechItems.AUROCHS_SPAWN_EGG);
@@ -168,6 +171,47 @@ class YTechItemModelsProvider extends ItemModelProvider {
                     .end()
                     .override().predicate(SpearItem.THROWING_PREDICATE, 1).model(throwing).end();
         });
+    }
+
+    private void decoratedPotItem() {
+        getBuilder(Utils.getPath(YTechItems.UNFIRED_DECORATED_POT))
+                .parent(getExistingFile(Utils.mcBlockLoc("block")))
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
+                        case EAST -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
+                        case WEST -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 6.5f, 7, 13.5f).texture("#0");
+                        case DOWN -> faceBuilder.uvs(7, 6.5f, 14, 13.5f).texture("#0");
+                    }
+                })
+                .from(1, 0, 1).to(15, 16, 15).end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(9, 5.5f, 12, 6).texture("#0");
+                        case EAST -> faceBuilder.uvs(6, 5.5f, 9, 6).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(3, 5.5f, 6, 6).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 5.5f, 3, 6).texture("#0");
+                    }
+                })
+                .from(5, 16, 5).to(11, 17, 11).rotation().angle(0).axis(Direction.Axis.Y).origin(7, 16, 7).end()
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(4, 4, 8, 5.5f).texture("#0");
+                        case EAST -> faceBuilder.uvs(12, 4, 16, 5.5f).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(8, 4, 12, 5.5f).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 4, 4, 5.5f).texture("#0");
+                        case UP -> faceBuilder.uvs(4, 0, 8, 4).texture("#0");
+                        case DOWN -> faceBuilder.uvs(8, 0, 12, 4).texture("#0");
+                    }
+                })
+                .from(4, 17, 4).to(12, 20, 12).rotation().angle(0).axis(Direction.Axis.Y).origin(4, 17, 4).end()
+                .end()
+                .texture("particle", Utils.modBlockLoc("unfired_decorated_pot_side"))
+                .texture("0", Utils.modBlockLoc("unfired_decorated_pot_base"))
+                .texture("1", Utils.modBlockLoc("unfired_decorated_pot_side"));
     }
 
     private void spawnEggModel(DeferredItem<Item> item) {

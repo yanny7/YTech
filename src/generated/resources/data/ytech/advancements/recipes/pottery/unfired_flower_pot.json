@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_clay_ball": {
+    "has_item": {
       "conditions": {
         "items": [
           {
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:clay_bucket"
+        "recipe": "ytech:unfired_flower_pot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +23,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_clay_ball"
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
-      "ytech:clay_bucket"
+      "ytech:unfired_flower_pot"
     ]
   }
 }
