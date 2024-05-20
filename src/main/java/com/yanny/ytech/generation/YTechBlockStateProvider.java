@@ -37,6 +37,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
         FirePitBlock.registerModel(this);
         GrassBedBlock.registerModel(this);
         MillstoneBlock.registerModel(this);
+        PottersWheelBlock.registerModel(this);
         PrimitiveAlloySmelterBlock.registerModel(this);
         PrimitiveSmelterBlock.registerModel(this);
         reinforcedBricksBlockState(this);

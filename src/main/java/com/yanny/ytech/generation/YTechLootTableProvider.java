@@ -72,6 +72,7 @@ class YTechLootTableProvider extends LootTableProvider {
             dropSelf(YTechBlocks.FIRE_PIT);
             GrassBedBlock.registerLootTable(this);
             dropSelf(YTechBlocks.MILLSTONE);
+            dropSelf(YTechBlocks.POTTERS_WHEEL);
             dropSelf(YTechBlocks.PRIMITIVE_ALLOY_SMELTER);
             dropSelf(YTechBlocks.PRIMITIVE_SMELTER);
             dropSelf(YTechBlocks.REINFORCED_BRICKS);
@@ -108,6 +109,7 @@ class YTechLootTableProvider extends LootTableProvider {
                             YTechBlocks.FIRE_PIT,
                             YTechBlocks.GRASS_BED,
                             YTechBlocks.MILLSTONE,
+                            YTechBlocks.POTTERS_WHEEL,
                             YTechBlocks.PRIMITIVE_ALLOY_SMELTER,
                             YTechBlocks.PRIMITIVE_SMELTER,
                             YTechBlocks.REINFORCED_BRICKS,

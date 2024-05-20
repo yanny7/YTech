@@ -57,6 +57,8 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.SHARP_FLINTS).add(YTechItems.SHARP_FLINT.get());
         tag(YTechItemTags.UNFIRED_BRICKS).add(YTechItems.UNFIRED_BRICK.get());
         tag(YTechItemTags.UNFIRED_CLAY_BUCKETS).add(YTechItems.UNFIRED_CLAY_BUCKET.get());
+        tag(YTechItemTags.UNFIRED_FLOWER_POTS).add(YTechItems.UNFIRED_FLOWER_POT.get());
+        tag(YTechItemTags.UNFIRED_DECORATED_POTS).add(YTechItems.UNFIRED_DECORATED_POT.get());
         tag(YTechItemTags.VENISON).add(YTechItems.VENISON.get());
         tag(YTechItemTags.WATER_BUCKETS).add(Items.WATER_BUCKET, YTechItems.WATER_CLAY_BUCKET.get());
 
@@ -69,6 +71,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.FIRE_PITS).add(YTechItems.FIRE_PIT.get());
         tag(YTechItemTags.GRASS_BEDS).add(YTechItems.GRASS_BED.get());
         tag(YTechItemTags.MILLSTONES).add(YTechItems.MILLSTONE.get());
+        tag(YTechItemTags.POTTERS_WHEELS).add(YTechItems.POTTERY_WHEEL.get());
         tag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS).add(YTechItems.PRIMITIVE_ALLOY_SMELTER.get());
         tag(YTechItemTags.PRIMITIVE_SMELTERS).add(YTechItems.PRIMITIVE_SMELTER.get());
         tag(YTechItemTags.REINFORCED_BRICKS).add(YTechItems.REINFORCED_BRICKS.get());

@@ -1,8 +1,8 @@
 {
   "type": "ytech:pottery",
-  "count": 3,
+  "count": 2,
   "result": {
     "count": 1,
-    "id": "ytech:unfired_clay_bucket"
+    "id": "ytech:unfired_flower_pot"
   }
 }
