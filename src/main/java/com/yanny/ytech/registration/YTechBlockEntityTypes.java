@@ -24,6 +24,7 @@ public class YTechBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BronzeAnvilBlockEntity>> BRONZE_ANVIL = register("bronze_anvil", BronzeAnvilBlockEntity::new, YTechBlocks.BRONZE_ANVIL);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DryingRackBlockEntity>> DRYING_RACK = register("drying_rack", DryingRackBlockEntity::new, YTechBlocks.DRYING_RACKS);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MillstoneBlockEntity>> MILLSTONE = register("millstone", MillstoneBlockEntity::new, YTechBlocks.MILLSTONE);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PottersWheelBlockEntity>> POTTERS_WHEEL = register("potters_wheel", PottersWheelBlockEntity::new, YTechBlocks.POTTERS_WHEEL);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PrimitiveAlloySmelterBlockEntity>> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", PrimitiveAlloySmelterBlockEntity::new, YTechBlocks.PRIMITIVE_ALLOY_SMELTER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PrimitiveSmelterBlockEntity>> PRIMITIVE_SMELTER = register("primitive_smelter", PrimitiveSmelterBlockEntity::new, YTechBlocks.PRIMITIVE_SMELTER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TanningRackBlockEntity>> TANNING_RACK = register("tanning_rack", TanningRackBlockEntity::new, YTechBlocks.TANNING_RACKS);

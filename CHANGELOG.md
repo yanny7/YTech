@@ -1,5 +1,11 @@
 # YTech Changelog
 
+## []
+
+- Added Potter's Wheel
+- Changed Unfired Clay Bucket recipe
+- Added unfired versions for Flower Pot and Decorated Pot
+
 ## [0.3.4]
 
 - Fixed broken recipes for Thatch and Stone Hammer and changed recipe for grass bed

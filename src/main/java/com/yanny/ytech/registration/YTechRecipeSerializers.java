@@ -20,6 +20,7 @@ public class YTechRecipeSerializers {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<HammeringRecipe>> HAMMERING = RECIPE_SERIALIZERS.register("hammering", HammeringRecipe.Serializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<RemainingShapelessRecipe>> REMAINING_SHAPELESS = RECIPE_SERIALIZERS.register("remaining_shapeless_crafting", RemainingShapelessRecipe.Serializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<RemainingShapedRecipe>> REMAINING_SHAPED = RECIPE_SERIALIZERS.register("remaining_shaped_crafting", RemainingShapedRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<PotteryRecipe>> POTTERY = RECIPE_SERIALIZERS.register("pottery", PotteryRecipe.Serializer::new);
 
     public static void register(IEventBus eventBus) {
         RECIPE_SERIALIZERS.register(eventBus);

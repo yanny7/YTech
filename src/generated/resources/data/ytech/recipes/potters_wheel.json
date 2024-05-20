@@ -1,0 +1,26 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "minecraft:axes"
+    },
+    "B": {
+      "tag": "ytech:saws"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "W": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "pattern": [
+    "ASB",
+    " W ",
+    "SSS"
+  ],
+  "result": {
+    "item": "ytech:potters_wheel"
+  }
+}
