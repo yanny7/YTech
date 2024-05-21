@@ -102,7 +102,8 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(sortedMaterials(YTechBlocks.DRYING_RACKS))
-                .add(sortedMaterials(YTechBlocks.TANNING_RACKS));
+                .add(sortedMaterials(YTechBlocks.TANNING_RACKS))
+                .add(YTechBlocks.POTTERS_WHEEL.get());
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(
                 YTechBlocks.AQUEDUCT.get(),
