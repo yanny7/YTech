@@ -312,5 +312,6 @@
   "text.ytech.hover.shell_beads": "World’s oldest jewelry. Will extend the time under water when worn",
   "text.ytech.hover.venus_of_hohle_fels": "Representing a fertility goddess. Small chance to apply bonemeal effect on crops around",
   "text.ytech.hover.wild_horse": "The earliest sculpture of a horse. Increases speed when worn",
-  "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint"
+  "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint",
+  "text.ytech.info.missing_curios": "Missing CuriosAPI, item is useless now"
 }

@@ -171,6 +171,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("sound.ytech.woolly_rhino.death", "Woolly Rhino Dies");
 
         add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint");
+        add("text.ytech.info.missing_curios", "Missing CuriosAPI, item is useless now");
 
         add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");
         add("text.ytech.hover.primitive_smelter", "Increase temperature by adding chimneys");
