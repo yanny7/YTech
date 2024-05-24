@@ -21,7 +21,7 @@ These dependencies are optional, but highly recommended:
 
 All bugs report on [GitHub](https://github.com/yanny7/ytech).
 
-Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/c2knc97j).
+Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/HauMDpbkNN).
 
 **For more information check [wiki](https://github.com/yanny7/YTech/wiki)**
 
