@@ -23,5 +23,6 @@ public class DataGeneration {
         generator.addProvider(event.includeServer(), new YTechGlobalLootModifierProvider(packOutput));
         generator.addProvider(event.includeServer(), new YTechDatapackProvider(packOutput, event.getLookupProvider()));
         generator.addProvider(event.includeServer(), new YTechAdvancementProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(), new YTechCuriosProvider(packOutput, event.getExistingFileHelper(), event.getLookupProvider()));
     }
 }

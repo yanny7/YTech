@@ -60,6 +60,12 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.UNFIRED_FLOWER_POT);
         simpleItem(YTechItems.VENISON);
 
+        simpleItem(YTechItems.CHLORITE_BRACELET);
+        simpleItem(YTechItems.LION_MAN);
+        simpleItem(YTechItems.SHELL_BEADS);
+        simpleItem(YTechItems.VENUS_OF_HOHLE_FELS);
+        simpleItem(YTechItems.WILD_HORSE);
+
         spawnEggModel(YTechItems.AUROCHS_SPAWN_EGG);
         spawnEggModel(YTechItems.DEER_SPAWN_EGG);
         spawnEggModel(YTechItems.FOWL_SPAWN_EGG);

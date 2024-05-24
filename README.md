@@ -11,9 +11,17 @@ Currently mod covers
 - Bronze age
 - Beginning of iron age (crafting iron ingot is final step right now)
 
+## Compatibility
+
+These dependencies are optional, but highly recommended:
+
+- The One Probe - Provides more information about in-world blocks and entities
+- Just Enough Items - You can see all changed recipes
+- Curios API - Needed for jewelry effects, otherwise items are useless
+
 All bugs report on [GitHub](https://github.com/yanny7/ytech).
 
-Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/c2knc97j):
+Ideas for expanding implemented ages or for next ages can be shared on [discord](https://discord.gg/c2knc97j).
 
 **For more information check [wiki](https://github.com/yanny7/YTech/wiki)**
 

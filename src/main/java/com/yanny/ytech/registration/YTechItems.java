@@ -84,6 +84,12 @@ public class YTechItems {
     public static final RegistryObject<Item> THATCH_SLAB = ITEMS.register("thatch_slab", () -> blockItem(YTechBlocks.THATCH_SLAB));
     public static final RegistryObject<Item> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> blockItem(YTechBlocks.THATCH_STAIRS));
 
+    public static final RegistryObject<Item> CHLORITE_BRACELET = ITEMS.register("chlorite_bracelet", ChloriteBraceletItem::new);
+    public static final RegistryObject<Item> LION_MAN = ITEMS.register("lion_man", LionManItem::new);
+    public static final RegistryObject<Item> SHELL_BEADS = ITEMS.register("shell_beads", ShellBeadsItem::new);
+    public static final RegistryObject<Item> VENUS_OF_HOHLE_FELS = ITEMS.register("venus_of_hohle_fels", VenusOfHohleFelsItem::new);
+    public static final RegistryObject<Item> WILD_HORSE = ITEMS.register("wild_horse", WildHorseItem::new);
+
     public static final RegistryObject<Item> AUROCHS_SPAWN_EGG = ITEMS.register("aurochs_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.AUROCHS, 0x4688f5, 0xE03C83, new Item.Properties()));
     public static final RegistryObject<Item> DEER_SPAWN_EGG = ITEMS.register("deer_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.DEER, 0x664825, 0xE09C53, new Item.Properties()));
     public static final RegistryObject<Item> FOWL_SPAWN_EGG = ITEMS.register("fowl_spawn_egg", () -> new ForgeSpawnEggItem(YTechEntityTypes.FOWL, 0xc6484b, 0xedde9d, new Item.Properties()));

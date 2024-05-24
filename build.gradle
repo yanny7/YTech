@@ -65,6 +65,9 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
             // "SCAN": For mods scan.
@@ -89,6 +92,9 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             property 'forge.logging.markers', 'REGISTRIES'
 
@@ -124,6 +130,9 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             property 'forge.logging.markers', 'REGISTRIES'
 
@@ -164,6 +173,9 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+    maven { // Curios
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -192,6 +204,11 @@ dependencies {
     implementation fg.deobf(project.dependencies.create("mcjty.theoneprobe:theoneprobe:${minecraft_version}-${top_version}") {
         transitive = false
     })
+
+    // Compile against only the API artifact
+    compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api"))
+    // Use the full Curios API jar at runtime
+    runtimeOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
