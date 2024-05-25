@@ -1,5 +1,6 @@
 package com.yanny.ytech;
 
+import com.yanny.ytech.compatibility.CuriosCapability;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
 import com.yanny.ytech.configuration.entity.*;
@@ -29,8 +30,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -46,6 +49,13 @@ import static com.yanny.ytech.configuration.model.SpearModel.*;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusSubscriber {
+    @SubscribeEvent
+    public static void commonSetupEvent(@NotNull FMLCommonSetupEvent event) {
+        if (ModList.get().isLoaded("curios")) {
+            CuriosCapability.register();
+        }
+    }
+
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
