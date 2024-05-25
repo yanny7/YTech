@@ -2,6 +2,7 @@ package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
+import com.yanny.ytech.registration.YTechMobEffects;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -22,6 +23,7 @@ import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent;
@@ -111,6 +113,13 @@ public class ForgeBusSubscriber {
                     heldItem.shrink(1);
                 });
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingBreatheEvent(@NotNull LivingBreatheEvent event) {
+        if (event.getEntity().hasEffect(YTechMobEffects.ABYSS_WALKER.get()) && event.getEntity().level().getGameTime() % 2 == 0) {
+            event.setConsumeAirAmount(0);
         }
     }
 

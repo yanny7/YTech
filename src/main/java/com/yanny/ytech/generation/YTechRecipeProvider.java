@@ -397,6 +397,39 @@ class YTechRecipeProvider extends RecipeProvider {
                 .bonusChance(0.2f)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(Items.BONE))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.BONE_MEAL).getPath() + "_from_milling"));
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.VENUS_OF_HOHLE_FELS.get())
+                .define('T', YTechItemTags.MAMMOTH_TUSKS)
+                .define('#', YTechItemTags.SHARP_FLINTS)
+                .pattern("T#")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
+                .save(recipeConsumer, YTechItems.VENUS_OF_HOHLE_FELS.getId());
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.LION_MAN.get())
+                .define('T', YTechItemTags.MAMMOTH_TUSKS)
+                .define('#', YTechItemTags.SHARP_FLINTS)
+                .pattern("T ")
+                .pattern(" #")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
+                .save(recipeConsumer, YTechItems.LION_MAN.getId());
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.WILD_HORSE.get())
+                .define('T', YTechItemTags.MAMMOTH_TUSKS)
+                .define('#', YTechItemTags.SHARP_FLINTS)
+                .pattern("T")
+                .pattern("#")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
+                .save(recipeConsumer, YTechItems.WILD_HORSE.getId());
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.SHELL_BEADS.get())
+                .define('S', Items.NAUTILUS_SHELL)
+                .define('L', YTechItemTags.LEATHER_STRIPS)
+                .define('F', YTechItemTags.SHARP_FLINTS)
+                .pattern("FL ")
+                .pattern("SSS")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.LEATHER_STRIPS))
+                .save(recipeConsumer, YTechItems.SHELL_BEADS.getId());
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, YTechItems.CHLORITE_BRACELET.get())
+                .requires(YTechItemTags.PEBBLES)
+                .requires(YTechItemTags.SHARP_FLINTS)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PEBBLES))
+                .save(recipeConsumer, YTechItems.CHLORITE_BRACELET.getId());
 
         /*
          * MOD RECIPES

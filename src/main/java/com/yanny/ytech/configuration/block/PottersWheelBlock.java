@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,7 +44,7 @@ public class PottersWheelBlock extends Block implements EntityBlock {
     );
 
     public PottersWheelBlock() {
-        super(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN));
+        super(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).mapColor(MapColor.TERRACOTTA_BROWN));
     }
 
     @SuppressWarnings("deprecation")

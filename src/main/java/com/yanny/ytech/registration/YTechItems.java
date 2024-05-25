@@ -86,6 +86,12 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> THATCH_SLAB = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_SLAB);
     public static final DeferredItem<BlockItem> THATCH_STAIRS = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_STAIRS);
 
+    public static final DeferredItem<Item> CHLORITE_BRACELET = ITEMS.register("chlorite_bracelet", ChloriteBraceletItem::new);
+    public static final DeferredItem<Item> LION_MAN = ITEMS.register("lion_man", LionManItem::new);
+    public static final DeferredItem<Item> SHELL_BEADS = ITEMS.register("shell_beads", ShellBeadsItem::new);
+    public static final DeferredItem<Item> VENUS_OF_HOHLE_FELS = ITEMS.register("venus_of_hohle_fels", VenusOfHohleFelsItem::new);
+    public static final DeferredItem<Item> WILD_HORSE = ITEMS.register("wild_horse", WildHorseItem::new);
+
     public static final DeferredItem<Item> AUROCHS_SPAWN_EGG = ITEMS.register("aurochs_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.AUROCHS, 0x4688f5, 0xE03C83, new Item.Properties()));
     public static final DeferredItem<Item> DEER_SPAWN_EGG = ITEMS.register("deer_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.DEER, 0x664825, 0xE09C53, new Item.Properties()));
     public static final DeferredItem<Item> FOWL_SPAWN_EGG = ITEMS.register("fowl_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.FOWL, 0xc6484b, 0xedde9d, new Item.Properties()));
