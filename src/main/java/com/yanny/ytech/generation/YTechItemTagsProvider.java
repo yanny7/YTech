@@ -100,6 +100,16 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.WOOLLY_MAMMOTH_TEMP_ITEMS).add(Items.CARROT, Items.APPLE);
         tag(YTechItemTags.WOOLLY_RHINO_TEMP_ITEMS).add(Items.WHEAT);
 
+        tag(YTechItemTags.CURIOS_BRACELETS).add(YTechItems.CHLORITE_BRACELET.get());
+        tag(YTechItemTags.CURIOS_CHARMS).add(YTechItems.LION_MAN.get(), YTechItems.WILD_HORSE.get());
+        tag(YTechItemTags.CURIOS_NECKLACES).add(YTechItems.SHELL_BEADS.get(), YTechItems.VENUS_OF_HOHLE_FELS.get());
+
+        tag(YTechItemTags.CHLORITE_BRACELETS).add(YTechItems.CHLORITE_BRACELET.get());
+        tag(YTechItemTags.LION_MANS).add(YTechItems.LION_MAN.get());
+        tag(YTechItemTags.SHELL_BEADS).add(YTechItems.SHELL_BEADS.get());
+        tag(YTechItemTags.VENUS_OF_HOHLE_FELS).add(YTechItems.VENUS_OF_HOHLE_FELS.get());
+        tag(YTechItemTags.WILD_HORSES).add(YTechItems.WILD_HORSE.get());
+
         materialTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         materialTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         materialTag(YTechItems.BOLTS, YTechItemTags.BOLTS);

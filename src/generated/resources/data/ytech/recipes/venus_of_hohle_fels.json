@@ -1,0 +1,19 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:sharp_flints"
+    },
+    "T": {
+      "tag": "ytech:mammoth_tusks"
+    }
+  },
+  "pattern": [
+    "T#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:venus_of_hohle_fels"
+  }
+}

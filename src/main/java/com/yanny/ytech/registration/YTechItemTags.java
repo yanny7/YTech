@@ -84,6 +84,16 @@ public class YTechItemTags {
     public static final TagKey<Item> THATCH_SLABS = create(YTechBlockTags.THATCH_SLABS);
     public static final TagKey<Item> THATCH_STAIRS = create(YTechBlockTags.THATCH_STAIRS);
 
+    public static final TagKey<Item> CURIOS_BRACELETS = create("curios", "bracelet");
+    public static final TagKey<Item> CURIOS_CHARMS = create("curios", "charm");
+    public static final TagKey<Item> CURIOS_NECKLACES = create("curios", "necklace");
+
+    public static final TagKey<Item> CHLORITE_BRACELETS = create("chlorite_bracelets");
+    public static final TagKey<Item> LION_MANS = create("lion_mans");
+    public static final TagKey<Item> SHELL_BEADS = create("shell_beads");
+    public static final TagKey<Item> VENUS_OF_HOHLE_FELS = create("venus_of_hohle_fels");
+    public static final TagKey<Item> WILD_HORSES = create("wild_horse");
+
     public static final MaterialTag ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
     public static final MaterialTag AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
     public static final MaterialTag BOLTS = new MaterialTag("bolts", YTechItems.BOLTS);
@@ -124,6 +134,10 @@ public class YTechItemTags {
 
     private static TagKey<Item> create(TagKey<Block> block) {
         return ItemTags.create(block.location());
+    }
+
+    private static TagKey<Item> create(String namespace, String name) {
+        return ItemTags.create(new ResourceLocation(namespace, name));
     }
 
     public static class MaterialTag {

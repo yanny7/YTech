@@ -44,6 +44,7 @@ public class YTechMod {
         YTechArmorMaterials.register(modEventBus);
         YTechDataComponentTypes.register(modEventBus);
         YTechSoundEvents.register(modEventBus);
+        YTechMobEffects.register(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);
