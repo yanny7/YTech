@@ -1,0 +1,22 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "F": {
+      "tag": "ytech:sharp_flints"
+    },
+    "L": {
+      "tag": "ytech:leather_strips"
+    },
+    "S": {
+      "item": "minecraft:nautilus_shell"
+    }
+  },
+  "pattern": [
+    "FL ",
+    "SSS"
+  ],
+  "result": {
+    "item": "ytech:shell_beads"
+  }
+}

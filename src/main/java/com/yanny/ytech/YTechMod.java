@@ -42,6 +42,7 @@ public class YTechMod {
         YTechGLMCodecs.register(modEventBus);
         YTechCreativeTabs.register(modEventBus);
         YTechSoundEvents.register(modEventBus);
+        YTechMobEffects.register(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);

@@ -1,0 +1,19 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:sharp_flints"
+    },
+    "T": {
+      "tag": "ytech:mammoth_tusks"
+    }
+  },
+  "pattern": [
+    "T",
+    "#"
+  ],
+  "result": {
+    "item": "ytech:wild_horse"
+  }
+}

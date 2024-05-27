@@ -58,6 +58,12 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.VENISON, "Venison");
         addItem(YTechItems.WATER_CLAY_BUCKET, "Water Clay Bucket");
 
+        addItem(YTechItems.CHLORITE_BRACELET, "Chlorite Bracelet");
+        addItem(YTechItems.LION_MAN, "Lion-Man");
+        addItem(YTechItems.SHELL_BEADS, "Shell Beads");
+        addItem(YTechItems.VENUS_OF_HOHLE_FELS, "Venus of Hohle Fels");
+        addItem(YTechItems.WILD_HORSE, "Wild Horse");
+
         addItem(YTechItems.AUROCHS_SPAWN_EGG, "Aurochs Spawn Egg");
         addItem(YTechItems.DEER_SPAWN_EGG, "Deer Spawn Egg");
         addItem(YTechItems.FOWL_SPAWN_EGG, "Fowl Spawn Egg");
@@ -138,6 +144,12 @@ class YTechLanguageProvider extends LanguageProvider {
             add(type.descriptionId(), type.description());
         }
 
+        add("effect.ytech.abyss_walker", "Abyss Walker");
+        add("effect.ytech.lions_heart", "Lion's Heart");
+        add("effect.ytech.lucky_stone", "Lucky Stone");
+        add("effect.ytech.venus_touch", "Venus' Touch");
+        add("effect.ytech.wild_ride", "Wild Ride");
+
         add("gui.ytech.category.drying", "Drying");
         add("gui.ytech.category.tanning", "Tanning");
         add("gui.ytech.category.milling", "Milling");
@@ -161,6 +173,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("sound.ytech.woolly_rhino.death", "Woolly Rhino Dies");
 
         add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint");
+        add("text.ytech.info.missing_curios", "Missing CuriosAPI, item is useless now");
 
         add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");
         add("text.ytech.hover.primitive_smelter", "Increase temperature by adding chimneys");
@@ -184,6 +197,11 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.grass_bed", "Doesn't set respawn point");
         add("text.ytech.hover.potters_wheel1", "Right-click with Clay Ball or Clay Block to add clay. Right-click with empty hand to get result");
         add("text.ytech.hover.potters_wheel2", "Right-click while sneaking to get all clay back");
+        add("text.ytech.hover.venus_of_hohle_fels", "Representing a fertility goddess. Small chance to apply bonemeal effect on crops around");
+        add("text.ytech.hover.lion_man", "Oldest known statue ever discovered. Increases attack damage when worn");
+        add("text.ytech.hover.wild_horse", "The earliest sculpture of a horse. Increases speed when worn");
+        add("text.ytech.hover.shell_beads", "World’s oldest jewelry. Will extend the time under water when worn");
+        add("text.ytech.hover.chlorite_bracelet", "Oldest piece of jewellery of its kind in the world, crafted by an extinct branch of early humans known as Denisovans. Increases luck when worn");
 
         add("creativeTab.ytech.title", "YTech");
     }

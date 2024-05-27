@@ -5,6 +5,13 @@
 - Added Potter's Wheel
 - Changed Unfired Clay Bucket recipe
 - Added unfired versions for Flower Pot and Decorated Pot
+- Added Curios API compatibility
+- Added prehistoric item and jewelry
+  - Venus of Hohle Fels
+  - Lion Man
+  - Wild Horse
+  - Shell Beads
+  - Chlorite Bracket
 
 ## [0.3.4]
 
