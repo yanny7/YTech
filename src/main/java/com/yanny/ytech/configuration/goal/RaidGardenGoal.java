@@ -27,7 +27,7 @@ public class RaidGardenGoal<T extends PathfinderMob & IRaidGarden> extends MoveT
     @Override
     public boolean canUse() {
         if (nextStartTick <= 0) {
-            if (!EventHooks.getMobGriefingEvent(animal.level(), animal)) {
+            if (!EventHooks.canEntityGrief(animal.level(), animal)) {
                 return false;
             }
 
