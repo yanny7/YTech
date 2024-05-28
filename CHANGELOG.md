@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.4.0]
 
 - Added Potter's Wheel
 - Changed Unfired Clay Bucket recipe
