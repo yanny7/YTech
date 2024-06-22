@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MaterialArrowItem extends ArrowItem {
     @NotNull private final MaterialType material;
@@ -23,8 +24,8 @@ public class MaterialArrowItem extends ArrowItem {
 
     @NotNull
     @Override
-    public AbstractArrow createArrow(@NotNull Level level, @NotNull ItemStack stack, @NotNull LivingEntity shooter) {
-        ArrowEntity arrow = new ArrowEntity(level, shooter, stack.getItem());
+    public AbstractArrow createArrow(@NotNull Level level, @NotNull ItemStack stack, @NotNull LivingEntity shooter, @Nullable ItemStack source) {
+        ArrowEntity arrow = new ArrowEntity(level, shooter, stack.getItem(), source);
         Triple<Holder<MobEffect>, Integer, Integer> effect = material.effect;
 
         if (effect != null) {

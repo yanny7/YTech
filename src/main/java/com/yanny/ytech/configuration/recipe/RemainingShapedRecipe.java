@@ -13,18 +13,16 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RemainingShapedRecipe extends ShapedRecipe {
-    private static final RandomSource RANDOM = RandomSource.create();
-
     public RemainingShapedRecipe(String group, CraftingBookCategory category, ShapedRecipePattern pattern, ItemStack result, boolean showNotification) {
         super(group, category, pattern, result, showNotification);
     }
@@ -35,8 +33,8 @@ public class RemainingShapedRecipe extends ShapedRecipe {
 
     @NotNull
     @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
-        NonNullList<ItemStack> list = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput container) {
+        NonNullList<ItemStack> list = NonNullList.withSize(container.size(), ItemStack.EMPTY);
 
         for(int i = 0; i < list.size(); ++i) {
             ItemStack item = container.getItem(i);
@@ -47,10 +45,14 @@ public class RemainingShapedRecipe extends ShapedRecipe {
                 ItemStack result = item.copy();
                 list.set(i, result);
 
-                result.hurtAndBreak(1, RANDOM, null, () -> {
-                    result.shrink(1);
-                    result.setDamageValue(0);
-                });
+                MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+
+                if (server != null) {
+                    result.hurtAndBreak(1, server.overworld(), null, (it) -> {
+                        result.shrink(1);
+                        result.setDamageValue(0);
+                    });
+                }
             }
         }
 

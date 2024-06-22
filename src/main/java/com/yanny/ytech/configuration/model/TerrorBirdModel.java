@@ -34,8 +34,8 @@ public class TerrorBirdModel extends EntityModel<TerrorBirdEntity> {
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packetLight, int packetOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
-        parts().forEach((modelPart) -> modelPart.render(poseStack, vertexConsumer, packetLight, packetOverlay, pRed, pGreen, pBlue, pAlpha));
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packetLight, int packetOverlay, int color) {
+        parts().forEach((modelPart) -> modelPart.render(poseStack, vertexConsumer, packetLight, packetOverlay, color));
     }
 
     @Override

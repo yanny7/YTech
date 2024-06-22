@@ -3,13 +3,13 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
+import com.yanny.ytech.configuration.recipe.TwoItemsRecipeInput;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -120,7 +120,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             ItemStack inputLeft = itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT);
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new SimpleContainer(inputLeft, inputRight), level).ifPresent((recipe) -> {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new TwoItemsRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 AlloyingRecipe r = recipe.value();
 
@@ -147,7 +147,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         if (level != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new SimpleContainer(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new TwoItemsRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {
@@ -189,4 +189,5 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             return false;
         }
     }
+
 }

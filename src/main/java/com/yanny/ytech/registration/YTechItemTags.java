@@ -137,7 +137,7 @@ public class YTechItemTags {
     }
 
     private static TagKey<Item> create(String namespace, String name) {
-        return ItemTags.create(new ResourceLocation(namespace, name));
+        return ItemTags.create(ResourceLocation.fromNamespaceAndPath(namespace, name));
     }
 
     public static class MaterialTag {
@@ -175,7 +175,7 @@ public class YTechItemTags {
         public MaterialTag(String name, String namespace, TagKey<Item> tag, EnumSet<MaterialType> materials, Function<MaterialType, String> materialNameSupplier) {
             this.tag = tag;
             tags = new HashMap<>();
-            materials.forEach((type) -> tags.put(type, ItemTags.create(new ResourceLocation(namespace, name + "/" + materialNameSupplier.apply(type)))));
+            materials.forEach((type) -> tags.put(type, ItemTags.create(ResourceLocation.fromNamespaceAndPath(namespace, name + "/" + materialNameSupplier.apply(type)))));
         }
 
         public TagKey<Item> of(MaterialType material) {

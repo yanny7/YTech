@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.Objects;
@@ -31,8 +32,8 @@ public class ArrowEntity extends AbstractArrow {
 
     private PotionContents potionContents = PotionContents.EMPTY;
 
-    public ArrowEntity(@NotNull Level level, @NotNull LivingEntity shooter, @NotNull Item arrowType) {
-        super(EntityType.ARROW, shooter, level, arrowType.getDefaultInstance());
+    public ArrowEntity(@NotNull Level level, @NotNull LivingEntity shooter, @NotNull Item arrowType, @Nullable ItemStack source) {
+        super(EntityType.ARROW, shooter, level, arrowType.getDefaultInstance(), source);
         this.updateColor();
     }
 

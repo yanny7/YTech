@@ -6,7 +6,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
@@ -103,7 +102,7 @@ public class YTechConfigSpec {
 
     @NotNull
     public Set<TagKey<Block>> getBlocksRequiringValidTool() {
-        return makeBlocksRequireValidToolTags.get().stream().map(value -> TagKey.create(Registries.BLOCK, new ResourceLocation(value))).collect(Collectors.toSet());
+        return makeBlocksRequireValidToolTags.get().stream().map(value -> TagKey.create(Registries.BLOCK, ResourceLocation.parse(value))).collect(Collectors.toSet());
     }
 
     public boolean enableCraftingSharpFlint() {
@@ -115,11 +114,11 @@ public class YTechConfigSpec {
     }
 
     public Set<TagKey<Biome>> getSlowDryingBiomes() {
-        return slowDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
+        return slowDryingBiomeTags.get().stream().map(ResourceLocation::withDefaultNamespace).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
     }
 
     public Set<TagKey<Biome>> getFastDryingBiomes() {
-        return fastDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
+        return fastDryingBiomeTags.get().stream().map(ResourceLocation::withDefaultNamespace).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
     }
 
     public int getBaseFluidStoragePerBlock() {
@@ -197,6 +196,6 @@ public class YTechConfigSpec {
     }
 
     private static boolean validateResourceLocation(@NotNull Object object) {
-        return object instanceof String resourceLocation && ResourceLocation.isValidResourceLocation(resourceLocation);
+        return object instanceof String resourceLocation && ResourceLocation.tryParse(resourceLocation) != null;
     }
 }

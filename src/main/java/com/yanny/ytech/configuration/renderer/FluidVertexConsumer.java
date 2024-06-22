@@ -10,7 +10,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.pipeline.RemappingVertexPipeline;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -27,74 +26,57 @@ public final class FluidVertexConsumer implements VertexConsumer {
 
     @NotNull
     @Override
-    public VertexConsumer vertex(double pX, double pY, double pZ) {
-        return vertex(pose, (float) pX, (float) pY, (float) pZ);
+    public VertexConsumer addVertex(float pX, float pY, float pZ) {
+        return addVertex(pose, pX, pY, pZ);
     }
 
     @NotNull
     @Override
-    public VertexConsumer color(int pRed, int pGreen, int pBlue, int pAlpha) {
-        parent.color(pRed, pGreen, pBlue, pAlpha);
+    public VertexConsumer setColor(int pRed, int pGreen, int pBlue, int pAlpha) {
+        parent.setColor(pRed, pGreen, pBlue, pAlpha);
         return this;
     }
 
     @NotNull
     @Override
-    public VertexConsumer uv(float pU, float pV) {
-        parent.uv(pU, pV);
+    public VertexConsumer setUv(float pU, float pV) {
+        parent.setUv(pU, pV);
         return this;
     }
 
     @NotNull
     @Override
-    public VertexConsumer overlayCoords(int pU, int pV) {
-        parent.overlayCoords(pU, pV);
+    public VertexConsumer setUv1(int pU, int pV) {
+        parent.setUv1(pU, pV);
         return this;
     }
 
     @NotNull
     @Override
-    public VertexConsumer uv2(int pU, int pV) {
-        parent.uv2(pU, pV);
+    public VertexConsumer setUv2(int pU, int pV) {
+        parent.setUv2(pU, pV);
         return this;
     }
 
     @NotNull
     @Override
-    public VertexConsumer normal(float pX, float pY, float pZ) {
-        return normal(pose, pX, pY, pZ);
-    }
-
-    @Override
-    public void endVertex() {
-        parent.endVertex();
-        // RemappingVertexPipeline does not call endVertex() on its parent TODO: remove in 1.20
-        // superParent.endVertex();
-    }
-
-    @Override
-    public void defaultColor(int pDefaultR, int pDefaultG, int pDefaultB, int pDefaultA) {
-        parent.defaultColor(pDefaultR, pDefaultG, pDefaultB, pDefaultA);
-    }
-
-    @Override
-    public void unsetDefaultColor() {
-        parent.unsetDefaultColor();
+    public VertexConsumer setNormal(float pX, float pY, float pZ) {
+        return setNormal(pose, pX, pY, pZ);
     }
 
     @NotNull
     @Override
-    public VertexConsumer vertex(Matrix4f pMatrix, float pX, float pY, float pZ) {
-        Vector4f vector4f = pMatrix.transform(new Vector4f(pX, pY, pZ, 1.0F));
-        parent.vertex(vector4f.x(), vector4f.y(), vector4f.z());
+    public VertexConsumer addVertex(PoseStack.Pose pose, float pX, float pY, float pZ) {
+        Vector4f vector4f = pose.pose().transform(new Vector4f(pX, pY, pZ, 1.0F));
+        parent.addVertex(vector4f.x, vector4f.y, vector4f.z);
         return this;
     }
 
     @NotNull
     @Override
-    public VertexConsumer normal(@NotNull PoseStack.Pose pose, float pX, float pY, float pZ) {
+    public VertexConsumer setNormal(PoseStack.Pose pose, float pX, float pY, float pZ) {
         Vector3f vector3f = pose.normal().transform(new Vector3f(pX, pY, pZ));
-        parent.normal(vector3f.x(), vector3f.y(), vector3f.z());
+        parent.setNormal(vector3f.x(), vector3f.y(), vector3f.z());
         return this;
     }
 }

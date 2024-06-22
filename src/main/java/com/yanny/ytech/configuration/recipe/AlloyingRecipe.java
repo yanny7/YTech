@@ -17,13 +17,9 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -34,15 +30,15 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public record AlloyingRecipe(IngredientCount ingredient1, IngredientCount ingredient2,
-                             int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
+                             int minTemperature, int smeltingTime, ItemStack result) implements Recipe<RecipeInput> {
     @Override
-    public boolean matches(@NotNull Container container, @NotNull Level level) {
-        return matchesFully(container.getItem(0), container.getItem(1), false);
+    public boolean matches(@NotNull RecipeInput recipeInput, @NotNull Level level) {
+        return matchesFully(recipeInput.getItem(0), recipeInput.getItem(1), false);
     }
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull Container container, @NotNull HolderLookup.Provider provider) {
+    public ItemStack assemble(@NotNull RecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 

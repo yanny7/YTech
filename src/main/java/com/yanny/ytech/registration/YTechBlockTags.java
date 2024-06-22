@@ -82,7 +82,7 @@ public class YTechBlockTags {
             this.tag = tag;
             this.materialNameSupplier = materialNameSupplier;
             tags = new HashMap<>();
-            materials.forEach((type) -> tags.put(type, BlockTags.create(new ResourceLocation(namespace, name + "/" + materialNameSupplier.apply(type)))));
+            materials.forEach((type) -> tags.put(type, BlockTags.create(ResourceLocation.fromNamespaceAndPath(namespace, name + "/" + materialNameSupplier.apply(type)))));
         }
 
         public TagKey<Block> of(MaterialType material) {

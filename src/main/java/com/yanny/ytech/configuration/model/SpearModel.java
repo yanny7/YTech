@@ -2,7 +2,6 @@ package com.yanny.ytech.configuration.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.YTechItems;
@@ -34,8 +33,8 @@ public class SpearModel extends Model {
          String key = Utils.getPath(YTechItems.SPEARS.of(type.materialType));
 
          LAYER_LOCATIONS.put(type, new ModelLayerLocation(Utils.modLoc(key), "main"));
-         MODEL_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key, "inventory"));
-         MODEL_IN_HAND_LOCATIONS.put(type, new ModelResourceLocation(YTechMod.MOD_ID, key + "_in_hand", "inventory"));
+         MODEL_LOCATIONS.put(type, ModelResourceLocation.inventory(Utils.modLoc(key)));
+         MODEL_IN_HAND_LOCATIONS.put(type, ModelResourceLocation.standalone(Utils.modItemLoc(key + "_in_hand")));
       }
    }
 
@@ -63,7 +62,8 @@ public class SpearModel extends Model {
       return LayerDefinition.create(meshDefinition, 32, 32);
    }
 
-   public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      this.root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+   @Override
+   public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+      this.root.render(poseStack, buffer, packedLight, packedOverlay, color);
    }
 }

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientBasketTooltip implements ClientTooltipComponent {
-    private static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation("container/bundle/background");
+    private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("container/bundle/background");
     private static final int MARGIN_Y = 4;
     private static final int BORDER_WIDTH = 1;
     private static final int SLOT_SIZE_X = 18;
@@ -88,8 +88,8 @@ public class ClientBasketTooltip implements ClientTooltipComponent {
 
     @OnlyIn(Dist.CLIENT)
     static enum Texture {
-        BLOCKED_SLOT(new ResourceLocation("container/bundle/blocked_slot"), SLOT_SIZE_X, SLOT_SIZE_Y),
-        SLOT(new ResourceLocation("container/bundle/slot"), SLOT_SIZE_X, SLOT_SIZE_Y);
+        BLOCKED_SLOT(ResourceLocation.withDefaultNamespace("container/bundle/blocked_slot"), SLOT_SIZE_X, SLOT_SIZE_Y),
+        SLOT(ResourceLocation.withDefaultNamespace("container/bundle/slot"), SLOT_SIZE_X, SLOT_SIZE_Y);
 
         public final ResourceLocation sprite;
         public final int w;

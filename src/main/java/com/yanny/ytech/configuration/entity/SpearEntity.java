@@ -1,8 +1,6 @@
 package com.yanny.ytech.configuration.entity;
 
 import com.yanny.ytech.configuration.SpearType;
-import com.yanny.ytech.registration.YTechItems;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,10 +9,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -26,6 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class SpearEntity extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BYTE);
@@ -37,13 +36,13 @@ public class SpearEntity extends AbstractArrow {
     public int clientSideReturnSpearTickCount;
 
     public SpearEntity(EntityType<SpearEntity> entityType, Level level, SpearType spearType) {
-        super(entityType, level, YTechItems.SPEARS.of(spearType.materialType).get().getDefaultInstance());
+        super(entityType, level);
         this.spearType = spearType;
     }
 
     public SpearEntity(Level level, LivingEntity shooter, ItemStack stack, SpearType spearType) {
-        super(spearType.entityType.get(), shooter, level, stack);
-        entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
+        super(spearType.entityType.get(), shooter, level, stack, null);
+        entityData.set(ID_LOYALTY, getLoyaltyFromItem(stack));
         entityData.set(ID_FOIL, stack.hasFoil());
         this.spearType = spearType;
     }
@@ -123,55 +122,32 @@ public class SpearEntity extends AbstractArrow {
     protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         float damage = spearType.baseDamage;
+        Entity entity1 = this.getOwner();
+        DamageSource damagesource = this.damageSources().trident(this, entity1 == null ? this : entity1);
 
-        if (entity instanceof LivingEntity livingentity) {
-            damage += EnchantmentHelper.getDamageBonus(getDefaultPickupItem(), livingentity.getType());
+        if (this.level() instanceof ServerLevel serverlevel) {
+            damage = EnchantmentHelper.modifyDamage(serverlevel, Objects.requireNonNull(this.getWeaponItem()), entity, damagesource, damage);
         }
 
-        Entity owner = getOwner();
-        DamageSource damagesource = damageSources().trident(this, owner == null ? this : owner); //TODO custom damage source
-        dealtDamage = true;
-        SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
+        this.dealtDamage = true;
 
         if (entity.hurt(damagesource, damage)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
 
-            if (entity instanceof LivingEntity livingEntity) {
-                if (owner instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingEntity, owner);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)owner, livingEntity);
-                }
+            if (this.level() instanceof ServerLevel serverlevel1) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, this.getWeaponItem());
+            }
 
-                doPostHurtEffects(livingEntity);
+            if (entity instanceof LivingEntity livingentity) {
+                this.doKnockback(livingentity, damagesource);
+                this.doPostHurtEffects(livingentity);
             }
         }
 
-        setDeltaMovement(getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
-        float volume = 1.0F;
-
-        if (level() instanceof ServerLevel && level().isThundering() && isChanneling()) {
-            BlockPos blockpos = entity.blockPosition();
-
-            if (level().canSeeSky(blockpos)) {
-                LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(level());
-
-                if (lightningBolt != null) {
-                    lightningBolt.moveTo(Vec3.atBottomCenterOf(blockpos));
-                    lightningBolt.setCause(owner instanceof ServerPlayer ? (ServerPlayer)owner : null);
-                    level().addFreshEntity(lightningBolt);
-                    soundevent = SoundEvents.TRIDENT_THUNDER;
-                    volume = 5.0F;
-                }
-            }
-        }
-
-        playSound(soundevent, volume, 1.0F);
-    }
-
-    public boolean isChanneling() {
-        return EnchantmentHelper.hasChanneling(getDefaultPickupItem());
+        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
+        this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
     }
 
     @Override
@@ -196,7 +172,7 @@ public class SpearEntity extends AbstractArrow {
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         dealtDamage = tag.getBoolean(TAG_DEALT_DAMAGE);
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.getPickupItemStackOrigin()));
+        this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(this.getPickupItemStackOrigin()));
     }
 
     @Override
@@ -222,5 +198,9 @@ public class SpearEntity extends AbstractArrow {
     @Override
     public boolean shouldRender(double pX, double pY, double pZ) {
         return true;
+    }
+
+    private byte getLoyaltyFromItem(ItemStack itemStack) {
+        return this.level() instanceof ServerLevel serverlevel ? (byte) Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverlevel, itemStack, this), 0, 127) : 0;
     }
 }

@@ -14,12 +14,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -74,7 +74,7 @@ public class MillstoneBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (result.isEmpty() && isLeashed && !holdingItemStack.isEmpty()) {
-                Optional<RecipeHolder<MillingRecipe>> millingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.MILLING.get(), new SimpleContainer(holdingItemStack), level);
+                Optional<RecipeHolder<MillingRecipe>> millingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.MILLING.get(), new SingleRecipeInput(holdingItemStack), level);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;

@@ -1,9 +1,11 @@
 package com.yanny.ytech.configuration.entity;
 
+import com.yanny.ytech.configuration.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -28,8 +30,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public abstract class WildDangerousEntity extends WildAnimalEntity implements NeutralMob {
-    private static final UUID SPEED_MODIFIER_ATTACKING_UUID = UUID.fromString("1726b8b1-a40a-4db1-9d6b-9f3fa8826166");
-    private static final AttributeModifier SPEED_MODIFIER_ATTACKING = new AttributeModifier(SPEED_MODIFIER_ATTACKING_UUID, "Attacking speed boost", 0.05, AttributeModifier.Operation.ADD_VALUE);
+    private static final ResourceLocation SPEED_MODIFIER_ATTACKING_ID = Utils.modLoc("wild_speed_modifier_attacking");
+    private static final AttributeModifier SPEED_MODIFIER_ATTACKING = new AttributeModifier(SPEED_MODIFIER_ATTACKING_ID, 0.05, AttributeModifier.Operation.ADD_VALUE);
     private static final EntityDataAccessor<Integer> DATA_GENERATION_ID = SynchedEntityData.defineId(WildDangerousEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final UniformInt FIRST_ANGER_SOUND_DELAY = TimeUtil.rangeOfSeconds(0, 1);
@@ -117,12 +119,12 @@ public abstract class WildDangerousEntity extends WildAnimalEntity implements Ne
 
         if (attributeInstance != null) {
             if (this.isAngry()) {
-                if (!this.isBaby() && !attributeInstance.hasModifier(SPEED_MODIFIER_ATTACKING)) {
+                if (!this.isBaby() && !attributeInstance.hasModifier(SPEED_MODIFIER_ATTACKING_ID)) {
                     attributeInstance.addTransientModifier(SPEED_MODIFIER_ATTACKING);
                 }
 
                 this.maybePlayFirstAngerSound();
-            } else if (attributeInstance.hasModifier(SPEED_MODIFIER_ATTACKING)) {
+            } else if (attributeInstance.hasModifier(SPEED_MODIFIER_ATTACKING_ID)) {
                 attributeInstance.removeModifier(SPEED_MODIFIER_ATTACKING);
             }
         }

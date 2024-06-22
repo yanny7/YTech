@@ -20,7 +20,7 @@ import java.util.Objects;
 public class Utils {
     @NotNull
     public static ResourceLocation mcLoc(@NotNull String path) {
-        return new ResourceLocation(path);
+        return ResourceLocation.withDefaultNamespace(path);
     }
 
     @NotNull
@@ -35,7 +35,7 @@ public class Utils {
 
     @NotNull
     public static ResourceLocation modLoc(@NotNull String path) {
-        return  new ResourceLocation(YTechMod.MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(YTechMod.MOD_ID, path);
     }
 
     @NotNull
@@ -71,7 +71,7 @@ public class Utils {
     @NotNull
     public static ResourceLocation blockLoc(@NotNull Block block) {
         ResourceLocation loc = loc(block);
-        return new ResourceLocation(loc.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + loc.getPath());
+        return ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + loc.getPath());
     }
 
     public static String getPath(DeferredHolder<?, ?> object) {

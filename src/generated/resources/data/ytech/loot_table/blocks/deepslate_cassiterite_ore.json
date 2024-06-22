@@ -16,7 +16,7 @@
                     "predicates": {
                       "minecraft:enchantments": [
                         {
-                          "enchantment": "minecraft:silk_touch",
+                          "enchantments": "minecraft:silk_touch",
                           "levels": {
                             "min": 1
                           }
@@ -26,7 +26,7 @@
                   }
                 }
               ],
-              "name": "ytech:deepslate_galena_ore"
+              "name": "ytech:deepslate_cassiterite_ore"
             },
             {
               "type": "minecraft:item",
@@ -40,7 +40,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "ytech:raw_galena"
+              "name": "ytech:raw_cassiterite"
             }
           ]
         }
@@ -48,5 +48,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ytech:blocks/deepslate_galena_ore"
+  "random_sequence": "ytech:blocks/deepslate_cassiterite_ore"
 }

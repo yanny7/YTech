@@ -1,6 +1,7 @@
 package com.yanny.ytech.compatibility;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.*;
 import com.yanny.ytech.configuration.entity.AurochsEntity;
 import com.yanny.ytech.configuration.entity.FowlEntity;
@@ -39,7 +40,7 @@ public class TopCompatibility {
             probe.registerProvider(new IProbeInfoProvider() {
                 @Override
                 public ResourceLocation getID() {
-                    return new ResourceLocation(YTechMod.MOD_ID , "theoneprobe");
+                    return Utils.modLoc("theoneprobe");
                 }
 
                 @Override

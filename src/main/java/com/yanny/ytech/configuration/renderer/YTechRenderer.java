@@ -88,7 +88,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
                     poseStack.pushPose();
                     poseStack.scale(1.0F, -1.0F, -1.0F);
                     VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, entry.getValue().renderType(SpearType.TEXTURE_LOCATION), false, stack.hasFoil());
-                    entry.getValue().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+                    entry.getValue().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 0xFFFFFFFF);
                     poseStack.popPose();
                 } else {
                     boolean isFabulous;

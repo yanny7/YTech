@@ -10,7 +10,7 @@
             "predicates": {
               "minecraft:enchantments": [
                 {
-                  "enchantment": "minecraft:silk_touch",
+                  "enchantments": "minecraft:silk_touch",
                   "levels": {
                     "min": 1
                   }
@@ -23,7 +23,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ytech:golden_gravel_deposit"
+          "name": "ytech:cassiterite_sand_deposit"
         }
       ],
       "rolls": 1.0
@@ -39,7 +39,7 @@
               "predicates": {
                 "minecraft:enchantments": [
                   {
-                    "enchantment": "minecraft:silk_touch",
+                    "enchantments": "minecraft:silk_touch",
                     "levels": {
                       "min": 1
                     }
@@ -53,7 +53,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:gravel"
+          "name": "minecraft:sand"
         }
       ],
       "rolls": 1.0
@@ -69,7 +69,7 @@
               "predicates": {
                 "minecraft:enchantments": [
                   {
-                    "enchantment": "minecraft:silk_touch",
+                    "enchantments": "minecraft:silk_touch",
                     "levels": {
                       "min": 1
                     }
@@ -99,11 +99,11 @@
               }
             }
           ],
-          "name": "ytech:crushed_gold"
+          "name": "ytech:crushed_cassiterite"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ytech:blocks/golden_gravel_deposit"
+  "random_sequence": "ytech:blocks/cassiterite_sand_deposit"
 }

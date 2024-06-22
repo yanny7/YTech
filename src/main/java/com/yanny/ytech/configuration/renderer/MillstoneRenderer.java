@@ -12,14 +12,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class MillstoneRenderer implements BlockEntityRenderer<BlockEntity> {
-    private static final ResourceLocation KNOT_LOCATION = new ResourceLocation("textures/entity/lead_knot.png");
+    private static final ResourceLocation KNOT_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/lead_knot.png");
     private final LeashKnotModel<LeashFenceKnotEntity> model;
 
     public MillstoneRenderer(BlockEntityRendererProvider.Context context) {
@@ -35,7 +34,7 @@ public class MillstoneRenderer implements BlockEntityRenderer<BlockEntity> {
             poseStack.translate(0.5, 0.51, 0.5);
             poseStack.scale(-1.0F, -1.0F, 1.0F);
             VertexConsumer $$6 = buffer.getBuffer(this.model.renderType(KNOT_LOCATION));
-            this.model.renderToBuffer(poseStack, $$6, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.model.renderToBuffer(poseStack, $$6, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             poseStack.popPose();
         }
     }

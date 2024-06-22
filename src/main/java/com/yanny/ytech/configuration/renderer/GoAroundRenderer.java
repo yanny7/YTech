@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class GoAroundRenderer extends MobRenderer<GoAroundEntity, CowModel<GoAroundEntity>> {
-    private static final ResourceLocation COW_LOCATION = new ResourceLocation("textures/entity/cow/cow.png");
+    private static final ResourceLocation COW_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/cow/cow.png");
 
     public GoAroundRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new CowModel<>(pContext.bakeLayer(ModelLayers.COW)), 0.1F);

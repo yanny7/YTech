@@ -7,6 +7,7 @@ import com.yanny.ytech.configuration.renderer.YTechRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +33,7 @@ import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -68,78 +70,71 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
         return 36000;
     }
 
     @Override
     public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
-            int throwTime = this.getUseDuration(stack) - timeLeft;
+            int throwTime = this.getUseDuration(stack, entity) - timeLeft;
 
             if (throwTime >= spearType.throwThreshold) {
-                int riptideLevel = EnchantmentHelper.getRiptide(stack);
+                float riptideLevel = EnchantmentHelper.getTridentSpinAttackStrength(stack, player);
 
                 if (riptideLevel <= 0 || player.isInWaterOrRain()) {
-                    if (!level.isClientSide) {
-                        stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
+                    if (!(stack.getDamageValue() >= stack.getMaxDamage() - 1)) {
+                        Holder<SoundEvent> holder = EnchantmentHelper.pickHighestLevel(stack, EnchantmentEffectComponents.TRIDENT_SOUND).orElse(SoundEvents.TRIDENT_THROW);
 
-                        if (riptideLevel == 0) {
-                            SpearEntity spearEntity = new SpearEntity(level, player, stack, spearType);
-                            spearEntity.shootFromRotation(
-                                    player,
-                                    player.getXRot(),
-                                    player.getYRot(),
-                                    0.0F,
-                                    spearType.shootPower + (float)riptideLevel * 0.5F,
-                                    spearType.accuracy
-                            );
+                        if (!level.isClientSide) {
+                            stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
 
-                            if (player.hasInfiniteMaterials()) {
-                                spearEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                            if (riptideLevel == 0) {
+                                SpearEntity spearEntity = new SpearEntity(level, player, stack, spearType);
+                                spearEntity.shootFromRotation(
+                                        player,
+                                        player.getXRot(),
+                                        player.getYRot(),
+                                        0.0F,
+                                        spearType.shootPower + (float) riptideLevel * 0.5F,
+                                        spearType.accuracy
+                                );
+
+                                if (player.hasInfiniteMaterials()) {
+                                    spearEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                                }
+
+                                level.addFreshEntity(spearEntity);
+                                level.playSound((Player) null, spearEntity, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
+
+                                if (!player.getAbilities().instabuild) {
+                                    player.getInventory().removeItem(stack);
+                                }
+                            }
+                        }
+
+                        player.awardStat(Stats.ITEM_USED.get(this));
+
+                        if (riptideLevel > 0) {
+                            float f7 = player.getYRot();
+                            float f = player.getXRot();
+                            float f1 = -Mth.sin(f7 * ((float) Math.PI / 180F)) * Mth.cos(f * ((float) Math.PI / 180F));
+                            float f2 = -Mth.sin(f * ((float) Math.PI / 180F));
+                            float f3 = Mth.cos(f7 * ((float) Math.PI / 180F)) * Mth.cos(f * ((float) Math.PI / 180F));
+                            float f4 = Mth.sqrt(f1 * f1 + f2 * f2 + f3 * f3);
+
+                            f1 *= riptideLevel / f4;
+                            f2 *= riptideLevel / f4;
+                            f3 *= riptideLevel / f4;
+                            player.push(f1, f2, f3);
+                            player.startAutoSpinAttack(20, 8.0F, stack);
+
+                            if (player.onGround()) {
+                                player.move(MoverType.SELF, new Vec3(0.0D, 1.1999999F, 0.0D));
                             }
 
-                            level.addFreshEntity(spearEntity);
-                            level.playSound(null, spearEntity, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
-
-                            if (!player.getAbilities().instabuild) {
-                                player.getInventory().removeItem(stack);
-                            }
+                            level.playSound(null, player, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                         }
-                    }
-
-                    player.awardStat(Stats.ITEM_USED.get(this));
-
-                    if (riptideLevel > 0) {
-                        float f7 = player.getYRot();
-                        float f = player.getXRot();
-                        float f1 = -Mth.sin(f7 * ((float)Math.PI / 180F)) * Mth.cos(f * ((float)Math.PI / 180F));
-                        float f2 = -Mth.sin(f * ((float)Math.PI / 180F));
-                        float f3 = Mth.cos(f7 * ((float)Math.PI / 180F)) * Mth.cos(f * ((float)Math.PI / 180F));
-                        float f4 = Mth.sqrt(f1 * f1 + f2 * f2 + f3 * f3);
-                        float f5 = 3.0F * ((1.0F + (float)riptideLevel) / 4.0F);
-
-                        f1 *= f5 / f4;
-                        f2 *= f5 / f4;
-                        f3 *= f5 / f4;
-                        player.push(f1, f2, f3);
-                        player.startAutoSpinAttack(20);
-
-                        if (player.onGround()) {
-                            player.move(MoverType.SELF, new Vec3(0.0D, 1.1999999F, 0.0D));
-                        }
-
-                        SoundEvent soundevent;
-
-                        if (riptideLevel >= 3) {
-                            soundevent = SoundEvents.TRIDENT_RIPTIDE_3;
-                        } else if (riptideLevel == 2) {
-                            soundevent = SoundEvents.TRIDENT_RIPTIDE_2;
-                        } else {
-                            soundevent = SoundEvents.TRIDENT_RIPTIDE_1;
-                        }
-
-                        level.playSound(null, player, soundevent, SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
                 }
             }
@@ -153,7 +148,7 @@ public class SpearItem extends Item implements ProjectileItem {
 
         if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
             return InteractionResultHolder.fail(itemstack);
-        } else if (EnchantmentHelper.getRiptide(itemstack) > 0 && !player.isInWaterOrRain()) {
+        } else if (EnchantmentHelper.getTridentSpinAttackStrength(itemstack, player) > 0 && !player.isInWaterOrRain()) {
             return InteractionResultHolder.fail(itemstack);
         } else {
             player.startUsingItem(hand);
@@ -204,12 +199,12 @@ public class SpearItem extends Item implements ProjectileItem {
         return ItemAttributeModifiers.builder()
                 .add(
                         Attributes.ATTACK_DAMAGE,
-                        new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", spearType.baseDamage, AttributeModifier.Operation.ADD_VALUE),
+                        new AttributeModifier(BASE_ATTACK_DAMAGE_ID, spearType.baseDamage, AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND
                 )
                 .add(
                         Attributes.ATTACK_SPEED,
-                        new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", spearType.attackSpeed, AttributeModifier.Operation.ADD_VALUE),
+                        new AttributeModifier(BASE_ATTACK_SPEED_ID, spearType.attackSpeed, AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND
                 )
                 .build();

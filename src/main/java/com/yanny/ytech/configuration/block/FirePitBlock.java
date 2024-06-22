@@ -24,7 +24,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -155,8 +154,8 @@ public class FirePitBlock extends Block {
     }
 
     public void entityInside(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
-        if (state.getValue(LIT) && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entity)) {
-            entity.hurt(level.damageSources().inFire(), state.getValue(LEVEL) / 15f);
+        if (state.getValue(LIT) && entity instanceof LivingEntity) {
+            entity.hurt(level.damageSources().campfire(), state.getValue(LEVEL) / 15f);
         }
 
         super.entityInside(state, level, pos, entity);

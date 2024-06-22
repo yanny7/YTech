@@ -9,12 +9,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -107,7 +107,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
         if (level != null) {
             ItemStack input = itemStackHandler.getStackInSlot(SLOT_INPUT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(input), level).ifPresent((recipe) -> {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SingleRecipeInput(input), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 SmeltingRecipe r = recipe.value();
 
@@ -123,10 +123,10 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
 
     @Override
     protected void finishRecipe() {
-        if (level != null) {
+        if (level != null && recipeInput != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(recipeInput), level).ifPresent((r) -> {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SingleRecipeInput(recipeInput), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {
@@ -141,7 +141,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     protected boolean isValidRecipeInInput() {
         if (level != null) {
             ItemStack itemStack = itemStackHandler.getStackInSlot(SLOT_INPUT);
-            return level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(itemStack), level).isPresent();
+            return level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SingleRecipeInput(itemStack), level).isPresent();
         }
 
         return false;
@@ -149,7 +149,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
 
     private boolean canInput(@NotNull MachineItemStackHandler itemStackHandler, int slot, @NotNull ItemStack itemStack) {
         if (level != null) {
-            return level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SimpleContainer(itemStack), level).isPresent();
+            return level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new SingleRecipeInput(itemStack), level).isPresent();
         } else {
             return false;
         }

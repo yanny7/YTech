@@ -1,6 +1,5 @@
 package com.yanny.ytech;
 
-import com.yanny.ytech.compatibility.CuriosCapability;
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
@@ -22,19 +21,16 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -61,9 +57,6 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void commonSetupEvent(@NotNull FMLCommonSetupEvent event) {
-        if (ModList.get().isLoaded("curios")) {
-            CuriosCapability.register();
-        }
         TopCompatibility.register();
     }
 
@@ -180,7 +173,7 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
-        Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
+        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         Stream.of(SpearType.values()).forEach(spearType -> {
             ModelResourceLocation modelLocation = MODEL_LOCATIONS.get(spearType);
             BakedModel existingModel = modelRegistry.get(modelLocation);

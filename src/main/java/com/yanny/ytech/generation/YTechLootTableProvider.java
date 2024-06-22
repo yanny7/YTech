@@ -10,6 +10,7 @@ import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.EntityLootSubProvider;
@@ -18,6 +19,7 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -25,7 +27,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -57,8 +59,8 @@ class YTechLootTableProvider extends LootTableProvider {
     }
 
     private static class YTechBlockLootSub extends BlockLootSubProvider {
-        protected YTechBlockLootSub() {
-            super(new HashSet<>(), FeatureFlags.REGISTRY.allFlags());
+        protected YTechBlockLootSub(HolderLookup.Provider provider) {
+            super(new HashSet<>(), FeatureFlags.REGISTRY.allFlags(), provider);
         }
 
         @Override
@@ -146,10 +148,11 @@ class YTechLootTableProvider extends LootTableProvider {
         }
 
         private void depositLootProvider(DeferredBlock<Block> object, MaterialType material, @NotNull Item baseItem) {
+            HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
             LootItemCondition.Builder hasSilkTouch = MatchTool.toolMatches(
                     ItemPredicate.Builder.item().withSubPredicate(
                             ItemSubPredicates.ENCHANTMENTS,
-                            ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))))
+                            ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registrylookup.getOrThrow(Enchantments.SILK_TOUCH), MinMaxBounds.Ints.atLeast(1))))
                     )
             );
 
@@ -175,7 +178,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             .add(
                                                     LootItem.lootTableItem(YTechItems.CRUSHED_MATERIALS.of(material).get())
                                                             .when(LootItemRandomChanceCondition.randomChance(0.25F))
-                                                            .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE, 2))
+                                                            .apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE), 2))
                                             )
                             )
             );
@@ -183,8 +186,8 @@ class YTechLootTableProvider extends LootTableProvider {
     }
 
     private static class YTechEntityLootSub extends EntityLootSubProvider {
-        protected YTechEntityLootSub() {
-            super(FeatureFlagSet.of(FeatureFlags.VANILLA), FeatureFlagSet.of());
+        protected YTechEntityLootSub(HolderLookup.Provider provider) {
+            super(FeatureFlagSet.of(FeatureFlags.VANILLA), FeatureFlagSet.of(), provider);
         }
 
         @Override
@@ -210,7 +213,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
@@ -220,7 +223,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             LootItem.lootTableItem(Items.BEEF)
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
                                                     .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
             );
@@ -236,7 +239,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
@@ -246,7 +249,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             LootItem.lootTableItem(YTechItems.VENISON.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
                                                     .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
@@ -276,7 +279,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(Items.FEATHER)
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
@@ -286,7 +289,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             LootItem.lootTableItem(Items.CHICKEN)
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
                                                     .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
             );
@@ -302,7 +305,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
@@ -312,7 +315,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             LootItem.lootTableItem(Items.MUTTON)
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                                     .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
             );
@@ -326,7 +329,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
             );
@@ -342,7 +345,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(Items.FEATHER)
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 5.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
@@ -352,7 +355,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             LootItem.lootTableItem(Items.CHICKEN)
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
                                                     .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
             );
@@ -369,7 +372,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             LootItem.lootTableItem(Items.PORKCHOP)
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
                                                     .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityOnFire)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
             );
@@ -383,7 +386,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 6.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
@@ -405,7 +408,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                     .add(
                                             LootItem.lootTableItem(YTechItems.RAW_HIDE.get())
                                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
-                                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                                                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                     )
                     )
                     .withPool(
