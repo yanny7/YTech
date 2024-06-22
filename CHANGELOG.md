@@ -1,5 +1,10 @@
 # YTech Changelog
 
+## [0.4.1]
+
+- Added JEI support
+- Fixed deer not spawning with antlers
+
 ## [0.4.0]
 
 - Added Potter's Wheel
