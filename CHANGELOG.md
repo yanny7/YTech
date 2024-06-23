@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.4.2]
 
 - Fixed crash when used with Caupona mod
 
