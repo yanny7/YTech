@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## [0.4.2]
+
+- Fixed crash when used with Caupona mod
+
 ## [0.4.0]
 
 - Added Potter's Wheel
