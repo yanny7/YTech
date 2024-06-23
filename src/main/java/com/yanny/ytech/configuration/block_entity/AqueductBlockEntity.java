@@ -67,9 +67,14 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
         return renderBox;
     }
 
+    @NotNull
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return ForgeCapabilities.FLUID_HANDLER.orEmpty(cap, lazyFluidHandler);
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (lazyFluidHandler != null) {
+            return ForgeCapabilities.FLUID_HANDLER.orEmpty(cap, lazyFluidHandler);
+        } else {
+            return LazyOptional.empty();
+        }
     }
 
     public void onRandomTick() {
