@@ -114,11 +114,11 @@ public class YTechConfigSpec {
     }
 
     public Set<TagKey<Biome>> getSlowDryingBiomes() {
-        return slowDryingBiomeTags.get().stream().map(ResourceLocation::withDefaultNamespace).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
+        return slowDryingBiomeTags.get().stream().map(ResourceLocation::parse).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
     }
 
     public Set<TagKey<Biome>> getFastDryingBiomes() {
-        return fastDryingBiomeTags.get().stream().map(ResourceLocation::withDefaultNamespace).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
+        return fastDryingBiomeTags.get().stream().map(ResourceLocation::parse).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
     }
 
     public int getBaseFluidStoragePerBlock() {

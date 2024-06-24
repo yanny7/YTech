@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## [0.4.3]
+
+- Fixed crash when used Drying Rack
+
 ## [0.4.1]
 
 - Added JEI support
