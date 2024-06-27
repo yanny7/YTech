@@ -89,17 +89,11 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
 
         if (level == null || !level.isClientSide) {
             if (recipeInputLeft != null) {
-                CompoundTag itemStack = new CompoundTag();
-
-                recipeInputLeft.save(provider, itemStack);
-                tag.put(TAG_RECIPE_INPUT_LEFT, itemStack);
+                tag.put(TAG_RECIPE_INPUT_LEFT, recipeInputLeft.saveOptional(provider));
             }
 
             if (recipeInputRight != null) {
-                CompoundTag itemStack = new CompoundTag();
-
-                recipeInputRight.save(provider, itemStack);
-                tag.put(TAG_RECIPE_INPUT_RIGHT, itemStack);
+                tag.put(TAG_RECIPE_INPUT_RIGHT, recipeInputRight.saveOptional(provider));
             }
         }
     }

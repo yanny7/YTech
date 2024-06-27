@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed crash for multiple block entities
+
 ## [0.4.3]
 
 - Fixed crash when used Drying Rack

@@ -185,8 +185,8 @@ public class MillstoneBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
         super.saveAdditional(tag, provider);
-        tag.put(TAG_INPUT, input.save(provider, new CompoundTag()));
-        tag.put(TAG_RESULT, result.save(provider, new CompoundTag()));
+        tag.put(TAG_INPUT, input.saveOptional(provider));
+        tag.put(TAG_RESULT, result.saveOptional(provider));
         tag.putFloat(TAG_BONUS_CHANCE, bonusChance);
         tag.putBoolean(TAG_IS_MILLING, isMilling);
         tag.putBoolean(TAG_IS_LEASHED, isLeashed);

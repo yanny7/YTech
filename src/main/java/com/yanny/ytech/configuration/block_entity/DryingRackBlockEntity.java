@@ -153,7 +153,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
         tag.putInt(TAG_DRYING_LEFT, dryingLeft);
 
         if (result != null) {
-            tag.put(TAG_RESULT, result.save(provider));
+            tag.put(TAG_RESULT, result.saveOptional(provider));
         }
     }
 }

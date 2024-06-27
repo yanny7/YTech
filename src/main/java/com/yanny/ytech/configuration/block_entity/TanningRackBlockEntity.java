@@ -144,10 +144,7 @@ public class TanningRackBlockEntity extends BlockEntity {
         tag.putInt(TAG_HIT_LEFT, hitLeft);
 
         if (result != null) {
-            CompoundTag itemStack = new CompoundTag();
-
-            result.save(provider, itemStack);
-            tag.put(TAG_RESULT, itemStack);
+            tag.put(TAG_RESULT, result.saveOptional(provider));
         }
     }
 }

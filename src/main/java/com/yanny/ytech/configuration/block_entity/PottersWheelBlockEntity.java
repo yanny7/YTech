@@ -134,7 +134,7 @@ public class PottersWheelBlockEntity extends BlockEntity {
         tag.put(TAG_ITEMS, items.serializeNBT(provider));
 
         if (result != null) {
-            tag.put(TAG_RESULT, result.save(provider));
+            tag.put(TAG_RESULT, result.saveOptional(provider));
         }
     }
 }

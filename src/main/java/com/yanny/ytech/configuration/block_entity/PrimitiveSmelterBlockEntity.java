@@ -84,10 +84,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
 
         if (level == null || !level.isClientSide) {
             if (recipeInput != null) {
-                CompoundTag itemStack = new CompoundTag();
-
-                recipeInput.save(provider, itemStack);
-                tag.put(TAG_RECIPE_INPUT, itemStack);
+                tag.put(TAG_RECIPE_INPUT, recipeInput.save(provider));
             }
         }
     }
