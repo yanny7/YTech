@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed missing lava/water clay bucket overlay color
+
 ## [0.4.1]
 
 - Added JEI support
