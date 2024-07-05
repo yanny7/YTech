@@ -11,7 +11,7 @@ public class Registration {
     }
 
     public static void addItemColors(RegisterColorHandlersEvent.Item event) {
-        event.register((i, t) -> t == 1 ? 0xF54D0C : 0xFFFFFFFF, YTechItems.LAVA_CLAY_BUCKET.get());
-        event.register((i, t) -> t == 1 ? 0x0C4DF5 : 0xFFFFFFFF, YTechItems.WATER_CLAY_BUCKET.get());
+        event.register((i, t) -> t == 1 ? 0xFFF54D0C : 0xFFFFFFFF, YTechItems.LAVA_CLAY_BUCKET.get());
+        event.register((i, t) -> t == 1 ? 0xFF0C4DF5 : 0xFFFFFFFF, YTechItems.WATER_CLAY_BUCKET.get());
     }
 }

@@ -35,7 +35,7 @@ public class YTechArmorMaterials {
                             material.getTier().getEnchantmentValue(),
                             SoundEvents.ARMOR_EQUIP_IRON,
                             () -> material.getTier().getRepairIngredient(),
-                            List.of(new ArmorMaterial.Layer(Utils.modLoc(""))),
+                            List.of(new ArmorMaterial.Layer(Utils.modLoc(material.key))),
                             0,//material.thoughness,
                             0//material.knockbackResistance
                     )));
