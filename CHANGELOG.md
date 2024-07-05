@@ -1,7 +1,8 @@
 # YTech Changelog
 
-## []
+## [0.4.5]
 
+- Fixed Aqueduct Fertilizer not working
 - Fixed armor rendering
 - Fixed missing lava/water clay bucket overlay color
 
