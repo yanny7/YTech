@@ -2,6 +2,7 @@
 
 ## []
 
+- Fixed armor rendering
 - Fixed missing lava/water clay bucket overlay color
 
 ## [0.4.1]
