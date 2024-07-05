@@ -16,7 +16,7 @@ public class YTechBlockEntityTypes {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, YTechMod.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<AqueductBlockEntity>> AQUEDUCT = register("aqueduct", AqueductBlockEntity::new, YTechBlocks.AQUEDUCT);
-    public static final RegistryObject<BlockEntityType<AqueductFertilizerBlockEntity>> AQUEDUCT_FERTILIZER = register("aqueduct_fertilizer", AqueductFertilizerBlockEntity::new, YTechBlocks.AQUEDUCT);
+    public static final RegistryObject<BlockEntityType<AqueductFertilizerBlockEntity>> AQUEDUCT_FERTILIZER = register("aqueduct_fertilizer", AqueductFertilizerBlockEntity::new, YTechBlocks.AQUEDUCT_FERTILIZER);
     public static final RegistryObject<BlockEntityType<AqueductHydratorBlockEntity>> AQUEDUCT_HYDRATOR = register("aqueduct_hydrator", (pos, state) -> new AqueductHydratorBlockEntity(YTechBlockEntityTypes.AQUEDUCT_HYDRATOR.get(), pos, state), YTechBlocks.AQUEDUCT_HYDRATOR);
     public static final RegistryObject<BlockEntityType<AqueductValveBlockEntity>> AQUEDUCT_VALVE = register("aqueduct_valve", AqueductValveBlockEntity::new, YTechBlocks.AQUEDUCT_VALVE);
     public static final RegistryObject<BlockEntityType<BrickChimneyBlockEntity>> BRICK_CHIMNEY = register("brick_chimney", BrickChimneyBlockEntity::new, YTechBlocks.BRICK_CHIMNEY, YTechBlocks.REINFORCED_BRICK_CHIMNEY);

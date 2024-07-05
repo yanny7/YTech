@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed Aqueduct Fertilizer not working
+
 ## [0.4.2]
 
 - Fixed crash when used with Caupona mod
