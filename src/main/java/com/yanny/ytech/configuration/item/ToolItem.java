@@ -1,8 +1,13 @@
 package com.yanny.ytech.configuration.item;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
@@ -12,8 +17,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class ToolItem extends TieredItem implements Vanishable {
-    public ToolItem(Tier tier, Properties properties) {
+    private final ImmutableMultimap<Attribute, AttributeModifier> defaultModifiers;
+
+    public ToolItem(Tier tier, boolean canAttack, Properties properties) {
         super(tier, properties);
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+
+        if (canAttack) {
+            double attackDamageBaseline = tier.getAttackDamageBonus();
+            double attackSpeedModifier = -2.5;
+
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", attackDamageBaseline, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", attackSpeedModifier, AttributeModifier.Operation.ADDITION));
+        }
+
+        this.defaultModifiers = builder.build();
     }
 
     public boolean hurtEnemy(@NotNull ItemStack itemStack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
@@ -28,5 +46,12 @@ public class ToolItem extends TieredItem implements Vanishable {
         }
 
         return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    @NotNull
+    @Override
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot equipmentSlot) {
+        return equipmentSlot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 }

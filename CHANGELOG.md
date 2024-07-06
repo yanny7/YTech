@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Added damage and attack speed modifier for Hammer, Saw, File and Sharp Flint
+
 ## [0.4.5]
 
 - Fixed Aqueduct Fertilizer not working
