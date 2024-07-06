@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "ytech:flours"
+    },
+    "B": {
+      "item": "minecraft:sugar"
+    },
+    "C": {
+      "item": "minecraft:milk_bucket"
+    },
+    "D": {
+      "item": "minecraft:egg"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "BDB",
+    "AAA"
+  ],
+  "result": {
+    "item": "minecraft:cake"
+  },
+  "show_notification": true
+}
