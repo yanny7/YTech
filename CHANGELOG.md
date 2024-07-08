@@ -7,6 +7,7 @@
 - Changed vanilla recipe for wooden stairs
 - Added knives made from metals
 - Changed recipes for Crossbow and Tripwire Hook
+- Changed recipes for Cartography Table, Fetching Table, Grindstone, Loom, Smithing Table and Smoker
 
 ## [0.4.5]
 
