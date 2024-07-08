@@ -154,6 +154,18 @@ class YTechRecipeProvider extends RecipeProvider {
         mcButtonRecipe(recipeConsumer, Items.BAMBOO_PLANKS, Items.BAMBOO_BUTTON);
         mcButtonRecipe(recipeConsumer, Items.WARPED_PLANKS, Items.WARPED_BUTTON);
 
+        mcStairsRecipe(recipeConsumer, Items.ACACIA_PLANKS, Items.ACACIA_SLAB, Items.ACACIA_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.BIRCH_PLANKS, Items.BIRCH_SLAB, Items.BIRCH_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.CHERRY_PLANKS, Items.CHERRY_SLAB, Items.CHERRY_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.JUNGLE_PLANKS, Items.JUNGLE_SLAB, Items.JUNGLE_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.OAK_PLANKS, Items.OAK_SLAB, Items.OAK_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.DARK_OAK_PLANKS, Items.DARK_OAK_SLAB, Items.DARK_OAK_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.MANGROVE_PLANKS, Items.MANGROVE_SLAB, Items.MANGROVE_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.SPRUCE_PLANKS, Items.SPRUCE_SLAB, Items.SPRUCE_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.CRIMSON_PLANKS, Items.CRIMSON_SLAB, Items.CRIMSON_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.BAMBOO_PLANKS, Items.BAMBOO_SLAB, Items.BAMBOO_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.WARPED_PLANKS, Items.WARPED_SLAB, Items.WARPED_STAIRS);
+
         mcBedRecipe(recipeConsumer, Items.BLACK_WOOL, Items.BLACK_BED);
         mcBedRecipe(recipeConsumer, Items.BLUE_WOOL, Items.BLUE_BED);
         mcBedRecipe(recipeConsumer, Items.BROWN_WOOL, Items.BROWN_BED);
@@ -658,6 +670,20 @@ class YTechRecipeProvider extends RecipeProvider {
                 .requires(YTechItemTags.SAWS.tag)
                 .requires(planks)
                 .group("wooden_button")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(result));
+    }
+
+    private void mcStairsRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item slab, @NotNull Item result) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
+                .define('W', YTechItemTags.SAWS.tag)
+                .define('B', YTechItemTags.BOLTS.of(MaterialType.WOODEN))
+                .define('P', planks)
+                .define('S', slab)
+                .pattern("PW")
+                .pattern("BB")
+                .pattern("SS")
+                .group("wooden_stairs")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(result));
     }
