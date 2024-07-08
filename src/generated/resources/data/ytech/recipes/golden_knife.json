@@ -1,0 +1,23 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "ytech:files"
+    },
+    "P": {
+      "tag": "ytech:plates/gold"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "FP",
+    "S "
+  ],
+  "result": {
+    "item": "ytech:golden_knife"
+  },
+  "show_notification": true
+}

@@ -111,7 +111,7 @@ public class YTechItems {
     public static final MaterialItem HELMETS = new HelmetMaterialItem();
     public static final MaterialItem HOES = new HoeMaterialItem();
     public static final MaterialItem INGOTS = new IngotMaterialItem();
-    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), EnumSet.of(MaterialType.FLINT), YTechItems::knifeItem);
+    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), YTechItems::knifeItem);
     public static final MaterialItem LEGGINGS = new LeggingsMaterialItem();
     public static final MaterialItem MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
     public static final MaterialItem PICKAXES = new PickaxeMaterialItem();

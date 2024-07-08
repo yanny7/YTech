@@ -457,7 +457,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.HELMETS.entries().forEach((entry) -> registerHelmetRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.HOES.entries().forEach((entry) -> registerHoeRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.INGOTS.entries().forEach((entry) -> registerIngotRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
-        registerFlintKnifeRecipe(recipeConsumer);
+        YTechItems.KNIVES.entries().forEach((entry) -> registerKnifeRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.LEGGINGS.entries().forEach((entry) -> registerLeggingsRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.MORTAR_AND_PESTLES.entries().forEach((entry) -> registerMortarAndPestleRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.PICKAXES.entries().forEach((entry) -> registerPickaxeRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
@@ -928,13 +928,24 @@ class YTechRecipeProvider extends RecipeProvider {
                 .save(recipeConsumer, YTechItems.BASKET.getId());
     }
 
-    private static void registerFlintKnifeRecipe(Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, YTechItems.KNIVES.of(FLINT).get())
-                .requires(Items.STICK)
-                .requires(Items.FLINT)
-                .requires(YTechItemTags.LEATHER_STRIPS)
-                .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
-                .save(recipeConsumer, Utils.modLoc(YTechItems.KNIVES.of(FLINT)));
+    private static void registerKnifeRecipe(Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
+        if (material == FLINT) {
+            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, item.get())
+                    .requires(Items.STICK)
+                    .requires(Items.FLINT)
+                    .requires(YTechItemTags.LEATHER_STRIPS)
+                    .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
+                    .save(recipeConsumer, item.getId());
+        } else {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, item.get())
+                    .define('S', Items.STICK)
+                    .define('P', YTechItemTags.PLATES.of(material))
+                    .define('F', YTechItemTags.FILES.tag)
+                    .pattern("FP")
+                    .pattern("S ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.of(material)))
+                    .save(recipeConsumer, item.getId());
+        }
     }
 
     private static void registerCookedVenisonRecipe(Consumer<FinishedRecipe> recipeConsumer) {
