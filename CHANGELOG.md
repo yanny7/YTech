@@ -6,6 +6,7 @@
 - Cake and Cookie now use Flour in recipe
 - Changed vanilla recipe for wooden stairs
 - Added knives made from metals
+- Changed recipes for Crossbow and Tripwire Hook
 
 ## [0.4.5]
 

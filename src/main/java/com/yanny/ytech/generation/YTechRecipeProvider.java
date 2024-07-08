@@ -424,6 +424,29 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("AAA")
                 .unlockedBy(Utils.getHasName(), has(YTechItemTags.FLOURS))
                 .save(recipeConsumer, Utils.loc(Items.CAKE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.TRIPWIRE_HOOK)
+                .define('I', YTechItemTags.RODS.of(IRON))
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('S', Items.STICK)
+                .define('L', ItemTags.LOGS)
+                .pattern("IH")
+                .pattern("S ")
+                .pattern("L ")
+                .unlockedBy(Utils.getHasName(), has(YTechItemTags.INGOTS.of(IRON)))
+                .save(recipeConsumer, Utils.loc(Items.TRIPWIRE_HOOK));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.CROSSBOW)
+                .define('#', Items.STICK)
+                .define('$', Items.TRIPWIRE_HOOK)
+                .define('&', YTechItemTags.RODS.of(IRON))
+                .define('~', YTechItemTags.LEATHER_STRIPS)
+                .define('S', ItemTags.WOODEN_SLABS)
+                .define('F', YTechItemTags.KNIVES.tag)
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .pattern("#&#")
+                .pattern("~$~")
+                .pattern("FSH")
+                .unlockedBy(Utils.getHasName(), has(Items.TRIPWIRE_HOOK))
+                .save(recipeConsumer, Utils.loc(Items.CROSSBOW));
 
         /*
          * MOD RECIPES
