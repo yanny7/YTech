@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.5.0]
 
 - Added damage and attack speed modifier for Hammer, Saw, File and Sharp Flint
 - Cake and Cookie now use Flour in recipe
