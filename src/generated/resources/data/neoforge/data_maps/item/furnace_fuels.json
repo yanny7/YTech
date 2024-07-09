@@ -1,7 +1,82 @@
 {
   "values": {
+    "#ytech:baskets": {
+      "burn_time": 300
+    },
+    "#ytech:bolts/wooden": {
+      "burn_time": 100
+    },
+    "#ytech:drying_racks/acacia": {
+      "burn_time": 300
+    },
+    "#ytech:drying_racks/birch": {
+      "burn_time": 300
+    },
+    "#ytech:drying_racks/cherry": {
+      "burn_time": 300
+    },
+    "#ytech:drying_racks/dark_oak": {
+      "burn_time": 300
+    },
+    "#ytech:drying_racks/jungle": {
+      "burn_time": 300
+    },
+    "#ytech:drying_racks/mangrove": {
+      "burn_time": 300
+    },
+    "#ytech:drying_racks/oak": {
+      "burn_time": 300
+    },
+    "#ytech:drying_racks/spruce": {
+      "burn_time": 300
+    },
+    "#ytech:grass_beds": {
+      "burn_time": 300
+    },
+    "#ytech:grass_fibers": {
+      "burn_time": 100
+    },
+    "#ytech:grass_twines": {
+      "burn_time": 200
+    },
     "#ytech:lava_buckets": {
       "burn_time": 20000
+    },
+    "#ytech:plates/wooden": {
+      "burn_time": 200
+    },
+    "#ytech:tanning_racks/acacia": {
+      "burn_time": 300
+    },
+    "#ytech:tanning_racks/birch": {
+      "burn_time": 300
+    },
+    "#ytech:tanning_racks/cherry": {
+      "burn_time": 300
+    },
+    "#ytech:tanning_racks/dark_oak": {
+      "burn_time": 300
+    },
+    "#ytech:tanning_racks/jungle": {
+      "burn_time": 300
+    },
+    "#ytech:tanning_racks/mangrove": {
+      "burn_time": 300
+    },
+    "#ytech:tanning_racks/oak": {
+      "burn_time": 300
+    },
+    "#ytech:tanning_racks/spruce": {
+      "burn_time": 300
+    },
+    "#ytech:thatch": {
+      "burn_time": 200
+    },
+    "#ytech:thatch_slabs": {
+      "burn_time": 100
+    },
+    "#ytech:thatch_stairs": {
+      "burn_time": 200
     }
   }
 }

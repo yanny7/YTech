@@ -47,7 +47,7 @@ public class YTechItems {
     public static final DeferredItem<Item> DRIED_VENISON = ITEMS.register("dried_venison", () -> foodItem(5, 0.7f));
     public static final DeferredItem<Item> FLOUR = ITEMS.registerSimpleItem("flour");
     public static final DeferredItem<Item> GRASS_FIBERS = ITEMS.register("grass_fibers", () -> descriptionItem(List.of(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY))));
-    public static final DeferredItem<Item> GRASS_TWINE = ITEMS.registerSimpleItem("grass_twine");
+    public static final DeferredItem<Item> GRASS_TWINE = ITEMS.register("grass_twine", YTechItems::simpleItem);
     public static final DeferredItem<Item> IRON_BLOOM = ITEMS.registerSimpleItem("iron_bloom");
     public static final DeferredItem<Item> LAVA_CLAY_BUCKET = ITEMS.register("lava_clay_bucket", () -> new ClayBucketItem(Fluids.LAVA, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
     public static final DeferredItem<Item> LEATHER_STRIPS = ITEMS.registerSimpleItem("leather_strips");
@@ -55,7 +55,7 @@ public class YTechItems {
     public static final DeferredItem<Item> PEBBLE = ITEMS.register("pebble", PebbleItem::new);
     public static final DeferredItem<Item> RAW_HIDE = ITEMS.registerSimpleItem("raw_hide");
     public static final DeferredItem<Item> RHINO_HORN = ITEMS.register("rhino_horn", YTechItems::simpleItem);
-    public static final DeferredItem<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolItem(Tiers.WOOD));
+    public static final DeferredItem<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolCanHurtItem(Tiers.WOOD));
     public static final DeferredItem<Item> UNFIRED_BRICK = ITEMS.registerSimpleItem("unfired_brick");
     public static final DeferredItem<Item> UNFIRED_CLAY_BUCKET = ITEMS.registerSimpleItem("unfired_clay_bucket");
     public static final DeferredItem<Item> UNFIRED_DECORATED_POT = ITEMS.registerSimpleItem("unfired_decoration_pot");
@@ -106,19 +106,19 @@ public class YTechItems {
     public static final MaterialItem BOOTS = new BootsMaterialItem();
     public static final MaterialItem CHESTPLATES = new ChestplatesMaterialItem();
     public static final MaterialItem CRUSHED_MATERIALS = new MaterialItem("crushed_material", NameHolder.prefix("crushed"), MaterialType.ALL_ORES, (type) -> simpleItem());
-    public static final MaterialItem FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> toolItem(type.getTier()));
-    public static final MaterialItem HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
+    public static final MaterialItem FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
+    public static final MaterialItem HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolCanHurtItem(type.getTier()));
     public static final MaterialItem HELMETS = new HelmetMaterialItem();
     public static final MaterialItem HOES = new HoeMaterialItem();
     public static final MaterialItem INGOTS = new IngotMaterialItem();
-    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), EnumSet.of(MaterialType.FLINT), YTechItems::knifeItem);
+    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), YTechItems::knifeItem);
     public static final MaterialItem LEGGINGS = new LeggingsMaterialItem();
     public static final MaterialItem MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
     public static final MaterialItem PICKAXES = new PickaxeMaterialItem();
     public static final MaterialItem PLATES = new MaterialItem("plate", NameHolder.suffix("plate"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> simpleItem());
     public static final MaterialItem RAW_MATERIALS = new RawMaterialItem();
     public static final MaterialItem RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
-    public static final MaterialItem SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolItem(type.getTier()));
+    public static final MaterialItem SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
     public static final MaterialItem SAW_BLADES = new MaterialItem("saw_blade", NameHolder.suffix("saw_blade"), EnumSet.of(MaterialType.IRON), (type) -> simpleItem());
     public static final MaterialItem SHOVELS = new ShovelMaterialItem();
     public static final MaterialItem SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
@@ -142,7 +142,7 @@ public class YTechItems {
         return ITEMS.getEntries();
     }
 
-    private static Item blockItem(DeferredBlock<Block> block) {
+    private static BlockItem blockItem(DeferredBlock<Block> block) {
         return new BlockItem(block.get(), new Item.Properties());
     }
 
@@ -151,7 +151,11 @@ public class YTechItems {
     }
 
     private static Item toolItem(Tier tier) {
-        return new TieredItem(tier, new Item.Properties());
+        return new ToolItem(tier, false);
+    }
+
+    private static Item toolCanHurtItem(Tier tier) {
+        return new ToolItem(tier, true);
     }
 
     private static Item axeItem(MaterialType material) {

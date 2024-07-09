@@ -1,5 +1,11 @@
 {
   "values": [
-    "#ytech:knives/flint"
+    "#ytech:knives/bronze",
+    "#ytech:knives/copper",
+    "#ytech:knives/flint",
+    "#ytech:knives/gold",
+    "#ytech:knives/iron",
+    "#ytech:knives/lead",
+    "#ytech:knives/tin"
   ]
 }
