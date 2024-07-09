@@ -1,0 +1,28 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "building",
+  "group": "wooden_stairs",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/wooden"
+    },
+    "P": {
+      "item": "minecraft:crimson_planks"
+    },
+    "S": {
+      "item": "minecraft:crimson_slab"
+    },
+    "W": {
+      "tag": "ytech:saws"
+    }
+  },
+  "pattern": [
+    "PW",
+    "BB",
+    "SS"
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:crimson_stairs"
+  }
+}

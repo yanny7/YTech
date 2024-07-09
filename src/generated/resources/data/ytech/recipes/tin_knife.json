@@ -1,0 +1,22 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "ytech:files"
+    },
+    "P": {
+      "tag": "ytech:plates/tin"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "FP",
+    "S "
+  ],
+  "result": {
+    "item": "ytech:tin_knife"
+  }
+}

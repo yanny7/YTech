@@ -12,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluids;
@@ -48,8 +49,8 @@ public class YTechItems {
     public static final DeferredItem<Item> DRIED_SALMON = ITEMS.register("dried_salmon", () -> foodItem(4, 0.5f));
     public static final DeferredItem<Item> DRIED_VENISON = ITEMS.register("dried_venison", () -> foodItem(5, 0.7f));
     public static final DeferredItem<Item> FLOUR = ITEMS.registerSimpleItem("flour");
-    public static final DeferredItem<Item> GRASS_FIBERS = ITEMS.register("grass_fibers", () -> descriptionItem(List.of(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY))));
-    public static final DeferredItem<Item> GRASS_TWINE = ITEMS.registerSimpleItem("grass_twine");
+    public static final DeferredItem<Item> GRASS_FIBERS = ITEMS.register("grass_fibers", () -> burnableDescriptionItem(List.of(Component.translatable("text.ytech.hover.grass_fibers").withStyle(ChatFormatting.DARK_GRAY)), 100));
+    public static final DeferredItem<Item> GRASS_TWINE = ITEMS.register("grass_twine", () -> burnableSimpleItem(200));
     public static final DeferredItem<Item> IRON_BLOOM = ITEMS.registerSimpleItem("iron_bloom");
     public static final DeferredItem<Item> LAVA_CLAY_BUCKET = ITEMS.register("lava_clay_bucket", () -> new ClayBucketItem(() -> Fluids.LAVA, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
     public static final DeferredItem<Item> LEATHER_STRIPS = ITEMS.registerSimpleItem("leather_strips");
@@ -57,7 +58,7 @@ public class YTechItems {
     public static final DeferredItem<Item> PEBBLE = ITEMS.register("pebble", PebbleItem::new);
     public static final DeferredItem<Item> RAW_HIDE = ITEMS.registerSimpleItem("raw_hide");
     public static final DeferredItem<Item> RHINO_HORN = ITEMS.register("rhino_horn", YTechItems::simpleItem);
-    public static final DeferredItem<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolItem(Tiers.WOOD));
+    public static final DeferredItem<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolCanHurtItem(Tiers.WOOD));
     public static final DeferredItem<Item> UNFIRED_BRICK = ITEMS.registerSimpleItem("unfired_brick");
     public static final DeferredItem<Item> UNFIRED_CLAY_BUCKET = ITEMS.registerSimpleItem("unfired_clay_bucket");
     public static final DeferredItem<Item> UNFIRED_DECORATED_POT = ITEMS.registerSimpleItem("unfired_decoration_pot");
@@ -82,9 +83,9 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> TERRACOTTA_BRICKS = ITEMS.registerSimpleBlockItem(YTechBlocks.TERRACOTTA_BRICKS);
     public static final DeferredItem<BlockItem> TERRACOTTA_BRICK_SLAB = ITEMS.registerSimpleBlockItem(YTechBlocks.TERRACOTTA_BRICK_SLAB);
     public static final DeferredItem<BlockItem> TERRACOTTA_BRICK_STAIRS = ITEMS.registerSimpleBlockItem(YTechBlocks.TERRACOTTA_BRICK_STAIRS);
-    public static final DeferredItem<BlockItem> THATCH = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH);
-    public static final DeferredItem<BlockItem> THATCH_SLAB = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_SLAB);
-    public static final DeferredItem<BlockItem> THATCH_STAIRS = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_STAIRS);
+    public static final DeferredItem<BlockItem> THATCH = ITEMS.register("thatch", () -> burnableBlockItem(YTechBlocks.THATCH, 200));
+    public static final DeferredItem<BlockItem> THATCH_SLAB = ITEMS.register("thatch_slab", () -> burnableBlockItem(YTechBlocks.THATCH_SLAB, 100));
+    public static final DeferredItem<BlockItem> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> burnableBlockItem(YTechBlocks.THATCH_STAIRS, 200));
 
     public static final DeferredItem<Item> CHLORITE_BRACELET = ITEMS.register("chlorite_bracelet", ChloriteBraceletItem::new);
     public static final DeferredItem<Item> LION_MAN = ITEMS.register("lion_man", LionManItem::new);
@@ -104,23 +105,23 @@ public class YTechItems {
 
     public static final MaterialItem ARROWS = new MaterialItem("arrow", NameHolder.suffix("arrow"), MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
     public static final MaterialItem AXES = new AxeMaterialItem();
-    public static final MaterialItem BOLTS = new MaterialItem("bolt", NameHolder.suffix("bolt"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> simpleItem());
+    public static final MaterialItem BOLTS = new MaterialItem("bolt", NameHolder.suffix("bolt"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> burnableSimpleItem(type, 100));
     public static final MaterialItem BOOTS = new BootsMaterialItem();
     public static final MaterialItem CHESTPLATES = new ChestplatesMaterialItem();
     public static final MaterialItem CRUSHED_MATERIALS = new MaterialItem("crushed_material", NameHolder.prefix("crushed"), MaterialType.ALL_ORES, (type) -> simpleItem());
-    public static final MaterialItem FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> toolItem(type.getTier()));
-    public static final MaterialItem HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
+    public static final MaterialItem FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
+    public static final MaterialItem HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolCanHurtItem(type.getTier()));
     public static final MaterialItem HELMETS = new HelmetMaterialItem();
     public static final MaterialItem HOES = new HoeMaterialItem();
     public static final MaterialItem INGOTS = new IngotMaterialItem();
-    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), EnumSet.of(MaterialType.FLINT), YTechItems::knifeItem);
+    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), YTechItems::knifeItem);
     public static final MaterialItem LEGGINGS = new LeggingsMaterialItem();
     public static final MaterialItem MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
     public static final MaterialItem PICKAXES = new PickaxeMaterialItem();
-    public static final MaterialItem PLATES = new MaterialItem("plate", NameHolder.suffix("plate"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> simpleItem());
+    public static final MaterialItem PLATES = new MaterialItem("plate", NameHolder.suffix("plate"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> burnableSimpleItem(type, 200));
     public static final MaterialItem RAW_MATERIALS = new RawMaterialItem();
     public static final MaterialItem RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
-    public static final MaterialItem SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolItem(type.getTier()));
+    public static final MaterialItem SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
     public static final MaterialItem SAW_BLADES = new MaterialItem("saw_blade", NameHolder.suffix("saw_blade"), EnumSet.of(MaterialType.IRON), (type) -> simpleItem());
     public static final MaterialItem SHOVELS = new ShovelMaterialItem();
     public static final MaterialItem SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
@@ -134,7 +135,7 @@ public class YTechItems {
     public static final MaterialItem SAND_DEPOSITS = new MaterialItem(YTechBlocks.SAND_DEPOSITS, YTechItems::blockItem);
     public static final MaterialItem STONE_ORES = new StoneOreMaterialItem();
     public static final MaterialItem STORAGE_BLOCKS = new StorageBlockMaterialItem();
-    public static final MaterialItem TANNING_RACKS = new MaterialItem(YTechBlocks.TANNING_RACKS, YTechItems::blockItem);
+    public static final MaterialItem TANNING_RACKS = new MaterialItem(YTechBlocks.TANNING_RACKS, block -> burnableBlockItem(block, 300));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
@@ -144,16 +145,47 @@ public class YTechItems {
         return ITEMS.getEntries();
     }
 
-    private static Item blockItem(DeferredBlock<Block> block) {
+    private static BlockItem blockItem(DeferredBlock<Block> block) {
         return new BlockItem(block.get(), new Item.Properties());
+    }
+
+    private static BlockItem burnableBlockItem(DeferredBlock<Block> block, int burnTime) {
+        return new BlockItem(block.get(), new Item.Properties()) {
+            @Override
+            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                return burnTime;
+            }
+        };
     }
 
     private static Item simpleItem() {
         return new Item(new Item.Properties());
     }
 
+    private static Item burnableSimpleItem(int burnTime) {
+        return new Item(new Item.Properties()) {
+            @Override
+            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                return burnTime;
+            }
+        };
+    }
+
+    private static Item burnableSimpleItem(@NotNull MaterialType material, int burnTime) {
+        return new Item(new Item.Properties()) {
+            @Override
+            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                return material == MaterialType.WOODEN ? burnTime : -1;
+            }
+        };
+    }
+
     private static Item toolItem(Tier tier) {
-        return new ToolItem(tier, new Item.Properties());
+        return new ToolItem(tier, false, new Item.Properties());
+    }
+
+    private static Item toolCanHurtItem(Tier tier) {
+        return new ToolItem(tier, true, new Item.Properties());
     }
 
     private static Item axeItem(MaterialType material) {
@@ -200,12 +232,17 @@ public class YTechItems {
         return new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(nutrition).saturationMod(saturation).build()));
     }
 
-    private static Item descriptionItem(@NotNull List<Component> description) {
+    private static Item burnableDescriptionItem(@NotNull List<Component> description, int burnTime) {
         return new Item(new Item.Properties()) {
             @Override
             public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
                 super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
                 tooltipComponents.addAll(description);
+            }
+
+            @Override
+            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                return burnTime;
             }
         };
     }
@@ -480,6 +517,11 @@ public class YTechItems {
                 super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
                 tooltipComponents.add(Component.translatable("text.ytech.hover.grass_bed").withStyle(DARK_GRAY));
             }
+
+            @Override
+            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                return 300;
+            }
         };
     }
 
@@ -493,6 +535,11 @@ public class YTechItems {
                 if (CONFIGURATION.noDryingDuringRain()) {
                     tooltipComponents.add(Component.translatable("text.ytech.hover.drying_rack2").withStyle(DARK_GRAY));
                 }
+            }
+
+            @Override
+            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+                return 300;
             }
         };
     }
