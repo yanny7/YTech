@@ -47,6 +47,13 @@ public class SpearEntity extends AbstractArrow {
         this.spearType = spearType;
     }
 
+    public SpearEntity(Level level, double x, double y, double z, ItemStack throwItem, SpearType spearType) {
+        super(EntityType.TRIDENT, x, y, z, level, throwItem, throwItem);
+        this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(throwItem));
+        this.entityData.set(ID_FOIL, throwItem.hasFoil());
+        this.spearType = spearType;
+    }
+
     @Override
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
         super.defineSynchedData(builder);
@@ -136,8 +143,8 @@ public class SpearEntity extends AbstractArrow {
                 return;
             }
 
-            if (this.level() instanceof ServerLevel serverlevel1) {
-                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, this.getWeaponItem());
+            if (this.level() instanceof ServerLevel serverLevel) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, entity, damagesource, this.getWeaponItem());
             }
 
             if (entity instanceof LivingEntity livingentity) {
@@ -148,6 +155,11 @@ public class SpearEntity extends AbstractArrow {
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
+    }
+
+    @Override
+    public ItemStack getWeaponItem() {
+        return this.getPickupItemStackOrigin();
     }
 
     @Override

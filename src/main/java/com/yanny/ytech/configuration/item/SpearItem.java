@@ -96,7 +96,7 @@ public class SpearItem extends Item implements ProjectileItem {
                                         player.getXRot(),
                                         player.getYRot(),
                                         0.0F,
-                                        spearType.shootPower + (float) riptideLevel * 0.5F,
+                                        spearType.shootPower + riptideLevel * 0.5F,
                                         spearType.accuracy
                                 );
 
@@ -105,7 +105,7 @@ public class SpearItem extends Item implements ProjectileItem {
                                 }
 
                                 level.addFreshEntity(spearEntity);
-                                level.playSound((Player) null, spearEntity, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                                level.playSound(null, spearEntity, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
                                 if (!player.getAbilities().instabuild) {
                                     player.getInventory().removeItem(stack);
@@ -170,7 +170,7 @@ public class SpearItem extends Item implements ProjectileItem {
     @NotNull
     @Override
     public Projectile asProjectile(@NotNull Level level, @NotNull Position position, @NotNull ItemStack itemStack, @NotNull Direction direction) {
-        SpearEntity spearEntity = new SpearEntity(SpearType.BY_MATERIAL_TYPE.get(spearType.materialType).entityType.get(), level, spearType);
+        SpearEntity spearEntity = new SpearEntity(level, position.x(), position.y(), position.z(), itemStack.copyWithCount(1), spearType);
         spearEntity.pickup = AbstractArrow.Pickup.ALLOWED;
         return spearEntity;
     }

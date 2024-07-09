@@ -9,6 +9,7 @@
 - Changed recipes for Crossbow and Tripwire Hook
 - Changed recipes for Cartography Table, Fetching Table, Grindstone, Loom, Smithing Table and Smoker
 - Added burn time for valid items like Thatch, Wooden Plate etc.
+- Fixed crash when Spear hits entity
 
 ## [0.4.6]
 
