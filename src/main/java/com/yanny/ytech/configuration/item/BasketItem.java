@@ -59,7 +59,7 @@ public class BasketItem extends Item {
                 if (slotItem.isEmpty()) {
                     this.playRemoveOneSound(player);
                     ItemStack removed = mutableBundleContents.removeOne();
-                    
+
                     if (removed != null) {
                         ItemStack insert = slot.safeInsert(removed);
                         mutableBundleContents.tryInsert(insert);
@@ -83,7 +83,7 @@ public class BasketItem extends Item {
         if (stack.getCount() != 1) return false;
         if (action == ClickAction.SECONDARY && slot.allowModification(player)) {
             BasketContents bundleContents = stack.get(YTechDataComponentTypes.BASKET_CONTENTS);
-            
+
             if (bundleContents == null) {
                 return false;
             } else {

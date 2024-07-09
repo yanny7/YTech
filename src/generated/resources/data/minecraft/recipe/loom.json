@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts"
+    },
+    "S": {
+      "tag": "minecraft:planks"
+    },
+    "~": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "~~",
+    "BB",
+    "SS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:loom"
+  }
+}

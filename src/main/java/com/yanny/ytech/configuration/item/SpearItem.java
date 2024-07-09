@@ -39,8 +39,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -187,8 +187,8 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ToolAction toolAction) {
-        return ToolActions.DEFAULT_TRIDENT_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility itemAbility) {
+        return ItemAbilities.DEFAULT_TRIDENT_ACTIONS.contains(itemAbility);
     }
 
     private static Tool createToolProperties() {

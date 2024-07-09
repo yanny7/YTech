@@ -1,5 +1,15 @@
 # YTech Changelog
 
+## [0.5.0]
+
+- Added damage and attack speed modifier for Hammer, Saw, File and Sharp Flint
+- Cake and Cookie now use Flour in recipe
+- Changed vanilla recipe for wooden stairs
+- Added knives made from metals
+- Changed recipes for Crossbow and Tripwire Hook
+- Changed recipes for Cartography Table, Fetching Table, Grindstone, Loom, Smithing Table and Smoker
+- Added burn time for valid items like Thatch, Wooden Plate etc.
+
 ## [0.4.6]
 
 - Fixed not rendering water in Aqueduct

@@ -41,7 +41,7 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.jetbrains.annotations.NotNull;
@@ -153,21 +153,21 @@ public class ModBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onSpawnPlacementRegister(SpawnPlacementRegisterEvent event) {
-        event.register(YTechEntityTypes.AUROCHS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.DEER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.FOWL.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.MOUFLON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.TERROR_BIRD.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.WILD_BOAR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.WOOLLY_MAMMOTH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
-        event.register(YTechEntityTypes.WOOLLY_RHINO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+    public static void onSpawnPlacementRegister(RegisterSpawnPlacementsEvent event) {
+        event.register(YTechEntityTypes.AUROCHS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.DEER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.FOWL.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.MOUFLON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.SABER_TOOTH_TIGER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.TERROR_BIRD.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.WILD_BOAR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.WOOLLY_MAMMOTH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(YTechEntityTypes.WOOLLY_RHINO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
 
-        event.register(EntityType.CHICKEN, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.COW, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.PIG, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.SHEEP, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(EntityType.CHICKEN, ModBusSubscriber::removeAnimalPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(EntityType.COW, ModBusSubscriber::removeAnimalPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(EntityType.PIG, ModBusSubscriber::removeAnimalPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(EntityType.SHEEP, ModBusSubscriber::removeAnimalPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     @OnlyIn(Dist.CLIENT)

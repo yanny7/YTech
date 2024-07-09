@@ -155,6 +155,18 @@ class YTechRecipeProvider extends RecipeProvider {
         mcButtonRecipe(recipeConsumer, Items.BAMBOO_PLANKS, Items.BAMBOO_BUTTON);
         mcButtonRecipe(recipeConsumer, Items.WARPED_PLANKS, Items.WARPED_BUTTON);
 
+        mcStairsRecipe(recipeConsumer, Items.ACACIA_PLANKS, Items.ACACIA_SLAB, Items.ACACIA_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.BIRCH_PLANKS, Items.BIRCH_SLAB, Items.BIRCH_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.CHERRY_PLANKS, Items.CHERRY_SLAB, Items.CHERRY_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.JUNGLE_PLANKS, Items.JUNGLE_SLAB, Items.JUNGLE_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.OAK_PLANKS, Items.OAK_SLAB, Items.OAK_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.DARK_OAK_PLANKS, Items.DARK_OAK_SLAB, Items.DARK_OAK_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.MANGROVE_PLANKS, Items.MANGROVE_SLAB, Items.MANGROVE_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.SPRUCE_PLANKS, Items.SPRUCE_SLAB, Items.SPRUCE_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.CRIMSON_PLANKS, Items.CRIMSON_SLAB, Items.CRIMSON_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.BAMBOO_PLANKS, Items.BAMBOO_SLAB, Items.BAMBOO_STAIRS);
+        mcStairsRecipe(recipeConsumer, Items.WARPED_PLANKS, Items.WARPED_SLAB, Items.WARPED_STAIRS);
+
         mcBedRecipe(recipeConsumer, Items.BLACK_WOOL, Items.BLACK_BED);
         mcBedRecipe(recipeConsumer, Items.BLUE_WOOL, Items.BLUE_BED);
         mcBedRecipe(recipeConsumer, Items.BROWN_WOOL, Items.BROWN_BED);
@@ -397,39 +409,103 @@ class YTechRecipeProvider extends RecipeProvider {
                 .bonusChance(0.2f)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(Items.BONE))
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(Items.BONE_MEAL).getPath() + "_from_milling"));
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.VENUS_OF_HOHLE_FELS.get())
-                .define('T', YTechItemTags.MAMMOTH_TUSKS)
-                .define('#', YTechItemTags.SHARP_FLINTS)
-                .pattern("T#")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
-                .save(recipeConsumer, YTechItems.VENUS_OF_HOHLE_FELS.getId());
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.LION_MAN.get())
-                .define('T', YTechItemTags.MAMMOTH_TUSKS)
-                .define('#', YTechItemTags.SHARP_FLINTS)
-                .pattern("T ")
-                .pattern(" #")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
-                .save(recipeConsumer, YTechItems.LION_MAN.getId());
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.WILD_HORSE.get())
-                .define('T', YTechItemTags.MAMMOTH_TUSKS)
-                .define('#', YTechItemTags.SHARP_FLINTS)
-                .pattern("T")
-                .pattern("#")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
-                .save(recipeConsumer, YTechItems.WILD_HORSE.getId());
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.SHELL_BEADS.get())
-                .define('S', Items.NAUTILUS_SHELL)
-                .define('L', YTechItemTags.LEATHER_STRIPS)
-                .define('F', YTechItemTags.SHARP_FLINTS)
-                .pattern("FL ")
-                .pattern("SSS")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.LEATHER_STRIPS))
-                .save(recipeConsumer, YTechItems.SHELL_BEADS.getId());
-        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, YTechItems.CHLORITE_BRACELET.get())
-                .requires(YTechItemTags.PEBBLES)
-                .requires(YTechItemTags.SHARP_FLINTS)
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PEBBLES))
-                .save(recipeConsumer, YTechItems.CHLORITE_BRACELET.getId());
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.COOKIE, 8)
+                .define('#', YTechItemTags.FLOURS)
+                .define('X', Items.COCOA_BEANS)
+                .pattern("#X#")
+                .unlockedBy(Utils.getHasName(), has(YTechItemTags.FLOURS))
+                .save(recipeConsumer, Utils.loc(Items.COOKIE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.CAKE)
+                .define('A', YTechItemTags.FLOURS)
+                .define('B', Items.SUGAR)
+                .define('C', Items.MILK_BUCKET)
+                .define('D', Items.EGG)
+                .pattern("CCC")
+                .pattern("BDB")
+                .pattern("AAA")
+                .unlockedBy(Utils.getHasName(), has(YTechItemTags.FLOURS))
+                .save(recipeConsumer, Utils.loc(Items.CAKE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Items.TRIPWIRE_HOOK)
+                .define('I', YTechItemTags.RODS.of(IRON))
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('S', Items.STICK)
+                .define('L', ItemTags.LOGS)
+                .pattern("IH")
+                .pattern("S ")
+                .pattern("L ")
+                .unlockedBy(Utils.getHasName(), has(YTechItemTags.INGOTS.of(IRON)))
+                .save(recipeConsumer, Utils.loc(Items.TRIPWIRE_HOOK));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.CROSSBOW)
+                .define('#', Items.STICK)
+                .define('$', Items.TRIPWIRE_HOOK)
+                .define('&', YTechItemTags.RODS.of(IRON))
+                .define('~', YTechItemTags.LEATHER_STRIPS)
+                .define('S', ItemTags.WOODEN_SLABS)
+                .define('F', YTechItemTags.KNIVES.tag)
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .pattern("#&#")
+                .pattern("~$~")
+                .pattern("FSH")
+                .unlockedBy(Utils.getHasName(), has(Items.TRIPWIRE_HOOK))
+                .save(recipeConsumer, Utils.loc(Items.CROSSBOW));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.FLETCHING_TABLE)
+                .define('F', Items.FLINT)
+                .define('K', YTechItemTags.KNIVES.tag)
+                .define('S', ItemTags.PLANKS)
+                .pattern("KF")
+                .pattern("SS")
+                .pattern("SS")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(Items.FLETCHING_TABLE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.CARTOGRAPHY_TABLE)
+                .define('P', Items.PAPER)
+                .define('L', Items.LEATHER)
+                .define('S', ItemTags.PLANKS)
+                .pattern("PL")
+                .pattern("SS")
+                .pattern("SS")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(Items.CARTOGRAPHY_TABLE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.SMITHING_TABLE)
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('F', YTechItemTags.FILES.tag)
+                .define('B', YTechItemTags.STORAGE_BLOCKS.of(IRON))
+                .define('S', ItemTags.PLANKS)
+                .pattern("HF")
+                .pattern("BB")
+                .pattern("SS")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(Items.SMITHING_TABLE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.GRINDSTONE)
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('F', YTechItemTags.FILES.tag)
+                .define('#', Items.STICK)
+                .define('-', Items.STONE_SLAB)
+                .define('S', ItemTags.PLANKS)
+                .pattern("H F")
+                .pattern("#-#")
+                .pattern("S S")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(Items.GRINDSTONE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.LOOM)
+                .define('~', Items.STRING)
+                .define('B', YTechItemTags.BOLTS.tag)
+                .define('S', ItemTags.PLANKS)
+                .pattern("~~")
+                .pattern("BB")
+                .pattern("SS")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(Items.LOOM));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.SMOKER)
+                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('W', YTechItemTags.SAWS.tag)
+                .define('S', ItemTags.LOGS)
+                .define('F', Items.FURNACE)
+                .pattern("HSW")
+                .pattern("SFS")
+                .pattern(" S ")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(Items.SMOKER));
 
         /*
          * MOD RECIPES
@@ -446,6 +522,12 @@ class YTechRecipeProvider extends RecipeProvider {
         registerRawHideRecipe(recipeConsumer);
         registerUnfiredBrickRecipe(recipeConsumer);
 
+        registerVenusOfHohleFelsRecipe(recipeConsumer);
+        registerLionManRecipe(recipeConsumer);
+        registerWildHorseRecipe(recipeConsumer);
+        registerShellBeadsRecipe(recipeConsumer);
+        registerChloriteBraceletRecipe(recipeConsumer);
+
         YTechItems.ARROWS.entries().forEach((entry) -> registerArrowRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.AXES.entries().forEach((entry) -> registerAxeRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.BOLTS.entries().forEach((entry) -> registerBoltRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
@@ -457,7 +539,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.HELMETS.entries().forEach((entry) -> registerHelmetRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.HOES.entries().forEach((entry) -> registerHoeRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.INGOTS.entries().forEach((entry) -> registerIngotRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
-        registerFlintKnifeRecipe(recipeConsumer);
+        YTechItems.KNIVES.entries().forEach((entry) -> registerKnifeRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.LEGGINGS.entries().forEach((entry) -> registerLeggingsRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.MORTAR_AND_PESTLES.entries().forEach((entry) -> registerMortarAndPestleRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
         YTechItems.PICKAXES.entries().forEach((entry) -> registerPickaxeRecipe(recipeConsumer, entry.getValue(), entry.getKey()));
@@ -674,6 +756,20 @@ class YTechRecipeProvider extends RecipeProvider {
                 .save(recipeConsumer, Utils.loc(result));
     }
 
+    private void mcStairsRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item planks, @NotNull Item slab, @NotNull Item result) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
+                .define('W', YTechItemTags.SAWS.tag)
+                .define('B', YTechItemTags.BOLTS.of(MaterialType.WOODEN))
+                .define('P', planks)
+                .define('S', slab)
+                .pattern("PW")
+                .pattern("BB")
+                .pattern("SS")
+                .group("wooden_stairs")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.loc(result));
+    }
+
     private void mcBedRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item wool, @NotNull Item result) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.DECORATIONS, result)
                 .define('H', YTechItemTags.HAMMERS.tag)
@@ -844,6 +940,54 @@ class YTechRecipeProvider extends RecipeProvider {
 
     }
 
+    private static void registerVenusOfHohleFelsRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.VENUS_OF_HOHLE_FELS.get())
+                .define('T', YTechItemTags.MAMMOTH_TUSKS)
+                .define('#', YTechItemTags.SHARP_FLINTS)
+                .pattern("T#")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
+                .save(recipeConsumer, YTechItems.VENUS_OF_HOHLE_FELS.getId());
+    }
+
+    private static void registerLionManRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.LION_MAN.get())
+                .define('T', YTechItemTags.MAMMOTH_TUSKS)
+                .define('#', YTechItemTags.SHARP_FLINTS)
+                .pattern("T ")
+                .pattern(" #")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
+                .save(recipeConsumer, YTechItems.LION_MAN.getId());
+    }
+
+    private static void registerWildHorseRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.WILD_HORSE.get())
+                .define('T', YTechItemTags.MAMMOTH_TUSKS)
+                .define('#', YTechItemTags.SHARP_FLINTS)
+                .pattern("T")
+                .pattern("#")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.MAMMOTH_TUSKS))
+                .save(recipeConsumer, YTechItems.WILD_HORSE.getId());
+    }
+
+    private static void registerShellBeadsRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.SHELL_BEADS.get())
+                .define('S', Items.NAUTILUS_SHELL)
+                .define('L', YTechItemTags.LEATHER_STRIPS)
+                .define('F', YTechItemTags.SHARP_FLINTS)
+                .pattern("FL ")
+                .pattern("SSS")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.LEATHER_STRIPS))
+                .save(recipeConsumer, YTechItems.SHELL_BEADS.getId());
+    }
+
+    private static void registerChloriteBraceletRecipe(RecipeOutput recipeConsumer) {
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, YTechItems.CHLORITE_BRACELET.get())
+                .requires(YTechItemTags.PEBBLES)
+                .requires(YTechItemTags.SHARP_FLINTS)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PEBBLES))
+                .save(recipeConsumer, YTechItems.CHLORITE_BRACELET.getId());
+    }
+
     private static void registerDryingRecipe(RecipeOutput recipeConsumer, Item rawMeat, DeferredItem<Item> output) {
         DryingRecipe.Builder.drying(rawMeat, 20 * 60, output.get())
                 .unlockedBy(RecipeProvider.getHasName(rawMeat), RecipeProvider.has(rawMeat))
@@ -866,13 +1010,24 @@ class YTechRecipeProvider extends RecipeProvider {
                 .save(recipeConsumer, YTechItems.BASKET.getId());
     }
 
-    private static void registerFlintKnifeRecipe(RecipeOutput recipeConsumer) {
-        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, YTechItems.KNIVES.of(FLINT).get())
-                .requires(Items.STICK)
-                .requires(Items.FLINT)
-                .requires(YTechItemTags.LEATHER_STRIPS)
-                .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
-                .save(recipeConsumer, Utils.modLoc(YTechItems.KNIVES.of(FLINT)));
+    private static void registerKnifeRecipe(RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
+        if (material == FLINT) {
+            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, item.get())
+                    .requires(Items.STICK)
+                    .requires(Items.FLINT)
+                    .requires(YTechItemTags.LEATHER_STRIPS)
+                    .unlockedBy(RecipeProvider.getHasName(Items.FLINT), RecipeProvider.has(Items.FLINT))
+                    .save(recipeConsumer, item.getId());
+        } else {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, item.get())
+                    .define('S', Items.STICK)
+                    .define('P', YTechItemTags.PLATES.of(material))
+                    .define('F', YTechItemTags.FILES.tag)
+                    .pattern("FP")
+                    .pattern("S ")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.of(material)))
+                    .save(recipeConsumer, item.getId());
+        }
     }
 
     private static void registerCookedVenisonRecipe(RecipeOutput recipeConsumer) {

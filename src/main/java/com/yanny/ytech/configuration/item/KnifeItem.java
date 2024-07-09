@@ -17,8 +17,8 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -59,7 +59,7 @@ public class KnifeItem extends TieredItem {
     }
 
     @Override
-    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ToolAction toolAction) {
-        return ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility itemAbility) {
+        return ItemAbilities.DEFAULT_SWORD_ACTIONS.contains(itemAbility);
     }
 }
