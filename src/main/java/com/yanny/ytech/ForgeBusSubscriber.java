@@ -5,10 +5,7 @@ import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.block.CraftingWorkspaceBlock;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
 import com.yanny.ytech.configuration.block.WoodenBoxBlock;
-import com.yanny.ytech.registration.YTechBlockTags;
-import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechMobEffects;
-import com.yanny.ytech.registration.YTechRecipeTypes;
+import com.yanny.ytech.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -25,6 +22,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,9 +33,11 @@ import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSetSpawnEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -202,6 +202,14 @@ public class ForgeBusSubscriber {
 
                 poseStack.popPose();
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCreateFluidSourceEvent(@NotNull BlockEvent.CreateFluidSourceEvent event) {
+        if (event.getState().getFluidState().is(Fluids.WATER) && YTechMod.CONFIGURATION.hasFiniteWaterSource()
+                && !event.getLevel().getBiome(event.getPos()).is(YTechBiomeTags.INFINITE_WATER_SOURCE_BIOMES)) {
+            event.setResult(Event.Result.DENY);
         }
     }
 

@@ -8,6 +8,8 @@
 - Added Jade compatibility
 - Fixed missing Millstone bottom texture
 - Moved some configuration options to tags
+- Finite water source
+- Aqueduct Valve slowly consumes water around
 
 ## [0.8.0]
 
