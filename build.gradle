@@ -23,7 +23,8 @@ repositories {
         url = "https://modmaven.dev"
     }
     maven { // Curios
-        url = "https://maven.theillusivec4.top/"
+        name = "OctoStudios"
+        url = uri("https://maven.octo-studios.com/releases")
     }
 }
 
@@ -122,10 +123,8 @@ dependencies {
     implementation project.dependencies.create("mcjty.theoneprobe:theoneprobe:1.21_neo-${top_version}") {
         transitive = false
     }
-    // Compile against only the API artifact
-    //compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}:api")
-    // Use the full Curios API jar at runtime
-    //runtimeOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}")
+
+    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
