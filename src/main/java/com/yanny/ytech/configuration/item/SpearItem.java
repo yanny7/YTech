@@ -3,8 +3,6 @@ package com.yanny.ytech.configuration.item;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.SpearEntity;
-import com.yanny.ytech.configuration.renderer.YTechRenderer;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -38,13 +36,11 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class SpearItem extends Item implements ProjectileItem {
     public static final ResourceLocation THROWING_PREDICATE = Utils.modLoc("throwing");
@@ -173,17 +169,6 @@ public class SpearItem extends Item implements ProjectileItem {
         SpearEntity spearEntity = new SpearEntity(level, position.x(), position.y(), position.z(), itemStack.copyWithCount(1), spearType);
         spearEntity.pickup = AbstractArrow.Pickup.ALLOWED;
         return spearEntity;
-    }
-
-    @Override
-    public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @NotNull
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return YTechRenderer.INSTANCE;
-            }
-        });
     }
 
     @Override
