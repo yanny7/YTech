@@ -26,6 +26,7 @@ class YTechLanguageProvider extends LanguageProvider {
     protected void addTranslations() {
         addItem(YTechItems.ANTLER, "Antler");
         addItem(YTechItems.BASKET, "Basket");
+        addItem(YTechItems.BONE_NEEDLE, "Bone Needle");
         addItem(YTechItems.BREAD_DOUGH, "Bread Dough");
         addItem(YTechItems.BRICK_MOLD, "Brick Mold");
         addItem(YTechItems.CLAY_BUCKET, "Clay Bucket");

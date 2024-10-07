@@ -16,6 +16,7 @@ import java.util.function.Function;
 public class YTechItemTags {
     public static final TagKey<Item> ANTLERS = create("antlers");
     public static final TagKey<Item> BASKETS = create("baskets");
+    public static final TagKey<Item> BONE_NEEDLES = create("bone_needles");
     public static final TagKey<Item> BREAD_DOUGHS = create("bread_doughs");
     public static final TagKey<Item> BRICK_MOLDS = create("brick_molds");
     public static final TagKey<Item> CLAY_BUCKETS = create("clay_buckets");
@@ -47,6 +48,7 @@ public class YTechItemTags {
     public static final TagKey<Item> WATER_BUCKETS = create("water_buckets");
 
     public static final TagKey<Item> FERTILIZER = create("fertilizer");
+    public static final TagKey<Item> BONE = create("bone");
 
     public static final TagKey<Item> AUROCHS_FOOD = create("aurochs_food");
     public static final TagKey<Item> AUROCHS_TEMP_ITEMS = create("aurochs_temp_items");

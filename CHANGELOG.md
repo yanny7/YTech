@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Added Bone Needle and changed leather armor and saddle recipe
+
 ## [0.5.0]
 
 - Added damage and attack speed modifier for Hammer, Saw, File and Sharp Flint

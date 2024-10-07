@@ -225,7 +225,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .unlockedBy(Utils.getHasName(), has(YTechItemTags.PLATES.of(MaterialType.WOODEN)))
                 .save(recipeConsumer, Utils.loc(Items.CHEST));
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_BOOTS)
-                .define('#', YTechItemTags.KNIVES.tag)
+                .define('#', YTechItemTags.BONE_NEEDLES)
                 .define('S', YTechItemTags.LEATHER_STRIPS)
                 .define('L', Items.LEATHER)
                 .pattern(" # ")
@@ -234,7 +234,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_BOOTS));
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_HELMET)
-                .define('#', YTechItemTags.KNIVES.tag)
+                .define('#', YTechItemTags.BONE_NEEDLES)
                 .define('S', YTechItemTags.LEATHER_STRIPS)
                 .define('L', Items.LEATHER)
                 .pattern(" # ")
@@ -243,7 +243,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_HELMET));
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_LEGGINGS)
-                .define('#', YTechItemTags.KNIVES.tag)
+                .define('#', YTechItemTags.BONE_NEEDLES)
                 .define('S', YTechItemTags.LEATHER_STRIPS)
                 .define('L', Items.LEATHER)
                 .pattern("LLL")
@@ -252,7 +252,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
                 .save(recipeConsumer, Utils.loc(Items.LEATHER_LEGGINGS));
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.LEATHER_CHESTPLATE)
-                .define('#', YTechItemTags.KNIVES.tag)
+                .define('#', YTechItemTags.BONE_NEEDLES)
                 .define('S', YTechItemTags.LEATHER_STRIPS)
                 .define('L', Items.LEATHER)
                 .pattern("L#L")
@@ -392,7 +392,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .define('L', Items.LEATHER)
                 .define('S', YTechItemTags.LEATHER_STRIPS)
                 .define('I', YTechItemTags.RODS.of(IRON))
-                .define('H', YTechItemTags.HAMMERS.tag)
+                .define('H', YTechItemTags.BONE_NEEDLES)
                 .define('K', YTechItemTags.KNIVES.tag)
                 .pattern("LLL")
                 .pattern("LSL")
@@ -511,6 +511,7 @@ class YTechRecipeProvider extends RecipeProvider {
          */
 
         registerBasketRecipe(recipeConsumer);
+        registerBoneNeedleRecipe(recipeConsumer);
         registerBreadDoughRecipe(recipeConsumer);
         registerBrickMoldRecipe(recipeConsumer);
         registerCookedVenisonRecipe(recipeConsumer);
@@ -1002,11 +1003,20 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void registerBasketRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.BASKET.get())
                 .define('#', YTechItemTags.GRASS_TWINES)
+                .define('B', YTechItemTags.BONE_NEEDLES)
                 .pattern(" # ")
-                .pattern("###")
+                .pattern("#B#")
                 .pattern("###")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.GRASS_TWINES))
                 .save(recipeConsumer, YTechItems.BASKET.getId());
+    }
+
+    private static void registerBoneNeedleRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, YTechItems.BONE_NEEDLE.get())
+                .requires(YTechItemTags.BONE)
+                .requires(YTechItemTags.SHARP_FLINTS)
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.BONE))
+                .save(recipeConsumer, YTechItems.BONE_NEEDLE.getId());
     }
 
     private static void registerKnifeRecipe(Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {

@@ -4,11 +4,14 @@
   "key": {
     "#": {
       "tag": "ytech:grass_twines"
+    },
+    "B": {
+      "tag": "ytech:bone_needles"
     }
   },
   "pattern": [
     " # ",
-    "###",
+    "#B#",
     "###"
   ],
   "result": {

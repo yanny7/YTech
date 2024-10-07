@@ -1,0 +1,15 @@
+{
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "ytech:bone"
+    },
+    {
+      "tag": "ytech:sharp_flints"
+    }
+  ],
+  "result": {
+    "item": "ytech:bone_needle"
+  }
+}

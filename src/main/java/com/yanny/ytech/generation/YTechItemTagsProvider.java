@@ -32,6 +32,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(YTechItemTags.ANTLERS).add(YTechItems.ANTLER.get());
         tag(YTechItemTags.BASKETS).add(YTechItems.BASKET.get());
+        tag(YTechItemTags.BONE_NEEDLES).add(YTechItems.BONE_NEEDLE.get());
         tag(YTechItemTags.BREAD_DOUGHS).add(YTechItems.BREAD_DOUGH.get());
         tag(YTechItemTags.BRICK_MOLDS).add(YTechItems.BRICK_MOLD.get());
         tag(YTechItemTags.CLAY_BUCKETS).add(YTechItems.CLAY_BUCKET.get());
@@ -84,6 +85,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
 
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);
+        tag(YTechItemTags.BONE).add(Items.BONE).addTags(YTechItemTags.ANTLERS, YTechItemTags.RHINO_HORNS, YTechItemTags.MAMMOTH_TUSKS);
 
         tag(YTechItemTags.AUROCHS_FOOD).add(Items.WHEAT);
         tag(YTechItemTags.AUROCHS_TEMP_ITEMS).add(Items.WHEAT);
