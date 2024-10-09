@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -184,6 +185,12 @@ public class FirePitBlock extends Block {
         if (!level.isClientSide && projectile.isOnFire() && projectile.mayInteract(level, pos) && !state.getValue(LIT)) {
             level.setBlock(pos, state.setValue(LIT, true), Block.UPDATE_ALL);
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
+        return false;
     }
 
     public static void registerModel(BlockStateProvider provider) {
