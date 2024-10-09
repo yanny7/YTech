@@ -60,6 +60,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.UNFIRED_CLAY_BUCKETS).add(YTechItems.UNFIRED_CLAY_BUCKET.get());
         tag(YTechItemTags.UNFIRED_FLOWER_POTS).add(YTechItems.UNFIRED_FLOWER_POT.get());
         tag(YTechItemTags.UNFIRED_DECORATED_POTS).add(YTechItems.UNFIRED_DECORATED_POT.get());
+        tag(YTechItemTags.UNLIT_TORCH).add(YTechItems.UNLIT_TORCH.get());
         tag(YTechItemTags.VENISON).add(YTechItems.VENISON.get());
         tag(YTechItemTags.WATER_BUCKETS).add(Items.WATER_BUCKET, YTechItems.WATER_CLAY_BUCKET.get());
 
@@ -84,8 +85,17 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_SLABS).add(YTechItems.THATCH_SLAB.get());
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
 
+        tag(YTechItemTags.BONE).add(Items.BONE)
+                .addTag(YTechItemTags.ANTLERS)
+                .addTag(YTechItemTags.MAMMOTH_TUSKS)
+                .addTag(YTechItemTags.RHINO_HORNS);
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);
-        tag(YTechItemTags.BONE).add(Items.BONE).addTags(YTechItemTags.ANTLERS, YTechItemTags.RHINO_HORNS, YTechItemTags.MAMMOTH_TUSKS);
+        tag(YTechItemTags.FIRE_SOURCE)
+                .add(Items.TORCH, Items.LANTERN, Items.CAMPFIRE, Items.FURNACE, Items.BLAST_FURNACE)
+                .addTag(YTechItemTags.FIRE_PITS)
+                .addTag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS)
+                .addTag(YTechItemTags.PRIMITIVE_SMELTERS);
+        tag(YTechItemTags.SOUL_FIRE_SOURCE).add(Items.SOUL_TORCH, Items.SOUL_LANTERN, Items.SOUL_CAMPFIRE);
 
         tag(YTechItemTags.AUROCHS_FOOD).add(Items.WHEAT);
         tag(YTechItemTags.AUROCHS_TEMP_ITEMS).add(Items.WHEAT);

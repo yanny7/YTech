@@ -271,6 +271,7 @@
   "item.ytech.unfired_clay_bucket": "Unfired Clay Bucket",
   "item.ytech.unfired_decoration_pot": "Unfired Decorated Pot",
   "item.ytech.unfired_flower_pot": "Unfired Flower Pot",
+  "item.ytech.unlit_torch": "Unlit Torch",
   "item.ytech.venison": "Venison",
   "item.ytech.venus_of_hohle_fels": "Venus of Hohle Fels",
   "item.ytech.water_clay_bucket": "Water Clay Bucket",
@@ -319,6 +320,6 @@
   "text.ytech.hover.shell_beads": "World’s oldest jewelry. Will extend the time under water when worn",
   "text.ytech.hover.venus_of_hohle_fels": "Representing a fertility goddess. Small chance to apply bonemeal effect on crops around",
   "text.ytech.hover.wild_horse": "The earliest sculpture of a horse. Increases speed when worn",
-  "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint",
+  "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint.",
   "text.ytech.info.missing_curios": "Missing CuriosAPI, item is useless now"
 }

@@ -149,10 +149,11 @@ public class FirePitBlock extends Block {
             if (burnTime > 0 && state.getValue(LEVEL) < 15) {
                 itemStack.shrink(1);
                 level.setBlock(pos, state.setValue(LEVEL, Math.min(15, state.getValue(LEVEL) + (int) Math.log10(burnTime))), Block.UPDATE_ALL);
+                return InteractionResult.sidedSuccess(serverLevel.isClientSide);
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.PASS;
     }
 
     @Nullable

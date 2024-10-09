@@ -59,6 +59,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.UNFIRED_CLAY_BUCKET);
         decoratedPotItem();
         simpleItem(YTechItems.UNFIRED_FLOWER_POT);
+        simpleItem(YTechItems.UNLIT_TORCH);
         simpleItem(YTechItems.VENISON);
 
         simpleItem(YTechItems.CHLORITE_BRACELET);

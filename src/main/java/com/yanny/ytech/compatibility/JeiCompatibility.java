@@ -58,7 +58,6 @@ public class JeiCompatibility implements IModPlugin {
         TanningRecipeCategory.registerCatalyst(registration);
         MillingRecipeCategory.registerCatalyst(registration);
         SmeltingRecipeCategory.registerCatalyst(registration);
-        BlockHitRecipeCategory.registerCatalyst(registration);
         AlloyingRecipeCategory.registerCatalyst(registration);
         HammeringRecipeCategory.registerCatalyst(registration);
         PotteryRecipeCategory.registerCatalyst(registration);

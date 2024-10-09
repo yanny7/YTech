@@ -1,0 +1,12 @@
+{
+  "type": "ytech:block_hit",
+  "block": {
+    "tag": "ytech:fire_source"
+  },
+  "ingredient": {
+    "item": "ytech:unlit_torch"
+  },
+  "result": {
+    "item": "minecraft:torch"
+  }
+}

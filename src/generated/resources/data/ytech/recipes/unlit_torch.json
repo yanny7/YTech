@@ -1,0 +1,21 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:coals"
+    },
+    "B": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "#",
+    "B"
+  ],
+  "result": {
+    "count": 4,
+    "item": "ytech:unlit_torch"
+  },
+  "show_notification": true
+}

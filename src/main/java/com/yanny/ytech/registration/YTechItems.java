@@ -62,6 +62,7 @@ public class YTechItems {
     public static final RegistryObject<Item> UNFIRED_CLAY_BUCKET = ITEMS.register("unfired_clay_bucket", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_DECORATED_POT = ITEMS.register("unfired_decoration_pot", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_FLOWER_POT = ITEMS.register("unfired_flower_pot", YTechItems::simpleItem);
+    public static final RegistryObject<Item> UNLIT_TORCH = ITEMS.register("unlit_torch", UnlitTorchItem::new);
     public static final RegistryObject<Item> VENISON = ITEMS.register("venison", () -> foodItem(2, 0.3f));
     public static final RegistryObject<Item> WATER_CLAY_BUCKET = ITEMS.register("water_clay_bucket", () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 

@@ -505,6 +505,24 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern(" S ")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.loc(Items.SMOKER));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.CAMPFIRE)
+                .define('S', Items.STICK)
+                .define('L', ItemTags.LOGS)
+                .define('T', Items.TORCH)
+                .pattern(" S ")
+                .pattern("STS")
+                .pattern("LLL")
+                .unlockedBy(RecipeProvider.getHasName(Items.TORCH), has(Items.TORCH))
+                .save(recipeConsumer, Utils.loc(Items.CAMPFIRE));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.SOUL_CAMPFIRE)
+                .define('S', Items.STICK)
+                .define('L', ItemTags.LOGS)
+                .define('T', Items.SOUL_TORCH)
+                .pattern(" S ")
+                .pattern("STS")
+                .pattern("LLL")
+                .unlockedBy(RecipeProvider.getHasName(Items.SOUL_TORCH), has(Items.SOUL_TORCH))
+                .save(recipeConsumer, Utils.loc(Items.SOUL_CAMPFIRE));
 
         /*
          * MOD RECIPES
@@ -521,6 +539,7 @@ class YTechRecipeProvider extends RecipeProvider {
         registerLeatherStripsRecipe(recipeConsumer);
         registerRawHideRecipe(recipeConsumer);
         registerUnfiredBrickRecipe(recipeConsumer);
+        registerUnlitTorchRecipe(recipeConsumer);
 
         registerVenusOfHohleFelsRecipe(recipeConsumer);
         registerLionManRecipe(recipeConsumer);
@@ -591,6 +610,8 @@ class YTechRecipeProvider extends RecipeProvider {
         hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, Items.IRON_INGOT);
 
         registerBlockHitRecipe(recipeConsumer, Items.FLINT, Tags.Items.STONE, YTechItems.SHARP_FLINT.get());
+        registerBlockHitRecipe(recipeConsumer, YTechItems.UNLIT_TORCH.get(), YTechItemTags.FIRE_SOURCE, Items.TORCH);
+        registerBlockHitRecipe(recipeConsumer, YTechItems.UNLIT_TORCH.get(), YTechItemTags.SOUL_FIRE_SOURCE, Items.SOUL_TORCH);
 
         registerDryingRecipe(recipeConsumer, Items.BEEF, YTechItems.DRIED_BEEF);
         registerDryingRecipe(recipeConsumer, Items.CHICKEN, YTechItems.DRIED_CHICKEN);
@@ -638,6 +659,8 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
 
         removeVanillaRecipe(recipeConsumer, Items.FLOWER_POT);
+        removeVanillaRecipe(recipeConsumer, Items.TORCH);
+        removeVanillaRecipe(recipeConsumer, Items.SOUL_TORCH);
     }
 
     private void removeVanillaRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item item) {
@@ -938,6 +961,16 @@ class YTechRecipeProvider extends RecipeProvider {
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, YTechItems.UNFIRED_BRICK.getId());
 
+    }
+
+    private static void registerUnlitTorchRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.UNLIT_TORCH.get(), 4)
+                .define('#', ItemTags.COALS)
+                .define('B', Items.STICK)
+                .pattern("#")
+                .pattern("B")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.COALS))
+                .save(recipeConsumer, YTechItems.UNLIT_TORCH.getId());
     }
 
     private static void registerVenusOfHohleFelsRecipe(Consumer<FinishedRecipe> recipeConsumer) {

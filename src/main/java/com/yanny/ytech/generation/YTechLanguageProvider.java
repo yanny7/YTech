@@ -54,6 +54,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.UNFIRED_CLAY_BUCKET, "Unfired Clay Bucket");
         addItem(YTechItems.UNFIRED_DECORATED_POT, "Unfired Decorated Pot");
         addItem(YTechItems.UNFIRED_FLOWER_POT, "Unfired Flower Pot");
+        addItem(YTechItems.UNLIT_TORCH, "Unlit Torch");
         addItem(YTechItems.VENISON, "Venison");
         addItem(YTechItems.WATER_CLAY_BUCKET, "Water Clay Bucket");
 
@@ -171,7 +172,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("sound.ytech.woolly_rhino.hurt", "Woolly Rhino Hurts");
         add("sound.ytech.woolly_rhino.death", "Woolly Rhino Dies");
 
-        add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint");
+        add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint.");
         add("text.ytech.info.missing_curios", "Missing CuriosAPI, item is useless now");
 
         add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");

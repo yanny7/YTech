@@ -44,11 +44,14 @@ public class YTechItemTags {
     public static final TagKey<Item> UNFIRED_CLAY_BUCKETS = create("unfired_clay_buckets");
     public static final TagKey<Item> UNFIRED_DECORATED_POTS = create("unfired_decorated_pots");
     public static final TagKey<Item> UNFIRED_FLOWER_POTS = create("unfired_flower_pots");
+    public static final TagKey<Item> UNLIT_TORCH = create("unlit_torch");
     public static final TagKey<Item> VENISON = create("venison");
     public static final TagKey<Item> WATER_BUCKETS = create("water_buckets");
 
-    public static final TagKey<Item> FERTILIZER = create("fertilizer");
     public static final TagKey<Item> BONE = create("bone");
+    public static final TagKey<Item> FERTILIZER = create("fertilizer");
+    public static final TagKey<Item> FIRE_SOURCE = create("fire_source");
+    public static final TagKey<Item> SOUL_FIRE_SOURCE = create("soul_fire_source");
 
     public static final TagKey<Item> AUROCHS_FOOD = create("aurochs_food");
     public static final TagKey<Item> AUROCHS_TEMP_ITEMS = create("aurochs_temp_items");
