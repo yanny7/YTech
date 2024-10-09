@@ -1045,9 +1045,10 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void registerBoneNeedleRecipe(Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, YTechItems.BONE_NEEDLE.get())
-                .requires(YTechItemTags.BONE)
-                .requires(YTechItemTags.SHARP_FLINTS)
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.BONE_NEEDLE.get())
+                .define('T', YTechItemTags.BONE)
+                .define('#', YTechItemTags.SHARP_FLINTS)
+                .pattern("#T")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.BONE))
                 .save(recipeConsumer, YTechItems.BONE_NEEDLE.getId());
     }
