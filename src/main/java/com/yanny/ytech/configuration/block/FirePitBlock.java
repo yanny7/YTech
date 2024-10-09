@@ -90,6 +90,11 @@ public class FirePitBlock extends Block {
             if (pState.getValue(LEVEL) > 0) {
                 level.addParticle(ParticleTypes.FLAME, pos.getX() + 0.25 + random.nextFloat() / 2, pos.getY() + 0.2, pos.getZ() + 0.25 + random.nextFloat() / 2, 0, 0, 0);
 
+                if (random.nextInt(16 - pState.getValue(LEVEL)) == 0) {
+                    level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, false, pos.getX() + 0.5 + random.nextDouble() / 3.0 * (random.nextBoolean() ? 1 : -1),
+                            pos.getY() + random.nextDouble() + random.nextDouble(), pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (random.nextBoolean() ? 1 : -1), 0.0, 0.07, 0.0);
+                }
+
                 if (random.nextInt(10) == 0) {
                     level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
                 }
