@@ -1,0 +1,15 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:ingots/tin"
+  },
+  "inputCount": 18,
+  "minTemp": 232,
+  "mold": {
+    "tag": "ytech:molds/hammer_head"
+  },
+  "result": {
+    "item": "ytech:tin_hammer_head_part"
+  },
+  "smeltingTime": 200
+}

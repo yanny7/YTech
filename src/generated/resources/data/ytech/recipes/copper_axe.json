@@ -1,24 +1,18 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "ytech:plates/copper"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/axe_head/copper"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    "##H",
-    "#S ",
-    " S "
   ],
   "result": {
     "item": "ytech:copper_axe"
-  },
-  "show_notification": true
+  }
 }

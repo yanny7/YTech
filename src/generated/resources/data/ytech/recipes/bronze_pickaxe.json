@@ -1,30 +1,18 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "forge:ingots/bronze"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "tag": "ytech:plates/bronze"
-    },
-    "R": {
-      "tag": "ytech:rods/bronze"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/pickaxe_head/bronze"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    "P#R",
-    " SH",
-    " S "
   ],
   "result": {
     "item": "ytech:bronze_pickaxe"
-  },
-  "show_notification": true
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:knives"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "P#"
+  ],
+  "result": {
+    "item": "ytech:pickaxe_head_pattern"
+  },
+  "show_notification": true
+}

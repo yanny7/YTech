@@ -1,0 +1,15 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:ingots/gold"
+  },
+  "inputCount": 2,
+  "minTemp": 1064,
+  "mold": {
+    "tag": "ytech:molds/sword_blade"
+  },
+  "result": {
+    "item": "ytech:gold_sword_blade_part"
+  },
+  "smeltingTime": 200
+}

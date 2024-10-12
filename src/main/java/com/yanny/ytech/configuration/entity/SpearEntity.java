@@ -42,7 +42,7 @@ public class SpearEntity extends AbstractArrow {
     public SpearEntity(EntityType<? extends Entity> entityType, Level level, SpearType spearType) {
         //noinspection unchecked
         super((EntityType<? extends AbstractArrow>) entityType, level);
-        spearItem = new ItemStack(YTechItems.SPEARS.of(spearType.materialType).get());
+        spearItem = new ItemStack(YTechItems.SPEARS.get(spearType.materialType).get());
         this.spearType = spearType;
     }
 

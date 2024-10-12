@@ -3,7 +3,11 @@
   "ingredient": {
     "tag": "forge:crushed_materials/galena"
   },
+  "inputCount": 1,
   "minTemp": 1114,
+  "mold": {
+    "tag": "ytech:molds/ingot"
+  },
   "result": {
     "item": "ytech:lead_ingot"
   },

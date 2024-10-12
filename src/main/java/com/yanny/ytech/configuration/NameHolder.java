@@ -18,4 +18,8 @@ public record NameHolder(
     @NotNull public static NameHolder both(@NotNull String prefix, @NotNull String suffix) {
         return new NameHolder(prefix, suffix);
     }
+
+    @NotNull public static NameHolder none() {
+        return new NameHolder(null, null);
+    }
 }

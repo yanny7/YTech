@@ -1,0 +1,15 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:ingots/bronze"
+  },
+  "inputCount": 18,
+  "minTemp": 913,
+  "mold": {
+    "tag": "ytech:molds/hammer_head"
+  },
+  "result": {
+    "item": "ytech:bronze_hammer_head_part"
+  },
+  "smeltingTime": 200
+}

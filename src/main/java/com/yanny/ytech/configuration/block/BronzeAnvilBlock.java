@@ -200,12 +200,12 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.BRONZE_ANVIL.get())
-                .define('B', YTechItemTags.STORAGE_BLOCKS.of(MaterialType.BRONZE))
-                .define('I', YTechItemTags.INGOTS.of(MaterialType.BRONZE))
+                .define('B', YTechItemTags.STORAGE_BLOCKS.get(MaterialType.BRONZE))
+                .define('I', YTechItemTags.INGOTS.get(MaterialType.BRONZE))
                 .pattern("BBB")
                 .pattern(" I ")
                 .pattern("III")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.of(MaterialType.BRONZE)))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(MaterialType.BRONZE)))
                 .save(recipeConsumer, Utils.modLoc(YTechBlocks.BRONZE_ANVIL));
     }
 }

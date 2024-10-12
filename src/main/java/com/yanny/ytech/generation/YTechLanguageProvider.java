@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.AdvancementType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.NameHolder;
+import com.yanny.ytech.configuration.PartType;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItems;
@@ -12,9 +13,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 class YTechLanguageProvider extends LanguageProvider {
@@ -95,29 +98,35 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH_SLAB, "Thatch Slab");
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
 
-        addMaterialItem(YTechItems.ARROWS, NameHolder.suffix("Arrow"));
-        addMaterialItem(YTechItems.AXES, NameHolder.suffix("Axe"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.BOLTS, NameHolder.suffix("Bolt"));
-        addMaterialItem(YTechItems.BOOTS, NameHolder.suffix("Boots"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.CHESTPLATES, NameHolder.suffix("Chestplate"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.CRUSHED_MATERIALS, NameHolder.prefix("Crushed"));
-        addMaterialItem(YTechItems.FILES, NameHolder.suffix("File"));
-        addMaterialItem(YTechItems.HAMMERS, NameHolder.suffix("Hammer"));
-        addMaterialItem(YTechItems.HELMETS, NameHolder.suffix("Helmet"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.HOES, NameHolder.suffix("Hoe"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.INGOTS, NameHolder.suffix("Ingot"), YTechLanguageProvider::vanillaMaterialsFilter);
-        addMaterialItem(YTechItems.KNIVES, NameHolder.suffix("Knife"));
-        addMaterialItem(YTechItems.LEGGINGS, NameHolder.suffix("Leggings"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.MORTAR_AND_PESTLES, NameHolder.suffix("Mortar and Pestle"));
-        addMaterialItem(YTechItems.PICKAXES, NameHolder.suffix("Pickaxe"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.PLATES, NameHolder.suffix("Plate"));
-        addMaterialItem(YTechItems.RAW_MATERIALS, NameHolder.prefix("Raw"), YTechLanguageProvider::vanillaMaterialsFilter);
-        addMaterialItem(YTechItems.RODS, NameHolder.suffix("Rod"));
-        addMaterialItem(YTechItems.SAWS, NameHolder.suffix("Saw"));
-        addMaterialItem(YTechItems.SAW_BLADES, NameHolder.suffix("Saw Blade"));
-        addMaterialItem(YTechItems.SHOVELS, NameHolder.suffix("Shovel"), YTechLanguageProvider::goldIronFilter);
-        addMaterialItem(YTechItems.SPEARS, NameHolder.suffix("Spear"));
-        addMaterialItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.MOLDS, NameHolder.suffix("Mold"), YTechLanguageProvider::getName);
+        addTypedItem(YTechItems.PATTERNS, NameHolder.suffix("Pattern"), YTechLanguageProvider::getName);
+        addTypedItem(YTechItems.UNFIRED_MOLDS, NameHolder.both("Unfired", "Mold"), YTechLanguageProvider::getName);
+
+        addMultiTypedItem(YTechItems.PARTS, NameHolder.suffix("Part"), YTechLanguageProvider::getName);
+
+        addTypedItem(YTechItems.ARROWS, NameHolder.suffix("Arrow"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.AXES, NameHolder.suffix("Axe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.BOLTS, NameHolder.suffix("Bolt"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.BOOTS, NameHolder.suffix("Boots"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.CHESTPLATES, NameHolder.suffix("Chestplate"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.CRUSHED_MATERIALS, NameHolder.prefix("Crushed"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.FILES, NameHolder.suffix("File"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.HAMMERS, NameHolder.suffix("Hammer"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.HELMETS, NameHolder.suffix("Helmet"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.HOES, NameHolder.suffix("Hoe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.INGOTS, NameHolder.suffix("Ingot"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::vanillaMaterialsFilter);
+        addTypedItem(YTechItems.KNIVES, NameHolder.suffix("Knife"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.LEGGINGS, NameHolder.suffix("Leggings"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.MORTAR_AND_PESTLES, NameHolder.suffix("Mortar and Pestle"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.PICKAXES, NameHolder.suffix("Pickaxe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.PLATES, NameHolder.suffix("Plate"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.RAW_MATERIALS, NameHolder.prefix("Raw"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::vanillaMaterialsFilter);
+        addTypedItem(YTechItems.RODS, NameHolder.suffix("Rod"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.SAWS, NameHolder.suffix("Saw"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.SAW_BLADES, NameHolder.suffix("Saw Blade"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.SHOVELS, NameHolder.suffix("Shovel"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.SPEARS, NameHolder.suffix("Spear"), YTechLanguageProvider::getMaterialName);
+        addTypedItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
 
         addMaterialBlock(YTechBlocks.DEEPSLATE_ORES, NameHolder.both("Deepslate", "Ore"), YTechLanguageProvider::vanillaMaterialsFilter);
         addMaterialBlock(YTechBlocks.DRYING_RACKS, NameHolder.suffix("Drying Rack"));
@@ -206,24 +215,28 @@ class YTechLanguageProvider extends LanguageProvider {
         add("creativeTab.ytech.title", "YTech");
     }
 
-    private void addMaterialItem(YTechItems.MaterialItem item, NameHolder nameHolder, Predicate<Map.Entry<MaterialType, RegistryObject<Item>>> filter) {
-        item.entries().stream().filter(filter).forEach((entry) -> addItem(entry.getValue(), getName(nameHolder, entry.getKey())));
+    private <E extends Enum<E>> void addTypedItem(YTechItems.TypedItem<E> item, NameHolder nameHolder, BiFunction<NameHolder, E, String> nameGetter, Predicate<Map.Entry<E, RegistryObject<Item>>> filter) {
+        item.entrySet().stream().filter(filter).forEach((entry) -> addItem(entry.getValue(), nameGetter.apply(nameHolder, entry.getKey())));
     }
 
-    private void addMaterialItem(YTechItems.MaterialItem item, NameHolder nameHolder) {
-        item.entries().forEach((entry) -> addItem(entry.getValue(), getName(nameHolder, entry.getKey())));
+    private <E extends Enum<E>> void addTypedItem(YTechItems.TypedItem<E> typedItem, NameHolder nameHolder, BiFunction<NameHolder, E, String> nameGetter) {
+        typedItem.forEach((key, item) -> addItem(item, nameGetter.apply(nameHolder, key)));
+    }
+
+    private <E extends Enum<E>, F extends Enum<F>> void addMultiTypedItem(YTechItems.MultiTypedItem<E, F> multiTypedItem, NameHolder nameHolder, TriFunction<NameHolder, E, F, String> nameGetter) {
+        multiTypedItem.forEach((key1, map) -> map.forEach((key2, item) -> addItem(item, nameGetter.apply(nameHolder, key1, key2))));
     }
 
     private void addMaterialBlock(YTechBlocks.MaterialBlock block, NameHolder nameHolder, Predicate<Map.Entry<MaterialType, RegistryObject<Block>>> filter) {
-        block.entries().stream().filter(filter).forEach((entry) -> addBlock(entry.getValue(), getName(nameHolder, entry.getKey())));
+        block.entries().stream().filter(filter).forEach((entry) -> addBlock(entry.getValue(), getMaterialName(nameHolder, entry.getKey())));
     }
 
     private void addMaterialBlock(YTechBlocks.MaterialBlock block, NameHolder nameHolder) {
-        block.entries().forEach((entry) -> addBlock(entry.getValue(), getName(nameHolder, entry.getKey())));
+        block.entries().forEach((entry) -> addBlock(entry.getValue(), getMaterialName(nameHolder, entry.getKey())));
     }
 
     private void addStorageBlockLanguage(YTechBlocks.MaterialBlock block, String prefix) {
-        block.entries().stream().filter(YTechLanguageProvider::vanillaMaterialsFilter).forEach((entry) -> addBlock(entry.getValue(), getName(NameHolder.prefix(prefix), entry.getKey())));
+        block.entries().stream().filter(YTechLanguageProvider::vanillaMaterialsFilter).forEach((entry) -> addBlock(entry.getValue(), getMaterialName(NameHolder.prefix(prefix), entry.getKey())));
     }
 
     private static <T> boolean vanillaMaterialsFilter(Map.Entry<MaterialType, RegistryObject<T>> entry) {
@@ -234,7 +247,7 @@ class YTechLanguageProvider extends LanguageProvider {
         return !EnumSet.of(MaterialType.GOLD, MaterialType.IRON).contains(entry.getKey());
     }
 
-    private static String getName(NameHolder nameHolder, MaterialType material) {
+    private static String getMaterialName(NameHolder nameHolder, MaterialType material) {
         String key = nameHolder.prefix() != null ? nameHolder.prefix() + " " : "";
 
         if (material.name.equals("Gold") && nameHolder.prefix() == null) {
@@ -243,6 +256,28 @@ class YTechLanguageProvider extends LanguageProvider {
             key += material.name;
         }
 
+        key += nameHolder.suffix() != null ? " " + nameHolder.suffix() : "";
+        return key;
+    }
+
+    private static String getName(NameHolder nameHolder, PartType partType) {
+        String key = nameHolder.prefix() != null ? nameHolder.prefix() + " " : "";
+        key += partType.name;
+        key += nameHolder.suffix() != null ? " " + nameHolder.suffix() : "";
+        return key;
+    }
+
+    private static String getName(NameHolder nameHolder, MaterialType material, PartType partType) {
+        String key = nameHolder.prefix() != null ? nameHolder.prefix() + " " : "";
+
+        if (material.name.equals("Gold") && nameHolder.prefix() == null) {
+            key += "Golden";
+        } else {
+            key += material.name;
+        }
+
+        key += " ";
+        key += partType.name;
         key += nameHolder.suffix() != null ? " " + nameHolder.suffix() : "";
         return key;
     }

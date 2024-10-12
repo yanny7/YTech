@@ -162,7 +162,7 @@ public class TanningRackBlock extends Block implements EntityBlock {
                     .define('S', Items.STICK)
                     .define('T', YTechItemTags.GRASS_TWINES)
                     .define('F', YTechItemTags.AXES.tag)
-                    .define('B', YTechItemTags.BOLTS.of(MaterialType.WOODEN))
+                    .define('B', YTechItemTags.BOLTS.get(MaterialType.WOODEN))
                     .pattern("TST")
                     .pattern("BFB")
                     .pattern("WSW")

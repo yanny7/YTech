@@ -37,7 +37,7 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
     public DryingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 0, 82, 34);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.TANNING_RACKS.of(MaterialType.OAK_WOOD).get()));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.TANNING_RACKS.get(MaterialType.OAK_WOOD).get()));
         localizedName = Component.translatable("gui.ytech.category.drying");
     }
 
@@ -85,6 +85,6 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        YTechItems.DRYING_RACKS.items().forEach((item) -> registration.addRecipeCatalyst(new ItemStack(item.get()), RECIPE_TYPE));
+        YTechItems.DRYING_RACKS.values().forEach((item) -> registration.addRecipeCatalyst(new ItemStack(item.get()), RECIPE_TYPE));
     }
 }

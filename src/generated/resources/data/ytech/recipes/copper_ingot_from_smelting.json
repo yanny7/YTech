@@ -3,7 +3,11 @@
   "ingredient": {
     "tag": "forge:crushed_materials/copper"
   },
+  "inputCount": 1,
   "minTemp": 1085,
+  "mold": {
+    "tag": "ytech:molds/ingot"
+  },
   "result": {
     "item": "minecraft:copper_ingot"
   },

@@ -27,10 +27,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
+public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int inputCount, Ingredient mold, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
-        return ingredient.test(container.getItem(0));
+        return ingredient.test(container.getItem(0)) && container.getItem(0).getCount() >= inputCount && (mold.isEmpty() || mold.test(container.getItem(1)));
     }
 
     @NotNull
@@ -73,35 +73,43 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
         @Override
         public SmeltingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe) {
             Ingredient ingredient = Ingredient.fromJson(serializedRecipe.get("ingredient"), false);
+            int inputCount = GsonHelper.getAsInt(serializedRecipe, "inputCount");
+            Ingredient mold = Ingredient.fromJson(serializedRecipe.get("mold"), true);
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
             int minTemperature = GsonHelper.getAsInt(serializedRecipe, "minTemp");
             int smeltingTime = GsonHelper.getAsInt(serializedRecipe, "smeltingTime");
-            return new SmeltingRecipe(recipeId, ingredient, minTemperature, smeltingTime, result);
+            return new SmeltingRecipe(recipeId, ingredient, inputCount, mold, minTemperature, smeltingTime, result);
         }
 
         @Override
         public @Nullable SmeltingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            int inputCount = buffer.readInt();
+            Ingredient mold = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
             int minTemperature = buffer.readInt();
             int dryingTime = buffer.readInt();
-            return new SmeltingRecipe(recipeId, ingredient, minTemperature, dryingTime, result);
+            return new SmeltingRecipe(recipeId, ingredient, inputCount, mold, minTemperature, dryingTime, result);
         }
 
         @Override
         public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull SmeltingRecipe recipe) {
             recipe.ingredient.toNetwork(buffer);
+            buffer.writeInt(recipe.inputCount);
+            recipe.mold.toNetwork(buffer);
             buffer.writeItem(recipe.result);
             buffer.writeInt(recipe.minTemperature);
             buffer.writeInt(recipe.smeltingTime);
         }
     }
 
-    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int minTemperature, int smeltingTime, @NotNull Item result,
-                         @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
+    public record Result(@NotNull ResourceLocation id, @NotNull Ingredient ingredient, int inputCount, @NotNull Ingredient mold, int minTemperature,
+                         int smeltingTime, @NotNull Item result, @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
             json.add("ingredient", ingredient.toJson());
+            json.addProperty("inputCount", inputCount);
+            json.add("mold", mold.toJson());
 
             JsonObject resultItemStack = new JsonObject();
             resultItemStack.addProperty("item", Utils.loc(result).toString());
@@ -138,24 +146,32 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
+        private final int inputCount;
+        private final Ingredient mold;
         private final int minTemperature;
         private final int smeltingTime;
         private final Item result;
         private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
-        Builder(@NotNull Ingredient ingredient, int minTemperature, int smeltingTime, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, int inputCount, @NotNull Ingredient mold, int minTemperature, int smeltingTime, @NotNull Item result) {
             this.ingredient = ingredient;
+            this.inputCount = inputCount;
+            this.mold = mold;
             this.minTemperature = minTemperature;
             this.smeltingTime = smeltingTime;
             this.result = result;
         }
 
-        public static Builder smelting(@NotNull TagKey<Item> input, int minTemperature, int smeltingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), minTemperature, smeltingTime, result);
+        public static Builder smelting(@NotNull TagKey<Item> input, int inputCount, @NotNull TagKey<Item> mold, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), inputCount, Ingredient.of(mold), minTemperature, smeltingTime, result);
         }
 
-        public static Builder smelting(@NotNull ItemLike input, int minTemperature, int smeltingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), minTemperature, smeltingTime, result);
+        public static Builder smelting(@NotNull TagKey<Item> input, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), 1, Ingredient.EMPTY, minTemperature, smeltingTime, result);
+        }
+
+        public static Builder smelting(@NotNull ItemLike input, int inputCount, @NotNull TagKey<Item> mold, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), inputCount, Ingredient.of(mold), minTemperature, smeltingTime, result);
         }
 
         @NotNull
@@ -182,7 +198,7 @@ public record SmeltingRecipe(ResourceLocation id, Ingredient ingredient, int min
             ensureValid(recipeId);
             advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-            finishedRecipeConsumer.accept(new SmeltingRecipe.Result(recipeId, ingredient, minTemperature, smeltingTime, result, advancement,
+            finishedRecipeConsumer.accept(new SmeltingRecipe.Result(recipeId, ingredient, inputCount, mold, minTemperature, smeltingTime, result, advancement,
                     recipeId.withPrefix("recipes/smelting/")));
         }
 

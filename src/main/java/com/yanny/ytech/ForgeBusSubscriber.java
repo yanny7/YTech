@@ -133,7 +133,7 @@ public class ForgeBusSubscriber {
 
             LOGGER.info("Set requiresCorrectToolForDrops on {}", Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)));
         } catch (Exception e) {
-            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block " + Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)) + ": " + e.getMessage());
+            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block {}: {}", Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)), e.getMessage());
         }
     }
 }

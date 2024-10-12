@@ -1,24 +1,18 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "ytech:plates/tin"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/sword_blade/tin"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    "# ",
-    "# ",
-    "SH"
   ],
   "result": {
     "item": "ytech:tin_sword"
-  },
-  "show_notification": true
+  }
 }

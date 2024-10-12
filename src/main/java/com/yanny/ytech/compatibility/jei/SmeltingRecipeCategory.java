@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
@@ -67,7 +68,8 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SmeltingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(recipe.ingredient());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addItemStacks(Arrays.stream(recipe.ingredient().getItems()).map((i) -> i.copyWithCount(recipe.inputCount())).toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 28, 41).addIngredients(recipe.mold());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 61,  23).addItemStack(recipe.result());
     }
 

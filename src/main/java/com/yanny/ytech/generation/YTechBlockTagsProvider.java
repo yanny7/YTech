@@ -1,6 +1,5 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.registration.YTechBlockTags;
@@ -129,7 +128,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void materialTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             tag(materialTag.of(material)).add(materialItem.of(material).get());
@@ -138,7 +137,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void materialTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             if (!excludeMaterials.contains(material)) {
@@ -149,7 +148,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void tieredMaterialTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             if (!excludeMaterials.contains(material)) {
@@ -164,7 +163,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void materialOreTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             if (!excludeMaterials.contains(material)) {

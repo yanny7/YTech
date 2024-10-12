@@ -107,8 +107,8 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
     public static void registerRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT_HYDRATOR.get())
                 .define('#', YTechItemTags.TERRACOTTA_BRICKS)
-                .define('R', YTechItemTags.RODS.of(MaterialType.COPPER))
-                .define('S', YTechItemTags.PLATES.of(MaterialType.COPPER))
+                .define('R', YTechItemTags.RODS.get(MaterialType.COPPER))
+                .define('S', YTechItemTags.PLATES.get(MaterialType.COPPER))
                 .define('H', YTechItemTags.HAMMERS.tag)
                 .pattern("#R#")
                 .pattern("SHS")

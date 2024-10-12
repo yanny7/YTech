@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public enum MaterialType {
+public enum MaterialType implements IType {
     //solid elements
     COPPER(new Builder("copper", "Copper", ToolType.PICKAXE)
             .color(0xB87333).temp(1085, 2562)
@@ -141,6 +141,11 @@ public enum MaterialType {
         return tier.get();
     }
 
+    @Override
+    public String key() {
+        return key;
+    }
+
     private static class Builder {
         @NotNull private final String key;
         @NotNull private final String name;
@@ -219,7 +224,7 @@ public enum MaterialType {
                 @NotNull
                 @Override
                 public Ingredient getRepairIngredient() {
-                    return Ingredient.of(YTechItemTags.INGOTS.of(material));
+                    return Ingredient.of(YTechItemTags.INGOTS.get(material));
                 }
 
                 @NotNull
@@ -256,7 +261,7 @@ public enum MaterialType {
             return this;
         }
 
-        Builder tier(int uses, float speed, float dmg, int e, Supplier<YTechItemTags.MaterialTag> repairItem) {
+        Builder tier(int uses, float speed, float dmg, int e, Supplier<YTechItemTags.TypedTag<MaterialType>> repairItem) {
             this.tierFactory = (material) -> Suppliers.memoize(() -> new YTechTier() {
                 private final TagKey<Block> needsTool = BlockTags.create(Utils.modLoc("needs_" + material.key + "_tool"));
 
@@ -288,7 +293,7 @@ public enum MaterialType {
                 @NotNull
                 @Override
                 public Ingredient getRepairIngredient() {
-                    return Ingredient.of(repairItem.get().of(material));
+                    return Ingredient.of(repairItem.get().get(material));
                 }
 
                 @NotNull

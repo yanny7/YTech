@@ -1,7 +1,9 @@
 package com.yanny.ytech.registration;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.IType;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.PartType;
 import com.yanny.ytech.configuration.Utils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -9,8 +11,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class YTechItemTags {
@@ -98,39 +102,45 @@ public class YTechItemTags {
     public static final TagKey<Item> VENUS_OF_HOHLE_FELS = create("venus_of_hohle_fels");
     public static final TagKey<Item> WILD_HORSES = create("wild_horse");
 
-    public static final MaterialTag ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
-    public static final MaterialTag AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
-    public static final MaterialTag BOLTS = new MaterialTag("bolts", YTechItems.BOLTS);
-    public static final MaterialTag BOOTS = new MaterialTag("boots", Tags.Items.ARMORS_BOOTS, YTechItems.BOOTS);
-    public static final MaterialTag CHESTPLATES = new MaterialTag("chestplates", Tags.Items.ARMORS_CHESTPLATES, YTechItems.CHESTPLATES);
-    public static final MaterialTag CRUSHED_MATERIALS = new MaterialTag("crushed_materials", "forge", YTechItems.CRUSHED_MATERIALS);
-    public static final MaterialTag FILES = new MaterialTag("files", YTechItems.FILES);
-    public static final MaterialTag HAMMERS = new MaterialTag("hammers", YTechItems.HAMMERS);
-    public static final MaterialTag HELMETS = new MaterialTag("helmets", Tags.Items.ARMORS_HELMETS, YTechItems.HELMETS);
-    public static final MaterialTag HOES = new MaterialTag("hoes", ItemTags.HOES, YTechItems.HOES);
-    public static final MaterialTag INGOTS = new IngotMaterialTag();
-    public static final MaterialTag KNIVES = new MaterialTag("knives", YTechItems.KNIVES);
-    public static final MaterialTag MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", YTechItems.MORTAR_AND_PESTLES);
-    public static final MaterialTag LEGGINGS = new MaterialTag("leggings", Tags.Items.ARMORS_LEGGINGS, YTechItems.LEGGINGS);
-    public static final MaterialTag PICKAXES = new MaterialTag("pickaxes", ItemTags.PICKAXES, YTechItems.PICKAXES);
-    public static final MaterialTag PLATES = new MaterialTag("plates", YTechItems.PLATES);
-    public static final MaterialTag RAW_MATERIALS = new RawMaterialTag();
-    public static final MaterialTag RODS = new MaterialTag("rods", YTechItems.RODS);
-    public static final MaterialTag SAWS = new MaterialTag("saws", YTechItems.SAWS);
-    public static final MaterialTag SAW_BLADES = new MaterialTag("saw_blades", YTechItems.SAW_BLADES);
-    public static final MaterialTag SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
-    public static final MaterialTag SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
-    public static final MaterialTag SWORDS = new MaterialTag("swords", ItemTags.SWORDS, YTechItems.SWORDS);
+    public static final TypedTag<PartType> MOLDS = new MoldTag("molds", YTechItems.MOLDS);
+    public static final TypedTag<PartType> PATTERNS = new MoldTag("patterns", YTechItems.PATTERNS);
+    public static final TypedTag<PartType> UNFIRED_MOLDS = new MoldTag("unfired_molds", YTechItems.UNFIRED_MOLDS);
 
-    public static final MaterialTag DEEPSLATE_ORES = new DeepslateOreMaterialTag();
-    public static final MaterialTag DRYING_RACKS = new MaterialTag(YTechBlockTags.DRYING_RACKS);
-    public static final MaterialTag GRAVEL_DEPOSITS = new MaterialTag(YTechBlockTags.GRAVEL_DEPOSITS);
-    public static final MaterialTag NETHER_ORES = new NetherOreMaterialTag();
-    public static final MaterialTag RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialTag();
-    public static final MaterialTag SAND_DEPOSITS = new MaterialTag(YTechBlockTags.SAND_DEPOSITS);
-    public static final MaterialTag STONE_ORES = new StoneOreMaterialTag();
-    public static final MaterialTag STORAGE_BLOCKS = new StorageBlockMaterialTag();
-    public static final MaterialTag TANNING_RACKS = new MaterialTag(YTechBlockTags.TANNING_RACKS);
+    public static final TypedTag<MaterialType> ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
+    public static final TypedTag<MaterialType> AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
+    public static final TypedTag<MaterialType> BOLTS = new MaterialTag("bolts", YTechItems.BOLTS);
+    public static final TypedTag<MaterialType> BOOTS = new MaterialTag("boots", Tags.Items.ARMORS_BOOTS, YTechItems.BOOTS);
+    public static final TypedTag<MaterialType> CHESTPLATES = new MaterialTag("chestplates", Tags.Items.ARMORS_CHESTPLATES, YTechItems.CHESTPLATES);
+    public static final TypedTag<MaterialType> CRUSHED_MATERIALS = new MaterialTag("crushed_materials", "forge", YTechItems.CRUSHED_MATERIALS);
+    public static final TypedTag<MaterialType> FILES = new MaterialTag("files", YTechItems.FILES);
+    public static final TypedTag<MaterialType> HAMMERS = new MaterialTag("hammers", YTechItems.HAMMERS);
+    public static final TypedTag<MaterialType> HELMETS = new MaterialTag("helmets", Tags.Items.ARMORS_HELMETS, YTechItems.HELMETS);
+    public static final TypedTag<MaterialType> HOES = new MaterialTag("hoes", ItemTags.HOES, YTechItems.HOES);
+    public static final TypedTag<MaterialType> INGOTS = new IngotMaterialTag();
+    public static final TypedTag<MaterialType> KNIVES = new MaterialTag("knives", YTechItems.KNIVES);
+    public static final TypedTag<MaterialType> MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", YTechItems.MORTAR_AND_PESTLES);
+    public static final TypedTag<MaterialType> LEGGINGS = new MaterialTag("leggings", Tags.Items.ARMORS_LEGGINGS, YTechItems.LEGGINGS);
+    public static final TypedTag<MaterialType> PICKAXES = new MaterialTag("pickaxes", ItemTags.PICKAXES, YTechItems.PICKAXES);
+    public static final TypedTag<MaterialType> PLATES = new MaterialTag("plates", YTechItems.PLATES);
+    public static final TypedTag<MaterialType> RAW_MATERIALS = new RawMaterialTag();
+    public static final TypedTag<MaterialType> RODS = new MaterialTag("rods", YTechItems.RODS);
+    public static final TypedTag<MaterialType> SAWS = new MaterialTag("saws", YTechItems.SAWS);
+    public static final TypedTag<MaterialType> SAW_BLADES = new MaterialTag("saw_blades", YTechItems.SAW_BLADES);
+    public static final TypedTag<MaterialType> SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
+    public static final TypedTag<MaterialType> SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
+    public static final TypedTag<MaterialType> SWORDS = new MaterialTag("swords", ItemTags.SWORDS, YTechItems.SWORDS);
+
+    public static final TypedTag<MaterialType> DEEPSLATE_ORES = new DeepslateOreMaterialTag();
+    public static final TypedTag<MaterialType> DRYING_RACKS = new MaterialTag(YTechBlockTags.DRYING_RACKS);
+    public static final TypedTag<MaterialType> GRAVEL_DEPOSITS = new MaterialTag(YTechBlockTags.GRAVEL_DEPOSITS);
+    public static final TypedTag<MaterialType> NETHER_ORES = new NetherOreMaterialTag();
+    public static final TypedTag<MaterialType> RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialTag();
+    public static final TypedTag<MaterialType> SAND_DEPOSITS = new MaterialTag(YTechBlockTags.SAND_DEPOSITS);
+    public static final TypedTag<MaterialType> STONE_ORES = new StoneOreMaterialTag();
+    public static final TypedTag<MaterialType> STORAGE_BLOCKS = new StorageBlockMaterialTag();
+    public static final TypedTag<MaterialType> TANNING_RACKS = new MaterialTag(YTechBlockTags.TANNING_RACKS);
+
+    public static final MultiTypedTag<MaterialType, PartType> PARTS = new MaterialPartTag("parts", YTechItems.PARTS);
 
     private static TagKey<Item> create(String name) {
         return ItemTags.create(Utils.modLoc(name));
@@ -144,50 +154,84 @@ public class YTechItemTags {
         return ItemTags.create(new ResourceLocation(namespace, name));
     }
 
-    public static class MaterialTag {
+    public static class TypedTag<E extends Enum<E> & IType> extends AbstractMap<E, TagKey<Item>> {
         public final TagKey<Item> tag;
-        protected final Map<MaterialType, TagKey<Item>> tags;
+        protected final Map<E, TagKey<Item>> tags;
 
-        public MaterialTag(String name, YTechItems.MaterialItem item) {
+        public TypedTag(String name, String namespace, TagKey<Item> tag, EnumSet<E> types, Function<E, String> typeNameSupplier) {
+            this.tag = tag;
+            tags = new HashMap<>();
+            types.forEach((type) -> tags.put(type, ItemTags.create(new ResourceLocation(namespace, name + "/" + typeNameSupplier.apply(type)))));
+        }
+
+        @Override
+        public @NotNull Set<Entry<E, TagKey<Item>>> entrySet() {
+            return tags.entrySet();
+        }
+    }
+
+    public static class MultiTypedTag<E extends Enum<E> & IType, F extends Enum<F> & IType> extends AbstractMap<E, Map<F, TagKey<Item>>> {
+        public final TagKey<Item> tag;
+        protected final Map<E, Map<F, TagKey<Item>>> tags = new HashMap<>();
+
+        public MultiTypedTag(String name, String namespace, TagKey<Item> tag, EnumSet<E> types1, EnumSet<F> types2, BiFunction<E, F, String> typeNameSupplier) {
+            this.tag = tag;
+            for (E type1 : types1) {
+                for (F type2 : types2) {
+                    tags.computeIfAbsent(type1, (t) -> new HashMap<>()).put(type2, ItemTags.create(new ResourceLocation(namespace, name + "/" + typeNameSupplier.apply(type1, type2))));
+                }
+            }
+        }
+
+        public TagKey<Item> get(E type1, F type2) {
+            return Objects.requireNonNull(tags.get(type1).get(type2), type1.key() + "_" + type2.key());
+        }
+
+        @Override
+        public @NotNull Set<Entry<E, Map<F, TagKey<Item>>>> entrySet() {
+            return tags.entrySet();
+        }
+    }
+
+    public static class MoldTag extends TypedTag<PartType> {
+        public MoldTag(String name, YTechItems.TypedItem<PartType> item) {
+            super(name, YTechMod.MOD_ID, create(name), EnumSet.copyOf(item.keySet()), (type) -> type.key);
+        }
+    }
+
+    public static class MaterialTag extends TypedTag<MaterialType> {
+        public MaterialTag(String name, YTechItems.TypedItem<MaterialType> item) {
             this(name, create(name), item);
         }
 
-        public MaterialTag(String name, String namespace, YTechItems.MaterialItem item) {
+        public MaterialTag(String name, String namespace, YTechItems.TypedItem<MaterialType> item) {
             this(name, namespace, create(name), item);
         }
 
-        public MaterialTag(String name, TagKey<Item> tag, YTechItems.MaterialItem item) {
+        public MaterialTag(String name, TagKey<Item> tag, YTechItems.TypedItem<MaterialType> item) {
             this(name, YTechMod.MOD_ID, tag, item);
         }
 
-        public MaterialTag(String name, String namespace, TagKey<Item> tag, YTechItems.MaterialItem item) {
-            this(name, namespace, tag, EnumSet.copyOf(item.materials()));
+        public MaterialTag(String name, String namespace, TagKey<Item> tag, YTechItems.TypedItem<MaterialType> item) {
+            this(name, namespace, tag, EnumSet.copyOf(item.keySet()));
         }
 
         public MaterialTag(YTechBlockTags.MaterialTag materialTag) {
-            this(materialTag.getName(), materialTag.getNamespace(), create(materialTag.tag), EnumSet.copyOf(materialTag.tags.keySet()), materialTag.materialNameSupplier);
+            super(materialTag.getName(), materialTag.getNamespace(), create(materialTag.tag), EnumSet.copyOf(materialTag.tags.keySet()), materialTag.materialNameSupplier);
         }
 
         public MaterialTag(YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> materials) {
-            this(materialTag.getName(), materialTag.getNamespace(), create(materialTag.tag), materials, materialTag.materialNameSupplier);
+            super(materialTag.getName(), materialTag.getNamespace(), create(materialTag.tag), materials, materialTag.materialNameSupplier);
         }
 
         public MaterialTag(String name, String namespace, TagKey<Item> tag, EnumSet<MaterialType> materials) {
-            this(name, namespace, tag, materials, (type) -> type.key);
+            super(name, namespace, tag, materials, (type) -> type.key);
         }
+    }
 
-        public MaterialTag(String name, String namespace, TagKey<Item> tag, EnumSet<MaterialType> materials, Function<MaterialType, String> materialNameSupplier) {
-            this.tag = tag;
-            tags = new HashMap<>();
-            materials.forEach((type) -> tags.put(type, ItemTags.create(new ResourceLocation(namespace, name + "/" + materialNameSupplier.apply(type)))));
-        }
-
-        public TagKey<Item> of(MaterialType material) {
-            return Objects.requireNonNull(tags.get(material), material.key);
-        }
-
-        public Collection<TagKey<Item>> values() {
-            return tags.values();
+    private static class MaterialPartTag extends MultiTypedTag<MaterialType, PartType> {
+        public MaterialPartTag(String name, YTechItems.MultiTypedItem<MaterialType, PartType> multiTypedItem) {
+            super(name, YTechMod.MOD_ID, create(name), EnumSet.copyOf(multiTypedItem.keySet()), PartType.ALL_PARTS, (material, part) -> part.key + "/" + material.key);
         }
     }
 

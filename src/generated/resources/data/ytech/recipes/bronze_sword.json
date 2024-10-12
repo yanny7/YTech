@@ -1,24 +1,18 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "ytech:plates/bronze"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/sword_blade/bronze"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    "# ",
-    "# ",
-    "SH"
   ],
   "result": {
     "item": "ytech:bronze_sword"
-  },
-  "show_notification": true
+  }
 }
