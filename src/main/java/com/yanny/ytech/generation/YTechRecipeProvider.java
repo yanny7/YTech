@@ -553,7 +553,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.PATTERNS.forEach((type, item) -> registerPatternRecipe(recipeConsumer, item, type));
         YTechItems.UNFIRED_MOLDS.forEach((part, item) -> registerUnfiredMoldRecipe(recipeConsumer, item, part));
 
-        YTechItems.PARTS.forEach((material, map) -> map.forEach((part, item) -> smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.MOLDS.get(part), item.get(), material.meltingTemp, 200)));
+        YTechItems.PARTS.forEach((material, map) -> map.forEach((part, item) -> smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.MOLDS.get(part), item.get(), material.meltingTemp, 200 * part.ingotCount)));
 
         YTechItems.ARROWS.forEach((material, item) -> registerArrowRecipe(recipeConsumer, item, material));
         YTechItems.AXES.forEach((material, item) -> registerAxeRecipe(recipeConsumer, item, material));
