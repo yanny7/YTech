@@ -20,6 +20,7 @@ import java.util.function.Function;
 public class YTechItemTags {
     public static final TagKey<Item> ANTLERS = create("antlers");
     public static final TagKey<Item> BASKETS = create("baskets");
+    public static final TagKey<Item> BEESWAXES = create("beeswaxes");
     public static final TagKey<Item> BONE_NEEDLES = create("bone_needles");
     public static final TagKey<Item> BREAD_DOUGHS = create("bread_doughs");
     public static final TagKey<Item> BRICK_MOLDS = create("brick_molds");

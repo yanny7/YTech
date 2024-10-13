@@ -33,6 +33,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         clayBucketItem(YTechItems.WATER_CLAY_BUCKET);
 
         simpleItem(YTechItems.ANTLER);
+        simpleItem(YTechItems.BEESWAX);
         simpleItem(YTechItems.BONE_NEEDLE);
         simpleItem(YTechItems.BREAD_DOUGH);
         simpleItem(YTechItems.BRICK_MOLD);

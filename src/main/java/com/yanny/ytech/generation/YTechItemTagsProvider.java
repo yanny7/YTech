@@ -32,6 +32,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(YTechItemTags.ANTLERS).add(YTechItems.ANTLER.get());
         tag(YTechItemTags.BASKETS).add(YTechItems.BASKET.get());
+        tag(YTechItemTags.BEESWAXES).add(YTechItems.BEESWAX.get());
         tag(YTechItemTags.BONE_NEEDLES).add(YTechItems.BONE_NEEDLE.get());
         tag(YTechItemTags.BREAD_DOUGHS).add(YTechItems.BREAD_DOUGH.get());
         tag(YTechItemTags.BRICK_MOLDS).add(YTechItems.BRICK_MOLD.get());

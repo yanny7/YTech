@@ -530,6 +530,7 @@ class YTechRecipeProvider extends RecipeProvider {
          */
 
         registerBasketRecipe(recipeConsumer);
+        registerBeeswaxRecipe(recipeConsumer);
         registerBoneNeedleRecipe(recipeConsumer);
         registerBreadDoughRecipe(recipeConsumer);
         registerBrickMoldRecipe(recipeConsumer);
@@ -1058,6 +1059,12 @@ class YTechRecipeProvider extends RecipeProvider {
                 .save(recipeConsumer, YTechItems.BASKET.getId());
     }
 
+    private static void registerBeeswaxRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(Items.HONEYCOMB), RecipeCategory.MISC, YTechItems.BEESWAX.get(), 0.5f, 100)
+                .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
+                .save(recipeConsumer, YTechItems.BEESWAX.getId());
+    }
+
     private static void registerBoneNeedleRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.BONE_NEEDLE.get())
                 .define('T', YTechItemTags.BONE)
@@ -1117,45 +1124,45 @@ class YTechRecipeProvider extends RecipeProvider {
                 .requires(YTechItemTags.FLOURS)
                 .requires(YTechItemTags.FLOURS)
                 .requires(YTechItemTags.WATER_BUCKETS)
-                .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
+                .unlockedBy(RecipeProvider.getHasName(Items.WHEAT), RecipeProvider.has(Tags.Items.CROPS_WHEAT))
                 .save(recipeConsumer, YTechItems.BREAD_DOUGH.getId());
     }
 
     public static void registerPatternRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, PartType partType) {
         switch (partType) {
             case AXE_HEAD -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
-                    .define('P', ItemTags.PLANKS)
+                    .define('P', YTechItemTags.BEESWAXES)
                     .define('#', YTechItemTags.KNIVES.tag)
                     .pattern("#")
                     .pattern("P")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                    .unlockedBy(RecipeProvider.getHasName(Items.HONEYCOMB), RecipeProvider.has(Items.HONEYCOMB))
                     .save(recipeConsumer, item.getId());
             case HAMMER_HEAD -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
-                    .define('P', ItemTags.PLANKS)
+                    .define('P', YTechItemTags.BEESWAXES)
                     .define('#', YTechItemTags.KNIVES.tag)
                     .pattern(" #")
                     .pattern("P ")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                    .unlockedBy(RecipeProvider.getHasName(Items.HONEYCOMB), RecipeProvider.has(Items.HONEYCOMB))
                     .save(recipeConsumer, item.getId());
             case PICKAXE_HEAD -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
-                    .define('P', ItemTags.PLANKS)
+                    .define('P', YTechItemTags.BEESWAXES)
                     .define('#', YTechItemTags.KNIVES.tag)
                     .pattern("P#")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                    .unlockedBy(RecipeProvider.getHasName(Items.HONEYCOMB), RecipeProvider.has(Items.HONEYCOMB))
                     .save(recipeConsumer, item.getId());
             case SWORD_BLADE -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
-                    .define('P', ItemTags.PLANKS)
+                    .define('P', YTechItemTags.BEESWAXES)
                     .define('#', YTechItemTags.KNIVES.tag)
                     .pattern("P ")
                     .pattern(" #")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                    .unlockedBy(RecipeProvider.getHasName(Items.HONEYCOMB), RecipeProvider.has(Items.HONEYCOMB))
                     .save(recipeConsumer, item.getId());
             case INGOT -> RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
-                    .define('P', ItemTags.PLANKS)
+                    .define('P', YTechItemTags.BEESWAXES)
                     .define('#', YTechItemTags.KNIVES.tag)
                     .pattern("P")
                     .pattern("#")
-                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                    .unlockedBy(RecipeProvider.getHasName(Items.HONEYCOMB), RecipeProvider.has(Items.HONEYCOMB))
                     .save(recipeConsumer, item.getId());
             default -> throw new IllegalArgumentException("Missing recipe");
         }

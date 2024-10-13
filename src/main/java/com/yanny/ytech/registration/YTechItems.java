@@ -32,6 +32,7 @@ public class YTechItems {
 
     public static final RegistryObject<Item> ANTLER = ITEMS.register("antler", YTechItems::simpleItem);
     public static final RegistryObject<Item> BASKET = ITEMS.register("basket", BasketItem::new);
+    public static final RegistryObject<Item> BEESWAX = ITEMS.register("beeswax", YTechItems::simpleItem);
     public static final RegistryObject<Item> BONE_NEEDLE = ITEMS.register("bone_needle", () -> new ToolItem(Tiers.WOOD, false, new Item.Properties().durability(5).setNoRepair()));
     public static final RegistryObject<Item> BREAD_DOUGH = ITEMS.register("bread_dough", YTechItems::simpleItem);
     public static final RegistryObject<Item> BRICK_MOLD = ITEMS.register("brick_mold", () -> new Item(new Item.Properties().durability(256)));

@@ -6,6 +6,8 @@
 - Added Unlit Torch and changed recipe for Torch, Soul Torch, Campfire and Soul Campfire
 - Added smoke to Fire Pit
 - Fixed Villagers dying on Fire Pit
+- Using parts for crafting tools, introduced molds
+- Added Beeswax, used in pattern crafting
 
 ## [0.5.0]
 

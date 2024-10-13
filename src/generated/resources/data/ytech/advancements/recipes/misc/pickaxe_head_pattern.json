@@ -1,11 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item": {
+    "has_honeycomb": {
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:planks"
+            "items": [
+              "minecraft:honeycomb"
+            ]
           }
         ]
       },
@@ -20,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_item",
+      "has_honeycomb",
       "has_the_recipe"
     ]
   ],
