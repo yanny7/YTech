@@ -39,6 +39,9 @@ public class YTechBlockTags {
     public static final TagKey<Block> FOWL_RAID_BLOCKS = create("fowl_raid_blocks");
     public static final TagKey<Block> MOUFLON_RAID_BLOCKS = create("mouflon_raid_blocks");
 
+    public static final TagKey<Block> FIRE_SOURCE = create("fire_source");
+    public static final TagKey<Block> SOUL_FIRE_SOURCE = create("soul_fire_source");
+
     public static final MaterialTag DEEPSLATE_ORES = new DeepslateOreMaterialTag();
     public static final MaterialTag DRYING_RACKS = new MaterialTag("drying_racks", YTechBlocks.DRYING_RACKS);
     public static final MaterialTag GRAVEL_DEPOSITS = new MaterialTag("gravel_deposits", YTechBlocks.GRAVEL_DEPOSITS);

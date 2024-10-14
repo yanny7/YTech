@@ -1,10 +1,7 @@
 package com.yanny.ytech.registration;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.NameHolder;
-import com.yanny.ytech.configuration.SpearType;
-import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
 import com.yanny.ytech.configuration.item.*;
 import net.minecraft.ChatFormatting;
@@ -27,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.yanny.ytech.YTechMod.CONFIGURATION;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
@@ -36,6 +34,8 @@ public class YTechItems {
 
     public static final DeferredItem<Item> ANTLER = ITEMS.registerSimpleItem("antler");
     public static final DeferredItem<Item> BASKET = ITEMS.register("basket", BasketItem::new);
+    public static final DeferredItem<Item> BEESWAX = ITEMS.register("beeswax", YTechItems::simpleItem);
+    public static final DeferredItem<Item> BONE_NEEDLE = ITEMS.register("bone_needle", () -> new ToolItem(Tiers.WOOD, false, new Item.Properties().durability(5).setNoRepair()));
     public static final DeferredItem<Item> BREAD_DOUGH = ITEMS.registerSimpleItem("bread_dough");
     public static final DeferredItem<Item> BRICK_MOLD = ITEMS.registerSimpleItem("brick_mold", new Item.Properties().durability(256));
     public static final DeferredItem<Item> CLAY_BUCKET = ITEMS.register("clay_bucket", () -> new ClayBucketItem(() -> Fluids.EMPTY, new Item.Properties().stacksTo(8)));
@@ -63,6 +63,7 @@ public class YTechItems {
     public static final DeferredItem<Item> UNFIRED_CLAY_BUCKET = ITEMS.registerSimpleItem("unfired_clay_bucket");
     public static final DeferredItem<Item> UNFIRED_DECORATED_POT = ITEMS.registerSimpleItem("unfired_decoration_pot");
     public static final DeferredItem<Item> UNFIRED_FLOWER_POT = ITEMS.registerSimpleItem("unfired_flower_pot");
+    public static final DeferredItem<Item> UNLIT_TORCH = ITEMS.register("unlit_torch", UnlitTorchItem::new);
     public static final DeferredItem<Item> VENISON = ITEMS.register("venison", () -> foodItem(2, 0.3f));
     public static final DeferredItem<Item> WATER_CLAY_BUCKET = ITEMS.register("water_clay_bucket", () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 
@@ -103,39 +104,45 @@ public class YTechItems {
     public static final DeferredItem<Item> WOOLLY_MAMMOTH_SPAWN_EGG = ITEMS.register("woolly_mammoth_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_MAMMOTH, 0x8a4a71, 0x6cc8ab, new Item.Properties()));
     public static final DeferredItem<Item> WOOLLY_RHINO_SPAWN_EGG = ITEMS.register("woolly_rhino_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_RHINO, 0x04b53a, 0x2f7415, new Item.Properties()));
 
-    public static final MaterialItem ARROWS = new MaterialItem("arrow", NameHolder.suffix("arrow"), MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
-    public static final MaterialItem AXES = new AxeMaterialItem();
-    public static final MaterialItem BOLTS = new MaterialItem("bolt", NameHolder.suffix("bolt"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> burnableSimpleItem(type, 100));
-    public static final MaterialItem BOOTS = new BootsMaterialItem();
-    public static final MaterialItem CHESTPLATES = new ChestplatesMaterialItem();
-    public static final MaterialItem CRUSHED_MATERIALS = new MaterialItem("crushed_material", NameHolder.prefix("crushed"), MaterialType.ALL_ORES, (type) -> simpleItem());
-    public static final MaterialItem FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
-    public static final MaterialItem HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolCanHurtItem(type.getTier()));
-    public static final MaterialItem HELMETS = new HelmetMaterialItem();
-    public static final MaterialItem HOES = new HoeMaterialItem();
-    public static final MaterialItem INGOTS = new IngotMaterialItem();
-    public static final MaterialItem KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), YTechItems::knifeItem);
-    public static final MaterialItem LEGGINGS = new LeggingsMaterialItem();
-    public static final MaterialItem MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
-    public static final MaterialItem PICKAXES = new PickaxeMaterialItem();
-    public static final MaterialItem PLATES = new MaterialItem("plate", NameHolder.suffix("plate"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> burnableSimpleItem(type, 200));
-    public static final MaterialItem RAW_MATERIALS = new RawMaterialItem();
-    public static final MaterialItem RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
-    public static final MaterialItem SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
-    public static final MaterialItem SAW_BLADES = new MaterialItem("saw_blade", NameHolder.suffix("saw_blade"), EnumSet.of(MaterialType.IRON), (type) -> simpleItem());
-    public static final MaterialItem SHOVELS = new ShovelMaterialItem();
-    public static final MaterialItem SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
-    public static final MaterialItem SWORDS = new SwordMaterialItem();
+    public static final TypedItem<PartType> MOLDS = new PartItem("mold", NameHolder.suffix("mold"), () -> new Item(new Item.Properties().durability(17)));
+    public static final TypedItem<PartType> PATTERNS = new PartItem("pattern", NameHolder.suffix("pattern"), YTechItems::simpleItem);
+    public static final TypedItem<PartType> UNFIRED_MOLDS = new PartItem("unfired_mold", NameHolder.both("unfired", "mold"), () -> new Item(new Item.Properties().durability(16)));
 
-    public static final MaterialItem DEEPSLATE_ORES = new DeepslateOreMaterialItem();
-    public static final MaterialItem DRYING_RACKS = new MaterialItem(YTechBlocks.DRYING_RACKS, YTechItems::dryingRackBlockItem);
-    public static final MaterialItem GRAVEL_DEPOSITS = new MaterialItem(YTechBlocks.GRAVEL_DEPOSITS, YTechItems::blockItem);
-    public static final MaterialItem NETHER_ORES = new NetherOreMaterialItem();
-    public static final MaterialItem RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialItem();
-    public static final MaterialItem SAND_DEPOSITS = new MaterialItem(YTechBlocks.SAND_DEPOSITS, YTechItems::blockItem);
-    public static final MaterialItem STONE_ORES = new StoneOreMaterialItem();
-    public static final MaterialItem STORAGE_BLOCKS = new StorageBlockMaterialItem();
-    public static final MaterialItem TANNING_RACKS = new MaterialItem(YTechBlocks.TANNING_RACKS, block -> burnableBlockItem(block, 300));
+    public static final MultiTypedItem<MaterialType, PartType> PARTS = new MaterialPartItem("part", Utils.exclude(MaterialType.ALL_METALS, MaterialType.IRON), PartType.ALL_PARTS, NameHolder.suffix("part"), YTechItems::simpleItem);
+
+    public static final TypedItem<MaterialType> ARROWS = new MaterialItem("arrow", NameHolder.suffix("arrow"), MaterialType.ALL_HARD_METALS, MaterialArrowItem::new);
+    public static final TypedItem<MaterialType> AXES = new AxeMaterialItem();
+    public static final TypedItem<MaterialType> BOLTS = new MaterialItem("bolt", NameHolder.suffix("bolt"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> burnableSimpleItem(type, 100));
+    public static final TypedItem<MaterialType> BOOTS = new BootsMaterialItem();
+    public static final TypedItem<MaterialType> CHESTPLATES = new ChestplatesMaterialItem();
+    public static final TypedItem<MaterialType> CRUSHED_MATERIALS = new MaterialItem("crushed_material", NameHolder.prefix("crushed"), MaterialType.ALL_ORES, (type) -> simpleItem());
+    public static final TypedItem<MaterialType> FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
+    public static final TypedItem<MaterialType> HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolCanHurtItem(type.getTier()));
+    public static final TypedItem<MaterialType> HELMETS = new HelmetMaterialItem();
+    public static final TypedItem<MaterialType> HOES = new HoeMaterialItem();
+    public static final TypedItem<MaterialType> INGOTS = new IngotMaterialItem();
+    public static final TypedItem<MaterialType> KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), YTechItems::knifeItem);
+    public static final TypedItem<MaterialType> LEGGINGS = new LeggingsMaterialItem();
+    public static final TypedItem<MaterialType> MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
+    public static final TypedItem<MaterialType> PICKAXES = new PickaxeMaterialItem();
+    public static final TypedItem<MaterialType> PLATES = new MaterialItem("plate", NameHolder.suffix("plate"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> burnableSimpleItem(type, 200));
+    public static final TypedItem<MaterialType> RAW_MATERIALS = new RawMaterialItem();
+    public static final TypedItem<MaterialType> RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
+    public static final TypedItem<MaterialType> SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
+    public static final TypedItem<MaterialType> SAW_BLADES = new MaterialItem("saw_blade", NameHolder.suffix("saw_blade"), EnumSet.of(MaterialType.IRON), (type) -> simpleItem());
+    public static final TypedItem<MaterialType> SHOVELS = new ShovelMaterialItem();
+    public static final TypedItem<MaterialType> SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
+    public static final TypedItem<MaterialType> SWORDS = new SwordMaterialItem();
+
+    public static final TypedItem<MaterialType> DEEPSLATE_ORES = new DeepslateOreMaterialItem();
+    public static final TypedItem<MaterialType> DRYING_RACKS = new MaterialItem(YTechBlocks.DRYING_RACKS, YTechItems::dryingRackBlockItem);
+    public static final TypedItem<MaterialType> GRAVEL_DEPOSITS = new MaterialItem(YTechBlocks.GRAVEL_DEPOSITS, YTechItems::blockItem);
+    public static final TypedItem<MaterialType> NETHER_ORES = new NetherOreMaterialItem();
+    public static final TypedItem<MaterialType> RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialItem();
+    public static final TypedItem<MaterialType> SAND_DEPOSITS = new MaterialItem(YTechBlocks.SAND_DEPOSITS, YTechItems::blockItem);
+    public static final TypedItem<MaterialType> STONE_ORES = new StoneOreMaterialItem();
+    public static final TypedItem<MaterialType> STORAGE_BLOCKS = new StorageBlockMaterialItem();
+    public static final TypedItem<MaterialType> TANNING_RACKS = new MaterialItem(YTechBlocks.TANNING_RACKS, block -> burnableBlockItem(block, 300));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
@@ -257,13 +264,76 @@ public class YTechItems {
         };
     }
 
-    public static class MaterialItem {
+    public static class TypedItem<E extends Enum<E>> extends AbstractMap<E, DeferredItem<Item>> {
         protected final String group;
-        protected final Map<MaterialType, DeferredItem<Item>> items;
+        protected final Map<E, DeferredItem<Item>> items = new HashMap<>();
 
-        public MaterialItem(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Function<MaterialType, Item> itemSupplier) {
+        TypedItem(String group) {
             this.group = group;
-            items = new HashMap<>();
+        }
+
+        public String getGroup() {
+            return group;
+        }
+
+        @NotNull
+        @Override
+        public Set<Entry<E, DeferredItem<Item>>> entrySet() {
+            return items.entrySet();
+        }
+    }
+
+    public static class MultiTypedItem<E extends Enum<E>, F extends Enum<F>> extends AbstractMap<E, Map<F, DeferredItem<Item>>> {
+        protected final String group;
+        protected final Map<E, Map<F, DeferredItem<Item>>> items = new HashMap<>();
+
+        MultiTypedItem(String group) {
+            this.group = group;
+        }
+
+        public DeferredItem<Item> get(E type1, F type2) {
+            return items.get(type1).get(type2);
+        }
+
+        public String getGroup() {
+            return group;
+        }
+
+        @Override
+        public @NotNull Set<Entry<E, Map<F, DeferredItem<Item>>>> entrySet() {
+            return items.entrySet();
+        }
+    }
+
+    public static class PartItem extends TypedItem<PartType> {
+        PartItem(String group, NameHolder nameHolder, Supplier<Item> itemSupplier) {
+            super(group);
+            for (PartType partType : PartType.values()) {
+                String key = nameHolder.prefix() != null ? nameHolder.prefix() + "_" : "";
+                key += partType.key;
+                key += nameHolder.suffix() != null ? "_" + nameHolder.suffix() : "";
+                items.put(partType, ITEMS.register(key, itemSupplier));
+            }
+        }
+    }
+
+    public static class MaterialPartItem extends MultiTypedItem<MaterialType, PartType> {
+        MaterialPartItem(String group, EnumSet<MaterialType> materials, EnumSet<PartType> parts, NameHolder nameHolder, Supplier<Item> itemSupplier) {
+            super(group);
+            for (MaterialType material : materials) {
+                for (PartType part : parts) {
+                    String key = nameHolder.prefix() != null ? nameHolder.prefix() + "_" : "";
+                    key += material.key + "_" + part.key;
+                    key += nameHolder.suffix() != null ? "_" + nameHolder.suffix() : "";
+                    items.computeIfAbsent(material, (k) -> new HashMap<>()).put(part, ITEMS.register(key, itemSupplier));
+                }
+            }
+        }
+    }
+
+    public static class MaterialItem extends TypedItem<MaterialType> {
+        public MaterialItem(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Function<MaterialType, Item> itemSupplier) {
+            super(group);
             materialTypes.forEach((type) -> {
                 String key = nameHolder.prefix() != null ? nameHolder.prefix() + "_" : "";
 
@@ -283,33 +353,12 @@ public class YTechItems {
         }
 
         public MaterialItem(YTechBlocks.MaterialBlock block, EnumSet<MaterialType> exclude, Function<DeferredBlock<Block>, Item> itemSupplier) {
-            this.group = block.getGroup();
-            items = new HashMap<>();
+            super(block.getGroup());
             block.entries().stream().filter((entry) -> !exclude.contains(entry.getKey())).forEach((entry) -> {
                 MaterialType type = entry.getKey();
                 DeferredBlock<Block> object = entry.getValue();
                 items.put(type, ITEMS.register(Utils.getPath(object), () -> itemSupplier.apply(object)));
             });
-        }
-
-        public DeferredItem<Item> of(MaterialType material) {
-            return Objects.requireNonNull(items.get(material));
-        }
-
-        public Collection<DeferredItem<Item>> items() {
-            return items.values();
-        }
-
-        public Set<MaterialType> materials() {
-            return items.keySet();
-        }
-
-        public Set<Map.Entry<MaterialType, DeferredItem<Item>>> entries() {
-            return items.entrySet();
-        }
-
-        public String getGroup() {
-            return group;
         }
     }
 

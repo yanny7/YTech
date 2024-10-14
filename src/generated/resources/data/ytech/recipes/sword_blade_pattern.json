@@ -1,0 +1,19 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:knives"
+    },
+    "P": {
+      "tag": "ytech:beeswaxes"
+    }
+  },
+  "pattern": [
+    "P ",
+    " #"
+  ],
+  "result": {
+    "item": "ytech:sword_blade_pattern"
+  }
+}

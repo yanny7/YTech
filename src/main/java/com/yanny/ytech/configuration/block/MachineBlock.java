@@ -54,7 +54,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
-        stateBuilder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.POWERED);
+        stateBuilder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT);
     }
 
     @Override
@@ -68,7 +68,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
         return defaultBlockState()
                 .setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
-                .setValue(BlockStateProperties.POWERED, false);
+                .setValue(BlockStateProperties.LIT, false);
     }
 
     @SuppressWarnings("deprecation")

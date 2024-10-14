@@ -1,21 +1,16 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "ytech:plates/tin"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/axe_head/tin"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    "##H",
-    "#S ",
-    " S "
   ],
   "result": {
     "item": "ytech:tin_axe"

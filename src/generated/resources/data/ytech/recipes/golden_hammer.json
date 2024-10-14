@@ -1,18 +1,16 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "forge:storage_blocks/gold"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/hammer_head/gold"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    " # ",
-    " S#",
-    "S  "
   ],
   "result": {
     "item": "ytech:golden_hammer"

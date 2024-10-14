@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -86,6 +87,11 @@ public class FirePitBlock extends Block {
 
             if (pState.getValue(LEVEL) > 0) {
                 level.addParticle(ParticleTypes.FLAME, pos.getX() + 0.25 + random.nextFloat() / 2, pos.getY() + 0.2, pos.getZ() + 0.25 + random.nextFloat() / 2, 0, 0, 0);
+
+                if (random.nextInt(16 - pState.getValue(LEVEL)) == 0) {
+                    level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, false, pos.getX() + 0.5 + random.nextDouble() / 3.0 * (random.nextBoolean() ? 1 : -1),
+                            pos.getY() + random.nextDouble() + random.nextDouble(), pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (random.nextBoolean() ? 1 : -1), 0.0, 0.07, 0.0);
+                }
 
                 if (random.nextInt(10) == 0) {
                     level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
@@ -146,10 +152,11 @@ public class FirePitBlock extends Block {
             if (burnTime > 0 && state.getValue(LEVEL) < 15) {
                 itemStack.shrink(1);
                 level.setBlock(pos, state.setValue(LEVEL, Math.min(15, state.getValue(LEVEL) + (int) Math.log10(burnTime))), Block.UPDATE_ALL);
+                return InteractionResult.sidedSuccess(serverLevel.isClientSide);
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.PASS;
     }
 
     @Nullable
@@ -175,6 +182,12 @@ public class FirePitBlock extends Block {
         if (!level.isClientSide && projectile.isOnFire() && projectile.mayInteract(level, pos) && !state.getValue(LIT)) {
             level.setBlock(pos, state.setValue(LIT, true), Block.UPDATE_ALL);
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isPathfindable(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull PathComputationType pType) {
+        return false;
     }
 
     public static void registerModel(BlockStateProvider provider) {

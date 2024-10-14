@@ -1,0 +1,15 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:ingots/tin"
+  },
+  "inputCount": 2,
+  "minTemp": 232,
+  "mold": {
+    "tag": "ytech:molds/sword_blade"
+  },
+  "result": {
+    "item": "ytech:tin_sword_blade_part"
+  },
+  "smeltingTime": 400
+}

@@ -1,6 +1,5 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.registration.YTechBlockTags;
@@ -54,6 +53,11 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.DEER_RAID_BLOCKS).add(Blocks.WHEAT);
         tag(YTechBlockTags.FOWL_RAID_BLOCKS).add(Blocks.BEETROOTS);
         tag(YTechBlockTags.MOUFLON_RAID_BLOCKS).add(Blocks.WHEAT, Blocks.BEETROOTS, Blocks.PUMPKIN_STEM, Blocks.ATTACHED_PUMPKIN_STEM, Blocks.MELON_STEM, Blocks.ATTACHED_MELON_STEM);
+
+        tag(YTechBlockTags.FIRE_SOURCE)
+                .add(Blocks.FIRE, Blocks.CAMPFIRE, Blocks.LANTERN, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.FURNACE, Blocks.BLAST_FURNACE)
+                .addTags(YTechBlockTags.FIRE_PITS, YTechBlockTags.PRIMITIVE_SMELTERS, YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
+        tag(YTechBlockTags.SOUL_FIRE_SOURCE).add(Blocks.SOUL_FIRE, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH);
 
         materialOreTag(YTechBlocks.DEEPSLATE_ORES, YTechBlockTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         materialTag(YTechBlocks.DRYING_RACKS, YTechBlockTags.DRYING_RACKS);
@@ -124,7 +128,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void materialTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             tag(materialTag.of(material)).add(materialItem.of(material).get());
@@ -133,7 +137,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void materialTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             if (!excludeMaterials.contains(material)) {
@@ -144,7 +148,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void tieredMaterialTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             if (!excludeMaterials.contains(material)) {
@@ -159,7 +163,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     }
 
     private void materialOreTag(YTechBlocks.MaterialBlock materialItem, YTechBlockTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+        materialItem.entries().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             if (!excludeMaterials.contains(material)) {

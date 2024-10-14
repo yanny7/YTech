@@ -1,0 +1,13 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "ytech:unfired_molds/pickaxe_head"
+  },
+  "inputCount": 1,
+  "minTemp": 1000,
+  "mold": [],
+  "result": {
+    "item": "ytech:pickaxe_head_mold"
+  },
+  "smeltingTime": 200
+}

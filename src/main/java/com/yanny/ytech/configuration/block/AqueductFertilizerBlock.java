@@ -17,8 +17,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
@@ -29,7 +27,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -47,16 +44,6 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
             player.openMenu(getMenuProvider(state, level, pos), pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> entityType) {
-        if (!level.isClientSide) {
-            return (level1, pos, state1, blockEntity) -> AqueductConsumerBlock.createAqueductConsumerTicker(level1, blockEntity);
-        } else {
-            return null;
-        }
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
@@ -127,9 +114,9 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
     public static void registerRecipe(RecipeOutput recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT_FERTILIZER.get())
                 .define('#', YTechItemTags.AQUEDUCT_HYDRATORS)
-                .define('R', YTechItemTags.RODS.of(MaterialType.BRONZE))
-                .define('S', YTechItemTags.PLATES.of(MaterialType.BRONZE))
-                .define('B', YTechItemTags.BOLTS.of(MaterialType.BRONZE))
+                .define('R', YTechItemTags.RODS.get(MaterialType.BRONZE))
+                .define('S', YTechItemTags.PLATES.get(MaterialType.BRONZE))
+                .define('B', YTechItemTags.BOLTS.get(MaterialType.BRONZE))
                 .define('H', YTechItemTags.HAMMERS.tag)
                 .define('F', YTechItemTags.FILES.tag)
                 .define('C', Tags.Items.CHESTS)

@@ -89,7 +89,7 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
             if (levelData != null) {
                 return levelData.getNetwork(blockEntity);
             } else {
-                LOGGER.warn("[{}][getNetwork] No " + networkName + " network for level {}", networkName, level);
+                LOGGER.warn("[{}][getNetwork] No {} network for level {}", networkName, networkName, level);
                 return null;
             }
         } else {

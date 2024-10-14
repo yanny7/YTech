@@ -1,7 +1,7 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.GeneralUtils;
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.IType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
@@ -32,6 +32,8 @@ class YTechItemTagsProvider extends ItemTagsProvider {
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(YTechItemTags.ANTLERS).add(YTechItems.ANTLER.get());
         tag(YTechItemTags.BASKETS).add(YTechItems.BASKET.get());
+        tag(YTechItemTags.BEESWAXES).add(YTechItems.BEESWAX.get());
+        tag(YTechItemTags.BONE_NEEDLES).add(YTechItems.BONE_NEEDLE.get());
         tag(YTechItemTags.BREAD_DOUGHS).add(YTechItems.BREAD_DOUGH.get());
         tag(YTechItemTags.BRICK_MOLDS).add(YTechItems.BRICK_MOLD.get());
         tag(YTechItemTags.CLAY_BUCKETS).add(YTechItems.CLAY_BUCKET.get());
@@ -59,6 +61,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.UNFIRED_CLAY_BUCKETS).add(YTechItems.UNFIRED_CLAY_BUCKET.get());
         tag(YTechItemTags.UNFIRED_FLOWER_POTS).add(YTechItems.UNFIRED_FLOWER_POT.get());
         tag(YTechItemTags.UNFIRED_DECORATED_POTS).add(YTechItems.UNFIRED_DECORATED_POT.get());
+        tag(YTechItemTags.UNLIT_TORCH).add(YTechItems.UNLIT_TORCH.get());
         tag(YTechItemTags.VENISON).add(YTechItems.VENISON.get());
         tag(YTechItemTags.WATER_BUCKETS).add(Items.WATER_BUCKET, YTechItems.WATER_CLAY_BUCKET.get());
 
@@ -83,7 +86,17 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_SLABS).add(YTechItems.THATCH_SLAB.get());
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
 
+        tag(YTechItemTags.BONE).add(Items.BONE)
+                .addTag(YTechItemTags.ANTLERS)
+                .addTag(YTechItemTags.MAMMOTH_TUSKS)
+                .addTag(YTechItemTags.RHINO_HORNS);
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);
+        tag(YTechItemTags.FIRE_SOURCE)
+                .add(Items.TORCH, Items.LANTERN, Items.CAMPFIRE, Items.FURNACE, Items.BLAST_FURNACE)
+                .addTag(YTechItemTags.FIRE_PITS)
+                .addTag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS)
+                .addTag(YTechItemTags.PRIMITIVE_SMELTERS);
+        tag(YTechItemTags.SOUL_FIRE_SOURCE).add(Items.SOUL_TORCH, Items.SOUL_LANTERN, Items.SOUL_CAMPFIRE);
 
         tag(YTechItemTags.AUROCHS_FOOD).add(Items.WHEAT);
         tag(YTechItemTags.AUROCHS_TEMP_ITEMS).add(Items.WHEAT);
@@ -109,39 +122,45 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.VENUS_OF_HOHLE_FELS).add(YTechItems.VENUS_OF_HOHLE_FELS.get());
         tag(YTechItemTags.WILD_HORSES).add(YTechItems.WILD_HORSE.get());
 
-        materialTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
-        materialTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.BOLTS, YTechItemTags.BOLTS);
-        materialTag(YTechItems.BOOTS, YTechItemTags.BOOTS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.CHESTPLATES, YTechItemTags.CHESTPLATES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.CRUSHED_MATERIALS, YTechItemTags.CRUSHED_MATERIALS);
-        materialTag(YTechItems.FILES, YTechItemTags.FILES);
-        materialTag(YTechItems.HAMMERS, YTechItemTags.HAMMERS);
-        materialTag(YTechItems.HELMETS, YTechItemTags.HELMETS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.HOES, YTechItemTags.HOES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.INGOTS, YTechItemTags.INGOTS, MaterialType.VANILLA_METALS);
-        materialTag(YTechItems.KNIVES, YTechItemTags.KNIVES);
-        materialTag(YTechItems.LEGGINGS, YTechItemTags.LEGGINGS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.MORTAR_AND_PESTLES, YTechItemTags.MORTAR_AND_PESTLES);
-        materialTag(YTechItems.PICKAXES, YTechItemTags.PICKAXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.PLATES, YTechItemTags.PLATES);
-        materialTag(YTechItems.RAW_MATERIALS, YTechItemTags.RAW_MATERIALS, MaterialType.VANILLA_METALS);
-        materialTag(YTechItems.RODS, YTechItemTags.RODS);
-        materialTag(YTechItems.SAWS, YTechItemTags.SAWS);
-        materialTag(YTechItems.SAW_BLADES, YTechItemTags.SAW_BLADES);
-        materialTag(YTechItems.SHOVELS, YTechItemTags.SHOVELS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        materialTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
-        materialTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.MOLDS, YTechItemTags.MOLDS);
+        typedTag(YTechItems.PATTERNS, YTechItemTags.PATTERNS);
+        typedTag(YTechItems.UNFIRED_MOLDS, YTechItemTags.UNFIRED_MOLDS);
+
+        typedTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
+        typedTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.BOLTS, YTechItemTags.BOLTS);
+        typedTag(YTechItems.BOOTS, YTechItemTags.BOOTS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.CHESTPLATES, YTechItemTags.CHESTPLATES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.CRUSHED_MATERIALS, YTechItemTags.CRUSHED_MATERIALS);
+        typedTag(YTechItems.FILES, YTechItemTags.FILES);
+        typedTag(YTechItems.HAMMERS, YTechItemTags.HAMMERS);
+        typedTag(YTechItems.HELMETS, YTechItemTags.HELMETS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.HOES, YTechItemTags.HOES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.INGOTS, YTechItemTags.INGOTS, MaterialType.VANILLA_METALS);
+        typedTag(YTechItems.KNIVES, YTechItemTags.KNIVES);
+        typedTag(YTechItems.LEGGINGS, YTechItemTags.LEGGINGS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.MORTAR_AND_PESTLES, YTechItemTags.MORTAR_AND_PESTLES);
+        typedTag(YTechItems.PICKAXES, YTechItemTags.PICKAXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.PLATES, YTechItemTags.PLATES);
+        typedTag(YTechItems.RAW_MATERIALS, YTechItemTags.RAW_MATERIALS, MaterialType.VANILLA_METALS);
+        typedTag(YTechItems.RODS, YTechItemTags.RODS);
+        typedTag(YTechItems.SAWS, YTechItemTags.SAWS);
+        typedTag(YTechItems.SAW_BLADES, YTechItemTags.SAW_BLADES);
+        typedTag(YTechItems.SHOVELS, YTechItemTags.SHOVELS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
+        typedTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
 
         materialOreTag(YTechItems.DEEPSLATE_ORES, YTechItemTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
-        materialTag(YTechItems.DRYING_RACKS, YTechItemTags.DRYING_RACKS);
-        materialTag(YTechItems.GRAVEL_DEPOSITS, YTechItemTags.GRAVEL_DEPOSITS);
+        typedTag(YTechItems.DRYING_RACKS, YTechItemTags.DRYING_RACKS);
+        typedTag(YTechItems.GRAVEL_DEPOSITS, YTechItemTags.GRAVEL_DEPOSITS);
         materialOreTag(YTechItems.NETHER_ORES, YTechItemTags.NETHER_ORES, EnumSet.of(MaterialType.GOLD));
-        materialTag(YTechItems.RAW_STORAGE_BLOCKS, YTechItemTags.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
-        materialTag(YTechItems.SAND_DEPOSITS, YTechItemTags.SAND_DEPOSITS);
+        typedTag(YTechItems.RAW_STORAGE_BLOCKS, YTechItemTags.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
+        typedTag(YTechItems.SAND_DEPOSITS, YTechItemTags.SAND_DEPOSITS);
         materialOreTag(YTechItems.STONE_ORES, YTechItemTags.STONE_ORES, MaterialType.VANILLA_METALS);
-        materialTag(YTechItems.STORAGE_BLOCKS, YTechItemTags.STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
-        materialTag(YTechItems.TANNING_RACKS, YTechItemTags.TANNING_RACKS);
+        typedTag(YTechItems.STORAGE_BLOCKS, YTechItemTags.STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
+        typedTag(YTechItems.TANNING_RACKS, YTechItemTags.TANNING_RACKS);
+
+        multiTypedTag(YTechItems.PARTS, YTechItemTags.PARTS);
 
         tag(ItemTags.ANVIL).add(YTechItems.BRONZE_ANVIL.get());
         tag(ItemTags.BEDS).add(YTechItems.GRASS_BED.get());
@@ -152,30 +171,41 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.STAIRS).add(YTechItems.TERRACOTTA_BRICK_STAIRS.get(), YTechItems.THATCH_STAIRS.get());
     }
 
-    private void materialTag(YTechItems.MaterialItem materialItem, YTechItemTags.MaterialTag materialTag) {
-        GeneralUtils.sortedStreamSet(materialItem.materials(), Comparator.comparing(t -> t.key)).forEach((material) -> {
-            tag(materialTag.of(material)).add(materialItem.of(material).get());
-            tag(materialTag.tag).addTag(materialTag.of(material));
+    private <E extends Enum<E> & IType> void typedTag(YTechItems.TypedItem<E> typedItem, YTechItemTags.TypedTag<E> moldTag) {
+        typedItem.keySet().stream().sorted(Comparator.comparing(IType::key)).forEach((moldType) -> {
+            tag(moldTag.get(moldType)).add(typedItem.get(moldType).get());
+            tag(moldTag.tag).addTag(moldTag.get(moldType));
         });
     }
 
-    private void materialTag(YTechItems.MaterialItem materialItem, YTechItemTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.materials(), Comparator.comparing(t -> t.key)).forEach((material) -> {
-            if (!excludeMaterials.contains(material)) {
-                tag(materialTag.of(material)).add(materialItem.of(material).get());
-                tag(materialTag.tag).addTag(materialTag.of(material));
+    private <E extends Enum<E> & IType> void typedTag(YTechItems.TypedItem<E> typedItem, YTechItemTags.TypedTag<E> typedTag, EnumSet<E> excludeTypes) {
+        typedItem.keySet().stream().sorted(Comparator.comparing(IType::key)).forEach((type) -> {
+            if (!excludeTypes.contains(type)) {
+                tag(typedTag.get(type)).add(typedItem.get(type).get());
+                tag(typedTag.tag).addTag(typedTag.get(type));
             }
         });
     }
 
-    private void materialOreTag(YTechItems.MaterialItem materialItem, YTechItemTags.MaterialTag materialTag, EnumSet<MaterialType> excludeMaterials) {
-        GeneralUtils.sortedStreamSet(materialItem.entries(), Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
+    private <E extends Enum<E> &IType, F extends Enum<F> & IType> void multiTypedTag(YTechItems.MultiTypedItem<E, F> multiTypedItem, YTechItemTags.MultiTypedTag<E, F> multiTypedTag) {
+        multiTypedItem.entrySet().stream().sorted(Comparator.comparing((e) -> e.getKey().key())).forEach((entry1) -> {
+            entry1.getValue().entrySet().stream().sorted(Comparator.comparing(e -> e.getKey().key())).forEach((entry2) -> {
+                E type1 = entry1.getKey();
+                F type2 = entry2.getKey();
+                tag(multiTypedTag.get(type1, type2)).add(multiTypedItem.get(type1, type2).get());
+                tag(multiTypedTag.tag).addTag(multiTypedTag.get(type1, type2));
+            });
+        });
+    }
+
+    private void materialOreTag(YTechItems.TypedItem<MaterialType> materialItem, YTechItemTags.TypedTag<MaterialType> materialTag, EnumSet<MaterialType> excludeMaterials) {
+        materialItem.entrySet().stream().sorted(Comparator.comparing(t -> t.getKey().key)).forEach((entry) -> {
             MaterialType material = entry.getKey();
 
             if (!excludeMaterials.contains(material)) {
                 DeferredItem<Item> item = entry.getValue();
 
-                tag(materialTag.of(material)).add(item.get());
+                tag(materialTag.get(material)).add(item.get());
                 tag(materialTag.tag).add(item.get());
 
                 switch (material) {
@@ -187,7 +217,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         });
     }
 
-    private static Item[] filteredMaterials(YTechItems.MaterialItem item, EnumSet<MaterialType> exclude) {
-        return item.entries().stream().filter((entry) -> !exclude.contains(entry.getKey())).sorted(Comparator.comparing(t -> t.getKey().key)).map(Map.Entry::getValue).map(DeferredItem::get).toArray(Item[]::new);
+    private static Item[] filteredMaterials(YTechItems.TypedItem<MaterialType> item, EnumSet<MaterialType> exclude) {
+        return item.entrySet().stream().filter((entry) -> !exclude.contains(entry.getKey())).sorted(Comparator.comparing(t -> t.getKey().key)).map(Map.Entry::getValue).map(DeferredItem::get).toArray(Item[]::new);
     }
 }
