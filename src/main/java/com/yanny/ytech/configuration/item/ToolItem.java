@@ -19,9 +19,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ToolItem extends TieredItem {
+    private ToolItem(Tier tier, Properties properties) {
+        super(tier, properties);
+    }
 
-    public ToolItem(Tier tier, boolean canAttack) {
-        super(tier, new Properties().durability(tier.getUses()).attributes(createAttributes(tier, canAttack)).component(DataComponents.TOOL, createToolProperties()));
+    public static ToolItem customToolItem(Tier tier, Properties properties) {
+        return new ToolItem(tier, properties.component(DataComponents.TOOL, createToolProperties()));
+    }
+
+    public static ToolItem attackableToolItem(Tier tier) {
+        return new ToolItem(tier, new Properties().durability(tier.getUses()).attributes(createAttributes(tier, true)).component(DataComponents.TOOL, createToolProperties()));
+    }
+
+    public static ToolItem toolItem(Tier tier) {
+        return new ToolItem(tier, new Properties().durability(tier.getUses()).attributes(createAttributes(tier, false)).component(DataComponents.TOOL, createToolProperties()));
     }
 
     public boolean hurtEnemy(@NotNull ItemStack itemStack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {

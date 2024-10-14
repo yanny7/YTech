@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#c:storage_blocks/tin"
+            "items": "#c:ingots/tin"
           }
         ]
       },

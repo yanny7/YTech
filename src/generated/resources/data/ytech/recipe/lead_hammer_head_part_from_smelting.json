@@ -1,0 +1,16 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:ingots/lead"
+  },
+  "inputCount": 18,
+  "minTemp": 327,
+  "mold": {
+    "tag": "ytech:molds/hammer_head"
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:lead_hammer_head_part"
+  },
+  "smeltingTime": 3600
+}

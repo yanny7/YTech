@@ -1,33 +1,33 @@
 {
   "variants": {
-    "facing=east,powered=false": {
+    "facing=east,lit=false": {
       "model": "ytech:block/primitive_alloy_smelter",
       "y": 90
     },
-    "facing=east,powered=true": {
-      "model": "ytech:block/primitive_alloy_smelter_powered",
+    "facing=east,lit=true": {
+      "model": "ytech:block/primitive_alloy_smelter_lit",
       "y": 90
     },
-    "facing=north,powered=false": {
+    "facing=north,lit=false": {
       "model": "ytech:block/primitive_alloy_smelter"
     },
-    "facing=north,powered=true": {
-      "model": "ytech:block/primitive_alloy_smelter_powered"
+    "facing=north,lit=true": {
+      "model": "ytech:block/primitive_alloy_smelter_lit"
     },
-    "facing=south,powered=false": {
+    "facing=south,lit=false": {
       "model": "ytech:block/primitive_alloy_smelter",
       "y": 180
     },
-    "facing=south,powered=true": {
-      "model": "ytech:block/primitive_alloy_smelter_powered",
+    "facing=south,lit=true": {
+      "model": "ytech:block/primitive_alloy_smelter_lit",
       "y": 180
     },
-    "facing=west,powered=false": {
+    "facing=west,lit=false": {
       "model": "ytech:block/primitive_alloy_smelter",
       "y": 270
     },
-    "facing=west,powered=true": {
-      "model": "ytech:block/primitive_alloy_smelter_powered",
+    "facing=west,lit=true": {
+      "model": "ytech:block/primitive_alloy_smelter_lit",
       "y": 270
     }
   }

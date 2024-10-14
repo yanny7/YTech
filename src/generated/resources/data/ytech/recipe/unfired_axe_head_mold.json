@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:clay"
+    },
+    {
+      "tag": "ytech:patterns/axe_head"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:unfired_axe_head_mold"
+  }
+}

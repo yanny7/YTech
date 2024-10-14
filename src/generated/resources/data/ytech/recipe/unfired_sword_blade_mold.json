@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:clay"
+    },
+    {
+      "tag": "ytech:patterns/sword_blade"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:unfired_sword_blade_mold"
+  }
+}

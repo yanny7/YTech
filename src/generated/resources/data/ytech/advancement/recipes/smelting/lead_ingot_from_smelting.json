@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#c:crushed_materials/galena"
+            "items": "#forge:crushed_materials/galena"
           }
         ]
       },

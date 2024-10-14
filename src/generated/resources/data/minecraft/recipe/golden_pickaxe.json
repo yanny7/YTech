@@ -1,27 +1,16 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "c:ingots/gold"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "tag": "ytech:plates/gold"
-    },
-    "R": {
-      "tag": "ytech:rods/gold"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/pickaxe_head/gold"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    "P#R",
-    " SH",
-    " S "
   ],
   "result": {
     "count": 1,

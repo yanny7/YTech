@@ -19,7 +19,7 @@ import java.util.EnumSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public enum MaterialType {
+public enum MaterialType implements IType {
     //solid elements
     COPPER(new Builder("copper", "Copper", ToolType.PICKAXE)
             .color(0xB87333).temp(1085, 2562)
@@ -100,6 +100,11 @@ public enum MaterialType {
     @NotNull
     public Tier getTier() {
         return tier.get();
+    }
+
+    @Override
+    public String key() {
+        return key;
     }
 
     private static class Builder {
@@ -194,7 +199,7 @@ public enum MaterialType {
                 @NotNull
                 @Override
                 public Ingredient getRepairIngredient() {
-                    return Ingredient.of(YTechItemTags.INGOTS.of(material));
+                    return Ingredient.of(YTechItemTags.INGOTS.get(material));
                 }
             });
             hasCustomTier = true;

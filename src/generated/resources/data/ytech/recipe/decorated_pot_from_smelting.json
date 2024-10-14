@@ -3,7 +3,9 @@
   "ingredient": {
     "tag": "ytech:unfired_decorated_pots"
   },
+  "inputCount": 1,
   "minTemp": 1000,
+  "mold": [],
   "result": {
     "count": 1,
     "id": "minecraft:decorated_pot"

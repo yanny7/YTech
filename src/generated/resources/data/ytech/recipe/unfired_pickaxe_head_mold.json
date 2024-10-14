@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:clay"
+    },
+    {
+      "tag": "ytech:patterns/pickaxe_head"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:unfired_pickaxe_head_mold"
+  }
+}

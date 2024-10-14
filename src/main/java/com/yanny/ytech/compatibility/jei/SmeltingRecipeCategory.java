@@ -3,7 +3,7 @@ package com.yanny.ytech.compatibility.jei;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
-import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -25,6 +25,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
@@ -38,7 +39,7 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
     public SmeltingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 138, 82, 62);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.PRIMITIVE_SMELTER.get()));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.PRIMITIVE_SMELTER.get()));
         localizedName = Component.translatable("gui.ytech.category.smelting");
     }
 
@@ -68,7 +69,8 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SmeltingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(recipe.ingredient());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addItemStacks(Arrays.stream(recipe.ingredient().getItems()).map((i) -> i.copyWithCount(recipe.inputCount())).toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 28, 41).addIngredients(recipe.mold());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 61,  23).addItemStack(recipe.result());
     }
 
@@ -89,8 +91,8 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.PRIMITIVE_SMELTER.get()), RECIPE_TYPE, RecipeTypes.FUELING);
-        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.BRICK_CHIMNEY.get()), RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.REINFORCED_BRICK_CHIMNEY.get()), RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechItems.PRIMITIVE_SMELTER.get()), RECIPE_TYPE, RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(new ItemStack(YTechItems.BRICK_CHIMNEY.get()), RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechItems.REINFORCED_BRICK_CHIMNEY.get()), RECIPE_TYPE);
     }
 }
