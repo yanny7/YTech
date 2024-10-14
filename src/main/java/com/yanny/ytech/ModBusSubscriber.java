@@ -75,7 +75,7 @@ public class ModBusSubscriber {
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
         ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
                 (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
-        YTechItems.SPEARS.items().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
+        YTechItems.SPEARS.values().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
                 (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
     }
 
@@ -104,7 +104,7 @@ public class ModBusSubscriber {
             }
         };
 
-        event.registerItem(clientItemExtensions, YTechItems.SPEARS.items().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        event.registerItem(clientItemExtensions, YTechItems.SPEARS.values().stream().map(DeferredHolder::get).toArray(Item[]::new));
     }
 
     @OnlyIn(Dist.CLIENT)

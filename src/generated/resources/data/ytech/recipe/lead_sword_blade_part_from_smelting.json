@@ -1,0 +1,16 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:ingots/lead"
+  },
+  "inputCount": 2,
+  "minTemp": 327,
+  "mold": {
+    "tag": "ytech:molds/sword_blade"
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:lead_sword_blade_part"
+  },
+  "smeltingTime": 400
+}

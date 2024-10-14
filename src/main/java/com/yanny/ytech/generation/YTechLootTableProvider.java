@@ -144,7 +144,7 @@ class YTechLootTableProvider extends LootTableProvider {
         }
 
         private void oreLoot(DeferredBlock<Block> block, MaterialType material) {
-            add(block.get(), b -> createOreDrop(b, YTechItems.RAW_MATERIALS.of(material).get()));
+            add(block.get(), b -> createOreDrop(b, YTechItems.RAW_MATERIALS.get(material).get()));
         }
 
         private void depositLootProvider(DeferredBlock<Block> object, MaterialType material, @NotNull Item baseItem) {
@@ -176,7 +176,7 @@ class YTechLootTableProvider extends LootTableProvider {
                                             .setRolls(ConstantValue.exactly(1.0F))
                                             .when(hasSilkTouch.invert())
                                             .add(
-                                                    LootItem.lootTableItem(YTechItems.CRUSHED_MATERIALS.of(material).get())
+                                                    LootItem.lootTableItem(YTechItems.CRUSHED_MATERIALS.get(material).get())
                                                             .when(LootItemRandomChanceCondition.randomChance(0.25F))
                                                             .apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE), 2))
                                             )

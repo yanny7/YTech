@@ -3,7 +3,9 @@
   "ingredient": {
     "tag": "ytech:unfired_clay_buckets"
   },
+  "inputCount": 1,
   "minTemp": 1000,
+  "mold": [],
   "result": {
     "count": 1,
     "id": "ytech:clay_bucket"

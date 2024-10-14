@@ -49,10 +49,7 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
                 MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 
                 if (server != null) {
-                    result.hurtAndBreak(1, server.overworld(), null, (it) -> {
-                        result.shrink(1);
-                        result.setDamageValue(0);
-                    });
+                    result.hurtAndBreak(1, server.overworld(), null, (it) -> {});
                 }
             }
         }

@@ -3,7 +3,6 @@ package com.yanny.ytech.compatibility.jei;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.PotteryRecipe;
-import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -74,6 +73,6 @@ public class PotteryRecipeCategory implements IRecipeCategory<PotteryRecipe> {
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.POTTERS_WHEEL.get()), PotteryRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechItems.POTTERY_WHEEL.get()), PotteryRecipeCategory.RECIPE_TYPE);
     }
 }

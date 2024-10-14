@@ -1,6 +1,7 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.IType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.item.BasketItem;
@@ -32,6 +33,8 @@ class YTechItemModelsProvider extends ItemModelProvider {
         clayBucketItem(YTechItems.WATER_CLAY_BUCKET);
 
         simpleItem(YTechItems.ANTLER);
+        simpleItem(YTechItems.BEESWAX);
+        simpleItem(YTechItems.BONE_NEEDLE);
         simpleItem(YTechItems.BREAD_DOUGH);
         simpleItem(YTechItems.BRICK_MOLD);
         simpleItem(YTechItems.CLAY_BUCKET);
@@ -58,6 +61,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.UNFIRED_CLAY_BUCKET);
         decoratedPotItem();
         simpleItem(YTechItems.UNFIRED_FLOWER_POT);
+        simpleItem(YTechItems.UNLIT_TORCH);
         simpleItem(YTechItems.VENISON);
 
         simpleItem(YTechItems.CHLORITE_BRACELET);
@@ -76,29 +80,35 @@ class YTechItemModelsProvider extends ItemModelProvider {
         spawnEggModel(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG);
         spawnEggModel(YTechItems.WOOLLY_RHINO_SPAWN_EGG);
 
-        materialItem(YTechItems.ARROWS, "item/generated");
-        vanillaMaterialItem(YTechItems.AXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
-        materialItem(YTechItems.BOLTS, "item/generated");
-        vanillaMaterialItem(YTechItems.BOOTS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
-        vanillaMaterialItem(YTechItems.CHESTPLATES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
-        materialItem(YTechItems.CRUSHED_MATERIALS, "item/generated");
-        materialItem(YTechItems.FILES, "item/handheld");
-        materialItem(YTechItems.HAMMERS, "item/handheld");
-        vanillaMaterialItem(YTechItems.HELMETS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
-        vanillaMaterialItem(YTechItems.HOES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
-        vanillaMaterialItem(YTechItems.INGOTS, MaterialType.VANILLA_METALS, "item/generated");
-        materialItem(YTechItems.KNIVES, "item/generated");
-        vanillaMaterialItem(YTechItems.LEGGINGS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
-        materialItem(YTechItems.MORTAR_AND_PESTLES, "item/generated");
-        vanillaMaterialItem(YTechItems.PICKAXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
-        materialItem(YTechItems.PLATES, "item/generated");
-        vanillaMaterialItem(YTechItems.RAW_MATERIALS, MaterialType.VANILLA_METALS, "item/generated");
-        materialItem(YTechItems.RODS, "item/generated");
-        materialItem(YTechItems.SAWS, "item/handheld");
-        materialItem(YTechItems.SAW_BLADES, "item/generated");
-        vanillaMaterialItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
+        simpleTypedItem(YTechItems.MOLDS);
+        simpleTypedItem(YTechItems.PATTERNS);
+        simpleTypedItem(YTechItems.UNFIRED_MOLDS);
+
+        simpleMultiTypedItem(YTechItems.PARTS);
+
+        simpleTypedItem(YTechItems.ARROWS);
+        simpleTypedItem(YTechItems.AXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
+        simpleTypedItem(YTechItems.BOLTS);
+        simpleTypedItem(YTechItems.BOOTS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.CHESTPLATES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.CRUSHED_MATERIALS);
+        simpleTypedItem(YTechItems.FILES, "item/handheld");
+        simpleTypedItem(YTechItems.HAMMERS, "item/handheld");
+        simpleTypedItem(YTechItems.HELMETS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.HOES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
+        simpleTypedItem(YTechItems.INGOTS, MaterialType.VANILLA_METALS, "item/generated");
+        simpleTypedItem(YTechItems.KNIVES);
+        simpleTypedItem(YTechItems.LEGGINGS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.MORTAR_AND_PESTLES);
+        simpleTypedItem(YTechItems.PICKAXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
+        simpleTypedItem(YTechItems.PLATES);
+        simpleTypedItem(YTechItems.RAW_MATERIALS, MaterialType.VANILLA_METALS, "item/generated");
+        simpleTypedItem(YTechItems.RODS);
+        simpleTypedItem(YTechItems.SAWS, "item/handheld");
+        simpleTypedItem(YTechItems.SAW_BLADES);
+        simpleTypedItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         spearItem();
-        vanillaMaterialItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
+        simpleTypedItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
     }
 
     private void simpleItem(DeferredItem<Item> item) {
@@ -106,20 +116,35 @@ class YTechItemModelsProvider extends ItemModelProvider {
                 .texture("layer0", Utils.modItemLoc(item.getId().getPath()));
     }
 
-    private void materialItem(YTechItems.MaterialItem materialItem, String parent) {
-        materialItem.materials().forEach((material) -> {
-            withExistingParent(materialItem.of(material).getId().getPath(), parent)
-                    .texture("layer0", Utils.modItemLoc(materialItem.getGroup() + "/" + material.key));
+    private <E extends Enum<E> & IType> void simpleTypedItem(YTechItems.TypedItem<E> typedItem, String parent) {
+        typedItem.keySet().forEach((type) -> {
+            withExistingParent(typedItem.get(type).getId().getPath(), parent)
+                    .texture("layer0", Utils.modItemLoc(typedItem.getGroup() + "/" + type.key()));
         });
     }
 
-    private void vanillaMaterialItem(YTechItems.MaterialItem materialItem, EnumSet<MaterialType> excludeMaterial, String parent) {
-        materialItem.materials().forEach((material) -> {
-            if (!excludeMaterial.contains(material)) {
-                withExistingParent(materialItem.of(material).getId().getPath(), parent)
-                        .texture("layer0", Utils.modItemLoc(materialItem.getGroup() + "/" + material.key));
+    private <E extends Enum<E> & IType> void simpleTypedItem(YTechItems.TypedItem<E> typedItem) {
+        simpleTypedItem(typedItem, "item/generated");
+    }
+
+    private <E extends Enum<E> & IType> void simpleTypedItem(YTechItems.TypedItem<E> typedItem, EnumSet<E> excludeTypes, String parent) {
+        typedItem.keySet().forEach((type) -> {
+            if (!excludeTypes.contains(type)) {
+                withExistingParent(typedItem.get(type).getId().getPath(), parent)
+                        .texture("layer0", Utils.modItemLoc(typedItem.getGroup() + "/" + type.key()));
             }
         });
+    }
+
+    private <E extends Enum<E> & IType, F extends Enum<F> & IType> void simpleMultiTypedItem(YTechItems.MultiTypedItem<E, F> multiTypedItem, String parent) {
+        multiTypedItem.forEach((key1, map) -> map.forEach((key2, item) -> {
+            withExistingParent(item.getId().getPath(), parent)
+                    .texture("layer0", Utils.modItemLoc(multiTypedItem.getGroup() + "/" + key2.key() + "/" + key1.key()));
+        }));
+    }
+
+    private <E extends Enum<E> & IType, F extends Enum<F> & IType> void simpleMultiTypedItem(YTechItems.MultiTypedItem<E, F> multiTypedItem) {
+        simpleMultiTypedItem(multiTypedItem, "item/generated");
     }
 
     private void basketItem() {
@@ -139,9 +164,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
     }
 
     private void spearItem() {
-        YTechItems.SPEARS.entries().forEach((entry) -> {
-            DeferredItem<Item> item = entry.getValue();
-            MaterialType material = entry.getKey();
+        YTechItems.SPEARS.forEach((material, item) -> {
             String texture = Utils.modItemLoc(YTechItems.SPEARS.getGroup() + "/" + material.key).getPath();
 
             getBuilder(Utils.getPath(item))
@@ -184,10 +207,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
                 .parent(getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
-                        case EAST -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
-                        case WEST -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(1, 0, 15, 16).texture("#1");
                         case UP -> faceBuilder.uvs(0, 6.5f, 7, 13.5f).texture("#0");
                         case DOWN -> faceBuilder.uvs(7, 6.5f, 14, 13.5f).texture("#0");
                     }

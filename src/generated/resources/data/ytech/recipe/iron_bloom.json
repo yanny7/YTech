@@ -3,7 +3,7 @@
   "ingredient1": {
     "count": 1,
     "ingredient": {
-      "tag": "c:crushed_materials/iron"
+      "tag": "forge:crushed_materials/iron"
     }
   },
   "ingredient2": {

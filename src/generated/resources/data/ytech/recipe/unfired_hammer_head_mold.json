@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:clay"
+    },
+    {
+      "tag": "ytech:patterns/hammer_head"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:unfired_hammer_head_mold"
+  }
+}
