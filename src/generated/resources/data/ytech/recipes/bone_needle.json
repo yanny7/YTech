@@ -1,0 +1,19 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "ytech:sharp_flints"
+    },
+    "T": {
+      "tag": "ytech:bone"
+    }
+  },
+  "pattern": [
+    "#T"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:bone_needle"
+  }
+}

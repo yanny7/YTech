@@ -32,10 +32,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
+public record SmeltingRecipe(Ingredient ingredient, int inputCount, Ingredient mold, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<Container> {
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
-        return ingredient.test(container.getItem(0));
+        return ingredient.test(container.getItem(0)) && container.getItem(0).getCount() >= inputCount && (mold.isEmpty() || mold.test(container.getItem(1)));
     }
 
     @NotNull
@@ -71,6 +71,8 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
         private static final MapCodec<SmeltingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(
                         Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((smeltingRecipe) -> smeltingRecipe.ingredient),
+                        Codec.INT.fieldOf("inputCount").forGetter((smeltingRecipe) -> smeltingRecipe.inputCount),
+                        Ingredient.CODEC.fieldOf("mold").forGetter((smeltingRecipe) -> smeltingRecipe.mold),
                         Codec.INT.fieldOf("minTemp").forGetter((smeltingRecipe) -> smeltingRecipe.minTemperature),
                         Codec.INT.fieldOf("smeltingTime").forGetter((smeltingRecipe) -> smeltingRecipe.smeltingTime),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((smeltingRecipe) -> smeltingRecipe.result)
@@ -95,14 +97,18 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
         @NotNull
         private static SmeltingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            int inputCount = buffer.readInt();
+            Ingredient mold = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             int minTemperature = buffer.readInt();
             int dryingTime = buffer.readInt();
-            return new SmeltingRecipe(ingredient, minTemperature, dryingTime, result);
+            return new SmeltingRecipe(ingredient, inputCount, mold, minTemperature, dryingTime, result);
         }
 
         private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull SmeltingRecipe recipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+            buffer.writeInt(recipe.inputCount);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.mold);
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeInt(recipe.minTemperature);
             buffer.writeInt(recipe.smeltingTime);
@@ -111,24 +117,32 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
+        private final int inputCount;
+        private final Ingredient mold;
         private final int minTemperature;
         private final int smeltingTime;
         private final Item result;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull Ingredient ingredient, int minTemperature, int smeltingTime, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, int inputCount, @NotNull Ingredient mold, int minTemperature, int smeltingTime, @NotNull Item result) {
             this.ingredient = ingredient;
+            this.inputCount = inputCount;
+            this.mold = mold;
             this.minTemperature = minTemperature;
             this.smeltingTime = smeltingTime;
             this.result = result;
         }
 
-        public static Builder smelting(@NotNull TagKey<Item> input, int minTemperature, int smeltingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), minTemperature, smeltingTime, result);
+        public static Builder smelting(@NotNull TagKey<Item> input, int inputCount, @NotNull TagKey<Item> mold, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), inputCount, Ingredient.of(mold), minTemperature, smeltingTime, result);
         }
 
-        public static Builder smelting(@NotNull ItemLike input, int minTemperature, int smeltingTime, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), minTemperature, smeltingTime, result);
+        public static Builder smelting(@NotNull TagKey<Item> input, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), 1, Ingredient.EMPTY, minTemperature, smeltingTime, result);
+        }
+
+        public static Builder smelting(@NotNull ItemLike input, int inputCount, @NotNull TagKey<Item> mold, int minTemperature, int smeltingTime, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), inputCount, Ingredient.of(mold), minTemperature, smeltingTime, result);
         }
 
         @NotNull
@@ -158,7 +172,7 @@ public record SmeltingRecipe(Ingredient ingredient, int minTemperature, int smel
             this.criteria.forEach(builder::addCriterion);
             finishedRecipeConsumer.accept(
                     recipeId,
-                    new SmeltingRecipe(ingredient, minTemperature, smeltingTime, new ItemStack(result)),
+                    new SmeltingRecipe(ingredient, inputCount, mold, minTemperature, smeltingTime, new ItemStack(result)),
                     builder.build(recipeId.withPrefix("recipes/smelting/"))
             );
         }

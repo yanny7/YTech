@@ -3,7 +3,7 @@ package com.yanny.ytech.compatibility.jei;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.MillingRecipe;
-import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -47,7 +47,7 @@ public class MillingRecipeCategory implements IRecipeCategory<MillingRecipe> {
     public MillingRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 200, 82, 47);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.MILLSTONE.get()));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.MILLSTONE.get()));
         localizedName = Component.translatable("gui.ytech.category.milling");
     }
 
@@ -93,6 +93,6 @@ public class MillingRecipeCategory implements IRecipeCategory<MillingRecipe> {
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(YTechBlocks.MILLSTONE.get()), MillingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(YTechItems.MILLSTONE.get()), MillingRecipeCategory.RECIPE_TYPE);
     }
 }

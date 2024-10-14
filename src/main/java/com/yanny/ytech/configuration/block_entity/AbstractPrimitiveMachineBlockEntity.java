@@ -87,9 +87,9 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
                 }
 
                 fuel.shrink(1);
-                setPoweredState(level, blockState, pos, true);
+                setLitState(level, blockState, pos, true);
             } else {
-                setPoweredState(level, blockState, pos, false);
+                setLitState(level, blockState, pos, false);
             }
         }
 
@@ -112,7 +112,7 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
 
     @Override
     public void tickClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
-        if (blockState.getValue(BlockStateProperties.POWERED) && RANDOM.nextInt(Math.max(Math.round(4 - nrChimney / 2f), 1)) == 0) {
+        if (blockState.getValue(BlockStateProperties.LIT) && RANDOM.nextInt(Math.max(Math.round(4 - nrChimney / 2f), 1)) == 0) {
             for (int i = 0; i < RANDOM.nextInt(2) + 2; ++i) {
                 makeParticles(level, pos, nrChimney);
             }
@@ -180,7 +180,7 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
                     case 2 -> temperature;
                     case 3 -> leftSmelting > 0 ? Math.round((smeltingTime - leftSmelting) / (float)smeltingTime * 100) : 0;
                     case 4 -> hasActiveRecipe() ? 1 : 0;
-                    case 5 -> (getBlockState().getValue(BlockStateProperties.POWERED) ? 1 : 0);
+                    case 5 -> (getBlockState().getValue(BlockStateProperties.LIT) ? 1 : 0);
                     default -> throw new IllegalStateException("Invalid index");
                 };
             }
@@ -255,9 +255,9 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
 
     protected abstract boolean isValidRecipeInInput();
 
-    private void setPoweredState(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockPos pos, boolean powered) {
-        if (powered != blockState.getValue(BlockStateProperties.POWERED)) {
-            BlockState newState = blockState.setValue(BlockStateProperties.POWERED, powered);
+    private void setLitState(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockPos pos, boolean lit) {
+        if (lit != blockState.getValue(BlockStateProperties.LIT)) {
+            BlockState newState = blockState.setValue(BlockStateProperties.LIT, lit);
 
             level.setBlock(pos, newState, Block.UPDATE_ALL);
             setChanged(level, worldPosition, newState);

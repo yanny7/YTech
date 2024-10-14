@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#c:crushed_materials/cassiterite"
+            "items": "#forge:crushed_materials/cassiterite"
           }
         ]
       },

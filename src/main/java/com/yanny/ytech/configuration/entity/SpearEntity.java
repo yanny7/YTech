@@ -37,7 +37,7 @@ public class SpearEntity extends AbstractArrow {
     public int clientSideReturnSpearTickCount;
 
     public SpearEntity(EntityType<SpearEntity> entityType, Level level, SpearType spearType) {
-        super(entityType, level, YTechItems.SPEARS.of(spearType.materialType).get().getDefaultInstance());
+        super(entityType, level, YTechItems.SPEARS.get(spearType.materialType).get().getDefaultInstance());
         this.spearType = spearType;
     }
 

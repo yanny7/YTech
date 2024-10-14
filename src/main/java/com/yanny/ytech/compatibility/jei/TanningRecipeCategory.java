@@ -4,7 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
-import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -38,7 +38,7 @@ public class TanningRecipeCategory implements IRecipeCategory<TanningRecipe> {
     public TanningRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 34, 82, 52);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.TANNING_RACKS.of(MaterialType.OAK_WOOD).get()));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.TANNING_RACKS.get(MaterialType.OAK_WOOD).get()));
         localizedName = Component.translatable("gui.ytech.category.tanning");
     }
 
@@ -83,6 +83,6 @@ public class TanningRecipeCategory implements IRecipeCategory<TanningRecipe> {
     }
 
     public static void registerCatalyst(@NotNull IRecipeCatalystRegistration registration) {
-        YTechBlocks.TANNING_RACKS.blocks().forEach((block) -> registration.addRecipeCatalyst(new ItemStack(block.get()), RECIPE_TYPE));
+        YTechItems.TANNING_RACKS.values().forEach((item) -> registration.addRecipeCatalyst(new ItemStack(item.get()), RECIPE_TYPE));
     }
 }

@@ -1,0 +1,14 @@
+{
+  "values": [
+    "minecraft:fire",
+    "minecraft:campfire",
+    "minecraft:lantern",
+    "minecraft:torch",
+    "minecraft:wall_torch",
+    "minecraft:furnace",
+    "minecraft:blast_furnace",
+    "#ytech:fire_pits",
+    "#ytech:primitive_smelters",
+    "#ytech:primitive_alloy_smelters"
+  ]
+}

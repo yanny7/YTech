@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#ytech:parts/axe_head/bronze",
+    "#ytech:parts/hammer_head/bronze",
+    "#ytech:parts/pickaxe_head/bronze",
+    "#ytech:parts/sword_blade/bronze",
+    "#ytech:parts/axe_head/copper",
+    "#ytech:parts/hammer_head/copper",
+    "#ytech:parts/pickaxe_head/copper",
+    "#ytech:parts/sword_blade/copper",
+    "#ytech:parts/axe_head/gold",
+    "#ytech:parts/hammer_head/gold",
+    "#ytech:parts/pickaxe_head/gold",
+    "#ytech:parts/sword_blade/gold",
+    "#ytech:parts/axe_head/lead",
+    "#ytech:parts/hammer_head/lead",
+    "#ytech:parts/pickaxe_head/lead",
+    "#ytech:parts/sword_blade/lead",
+    "#ytech:parts/axe_head/tin",
+    "#ytech:parts/hammer_head/tin",
+    "#ytech:parts/pickaxe_head/tin",
+    "#ytech:parts/sword_blade/tin"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:ingots/gold"
+  },
+  "inputCount": 18,
+  "minTemp": 1064,
+  "mold": {
+    "tag": "ytech:molds/hammer_head"
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:gold_hammer_head_part"
+  },
+  "smeltingTime": 3600
+}

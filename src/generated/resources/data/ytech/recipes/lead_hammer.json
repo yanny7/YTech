@@ -1,18 +1,16 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "#": {
-      "tag": "c:storage_blocks/lead"
-    },
-    "S": {
+  "ingredients": [
+    {
       "item": "minecraft:stick"
+    },
+    {
+      "tag": "ytech:parts/hammer_head/lead"
+    },
+    {
+      "tag": "ytech:hammers"
     }
-  },
-  "pattern": [
-    " # ",
-    " S#",
-    "S  "
   ],
   "result": {
     "count": 1,

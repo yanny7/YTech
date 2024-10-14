@@ -30,7 +30,7 @@ public class YTechRecipeTypes {
         return RECIPE_TYPES.register(name, () -> new RecipeType<>() {
                     @Override
                     public String toString() {
-                        return Utils.modLoc("drying").toString();
+                        return Utils.modLoc(name).toString();
                     }
                 }
         );

@@ -21,12 +21,12 @@ public class YTechDataMapProvider extends DataMapProvider {
         Builder<FurnaceFuel, Item> builder = builder(NeoForgeDataMaps.FURNACE_FUELS);
 
         builder.add(YTechItemTags.BASKETS, new FurnaceFuel(300), false)
-                .add(YTechItemTags.BOLTS.of(MaterialType.WOODEN), new FurnaceFuel(100), false)
+                .add(YTechItemTags.BOLTS.get(MaterialType.WOODEN), new FurnaceFuel(100), false)
                 .add(YTechItemTags.GRASS_BEDS, new FurnaceFuel(300), false)
                 .add(YTechItemTags.GRASS_FIBERS, new FurnaceFuel(100), false)
                 .add(YTechItemTags.GRASS_TWINES, new FurnaceFuel(200), false)
                 .add(YTechItemTags.LAVA_BUCKETS, new FurnaceFuel(20000), false)
-                .add(YTechItemTags.PLATES.of(MaterialType.WOODEN), new FurnaceFuel(200), false)
+                .add(YTechItemTags.PLATES.get(MaterialType.WOODEN), new FurnaceFuel(200), false)
                 .add(YTechItemTags.THATCH, new FurnaceFuel(200), false)
                 .add(YTechItemTags.THATCH_SLABS, new FurnaceFuel(100), false)
                 .add(YTechItemTags.THATCH_STAIRS, new FurnaceFuel(200), false);

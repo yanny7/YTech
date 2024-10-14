@@ -1,0 +1,16 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:ingots/tin"
+  },
+  "inputCount": 3,
+  "minTemp": 232,
+  "mold": {
+    "tag": "ytech:molds/axe_head"
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:tin_axe_head_part"
+  },
+  "smeltingTime": 600
+}

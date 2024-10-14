@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
     public AbstractPrimitiveMachineBlock() {
@@ -22,7 +22,7 @@ public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
                 .mapColor(MapColor.COLOR_RED)
                 .requiresCorrectToolForDrops()
                 .strength(3.5F)
-                .lightLevel((state) -> state.getValue(POWERED) ? 13 : 0));
+                .lightLevel((state) -> state.getValue(LIT) ? 13 : 0));
     }
 
     @Override
@@ -45,7 +45,7 @@ public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
 
     @Override
     public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        if (state.getValue(POWERED)) {
+        if (state.getValue(LIT)) {
             if (random.nextInt(10) == 0) {
                 level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE,
                         SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
