@@ -1,0 +1,15 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:ingots/copper"
+  },
+  "inputCount": 2,
+  "minTemp": 1085,
+  "mold": {
+    "tag": "ytech:sand_molds/sword_blade"
+  },
+  "result": {
+    "item": "ytech:copper_sword_blade_part"
+  },
+  "smeltingTime": 400
+}

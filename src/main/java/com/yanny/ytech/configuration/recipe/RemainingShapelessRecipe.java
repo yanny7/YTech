@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.NonNullList;
@@ -48,6 +49,8 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
                     result.shrink(1);
                     result.setDamageValue(0);
                 }
+            } else if (item.is(YTechItemTags.PARTS.tag)) {
+                list.set(i, item.copy());
             }
         }
 

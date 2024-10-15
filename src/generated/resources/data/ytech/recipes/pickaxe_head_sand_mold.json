@@ -1,0 +1,15 @@
+{
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:sand"
+    },
+    {
+      "tag": "ytech:parts/pickaxe_heads"
+    }
+  ],
+  "result": {
+    "item": "ytech:pickaxe_head_sand_mold"
+  }
+}

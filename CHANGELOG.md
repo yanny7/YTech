@@ -8,6 +8,7 @@
 - Fixed Villagers dying on Fire Pit
 - Using parts for crafting tools, introduced molds
 - Added Beeswax, used in pattern crafting
+- Added Sand Molds
 
 ## [0.5.0]
 

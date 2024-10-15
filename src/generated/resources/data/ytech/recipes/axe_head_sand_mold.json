@@ -1,0 +1,15 @@
+{
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:sand"
+    },
+    {
+      "tag": "ytech:parts/axe_heads"
+    }
+  ],
+  "result": {
+    "item": "ytech:axe_head_sand_mold"
+  }
+}
