@@ -82,7 +82,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
 
         simpleTypedItem(YTechItems.MOLDS);
         simpleTypedItem(YTechItems.PATTERNS);
-        //simpleTypedItem(YTechItems.SAND_MOLDS);
+        simpleTypedItem(YTechItems.SAND_MOLDS);
         simpleTypedItem(YTechItems.UNFIRED_MOLDS);
 
         simpleMultiTypedItem(YTechItems.PARTS);
