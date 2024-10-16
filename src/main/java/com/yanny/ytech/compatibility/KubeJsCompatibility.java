@@ -55,6 +55,7 @@ public class KubeJsCompatibility extends KubeJSPlugin {
         event.register(ref(YTechRecipeTypes.HAMMERING), HammeringJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.MILLING), MillingJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.POTTERY), PotteryJS.SCHEMA);
+        event.register(Utils.modLoc("remaining_part_shapeless_crafting"), ShapelessRecipeSchema.SCHEMA);
         event.register(Utils.modLoc("remaining_shaped_crafting"), ShapedRecipeSchema.SCHEMA);
         event.register(Utils.modLoc("remaining_shapeless_crafting"), ShapelessRecipeSchema.SCHEMA);
         event.register(ref(YTechRecipeTypes.SMELTING), SmeltingJS.SCHEMA);

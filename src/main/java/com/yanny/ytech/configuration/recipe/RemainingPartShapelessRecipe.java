@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.google.gson.JsonObject;
+import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.NonNullList;
@@ -23,10 +24,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class RemainingShapelessRecipe extends ShapelessRecipe {
+public class RemainingPartShapelessRecipe extends ShapelessRecipe {
     private static final RandomSource RANDOM = RandomSource.create();
 
-    public RemainingShapelessRecipe(ShapelessRecipe recipe) {
+    public RemainingPartShapelessRecipe(ShapelessRecipe recipe) {
         super(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.getResultItem(null), recipe.getIngredients());
     }
 
@@ -48,6 +49,8 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
                     result.shrink(1);
                     result.setDamageValue(0);
                 }
+            } else if (item.is(YTechItemTags.PARTS.tag)) {
+                list.set(i, item.copy());
             }
         }
 
@@ -57,26 +60,26 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
     @NotNull
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return YTechRecipeSerializers.REMAINING_SHAPELESS.get();
+        return YTechRecipeSerializers.REMAINING_PART_SHAPELESS.get();
     }
 
-    public static class Serializer implements RecipeSerializer<RemainingShapelessRecipe> {
+    public static class Serializer implements RecipeSerializer<RemainingPartShapelessRecipe> {
         private final ShapelessRecipe.Serializer serializer = new ShapelessRecipe.Serializer();
 
         @NotNull
         @Override
-        public RemainingShapelessRecipe fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
-            return new RemainingShapelessRecipe(serializer.fromJson(id, json));
+        public RemainingPartShapelessRecipe fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
+            return new RemainingPartShapelessRecipe(serializer.fromJson(id, json));
         }
 
         @NotNull
         @Override
-        public RemainingShapelessRecipe fromNetwork(@NotNull ResourceLocation id, @NotNull FriendlyByteBuf buffer) {
-            return new RemainingShapelessRecipe(serializer.fromNetwork(id, buffer));
+        public RemainingPartShapelessRecipe fromNetwork(@NotNull ResourceLocation id, @NotNull FriendlyByteBuf buffer) {
+            return new RemainingPartShapelessRecipe(serializer.fromNetwork(id, buffer));
         }
 
         @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buf, @NotNull RemainingShapelessRecipe recipe) {
+        public void toNetwork(@NotNull FriendlyByteBuf buf, @NotNull RemainingPartShapelessRecipe recipe) {
             serializer.toNetwork(buf, recipe);
         }
     }
@@ -89,7 +92,7 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
         @NotNull
         @Override
         public RecipeSerializer<?> getType() {
-            return YTechRecipeSerializers.REMAINING_SHAPELESS.get();
+            return YTechRecipeSerializers.REMAINING_PART_SHAPELESS.get();
         }
     }
 
@@ -98,19 +101,19 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
             super(pCategory, pResult, pCount);
         }
 
-        public static Builder shapeless(@NotNull RecipeCategory pCategory, ItemLike pResult) {
-            return new Builder(pCategory, pResult, 1);
+        public static RemainingPartShapelessRecipe.Builder shapeless(@NotNull RecipeCategory pCategory, ItemLike pResult) {
+            return new RemainingPartShapelessRecipe.Builder(pCategory, pResult, 1);
         }
 
-        public static Builder shapeless(@NotNull RecipeCategory pCategory, ItemLike pResult, int pCount) {
-            return new Builder(pCategory, pResult, pCount);
+        public static RemainingPartShapelessRecipe.Builder shapeless(@NotNull RecipeCategory pCategory, ItemLike pResult, int pCount) {
+            return new RemainingPartShapelessRecipe.Builder(pCategory, pResult, pCount);
         }
 
         @Override
         public void save(@NotNull Consumer<FinishedRecipe> consumer, @NotNull ResourceLocation id) {
             super.save((t) -> {
                 ShapelessRecipeBuilder.Result r = (ShapelessRecipeBuilder.Result)t;
-                consumer.accept(new RemainingShapelessRecipe.Result(id, r.result, r.count, r.group, determineBookCategory(this.category), r.ingredients, r.advancement, r.advancementId));
+                consumer.accept(new RemainingPartShapelessRecipe.Result(id, r.result, r.count, r.group, determineBookCategory(this.category), r.ingredients, r.advancement, r.advancementId));
             }, id);
         }
     }

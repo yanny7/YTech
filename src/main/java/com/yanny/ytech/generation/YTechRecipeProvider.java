@@ -1180,7 +1180,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.SAND))
                     .save(recipeConsumer, item.getId());
         } else {
-            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, item.get())
+            RemainingPartShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, item.get())
                     .requires(ItemTags.SAND)
                     .requires(YTechItemTags.PARTS.getSubType(partType))
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.SAND))
