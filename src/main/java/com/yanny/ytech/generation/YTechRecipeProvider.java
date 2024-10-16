@@ -1225,7 +1225,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .pattern(" S ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.get(material)))
                     .save(recipeConsumer, item.getId());
-            default -> ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, item.get())
+            default -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.AXE_HEAD))
                     .requires(YTechItemTags.HAMMERS.tag)
@@ -1321,7 +1321,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .pattern("S  ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.STORAGE_BLOCKS.get(material)))
                     .save(recipeConsumer, item.getId());
-            default -> ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, item.get())
+            default -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.HAMMER_HEAD))
                     .requires(YTechItemTags.HAMMERS.tag)
@@ -1411,7 +1411,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .pattern(" S ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(material)))
                     .save(recipeConsumer, item.getId());
-            default -> ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, item.get())
+            default -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.PICKAXE_HEAD))
                     .requires(YTechItemTags.HAMMERS.tag)
@@ -1539,7 +1539,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.get(material)))
                     .save(recipeConsumer, item.getId());
         } else {
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, item.get())
+            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.SWORD_BLADE))
                     .requires(YTechItemTags.HAMMERS.tag)
