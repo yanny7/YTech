@@ -9,6 +9,7 @@
 - Using parts for crafting tools, introduced molds
 - Added Beeswax, used in pattern crafting
 - Added Sand Molds
+- Added KubeJS recipes integration
 
 ## [0.5.0]
 
