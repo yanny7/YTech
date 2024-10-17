@@ -328,6 +328,15 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("BBB")
                 .unlockedBy(Utils.getHasName(), has(YTechItemTags.INGOTS.get(IRON)))
                 .save(recipeConsumer, Utils.loc(Items.HEAVY_WEIGHTED_PRESSURE_PLATE));
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.REDSTONE, Items.LIGHT_WEIGHTED_PRESSURE_PLATE)
+                .define('W', YTechItemTags.HAMMERS.tag)
+                .define('B', YTechItemTags.BOLTS.get(GOLD))
+                .define('P', YTechItemTags.PLATES.get(GOLD))
+                .pattern(" W ")
+                .pattern("PPP")
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), has(YTechItemTags.INGOTS.get(GOLD)))
+                .save(recipeConsumer, Utils.loc(Items.LIGHT_WEIGHTED_PRESSURE_PLATE));
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.REDSTONE, Items.CHAIN)
                 .define('W', YTechItemTags.HAMMERS.tag)
                 .define('I', YTechItemTags.RODS.get(IRON))

@@ -10,6 +10,7 @@
 - Added Beeswax, used in pattern crafting
 - Added Sand Molds
 - Added KubeJS recipes integration
+- Modified Light Weighted Pressure Plate recipe
 
 ## [0.5.0]
 
