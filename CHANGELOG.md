@@ -11,6 +11,7 @@
 - Added Sand Molds
 - Added KubeJS recipes integration
 - Modified Light Weighted Pressure Plate recipe
+- Added Fire Pit cooking
 
 ## [0.5.0]
 

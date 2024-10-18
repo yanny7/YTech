@@ -22,6 +22,7 @@ public class YTechBlockEntityTypes {
     public static final RegistryObject<BlockEntityType<BrickChimneyBlockEntity>> BRICK_CHIMNEY = register("brick_chimney", BrickChimneyBlockEntity::new, YTechBlocks.BRICK_CHIMNEY, YTechBlocks.REINFORCED_BRICK_CHIMNEY);
     public static final RegistryObject<BlockEntityType<BronzeAnvilBlockEntity>> BRONZE_ANVIL = register("bronze_anvil", BronzeAnvilBlockEntity::new, YTechBlocks.BRONZE_ANVIL);
     public static final RegistryObject<BlockEntityType<DryingRackBlockEntity>> DRYING_RACK = register("drying_rack", DryingRackBlockEntity::new, YTechBlocks.DRYING_RACKS);
+    public static final RegistryObject<BlockEntityType<FirePitBlockEntity>> FIRE_PIT = register("fire_pit", FirePitBlockEntity::new, YTechBlocks.FIRE_PIT);
     public static final RegistryObject<BlockEntityType<MillstoneBlockEntity>> MILLSTONE = register("millstone", MillstoneBlockEntity::new, YTechBlocks.MILLSTONE);
     public static final RegistryObject<BlockEntityType<PottersWheelBlockEntity>> POTTERS_WHEEL = register("potters_wheel", PottersWheelBlockEntity::new, YTechBlocks.POTTERS_WHEEL);
     public static final RegistryObject<BlockEntityType<PrimitiveAlloySmelterBlockEntity>> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", PrimitiveAlloySmelterBlockEntity::new, YTechBlocks.PRIMITIVE_ALLOY_SMELTER);

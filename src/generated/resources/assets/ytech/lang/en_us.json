@@ -362,5 +362,15 @@
   "text.ytech.hover.venus_of_hohle_fels": "Representing a fertility goddess. Small chance to apply bonemeal effect on crops around",
   "text.ytech.hover.wild_horse": "The earliest sculpture of a horse. Increases speed when worn",
   "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint.",
-  "text.ytech.info.missing_curios": "Missing CuriosAPI, item is useless now"
+  "text.ytech.info.missing_curios": "Missing CuriosAPI, item is useless now",
+  "text.ytech.top.drying_rack.progress": "Remaining: %ss",
+  "text.ytech.top.entity.generation": "Generation: %s",
+  "text.ytech.top.fire_pit.progress": "Progress: %s%%",
+  "text.ytech.top.irrigation.fertilizing": "Fertilizing",
+  "text.ytech.top.irrigation.hydrating": "Hydrating",
+  "text.ytech.top.irrigation.network": "Network: %s/%s",
+  "text.ytech.top.irrigation.production": "Producing: %s mb/s",
+  "text.ytech.top.smelter.progress": "Progress: %s%%",
+  "text.ytech.top.smelter.temperature": "Temperature: %s°C",
+  "text.ytech.top.tanning_rack.progress": "Hit left: %s times"
 }
