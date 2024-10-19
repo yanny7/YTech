@@ -214,7 +214,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.shell_beads", "World’s oldest jewelry. Will extend the time under water when worn");
         add("text.ytech.hover.chlorite_bracelet", "Oldest piece of jewellery of its kind in the world, crafted by an extinct branch of early humans known as Denisovans. Increases luck when worn");
 
-        add("text.ytech.top.drying_rack.progress", "Remaining: %ss");
+        add("text.ytech.top.drying_rack.progress", "Progress: %s%%");
         add("text.ytech.top.entity.generation", "Generation: %s");
         add("text.ytech.top.fire_pit.progress", "Progress: %s%%");
         add("text.ytech.top.irrigation.fertilizing", "Fertilizing");
@@ -223,7 +223,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.top.irrigation.network", "Network: %s/%s");
         add("text.ytech.top.smelter.progress", "Progress: %s%%");
         add("text.ytech.top.smelter.temperature", "Temperature: %s°C");
-        add("text.ytech.top.tanning_rack.progress", "Hit left: %s times");
+        add("text.ytech.top.tanning_rack.progress", "Progress: %s%%");
 
         add("creativeTab.ytech.title", "YTech");
     }

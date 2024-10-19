@@ -50,19 +50,19 @@ public class TopCompatibility {
 
                         if (entity instanceof BronzeAnvilBlockEntity blockEntity && blockEntity.getItemStackHandler().getStackInSlot(0).getCount() >= 0) {
                             probeInfo.horizontal().item(blockEntity.getItemStackHandler().getStackInSlot(0));
-                        } else if (entity instanceof DryingRackBlockEntity blockEntity && blockEntity.getDryingLeft() >= 0) {
-                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.drying_rack.progress", Integer.toString(Math.round(blockEntity.getDryingLeft() / 20f))));
+                        } else if (entity instanceof DryingRackBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
+                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.drying_rack.progress", Integer.toString(blockEntity.getProgress())));
                         } else if (entity instanceof MillstoneBlockEntity blockEntity && !blockEntity.getInputItem().isEmpty()) {
                             probeInfo.horizontal().item(blockEntity.getInputItem());
-                        } else if (entity instanceof TanningRackBlockEntity blockEntity && blockEntity.getHitLeft() > 0) {
-                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.tanning_rack.progress", Integer.toString(blockEntity.getHitLeft())));
+                        } else if (entity instanceof TanningRackBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
+                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.tanning_rack.progress", Integer.toString(blockEntity.getProgress())));
                         } else if (entity instanceof AbstractPrimitiveMachineBlockEntity blockEntity) {
                             addPrimitiveSmelterInfo(probeInfo, blockEntity);
                         } else if (entity instanceof IIrrigationBlockEntity blockEntity) {
                             addIrrigationInfo(probeInfo, blockEntity);
                         } else if (entity instanceof PottersWheelBlockEntity blockEntity) {
                             probeInfo.horizontal().item(blockEntity.getItem());
-                        } else if (entity instanceof FirePitBlockEntity blockEntity && blockEntity.getProgress() > 0) {
+                        } else if (entity instanceof FirePitBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
                             probeInfo.horizontal().text(Component.translatable("text.ytech.top.fire_pit.progress", Integer.toString(blockEntity.getProgress())));
                         }
                     }
