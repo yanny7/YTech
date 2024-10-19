@@ -1,0 +1,15 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "forge:ingots/gold"
+  },
+  "inputCount": 3,
+  "minTemp": 1064,
+  "mold": {
+    "tag": "ytech:sand_molds/pickaxe_head"
+  },
+  "result": {
+    "item": "ytech:gold_pickaxe_head_part"
+  },
+  "smeltingTime": 600
+}

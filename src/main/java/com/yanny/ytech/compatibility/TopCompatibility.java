@@ -9,6 +9,7 @@ import com.yanny.ytech.configuration.entity.WildBoarEntity;
 import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import mcjty.theoneprobe.api.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -49,18 +50,20 @@ public class TopCompatibility {
 
                         if (entity instanceof BronzeAnvilBlockEntity blockEntity && blockEntity.getItemStackHandler().getStackInSlot(0).getCount() >= 0) {
                             probeInfo.horizontal().item(blockEntity.getItemStackHandler().getStackInSlot(0));
-                        } else if (entity instanceof DryingRackBlockEntity blockEntity && blockEntity.getDryingLeft() >= 0) {
-                            probeInfo.horizontal().text("Remaining: ").text(Integer.toString(Math.round(blockEntity.getDryingLeft() / 20f))).text("s");
+                        } else if (entity instanceof DryingRackBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
+                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.drying_rack.progress", Integer.toString(blockEntity.getProgress())));
                         } else if (entity instanceof MillstoneBlockEntity blockEntity && !blockEntity.getInputItem().isEmpty()) {
                             probeInfo.horizontal().item(blockEntity.getInputItem());
-                        } else if (entity instanceof TanningRackBlockEntity blockEntity && blockEntity.getHitLeft() > 0) {
-                            probeInfo.horizontal().text("Hit left: ").text(Integer.toString(blockEntity.getHitLeft())).text(" times");
+                        } else if (entity instanceof TanningRackBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
+                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.tanning_rack.progress", Integer.toString(blockEntity.getProgress())));
                         } else if (entity instanceof AbstractPrimitiveMachineBlockEntity blockEntity) {
                             addPrimitiveSmelterInfo(probeInfo, blockEntity);
                         } else if (entity instanceof IIrrigationBlockEntity blockEntity) {
                             addIrrigationInfo(probeInfo, blockEntity);
                         } else if (entity instanceof PottersWheelBlockEntity blockEntity) {
                             probeInfo.horizontal().item(blockEntity.getItem());
+                        } else if (entity instanceof FirePitBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
+                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.fire_pit.progress", Integer.toString(blockEntity.getProgress())));
                         }
                     }
                 }
@@ -75,13 +78,13 @@ public class TopCompatibility {
                 public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, Player player, Level level, Entity entity, IProbeHitEntityData iProbeHitEntityData) {
                     if (!level.isClientSide) {
                         if (entity instanceof AurochsEntity aurochsEntity) {
-                            iProbeInfo.horizontal().text("Generation: " + aurochsEntity.getGeneration());
+                            iProbeInfo.horizontal().text(Component.translatable("text.ytech.top.entity.generation", aurochsEntity.getGeneration()));
                         } else if (entity instanceof MouflonEntity mouflonEntity) {
-                            iProbeInfo.horizontal().text("Generation: " + mouflonEntity.getGeneration());
+                            iProbeInfo.horizontal().text(Component.translatable("text.ytech.top.entity.generation", mouflonEntity.getGeneration()));
                         } else if (entity instanceof FowlEntity fowlEntity) {
-                            iProbeInfo.horizontal().text("Generation: " + fowlEntity.getGeneration());
+                            iProbeInfo.horizontal().text(Component.translatable("text.ytech.top.entity.generation", fowlEntity.getGeneration()));
                         } else if (entity instanceof WildBoarEntity wildBoarEntity) {
-                            iProbeInfo.horizontal().text("Generation: " + wildBoarEntity.getGeneration());
+                            iProbeInfo.horizontal().text(Component.translatable("text.ytech.top.entity.generation", wildBoarEntity.getGeneration()));
                         }
                     }
                 }
@@ -94,14 +97,14 @@ public class TopCompatibility {
         switch (blockEntity.getNetworkType()) {
             case PROVIDER -> {
                 int perSec = Math.round(blockEntity.getFlow() * (20 / (float) YTechMod.CONFIGURATION.getValveFillPerNthTick()));
-                probeInfo.horizontal().text("Producing: ").text(Integer.toString(perSec)).text(" mb/s");
+                probeInfo.horizontal().text(Component.translatable("text.ytech.top.irrigation.production", Integer.toString(perSec)));
             }
             case CONSUMER -> {
                 if (blockEntity instanceof AqueductHydratorBlockEntity hydratorBlock && hydratorBlock.isHydrating()) {
-                    probeInfo.horizontal().text("Hydrating");
+                    probeInfo.horizontal().text(Component.translatable("text.ytech.top.irrigation.hydrating"));
                 }
                 if (blockEntity instanceof AqueductFertilizerBlockEntity fertilizerBlock && fertilizerBlock.isFertilizing()) {
-                    probeInfo.horizontal().text("Fertilizing");
+                    probeInfo.horizontal().text(Component.translatable("text.ytech.top.irrigation.fertilizing"));
                 }
             }
         }
@@ -109,8 +112,8 @@ public class TopCompatibility {
         IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
 
         if (network != null) {
-            probeInfo.horizontal().text("Network: ").text(Integer.toString(network.getFluidHandler().getFluidAmount())).text("/")
-                    .text(Integer.toString(network.getFluidHandler().getCapacity()));
+            probeInfo.horizontal().text(Component.translatable("text.ytech.top.irrigation.network", Integer.toString(network.getFluidHandler().getFluidAmount()),
+                    Integer.toString(network.getFluidHandler().getCapacity())));
         }
     }
 
@@ -118,9 +121,9 @@ public class TopCompatibility {
         IProbeInfo verticalLayout = probeInfo.vertical();
 
         if (blockEntity.hasActiveRecipe()) {
-            verticalLayout.horizontal().text("Progress: ").horizontal().text(Integer.toString(blockEntity.progress())).text("%");
+            verticalLayout.horizontal().text(Component.translatable("text.ytech.top.smelter.progress", Integer.toString(blockEntity.progress())));
         }
 
-        verticalLayout.horizontal().text("Temperature: ").horizontal().text(Integer.toString(blockEntity.temperature())).text("°C");
+        verticalLayout.horizontal().text(Component.translatable("text.ytech.top.smelter.temperature", Integer.toString(blockEntity.temperature())));
     }
 }

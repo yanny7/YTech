@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "ytech:remaining_shapeless_crafting",
   "category": "equipment",
   "ingredients": [
     {
       "item": "minecraft:stick"
     },
     {
-      "tag": "ytech:parts/hammer_head/bronze"
+      "tag": "ytech:parts/hammer_heads/bronze"
     },
     {
       "tag": "ytech:hammers"

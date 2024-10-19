@@ -1,0 +1,23 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "ytech:bolts/gold"
+    },
+    "P": {
+      "tag": "ytech:plates/gold"
+    },
+    "W": {
+      "tag": "ytech:hammers"
+    }
+  },
+  "pattern": [
+    " W ",
+    "PPP",
+    "BBB"
+  ],
+  "result": {
+    "item": "minecraft:light_weighted_pressure_plate"
+  }
+}

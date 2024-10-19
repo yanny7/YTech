@@ -1,11 +1,13 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.configuration.block_entity.FirePitBlockEntity;
 import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -15,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -27,14 +30,15 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -48,8 +52,10 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LEVEL;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
-public class FirePitBlock extends Block {
-    private static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 2/16.0, 1);
+public class FirePitBlock extends Block implements EntityBlock {
+    private static final VoxelShape SHAPE_DOWN = Shapes.box(0, 0, 0, 1, 2/16.0, 1);
+    private static final VoxelShape SHAPE_UP = Shapes.box(0, 0, 7/16.0, 1, 14/16.0, 9/16.0);
+    private static final VoxelShape SHAPE = Shapes.join(SHAPE_DOWN, SHAPE_UP, BooleanOp.OR);
 
     public FirePitBlock() {
         super(Properties.ofFullCopy(Blocks.STONE).sound(SoundType.WOOD).noOcclusion().hasPostProcess(FirePitBlock::always).lightLevel(FirePitBlock::getLightLevel));
@@ -76,6 +82,33 @@ public class FirePitBlock extends Block {
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return SHAPE;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+        return new FirePitBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+        if (!level.isClientSide) {
+            return FirePitBlock::createFirePitTicker;
+        } else {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (!level.isClientSide && level.getBlockEntity(pos) instanceof FirePitBlockEntity firePit) {
+                Containers.dropContents(level, pos, NonNullList.withSize(1, firePit.getItem()));
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
@@ -131,29 +164,31 @@ public class FirePitBlock extends Block {
     @NotNull
     @Override
     public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if (level instanceof ServerLevel serverLevel) {
-            if (!state.getValue(LIT) && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.STICK) && player.getItemInHand(InteractionHand.OFF_HAND).is(Items.STICK)) {
-                player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
-                player.getItemInHand(InteractionHand.OFF_HAND).shrink(1);
+        if (!state.getValue(LIT) && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.STICK) && player.getItemInHand(InteractionHand.OFF_HAND).is(Items.STICK)) {
+            player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+            player.getItemInHand(InteractionHand.OFF_HAND).shrink(1);
 
+            if (level instanceof ServerLevel) {
                 if (player.getRandom().nextFloat() < 0.4f) {
                     level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 0.8F + player.getRandom().nextFloat() * 0.4F);
                     level.setBlock(pos, state.setValue(LIT, true), Block.UPDATE_ALL);
                 } else {
                     level.playSound(null, pos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0f, 0.8F + player.getRandom().nextFloat() * 0.4F);
                 }
-
-                return InteractionResult.sidedSuccess(serverLevel.isClientSide);
             }
 
-            ItemStack itemStack = player.getItemInHand(hand);
-            int burnTime = itemStack.getBurnTime(null);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
 
-            if (burnTime > 0 && state.getValue(LEVEL) < 15) {
-                itemStack.shrink(1);
-                level.setBlock(pos, state.setValue(LEVEL, Math.min(15, state.getValue(LEVEL) + (int) Math.log10(burnTime))), Block.UPDATE_ALL);
-                return InteractionResult.sidedSuccess(serverLevel.isClientSide);
-            }
+        ItemStack itemStack = player.getItemInHand(hand);
+        int burnTime = itemStack.getBurnTime(null);
+
+        if (burnTime > 0 && state.getValue(LEVEL) < 15) {
+            itemStack.shrink(1);
+            level.setBlock(pos, state.setValue(LEVEL, Math.min(15, state.getValue(LEVEL) + (int) Math.log10(burnTime))), Block.UPDATE_ALL);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        } else if (level.getBlockEntity(pos) instanceof FirePitBlockEntity blockEntity) {
+            return blockEntity.onUse(state, level, pos, player, hand, hit);
         }
 
         return InteractionResult.PASS;
@@ -313,9 +348,43 @@ public class FirePitBlock extends Block {
                 })
                 .from(3, 0.01f, 3).to(13, 0.01f, 13).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 0.01f, 8).end()
                 .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                    }
+                })
+                .from(0, 0, 7).to(2, 14, 9)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                    }
+                })
+                .from(14, 0, 7).to(16, 14, 9)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case UP -> faceBuilder.uvs(2, 0, 4, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case SOUTH -> faceBuilder.uvs(4, 0, 6, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case DOWN -> faceBuilder.uvs(6, 0, 8, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                    }
+                })
+                .from(2, 12.5f, 7.5f).to(14, 13.5f, 8.5f)
+                .end()
                 .texture("particle", magmaTexture)
                 .texture("0", magmaTexture)
-                .texture("2", andesiteTexture);
+                .texture("1", logTexture)
+                .texture("2", andesiteTexture)
+                .texture("3", logTopTexture);
         ModelFile base = provider.models().getBuilder(name + "_base")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
@@ -432,9 +501,43 @@ public class FirePitBlock extends Block {
                 })
                 .from(3, 0.01f, 3).to(13, 0.01f, 13).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 0.01f, 8).end()
                 .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                    }
+                })
+                .from(0, 0, 7).to(2, 14, 9)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                    }
+                })
+                .from(14, 0, 7).to(16, 14, 9)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH -> faceBuilder.uvs(0, 0, 2, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case UP -> faceBuilder.uvs(2, 0, 4, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case SOUTH -> faceBuilder.uvs(4, 0, 6, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case DOWN -> faceBuilder.uvs(6, 0, 8, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                    }
+                })
+                .from(2, 12.5f, 7.5f).to(14, 13.5f, 8.5f)
+                .end()
                 .texture("particle", basaltTexture)
                 .texture("0", basaltTexture)
-                .texture("2", andesiteTexture);
+                .texture("1", logTexture)
+                .texture("2", andesiteTexture)
+                .texture("3", logTopTexture);
         ModelFile logs_down = provider.models().getBuilder(name + "_logs_up")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
@@ -513,5 +616,11 @@ public class FirePitBlock extends Block {
 
     private static int getLightLevel(BlockState state) {
         return state.getValue(LIT) ? Math.min(15, state.getValue(LEVEL) * 2 + 1) : 0;
+    }
+
+    private static void createFirePitTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {
+        if (blockEntity instanceof FirePitBlockEntity block) {
+            block.tick(level, pos, state, block);
+        }
     }
 }

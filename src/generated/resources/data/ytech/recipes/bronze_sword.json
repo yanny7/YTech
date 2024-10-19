@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "ytech:remaining_shapeless_crafting",
   "category": "equipment",
   "ingredients": [
     {
       "item": "minecraft:stick"
     },
     {
-      "tag": "ytech:parts/sword_blade/bronze"
+      "tag": "ytech:parts/sword_blades/bronze"
     },
     {
       "tag": "ytech:hammers"
