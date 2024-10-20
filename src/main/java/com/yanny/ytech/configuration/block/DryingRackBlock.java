@@ -151,9 +151,6 @@ public class DryingRackBlock extends Block implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH, SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#4");
-                        case EAST, WEST -> faceBuilder.uvs(0, 0, 1, 1).texture("#4");
-                        case UP -> faceBuilder.uvs(2, 10, 14, 11).texture("#4");
-                        case DOWN -> faceBuilder.uvs(2, 9, 14, 10).texture("#4");
                     }
                 })
                 .from(2, 13, 8).to(14, 15, 8).end()

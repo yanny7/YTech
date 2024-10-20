@@ -197,7 +197,7 @@ public class FirePitBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-        return defaultBlockState().setValue(LEVEL, 2).setValue(LIT, false);
+        return defaultBlockState().setValue(LEVEL, 0).setValue(LIT, false);
     }
 
     @SuppressWarnings("deprecation")
@@ -231,6 +231,7 @@ public class FirePitBlock extends Block implements EntityBlock {
         ResourceLocation logTexture = Utils.mcBlockLoc("oak_log");
         ResourceLocation logTopTexture = Utils.mcBlockLoc("oak_log_top");
         ResourceLocation basaltTexture = Utils.mcBlockLoc("smooth_basalt");
+        ResourceLocation ropeTexture = Utils.modBlockLoc("horizontal_rope");
         String name = Utils.getPath(YTechBlocks.FIRE_PIT);
         ModelFile base_lit = provider.models().getBuilder(name + "_base_lit")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
@@ -372,19 +373,18 @@ public class FirePitBlock extends Block implements EntityBlock {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
-                        case UP -> faceBuilder.uvs(2, 0, 4, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
-                        case SOUTH -> faceBuilder.uvs(4, 0, 6, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
-                        case DOWN -> faceBuilder.uvs(6, 0, 8, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case NORTH, SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#4");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 1, 1).texture("#4");
                     }
                 })
-                .from(2, 12.5f, 7.5f).to(14, 13.5f, 8.5f)
+                .from(2, 11.5f, 8).to(14, 13.5f, 8)
                 .end()
                 .texture("particle", magmaTexture)
                 .texture("0", magmaTexture)
                 .texture("1", logTexture)
                 .texture("2", andesiteTexture)
-                .texture("3", logTopTexture);
+                .texture("3", logTopTexture)
+                .texture("4", ropeTexture);
         ModelFile base = provider.models().getBuilder(name + "_base")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
@@ -525,19 +525,18 @@ public class FirePitBlock extends Block implements EntityBlock {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH -> faceBuilder.uvs(0, 0, 2, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
-                        case UP -> faceBuilder.uvs(2, 0, 4, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
-                        case SOUTH -> faceBuilder.uvs(4, 0, 6, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
-                        case DOWN -> faceBuilder.uvs(6, 0, 8, 12).texture("#1").rotation(ModelBuilder.FaceRotation.CLOCKWISE_90);
+                        case NORTH, SOUTH -> faceBuilder.uvs(2, 2, 14, 4).texture("#4");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 1, 1).texture("#4");
                     }
                 })
-                .from(2, 12.5f, 7.5f).to(14, 13.5f, 8.5f)
+                .from(2, 11.5f, 8).to(14, 13.5f, 8)
                 .end()
                 .texture("particle", basaltTexture)
                 .texture("0", basaltTexture)
                 .texture("1", logTexture)
                 .texture("2", andesiteTexture)
-                .texture("3", logTopTexture);
+                .texture("3", logTopTexture)
+                .texture("4", ropeTexture);
         ModelFile logs_down = provider.models().getBuilder(name + "_logs_up")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
