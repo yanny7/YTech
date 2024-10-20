@@ -2,7 +2,7 @@ package com.yanny.ytech;
 
 import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
-import com.yanny.ytech.configuration.recipe.TwoItemsRecipeInput;
+import com.yanny.ytech.configuration.recipe.YTechRecipeInput;
 import com.yanny.ytech.registration.YTechMobEffects;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -110,7 +110,7 @@ public class ForgeBusSubscriber {
             Direction direction = event.getFace();
 
             if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
-                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new TwoItemsRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new YTechRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
                     Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
                     heldItem.shrink(1);
                 });

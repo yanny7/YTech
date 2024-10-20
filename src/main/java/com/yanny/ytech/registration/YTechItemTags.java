@@ -14,7 +14,6 @@ import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class YTechItemTags {
@@ -104,9 +103,10 @@ public class YTechItemTags {
     public static final TagKey<Item> VENUS_OF_HOHLE_FELS = create("venus_of_hohle_fels");
     public static final TagKey<Item> WILD_HORSES = create("wild_horse");
 
-    public static final TypedTag<PartType> MOLDS = new MoldTag("molds", YTechItems.MOLDS);
-    public static final TypedTag<PartType> PATTERNS = new MoldTag("patterns", YTechItems.PATTERNS);
-    public static final TypedTag<PartType> UNFIRED_MOLDS = new MoldTag("unfired_molds", YTechItems.UNFIRED_MOLDS);
+    public static final TypedTag<PartType> MOLDS = new PartTag("molds", YTechItems.MOLDS);
+    public static final TypedTag<PartType> PATTERNS = new PartTag("patterns", YTechItems.PATTERNS);
+    public static final TypedTag<PartType> SAND_MOLDS = new PartTag("sand_molds", YTechItems.SAND_MOLDS);
+    public static final TypedTag<PartType> UNFIRED_MOLDS = new PartTag("unfired_molds", YTechItems.UNFIRED_MOLDS);
 
     public static final TypedTag<MaterialType> ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
     public static final TypedTag<MaterialType> AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
@@ -174,19 +174,19 @@ public class YTechItemTags {
 
     public static class MultiTypedTag<E extends Enum<E> & IType, F extends Enum<F> & IType> extends AbstractMap<E, Map<F, TagKey<Item>>> {
         public final TagKey<Item> tag;
+        protected final Map<F, TagKey<Item>> categoryTags = new HashMap<>();
         protected final Map<E, Map<F, TagKey<Item>>> tags = new HashMap<>();
 
-        public MultiTypedTag(String name, String namespace, TagKey<Item> tag, EnumSet<E> types1, EnumSet<F> types2, BiFunction<E, F, String> typeNameSupplier) {
+        public MultiTypedTag(TagKey<Item> tag) {
             this.tag = tag;
-            for (E type1 : types1) {
-                for (F type2 : types2) {
-                    tags.computeIfAbsent(type1, (t) -> new HashMap<>()).put(type2, ItemTags.create(ResourceLocation.fromNamespaceAndPath(namespace, name + "/" + typeNameSupplier.apply(type1, type2))));
-                }
-            }
         }
 
         public TagKey<Item> get(E type1, F type2) {
             return Objects.requireNonNull(tags.get(type1).get(type2), type1.key() + "_" + type2.key());
+        }
+
+        public TagKey<Item> getSubType(F type) {
+            return Objects.requireNonNull(categoryTags.get(type), type.key());
         }
 
         @Override
@@ -195,8 +195,8 @@ public class YTechItemTags {
         }
     }
 
-    public static class MoldTag extends TypedTag<PartType> {
-        public MoldTag(String name, YTechItems.TypedItem<PartType> item) {
+    public static class PartTag extends TypedTag<PartType> {
+        public PartTag(String name, YTechItems.TypedItem<PartType> item) {
             super(name, YTechMod.MOD_ID, create(name), EnumSet.copyOf(item.keySet()), (type) -> type.key);
         }
     }
@@ -233,7 +233,14 @@ public class YTechItemTags {
 
     private static class MaterialPartTag extends MultiTypedTag<MaterialType, PartType> {
         public MaterialPartTag(String name, YTechItems.MultiTypedItem<MaterialType, PartType> multiTypedItem) {
-            super(name, YTechMod.MOD_ID, create(name), EnumSet.copyOf(multiTypedItem.keySet()), PartType.ALL_PARTS, (material, part) -> part.key + "/" + material.key);
+            super(create(name));
+            for (PartType part : PartType.ALL_PARTS) {
+                for (MaterialType material : multiTypedItem.keySet()) {
+                    tags.computeIfAbsent(material, (t) -> new HashMap<>()).put(part, ItemTags.create(Utils.modLoc(name + "/" + part.key + "s/" + material.key)));
+                }
+
+                this.categoryTags.put(part, ItemTags.create(Utils.modLoc(name + "/" + part.key + "s")));
+            }
         }
     }
 

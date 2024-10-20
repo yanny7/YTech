@@ -17,7 +17,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class MillstoneRenderer implements BlockEntityRenderer<BlockEntity> {
+public class MillstoneRenderer implements BlockEntityRenderer<MillstoneBlockEntity> {
     private static final ResourceLocation KNOT_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/lead_knot.png");
     private final LeashKnotModel<LeashFenceKnotEntity> model;
 
@@ -26,10 +26,8 @@ public class MillstoneRenderer implements BlockEntityRenderer<BlockEntity> {
     }
 
     @Override
-    public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        MillstoneBlockEntity millstone = (MillstoneBlockEntity) blockEntity;
-
-        if (millstone.isLeashed()) {
+    public void render(@NotNull MillstoneBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        if (blockEntity.isLeashed()) {
             poseStack.pushPose();
             poseStack.translate(0.5, 0.51, 0.5);
             poseStack.scale(-1.0F, -1.0F, 1.0F);

@@ -8,6 +8,10 @@
 - Fixed Villagers dying on Fire Pit
 - Using parts for crafting tools, introduced molds
 - Added Beeswax, used in pattern crafting
+- Added Sand Molds
+- Added KubeJS recipes integration
+- Modified Light Weighted Pressure Plate recipe
+- Added Fire Pit cooking
 
 ## [0.5.1]
 

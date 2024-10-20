@@ -26,7 +26,6 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
     public static final RecipeType<AlloyingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "alloying", AlloyingRecipe.class);
@@ -69,8 +68,8 @@ public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlloyingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addItemStacks(Stream.of(recipe.ingredient1().ingredient().getItems()).map(r -> new ItemStack(r.getItem(), recipe.getInput1Count())).toList());
-        builder.addSlot(RecipeIngredientRole.INPUT, 21, 5).addItemStacks(Stream.of(recipe.ingredient2().ingredient().getItems()).map(r -> new ItemStack(r.getItem(), recipe.getInput2Count())).toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(recipe.ingredient1());
+        builder.addSlot(RecipeIngredientRole.INPUT, 21, 5).addIngredients(recipe.ingredient2());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 71,  23).addItemStack(recipe.result());
     }
 

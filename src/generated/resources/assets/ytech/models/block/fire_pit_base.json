@@ -831,11 +831,206 @@
         0.01,
         13
       ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#3",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            10.0,
+            0.0,
+            12.0,
+            14.0
+          ]
+        },
+        "north": {
+          "texture": "#1",
+          "uv": [
+            8.0,
+            0.0,
+            10.0,
+            14.0
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            12.0,
+            0.0,
+            14.0,
+            14.0
+          ]
+        },
+        "up": {
+          "texture": "#3",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            14.0,
+            0.0,
+            16.0,
+            14.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        7
+      ],
+      "to": [
+        2,
+        14,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#3",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            10.0,
+            0.0,
+            12.0,
+            14.0
+          ]
+        },
+        "north": {
+          "texture": "#1",
+          "uv": [
+            8.0,
+            0.0,
+            10.0,
+            14.0
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            12.0,
+            0.0,
+            14.0,
+            14.0
+          ]
+        },
+        "up": {
+          "texture": "#3",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            14.0,
+            0.0,
+            16.0,
+            14.0
+          ]
+        }
+      },
+      "from": [
+        14,
+        0,
+        7
+      ],
+      "to": [
+        16,
+        14,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "#4",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        },
+        "north": {
+          "texture": "#4",
+          "uv": [
+            2.0,
+            2.0,
+            14.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#4",
+          "uv": [
+            2.0,
+            2.0,
+            14.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "#4",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        11.5,
+        8
+      ],
+      "to": [
+        14,
+        13.5,
+        8
+      ]
     }
   ],
   "textures": {
     "0": "minecraft:block/smooth_basalt",
+    "1": "minecraft:block/oak_log",
     "2": "minecraft:block/andesite",
+    "3": "minecraft:block/oak_log_top",
+    "4": "ytech:block/horizontal_rope",
     "particle": "minecraft:block/smooth_basalt"
   }
 }

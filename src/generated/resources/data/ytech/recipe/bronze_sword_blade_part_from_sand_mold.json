@@ -1,0 +1,16 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "inputCount": 2,
+  "minTemp": 913,
+  "mold": {
+    "tag": "ytech:sand_molds/sword_blade"
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:bronze_sword_blade_part"
+  },
+  "smeltingTime": 400
+}

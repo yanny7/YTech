@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
+import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -34,7 +34,7 @@ import java.util.List;
 import static net.minecraft.client.renderer.LevelRenderer.getLightColor;
 
 @OnlyIn(Dist.CLIENT)
-public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
+public class AqueductRenderer implements BlockEntityRenderer<AqueductBlockEntity> {
     private final TextureAtlasSprite sprite;
     private final float r, g, b, a;
     private final float minU, minV, maxU, maxV;
@@ -61,19 +61,17 @@ public class AqueductRenderer implements BlockEntityRenderer<BlockEntity> {
 
     @Override
     @NotNull
-    public AABB getRenderBoundingBox(@NotNull BlockEntity blockEntity) {
+    public AABB getRenderBoundingBox(@NotNull AqueductBlockEntity blockEntity) {
         return new AABB(blockEntity.getBlockPos());
     }
 
     @Override
-    public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        if (blockEntity instanceof IrrigationBlockEntity irrigationBlockEntity) {
-            IrrigationClientNetwork network = YTechMod.IRRIGATION_PROPAGATOR.client().getNetwork(irrigationBlockEntity);
+    public void render(@NotNull AqueductBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        IrrigationClientNetwork network = YTechMod.IRRIGATION_PROPAGATOR.client().getNetwork(blockEntity);
 
-            if (network != null && network.getCapacity() > 0 && network.getAmount() > 0) {
-                float height = 2/16f + (network.getAmount() / (float)network.getCapacity()) * (12.0f/16.0f);
-                renderFluidBlock(blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.TRANSLUCENT), height, packedOverlay);
-            }
+        if (network != null && network.getCapacity() > 0 && network.getAmount() > 0) {
+            float height = 2/16f + (network.getAmount() / (float)network.getCapacity()) * (12.0f/16.0f);
+            renderFluidBlock(blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.TRANSLUCENT), height, packedOverlay);
         }
     }
     private static BakedQuad createQuad(List<Vec3> vectors, float[] cols, TextureAtlasSprite sprite, Direction face, float u1, float u2, float v1, float v2) {

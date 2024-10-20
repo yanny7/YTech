@@ -26,6 +26,20 @@ repositories {
         name = "OctoStudios"
         url = uri("https://maven.octo-studios.com/releases")
     }
+    maven { // KubeJS
+        // Shedaniel's maven (Architectury API)
+        url = "https://maven.architectury.dev"
+        content {
+            includeGroup "dev.architectury"
+        }
+    }
+    maven { // KubeJS
+        // saps.dev Maven (KubeJS and Rhino)
+        url = "https://maven.saps.dev/minecraft"
+        content {
+            includeGroup "dev.latvian.mods"
+        }
+    }
 }
 
 base {
@@ -125,6 +139,12 @@ dependencies {
     }
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+    // ForgeGradle
+    implementation "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
+
+    // these two are unfortunately needed since fg.deobf doesn't respect transitive dependencies yet
+    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
