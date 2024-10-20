@@ -971,61 +971,57 @@
     {
       "faces": {
         "down": {
-          "rotation": 90,
-          "texture": "#1",
-          "uv": [
-            6.0,
-            0.0,
-            8.0,
-            12.0
-          ]
-        },
-        "east": {
           "texture": "minecraft:missingno"
         },
-        "north": {
-          "rotation": 90,
-          "texture": "#1",
+        "east": {
+          "texture": "#4",
           "uv": [
             0.0,
             0.0,
+            1.0,
+            1.0
+          ]
+        },
+        "north": {
+          "texture": "#4",
+          "uv": [
             2.0,
-            12.0
+            2.0,
+            14.0,
+            4.0
           ]
         },
         "south": {
-          "rotation": 90,
-          "texture": "#1",
+          "texture": "#4",
           "uv": [
-            4.0,
-            0.0,
-            6.0,
-            12.0
+            2.0,
+            2.0,
+            14.0,
+            4.0
           ]
         },
         "up": {
-          "rotation": 90,
-          "texture": "#1",
-          "uv": [
-            2.0,
-            0.0,
-            4.0,
-            12.0
-          ]
+          "texture": "minecraft:missingno"
         },
         "west": {
-          "texture": "minecraft:missingno"
+          "texture": "#4",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
         }
       },
       "from": [
         2,
-        12.5,
-        7.5
+        11.5,
+        8
       ],
       "to": [
         14,
         13.5,
-        8.5
+        8
       ]
     }
   ],
@@ -1034,6 +1030,7 @@
     "1": "minecraft:block/oak_log",
     "2": "minecraft:block/andesite",
     "3": "minecraft:block/oak_log_top",
+    "4": "ytech:block/horizontal_rope",
     "particle": "minecraft:block/smooth_basalt"
   }
 }

@@ -134,22 +134,10 @@
     {
       "faces": {
         "down": {
-          "texture": "#4",
-          "uv": [
-            2.0,
-            9.0,
-            14.0,
-            10.0
-          ]
+          "texture": "minecraft:missingno"
         },
         "east": {
-          "texture": "#4",
-          "uv": [
-            0.0,
-            0.0,
-            1.0,
-            1.0
-          ]
+          "texture": "minecraft:missingno"
         },
         "north": {
           "texture": "#4",
@@ -170,22 +158,10 @@
           ]
         },
         "up": {
-          "texture": "#4",
-          "uv": [
-            2.0,
-            10.0,
-            14.0,
-            11.0
-          ]
+          "texture": "minecraft:missingno"
         },
         "west": {
-          "texture": "#4",
-          "uv": [
-            0.0,
-            0.0,
-            1.0,
-            1.0
-          ]
+          "texture": "minecraft:missingno"
         }
       },
       "from": [

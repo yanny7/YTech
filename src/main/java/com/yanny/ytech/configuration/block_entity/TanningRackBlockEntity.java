@@ -58,6 +58,8 @@ public class TanningRackBlockEntity extends BlockEntity {
                 if (!progressHandler.tick(level, canProcess, getStep, onFinish)) {
                     Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
                     progressHandler.clear();
+                } else {
+                    player.getItemInHand(hand).hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
                 }
             }
 
