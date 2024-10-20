@@ -125,6 +125,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
 
         typedTag(YTechItems.MOLDS, YTechItemTags.MOLDS);
         typedTag(YTechItems.PATTERNS, YTechItemTags.PATTERNS);
+        typedTag(YTechItems.SAND_MOLDS, YTechItemTags.SAND_MOLDS);
         typedTag(YTechItems.UNFIRED_MOLDS, YTechItemTags.UNFIRED_MOLDS);
 
         typedTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
@@ -194,6 +195,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
                 E type1 = entry1.getKey();
                 F type2 = entry2.getKey();
                 tag(multiTypedTag.get(type1, type2)).add(multiTypedItem.get(type1, type2).get());
+                tag(multiTypedTag.getSubType(type2)).add(multiTypedItem.get(type1, type2).get());
                 tag(multiTypedTag.tag).addTag(multiTypedTag.get(type1, type2));
             });
         });

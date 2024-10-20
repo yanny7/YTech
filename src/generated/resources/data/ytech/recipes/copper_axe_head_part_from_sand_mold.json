@@ -1,0 +1,16 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:ingots/copper"
+  },
+  "inputCount": 3,
+  "minTemp": 1085,
+  "mold": {
+    "tag": "ytech:sand_molds/axe_head"
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:copper_axe_head_part"
+  },
+  "smeltingTime": 600
+}

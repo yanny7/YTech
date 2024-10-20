@@ -10,7 +10,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.api.distmarker.Dist;
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
 @OnlyIn(Dist.CLIENT)
-public class TanningRackRenderer implements BlockEntityRenderer<BlockEntity> {
+public class TanningRackRenderer implements BlockEntityRenderer<TanningRackBlockEntity> {
     private final ItemRenderer itemRenderer;
 
     public TanningRackRenderer(BlockEntityRendererProvider.Context context) {
@@ -27,7 +26,7 @@ public class TanningRackRenderer implements BlockEntityRenderer<BlockEntity> {
     }
 
     @Override
-    public void render(@NotNull BlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void render(@NotNull TanningRackBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
         BlockState blockState = blockEntity.getBlockState();
         Direction facing = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
         Level level = blockEntity.getLevel();
@@ -42,11 +41,9 @@ public class TanningRackRenderer implements BlockEntityRenderer<BlockEntity> {
         poseStack.scale(0.9f, 0.9f, 0.9f);
 
         if (level != null) {
-            if (blockEntity instanceof TanningRackBlockEntity tanningRack) {
-                if (!tanningRack.getItem().isEmpty()) {
-                    BakedModel bakedmodel = itemRenderer.getModel(tanningRack.getItem(), level, null, 0);
-                    itemRenderer.render(tanningRack.getItem(), ItemDisplayContext.FIXED, false, poseStack, buffer, packedLight, packedOverlay, bakedmodel);
-                }
+            if (!blockEntity.getItem().isEmpty()) {
+                BakedModel bakedmodel = itemRenderer.getModel(blockEntity.getItem(), level, null, 0);
+                itemRenderer.render(blockEntity.getItem(), ItemDisplayContext.FIXED, false, poseStack, buffer, packedLight, packedOverlay, bakedmodel);
             }
         }
 

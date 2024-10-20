@@ -329,6 +329,15 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("BBB")
                 .unlockedBy(Utils.getHasName(), has(YTechItemTags.INGOTS.get(IRON)))
                 .save(recipeConsumer, Utils.loc(Items.HEAVY_WEIGHTED_PRESSURE_PLATE));
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.REDSTONE, Items.LIGHT_WEIGHTED_PRESSURE_PLATE)
+                .define('W', YTechItemTags.HAMMERS.tag)
+                .define('B', YTechItemTags.BOLTS.get(GOLD))
+                .define('P', YTechItemTags.PLATES.get(GOLD))
+                .pattern(" W ")
+                .pattern("PPP")
+                .pattern("BBB")
+                .unlockedBy(Utils.getHasName(), has(YTechItemTags.INGOTS.get(GOLD)))
+                .save(recipeConsumer, Utils.loc(Items.LIGHT_WEIGHTED_PRESSURE_PLATE));
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.REDSTONE, Items.CHAIN)
                 .define('W', YTechItemTags.HAMMERS.tag)
                 .define('I', YTechItemTags.RODS.get(IRON))
@@ -552,9 +561,13 @@ class YTechRecipeProvider extends RecipeProvider {
 
         YTechItems.MOLDS.forEach((part, item) -> smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_MOLDS.get(part), item.get(), 1000, 200));
         YTechItems.PATTERNS.forEach((type, item) -> registerPatternRecipe(recipeConsumer, item, type));
+        YTechItems.SAND_MOLDS.forEach((type, item) -> registerSandMoldRecipe(recipeConsumer, item, type));
         YTechItems.UNFIRED_MOLDS.forEach((part, item) -> registerUnfiredMoldRecipe(recipeConsumer, item, part));
 
-        YTechItems.PARTS.forEach((material, map) -> map.forEach((part, item) -> smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.MOLDS.get(part), item.get(), material.meltingTemp, 200 * part.ingotCount)));
+        YTechItems.PARTS.forEach((material, map) -> map.forEach((part, item) -> {
+            smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.MOLDS.get(part), item.get(), material.meltingTemp, 200 * part.ingotCount, "mold");
+            smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.SAND_MOLDS.get(part), item.get(), material.meltingTemp, 200 * part.ingotCount, "sand_mold");
+        }));
 
         YTechItems.ARROWS.forEach((material, item) -> registerArrowRecipe(recipeConsumer, item, material));
         YTechItems.AXES.forEach((material, item) -> registerAxeRecipe(recipeConsumer, item, material));
@@ -608,10 +621,10 @@ class YTechRecipeProvider extends RecipeProvider {
 
         alloyingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(COPPER), 9, YTechItemTags.INGOTS.get(TIN), 1, YTechItems.INGOTS.get(BRONZE).get(), 10, Math.max(COPPER.meltingTemp, TIN.meltingTemp), 200);
 
-        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(COPPER), 1, YTechItemTags.MOLDS.get(PartType.INGOT), Items.COPPER_INGOT, COPPER.meltingTemp, 200);
-        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(GOLD), 1, YTechItemTags.MOLDS.get(PartType.INGOT), Items.GOLD_INGOT, GOLD.meltingTemp, 200);
-        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(CASSITERITE), 1, YTechItemTags.MOLDS.get(PartType.INGOT), YTechItems.INGOTS.get(TIN).get(), CASSITERITE.meltingTemp, 200);
-        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(GALENA), 1, YTechItemTags.MOLDS.get(PartType.INGOT), YTechItems.INGOTS.get(LEAD).get(), GALENA.meltingTemp, 200);
+        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(COPPER), 1, YTechItemTags.MOLDS.get(PartType.INGOT), Items.COPPER_INGOT, COPPER.meltingTemp, 200, "smelting");
+        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(GOLD), 1, YTechItemTags.MOLDS.get(PartType.INGOT), Items.GOLD_INGOT, GOLD.meltingTemp, 200, "smelting");
+        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(CASSITERITE), 1, YTechItemTags.MOLDS.get(PartType.INGOT), YTechItems.INGOTS.get(TIN).get(), CASSITERITE.meltingTemp, 200, "smelting");
+        smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(GALENA), 1, YTechItemTags.MOLDS.get(PartType.INGOT), YTechItems.INGOTS.get(LEAD).get(), GALENA.meltingTemp, 200, "smelting");
 
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_CLAY_BUCKETS, YTechItems.CLAY_BUCKET.get(), 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_DECORATED_POTS, Items.DECORATED_POT, 1000, 200);
@@ -865,10 +878,10 @@ class YTechRecipeProvider extends RecipeProvider {
                 .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_smelting"));
     }
 
-    private void smeltingRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull TagKey<Item> input, int inputCount, TagKey<Item> mold, @NotNull Item result, int temperature, int smeltingTime) {
+    private void smeltingRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull TagKey<Item> input, int inputCount, TagKey<Item> mold, @NotNull Item result, int temperature, int smeltingTime, String from) {
         SmeltingRecipe.Builder.smelting(input, inputCount, mold, temperature, smeltingTime, result)
                 .unlockedBy(Utils.getHasName(), has(input))
-                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_smelting"));
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_" + from));
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -1169,6 +1182,22 @@ class YTechRecipeProvider extends RecipeProvider {
         }
     }
 
+    public static void registerSandMoldRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, PartType partType) {
+        if (partType == PartType.INGOT) {
+            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, item.get())
+                    .requires(ItemTags.SAND)
+                    .requires(YTechItemTags.INGOTS.tag)
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.SAND))
+                    .save(recipeConsumer, item.getId());
+        } else {
+            RemainingPartShapelessRecipe.Builder.shapeless(RecipeCategory.MISC, item.get())
+                    .requires(ItemTags.SAND)
+                    .requires(YTechItemTags.PARTS.getSubType(partType))
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.SAND))
+                    .save(recipeConsumer, item.getId());
+        }
+    }
+
     public static void registerUnfiredMoldRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, PartType partType) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item.get())
                 .requires(Items.CLAY)
@@ -1206,7 +1235,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .pattern(" S ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.get(material)))
                     .save(recipeConsumer, item.getId());
-            default -> ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, item.get())
+            default -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.AXE_HEAD))
                     .requires(YTechItemTags.HAMMERS.tag)
@@ -1302,7 +1331,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .pattern("S  ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.STORAGE_BLOCKS.get(material)))
                     .save(recipeConsumer, item.getId());
-            default -> ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, item.get())
+            default -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.HAMMER_HEAD))
                     .requires(YTechItemTags.HAMMERS.tag)
@@ -1392,7 +1421,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .pattern(" S ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(material)))
                     .save(recipeConsumer, item.getId());
-            default -> ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, item.get())
+            default -> RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.TOOLS, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.PICKAXE_HEAD))
                     .requires(YTechItemTags.HAMMERS.tag)
@@ -1520,7 +1549,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.get(material)))
                     .save(recipeConsumer, item.getId());
         } else {
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, item.get())
+            RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.COMBAT, item.get())
                     .requires(Items.STICK)
                     .requires(YTechItemTags.PARTS.get(material, PartType.SWORD_BLADE))
                     .requires(YTechItemTags.HAMMERS.tag)
