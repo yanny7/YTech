@@ -149,10 +149,12 @@ public class ModBusSubscriber {
         event.register(YTechEntityTypes.WOOLLY_MAMMOTH.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(YTechEntityTypes.WOOLLY_RHINO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
-        event.register(EntityType.CHICKEN, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.COW, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.PIG, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.SHEEP, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        if (YTechMod.CONFIGURATION.removeVanillaMobs()) {
+            event.register(EntityType.CHICKEN, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+            event.register(EntityType.COW, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+            event.register(EntityType.PIG, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+            event.register(EntityType.SHEEP, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

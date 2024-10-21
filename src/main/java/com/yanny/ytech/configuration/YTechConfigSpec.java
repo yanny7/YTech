@@ -17,28 +17,29 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class YTechConfigSpec {
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
-    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolTags;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
+    private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
+    private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolTags;
+    private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
 
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
-    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
-    @NotNull private final ForgeConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
+    private final ForgeConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
+    private final ForgeConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
+    private final ForgeConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
 
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillAmount;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Boolean> validBlockForRaining;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> valveFillAmount;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainAmount;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainPerNthTick;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> fertilizerDuration;
-    @NotNull private final ForgeConfigSpec.ConfigValue<Integer> applyFertilizerChance;
+    private final ForgeConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
+    private final ForgeConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
+    private final ForgeConfigSpec.ConfigValue<Integer> rainingFillAmount;
+    private final ForgeConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
+    private final ForgeConfigSpec.ConfigValue<Boolean> validBlockForRaining;
+    private final ForgeConfigSpec.ConfigValue<Integer> valveFillAmount;
+    private final ForgeConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
+    private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainAmount;
+    private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainPerNthTick;
+    private final ForgeConfigSpec.ConfigValue<Integer> fertilizerDuration;
+    private final ForgeConfigSpec.ConfigValue<Integer> applyFertilizerChance;
 
     private final ForgeConfigSpec.ConfigValue<Integer> minBreedingGenerations;
     private final ForgeConfigSpec.DoubleValue domesticChance;
+    private final ForgeConfigSpec.BooleanValue removeVanillaMobs;
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -94,6 +95,9 @@ public class YTechConfigSpec {
                     .worldRestart().defineInRange("minBreedingGenerations", 3, 1, Integer.MAX_VALUE);
             domesticChance = builder.comment("Chance for domestic animal breeding result, multiplied by each generation after minBreedingGenerations")
                     .worldRestart().defineInRange("domesticChance", 0.2, Double.MIN_NORMAL, 1.0);
+            removeVanillaMobs = builder.comment("If remove vanilla mobs spawning (sheeps, cows, chickens and pigs)")
+                    .worldRestart().define("removeVanillaMobs", true);
+        builder.pop();
     }
 
     public boolean shouldRequireValidTool() {
@@ -171,6 +175,10 @@ public class YTechConfigSpec {
 
     public double getDomesticChance() {
         return domesticChance.get();
+    }
+
+    public boolean removeVanillaMobs() {
+        return removeVanillaMobs.get();
     }
 
     @NotNull

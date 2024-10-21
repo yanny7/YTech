@@ -12,6 +12,7 @@
 - Added KubeJS recipes integration
 - Modified Light Weighted Pressure Plate recipe
 - Added Fire Pit cooking
+- Added configuration for removing vanilla mobs
 
 ## [0.5.0]
 
