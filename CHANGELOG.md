@@ -13,6 +13,7 @@
 - Modified Light Weighted Pressure Plate recipe
 - Added Fire Pit cooking
 - Added configuration for removing vanilla mobs
+- Fixed random ConcurrentModificationException while startup
 
 ## [0.5.0]
 
