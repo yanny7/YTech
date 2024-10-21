@@ -4,7 +4,7 @@
     "type": "ytech:ingredient",
     "count": 1,
     "ingredient": {
-      "tag": "forge:crushed_materials/iron"
+      "tag": "c:crushed_materials/iron"
     }
   },
   "ingredient2": {

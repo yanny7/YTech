@@ -169,20 +169,11 @@ public class YTechItems {
         return new Item(new Item.Properties());
     }
 
-    private static Item burnableSimpleItem(int burnTime) {
-        return new Item(new Item.Properties()) {
-            @Override
-            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                return burnTime;
-            }
-        };
-    }
-
     private static Item burnableSimpleItem(@NotNull MaterialType material, int burnTime) {
         return new Item(new Item.Properties()) {
             @Override
             public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                return material == MaterialType.WOODEN ? burnTime : -1;
+                return material == MaterialType.WOODEN ? burnTime : 0;
             }
         };
     }

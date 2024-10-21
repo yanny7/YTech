@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#forge:crushed_materials/copper"
+            "items": "#c:crushed_materials/copper"
           }
         ]
       },

@@ -113,7 +113,7 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> BOLTS = new MaterialTag("bolts", YTechItems.BOLTS);
     public static final TypedTag<MaterialType> BOOTS = new MaterialTag("boots", ItemTags.FOOT_ARMOR, YTechItems.BOOTS);
     public static final TypedTag<MaterialType> CHESTPLATES = new MaterialTag("chestplates", ItemTags.CHEST_ARMOR, YTechItems.CHESTPLATES);
-    public static final TypedTag<MaterialType> CRUSHED_MATERIALS = new MaterialTag("crushed_materials", "forge", YTechItems.CRUSHED_MATERIALS);
+    public static final TypedTag<MaterialType> CRUSHED_MATERIALS = new MaterialTag("crushed_materials", "c", YTechItems.CRUSHED_MATERIALS);
     public static final TypedTag<MaterialType> FILES = new MaterialTag("files", YTechItems.FILES);
     public static final TypedTag<MaterialType> HAMMERS = new MaterialTag("hammers", YTechItems.HAMMERS);
     public static final TypedTag<MaterialType> HELMETS = new MaterialTag("helmets", ItemTags.HEAD_ARMOR, YTechItems.HELMETS);
