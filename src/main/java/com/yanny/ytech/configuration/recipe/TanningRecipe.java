@@ -27,15 +27,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<RecipeInput> {
+public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<SingleRecipeInput> {
     @Override
-    public boolean matches(@NotNull RecipeInput recipeInput, @NotNull Level level) {
+    public boolean matches(@NotNull SingleRecipeInput recipeInput, @NotNull Level level) {
         return ingredient.test(recipeInput.getItem(0));
     }
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull RecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
+    public ItemStack assemble(@NotNull SingleRecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -66,7 +66,7 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
         private static final MapCodec<TanningRecipe> CODEC = RecordCodecBuilder.mapCodec((recipe) ->
                 recipe.group(
                         Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((tanningRecipe) -> tanningRecipe.ingredient),
-                        Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter((tanningRecipe) -> tanningRecipe.tool),
+                        Ingredient.CODEC.fieldOf("tool").forGetter((tanningRecipe) -> tanningRecipe.tool),
                         Codec.INT.fieldOf("hitCount").forGetter((tanningRecipe) -> tanningRecipe.hitCount),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((tanningRecipe) -> tanningRecipe.result)
                 ).apply(recipe, TanningRecipe::new)

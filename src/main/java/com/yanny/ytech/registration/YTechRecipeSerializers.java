@@ -18,6 +18,7 @@ public class YTechRecipeSerializers {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BlockHitRecipe>> BLOCK_HIT = RECIPE_SERIALIZERS.register("block_hit", BlockHitRecipe.Serializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<AlloyingRecipe>> ALLOYING = RECIPE_SERIALIZERS.register("alloying", AlloyingRecipe.Serializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<HammeringRecipe>> HAMMERING = RECIPE_SERIALIZERS.register("hammering", HammeringRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<RemainingPartShapelessRecipe>> REMAINING_PART_SHAPELESS = RECIPE_SERIALIZERS.register("remaining_part_shapeless_crafting", RemainingPartShapelessRecipe.Serializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<RemainingShapelessRecipe>> REMAINING_SHAPELESS = RECIPE_SERIALIZERS.register("remaining_shapeless_crafting", RemainingShapelessRecipe.Serializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<RemainingShapedRecipe>> REMAINING_SHAPED = RECIPE_SERIALIZERS.register("remaining_shaped_crafting", RemainingShapedRecipe.Serializer::new);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<PotteryRecipe>> POTTERY = RECIPE_SERIALIZERS.register("pottery", PotteryRecipe.Serializer::new);

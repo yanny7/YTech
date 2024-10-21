@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "ytech:remaining_shapeless_crafting",
   "category": "equipment",
   "ingredients": [
     {
       "item": "minecraft:stick"
     },
     {
-      "tag": "ytech:parts/axe_head/copper"
+      "tag": "ytech:parts/axe_heads/copper"
     },
     {
       "tag": "ytech:hammers"

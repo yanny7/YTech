@@ -20,7 +20,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class SpearRenderer extends EntityRenderer<Entity> {
+public class SpearRenderer extends EntityRenderer<SpearEntity> {
     private final SpearModel model;
 
     public SpearRenderer(@NotNull EntityRendererProvider.Context context, ModelLayerLocation layerLocation) {
@@ -28,19 +28,19 @@ public class SpearRenderer extends EntityRenderer<Entity> {
         this.model = new SpearModel(context.bakeLayer(layerLocation));
     }
 
-    public void render(@NotNull Entity entity, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
+    public void render(@NotNull SpearEntity entity, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0F));
         VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(buffer, this.model.renderType(this.getTextureLocation(entity)),
-                false, ((SpearEntity)entity).isFoil());
+                false, entity.isFoil());
         this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 0xffffffff);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
     @NotNull
-    public ResourceLocation getTextureLocation(@NotNull Entity entity) {
+    public ResourceLocation getTextureLocation(@NotNull SpearEntity entity) {
         return SpearType.TEXTURE_LOCATION;
     }
 }

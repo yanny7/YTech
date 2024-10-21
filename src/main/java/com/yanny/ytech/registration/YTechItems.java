@@ -103,9 +103,10 @@ public class YTechItems {
     public static final DeferredItem<Item> WOOLLY_MAMMOTH_SPAWN_EGG = ITEMS.register("woolly_mammoth_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_MAMMOTH, 0x8a4a71, 0x6cc8ab, new Item.Properties()));
     public static final DeferredItem<Item> WOOLLY_RHINO_SPAWN_EGG = ITEMS.register("woolly_rhino_spawn_egg", () -> new DeferredSpawnEggItem(YTechEntityTypes.WOOLLY_RHINO, 0x04b53a, 0x2f7415, new Item.Properties()));
 
-    public static final TypedItem<PartType> MOLDS = new PartItem("mold", NameHolder.suffix("mold"), () -> new Item(new Item.Properties().durability(17)));
+    public static final TypedItem<PartType> MOLDS = new PartItem("mold", NameHolder.suffix("mold"), () -> new Item(new Item.Properties().durability(16)));
     public static final TypedItem<PartType> PATTERNS = new PartItem("pattern", NameHolder.suffix("pattern"), YTechItems::simpleItem);
-    public static final TypedItem<PartType> UNFIRED_MOLDS = new PartItem("unfired_mold", NameHolder.both("unfired", "mold"), () -> new Item(new Item.Properties().durability(16)));
+    public static final TypedItem<PartType> SAND_MOLDS = new PartItem("sand_mold", NameHolder.suffix("sand_mold"), YTechItems::simpleItem);
+    public static final TypedItem<PartType> UNFIRED_MOLDS = new PartItem("unfired_mold", NameHolder.both("unfired", "mold"), YTechItems::simpleItem);
 
     public static final MultiTypedItem<MaterialType, PartType> PARTS = new MaterialPartItem("part", Utils.exclude(MaterialType.ALL_METALS, MaterialType.IRON), PartType.ALL_PARTS, NameHolder.suffix("part"), YTechItems::simpleItem);
 
@@ -168,20 +169,11 @@ public class YTechItems {
         return new Item(new Item.Properties());
     }
 
-    private static Item burnableSimpleItem(int burnTime) {
-        return new Item(new Item.Properties()) {
-            @Override
-            public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                return burnTime;
-            }
-        };
-    }
-
     private static Item burnableSimpleItem(@NotNull MaterialType material, int burnTime) {
         return new Item(new Item.Properties()) {
             @Override
             public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                return material == MaterialType.WOODEN ? burnTime : -1;
+                return material == MaterialType.WOODEN ? burnTime : 0;
             }
         };
     }

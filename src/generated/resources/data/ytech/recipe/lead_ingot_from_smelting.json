@@ -1,7 +1,7 @@
 {
   "type": "ytech:smelting",
   "ingredient": {
-    "tag": "forge:crushed_materials/galena"
+    "tag": "c:crushed_materials/galena"
   },
   "inputCount": 1,
   "minTemp": 1114,

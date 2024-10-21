@@ -1,0 +1,16 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "inputCount": 3,
+  "minTemp": 913,
+  "mold": {
+    "tag": "ytech:sand_molds/axe_head"
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:bronze_axe_head_part"
+  },
+  "smeltingTime": 600
+}

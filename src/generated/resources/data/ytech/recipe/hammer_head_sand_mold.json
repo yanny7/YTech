@@ -1,0 +1,16 @@
+{
+  "type": "ytech:remaining_part_shapeless_crafting",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:sand"
+    },
+    {
+      "tag": "ytech:parts/hammer_heads"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:hammer_head_sand_mold"
+  }
+}
