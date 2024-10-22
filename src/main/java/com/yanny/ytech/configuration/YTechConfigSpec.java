@@ -39,6 +39,7 @@ public class YTechConfigSpec {
 
     private final ModConfigSpec.ConfigValue<Integer> minBreedingGenerations;
     private final ModConfigSpec.DoubleValue domesticChance;
+    private final ModConfigSpec.BooleanValue removeVanillaMobs;
 
     public YTechConfigSpec(@NotNull ModConfigSpec.Builder builder) {
         builder.push("general");
@@ -94,6 +95,9 @@ public class YTechConfigSpec {
                     .worldRestart().defineInRange("minBreedingGenerations", 3, 1, Integer.MAX_VALUE);
             domesticChance = builder.comment("Chance for domestic animal breeding result, multiplied by each generation after minBreedingGenerations")
                     .worldRestart().defineInRange("domesticChance", 0.2, Double.MIN_NORMAL, 1.0);
+            removeVanillaMobs = builder.comment("If remove vanilla mobs spawning (sheeps, cows, chickens and pigs)")
+                    .worldRestart().define("removeVanillaMobs", true);
+        builder.pop();
     }
 
     public boolean shouldRequireValidTool() {
@@ -171,6 +175,10 @@ public class YTechConfigSpec {
 
     public double getDomesticChance() {
         return domesticChance.get();
+    }
+
+    public boolean removeVanillaMobs() {
+        return removeVanillaMobs.get();
     }
 
     @NotNull
