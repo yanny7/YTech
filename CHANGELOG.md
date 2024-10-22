@@ -14,6 +14,7 @@
 - Added Fire Pit cooking
 - Added configuration for removing vanilla mobs
 - Fixed random ConcurrentModificationException while startup
+- Changed Lava Clay Bucket to single-use
 
 ## [0.5.0]
 
