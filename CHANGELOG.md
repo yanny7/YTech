@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.6.0]
 
 - Added Bone Needle and changed leather armor and saddle recipe
 - Added Unlit Torch and changed recipe for Torch, Soul Torch, Campfire and Soul Campfire
