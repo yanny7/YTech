@@ -66,12 +66,12 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
-        ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
-                (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
-        YTechItems.SPEARS.values().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
-                (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
-
         event.enqueueWork(() -> {
+            ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
+                    (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
+            YTechItems.SPEARS.values().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
+                    (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
+
             MenuScreens.register(YTechMenuTypes.AQUEDUCT_FERTILIZER.get(), AqueductFertilizerScreen::new);
             MenuScreens.register(YTechMenuTypes.PRIMITIVE_ALLOY_SMELTER.get(), PrimitiveAlloySmelterScreen::new);
             MenuScreens.register(YTechMenuTypes.PRIMITIVE_SMELTER.get(), PrimitiveSmelterScreen::new);
@@ -160,10 +160,10 @@ public class ModBusSubscriber {
         event.register(YTechEntityTypes.WOOLLY_MAMMOTH.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(YTechEntityTypes.WOOLLY_RHINO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
-        event.register(EntityType.CHICKEN, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.COW, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.PIG, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EntityType.SHEEP, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(EntityType.CHICKEN, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(EntityType.COW, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(EntityType.PIG, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(EntityType.SHEEP, ModBusSubscriber::removeAnimalPredicate, SpawnPlacementRegisterEvent.Operation.AND);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -205,6 +205,6 @@ public class ModBusSubscriber {
     }
 
     public static boolean removeAnimalPredicate(EntityType<? extends Animal> pAnimal, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
-        return false;
+        return !YTechMod.CONFIGURATION.removeVanillaMobs();
     }
 }

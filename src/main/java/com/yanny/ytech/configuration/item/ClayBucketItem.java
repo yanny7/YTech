@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.item;
 
+import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -118,6 +119,10 @@ public class ClayBucketItem extends BucketItem {
 
     @NotNull
     public static ItemStack getEmptySuccessItem(@NotNull ItemStack bucketItemStack, Player player) {
+        if (bucketItemStack.is(YTechItemTags.LAVA_BUCKETS) && !player.getAbilities().instabuild) {
+            return ItemStack.EMPTY;
+        }
+
         return !player.getAbilities().instabuild ? new ItemStack(YTechItems.CLAY_BUCKET.get()) : bucketItemStack;
     }
 }
