@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.6.0]
 
 - Added Bone Needle and changed leather armor and saddle recipe
 - Added Unlit Torch and changed recipe for Torch, Soul Torch, Campfire and Soul Campfire
@@ -12,6 +12,9 @@
 - Added KubeJS recipes integration
 - Modified Light Weighted Pressure Plate recipe
 - Added Fire Pit cooking
+- Added configuration for removing vanilla mobs
+- Fixed random ConcurrentModificationException while startup
+- Changed Lava Clay Bucket to single-use
 
 ## [0.5.1]
 
