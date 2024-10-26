@@ -25,6 +25,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
@@ -68,8 +69,8 @@ public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlloyingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addIngredients(recipe.ingredient1());
-        builder.addSlot(RecipeIngredientRole.INPUT, 21, 5).addIngredients(recipe.ingredient2());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addItemStacks(Arrays.stream(recipe.ingredient1().getItems()).peek(i -> i.setCount(recipe.ingredient1().count())).toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 21, 5).addItemStacks(Arrays.stream(recipe.ingredient2().getItems()).peek(i -> i.setCount(recipe.ingredient2().count())).toList());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 71,  23).addItemStack(recipe.result());
     }
 
