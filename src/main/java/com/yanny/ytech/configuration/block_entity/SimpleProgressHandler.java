@@ -87,6 +87,8 @@ class SimpleProgressHandler<R extends Recipe<Container>> {
     public void load(@NotNull CompoundTag tag) {
         if (tag.contains(TAG_ITEM)) {
             item = ItemStack.of(tag.getCompound(TAG_ITEM));
+        } else {
+            item = ItemStack.EMPTY;
         }
 
         if (tag.contains(TAG_TIME)) {
@@ -99,9 +101,7 @@ class SimpleProgressHandler<R extends Recipe<Container>> {
     }
 
     public void save(@NotNull CompoundTag tag) {
-        CompoundTag itemTag = new CompoundTag();
-        item.save(itemTag);
-        tag.put(TAG_ITEM, itemTag);
+        tag.put(TAG_ITEM, item.save(new CompoundTag()));
         tag.putFloat(TAG_TIME, cookingProgress);
         tag.putInt(TAG_TOTAL_TIME, cookingTime);
     }
