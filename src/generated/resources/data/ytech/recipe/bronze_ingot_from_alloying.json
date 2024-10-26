@@ -1,14 +1,12 @@
 {
   "type": "ytech:alloying",
   "ingredient1": {
-    "type": "ytech:ingredient",
     "count": 9,
     "ingredient": {
       "tag": "c:ingots/copper"
     }
   },
   "ingredient2": {
-    "type": "ytech:ingredient",
     "count": 1,
     "ingredient": {
       "tag": "c:ingots/tin"
