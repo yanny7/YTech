@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.6.1]
 
 - Fixed item duplication in FirePit and Drying Rack
 
