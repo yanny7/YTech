@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed item duplication in FirePit and Drying Rack
+
 ## [0.6.0]
 
 - Added Bone Needle and changed leather armor and saddle recipe

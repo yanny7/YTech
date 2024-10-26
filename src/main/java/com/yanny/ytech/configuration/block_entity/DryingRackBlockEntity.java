@@ -54,6 +54,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
                 progressHandler.setupCrafting(level, holdingItemStack, DryingRecipe::dryingTime);
             } else {
                 Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
+                progressHandler.clear();
             }
 
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
