@@ -1,20 +1,8 @@
 {
   "values": [
-    "minecraft:windswept_forest",
-    "minecraft:old_growth_birch_forest",
-    "minecraft:old_growth_pine_taiga",
-    "minecraft:old_growth_spruce_taiga",
-    "minecraft:wooded_badlands",
-    "minecraft:snowy_taiga",
-    "minecraft:meadow",
-    "minecraft:snowy_slopes",
-    "minecraft:windswept_hills",
-    "minecraft:taiga",
-    "minecraft:sparse_jungle",
-    "minecraft:swamp",
-    "minecraft:plains",
-    "minecraft:sunflower_plains",
-    "minecraft:snowy_plains",
-    "minecraft:ice_spikes"
+    "#minecraft:is_taiga",
+    "#minecraft:is_savanna",
+    "#minecraft:is_hill",
+    "#minecraft:is_badlands"
   ]
 }
