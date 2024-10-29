@@ -3,6 +3,7 @@
 ## []
 
 - Changed mob spawn biomes
+- Fixed blocks not correctly saving state
 
 ## [0.6.1]
 

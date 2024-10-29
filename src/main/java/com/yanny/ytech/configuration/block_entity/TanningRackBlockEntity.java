@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,7 +63,7 @@ public class TanningRackBlockEntity extends BlockEntity {
             }
 
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            level.blockEntityChanged(pos);
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
