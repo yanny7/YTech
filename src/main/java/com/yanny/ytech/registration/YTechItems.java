@@ -71,6 +71,7 @@ public class YTechItems {
     public static final RegistryObject<Item> AQUEDUCT_VALVE = ITEMS.register("aqueduct_valve", YTechItems::aqueductValveBlockItem);
     public static final RegistryObject<Item> BRICK_CHIMNEY = ITEMS.register("brick_chimney", () -> descriptionItem(YTechBlocks.BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> BRONZE_ANVIL = ITEMS.register("bronze_anvil", () -> blockItem(YTechBlocks.BRONZE_ANVIL));
+    public static final RegistryObject<Item> CRAFTING_WORKSPACE = ITEMS.register("crafting_workspace", () -> descriptionItem(YTechBlocks.CRAFTING_WORKSPACE, List.of(Component.translatable("text.ytech.hover.crafting_workbench1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench3").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> FIRE_PIT = ITEMS.register("fire_pit", YTechItems::firePitBlockItem);
     public static final RegistryObject<Item> GRASS_BED = ITEMS.register("grass_bed", YTechItems::grassBedBlockItem);
     public static final RegistryObject<Item> MILLSTONE = ITEMS.register("millstone", () -> descriptionItem(YTechBlocks.MILLSTONE, List.of(Component.translatable("text.ytech.hover.millstone").withStyle(DARK_GRAY))));
@@ -374,6 +375,7 @@ public class YTechItems {
             super("boots", NameHolder.suffix("boots"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::bootsItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_BOOTS), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_BOOTS), ForgeRegistries.ITEMS));
+            items.put(MaterialType.LEATHER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.LEATHER_BOOTS), ForgeRegistries.ITEMS));
         }
     }
 
@@ -382,6 +384,7 @@ public class YTechItems {
             super("chestplate", NameHolder.suffix("chestplate"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::chestplateItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_CHESTPLATE), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_CHESTPLATE), ForgeRegistries.ITEMS));
+            items.put(MaterialType.LEATHER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.LEATHER_CHESTPLATE), ForgeRegistries.ITEMS));
         }
     }
 
@@ -390,6 +393,7 @@ public class YTechItems {
             super("helmet", NameHolder.suffix("helmet"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::helmetItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_HELMET), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_HELMET), ForgeRegistries.ITEMS));
+            items.put(MaterialType.LEATHER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.LEATHER_HELMET), ForgeRegistries.ITEMS));
         }
     }
 
@@ -415,6 +419,7 @@ public class YTechItems {
             super("leggings", NameHolder.suffix("leggings"), Utils.exclude(MaterialType.ALL_HARD_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::leggingsItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_LEGGINGS), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_LEGGINGS), ForgeRegistries.ITEMS));
+            items.put(MaterialType.LEATHER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.LEATHER_LEGGINGS), ForgeRegistries.ITEMS));
         }
     }
 
@@ -440,6 +445,7 @@ public class YTechItems {
             super("shovel", NameHolder.suffix("shovel"), Utils.exclude(MaterialType.ALL_METALS, MaterialType.GOLD, MaterialType.IRON), YTechItems::shovelItem);
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.GOLDEN_SHOVEL), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.IRON_SHOVEL), ForgeRegistries.ITEMS));
+            items.put(MaterialType.WOODEN, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.WOODEN_SHOVEL), ForgeRegistries.ITEMS));
         }
     }
 

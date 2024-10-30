@@ -1,0 +1,34 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "A": {
+      "item": "minecraft:torch"
+    },
+    "C": {
+      "tag": "forge:cobblestone/normal"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "SSS",
+      "SSS",
+      "SSS"
+    ],
+    "middle": [
+      "CCC",
+      "CAC",
+      "C C"
+    ],
+    "top": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ]
+  },
+  "result": {
+    "item": "minecraft:furnace"
+  }
+}

@@ -21,6 +21,7 @@ public class YTechRecipeTypes {
     public static final RegistryObject<RecipeType<PotteryRecipe>> POTTERY = create("pottery");
     public static final RegistryObject<RecipeType<SmeltingRecipe>> SMELTING = create("smelting");
     public static final RegistryObject<RecipeType<TanningRecipe>> TANNING = create("tanning");
+    public static final RegistryObject<RecipeType<WorkspaceCraftingRecipe>> WORKSPACE_CRAFTING = create("workspace_crafting");
 
     public static void register(IEventBus eventBus) {
         RECIPE_TYPES.register(eventBus);

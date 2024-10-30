@@ -77,6 +77,7 @@ public class YTechItemTags {
     public static final TagKey<Item> AQUEDUCT_VALVES = create(YTechBlockTags.AQUEDUCT_VALVES);
     public static final TagKey<Item> BRICK_CHIMNEYS = create(YTechBlockTags.BRICK_CHIMNEYS);
     public static final TagKey<Item> BRONZE_ANVILS = create(YTechBlockTags.BRONZE_ANVILS);
+    public static final TagKey<Item> CRAFTING_WORKSPACES = create(YTechBlockTags.CRAFTING_WORKSPACES);
     public static final TagKey<Item> FIRE_PITS = create(YTechBlockTags.FIRE_PITS);
     public static final TagKey<Item> GRASS_BEDS = create(YTechBlockTags.GRASS_BEDS);
     public static final TagKey<Item> MILLSTONES = create(YTechBlockTags.MILLSTONES);

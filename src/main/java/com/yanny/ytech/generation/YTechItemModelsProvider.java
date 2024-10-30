@@ -90,16 +90,16 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleTypedItem(YTechItems.ARROWS);
         simpleTypedItem(YTechItems.AXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         simpleTypedItem(YTechItems.BOLTS);
-        simpleTypedItem(YTechItems.BOOTS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
-        simpleTypedItem(YTechItems.CHESTPLATES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.BOOTS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
+        simpleTypedItem(YTechItems.CHESTPLATES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
         simpleTypedItem(YTechItems.CRUSHED_MATERIALS);
         simpleTypedItem(YTechItems.FILES, "item/handheld");
         simpleTypedItem(YTechItems.HAMMERS, "item/handheld");
-        simpleTypedItem(YTechItems.HELMETS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.HELMETS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
         simpleTypedItem(YTechItems.HOES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         simpleTypedItem(YTechItems.INGOTS, MaterialType.VANILLA_METALS, "item/generated");
         simpleTypedItem(YTechItems.KNIVES);
-        simpleTypedItem(YTechItems.LEGGINGS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.LEGGINGS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
         simpleTypedItem(YTechItems.MORTAR_AND_PESTLES);
         simpleTypedItem(YTechItems.PICKAXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         simpleTypedItem(YTechItems.PLATES);
@@ -107,7 +107,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleTypedItem(YTechItems.RODS);
         simpleTypedItem(YTechItems.SAWS, "item/handheld");
         simpleTypedItem(YTechItems.SAW_BLADES);
-        simpleTypedItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
+        simpleTypedItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.WOODEN), "item/handheld");
         spearItem();
         simpleTypedItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
     }
