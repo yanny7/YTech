@@ -5,7 +5,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:planks"
+            "items": [
+              "minecraft:smooth_stone"
+            ]
           }
         ]
       },
@@ -13,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:smithing_table"
+        "recipe": "ytech:stonecutter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:smithing_table"
+      "ytech:stonecutter"
     ]
   },
   "sends_telemetry_event": false

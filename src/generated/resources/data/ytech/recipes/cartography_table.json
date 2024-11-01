@@ -1,0 +1,28 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "middle": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "top": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ]
+  },
+  "result": {
+    "item": "minecraft:cartography_table"
+  }
+}

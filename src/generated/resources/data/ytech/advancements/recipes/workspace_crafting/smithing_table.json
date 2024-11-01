@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:planks"
+            "tag": "forge:ingots/copper"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:barrel"
+        "recipe": "ytech:smithing_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:barrel"
+      "ytech:smithing_table"
     ]
   },
   "sends_telemetry_event": false

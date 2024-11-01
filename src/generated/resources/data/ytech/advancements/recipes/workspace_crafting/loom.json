@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crafting_table"
+        "recipe": "ytech:loom"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:crafting_table"
+      "ytech:loom"
     ]
   },
   "sends_telemetry_event": false

@@ -1,0 +1,31 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "middle": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "top": [
+      "LLL",
+      "LLL",
+      "LLL"
+    ]
+  },
+  "result": {
+    "item": "minecraft:crafting_table"
+  }
+}

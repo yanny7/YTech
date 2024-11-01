@@ -5,7 +5,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:plates/wooden"
+            "items": [
+              "minecraft:smooth_stone"
+            ]
           }
         ]
       },
@@ -13,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:chest"
+        "recipe": "ytech:grindstone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:chest"
+      "ytech:grindstone"
     ]
   },
   "sends_telemetry_event": false

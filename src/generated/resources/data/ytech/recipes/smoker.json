@@ -6,26 +6,29 @@
     },
     "C": {
       "tag": "forge:cobblestone/normal"
+    },
+    "L": {
+      "tag": "minecraft:logs"
     }
   },
   "pattern": {
     "bottom": [
+      "LCL",
       "CCC",
-      "CCC",
-      "CCC"
+      "LCL"
     ],
     "middle": [
-      "CCC",
+      "LCL",
       "CAC",
-      "C C"
+      "L L"
     ],
     "top": [
-      "CCC",
-      "CCC",
-      "CCC"
+      "LCL",
+      "C C",
+      "LCL"
     ]
   },
   "result": {
-    "item": "minecraft:furnace"
+    "item": "minecraft:smoker"
   }
 }

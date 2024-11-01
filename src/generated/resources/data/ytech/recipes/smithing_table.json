@@ -1,23 +1,23 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
-    "A": {
-      "item": "minecraft:campfire"
-    },
     "C": {
-      "tag": "forge:cobblestone/normal"
+      "tag": "forge:storage_blocks/copper"
+    },
+    "P": {
+      "tag": "minecraft:planks"
     }
   },
   "pattern": {
     "bottom": [
-      "CCC",
-      "CCC",
-      "CCC"
+      "CPC",
+      "PPP",
+      "CPC"
     ],
     "middle": [
-      "CCC",
-      "CAC",
-      "C C"
+      "CPC",
+      "PPP",
+      "CPC"
     ],
     "top": [
       "CCC",
@@ -26,6 +26,6 @@
     ]
   },
   "result": {
-    "item": "minecraft:furnace"
+    "item": "minecraft:smithing_table"
   }
 }

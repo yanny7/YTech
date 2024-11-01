@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cobblestone": {
+    "has_item": {
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:stone_crafting_materials"
+            "tag": "minecraft:planks"
           }
         ]
       },
@@ -13,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:furnace"
+        "recipe": "ytech:cartography_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_cobblestone",
+      "has_item",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:furnace"
+      "ytech:cartography_table"
     ]
   },
   "sends_telemetry_event": false

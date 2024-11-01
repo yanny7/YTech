@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:fletching_table"
+        "recipe": "ytech:chest"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:fletching_table"
+      "ytech:chest"
     ]
   },
   "sends_telemetry_event": false

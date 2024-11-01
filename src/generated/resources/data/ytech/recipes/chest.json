@@ -1,11 +1,8 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
-    "A": {
-      "item": "minecraft:campfire"
-    },
     "C": {
-      "tag": "forge:cobblestone/normal"
+      "tag": "minecraft:planks"
     }
   },
   "pattern": {
@@ -16,8 +13,8 @@
     ],
     "middle": [
       "CCC",
-      "CAC",
-      "C C"
+      "C C",
+      "CCC"
     ],
     "top": [
       "CCC",
@@ -26,6 +23,6 @@
     ]
   },
   "result": {
-    "item": "minecraft:furnace"
+    "item": "minecraft:chest"
   }
 }
