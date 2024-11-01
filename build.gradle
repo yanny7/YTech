@@ -190,6 +190,9 @@ repositories {
             includeGroup "dev.latvian.mods"
         }
     }
+    maven {
+        url = "https://repo1.maven.org/maven2/"
+    }
 }
 
 dependencies {
@@ -199,6 +202,8 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.neoforged:forge:${minecraft_version}-${neoforge_version}"
+
+    minecraftLibrary "org.objenesis:objenesis:3.4"
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

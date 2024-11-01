@@ -125,7 +125,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
     }
 
     public static int getIndex(int @Nullable [] position) {
-        if (position != null) {
+        if (validPosition(position)) {
             return position[1] * 9 + position[2] * 3 + position[0];
         } else {
             return -1;
@@ -161,6 +161,10 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
         } else {
             return null;
         }
+    }
+
+    public static boolean validPosition(int @Nullable [] position) {
+        return position != null && position[0] >= 0 && position[0] < 3 && position[1] >= 0 && position[1] < 3 && position[2] >= 0 && position[2] < 3;
     }
 
     private static VoxelShape prepareShape(int bitmask) {

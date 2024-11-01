@@ -14,20 +14,27 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
+import org.objenesis.Objenesis;
+import org.objenesis.ObjenesisStd;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWorkspaceBlockEntity> {
-    private static final FakeCraftingWorkspaceLevel fakeLevel = new FakeCraftingWorkspaceLevel();
+    private static final FakeCraftingWorkspaceLevel FAKE_LEVEL;
 
-    public CraftingWorkspaceRenderer(BlockEntityRendererProvider.Context context) {
+    static {
+        Objenesis objenesis = new ObjenesisStd();
+        ObjectInstantiator<FakeCraftingWorkspaceLevel> instantiator = objenesis.getInstantiatorOf(FakeCraftingWorkspaceLevel.class);
+        FAKE_LEVEL = instantiator.newInstance();
+        FAKE_LEVEL.init();
     }
+
+    public CraftingWorkspaceRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
     public void render(@NotNull CraftingWorkspaceBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
@@ -40,9 +47,9 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
             int bitmask = blockEntity.getBitmask();
             int i = 0;
             NonNullList<ItemStack> items = blockEntity.getItems();
+            NonNullList<BlockState> states = blockEntity.getBlockStates();
 
-            fakeLevel.setData(blockEntity.getBlockPos(), level, items);
-
+            FAKE_LEVEL.setData(blockEntity.getBlockPos(), level, items, states);
             ModelBlockRenderer.enableCaching();
 
             for (int y = 0; y < 3; y++) {
@@ -52,12 +59,11 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                             int[] position = CraftingWorkspaceBlock.getPosition(i);
                             ItemStack itemStack = items.get(i);
 
-                            if (position == null || itemStack.isEmpty() || !(itemStack.getItem() instanceof BlockItem blockItem)) {
+                            if (position == null || itemStack.isEmpty()) {
                                 continue;
                             }
 
-                            Block block = blockItem.getBlock();
-                            BlockState state = block.defaultBlockState();
+                            BlockState state = states.get(i);
                             BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
 
                             poseStack.pushPose();
@@ -68,7 +74,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                             for (RenderType renderType : model.getRenderTypes(state, RandomSource.create(state.getSeed(pos)), ModelData.EMPTY)) {
                                 VertexConsumer vertexConsumer = buffer.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType));
                                 Minecraft.getInstance().getBlockRenderer().getModelRenderer()
-                                        .tesselateBlock(fakeLevel, model, state, pos, poseStack, vertexConsumer, true,
+                                        .tesselateBlock(FAKE_LEVEL, model, state, pos, poseStack, vertexConsumer, true,
                                                 RandomSource.create(), state.getSeed(pos), packedOverlay, ModelData.EMPTY, renderType);
                             }
 
@@ -80,6 +86,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                 }
             }
 
+            FAKE_LEVEL.clearData();
             ModelBlockRenderer.clearCache();
         }
 
