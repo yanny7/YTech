@@ -2,13 +2,11 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveAlloySmelterBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
+import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -53,12 +51,18 @@ public class PrimitiveAlloySmelterBlock extends AbstractPrimitiveMachineBlock {
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get())
-                .define('B', Items.BRICKS)
-                .define('S', YTechItemTags.PRIMITIVE_SMELTERS)
-                .pattern("BBB")
-                .pattern("SBS")
-                .pattern("BBB")
+        WorkspaceCraftingRecipe.Builder.recipe(YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get())
+                .define('A', Items.FURNACE)
+                .define('C', Items.BRICKS)
+                .bottomPattern("CCC")
+                .bottomPattern("CCC")
+                .bottomPattern("CCC")
+                .middlePattern("CCC")
+                .middlePattern("AAA")
+                .middlePattern("C C")
+                .topPattern("CCC")
+                .topPattern("C C")
+                .topPattern("CCC")
                 .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
                 .save(recipeConsumer, Utils.modLoc(YTechBlocks.PRIMITIVE_ALLOY_SMELTER));
     }

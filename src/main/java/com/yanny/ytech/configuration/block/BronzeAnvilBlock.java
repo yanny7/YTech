@@ -3,14 +3,13 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
+import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -199,12 +198,17 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.BRONZE_ANVIL.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechBlocks.BRONZE_ANVIL.get())
                 .define('B', YTechItemTags.STORAGE_BLOCKS.get(MaterialType.BRONZE))
-                .define('I', YTechItemTags.INGOTS.get(MaterialType.BRONZE))
-                .pattern("BBB")
-                .pattern(" I ")
-                .pattern("III")
+                .bottomPattern(" B ")
+                .bottomPattern("BBB")
+                .bottomPattern(" B ")
+                .middlePattern("   ")
+                .middlePattern(" B ")
+                .middlePattern("   ")
+                .topPattern("BBB")
+                .topPattern("BBB")
+                .topPattern("BBB")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(MaterialType.BRONZE)))
                 .save(recipeConsumer, Utils.modLoc(YTechBlocks.BRONZE_ANVIL));
     }

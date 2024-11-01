@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.objenesis.Objenesis;
@@ -76,7 +77,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                                 BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
 
                                 for (RenderType renderType : model.getRenderTypes(state, RandomSource.create(state.getSeed(pos)), ModelData.EMPTY)) {
-                                    VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
+                                    VertexConsumer vertexConsumer = buffer.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType));
                                     Minecraft.getInstance().getBlockRenderer().getModelRenderer()
                                             .tesselateBlock(FAKE_LEVEL, model, state, pos, poseStack, vertexConsumer, true,
                                                     RandomSource.create(), state.getSeed(pos), packedOverlay, ModelData.EMPTY, renderType);

@@ -6,6 +6,9 @@
     },
     "P": {
       "item": "minecraft:smooth_stone"
+    },
+    "S": {
+      "tag": "ytech:saw_blades"
     }
   },
   "pattern": {
@@ -21,7 +24,7 @@
     ],
     "top": [
       "   ",
-      "   ",
+      " S ",
       "   "
     ]
   },

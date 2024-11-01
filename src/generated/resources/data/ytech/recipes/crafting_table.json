@@ -2,7 +2,7 @@
   "type": "ytech:workspace_crafting",
   "key": {
     "L": {
-      "tag": "minecraft:logs"
+      "item": "minecraft:leather"
     },
     "P": {
       "tag": "minecraft:planks"
@@ -20,9 +20,9 @@
       "PPP"
     ],
     "top": [
-      "LLL",
-      "LLL",
-      "LLL"
+      "   ",
+      " L ",
+      "   "
     ]
   },
   "result": {

@@ -1690,7 +1690,7 @@ class YTechRecipeProvider extends RecipeProvider {
 
     private static void wcCraftingTableRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(Items.CRAFTING_TABLE)
-                .define('L', ItemTags.LOGS)
+                .define('L', Items.LEATHER)
                 .define('P', ItemTags.PLANKS)
                 .bottomPattern("PPP")
                 .bottomPattern("PPP")
@@ -1698,9 +1698,9 @@ class YTechRecipeProvider extends RecipeProvider {
                 .middlePattern("PPP")
                 .middlePattern("PPP")
                 .middlePattern("PPP")
-                .topPattern("LLL")
-                .topPattern("LLL")
-                .topPattern("LLL")
+                .topPattern("   ")
+                .topPattern(" L ")
+                .topPattern("   ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.modLoc(Items.CRAFTING_TABLE));
     }
@@ -1709,6 +1709,7 @@ class YTechRecipeProvider extends RecipeProvider {
         WorkspaceCraftingRecipe.Builder.recipe(Items.STONECUTTER)
                 .define('L', ItemTags.LOGS)
                 .define('P', Items.SMOOTH_STONE)
+                .define('S', YTechItemTags.SAW_BLADES.tag)
                 .bottomPattern("LPL")
                 .bottomPattern("PPP")
                 .bottomPattern("LPL")
@@ -1716,7 +1717,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .middlePattern("PPP")
                 .middlePattern("LPL")
                 .topPattern("   ")
-                .topPattern("   ")
+                .topPattern(" S ")
                 .topPattern("   ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(Items.SMOOTH_STONE))
                 .save(recipeConsumer, Utils.modLoc(Items.STONECUTTER));
@@ -1759,15 +1760,16 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void wcCartographyTableRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(Items.CARTOGRAPHY_TABLE)
                 .define('P', ItemTags.PLANKS)
+                .define('M', Items.MAP)
                 .bottomPattern("PPP")
                 .bottomPattern("PPP")
                 .bottomPattern("PPP")
                 .middlePattern("PPP")
                 .middlePattern("PPP")
                 .middlePattern("PPP")
-                .topPattern("PPP")
-                .topPattern("PPP")
-                .topPattern("PPP")
+                .topPattern("   ")
+                .topPattern(" M ")
+                .topPattern("   ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.modLoc(Items.CARTOGRAPHY_TABLE));
     }
@@ -1775,7 +1777,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void wcSmithingTableRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(Items.SMITHING_TABLE)
                 .define('P', ItemTags.PLANKS)
-                .define('C', Tags.Items.STORAGE_BLOCKS_COPPER)
+                .define('C', YTechItemTags.STORAGE_BLOCKS.get(IRON))
                 .bottomPattern("CPC")
                 .bottomPattern("PPP")
                 .bottomPattern("CPC")
@@ -1785,7 +1787,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .topPattern("CCC")
                 .topPattern("CCC")
                 .topPattern("CCC")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(COPPER)))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(IRON)))
                 .save(recipeConsumer, Utils.modLoc(Items.SMITHING_TABLE));
     }
 

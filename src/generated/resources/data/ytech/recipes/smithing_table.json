@@ -2,7 +2,7 @@
   "type": "ytech:workspace_crafting",
   "key": {
     "C": {
-      "tag": "forge:storage_blocks/copper"
+      "tag": "forge:storage_blocks/iron"
     },
     "P": {
       "tag": "minecraft:planks"
