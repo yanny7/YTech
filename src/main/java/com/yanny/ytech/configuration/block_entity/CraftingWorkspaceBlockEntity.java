@@ -73,22 +73,24 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
             BlockPos fakePos = new BlockPos(pos[0] + 1, pos[1] + 1, pos[2] + 1);
             boolean wasChange = false;
 
-            if ((bitmask >> index & 1) == 0 && !itemStack.isEmpty() && itemStack.getItem() instanceof BlockItem blockItem) {
+            if ((bitmask >> index & 1) == 0 && !itemStack.isEmpty() && !itemStack.is(YTechItemTags.HAMMERS.tag)) {
                 bitmask |= 1 << index;
 
-                FAKE_LEVEL.setData(pPos, pLevel, itemList, blockStates);
+                if (itemStack.getItem() instanceof BlockItem blockItem) {
+                    FAKE_LEVEL.setData(pPos, pLevel, itemList, blockStates);
 
-                Block block = blockItem.getBlock();
-                BlockHitResult hit = new BlockHitResult(pHit.getLocation(), pHit.getDirection(), fakePos, true);
-                BlockState state = block.getStateForPlacement(new BlockPlaceContext(FAKE_LEVEL, pPlayer, pHand, itemStack, hit));
+                    Block block = blockItem.getBlock();
+                    BlockHitResult hit = new BlockHitResult(pHit.getLocation(), pHit.getDirection(), fakePos, true);
+                    BlockState state = block.getStateForPlacement(new BlockPlaceContext(FAKE_LEVEL, pPlayer, pHand, itemStack, hit));
 
-                if (state == null) {
-                    state = block.defaultBlockState();
+                    if (state == null) {
+                        state = block.defaultBlockState();
+                    }
+
+                    blockStates.set(index, state);
+                    updateNeighbors(state, pos, fakePos);
+                    FAKE_LEVEL.clearData();
                 }
-
-                blockStates.set(index, state);
-                updateNeighbors(state, pos, fakePos);
-                FAKE_LEVEL.clearData();
 
                 itemList.set(index, itemStack.split(1));
                 wasChange = true;
@@ -209,7 +211,6 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
                 if (neighborIndex >= 0 && neighborIndex < 27) {
                     if (itemList.get(neighborIndex).getItem() instanceof BlockItem neighborBlock) {
                         blockStates.set(neighborIndex, neighborBlock.getBlock().updateShape(blockStates.get(neighborIndex), value.getOpposite(), state, FAKE_LEVEL, fakePos.offset(value.getNormal()), fakePos));
-
                     }
                 }
             }

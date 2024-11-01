@@ -23,7 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -33,7 +32,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -154,17 +152,6 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
             String[][] pattern = patternFromJson(GsonHelper.getAsJsonObject(pJson, "pattern"));
             NonNullList<Ingredient> ingredients = dissolvePattern(pattern, keys);
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
-
-            if (!(result.getItem() instanceof BlockItem)) {
-                throw new JsonSyntaxException("Result isn't BlockItem");
-            }
-
-            ingredients.forEach((i) -> Arrays.stream(i.getItems()).forEach(itemStack -> {
-                if (!(itemStack.getItem() instanceof BlockItem)) {
-                    throw new JsonSyntaxException("Ingredient " + itemStack + " isn't BlockItem");
-                }
-            }));
-
             return new WorkspaceCraftingRecipe(recipeId, ingredients, result);
         }
 
