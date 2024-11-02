@@ -80,7 +80,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         spawnEggModel(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG);
         spawnEggModel(YTechItems.WOOLLY_RHINO_SPAWN_EGG);
 
-        simpleTypedItem(YTechItems.MOLDS);
+        simpleTypedItem(YTechItems.CLAY_MOLDS);
         simpleTypedItem(YTechItems.PATTERNS);
         simpleTypedItem(YTechItems.SAND_MOLDS);
         simpleTypedItem(YTechItems.UNFIRED_MOLDS);
