@@ -114,7 +114,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
                 pLevel.blockEntityChanged(pPos);
                 return InteractionResult.CONSUME;
             }
-        } else if (itemStack.is(YTechItemTags.HAMMERS.tag)) {
+        } else if (itemStack.is(YTechItemTags.SHARP_FLINTS)) {
             return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit);
         }
 
