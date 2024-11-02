@@ -1,17 +1,6 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
-  "group": "drying_rack_wooden",
+  "type": "ytech:workspace_crafting",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "F": {
-      "tag": "minecraft:axes"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
     "T": {
       "tag": "ytech:grass_twines"
     },
@@ -19,12 +8,25 @@
       "tag": "minecraft:acacia_logs"
     }
   },
-  "pattern": [
-    "TST",
-    "BFB",
-    "W W"
-  ],
+  "pattern": {
+    "bottom": [
+      "   ",
+      "W W",
+      "   "
+    ],
+    "middle": [
+      "   ",
+      "W W",
+      "   "
+    ],
+    "top": [
+      "   ",
+      "WTW",
+      "   "
+    ]
+  },
   "result": {
-    "item": "ytech:acacia_drying_rack"
+    "Count": 1,
+    "id": "ytech:acacia_drying_rack"
   }
 }

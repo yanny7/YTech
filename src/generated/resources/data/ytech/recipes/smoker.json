@@ -1,0 +1,35 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "A": {
+      "item": "minecraft:campfire"
+    },
+    "C": {
+      "tag": "forge:cobblestone/normal"
+    },
+    "L": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "LCL",
+      "CCC",
+      "LCL"
+    ],
+    "middle": [
+      "LCL",
+      "CAC",
+      "L L"
+    ],
+    "top": [
+      "LCL",
+      "C C",
+      "LCL"
+    ]
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:smoker"
+  }
+}

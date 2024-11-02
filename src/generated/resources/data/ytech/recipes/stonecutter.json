@@ -1,0 +1,35 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "P": {
+      "item": "minecraft:smooth_stone"
+    },
+    "S": {
+      "tag": "ytech:saw_blades"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "LPL",
+      "PPP",
+      "LPL"
+    ],
+    "middle": [
+      "LPL",
+      "PPP",
+      "LPL"
+    ],
+    "top": [
+      "   ",
+      " S ",
+      "   "
+    ]
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:stonecutter"
+  }
+}

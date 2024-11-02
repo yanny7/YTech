@@ -39,6 +39,9 @@ repositories {
             includeGroup "dev.latvian.mods"
         }
     }
+    maven {
+        url = "https://repo1.maven.org/maven2/"
+    }
 }
 
 base {
@@ -69,6 +72,10 @@ runs {
         // You can set various levels here.
         // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
         systemProperty 'forge.logging.console.level', 'debug'
+
+        dependencies {
+            runtime "org.objenesis:objenesis:3.4"
+        }
 
         modSource project.sourceSets.main
     }
@@ -111,6 +118,8 @@ dependencies {
     // And its provides the option to then use net.minecraft as the group, and one of; client, server or joined as the module name, plus the game version as version.
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
+
+    implementation "org.objenesis:objenesis:3.4"
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

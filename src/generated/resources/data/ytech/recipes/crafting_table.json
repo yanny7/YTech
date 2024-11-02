@@ -1,0 +1,32 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "middle": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "top": [
+      "   ",
+      " L ",
+      "   "
+    ]
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:crafting_table"
+  }
+}

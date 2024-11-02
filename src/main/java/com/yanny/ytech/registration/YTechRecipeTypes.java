@@ -21,6 +21,7 @@ public class YTechRecipeTypes {
     public static final DeferredHolder<RecipeType<?>, RecipeType<PotteryRecipe>> POTTERY = create("pottery");
     public static final DeferredHolder<RecipeType<?>, RecipeType<SmeltingRecipe>> SMELTING = create("smelting");
     public static final DeferredHolder<RecipeType<?>, RecipeType<TanningRecipe>> TANNING = create("tanning");
+    public static final DeferredHolder<RecipeType<?>, RecipeType<WorkspaceCraftingRecipe>> WORKSPACE_CRAFTING = create("workspace_crafting");
 
     public static void register(IEventBus eventBus) {
         RECIPE_TYPES.register(eventBus);

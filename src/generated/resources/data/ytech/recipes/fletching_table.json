@@ -1,0 +1,32 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "T": {
+      "item": "minecraft:target"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "middle": [
+      "PTP",
+      "PPP",
+      "PTP"
+    ],
+    "top": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ]
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:fletching_table"
+  }
+}

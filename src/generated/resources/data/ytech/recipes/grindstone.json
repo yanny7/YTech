@@ -1,0 +1,32 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      " L ",
+      "SSS",
+      " L "
+    ],
+    "middle": [
+      " L ",
+      "SSS",
+      " L "
+    ],
+    "top": [
+      "   ",
+      "SSS",
+      "   "
+    ]
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:grindstone"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "PPP",
+      "PPP",
+      "PPP"
+    ],
+    "middle": [
+      "PPP",
+      "P P",
+      "PPP"
+    ],
+    "top": [
+      "SSS",
+      "SSS",
+      "SSS"
+    ]
+  },
+  "result": {
+    "Count": 1,
+    "id": "minecraft:barrel"
+  }
+}

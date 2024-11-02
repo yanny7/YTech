@@ -77,6 +77,7 @@ public class YTechItemTags {
     public static final TagKey<Item> AQUEDUCT_VALVES = create(YTechBlockTags.AQUEDUCT_VALVES);
     public static final TagKey<Item> BRICK_CHIMNEYS = create(YTechBlockTags.BRICK_CHIMNEYS);
     public static final TagKey<Item> BRONZE_ANVILS = create(YTechBlockTags.BRONZE_ANVILS);
+    public static final TagKey<Item> CRAFTING_WORKSPACES = create(YTechBlockTags.CRAFTING_WORKSPACES);
     public static final TagKey<Item> FIRE_PITS = create(YTechBlockTags.FIRE_PITS);
     public static final TagKey<Item> GRASS_BEDS = create(YTechBlockTags.GRASS_BEDS);
     public static final TagKey<Item> MILLSTONES = create(YTechBlockTags.MILLSTONES);
@@ -126,6 +127,7 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> RAW_MATERIALS = new RawMaterialTag();
     public static final TypedTag<MaterialType> RODS = new MaterialTag("rods", YTechItems.RODS);
     public static final TypedTag<MaterialType> SAWS = new MaterialTag("saws", YTechItems.SAWS);
+    public static final TypedTag<MaterialType> SHEARS = new MaterialTag("shears", "forge", YTechItems.SHEARS);
     public static final TypedTag<MaterialType> SAW_BLADES = new MaterialTag("saw_blades", YTechItems.SAW_BLADES);
     public static final TypedTag<MaterialType> SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
     public static final TypedTag<MaterialType> SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
@@ -206,7 +208,7 @@ public class YTechItemTags {
         }
 
         public MaterialTag(String name, String namespace, YTechItems.TypedItem<MaterialType> item) {
-            this(name, namespace, create(name), item);
+            this(name, namespace, create(namespace, name), item);
         }
 
         public MaterialTag(String name, TagKey<Item> tag, YTechItems.TypedItem<MaterialType> item) {

@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,7 +58,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             }
 
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            level.blockEntityChanged(pos);
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -82,7 +81,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
         BiConsumer<Container, DryingRecipe> onFinish = (container, recipe) -> {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            level.blockEntityChanged(pos);
         };
 
         if (progressHandler.tick(level, canProcess, getStep, onFinish)) {

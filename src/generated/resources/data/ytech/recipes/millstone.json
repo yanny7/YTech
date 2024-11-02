@@ -1,23 +1,32 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
+  "type": "ytech:workspace_crafting",
   "key": {
-    "F": {
-      "tag": "ytech:sharp_flints"
-    },
     "S": {
-      "item": "minecraft:smooth_stone_slab"
+      "item": "minecraft:smooth_stone"
     },
     "W": {
       "tag": "minecraft:logs"
     }
   },
-  "pattern": [
-    "WF",
-    "S ",
-    "S "
-  ],
+  "pattern": {
+    "bottom": [
+      "SSS",
+      "SWS",
+      "SSS"
+    ],
+    "middle": [
+      "SSS",
+      "SWS",
+      "SSS"
+    ],
+    "top": [
+      "   ",
+      " W ",
+      "   "
+    ]
+  },
   "result": {
-    "item": "ytech:millstone"
+    "Count": 1,
+    "id": "ytech:millstone"
   }
 }

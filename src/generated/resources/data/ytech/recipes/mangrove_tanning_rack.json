@@ -1,17 +1,6 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
-  "group": "tanning_rack_wooden",
+  "type": "ytech:workspace_crafting",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "F": {
-      "tag": "minecraft:axes"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
     "T": {
       "tag": "ytech:grass_twines"
     },
@@ -19,12 +8,25 @@
       "tag": "minecraft:mangrove_logs"
     }
   },
-  "pattern": [
-    "TST",
-    "BFB",
-    "WSW"
-  ],
+  "pattern": {
+    "bottom": [
+      "   ",
+      "WTW",
+      "   "
+    ],
+    "middle": [
+      "   ",
+      "W W",
+      "   "
+    ],
+    "top": [
+      "   ",
+      "WTW",
+      "   "
+    ]
+  },
   "result": {
-    "item": "ytech:mangrove_tanning_rack"
+    "Count": 1,
+    "id": "ytech:mangrove_tanning_rack"
   }
 }

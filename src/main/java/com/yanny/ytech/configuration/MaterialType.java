@@ -74,6 +74,7 @@ public enum MaterialType implements IType {
     FLINT(new Builder("flint", "Flint", Tiers.STONE, ToolType.PICKAXE).color(0x666666)),
     ANTLER(new Builder("antler", "Antler", Tiers.STONE, ToolType.PICKAXE).color(0xFCFBED)),
     STONE(new Builder("stone", "Stone", Tiers.STONE, ToolType.PICKAXE).color(999999)),
+    LEATHER(new Builder("leather", "Leather", Tiers.STONE, ToolType.PICKAXE).color(888888)),
     ;
 
     public static final EnumSet<MaterialType> ALL_WOODS = EnumSet.of(ACACIA_WOOD, BIRCH_WOOD, CHERRY_WOOD, DARK_OAK_WOOD, JUNGLE_WOOD, MANGROVE_WOOD, OAK_WOOD, SPRUCE_WOOD);
