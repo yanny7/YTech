@@ -2,6 +2,7 @@
   "values": [
     "#minecraft:is_jungle",
     "#minecraft:is_savanna",
+    "#forge:is_plains",
     "#minecraft:is_forest"
   ]
 }

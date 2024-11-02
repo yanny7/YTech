@@ -3,6 +3,7 @@ package com.yanny.ytech.generation;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.IType;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.PartType;
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.HolderLookup;
@@ -123,10 +124,17 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.VENUS_OF_HOHLE_FELS).add(YTechItems.VENUS_OF_HOHLE_FELS.get());
         tag(YTechItemTags.WILD_HORSES).add(YTechItems.WILD_HORSE.get());
 
-        typedTag(YTechItems.MOLDS, YTechItemTags.MOLDS);
+        typedTag(YTechItems.CLAY_MOLDS, YTechItemTags.CLAY_MOLDS);
         typedTag(YTechItems.PATTERNS, YTechItemTags.PATTERNS);
         typedTag(YTechItems.SAND_MOLDS, YTechItemTags.SAND_MOLDS);
         typedTag(YTechItems.UNFIRED_MOLDS, YTechItemTags.UNFIRED_MOLDS);
+
+        PartType.ALL_PARTS.stream().sorted(Comparator.comparing(IType::key)).forEach((partType) -> {
+            tag(YTechItemTags.MOLDS.get(partType))
+                    .addTag(YTechItemTags.CLAY_MOLDS.get(partType))
+                    .addTag(YTechItemTags.SAND_MOLDS.get(partType));
+            tag(YTechItemTags.MOLDS.tag).addTag(YTechItemTags.MOLDS.get(partType));
+        });
 
         typedTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         typedTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));

@@ -3,6 +3,7 @@
     "#minecraft:is_taiga",
     "#minecraft:is_savanna",
     "#minecraft:is_forest",
+    "#forge:is_plains",
     "#minecraft:is_badlands"
   ]
 }

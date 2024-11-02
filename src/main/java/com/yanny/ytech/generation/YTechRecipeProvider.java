@@ -251,15 +251,12 @@ class YTechRecipeProvider extends RecipeProvider {
         registerShellBeadsRecipe(recipeConsumer);
         registerChloriteBraceletRecipe(recipeConsumer);
 
-        YTechItems.MOLDS.forEach((part, item) -> smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_MOLDS.get(part), item.get(), 1000, 200));
+        YTechItems.CLAY_MOLDS.forEach((part, item) -> smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_MOLDS.get(part), item.get(), 1000, 200));
         YTechItems.PATTERNS.forEach((type, item) -> registerPatternRecipe(recipeConsumer, item, type));
         YTechItems.SAND_MOLDS.forEach((type, item) -> registerSandMoldRecipe(recipeConsumer, item, type));
         YTechItems.UNFIRED_MOLDS.forEach((part, item) -> registerUnfiredMoldRecipe(recipeConsumer, item, part));
 
-        YTechItems.PARTS.forEach((material, map) -> map.forEach((part, item) -> {
-            smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.MOLDS.get(part), item.get(), material.meltingTemp, 200 * part.ingotCount, "mold");
-            smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.SAND_MOLDS.get(part), item.get(), material.meltingTemp, 200 * part.ingotCount, "sand_mold");
-        }));
+        YTechItems.PARTS.forEach((material, map) -> map.forEach((part, item) -> smeltingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(material), part.ingotCount, YTechItemTags.MOLDS.get(part), item.get(), material.meltingTemp, 200 * part.ingotCount, "mold")));
 
         YTechItems.ARROWS.forEach((material, item) -> registerArrowRecipe(recipeConsumer, item, material));
         YTechItems.AXES.forEach((material, item) -> registerAxeRecipe(recipeConsumer, item, material));
@@ -281,6 +278,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.RODS.forEach((material, item) -> registerRodRecipe(recipeConsumer, item, material));
         YTechItems.SAWS.forEach((material, item) -> registerSawRecipe(recipeConsumer, item, material));
         YTechItems.SAW_BLADES.forEach((material, item) -> registerSawBladeRecipe(recipeConsumer, item, material));
+        YTechItems.SHEARS.forEach((material, item) -> registerShearsRecipe(recipeConsumer, item, material));
         YTechItems.SHOVELS.forEach((material, item) -> registerShovelRecipe(recipeConsumer, item, material));
         YTechItems.SPEARS.forEach((material, item) -> registerSpearRecipe(recipeConsumer, item, material));
         YTechItems.SWORDS.forEach((key, item) -> registerSwordRecipe(recipeConsumer, item, key));
@@ -358,6 +356,7 @@ class YTechRecipeProvider extends RecipeProvider {
         wcGrindstoneRecipe(recipeConsumer);
         wcLoomRecipe(recipeConsumer);
         wcSmokerRecipe(recipeConsumer);
+        wcComposterRecipe(recipeConsumer);
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -386,10 +385,23 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.IRON_ORE);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
 
-        removeVanillaRecipe(recipeConsumer, Items.DECORATED_POT);
         removeVanillaRecipe(recipeConsumer, Items.FLOWER_POT);
         removeVanillaRecipe(recipeConsumer, Items.TORCH);
         removeVanillaRecipe(recipeConsumer, Items.SOUL_TORCH);
+        removeVanillaRecipe(recipeConsumer, Items.CRAFTING_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.FURNACE);
+        removeVanillaRecipe(recipeConsumer, Items.SMOKER);
+        removeVanillaRecipe(recipeConsumer, Items.FLETCHING_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.CARTOGRAPHY_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.STONECUTTER);
+        removeVanillaRecipe(recipeConsumer, Items.SMITHING_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.GRINDSTONE);
+        removeVanillaRecipe(recipeConsumer, Items.LOOM);
+        removeVanillaRecipe(recipeConsumer, Items.CHEST);
+        removeVanillaRecipe(recipeConsumer, Items.BARREL);
+        removeVanillaRecipe(recipeConsumer, Items.COMPOSTER);
+
+        SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(recipeConsumer, Utils.mcLoc("decorated_pot_simple").toString());
     }
 
     private void removeVanillaRecipe(@NotNull RecipeOutput recipeConsumer, Item item) {
@@ -1493,6 +1505,20 @@ class YTechRecipeProvider extends RecipeProvider {
                 .save(recipeConsumer, item.getId());
     }
 
+    private static void registerShearsRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
+                .define('#', YTechItemTags.PLATES.get(material))
+                .define('R', YTechItemTags.RODS.get(material))
+                .define('B', YTechItemTags.BOLTS.get(material))
+                .define('F', YTechItemTags.FILES.tag)
+                .define('L', YTechItemTags.LEATHER_STRIPS)
+                .pattern(" #F")
+                .pattern("RB#")
+                .pattern("LR ")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.get(material)))
+                .save(recipeConsumer, item.getId());
+    }
+
     private static void registerShovelRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
         if (material == WOODEN) {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
@@ -1840,5 +1866,21 @@ class YTechRecipeProvider extends RecipeProvider {
                 .topPattern("LCL")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.COBBLESTONE_NORMAL))
                 .save(recipeConsumer, Utils.modLoc(Items.SMOKER));
+    }
+
+    private static void wcComposterRecipe(RecipeOutput recipeConsumer) {
+        WorkspaceCraftingRecipe.Builder.recipe(Items.COMPOSTER)
+                .define('L', ItemTags.PLANKS)
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .middlePattern("LLL")
+                .middlePattern("L L")
+                .middlePattern("LLL")
+                .topPattern("LLL")
+                .topPattern("L L")
+                .topPattern("LLL")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.modLoc(Items.COMPOSTER));
     }
 }

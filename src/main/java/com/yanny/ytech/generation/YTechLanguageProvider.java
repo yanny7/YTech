@@ -102,7 +102,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH_SLAB, "Thatch Slab");
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
 
-        addTypedItem(YTechItems.MOLDS, NameHolder.suffix("Mold"), YTechLanguageProvider::getName);
+        addTypedItem(YTechItems.CLAY_MOLDS, NameHolder.suffix("Clay Mold"), YTechLanguageProvider::getName);
         addTypedItem(YTechItems.PATTERNS, NameHolder.suffix("Pattern"), YTechLanguageProvider::getName);
         addTypedItem(YTechItems.SAND_MOLDS, NameHolder.suffix("Sand Mold"), YTechLanguageProvider::getName);
         addTypedItem(YTechItems.UNFIRED_MOLDS, NameHolder.both("Unfired", "Mold"), YTechLanguageProvider::getName);

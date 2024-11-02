@@ -1,5 +1,6 @@
 {
   "values": [
-    "ytech:pickaxe_head_mold"
+    "#ytech:clay_molds/pickaxe_head",
+    "#ytech:sand_molds/pickaxe_head"
   ]
 }

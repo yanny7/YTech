@@ -103,10 +103,12 @@ public class YTechItemTags {
     public static final TagKey<Item> VENUS_OF_HOHLE_FELS = create("venus_of_hohle_fels");
     public static final TagKey<Item> WILD_HORSES = create("wild_horse");
 
-    public static final TypedTag<PartType> MOLDS = new PartTag("molds", YTechItems.MOLDS);
+    public static final TypedTag<PartType> CLAY_MOLDS = new PartTag("clay_molds", YTechItems.CLAY_MOLDS);
     public static final TypedTag<PartType> PATTERNS = new PartTag("patterns", YTechItems.PATTERNS);
     public static final TypedTag<PartType> SAND_MOLDS = new PartTag("sand_molds", YTechItems.SAND_MOLDS);
     public static final TypedTag<PartType> UNFIRED_MOLDS = new PartTag("unfired_molds", YTechItems.UNFIRED_MOLDS);
+
+    public static final TypedTag<PartType> MOLDS = new PartTag("molds", PartType.ALL_PARTS);
 
     public static final TypedTag<MaterialType> ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
     public static final TypedTag<MaterialType> AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
@@ -200,6 +202,10 @@ public class YTechItemTags {
         public PartTag(String name, YTechItems.TypedItem<PartType> item) {
             super(name, YTechMod.MOD_ID, create(name), EnumSet.copyOf(item.keySet()), (type) -> type.key);
         }
+
+        public PartTag(String name, EnumSet<PartType> parts) {
+            super(name, YTechMod.MOD_ID, create(name), parts, (type) -> type.key);
+        }
     }
 
     public static class MaterialTag extends TypedTag<MaterialType> {
@@ -235,7 +241,7 @@ public class YTechItemTags {
     private static class MaterialPartTag extends MultiTypedTag<MaterialType, PartType> {
         public MaterialPartTag(String name, YTechItems.MultiTypedItem<MaterialType, PartType> multiTypedItem) {
             super(create(name));
-            for (PartType part : PartType.ALL_PARTS) {
+            for (PartType part : Utils.exclude(PartType.ALL_PARTS, PartType.INGOT)) {
                 for (MaterialType material : multiTypedItem.keySet()) {
                     tags.computeIfAbsent(material, (t) -> new HashMap<>()).put(part, ItemTags.create(Utils.modLoc(name + "/" + part.key + "s/" + material.key)));
                 }
