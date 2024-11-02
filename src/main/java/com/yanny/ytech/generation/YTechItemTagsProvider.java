@@ -148,6 +148,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         typedTag(YTechItems.RODS, YTechItemTags.RODS);
         typedTag(YTechItems.SAWS, YTechItemTags.SAWS);
         typedTag(YTechItems.SAW_BLADES, YTechItemTags.SAW_BLADES);
+        typedTag(YTechItems.SHEARS, YTechItemTags.SHEARS, EnumSet.of(MaterialType.IRON));
         typedTag(YTechItems.SHOVELS, YTechItemTags.SHOVELS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.WOODEN));
         typedTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
         typedTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));

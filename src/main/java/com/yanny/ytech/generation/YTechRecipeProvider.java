@@ -388,6 +388,7 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.IRON_ORE);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
 
+        removeVanillaRecipe(recipeConsumer, Items.DECORATED_POT);
         removeVanillaRecipe(recipeConsumer, Items.FLOWER_POT);
         removeVanillaRecipe(recipeConsumer, Items.TORCH);
         removeVanillaRecipe(recipeConsumer, Items.SOUL_TORCH);

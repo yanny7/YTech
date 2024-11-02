@@ -107,6 +107,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleTypedItem(YTechItems.RODS);
         simpleTypedItem(YTechItems.SAWS, "item/handheld");
         simpleTypedItem(YTechItems.SAW_BLADES);
+        simpleTypedItem(YTechItems.SHEARS, EnumSet.of(MaterialType.IRON), "item/handheld");
         simpleTypedItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.WOODEN), "item/handheld");
         spearItem();
         simpleTypedItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");

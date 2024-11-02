@@ -5,6 +5,7 @@
 - Changed mob spawn biomes
 - Fixed blocks not correctly saving state
 - Added in-world crafting using Crafting Workspace
+- Added Shears
 
 ## [0.6.1]
 

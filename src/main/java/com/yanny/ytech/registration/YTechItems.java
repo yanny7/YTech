@@ -130,6 +130,7 @@ public class YTechItems {
     public static final TypedItem<MaterialType> RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
     public static final TypedItem<MaterialType> SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
     public static final TypedItem<MaterialType> SAW_BLADES = new MaterialItem("saw_blade", NameHolder.suffix("saw_blade"), EnumSet.of(MaterialType.IRON), (type) -> simpleItem());
+    public static final TypedItem<MaterialType> SHEARS = new ShearsMaterialItem();
     public static final TypedItem<MaterialType> SHOVELS = new ShovelMaterialItem();
     public static final TypedItem<MaterialType> SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
     public static final TypedItem<MaterialType> SWORDS = new SwordMaterialItem();
@@ -201,6 +202,10 @@ public class YTechItems {
 
     private static Item pickaxeItem(MaterialType material) {
         return new PickaxeItem(material.getTier(), 1, -2.8f, new Item.Properties());
+    }
+
+    private static Item shearsItem(MaterialType materialType) {
+        return new ShearsItem(new Item.Properties().durability(materialType.getTier().getUses()));
     }
 
     private static Item shovelItem(MaterialType material) {
@@ -437,6 +442,13 @@ public class YTechItems {
             items.put(MaterialType.COPPER, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_COPPER), ForgeRegistries.ITEMS));
             items.put(MaterialType.GOLD, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_GOLD), ForgeRegistries.ITEMS));
             items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.RAW_IRON), ForgeRegistries.ITEMS));
+        }
+    }
+
+    private static class ShearsMaterialItem extends MaterialItem {
+        public ShearsMaterialItem() {
+            super("shears", NameHolder.suffix("shears"), Utils.exclude(MaterialType.ALL_METALS, MaterialType.IRON), YTechItems::shearsItem);
+            items.put(MaterialType.IRON, RegistryObject.create(ForgeRegistries.ITEMS.getKey(Items.SHEARS), ForgeRegistries.ITEMS));
         }
     }
 
