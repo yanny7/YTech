@@ -3,7 +3,7 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.DryingRackBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
+import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
@@ -159,18 +159,21 @@ public class DryingRackBlock extends Block implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
-                    .define('W', Utils.getLogFromMaterial(material))
-                    .define('S', Items.STICK)
-                    .define('T', YTechItemTags.GRASS_TWINES)
-                    .define('F', YTechItemTags.AXES.tag)
-                    .define('B', YTechItemTags.BOLTS.get(MaterialType.WOODEN))
-                    .pattern("TST")
-                    .pattern("BFB")
-                    .pattern("W W")
-                    .group(YTechBlocks.DRYING_RACKS.getGroup() + "_" + material.group)
-                    .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                    .save(recipeConsumer, Utils.modLoc(item));
+        WorkspaceCraftingRecipe.Builder.recipe(item.get())
+                .define('W', Utils.getLogFromMaterial(material))
+                .define('T', YTechItemTags.GRASS_TWINES)
+                .bottomPattern("   ")
+                .bottomPattern("W W")
+                .bottomPattern("   ")
+                .middlePattern("   ")
+                .middlePattern("W W")
+                .middlePattern("   ")
+                .topPattern("   ")
+                .topPattern("WTW")
+                .topPattern("   ")
+                .group(YTechBlocks.DRYING_RACKS.getGroup() + "_" + material.group)
+                .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
+                .save(recipeConsumer, Utils.modLoc(item));
     }
 
     private static void createDryingRackTicker(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BlockEntity blockEntity) {

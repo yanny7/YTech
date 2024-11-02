@@ -1,0 +1,30 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/copper"
+    },
+    "B": {
+      "tag": "ytech:bolts/copper"
+    },
+    "F": {
+      "tag": "ytech:files"
+    },
+    "L": {
+      "tag": "ytech:leather_strips"
+    },
+    "R": {
+      "tag": "ytech:rods/copper"
+    }
+  },
+  "pattern": [
+    " #F",
+    "RB#",
+    "LR "
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:copper_shears"
+  }
+}

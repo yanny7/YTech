@@ -1,19 +1,27 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
+  "type": "ytech:workspace_crafting",
   "key": {
     "B": {
       "tag": "c:storage_blocks/bronze"
-    },
-    "I": {
-      "tag": "c:ingots/bronze"
     }
   },
-  "pattern": [
-    "BBB",
-    " I ",
-    "III"
-  ],
+  "pattern": {
+    "bottom": [
+      " B ",
+      "BBB",
+      " B "
+    ],
+    "middle": [
+      "   ",
+      " B ",
+      "   "
+    ],
+    "top": [
+      "BBB",
+      "BBB",
+      "BBB"
+    ]
+  },
   "result": {
     "count": 1,
     "id": "ytech:bronze_anvil"

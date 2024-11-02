@@ -1,0 +1,32 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "C": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "CPC",
+      "PPP",
+      "CPC"
+    ],
+    "middle": [
+      "CPC",
+      "PPP",
+      "CPC"
+    ],
+    "top": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:smithing_table"
+  }
+}

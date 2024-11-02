@@ -52,6 +52,9 @@ repositories {
     maven { // KubeJS (animated-gif-lib-for-java)
         url 'https://jitpack.io'
     }
+    maven {
+        url = "https://repo1.maven.org/maven2/"
+    }
 }
 
 base {
@@ -83,6 +86,10 @@ neoForge {
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             logLevel = org.slf4j.event.Level.DEBUG
+
+            dependencies {
+                additionalRuntimeClasspath "org.objenesis:objenesis:3.4"
+            }
         }
         client {
             client()
@@ -139,6 +146,8 @@ configurations {
 }
 
 dependencies {
+    implementation "org.objenesis:objenesis:3.4"
+
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"

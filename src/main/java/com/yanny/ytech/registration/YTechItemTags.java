@@ -78,6 +78,7 @@ public class YTechItemTags {
     public static final TagKey<Item> AQUEDUCT_VALVES = create(YTechBlockTags.AQUEDUCT_VALVES);
     public static final TagKey<Item> BRICK_CHIMNEYS = create(YTechBlockTags.BRICK_CHIMNEYS);
     public static final TagKey<Item> BRONZE_ANVILS = create(YTechBlockTags.BRONZE_ANVILS);
+    public static final TagKey<Item> CRAFTING_WORKSPACES = create(YTechBlockTags.CRAFTING_WORKSPACES);
     public static final TagKey<Item> FIRE_PITS = create(YTechBlockTags.FIRE_PITS);
     public static final TagKey<Item> GRASS_BEDS = create(YTechBlockTags.GRASS_BEDS);
     public static final TagKey<Item> MILLSTONES = create(YTechBlockTags.MILLSTONES);
@@ -103,10 +104,12 @@ public class YTechItemTags {
     public static final TagKey<Item> VENUS_OF_HOHLE_FELS = create("venus_of_hohle_fels");
     public static final TagKey<Item> WILD_HORSES = create("wild_horse");
 
-    public static final TypedTag<PartType> MOLDS = new PartTag("molds", YTechItems.MOLDS);
+    public static final TypedTag<PartType> CLAY_MOLDS = new PartTag("clay_molds", YTechItems.CLAY_MOLDS);
     public static final TypedTag<PartType> PATTERNS = new PartTag("patterns", YTechItems.PATTERNS);
     public static final TypedTag<PartType> SAND_MOLDS = new PartTag("sand_molds", YTechItems.SAND_MOLDS);
     public static final TypedTag<PartType> UNFIRED_MOLDS = new PartTag("unfired_molds", YTechItems.UNFIRED_MOLDS);
+
+    public static final TypedTag<PartType> MOLDS = new PartTag("molds", PartType.ALL_PARTS);
 
     public static final TypedTag<MaterialType> ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
     public static final TypedTag<MaterialType> AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
@@ -127,6 +130,7 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> RAW_MATERIALS = new RawMaterialTag();
     public static final TypedTag<MaterialType> RODS = new MaterialTag("rods", YTechItems.RODS);
     public static final TypedTag<MaterialType> SAWS = new MaterialTag("saws", YTechItems.SAWS);
+    public static final TypedTag<MaterialType> SHEARS = new MaterialTag("shears", "forge", YTechItems.SHEARS);
     public static final TypedTag<MaterialType> SAW_BLADES = new MaterialTag("saw_blades", YTechItems.SAW_BLADES);
     public static final TypedTag<MaterialType> SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
     public static final TypedTag<MaterialType> SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
@@ -199,6 +203,10 @@ public class YTechItemTags {
         public PartTag(String name, YTechItems.TypedItem<PartType> item) {
             super(name, YTechMod.MOD_ID, create(name), EnumSet.copyOf(item.keySet()), (type) -> type.key);
         }
+
+        public PartTag(String name, EnumSet<PartType> parts) {
+            super(name, YTechMod.MOD_ID, create(name), parts, (type) -> type.key);
+        }
     }
 
     public static class MaterialTag extends TypedTag<MaterialType> {
@@ -207,7 +215,7 @@ public class YTechItemTags {
         }
 
         public MaterialTag(String name, String namespace, YTechItems.TypedItem<MaterialType> item) {
-            this(name, namespace, create(name), item);
+            this(name, namespace, create(namespace, name), item);
         }
 
         public MaterialTag(String name, TagKey<Item> tag, YTechItems.TypedItem<MaterialType> item) {
@@ -234,7 +242,7 @@ public class YTechItemTags {
     private static class MaterialPartTag extends MultiTypedTag<MaterialType, PartType> {
         public MaterialPartTag(String name, YTechItems.MultiTypedItem<MaterialType, PartType> multiTypedItem) {
             super(create(name));
-            for (PartType part : PartType.ALL_PARTS) {
+            for (PartType part : Utils.exclude(PartType.ALL_PARTS, PartType.INGOT)) {
                 for (MaterialType material : multiTypedItem.keySet()) {
                     tags.computeIfAbsent(material, (t) -> new HashMap<>()).put(part, ItemTags.create(Utils.modLoc(name + "/" + part.key + "s/" + material.key)));
                 }

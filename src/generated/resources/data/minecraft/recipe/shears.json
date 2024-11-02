@@ -1,0 +1,30 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/iron"
+    },
+    "B": {
+      "tag": "ytech:bolts/iron"
+    },
+    "F": {
+      "tag": "ytech:files"
+    },
+    "L": {
+      "tag": "ytech:leather_strips"
+    },
+    "R": {
+      "tag": "ytech:rods/iron"
+    }
+  },
+  "pattern": [
+    " #F",
+    "RB#",
+    "LR "
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:shears"
+  }
+}

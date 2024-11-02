@@ -115,6 +115,7 @@ public class ModBusSubscriber {
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.AQUEDUCT.get(), AqueductRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.BRONZE_ANVIL.get(), BronzeAnvilRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.DRYING_RACK.get(), DryingRackRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.CRAFTING_WORKSPACE.get(), CraftingWorkspaceRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.FIRE_PIT.get(), FirePitRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.MILLSTONE.get(), MillstoneRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.POTTERS_WHEEL.get(), PottersWheelRenderer::new);
@@ -236,6 +237,6 @@ public class ModBusSubscriber {
     }
 
     public static boolean removeAnimalPredicate(EntityType<? extends Animal> pAnimal, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
-        return !YTechMod.CONFIGURATION.removeVanillaMobs();
+        return YTechMod.CONFIGURATION.removeVanillaMobs();
     }
 }

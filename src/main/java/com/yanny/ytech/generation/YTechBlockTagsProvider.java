@@ -33,6 +33,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.AQUEDUCT_VALVES).add(YTechBlocks.AQUEDUCT_VALVE.get());
         tag(YTechBlockTags.BRICK_CHIMNEYS).add(YTechBlocks.BRICK_CHIMNEY.get());
         tag(YTechBlockTags.BRONZE_ANVILS).add(YTechBlocks.BRONZE_ANVIL.get());
+        tag(YTechBlockTags.CRAFTING_WORKSPACES).add(YTechBlocks.CRAFTING_WORKSPACE.get());
         tag(YTechBlockTags.FIRE_PITS).add(YTechBlocks.FIRE_PIT.get());
         tag(YTechBlockTags.GRASS_BEDS).add(YTechBlocks.GRASS_BED.get());
         tag(YTechBlockTags.MILLSTONES).add(YTechBlocks.MILLSTONE.get());

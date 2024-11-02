@@ -3,6 +3,7 @@ package com.yanny.ytech.generation;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.IType;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.PartType;
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.HolderLookup;
@@ -71,6 +72,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.AQUEDUCT_VALVES).add(YTechItems.AQUEDUCT_VALVE.get());
         tag(YTechItemTags.BRICK_CHIMNEYS).add(YTechItems.BRICK_CHIMNEY.get());
         tag(YTechItemTags.BRONZE_ANVILS).add(YTechItems.BRONZE_ANVIL.get());
+        tag(YTechItemTags.CRAFTING_WORKSPACES).add(YTechItems.CRAFTING_WORKSPACE.get());
         tag(YTechItemTags.FIRE_PITS).add(YTechItems.FIRE_PIT.get());
         tag(YTechItemTags.GRASS_BEDS).add(YTechItems.GRASS_BED.get());
         tag(YTechItemTags.MILLSTONES).add(YTechItems.MILLSTONE.get());
@@ -123,24 +125,31 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.VENUS_OF_HOHLE_FELS).add(YTechItems.VENUS_OF_HOHLE_FELS.get());
         tag(YTechItemTags.WILD_HORSES).add(YTechItems.WILD_HORSE.get());
 
-        typedTag(YTechItems.MOLDS, YTechItemTags.MOLDS);
+        typedTag(YTechItems.CLAY_MOLDS, YTechItemTags.CLAY_MOLDS);
         typedTag(YTechItems.PATTERNS, YTechItemTags.PATTERNS);
         typedTag(YTechItems.SAND_MOLDS, YTechItemTags.SAND_MOLDS);
         typedTag(YTechItems.UNFIRED_MOLDS, YTechItemTags.UNFIRED_MOLDS);
 
+        PartType.ALL_PARTS.stream().sorted(Comparator.comparing(IType::key)).forEach((partType) -> {
+            tag(YTechItemTags.MOLDS.get(partType))
+                    .addTag(YTechItemTags.CLAY_MOLDS.get(partType))
+                    .addTag(YTechItemTags.SAND_MOLDS.get(partType));
+            tag(YTechItemTags.MOLDS.tag).addTag(YTechItemTags.MOLDS.get(partType));
+        });
+
         typedTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         typedTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         typedTag(YTechItems.BOLTS, YTechItemTags.BOLTS);
-        typedTag(YTechItems.BOOTS, YTechItemTags.BOOTS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
-        typedTag(YTechItems.CHESTPLATES, YTechItemTags.CHESTPLATES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.BOOTS, YTechItemTags.BOOTS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.LEATHER));
+        typedTag(YTechItems.CHESTPLATES, YTechItemTags.CHESTPLATES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.LEATHER));
         typedTag(YTechItems.CRUSHED_MATERIALS, YTechItemTags.CRUSHED_MATERIALS);
         typedTag(YTechItems.FILES, YTechItemTags.FILES);
         typedTag(YTechItems.HAMMERS, YTechItemTags.HAMMERS);
-        typedTag(YTechItems.HELMETS, YTechItemTags.HELMETS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.HELMETS, YTechItemTags.HELMETS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.LEATHER));
         typedTag(YTechItems.HOES, YTechItemTags.HOES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         typedTag(YTechItems.INGOTS, YTechItemTags.INGOTS, MaterialType.VANILLA_METALS);
         typedTag(YTechItems.KNIVES, YTechItemTags.KNIVES);
-        typedTag(YTechItems.LEGGINGS, YTechItemTags.LEGGINGS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.LEGGINGS, YTechItemTags.LEGGINGS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.LEATHER));
         typedTag(YTechItems.MORTAR_AND_PESTLES, YTechItemTags.MORTAR_AND_PESTLES);
         typedTag(YTechItems.PICKAXES, YTechItemTags.PICKAXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         typedTag(YTechItems.PLATES, YTechItemTags.PLATES);
@@ -148,7 +157,8 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         typedTag(YTechItems.RODS, YTechItemTags.RODS);
         typedTag(YTechItems.SAWS, YTechItemTags.SAWS);
         typedTag(YTechItems.SAW_BLADES, YTechItemTags.SAW_BLADES);
-        typedTag(YTechItems.SHOVELS, YTechItemTags.SHOVELS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
+        typedTag(YTechItems.SHEARS, YTechItemTags.SHEARS, EnumSet.of(MaterialType.IRON));
+        typedTag(YTechItems.SHOVELS, YTechItemTags.SHOVELS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.WOODEN));
         typedTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
         typedTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
 

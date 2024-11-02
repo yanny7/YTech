@@ -1,5 +1,13 @@
 # YTech Changelog
 
+## []
+
+- Changed mob spawn biomes
+- Fixed blocks not correctly saving state
+- Added in-world crafting using Crafting Workspace
+- Added Shears
+- Fixed vanilla mobs spawning and added biomes where Aurochs, Deer, Fowl, Mouflon, Wild Boar and Terror Bird spawns
+
 ## [0.6.1]
 
 - Fixed item duplication in FirePit and Drying Rack

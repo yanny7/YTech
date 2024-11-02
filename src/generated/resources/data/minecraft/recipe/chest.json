@@ -1,24 +1,4 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
-  "key": {
-    "#": {
-      "tag": "ytech:plates/wooden"
-    },
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "S": {
-      "tag": "ytech:saws"
-    }
-  },
-  "pattern": [
-    "B#B",
-    "#S#",
-    "B#B"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:chest"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

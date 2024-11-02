@@ -1,27 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "F": {
-      "item": "minecraft:furnace"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
-      "tag": "minecraft:logs"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
-  },
-  "pattern": [
-    "HSW",
-    "SFS",
-    " S "
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:smoker"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

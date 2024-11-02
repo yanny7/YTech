@@ -1,19 +1,30 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
+  "type": "ytech:workspace_crafting",
   "key": {
-    "#": {
+    "A": {
       "item": "minecraft:furnace"
     },
-    "B": {
+    "C": {
       "item": "minecraft:bricks"
     }
   },
-  "pattern": [
-    "BBB",
-    "B#B",
-    "BBB"
-  ],
+  "pattern": {
+    "bottom": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ],
+    "middle": [
+      "CCC",
+      "CAC",
+      "C C"
+    ],
+    "top": [
+      "CCC",
+      "C C",
+      "CCC"
+    ]
+  },
   "result": {
     "count": 1,
     "id": "ytech:primitive_smelter"

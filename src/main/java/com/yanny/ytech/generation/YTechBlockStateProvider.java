@@ -34,6 +34,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
         AqueductValveBlock.registerModel(this);
         BrickChimneyBlock.registerModel(this);
         BronzeAnvilBlock.registerModel(this);
+        CraftingWorkspaceBlock.registerModel(this);
         FirePitBlock.registerModel(this);
         GrassBedBlock.registerModel(this);
         MillstoneBlock.registerModel(this);

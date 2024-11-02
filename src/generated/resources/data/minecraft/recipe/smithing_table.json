@@ -1,27 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "B": {
-      "tag": "c:storage_blocks/iron"
-    },
-    "F": {
-      "tag": "ytech:files"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
-      "tag": "minecraft:planks"
-    }
-  },
-  "pattern": [
-    "HF",
-    "BB",
-    "SS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:smithing_table"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }
