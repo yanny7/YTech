@@ -64,7 +64,7 @@ public class CraftingWorkspaceCategory implements IRecipeCategory<WorkspaceCraft
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, WorkspaceCraftingRecipe recipe, @NotNull IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.OUTPUT, 129,  65).addItemStack(recipe.result());
-        builder.addSlot(RecipeIngredientRole.CATALYST, 96,  84).addIngredients(Ingredient.of(YTechItemTags.HAMMERS.tag));
+        builder.addSlot(RecipeIngredientRole.CATALYST, 96,  84).addIngredients(Ingredient.of(YTechItemTags.SHARP_FLINTS));
 
         int i = 0;
         int posX = 64;

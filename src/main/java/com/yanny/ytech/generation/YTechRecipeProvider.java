@@ -360,6 +360,7 @@ class YTechRecipeProvider extends RecipeProvider {
         wcGrindstoneRecipe(recipeConsumer);
         wcLoomRecipe(recipeConsumer);
         wcSmokerRecipe(recipeConsumer);
+        wcComposterRecipe(recipeConsumer);
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -388,10 +389,23 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.IRON_ORE);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
 
-        removeVanillaRecipe(recipeConsumer, Items.DECORATED_POT);
         removeVanillaRecipe(recipeConsumer, Items.FLOWER_POT);
         removeVanillaRecipe(recipeConsumer, Items.TORCH);
         removeVanillaRecipe(recipeConsumer, Items.SOUL_TORCH);
+        removeVanillaRecipe(recipeConsumer, Items.CRAFTING_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.FURNACE);
+        removeVanillaRecipe(recipeConsumer, Items.SMOKER);
+        removeVanillaRecipe(recipeConsumer, Items.FLETCHING_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.CARTOGRAPHY_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.STONECUTTER);
+        removeVanillaRecipe(recipeConsumer, Items.SMITHING_TABLE);
+        removeVanillaRecipe(recipeConsumer, Items.GRINDSTONE);
+        removeVanillaRecipe(recipeConsumer, Items.LOOM);
+        removeVanillaRecipe(recipeConsumer, Items.CHEST);
+        removeVanillaRecipe(recipeConsumer, Items.BARREL);
+        removeVanillaRecipe(recipeConsumer, Items.COMPOSTER);
+
+        SpecialRecipeBuilder.special(RecipeSerializer.TIPPED_ARROW).save(recipeConsumer, Utils.mcLoc("decorated_pot_simple").toString());
     }
 
     private void removeVanillaRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, Item item) {
@@ -1842,5 +1856,21 @@ class YTechRecipeProvider extends RecipeProvider {
                 .topPattern("LCL")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.COBBLESTONE_NORMAL))
                 .save(recipeConsumer, Utils.modLoc(Items.SMOKER));
+    }
+
+    private static void wcComposterRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        WorkspaceCraftingRecipe.Builder.recipe(Items.COMPOSTER)
+                .define('L', ItemTags.PLANKS)
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .middlePattern("LLL")
+                .middlePattern("L L")
+                .middlePattern("LLL")
+                .topPattern("LLL")
+                .topPattern("L L")
+                .topPattern("LLL")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.modLoc(Items.COMPOSTER));
     }
 }
