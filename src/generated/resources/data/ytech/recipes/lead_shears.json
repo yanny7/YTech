@@ -1,0 +1,30 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/lead"
+    },
+    "B": {
+      "tag": "ytech:bolts/lead"
+    },
+    "F": {
+      "tag": "ytech:files"
+    },
+    "L": {
+      "tag": "ytech:leather_strips"
+    },
+    "R": {
+      "tag": "ytech:rods/lead"
+    }
+  },
+  "pattern": [
+    " #F",
+    "RB#",
+    "LR "
+  ],
+  "result": {
+    "item": "ytech:lead_shears"
+  },
+  "show_notification": true
+}

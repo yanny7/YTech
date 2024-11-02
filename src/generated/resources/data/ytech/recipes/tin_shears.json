@@ -1,0 +1,30 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/tin"
+    },
+    "B": {
+      "tag": "ytech:bolts/tin"
+    },
+    "F": {
+      "tag": "ytech:files"
+    },
+    "L": {
+      "tag": "ytech:leather_strips"
+    },
+    "R": {
+      "tag": "ytech:rods/tin"
+    }
+  },
+  "pattern": [
+    " #F",
+    "RB#",
+    "LR "
+  ],
+  "result": {
+    "item": "ytech:tin_shears"
+  },
+  "show_notification": true
+}

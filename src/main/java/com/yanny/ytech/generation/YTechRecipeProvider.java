@@ -280,6 +280,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.RODS.forEach((material, item) -> registerRodRecipe(recipeConsumer, item, material));
         YTechItems.SAWS.forEach((material, item) -> registerSawRecipe(recipeConsumer, item, material));
         YTechItems.SAW_BLADES.forEach((material, item) -> registerSawBladeRecipe(recipeConsumer, item, material));
+        YTechItems.SHEARS.forEach((material, item) -> registerShearsRecipe(recipeConsumer, item, material));
         YTechItems.SHOVELS.forEach((material, item) -> registerShovelRecipe(recipeConsumer, item, material));
         YTechItems.SPEARS.forEach((material, item) -> registerSpearRecipe(recipeConsumer, item, material));
         YTechItems.SWORDS.forEach((key, item) -> registerSwordRecipe(recipeConsumer, item, key));
@@ -1502,6 +1503,20 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern(" P ")
                 .pattern("PHP")
                 .pattern(" P ")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.get(material)))
+                .save(recipeConsumer, item.getId());
+    }
+
+    private static void registerShearsRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
+                .define('#', YTechItemTags.PLATES.get(material))
+                .define('R', YTechItemTags.RODS.get(material))
+                .define('B', YTechItemTags.BOLTS.get(material))
+                .define('F', YTechItemTags.FILES.tag)
+                .define('L', YTechItemTags.LEATHER_STRIPS)
+                .pattern(" #F")
+                .pattern("RB#")
+                .pattern("LR ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.PLATES.get(material)))
                 .save(recipeConsumer, item.getId());
     }

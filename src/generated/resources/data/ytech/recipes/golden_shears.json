@@ -1,0 +1,30 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "ytech:plates/gold"
+    },
+    "B": {
+      "tag": "ytech:bolts/gold"
+    },
+    "F": {
+      "tag": "ytech:files"
+    },
+    "L": {
+      "tag": "ytech:leather_strips"
+    },
+    "R": {
+      "tag": "ytech:rods/gold"
+    }
+  },
+  "pattern": [
+    " #F",
+    "RB#",
+    "LR "
+  ],
+  "result": {
+    "item": "ytech:golden_shears"
+  },
+  "show_notification": true
+}
