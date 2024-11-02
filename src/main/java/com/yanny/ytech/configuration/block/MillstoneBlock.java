@@ -2,9 +2,8 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
+import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -142,13 +141,18 @@ public class MillstoneBlock extends Block implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.MILLSTONE.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechBlocks.MILLSTONE.get())
                 .define('W', ItemTags.LOGS)
-                .define('S', Items.SMOOTH_STONE_SLAB)
-                .define('F', YTechItemTags.SHARP_FLINTS)
-                .pattern("WF")
-                .pattern("S ")
-                .pattern("S ")
+                .define('S', Items.SMOOTH_STONE)
+                .bottomPattern("SSS")
+                .bottomPattern("SWS")
+                .bottomPattern("SSS")
+                .middlePattern("SSS")
+                .middlePattern("SWS")
+                .middlePattern("SSS")
+                .topPattern("   ")
+                .topPattern(" W ")
+                .topPattern("   ")
                 .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
                 .save(recipeConsumer, Utils.modLoc(YTechBlocks.MILLSTONE));
     }

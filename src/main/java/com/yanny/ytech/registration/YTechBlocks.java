@@ -25,6 +25,7 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> AQUEDUCT_VALVE = BLOCKS.register("aqueduct_valve", AqueductValveBlock::new);
     public static final DeferredBlock<Block> BRICK_CHIMNEY = BLOCKS.register("brick_chimney", BrickChimneyBlock::new);
     public static final DeferredBlock<Block> BRONZE_ANVIL = BLOCKS.register("bronze_anvil", BronzeAnvilBlock::new);
+    public static final DeferredBlock<Block> CRAFTING_WORKSPACE = BLOCKS.register("crafting_workspace", CraftingWorkspaceBlock::new);
     public static final DeferredBlock<Block> FIRE_PIT = BLOCKS.register("fire_pit", FirePitBlock::new);
     public static final DeferredBlock<Block> GRASS_BED = BLOCKS.register("grass_bed", GrassBedBlock::new);
     public static final DeferredBlock<Block> MILLSTONE = BLOCKS.register("millstone", MillstoneBlock::new);

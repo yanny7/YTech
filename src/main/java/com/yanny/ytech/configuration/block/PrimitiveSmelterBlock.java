@@ -2,7 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
+import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,12 +50,18 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock {
     }
 
     public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.PRIMITIVE_SMELTER.get())
-                .define('#', Items.FURNACE)
-                .define('B', Items.BRICKS)
-                .pattern("BBB")
-                .pattern("B#B")
-                .pattern("BBB")
+        WorkspaceCraftingRecipe.Builder.recipe(YTechBlocks.PRIMITIVE_SMELTER.get())
+                .define('A', Items.FURNACE)
+                .define('C', Items.BRICKS)
+                .bottomPattern("CCC")
+                .bottomPattern("CCC")
+                .bottomPattern("CCC")
+                .middlePattern("CCC")
+                .middlePattern("CAC")
+                .middlePattern("C C")
+                .topPattern("CCC")
+                .topPattern("C C")
+                .topPattern("CCC")
                 .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
                 .save(recipeConsumer, Utils.modLoc(YTechBlocks.PRIMITIVE_SMELTER));
     }

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#forge:shears/bronze",
+    "#forge:shears/copper",
+    "#forge:shears/gold",
+    "#forge:shears/lead",
+    "#forge:shears/tin"
+  ]
+}

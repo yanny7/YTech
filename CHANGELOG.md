@@ -2,6 +2,17 @@
 
 ## []
 
+- Changed mob spawn biomes
+- Fixed blocks not correctly saving state
+- Added in-world crafting using Crafting Workspace
+- Added Shears
+
+## [0.6.1]
+
+- Fixed item duplication in FirePit and Drying Rack
+
+## [0.6.0]
+
 - Added Bone Needle and changed leather armor and saddle recipe
 - Added Unlit Torch and changed recipe for Torch, Soul Torch, Campfire and Soul Campfire
 - Added smoke to Fire Pit
@@ -12,6 +23,9 @@
 - Added KubeJS recipes integration
 - Modified Light Weighted Pressure Plate recipe
 - Added Fire Pit cooking
+- Added configuration for removing vanilla mobs
+- Fixed random ConcurrentModificationException while startup
+- Changed Lava Clay Bucket to single-use
 
 ## [0.5.0]
 

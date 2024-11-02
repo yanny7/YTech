@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,10 +53,11 @@ public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker
                 progressHandler.setupCrafting(level, holdingItemStack, AbstractCookingRecipe::getCookingTime);
             } else {
                 Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
+                progressHandler.clear();
             }
 
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            level.blockEntityChanged(pos);
         }
 
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -71,7 +71,7 @@ public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker
         BiConsumer<Container, CampfireCookingRecipe> onFinish = (container, recipe) -> {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            level.blockEntityChanged(pos);
         };
 
         if (progressHandler.tick(level, canProcess, getStep, onFinish)) {

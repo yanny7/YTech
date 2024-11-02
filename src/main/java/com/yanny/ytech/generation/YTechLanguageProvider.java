@@ -86,6 +86,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.AQUEDUCT_VALVE, "Aqueduct Valve");
         addBlock(YTechBlocks.BRICK_CHIMNEY, "Brick Chimney");
         addBlock(YTechBlocks.BRONZE_ANVIL, "Bronze Anvil");
+        addBlock(YTechBlocks.CRAFTING_WORKSPACE, "Crafting Workspace");
         addBlock(YTechBlocks.FIRE_PIT, "Fire Pit");
         addBlock(YTechBlocks.GRASS_BED, "Grass Bed");
         addBlock(YTechBlocks.MILLSTONE, "Millstone");
@@ -109,28 +110,29 @@ class YTechLanguageProvider extends LanguageProvider {
         addMultiTypedItem(YTechItems.PARTS, NameHolder.suffix("Part"), YTechLanguageProvider::getName);
 
         addTypedItem(YTechItems.ARROWS, NameHolder.suffix("Arrow"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.AXES, NameHolder.suffix("Axe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.AXES, NameHolder.suffix("Axe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.BOLTS, NameHolder.suffix("Bolt"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.BOOTS, NameHolder.suffix("Boots"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
-        addTypedItem(YTechItems.CHESTPLATES, NameHolder.suffix("Chestplate"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.BOOTS, NameHolder.suffix("Boots"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
+        addTypedItem(YTechItems.CHESTPLATES, NameHolder.suffix("Chestplate"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.CRUSHED_MATERIALS, NameHolder.prefix("Crushed"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.FILES, NameHolder.suffix("File"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.HAMMERS, NameHolder.suffix("Hammer"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.HELMETS, NameHolder.suffix("Helmet"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
-        addTypedItem(YTechItems.HOES, NameHolder.suffix("Hoe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.HELMETS, NameHolder.suffix("Helmet"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
+        addTypedItem(YTechItems.HOES, NameHolder.suffix("Hoe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.INGOTS, NameHolder.suffix("Ingot"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::vanillaMaterialsFilter);
         addTypedItem(YTechItems.KNIVES, NameHolder.suffix("Knife"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.LEGGINGS, NameHolder.suffix("Leggings"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.LEGGINGS, NameHolder.suffix("Leggings"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.MORTAR_AND_PESTLES, NameHolder.suffix("Mortar and Pestle"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.PICKAXES, NameHolder.suffix("Pickaxe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.PICKAXES, NameHolder.suffix("Pickaxe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.PLATES, NameHolder.suffix("Plate"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.RAW_MATERIALS, NameHolder.prefix("Raw"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::vanillaMaterialsFilter);
         addTypedItem(YTechItems.RODS, NameHolder.suffix("Rod"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SAWS, NameHolder.suffix("Saw"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SAW_BLADES, NameHolder.suffix("Saw Blade"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.SHOVELS, NameHolder.suffix("Shovel"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.SHEARS, NameHolder.suffix("Shears"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
+        addTypedItem(YTechItems.SHOVELS, NameHolder.suffix("Shovel"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.SPEARS, NameHolder.suffix("Spear"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronFilter);
+        addTypedItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
 
         addMaterialBlock(YTechBlocks.DEEPSLATE_ORES, NameHolder.both("Deepslate", "Ore"), YTechLanguageProvider::vanillaMaterialsFilter);
         addMaterialBlock(YTechBlocks.DRYING_RACKS, NameHolder.suffix("Drying Rack"));
@@ -171,6 +173,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("gui.ytech.category.alloying", "Alloying");
         add("gui.ytech.category.hammering", "Hammering");
         add("gui.ytech.category.pottery", "Pottery");
+        add("gui.ytech.category.workspace_crafting", "Workspace Crafting");
 
         add("sound.ytech.saber_tooth_tiger.ambient", "Saber-Toothed Tiger Roars");
         add("sound.ytech.saber_tooth_tiger.hurt", "Saber-Toothed Tiger Hurts");
@@ -199,6 +202,9 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.aqueduct_hydrator2", "Consumes %smB every %s tick(s)");
         add("text.ytech.hover.aqueduct_fertilizer1", "Hydrates soil similar to water source and applies random bonemeal effect when fertilizer is provided");
         add("text.ytech.hover.aqueduct_fertilizer2", "Consumes %smB every %s tick(s)");
+        add("text.ytech.hover.crafting_workbench1", "Right-click to insert item (Must be placeable)");
+        add("text.ytech.hover.crafting_workbench2", "Right-click with Hammer to assemble block");
+        add("text.ytech.hover.crafting_workbench3", "Left-click with empty hand to remove item");
         add("text.ytech.hover.drying_rack1", "Works faster in dry biomes and slower in wet biomes");
         add("text.ytech.hover.drying_rack2", "Doesn't work during rain");
         add("text.ytech.hover.millstone", "Use leashed animal on block as power source. Shift-right click with empty hand for disconnecting animal.");
@@ -258,8 +264,8 @@ class YTechLanguageProvider extends LanguageProvider {
         return !MaterialType.VANILLA_METALS.contains(entry.getKey());
     }
 
-    private static boolean goldIronFilter(Map.Entry<MaterialType, DeferredItem<Item>> entry) {
-        return !EnumSet.of(MaterialType.GOLD, MaterialType.IRON).contains(entry.getKey());
+    private static boolean goldIronWoodLeatherFilter(Map.Entry<MaterialType, DeferredItem<Item>> entry) {
+        return !EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.WOODEN, MaterialType.LEATHER).contains(entry.getKey());
     }
 
     private static String getMaterialName(NameHolder nameHolder, MaterialType material) {

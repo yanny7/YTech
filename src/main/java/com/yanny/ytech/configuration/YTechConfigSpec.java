@@ -18,28 +18,29 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class YTechConfigSpec {
-    @NotNull private final ModConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
-    @NotNull private final ModConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolTags;
-    @NotNull private final ModConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
+    private final ModConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
+    private final ModConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolTags;
+    private final ModConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
 
-    @NotNull private final ModConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
-    @NotNull private final ModConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
-    @NotNull private final ModConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
+    private final ModConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
+    private final ModConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
+    private final ModConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
 
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
-    @NotNull private final ModConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> rainingFillAmount;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
-    @NotNull private final ModConfigSpec.ConfigValue<Boolean> validBlockForRaining;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> valveFillAmount;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> hydratorDrainAmount;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> hydratorDrainPerNthTick;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> fertilizerDuration;
-    @NotNull private final ModConfigSpec.ConfigValue<Integer> applyFertilizerChance;
+    private final ModConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
+    private final ModConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
+    private final ModConfigSpec.ConfigValue<Integer> rainingFillAmount;
+    private final ModConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
+    private final ModConfigSpec.ConfigValue<Boolean> validBlockForRaining;
+    private final ModConfigSpec.ConfigValue<Integer> valveFillAmount;
+    private final ModConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
+    private final ModConfigSpec.ConfigValue<Integer> hydratorDrainAmount;
+    private final ModConfigSpec.ConfigValue<Integer> hydratorDrainPerNthTick;
+    private final ModConfigSpec.ConfigValue<Integer> fertilizerDuration;
+    private final ModConfigSpec.ConfigValue<Integer> applyFertilizerChance;
 
     private final ModConfigSpec.ConfigValue<Integer> minBreedingGenerations;
     private final ModConfigSpec.DoubleValue domesticChance;
+    private final ModConfigSpec.BooleanValue removeVanillaMobs;
 
     public YTechConfigSpec(@NotNull ModConfigSpec.Builder builder) {
         builder.push("general");
@@ -95,6 +96,9 @@ public class YTechConfigSpec {
                     .worldRestart().defineInRange("minBreedingGenerations", 3, 1, Integer.MAX_VALUE);
             domesticChance = builder.comment("Chance for domestic animal breeding result, multiplied by each generation after minBreedingGenerations")
                     .worldRestart().defineInRange("domesticChance", 0.2, Double.MIN_NORMAL, 1.0);
+            removeVanillaMobs = builder.comment("If remove vanilla mobs spawning (sheeps, cows, chickens and pigs)")
+                    .worldRestart().define("removeVanillaMobs", true);
+        builder.pop();
     }
 
     public boolean shouldRequireValidTool() {
@@ -172,6 +176,10 @@ public class YTechConfigSpec {
 
     public double getDomesticChance() {
         return domesticChance.get();
+    }
+
+    public boolean removeVanillaMobs() {
+        return removeVanillaMobs.get();
     }
 
     @NotNull

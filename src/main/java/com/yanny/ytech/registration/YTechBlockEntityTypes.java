@@ -22,6 +22,7 @@ public class YTechBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductValveBlockEntity>> AQUEDUCT_VALVE = register("aqueduct_valve", AqueductValveBlockEntity::new, YTechBlocks.AQUEDUCT_VALVE);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrickChimneyBlockEntity>> BRICK_CHIMNEY = register("brick_chimney", BrickChimneyBlockEntity::new, YTechBlocks.BRICK_CHIMNEY, YTechBlocks.REINFORCED_BRICK_CHIMNEY);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BronzeAnvilBlockEntity>> BRONZE_ANVIL = register("bronze_anvil", BronzeAnvilBlockEntity::new, YTechBlocks.BRONZE_ANVIL);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CraftingWorkspaceBlockEntity>> CRAFTING_WORKSPACE = register("crafting_workspace", CraftingWorkspaceBlockEntity::new, YTechBlocks.CRAFTING_WORKSPACE);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DryingRackBlockEntity>> DRYING_RACK = register("drying_rack", DryingRackBlockEntity::new, YTechBlocks.DRYING_RACKS);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FirePitBlockEntity>> FIRE_PIT = register("fire_pit", FirePitBlockEntity::new, YTechBlocks.FIRE_PIT);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MillstoneBlockEntity>> MILLSTONE = register("millstone", MillstoneBlockEntity::new, YTechBlocks.MILLSTONE);

@@ -3,13 +3,12 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.TanningRackBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
+import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.ItemTags;
@@ -19,7 +18,6 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -153,17 +151,20 @@ public class TanningRackBlock extends Block implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
-                    .define('W', Utils.getLogFromMaterial(material))
-                    .define('S', Items.STICK)
-                    .define('T', YTechItemTags.GRASS_TWINES)
-                    .define('F', YTechItemTags.AXES.tag)
-                    .define('B', YTechItemTags.BOLTS.get(MaterialType.WOODEN))
-                    .pattern("TST")
-                    .pattern("BFB")
-                    .pattern("WSW")
-                    .group(YTechBlocks.TANNING_RACKS.getGroup() + "_" + material.group)
-                    .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                    .save(recipeConsumer, Utils.modLoc(item));
+        WorkspaceCraftingRecipe.Builder.recipe(item.get())
+                .define('W', Utils.getLogFromMaterial(material))
+                .define('T', YTechItemTags.GRASS_TWINES)
+                .bottomPattern("   ")
+                .bottomPattern("WTW")
+                .bottomPattern("   ")
+                .middlePattern("   ")
+                .middlePattern("W W")
+                .middlePattern("   ")
+                .topPattern("   ")
+                .topPattern("WTW")
+                .topPattern("   ")
+                .group(YTechBlocks.TANNING_RACKS.getGroup() + "_" + material.group)
+                .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
+                .save(recipeConsumer, Utils.modLoc(item));
     }
 }

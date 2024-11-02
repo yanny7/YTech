@@ -30,6 +30,7 @@ public class JeiCompatibility implements IModPlugin {
         registration.addRecipeCategories(new AlloyingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new HammeringRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new PotteryRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CraftingWorkspaceCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -45,6 +46,7 @@ public class JeiCompatibility implements IModPlugin {
             registration.addRecipes(AlloyingRecipeCategory.RECIPE_TYPE, AlloyingRecipeCategory.getRecipes(level.getRecipeManager()));
             registration.addRecipes(HammeringRecipeCategory.RECIPE_TYPE, HammeringRecipeCategory.getRecipes(level.getRecipeManager()));
             registration.addRecipes(PotteryRecipeCategory.RECIPE_TYPE, PotteryRecipeCategory.getRecipes(level.getRecipeManager()));
+            registration.addRecipes(CraftingWorkspaceCategory.RECIPE_TYPE, CraftingWorkspaceCategory.getRecipes(level.getRecipeManager()));
 
             registration.addItemStackInfo(YTechItems.GRASS_FIBERS.get().getDefaultInstance(), Component.translatable("text.ytech.info.grass_fibers"));
         } else {
@@ -61,6 +63,7 @@ public class JeiCompatibility implements IModPlugin {
         AlloyingRecipeCategory.registerCatalyst(registration);
         HammeringRecipeCategory.registerCatalyst(registration);
         PotteryRecipeCategory.registerCatalyst(registration);
+        CraftingWorkspaceCategory.registerCatalyst(registration);
     }
 
     @NotNull

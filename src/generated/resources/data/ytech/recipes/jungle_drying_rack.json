@@ -1,17 +1,6 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
-  "category": "misc",
-  "group": "drying_rack_wooden",
+  "type": "ytech:workspace_crafting",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "F": {
-      "tag": "minecraft:axes"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
     "T": {
       "tag": "ytech:grass_twines"
     },
@@ -19,11 +8,23 @@
       "tag": "minecraft:jungle_logs"
     }
   },
-  "pattern": [
-    "TST",
-    "BFB",
-    "W W"
-  ],
+  "pattern": {
+    "bottom": [
+      "   ",
+      "W W",
+      "   "
+    ],
+    "middle": [
+      "   ",
+      "W W",
+      "   "
+    ],
+    "top": [
+      "   ",
+      "WTW",
+      "   "
+    ]
+  },
   "result": {
     "count": 1,
     "id": "ytech:jungle_drying_rack"
