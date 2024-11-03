@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.7.0]
 
 - Changed mob spawn biomes
 - Fixed blocks not correctly saving state
