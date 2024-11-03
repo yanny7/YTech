@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -29,7 +31,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class MillstoneBlockEntity extends BlockEntity {
     private static final String TAG_INPUT = "input";
@@ -44,10 +45,11 @@ public class MillstoneBlockEntity extends BlockEntity {
     private boolean isMilling = false;
     private boolean isLeashed = false;
     @Nullable private GoAroundEntity entity = null;
-    private final Random random = new Random();
+    private final RecipeManager.CachedCheck<Container, MillingRecipe> quickCheck;
 
     public MillstoneBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.MILLSTONE.get(), pos, blockState);
+        quickCheck = RecipeManager.createCheck(YTechRecipeTypes.MILLING.get());
     }
 
     public InteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand) {
@@ -72,7 +74,7 @@ public class MillstoneBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (result.isEmpty() && isLeashed && !holdingItemStack.isEmpty()) {
-                Optional<MillingRecipe> millingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.MILLING.get(), new SimpleContainer(holdingItemStack), level);
+                Optional<MillingRecipe> millingRecipe = quickCheck.getRecipeFor(new SimpleContainer(holdingItemStack), level);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
@@ -126,7 +128,7 @@ public class MillstoneBlockEntity extends BlockEntity {
         if (level != null && !result.isEmpty()) {
             Block.popResource(level, getBlockPos(), result.copy());
 
-            if (random.nextFloat() < bonusChance) {
+            if (level.random.nextFloat() < bonusChance) {
                 Block.popResource(level, getBlockPos(), result.copyWithCount(1));
             }
 
@@ -137,7 +139,7 @@ public class MillstoneBlockEntity extends BlockEntity {
                 input.setCount(input.getCount() - 1);
             }
 
-            level.playSound(null, getBlockPos(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F);
+            level.playSound(null, getBlockPos(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, level.random.nextFloat() * 0.25F + 0.75F, level.random.nextFloat() + 0.5F);
             setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
         }
     }

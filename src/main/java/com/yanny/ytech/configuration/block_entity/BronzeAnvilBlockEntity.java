@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.block_entity;
 
+import com.yanny.ytech.configuration.recipe.HammeringRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
@@ -9,11 +10,13 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,10 +30,12 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
     private static final String TAG_ITEMS = "items";
     private static final int SLOT_INPUT = 0;
 
+    private final RecipeManager.CachedCheck<Container, HammeringRecipe> quickCheck;
     @NotNull protected final ItemStackHandler itemStackHandler;
 
     public BronzeAnvilBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.BRONZE_ANVIL.get(), pos, blockState);
+        quickCheck = RecipeManager.createCheck(YTechRecipeTypes.HAMMERING.get());
         itemStackHandler = new ItemStackHandler(1) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -46,7 +51,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
             ItemStack hammeringItem = itemStackHandler.getStackInSlot(0);
 
             if (hammeringItem.isEmpty()) {
-                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SimpleContainer(holdingItemStack), level).ifPresent((recipe) -> {
+                quickCheck.getRecipeFor(new SimpleContainer(holdingItemStack), level).ifPresent((recipe) -> {
                     itemStackHandler.setStackInSlot(SLOT_INPUT, holdingItemStack.split(holdingItemStack.getMaxStackSize()));
                     setChanged(level, pos, Blocks.AIR.defaultBlockState());
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
@@ -61,7 +66,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                 } else {
-                    level.getRecipeManager().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SimpleContainer(hammeringItem), level).ifPresent((recipe) -> {
+                    quickCheck.getRecipeFor(new SimpleContainer(hammeringItem), level).ifPresent((recipe) -> {
                         if (recipe.tool().test(holdingItemStack)) {
                             hammeringItem.split(1);
                             holdingItemStack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
