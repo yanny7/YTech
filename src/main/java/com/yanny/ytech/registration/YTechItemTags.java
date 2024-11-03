@@ -130,7 +130,7 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> RAW_MATERIALS = new RawMaterialTag();
     public static final TypedTag<MaterialType> RODS = new MaterialTag("rods", YTechItems.RODS);
     public static final TypedTag<MaterialType> SAWS = new MaterialTag("saws", YTechItems.SAWS);
-    public static final TypedTag<MaterialType> SHEARS = new MaterialTag("shears", "forge", YTechItems.SHEARS);
+    public static final TypedTag<MaterialType> SHEARS = new MaterialTag("shears", "c", YTechItems.SHEARS);
     public static final TypedTag<MaterialType> SAW_BLADES = new MaterialTag("saw_blades", YTechItems.SAW_BLADES);
     public static final TypedTag<MaterialType> SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
     public static final TypedTag<MaterialType> SPEARS = new MaterialTag("spears", YTechItems.SPEARS);

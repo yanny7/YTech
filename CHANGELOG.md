@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed Shears tag namespace
+
 ## [0.7.0]
 
 - Changed mob spawn biomes
