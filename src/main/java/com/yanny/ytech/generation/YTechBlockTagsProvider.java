@@ -7,7 +7,6 @@ import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -57,7 +56,9 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
         tag(YTechBlockTags.FIRE_SOURCE)
                 .add(Blocks.FIRE, Blocks.CAMPFIRE, Blocks.LANTERN, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.FURNACE, Blocks.BLAST_FURNACE)
-                .addTags(YTechBlockTags.FIRE_PITS, YTechBlockTags.PRIMITIVE_SMELTERS, YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
+                .addTag(YTechBlockTags.FIRE_PITS)
+                .addTag(YTechBlockTags.PRIMITIVE_SMELTERS)
+                .addTag(YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
         tag(YTechBlockTags.SOUL_FIRE_SOURCE).add(Blocks.SOUL_FIRE, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH);
 
         materialOreTag(YTechBlocks.DEEPSLATE_ORES, YTechBlockTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
@@ -157,7 +158,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                 tag(materialTag.tag).addTag(materialTag.of(material));
 
                 if (material.getTier().getTag() != null) {
-                    tag(material.getTier().getTag()).add(entry.getValue().get());
+                    tag(BlockTags.NEEDS_STONE_TOOL).add(entry.getValue().get());
                 }
             }
         });
@@ -172,12 +173,8 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
                 tag(materialTag.of(material)).add(block.get());
                 tag(materialTag.tag).add(block.get());
-                // ore must be mineable with lesser tier as material tier
-                TagKey<Block> tierTag = com.yanny.ytech.configuration.Utils.getPreviousTier(material.getTier()).getTag();
 
-                if (tierTag != null) {
-                    tag(tierTag).add(block.get());
-                }
+                tag(BlockTags.NEEDS_STONE_TOOL).add(block.get());
 
                 switch (material) {
                     case IRON -> tag(BlockTags.IRON_ORES).add(block.get());
