@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.7.1]
 
 - Fixed crash due to missing library
 
