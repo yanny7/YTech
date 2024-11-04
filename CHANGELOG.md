@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed crash due to missing library
+
 ## [0.7.0]
 
 - Changed mob spawn biomes
