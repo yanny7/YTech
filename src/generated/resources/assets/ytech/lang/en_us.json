@@ -350,7 +350,7 @@
   "text.ytech.hover.aqueduct_valve2": "Generates %smB every %s tick(s)",
   "text.ytech.hover.chimney": "Increases temperature in smelter by %s °C",
   "text.ytech.hover.chlorite_bracelet": "Oldest piece of jewellery of its kind in the world, crafted by an extinct branch of early humans known as Denisovans. Increases luck when worn",
-  "text.ytech.hover.crafting_workbench1": "Right-click to insert item (Must be placeable)",
+  "text.ytech.hover.crafting_workbench1": "Right-click to insert item",
   "text.ytech.hover.crafting_workbench2": "Right-click with Hammer to assemble block",
   "text.ytech.hover.crafting_workbench3": "Left-click with empty hand to remove item",
   "text.ytech.hover.drying_rack1": "Works faster in dry biomes and slower in wet biomes",

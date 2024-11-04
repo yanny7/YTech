@@ -143,7 +143,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
         ListTag states = pTag.getList(TAG_BLOCK_STATES, Tag.TAG_COMPOUND);
 
         for (int i = 0; i < 27; i++) {
-            itemList.set(i, ItemStack.parse(pProvider, list.getCompound(i)).orElse(ItemStack.EMPTY));
+            itemList.set(i, ItemStack.parseOptional(pProvider, list.getCompound(i)));
             blockStates.set(i, NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), states.getCompound(i)));
         }
     }
@@ -171,7 +171,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
         ListTag states = new ListTag();
 
         for (int i = 0; i < 27; i++) {
-            list.add(i, itemList.get(i).save(pProvider));
+            list.add(i, itemList.get(i).saveOptional(pProvider));
             states.add(i, NbtUtils.writeBlockState(blockStates.get(i)));
         }
 

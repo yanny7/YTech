@@ -18,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -35,6 +37,7 @@ public class PottersWheelBlockEntity extends BlockEntity {
     private static final String TAG_RESULT = "result";
 
     private final ItemStackHandler items;
+    private final RecipeManager.CachedCheck<RecipeInput, PotteryRecipe> quickCheck;
 
     @Nullable
     private ItemStack result = null;
@@ -42,6 +45,7 @@ public class PottersWheelBlockEntity extends BlockEntity {
     public PottersWheelBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(YTechBlockEntityTypes.POTTERS_WHEEL.get(), pPos, pBlockState);
         this.items = new ItemStackHandler(1);
+        quickCheck = RecipeManager.createCheck(YTechRecipeTypes.POTTERY.get());
     }
 
     public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
@@ -70,7 +74,7 @@ public class PottersWheelBlockEntity extends BlockEntity {
                         holdingItemStack.shrink(1);
                         level.playSound(null, pos, SoundEvents.SLIME_SQUISH, SoundSource.BLOCKS, level.random.nextFloat() * 0.25F + 0.75F, 1.0f);
 
-                        Optional<RecipeHolder<PotteryRecipe>> recipes = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.POTTERY.get(), new SingleRecipeInput(items.getStackInSlot(0)), level);
+                        Optional<RecipeHolder<PotteryRecipe>> recipes = quickCheck.getRecipeFor(new SingleRecipeInput(items.getStackInSlot(0)), level);
 
                         result = recipes.map((m) -> m.value().result()).orElse(null);
                         level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);

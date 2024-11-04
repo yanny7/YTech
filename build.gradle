@@ -86,10 +86,6 @@ neoForge {
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             logLevel = org.slf4j.event.Level.DEBUG
-
-            dependencies {
-                additionalRuntimeClasspath "org.objenesis:objenesis:3.4"
-            }
         }
         client {
             client()
@@ -147,6 +143,18 @@ configurations {
 
 dependencies {
     implementation "org.objenesis:objenesis:3.4"
+
+    jarJar(implementation("org.objenesis:objenesis")) {
+        version {
+            // The version range your mod is actually compatible with.
+            // Note that you may receive a *lower* version than your preferred if another
+            // Mod is only compatible up to 1.7.24, for example, your mod might get 1.7.24 at runtime.
+            strictly '[3.0,)'
+            prefer '3.4' // The version actually used in your dev workspace
+        }
+    }
+
+    additionalRuntimeClasspath "org.objenesis:objenesis:3.4"
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

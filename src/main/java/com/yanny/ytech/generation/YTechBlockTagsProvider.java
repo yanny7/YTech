@@ -56,7 +56,9 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
         tag(YTechBlockTags.FIRE_SOURCE)
                 .add(Blocks.FIRE, Blocks.CAMPFIRE, Blocks.LANTERN, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.FURNACE, Blocks.BLAST_FURNACE)
-                .addTags(YTechBlockTags.FIRE_PITS, YTechBlockTags.PRIMITIVE_SMELTERS, YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
+                .addTag(YTechBlockTags.FIRE_PITS)
+                .addTag(YTechBlockTags.PRIMITIVE_SMELTERS)
+                .addTag(YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
         tag(YTechBlockTags.SOUL_FIRE_SOURCE).add(Blocks.SOUL_FIRE, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH);
 
         materialOreTag(YTechBlocks.DEEPSLATE_ORES, YTechBlockTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);

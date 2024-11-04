@@ -16,6 +16,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -31,11 +33,14 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     private static final int SLOT_MOLD = 2;
     private static final int SLOT_OUTPUT = 3;
 
+    private final RecipeManager.CachedCheck<RecipeInput, SmeltingRecipe> quickCheck;
+
     @Nullable private ItemStack recipeInput = ItemStack.EMPTY;
     @Nullable private ItemStack recipeMold = ItemStack.EMPTY;
 
     public PrimitiveSmelterBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.PRIMITIVE_SMELTER.get(), pos, blockState, YTechRecipeTypes.SMELTING.get());
+        quickCheck = RecipeManager.createCheck(YTechRecipeTypes.SMELTING.get());
     }
 
     @Override
@@ -119,7 +124,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
             ItemStack input = itemStackHandler.getStackInSlot(SLOT_INPUT);
             ItemStack mold = itemStackHandler.getStackInSlot(SLOT_MOLD);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new YTechRecipeInput(input, mold), level).ifPresent((recipe) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(input, mold), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 SmeltingRecipe r = recipe.value();
 
@@ -143,7 +148,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
         if (level != null && recipeInput != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new YTechRecipeInput(recipeInput, recipeMold), level).ifPresent((r) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(recipeInput, recipeMold), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {
@@ -160,7 +165,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
         if (level != null) {
             ItemStack itemStack = itemStackHandler.getStackInSlot(SLOT_INPUT);
             ItemStack mold = itemStackHandler.getStackInSlot(SLOT_MOLD);
-            return level.getRecipeManager().getRecipeFor(YTechRecipeTypes.SMELTING.get(), new YTechRecipeInput(itemStack, mold), level).isPresent();
+            return quickCheck.getRecipeFor(new YTechRecipeInput(itemStack, mold), level).isPresent();
         }
 
         return false;

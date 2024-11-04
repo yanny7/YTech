@@ -14,6 +14,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -29,12 +31,14 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
     private static final int SLOT_FUEL = 2;
     private static final int SLOT_OUTPUT = 3;
 
-    @Nullable private ItemStack recipeInputLeft = ItemStack.EMPTY;
+    private final RecipeManager.CachedCheck<RecipeInput, AlloyingRecipe> quickCheck;
 
+    @Nullable private ItemStack recipeInputLeft = ItemStack.EMPTY;
     @Nullable private ItemStack recipeInputRight = ItemStack.EMPTY;
 
     public PrimitiveAlloySmelterBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER.get(), pos, blockState, YTechRecipeTypes.ALLOYING.get());
+        quickCheck = RecipeManager.createCheck(YTechRecipeTypes.ALLOYING.get());
     }
 
     @Override
@@ -114,7 +118,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             ItemStack inputLeft = itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT);
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 AlloyingRecipe r = recipe.value();
 
@@ -141,7 +145,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         if (level != null && recipeInputLeft != null && recipeInputRight != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {

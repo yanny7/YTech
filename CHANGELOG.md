@@ -1,8 +1,9 @@
 # YTech Changelog
 
-## []
+## [0.7.1]
 
 - Fixed Shears tag namespace
+- Fixed crash due to missing library
 
 ## [0.7.0]
 
