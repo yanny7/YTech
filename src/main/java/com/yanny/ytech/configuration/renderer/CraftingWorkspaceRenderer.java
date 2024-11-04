@@ -70,7 +70,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                             poseStack.pushPose();
                             poseStack.translate(x, y, z);
 
-                            if (itemStack.getItem() instanceof BlockItem) {
+                            if (itemStack.getItem() instanceof BlockItem blockItem) {
                                 BlockState state = states.get(i);
                                 BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
 
@@ -82,6 +82,19 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                                             .tesselateBlock(FAKE_LEVEL, model, state, pos, poseStack, vertexConsumer, true,
                                                     RandomSource.create(), state.getSeed(pos), packedOverlay, ModelData.EMPTY, renderType);
                                 }
+
+                                // Rendering BEWLR
+                                /*if (blockItem.getBlock() instanceof EntityBlock entityBlock) {
+                                    BlockEntity be = entityBlock.newBlockEntity(pos, state);
+                                    if (be != null) {
+                                        be.setLevel(FAKE_LEVEL);
+                                        BlockEntityRenderer<BlockEntity> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(be);
+
+                                        if (renderer != null) {
+                                            renderer.render(be, partialTick, poseStack, buffer, packedLight, packedOverlay);
+                                        }
+                                    }
+                                }*/
                             } else {
                                 poseStack.translate(0.5, 0.5, 0.5);
                                 poseStack.pushPose();
