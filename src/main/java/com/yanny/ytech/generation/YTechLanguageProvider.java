@@ -202,7 +202,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.aqueduct_hydrator2", "Consumes %smB every %s tick(s)");
         add("text.ytech.hover.aqueduct_fertilizer1", "Hydrates soil similar to water source and applies random bonemeal effect when fertilizer is provided");
         add("text.ytech.hover.aqueduct_fertilizer2", "Consumes %smB every %s tick(s)");
-        add("text.ytech.hover.crafting_workbench1", "Right-click to insert item (Must be placeable)");
+        add("text.ytech.hover.crafting_workbench1", "Right-click to insert item");
         add("text.ytech.hover.crafting_workbench2", "Right-click with Hammer to assemble block");
         add("text.ytech.hover.crafting_workbench3", "Left-click with empty hand to remove item");
         add("text.ytech.hover.drying_rack1", "Works faster in dry biomes and slower in wet biomes");

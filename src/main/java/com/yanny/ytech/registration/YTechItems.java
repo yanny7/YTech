@@ -215,19 +215,19 @@ public class YTechItems {
     }
 
     private static Item helmetItem(MaterialType material) {
-        return new ArmorItem(Objects.requireNonNull(material.armorMaterial), ArmorItem.Type.HELMET, new Item.Properties());
+        return new ArmorItem(YTechArmorMaterial.get(material), ArmorItem.Type.HELMET, new Item.Properties());
     }
 
     private static Item chestplateItem(MaterialType material) {
-        return new ArmorItem(Objects.requireNonNull(material.armorMaterial), ArmorItem.Type.CHESTPLATE, new Item.Properties());
+        return new ArmorItem(YTechArmorMaterial.get(material), ArmorItem.Type.CHESTPLATE, new Item.Properties());
     }
 
     private static Item leggingsItem(MaterialType material) {
-        return new ArmorItem(Objects.requireNonNull(material.armorMaterial), ArmorItem.Type.LEGGINGS, new Item.Properties());
+        return new ArmorItem(YTechArmorMaterial.get(material), ArmorItem.Type.LEGGINGS, new Item.Properties());
     }
 
     private static Item bootsItem(MaterialType material) {
-        return new ArmorItem(Objects.requireNonNull(material.armorMaterial), ArmorItem.Type.BOOTS, new Item.Properties());
+        return new ArmorItem(YTechArmorMaterial.get(material), ArmorItem.Type.BOOTS, new Item.Properties());
     }
 
     private static Item hoeItem(MaterialType material) {

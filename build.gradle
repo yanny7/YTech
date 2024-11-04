@@ -51,6 +51,15 @@ base {
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+// Enable the Jar-in-Jar system for your mod
+jarJar.enable()
+
+// Configure the 'jarJar' task
+// 'all' is the default classifier
+tasks.named('jarJar') {
+    // ...
+}
+
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 //minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
 
@@ -120,6 +129,12 @@ dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
     implementation "org.objenesis:objenesis:3.4"
+
+    // Compiles against the highest supported version of examplelib
+    //   between 2.0 (inclusive) and 3.0 (exclusive)
+    jarJar(group: 'org.objenesis', name: 'objenesis', version: '[3.0,4.0)') {
+        jarJar.pin(it, "3.4")
+    }
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
