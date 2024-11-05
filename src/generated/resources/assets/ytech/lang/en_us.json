@@ -111,6 +111,7 @@
   "block.ytech.thatch_slab": "Thatch Slab",
   "block.ytech.thatch_stairs": "Thatch Stairs",
   "block.ytech.tin_block": "Block of Tin",
+  "block.ytech.tree_stump": "Tree Stump",
   "creativeTab.ytech.title": "YTech",
   "effect.ytech.abyss_walker": "Abyss Walker",
   "effect.ytech.lions_heart": "Lion's Heart",
@@ -128,6 +129,7 @@
   "entity.ytech.woolly_rhino": "Woolly Rhino",
   "gui.ytech.category.alloying": "Alloying",
   "gui.ytech.category.block_hit": "Block Hit",
+  "gui.ytech.category.chopping": "Chopping",
   "gui.ytech.category.drying": "Drying",
   "gui.ytech.category.hammering": "Hammering",
   "gui.ytech.category.milling": "Milling",
@@ -381,5 +383,6 @@
   "text.ytech.top.irrigation.production": "Producing: %s mb/s",
   "text.ytech.top.smelter.progress": "Progress: %s%%",
   "text.ytech.top.smelter.temperature": "Temperature: %s°C",
-  "text.ytech.top.tanning_rack.progress": "Progress: %s%%"
+  "text.ytech.top.tanning_rack.progress": "Progress: %s%%",
+  "text.ytech.top.tree_stump.progress": "Progress: %s%%"
 }

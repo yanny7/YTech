@@ -15,6 +15,7 @@ public class YTechRecipeTypes {
 
     public static final RegistryObject<RecipeType<AlloyingRecipe>> ALLOYING = create("alloying");
     public static final RegistryObject<RecipeType<BlockHitRecipe>> BLOCK_HIT = create("block_hit");
+    public static final RegistryObject<RecipeType<ChoppingRecipe>> CHOPPING = create("chopping");
     public static final RegistryObject<RecipeType<DryingRecipe>> DRYING = create("drying");
     public static final RegistryObject<RecipeType<HammeringRecipe>> HAMMERING = create("hammering");
     public static final RegistryObject<RecipeType<MillingRecipe>> MILLING = create("milling");

@@ -48,6 +48,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.THATCH).add(YTechBlocks.THATCH.get());
         tag(YTechBlockTags.THATCH_SLABS).add(YTechBlocks.THATCH_SLAB.get());
         tag(YTechBlockTags.THATCH_STAIRS).add(YTechBlocks.THATCH_STAIRS.get());
+        tag(YTechBlockTags.TREE_STUMPS).add(YTechBlocks.TREE_STUMP.get());
 
         tag(YTechBlockTags.AUROCHS_RAID_BLOCKS).add(Blocks.WHEAT);
         tag(YTechBlockTags.DEER_RAID_BLOCKS).add(Blocks.WHEAT);

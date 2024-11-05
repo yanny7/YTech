@@ -99,6 +99,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH, "Thatch");
         addBlock(YTechBlocks.THATCH_SLAB, "Thatch Slab");
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
+        addBlock(YTechBlocks.TREE_STUMP, "Tree Stump");
 
         addTypedItem(YTechItems.CLAY_MOLDS, NameHolder.suffix("Clay Mold"), YTechLanguageProvider::getName);
         addTypedItem(YTechItems.PATTERNS, NameHolder.suffix("Pattern"), YTechLanguageProvider::getName);
@@ -172,6 +173,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("gui.ytech.category.hammering", "Hammering");
         add("gui.ytech.category.pottery", "Pottery");
         add("gui.ytech.category.workspace_crafting", "Workspace Crafting");
+        add("gui.ytech.category.chopping", "Chopping");
 
         add("sound.ytech.saber_tooth_tiger.ambient", "Saber-Toothed Tiger Roars");
         add("sound.ytech.saber_tooth_tiger.hurt", "Saber-Toothed Tiger Hurts");
@@ -230,6 +232,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.top.smelter.progress", "Progress: %s%%");
         add("text.ytech.top.smelter.temperature", "Temperature: %s°C");
         add("text.ytech.top.tanning_rack.progress", "Progress: %s%%");
+        add("text.ytech.top.tree_stump.progress", "Progress: %s%%");
 
         add("creativeTab.ytech.title", "YTech");
     }

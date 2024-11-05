@@ -20,8 +20,8 @@ class SimpleProgressHandler<R extends Recipe<Container>> {
     private static final String TAG_TOTAL_TIME = "TotalTime";
 
     private ItemStack item = ItemStack.EMPTY;
-    private float cookingProgress = 0;
-    private int cookingTime = 0;
+    private float progress = 0;
+    private int total = 0;
     private final RecipeManager.CachedCheck<Container, R> quickCheck;
 
     public SimpleProgressHandler(RecipeType<R> recipeType) {
@@ -37,21 +37,26 @@ class SimpleProgressHandler<R extends Recipe<Container>> {
     }
 
     public int getProgress() {
-        return Math.round(cookingProgress / cookingTime * 100);
+        return Math.round(progress / total * 100);
     }
 
     public void clear() {
-        cookingTime = 0;
-        cookingProgress = 0;
+        total = 0;
+        progress = 0;
         item = ItemStack.EMPTY;
     }
 
-    public void setupCrafting(@NotNull Level level, ItemStack input, Function<R, Integer> recipeTimeGetter) {
-        cookingProgress = 0;
-        quickCheck.getRecipeFor(new SimpleContainer(input), level).ifPresent((recipe) -> {
-            cookingTime = recipeTimeGetter.apply(recipe);
+    public boolean setupCrafting(@NotNull Level level, ItemStack input, Function<R, Integer> recipeTimeGetter) {
+        Optional<R> recipeHolder = quickCheck.getRecipeFor(new SimpleContainer(input), level);
+
+        if (recipeHolder.isPresent()) {
+            total = recipeTimeGetter.apply(recipeHolder.get());
             item = input.split(1);
-        });
+            progress = 0;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean tick(@NotNull Level level, Function<R, Boolean> canProcess, Function<R, Float> recipeStepGetter, BiConsumer<Container, R> onFinish) {
@@ -64,9 +69,9 @@ class SimpleProgressHandler<R extends Recipe<Container>> {
 
                 if (canProcess.apply(recipe)) {
 
-                    cookingProgress += recipeStepGetter.apply(recipe);
+                    progress += recipeStepGetter.apply(recipe);
 
-                    if (cookingProgress >= cookingTime) {
+                    if (progress >= total) {
                         ItemStack result = recipe.getResultItem(level.registryAccess());
 
                         if (result.isItemEnabled(level.enabledFeatures())) {
@@ -91,17 +96,17 @@ class SimpleProgressHandler<R extends Recipe<Container>> {
         }
 
         if (tag.contains(TAG_TIME)) {
-            cookingProgress = tag.getFloat(TAG_TIME);
+            progress = tag.getFloat(TAG_TIME);
         }
 
         if (tag.contains(TAG_TOTAL_TIME)) {
-            cookingTime = tag.getInt(TAG_TOTAL_TIME);
+            total = tag.getInt(TAG_TOTAL_TIME);
         }
     }
 
     public void save(@NotNull CompoundTag tag) {
         tag.put(TAG_ITEM, item.save(new CompoundTag()));
-        tag.putFloat(TAG_TIME, cookingProgress);
-        tag.putInt(TAG_TOTAL_TIME, cookingTime);
+        tag.putFloat(TAG_TIME, progress);
+        tag.putInt(TAG_TOTAL_TIME, total);
     }
 }

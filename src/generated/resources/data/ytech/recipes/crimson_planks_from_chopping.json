@@ -1,0 +1,14 @@
+{
+  "type": "ytech:chopping",
+  "hitCount": 3,
+  "ingredient": {
+    "item": "minecraft:crimson_stem"
+  },
+  "result": {
+    "count": 2,
+    "item": "minecraft:crimson_planks"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
+  }
+}

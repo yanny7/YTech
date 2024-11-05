@@ -55,6 +55,7 @@ public class KubeJsCompatibility extends KubeJSPlugin {
     public void registerRecipeSchemas(RegisterRecipeSchemasEvent event) {
         event.register(ref(YTechRecipeTypes.ALLOYING), AlloyingJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.BLOCK_HIT), BlockHitJS.SCHEMA);
+        event.register(ref(YTechRecipeTypes.CHOPPING), ChoppingJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.DRYING), DryingJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.HAMMERING), HammeringJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.MILLING), MillingJS.SCHEMA);
@@ -85,6 +86,14 @@ public class KubeJsCompatibility extends KubeJSPlugin {
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
         private static final RecipeKey<InputItem> BLOCK = ItemComponents.INPUT.key("block");
         private static final RecipeSchema SCHEMA = new RecipeSchema(BlockHitJS.class, BlockHitJS::new, RESULT, INGREDIENT, BLOCK);
+    }
+
+    private static class ChoppingJS extends RecipeJS {
+        private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
+        private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
+        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool");
+        private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount").optional(3).exclude();
+        private static final RecipeSchema SCHEMA = new RecipeSchema(ChoppingJS.class, ChoppingJS::new, RESULT, INGREDIENT, TOOL, HIT_COUNT);
     }
 
     private static class DryingJS extends RecipeJS {

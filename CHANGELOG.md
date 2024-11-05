@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Added Tree Stump
+
 ## [0.7.1]
 
 - Fixed crash due to missing library
