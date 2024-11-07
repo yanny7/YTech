@@ -197,6 +197,10 @@ public class YTechItemTags {
         public @NotNull Set<Entry<E, Map<F, TagKey<Item>>>> entrySet() {
             return tags.entrySet();
         }
+
+        public @NotNull Set<Entry<F, TagKey<Item>>> entrySubSet() {
+            return categoryTags.entrySet();
+        }
     }
 
     public static class PartTag extends TypedTag<PartType> {

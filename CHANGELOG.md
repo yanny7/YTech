@@ -3,6 +3,7 @@
 ## []
 
 - Added Tree Stump
+- Added EMI compatibility
 
 ## [0.7.1]
 

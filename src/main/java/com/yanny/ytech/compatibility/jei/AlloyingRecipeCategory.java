@@ -40,7 +40,7 @@ public class AlloyingRecipeCategory implements IRecipeCategory<AlloyingRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 82, 0, 92, 62);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get()));
-        localizedName = Component.translatable("gui.ytech.category.alloying");
+        localizedName = Component.translatable("emi.category.ytech.alloying");
     }
 
     @NotNull

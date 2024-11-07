@@ -37,7 +37,7 @@ public class ChoppingRecipeCategory implements IRecipeCategory<ChoppingRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 34, 82, 52);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.TREE_STUMP.get()));
-        localizedName = Component.translatable("gui.ytech.category.chopping");
+        localizedName = Component.translatable("emi.category.ytech.chopping");
     }
 
     @NotNull

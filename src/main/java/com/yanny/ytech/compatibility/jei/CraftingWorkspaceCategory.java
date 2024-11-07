@@ -34,7 +34,7 @@ public class CraftingWorkspaceCategory implements IRecipeCategory<WorkspaceCraft
         ResourceLocation location = Utils.modLoc("textures/gui/workspace_crafting.png");
         background = guiHelper.createDrawable(location, 0, 0, 150, 144);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.CRAFTING_WORKSPACE.get()));
-        localizedName = Component.translatable("gui.ytech.category.workspace_crafting");
+        localizedName = Component.translatable("emi.category.ytech.workspace_crafting");
     }
 
     @NotNull

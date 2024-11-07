@@ -32,7 +32,7 @@ public class HammeringRecipeCategory implements IRecipeCategory<HammeringRecipe>
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 86, 82, 52);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.BRONZE_ANVIL.get()));
-        localizedName = Component.translatable("gui.ytech.category.hammering");
+        localizedName = Component.translatable("emi.category.ytech.hammering");
     }
 
     @NotNull

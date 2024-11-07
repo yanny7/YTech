@@ -1,14 +1,14 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.AdvancementType;
-import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.NameHolder;
-import com.yanny.ytech.configuration.PartType;
+import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechEntityTypes;
+import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -152,6 +152,128 @@ class YTechLanguageProvider extends LanguageProvider {
         addEntityType(YTechEntityTypes.WILD_BOAR, "Wild Boar");
         addEntityType(YTechEntityTypes.WOOLLY_MAMMOTH, "Woolly Mammoth");
         addEntityType(YTechEntityTypes.WOOLLY_RHINO, "Woolly Rhino");
+        
+        addTag(YTechItemTags.ANTLERS, "Antlers");
+        addTag(YTechItemTags.BASKETS, "Baskets");
+        addTag(YTechItemTags.BEESWAXES, "Bees Waxes");
+        addTag(YTechItemTags.BONE_NEEDLES, "Bone Needles");
+        addTag(YTechItemTags.BREAD_DOUGHS, "Bread Doughs");
+        addTag(YTechItemTags.BRICK_MOLDS, "Brick Molds");
+        addTag(YTechItemTags.CLAY_BUCKETS, "Clay Buckets");
+        addTag(YTechItemTags.COOKED_VENISON, "Cooked Venison");
+        addTag(YTechItemTags.DRIED_BEEFS, "Dried Beefs");
+        addTag(YTechItemTags.DRIED_CHICKENS, "Dried Chicken");
+        addTag(YTechItemTags.DRIED_CODS, "Dried Cods");
+        addTag(YTechItemTags.DRIED_MUTTONS, "Dried Mutton");
+        addTag(YTechItemTags.DRIED_PORKCHOP, "Dried Porkchop");
+        addTag(YTechItemTags.DRIED_RABBITS, "Dried Rabbit");
+        addTag(YTechItemTags.DRIED_SALMONS, "Dried Salmon");
+        addTag(YTechItemTags.DRIED_VENISON, "Dried Venison");
+        addTag(YTechItemTags.FLOURS, "Flours");
+        addTag(YTechItemTags.GRASS_FIBERS, "Grass Fibers");
+        addTag(YTechItemTags.GRASS_TWINES, "Grass Twines");
+        addTag(YTechItemTags.IRON_BLOOMS, "Iron Blooms");
+        addTag(YTechItemTags.LAVA_BUCKETS, "Lava Buckets");
+        addTag(YTechItemTags.LEATHER_STRIPS, "Leather Strips");
+        addTag(YTechItemTags.MAMMOTH_TUSKS, "Mammoth Tusks");
+        addTag(YTechItemTags.PEBBLES, "Pebbles");
+        addTag(YTechItemTags.RAW_HIDES, "Raw Hides");
+        addTag(YTechItemTags.RHINO_HORNS, "Rhino Horns");
+        addTag(YTechItemTags.SHARP_FLINTS, "Sharp Flints");
+        addTag(YTechItemTags.UNFIRED_BRICKS, "Unfired Bricks");
+        addTag(YTechItemTags.UNFIRED_CLAY_BUCKETS, "Unfired Clay Buckets");
+        addTag(YTechItemTags.UNFIRED_DECORATED_POTS, "Unfired Decorated Pots");
+        addTag(YTechItemTags.UNFIRED_FLOWER_POTS, "Unfired Flower Pots");
+        addTag(YTechItemTags.UNLIT_TORCH, "Unlit Torch");
+        addTag(YTechItemTags.VENISON, "Venison");
+        addTag(YTechItemTags.WATER_BUCKETS, "Water Buckets");
+
+        addTag(YTechItemTags.BONE, "Bones");
+        addTag(YTechItemTags.FERTILIZER, "Fertilizers");
+        addTag(YTechItemTags.FIRE_SOURCE, "Fire Sources");
+        addTag(YTechItemTags.SOUL_FIRE_SOURCE, "Soul Fire Sources");
+        
+        addTag(YTechItemTags.AUROCHS_FOOD, "Aurochs Foods");
+        addTag(YTechItemTags.AUROCHS_TEMP_ITEMS, "Aurochs Temptation Items");
+        addTag(YTechItemTags.DEER_TEMP_ITEMS, "Deer Temptation Items");
+        addTag(YTechItemTags.FOWL_FOOD, "Fowl Foods");
+        addTag(YTechItemTags.FOWL_TEMP_ITEMS, "Fowl Temptation Items");
+        addTag(YTechItemTags.MOUFLON_FOOD, "Mouflon Foods");
+        addTag(YTechItemTags.MOUFLON_TEMP_ITEMS, "Mouflon Temptation Items");
+        addTag(YTechItemTags.SABER_TOOTH_TIGER_TEMP_ITEMS, "Saber-Toothed Tiger Temptation Items");
+        addTag(YTechItemTags.TERROR_BIRD_TEMP_ITEMS, "Terror Bird Temptation Items");
+        addTag(YTechItemTags.WILD_BOAR_FOOD, "Wild Boar Foods");
+        addTag(YTechItemTags.WILD_BOAR_TEMP_ITEMS, "Wild Boar Temptation Items");
+        addTag(YTechItemTags.WOOLLY_MAMMOTH_TEMP_ITEMS, "Woolly Mammoth Temptation Items");
+        addTag(YTechItemTags.WOOLLY_RHINO_TEMP_ITEMS, "Woolly Rhino Temptation Items");
+
+        addTag(YTechItemTags.AQUEDUCTS, "Aqueducts");
+        addTag(YTechItemTags.AQUEDUCT_FERTILIZERS, "Aqueduct Fertilizers");
+        addTag(YTechItemTags.AQUEDUCT_HYDRATORS, "Aqueduct Hydrators");
+        addTag(YTechItemTags.AQUEDUCT_VALVES, "Aqueduct Valves");
+        addTag(YTechItemTags.BRICK_CHIMNEYS, "Brick Chimneys");
+        addTag(YTechItemTags.BRONZE_ANVILS, "Bronze Anvils");
+        addTag(YTechItemTags.CRAFTING_WORKSPACES, "Crafting Workspaces");
+        addTag(YTechItemTags.FIRE_PITS, "Fire Pits");
+        addTag(YTechItemTags.GRASS_BEDS, "Grass Beds");
+        addTag(YTechItemTags.MILLSTONES, "Millstones");
+        addTag(YTechItemTags.POTTERS_WHEELS, "Potters Wheels");
+        addTag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS, "Primitive Alloy Smelters");
+        addTag(YTechItemTags.PRIMITIVE_SMELTERS, "Primitive Smelters");
+        addTag(YTechItemTags.REINFORCED_BRICKS, "Reinforced Bricks");
+        addTag(YTechItemTags.REINFORCED_BRICK_CHIMNEYS, "Reinforced Brick Chimneys");
+        addTag(YTechItemTags.TERRACOTTA_BRICKS, "Terracotta Bricks");
+        addTag(YTechItemTags.TERRACOTTA_BRICK_SLABS, "Terracotta Brick Slabs");
+        addTag(YTechItemTags.TERRACOTTA_BRICK_STAIRS, "Terracotta Brick Stairs");
+        addTag(YTechItemTags.THATCH, "Thatch");
+        addTag(YTechItemTags.THATCH_SLABS, "Thatch Slabs");
+        addTag(YTechItemTags.THATCH_STAIRS, "Thatch Stairs");
+        addTag(YTechItemTags.TREE_STUMPS, "Tree Stumps");
+
+        addTag(YTechItemTags.CHLORITE_BRACELETS, "Chlorite Bracelets");
+        addTag(YTechItemTags.LION_MANS, "Lion Mans");
+        addTag(YTechItemTags.SHELL_BEADS, "Shell Beads");
+        addTag(YTechItemTags.VENUS_OF_HOHLE_FELS, "Venus of Hohle Fels");
+        addTag(YTechItemTags.WILD_HORSES, "Wild Horses");
+
+        addTag(YTechItemTags.CLAY_MOLDS, NameHolder.suffix("Clay Molds"), YTechLanguageProvider::getName);
+        addTag(YTechItemTags.PATTERNS, NameHolder.suffix("Patterns"), YTechLanguageProvider::getName);
+        addTag(YTechItemTags.SAND_MOLDS, NameHolder.suffix("Sand Molds"), YTechLanguageProvider::getName);
+        addTag(YTechItemTags.UNFIRED_MOLDS, NameHolder.suffix("Unfired Molds"), YTechLanguageProvider::getName);
+
+        addTag(YTechItemTags.MOLDS, NameHolder.suffix("Molds"), YTechLanguageProvider::getName);
+
+        addTag(YTechItemTags.ARROWS, NameHolder.suffix("Arrows"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.AXES, NameHolder.suffix("Axes"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.BOLTS, NameHolder.suffix("Bolts"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.BOOTS, NameHolder.suffix("Boots"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.CHESTPLATES, NameHolder.suffix("Chestplates"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.CRUSHED_MATERIALS, NameHolder.suffix("Crushed Materials"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.FILES, NameHolder.suffix("Files"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.HAMMERS, NameHolder.suffix("Hammers"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.HELMETS, NameHolder.suffix("Helmets"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.HOES, NameHolder.suffix("Hoes"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.INGOTS, NameHolder.suffix("Ingots"), YTechLanguageProvider::getMaterialName, MaterialType.VANILLA_METALS);
+        addTag(YTechItemTags.KNIVES, NameHolder.suffix("Knives"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.MORTAR_AND_PESTLES, NameHolder.suffix("Mortar and Pestles"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.LEGGINGS, NameHolder.suffix("Leggings"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.PICKAXES, NameHolder.suffix("Pickaxes"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.PLATES, NameHolder.suffix("Plates"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.RAW_MATERIALS, NameHolder.suffix("Raw Materials"), YTechLanguageProvider::getMaterialName, MaterialType.VANILLA_METALS);
+        addTag(YTechItemTags.RODS, NameHolder.suffix("Rods"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.SAWS, NameHolder.suffix("Saws"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.SHEARS, NameHolder.suffix("Shears"), YTechLanguageProvider::getMaterialName, EnumSet.of(MaterialType.IRON));
+        addTag(YTechItemTags.SAW_BLADES, NameHolder.suffix("Saw Blades"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.SHOVELS, NameHolder.suffix("Shovels"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.SPEARS, NameHolder.suffix("Spears"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.SWORDS, NameHolder.suffix("Swords"), YTechLanguageProvider::getMaterialName);
+
+        addTag(YTechItemTags.DRYING_RACKS, NameHolder.suffix("Drying Racks"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.GRAVEL_DEPOSITS, NameHolder.suffix("Gravel Deposits"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.SAND_DEPOSITS, NameHolder.suffix("Sand Deposits"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.TANNING_RACKS, NameHolder.suffix("Tanning Racks"), YTechLanguageProvider::getMaterialName);
+
+        addTag(YTechItemTags.PARTS, NameHolder.suffix("Parts"), YTechLanguageProvider::getName, YTechLanguageProvider::getName);
 
         for (AdvancementType type : AdvancementType.values()) {
             add(type.titleId(), type.title());
@@ -164,16 +286,20 @@ class YTechLanguageProvider extends LanguageProvider {
         add("effect.ytech.venus_touch", "Venus' Touch");
         add("effect.ytech.wild_ride", "Wild Ride");
 
-        add("gui.ytech.category.drying", "Drying");
-        add("gui.ytech.category.tanning", "Tanning");
-        add("gui.ytech.category.milling", "Milling");
-        add("gui.ytech.category.smelting", "Smelting");
-        add("gui.ytech.category.block_hit", "Block Hit");
-        add("gui.ytech.category.alloying", "Alloying");
-        add("gui.ytech.category.hammering", "Hammering");
-        add("gui.ytech.category.pottery", "Pottery");
-        add("gui.ytech.category.workspace_crafting", "Workspace Crafting");
-        add("gui.ytech.category.chopping", "Chopping");
+        add("emi.category.ytech.drying", "Drying");
+        add("emi.category.ytech.tanning", "Tanning");
+        add("emi.category.ytech.milling", "Milling");
+        add("emi.category.ytech.smelting", "Smelting");
+        add("emi.category.ytech.block_hit", "Block Hit");
+        add("emi.category.ytech.alloying", "Alloying");
+        add("emi.category.ytech.hammering", "Hammering");
+        add("emi.category.ytech.pottery", "Pottery");
+        add("emi.category.ytech.workspace_crafting", "Workspace Crafting");
+        add("emi.category.ytech.chopping", "Chopping");
+
+        add("emi.alloying.temperature", "%s °C");
+        add("emi.chopping.hit_count", "%s time(s)");
+        add("emi.tanning.hit_count", "%s time(s)");
 
         add("sound.ytech.saber_tooth_tiger.ambient", "Saber-Toothed Tiger Roars");
         add("sound.ytech.saber_tooth_tiger.hurt", "Saber-Toothed Tiger Hurts");
@@ -259,6 +385,29 @@ class YTechLanguageProvider extends LanguageProvider {
 
     private void addStorageBlockLanguage(YTechBlocks.MaterialBlock block, String prefix) {
         block.entries().stream().filter(YTechLanguageProvider::vanillaMaterialsFilter).forEach((entry) -> addBlock(entry.getValue(), getMaterialName(NameHolder.prefix(prefix), entry.getKey())));
+    }
+
+    private void addTag(TagKey<Item> tag, String name) {
+        ResourceLocation location = tag.location();
+        add("tag.item." + location.getNamespace().replace("/", ".") + "." + location.getPath().replace("/", "."), name);
+    }
+
+    private <E extends Enum<E> & IType> void addTag(YTechItemTags.TypedTag<E> tag, NameHolder nameHolder, BiFunction<NameHolder, E, String> nameGetter) {
+        addTag(tag.tag, nameHolder.prefix() != null ? nameHolder.prefix() : nameHolder.suffix());
+        tag.forEach((type, t) -> addTag(t, nameGetter.apply(nameHolder, type)));
+    }
+
+    private <E extends Enum<E> & IType> void addTag(YTechItemTags.TypedTag<E> tag, NameHolder nameHolder, BiFunction<NameHolder, E, String> nameGetter, EnumSet<E> exclude) {
+        addTag(tag.tag, nameHolder.prefix() != null ? nameHolder.prefix() : nameHolder.suffix());
+        tag.entrySet().stream().filter((e) -> !exclude.contains(e.getKey())).forEach((e) -> addTag(e.getValue(), nameGetter.apply(nameHolder, e.getKey())));
+    }
+
+    private <E extends Enum<E> & IType, F extends Enum<F> & IType> void addTag(YTechItemTags.MultiTypedTag<E, F> tag, NameHolder nameHolder, BiFunction<NameHolder, F, String> subNameGetter, TriFunction<NameHolder, E, F, String> nameGetter) {
+        String name = nameHolder.prefix() != null ? nameHolder.prefix() : nameHolder.suffix();
+
+        addTag(tag.tag, name);
+        tag.forEach((type1, map) -> map.forEach((type2, t) -> addTag(tag.get(type1, type2), nameGetter.apply(nameHolder, type1, type2))));
+        tag.entrySubSet().forEach((e) -> addTag(e.getValue(), subNameGetter.apply(nameHolder, e.getKey())));
     }
 
     private static <T> boolean vanillaMaterialsFilter(Map.Entry<MaterialType, RegistryObject<T>> entry) {
