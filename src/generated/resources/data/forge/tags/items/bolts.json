@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#forge:bolts/bronze",
+    "#forge:bolts/copper",
+    "#forge:bolts/gold",
+    "#forge:bolts/iron",
+    "#forge:bolts/lead",
+    "#forge:bolts/tin",
+    "#forge:bolts/wooden"
+  ]
+}

@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:bolts/iron"
+      "tag": "forge:bolts/iron"
     },
     "F": {
       "item": "minecraft:feather"

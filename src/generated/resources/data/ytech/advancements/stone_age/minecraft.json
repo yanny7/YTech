@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:pickaxes/antler"
+            "tag": "forge:pickaxes/antler"
           }
         ]
       },

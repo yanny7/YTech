@@ -4,7 +4,7 @@
   "group": "wooden_button",
   "ingredients": [
     {
-      "tag": "ytech:saws"
+      "tag": "forge:saws"
     },
     {
       "item": "minecraft:warped_planks"

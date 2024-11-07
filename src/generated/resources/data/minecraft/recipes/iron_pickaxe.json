@@ -6,13 +6,13 @@
       "tag": "forge:ingots/iron"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     },
     "P": {
-      "tag": "ytech:plates/iron"
+      "tag": "forge:plates/iron"
     },
     "R": {
-      "tag": "ytech:rods/iron"
+      "tag": "forge:rods/iron"
     },
     "S": {
       "item": "minecraft:stick"

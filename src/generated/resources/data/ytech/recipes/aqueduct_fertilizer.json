@@ -6,22 +6,22 @@
       "tag": "ytech:aqueduct_hydrators"
     },
     "B": {
-      "tag": "ytech:bolts/bronze"
+      "tag": "forge:bolts/bronze"
     },
     "C": {
       "tag": "forge:chests"
     },
     "F": {
-      "tag": "ytech:files"
+      "tag": "forge:files"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     },
     "R": {
-      "tag": "ytech:rods/bronze"
+      "tag": "forge:rods/bronze"
     },
     "S": {
-      "tag": "ytech:plates/bronze"
+      "tag": "forge:plates/bronze"
     }
   },
   "pattern": [

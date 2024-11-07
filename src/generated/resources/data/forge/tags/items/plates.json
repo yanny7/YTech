@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#forge:plates/bronze",
+    "#forge:plates/copper",
+    "#forge:plates/gold",
+    "#forge:plates/iron",
+    "#forge:plates/lead",
+    "#forge:plates/tin",
+    "#forge:plates/wooden"
+  ]
+}

@@ -4,6 +4,7 @@
 
 - Added Tree Stump
 - Added EMI compatibility
+- Moved some YTech tags to Forge namespace
 
 ## [0.7.1]
 

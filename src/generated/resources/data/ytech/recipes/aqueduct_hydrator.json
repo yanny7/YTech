@@ -6,13 +6,13 @@
       "tag": "ytech:terracotta_bricks"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     },
     "R": {
-      "tag": "ytech:rods/copper"
+      "tag": "forge:rods/copper"
     },
     "S": {
-      "tag": "ytech:plates/copper"
+      "tag": "forge:plates/copper"
     }
   },
   "pattern": [

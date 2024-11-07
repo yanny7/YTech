@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:axes/flint"
+            "tag": "forge:axes/flint"
           }
         ]
       },

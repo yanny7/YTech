@@ -1,8 +1,8 @@
 {
   "values": [
-    "#ytech:swords/bronze",
-    "#ytech:swords/copper",
-    "#ytech:swords/lead",
-    "#ytech:swords/tin"
+    "#forge:swords/bronze",
+    "#forge:swords/copper",
+    "#forge:swords/lead",
+    "#forge:swords/tin"
   ]
 }

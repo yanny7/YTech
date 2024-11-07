@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#forge:knives/bronze",
+    "#forge:knives/copper",
+    "#forge:knives/flint",
+    "#forge:knives/gold",
+    "#forge:knives/iron",
+    "#forge:knives/lead",
+    "#forge:knives/tin"
+  ]
+}

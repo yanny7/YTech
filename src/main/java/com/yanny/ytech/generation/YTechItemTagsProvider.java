@@ -89,10 +89,6 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
         tag(YTechItemTags.TREE_STUMPS).add(YTechItems.TREE_STUMP.get());
 
-        tag(YTechItemTags.BONE).add(Items.BONE)
-                .addTag(YTechItemTags.ANTLERS)
-                .addTag(YTechItemTags.MAMMOTH_TUSKS)
-                .addTag(YTechItemTags.RHINO_HORNS);
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);
         tag(YTechItemTags.FIRE_SOURCE)
                 .add(Items.TORCH, Items.LANTERN, Items.CAMPFIRE, Items.FURNACE, Items.BLAST_FURNACE)
@@ -176,17 +172,28 @@ class YTechItemTagsProvider extends ItemTagsProvider {
 
         tag(ItemTags.ANVIL).add(YTechItems.BRONZE_ANVIL.get());
         tag(ItemTags.BEDS).add(YTechItems.GRASS_BED.get());
+        tag(Tags.Items.BONES)
+                .addTag(YTechItemTags.ANTLERS)
+                .addTag(YTechItemTags.MAMMOTH_TUSKS)
+                .addTag(YTechItemTags.RHINO_HORNS);
         tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(filteredMaterials(YTechItems.DEEPSLATE_ORES, MaterialType.VANILLA_METALS));
         tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(filteredMaterials(YTechItems.NETHER_ORES, EnumSet.of(MaterialType.GOLD)));
         tag(Tags.Items.ORES_IN_GROUND_STONE).add(filteredMaterials(YTechItems.STONE_ORES, MaterialType.VANILLA_METALS));
         tag(ItemTags.SLABS).add(YTechItems.TERRACOTTA_BRICK_SLAB.get(), YTechItems.THATCH_SLAB.get());
         tag(ItemTags.STAIRS).add(YTechItems.TERRACOTTA_BRICK_STAIRS.get(), YTechItems.THATCH_STAIRS.get());
+        tag(Tags.Items.TOOLS) //ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES
+                .addTag(YTechItemTags.FILES.tag)
+                .addTag(YTechItemTags.HAMMERS.tag)
+                .addTag(YTechItemTags.KNIVES.tag)
+                .addTag(YTechItemTags.MORTAR_AND_PESTLES.tag)
+                .addTag(YTechItemTags.SAWS.tag);
+//                .addTag(YTechItemTags.SHEARS.tag); ??? Why not part of TOOLS ??? (See ForgeItemTagsProvider)
     }
 
-    private <E extends Enum<E> & IType> void typedTag(YTechItems.TypedItem<E> typedItem, YTechItemTags.TypedTag<E> moldTag) {
-        typedItem.keySet().stream().sorted(Comparator.comparing(IType::key)).forEach((moldType) -> {
-            tag(moldTag.get(moldType)).add(typedItem.get(moldType).get());
-            tag(moldTag.tag).addTag(moldTag.get(moldType));
+    private <E extends Enum<E> & IType> void typedTag(YTechItems.TypedItem<E> typedItem, YTechItemTags.TypedTag<E> typedTag) {
+        typedItem.keySet().stream().sorted(Comparator.comparing(IType::key)).forEach((type) -> {
+            tag(typedTag.get(type)).add(typedItem.get(type).get());
+            tag(typedTag.tag).addTag(typedTag.get(type));
         });
     }
 

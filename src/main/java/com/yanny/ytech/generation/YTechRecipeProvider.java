@@ -715,7 +715,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private void mcLeadRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, Items.LEAD)
                 .define('L', YTechItemTags.LEATHER_STRIPS)
-                .define('S', Items.STRING)
+                .define('S', Tags.Items.STRING)
                 .pattern("LL ")
                 .pattern("LS ")
                 .pattern("  L")
@@ -727,7 +727,7 @@ class YTechRecipeProvider extends RecipeProvider {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, Items.FISHING_ROD)
                 .define('B', YTechItemTags.BOLTS.tag)
                 .define('S', Items.STICK)
-                .define('T', Items.STRING)
+                .define('T', Tags.Items.STRING)
                 .pattern("  S")
                 .pattern(" ST")
                 .pattern("S B")
@@ -841,7 +841,7 @@ class YTechRecipeProvider extends RecipeProvider {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.BOW)
                 .define('#', YTechItemTags.KNIVES.tag)
                 .define('S', Items.STICK)
-                .define('W', Items.STRING)
+                .define('W', Tags.Items.STRING)
                 .pattern(" SW")
                 .pattern("S#W")
                 .pattern(" SW")
@@ -1059,10 +1059,10 @@ class YTechRecipeProvider extends RecipeProvider {
 
     private static void registerBoneNeedleRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.BONE_NEEDLE.get())
-                .define('T', YTechItemTags.BONE)
+                .define('T', Tags.Items.BONES)
                 .define('#', YTechItemTags.SHARP_FLINTS)
                 .pattern("#T")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.BONE))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.BONES))
                 .save(recipeConsumer, YTechItems.BONE_NEEDLE.getId());
     }
 
@@ -1875,7 +1875,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void wcLoomRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(Items.LOOM)
                 .define('P', ItemTags.PLANKS)
-                .define('S', Items.STRING)
+                .define('S', Tags.Items.STRING)
                 .bottomPattern("P P")
                 .bottomPattern("   ")
                 .bottomPattern("P P")

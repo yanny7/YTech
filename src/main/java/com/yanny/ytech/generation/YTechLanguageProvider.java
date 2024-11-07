@@ -188,7 +188,6 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.VENISON, "Venison");
         addTag(YTechItemTags.WATER_BUCKETS, "Water Buckets");
 
-        addTag(YTechItemTags.BONE, "Bones");
         addTag(YTechItemTags.FERTILIZER, "Fertilizers");
         addTag(YTechItemTags.FIRE_SOURCE, "Fire Sources");
         addTag(YTechItemTags.SOUL_FIRE_SOURCE, "Soul Fire Sources");

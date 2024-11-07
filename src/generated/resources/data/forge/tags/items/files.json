@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#forge:files/bronze",
+    "#forge:files/copper",
+    "#forge:files/gold",
+    "#forge:files/iron",
+    "#forge:files/lead",
+    "#forge:files/tin"
+  ]
+}

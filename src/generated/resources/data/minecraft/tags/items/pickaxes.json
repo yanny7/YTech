@@ -1,9 +1,9 @@
 {
   "values": [
-    "#ytech:pickaxes/antler",
-    "#ytech:pickaxes/bronze",
-    "#ytech:pickaxes/copper",
-    "#ytech:pickaxes/lead",
-    "#ytech:pickaxes/tin"
+    "#forge:pickaxes/antler",
+    "#forge:pickaxes/bronze",
+    "#forge:pickaxes/copper",
+    "#forge:pickaxes/lead",
+    "#forge:pickaxes/tin"
   ]
 }
