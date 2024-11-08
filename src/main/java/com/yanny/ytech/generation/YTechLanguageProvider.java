@@ -346,6 +346,8 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.wild_horse", "The earliest sculpture of a horse. Increases speed when worn");
         add("text.ytech.hover.shell_beads", "World’s oldest jewelry. Will extend the time under water when worn");
         add("text.ytech.hover.chlorite_bracelet", "Oldest piece of jewellery of its kind in the world, crafted by an extinct branch of early humans known as Denisovans. Increases luck when worn");
+        add("text.ytech.hover.unlit_torch1", "Right-click on fire source to lit a torch");
+        add("text.ytech.hover.unlit_torch2", "Right-click while sneaking on machine that can be lit (e.g. Furnace) to lit a torch");
 
         add("text.ytech.top.drying_rack.progress", "Progress: %s%%");
         add("text.ytech.top.entity.generation", "Generation: %s");

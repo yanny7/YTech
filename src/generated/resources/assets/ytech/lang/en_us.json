@@ -682,6 +682,8 @@
   "text.ytech.hover.potters_wheel2": "Right-click while sneaking to get all clay back",
   "text.ytech.hover.primitive_smelter": "Increase temperature by adding chimneys",
   "text.ytech.hover.shell_beads": "World’s oldest jewelry. Will extend the time under water when worn",
+  "text.ytech.hover.unlit_torch1": "Right-click on fire source to lit a torch",
+  "text.ytech.hover.unlit_torch2": "Right-click while sneaking on machine that can be lit (e.g. Furnace) to lit a torch",
   "text.ytech.hover.venus_of_hohle_fels": "Representing a fertility goddess. Small chance to apply bonemeal effect on crops around",
   "text.ytech.hover.wild_horse": "The earliest sculpture of a horse. Increases speed when worn",
   "text.ytech.info.grass_fibers": "Grass fibers are obtained by breaking grass with Sharp Flint.",
