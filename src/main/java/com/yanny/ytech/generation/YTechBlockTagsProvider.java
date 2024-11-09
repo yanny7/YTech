@@ -27,6 +27,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
+        tag(YTechBlockTags.AMPHORAE).add(YTechBlocks.AMPHORA.get());
         tag(YTechBlockTags.AQUEDUCTS).add(YTechBlocks.AQUEDUCT.get());
         tag(YTechBlockTags.AQUEDUCT_FERTILIZERS).add(YTechBlocks.AQUEDUCT_FERTILIZER.get());
         tag(YTechBlockTags.AQUEDUCT_HYDRATORS).add(YTechBlocks.AQUEDUCT_HYDRATOR.get());

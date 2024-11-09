@@ -54,6 +54,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.RAW_HIDE, "Raw Hide");
         addItem(YTechItems.RHINO_HORN, "Rhino Horn");
         addItem(YTechItems.SHARP_FLINT, "Sharp Flint");
+        addItem(YTechItems.UNFIRED_AMPHORA, "Unfired Amphora");
         addItem(YTechItems.UNFIRED_BRICK, "Unfired Brick");
         addItem(YTechItems.UNFIRED_CLAY_BUCKET, "Unfired Clay Bucket");
         addItem(YTechItems.UNFIRED_DECORATED_POT, "Unfired Decorated Pot");
@@ -78,6 +79,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG, "Woolly Mammoth Spawn Egg");
         addItem(YTechItems.WOOLLY_RHINO_SPAWN_EGG, "Woolly Rhino Spawn Egg");
 
+        addBlock(YTechBlocks.AMPHORA, "Amphora");
         addBlock(YTechBlocks.AQUEDUCT, "Aqueduct");
         addBlock(YTechBlocks.AQUEDUCT_FERTILIZER, "Aqueduct Fertilizer");
         addBlock(YTechBlocks.AQUEDUCT_HYDRATOR, "Aqueduct Hydrator");
@@ -206,6 +208,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.WOOLLY_MAMMOTH_TEMP_ITEMS, "Woolly Mammoth Temptation Items");
         addTag(YTechItemTags.WOOLLY_RHINO_TEMP_ITEMS, "Woolly Rhino Temptation Items");
 
+        addTag(YTechItemTags.AMPHORAE, "Amphorae");
         addTag(YTechItemTags.AQUEDUCTS, "Aqueducts");
         addTag(YTechItemTags.AQUEDUCT_FERTILIZERS, "Aqueduct Fertilizers");
         addTag(YTechItemTags.AQUEDUCT_HYDRATORS, "Aqueduct Hydrators");
@@ -316,6 +319,8 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint.");
         add("text.ytech.info.missing_curios", "Missing CuriosAPI, item is useless now");
 
+        add("text.ytech.hover.amphora1", "Right-click to insert stackable items");
+        add("text.ytech.hover.amphora2", "Right-click while sneaking to extract items");
         add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");
         add("text.ytech.hover.primitive_smelter", "Increase temperature by adding chimneys");
         add("text.ytech.hover.chimney", "Increases temperature in smelter by %s °C");

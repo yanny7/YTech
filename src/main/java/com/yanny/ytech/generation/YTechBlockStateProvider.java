@@ -28,6 +28,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        AmphoraBlock.registerModel(this);
         AqueductBlock.registerModel(this);
         AqueductFertilizerBlock.registerModel(this);
         AqueductHydratorBlock.registerModel(this);

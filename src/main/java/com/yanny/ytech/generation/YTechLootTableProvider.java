@@ -60,6 +60,7 @@ class YTechLootTableProvider extends LootTableProvider {
 
         @Override
         protected void generate() {
+            dropSelf(YTechBlocks.AMPHORA);
             dropSelf(YTechBlocks.AQUEDUCT);
             dropSelf(YTechBlocks.AQUEDUCT_FERTILIZER);
             dropSelf(YTechBlocks.AQUEDUCT_HYDRATOR);
@@ -98,6 +99,7 @@ class YTechLootTableProvider extends LootTableProvider {
         protected Iterable<Block> getKnownBlocks() {
             return Stream.of(
                     Stream.of(
+                            YTechBlocks.AMPHORA,
                             YTechBlocks.AQUEDUCT,
                             YTechBlocks.AQUEDUCT_FERTILIZER,
                             YTechBlocks.AQUEDUCT_HYDRATOR,

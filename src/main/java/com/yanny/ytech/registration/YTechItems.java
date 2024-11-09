@@ -57,6 +57,7 @@ public class YTechItems {
     public static final RegistryObject<Item> RAW_HIDE = ITEMS.register("raw_hide", YTechItems::simpleItem);
     public static final RegistryObject<Item> RHINO_HORN = ITEMS.register("rhino_horn", YTechItems::simpleItem);
     public static final RegistryObject<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolCanHurtItem(Tiers.WOOD));
+    public static final RegistryObject<Item> UNFIRED_AMPHORA = ITEMS.register("unfired_amphora", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_BRICK = ITEMS.register("unfired_brick", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_CLAY_BUCKET = ITEMS.register("unfired_clay_bucket", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_DECORATED_POT = ITEMS.register("unfired_decoration_pot", YTechItems::simpleItem);
@@ -65,6 +66,7 @@ public class YTechItems {
     public static final RegistryObject<Item> VENISON = ITEMS.register("venison", () -> foodItem(2, 0.3f));
     public static final RegistryObject<Item> WATER_CLAY_BUCKET = ITEMS.register("water_clay_bucket", () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 
+    public static final RegistryObject<Item> AMPHORA = ITEMS.register("amphora", () -> descriptionItem(YTechBlocks.AMPHORA, List.of(Component.translatable("text.ytech.hover.amphora1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.amphora2").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> AQUEDUCT = ITEMS.register("aqueduct", YTechItems::aqueductBlockItem);
     public static final RegistryObject<Item> AQUEDUCT_FERTILIZER = ITEMS.register("aqueduct_fertilizer", YTechItems::aqueductFertilizerBlockItem);
     public static final RegistryObject<Item> AQUEDUCT_HYDRATOR = ITEMS.register("aqueduct_hydrator", YTechItems::aqueductHydratorBlockItem);

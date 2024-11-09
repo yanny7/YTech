@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 
 public class YTechBlockTags {
+    public static final TagKey<Block> AMPHORAE = create("amphorae");
     public static final TagKey<Block> AQUEDUCTS = create("aqueducts");
     public static final TagKey<Block> AQUEDUCT_FERTILIZERS = create("aqueduct_fertilizers");
     public static final TagKey<Block> AQUEDUCT_HYDRATORS = create("aqueduct_hydrators");

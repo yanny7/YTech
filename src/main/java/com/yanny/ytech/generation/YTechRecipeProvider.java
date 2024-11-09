@@ -335,6 +335,7 @@ class YTechRecipeProvider extends RecipeProvider {
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_CLAY_BUCKETS, YTechItems.CLAY_BUCKET.get(), 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_DECORATED_POTS, Items.DECORATED_POT, 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_FLOWER_POTS, Items.FLOWER_POT, 1000, 200);
+        smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_AMPHORAE, YTechItems.AMPHORA.get(), 1000, 200);
 
         hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, Items.IRON_INGOT);
 
@@ -359,6 +360,7 @@ class YTechRecipeProvider extends RecipeProvider {
         potteryRecipe(recipeConsumer, 2, YTechItems.UNFIRED_FLOWER_POT);
         potteryRecipe(recipeConsumer, 3, YTechItems.UNFIRED_CLAY_BUCKET);
         potteryRecipe(recipeConsumer, 4, YTechItems.UNFIRED_DECORATED_POT);
+        potteryRecipe(recipeConsumer, 5, YTechItems.UNFIRED_AMPHORA);
 
         wcChestRecipe(recipeConsumer);
         wcFurnaceRecipe(recipeConsumer);
@@ -967,7 +969,6 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("BBB")
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, YTechItems.UNFIRED_BRICK.getId());
-
     }
 
     private static void registerUnlitTorchRecipe(Consumer<FinishedRecipe> recipeConsumer) {

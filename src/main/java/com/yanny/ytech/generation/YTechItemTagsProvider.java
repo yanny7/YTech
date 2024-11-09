@@ -58,6 +58,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.RAW_HIDES).add(YTechItems.RAW_HIDE.get());
         tag(YTechItemTags.RHINO_HORNS).add(YTechItems.RHINO_HORN.get());
         tag(YTechItemTags.SHARP_FLINTS).add(YTechItems.SHARP_FLINT.get());
+        tag(YTechItemTags.UNFIRED_AMPHORAE).add(YTechItems.UNFIRED_AMPHORA.get());
         tag(YTechItemTags.UNFIRED_BRICKS).add(YTechItems.UNFIRED_BRICK.get());
         tag(YTechItemTags.UNFIRED_CLAY_BUCKETS).add(YTechItems.UNFIRED_CLAY_BUCKET.get());
         tag(YTechItemTags.UNFIRED_FLOWER_POTS).add(YTechItems.UNFIRED_FLOWER_POT.get());
@@ -66,6 +67,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.VENISON).add(YTechItems.VENISON.get());
         tag(YTechItemTags.WATER_BUCKETS).add(Items.WATER_BUCKET, YTechItems.WATER_CLAY_BUCKET.get());
 
+        tag(YTechItemTags.AMPHORAE).add(YTechItems.AMPHORA.get());
         tag(YTechItemTags.AQUEDUCTS).add(YTechItems.AQUEDUCT.get());
         tag(YTechItemTags.AQUEDUCT_FERTILIZERS).add(YTechItems.AQUEDUCT_FERTILIZER.get());
         tag(YTechItemTags.AQUEDUCT_HYDRATORS).add(YTechItems.AQUEDUCT_HYDRATOR.get());

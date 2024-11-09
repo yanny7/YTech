@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 public class YTechBlocks {
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YTechMod.MOD_ID);
 
+    public static final RegistryObject<Block> AMPHORA = BLOCKS.register("amphora", AmphoraBlock::new);
     public static final RegistryObject<Block> AQUEDUCT = BLOCKS.register("aqueduct", AqueductBlock::new);
     public static final RegistryObject<Block> AQUEDUCT_FERTILIZER = BLOCKS.register("aqueduct_fertilizer", AqueductFertilizerBlock::new);
     public static final RegistryObject<Block> AQUEDUCT_HYDRATOR = BLOCKS.register("aqueduct_hydrator", AqueductHydratorBlock::new);

@@ -44,6 +44,7 @@ public class YTechItemTags {
     public static final TagKey<Item> RAW_HIDES = create("raw_hides");
     public static final TagKey<Item> RHINO_HORNS = create("rhino_horns");
     public static final TagKey<Item> SHARP_FLINTS = create("sharp_flints");
+    public static final TagKey<Item> UNFIRED_AMPHORAE = create("unfired_amphorae");
     public static final TagKey<Item> UNFIRED_BRICKS = create("unfired_bricks");
     public static final TagKey<Item> UNFIRED_CLAY_BUCKETS = create("unfired_clay_buckets");
     public static final TagKey<Item> UNFIRED_DECORATED_POTS = create("unfired_decorated_pots");
@@ -70,6 +71,7 @@ public class YTechItemTags {
     public static final TagKey<Item> WOOLLY_MAMMOTH_TEMP_ITEMS = create("woolly_mammoth_temp_items");
     public static final TagKey<Item> WOOLLY_RHINO_TEMP_ITEMS = create("woolly_rhino_temp_items");
 
+    public static final TagKey<Item> AMPHORAE = create(YTechBlockTags.AMPHORAE);
     public static final TagKey<Item> AQUEDUCTS = create(YTechBlockTags.AQUEDUCTS);
     public static final TagKey<Item> AQUEDUCT_FERTILIZERS = create(YTechBlockTags.AQUEDUCT_FERTILIZERS);
     public static final TagKey<Item> AQUEDUCT_HYDRATORS = create(YTechBlockTags.AQUEDUCT_HYDRATORS);

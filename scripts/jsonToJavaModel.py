@@ -63,7 +63,7 @@ for element in model["elements"]:
     result += "})\n"
     result += f".from({list_to_comma_sep_str(element['from'])}).to({list_to_comma_sep_str(element['to'])})"
 
-    if "rotation" in element:
+    if "rotation" in element and element["rotation"]["angle"] != 0:
         rotation = element["rotation"]
 
         result += ".rotation()"
@@ -71,6 +71,8 @@ for element in model["elements"]:
         result += f".axis(Direction.Axis.{rotation['axis'].upper()})"
         result += f".origin({list_to_comma_sep_str(rotation['origin'])})"
         result += ".end()\n"
+    else:
+        result += "\n"
 
     result += ".end()\n"
 

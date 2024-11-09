@@ -5,6 +5,7 @@
 - Added Tree Stump
 - Added EMI compatibility
 - Moved some YTech tags to Forge namespace
+- Added Amphora for storing up to 8 stacks of same item
 
 ## [0.7.1]
 
