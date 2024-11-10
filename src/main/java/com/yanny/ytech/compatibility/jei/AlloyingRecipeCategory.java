@@ -4,6 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
@@ -34,7 +35,7 @@ public class AlloyingRecipeCategory extends AbstractRecipeCategory<AlloyingRecip
         super(
                 RECIPE_TYPE,
                 Component.translatable("emi.category.ytech.alloying"),
-                guiHelper.createDrawableItemLike(YTechBlocks.PRIMITIVE_ALLOY_SMELTER.get()),
+                guiHelper.createDrawableItemLike(YTechItems.PRIMITIVE_ALLOY_SMELTER.get()),
                 112, 38
         );
     }

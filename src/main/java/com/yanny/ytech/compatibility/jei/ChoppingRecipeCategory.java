@@ -2,7 +2,6 @@ package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.recipe.ChoppingRecipe;
-import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -29,7 +28,7 @@ public class ChoppingRecipeCategory extends AbstractRecipeCategory<ChoppingRecip
         super(
                 RECIPE_TYPE,
                 Component.translatable("emi.category.ytech.chopping"),
-                guiHelper.createDrawableItemLike(YTechBlocks.TREE_STUMP.get()),
+                guiHelper.createDrawableItemLike(YTechItems.TREE_STUMP.get()),
                 84, 41
         );
     }
