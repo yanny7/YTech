@@ -106,7 +106,7 @@ public class KubeJsCompatibility extends KubeJSPlugin {
     private static class HammeringJS extends RecipeJS {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
-        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").optional(InputItem.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").allowEmpty().optional(InputItem.EMPTY).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(HammeringJS.class, HammeringJS::new, RESULT, INGREDIENT, TOOL);
     }
 
@@ -136,7 +136,7 @@ public class KubeJsCompatibility extends KubeJSPlugin {
     private static class TanningJS extends RecipeJS {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
-        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").optional(InputItem.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").allowEmpty().optional(InputItem.EMPTY).exclude().alwaysWrite();
         private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount").optional(5).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(TanningJS.class, TanningJS::new, RESULT, INGREDIENT, TOOL, HIT_COUNT);
     }
