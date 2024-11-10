@@ -1,68 +1,50 @@
 package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.BlockHitRecipe;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class BlockHitRecipeCategory implements IRecipeCategory<BlockHitRecipe> {
+public class BlockHitRecipeCategory extends AbstractRecipeCategory<BlockHitRecipe> {
     public static final RecipeType<BlockHitRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "block_hit", BlockHitRecipe.class);
 
-    private final IDrawable background;
-    private final IDrawable icon;
-    private final Component localizedName;
-
     public BlockHitRecipeCategory(IGuiHelper guiHelper) {
-        ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
-        background = guiHelper.createDrawable(location, 0, 86, 82, 52);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Items.STONE));
-        localizedName = Component.translatable("emi.category.ytech.block_hit");
-    }
-
-    @NotNull
-    @Override
-    public RecipeType<BlockHitRecipe> getRecipeType() {
-        return RECIPE_TYPE;
-    }
-
-    @NotNull
-    @Override
-    public Component getTitle() {
-        return localizedName;
-    }
-
-    @NotNull
-    @Override
-    public IDrawable getBackground() {
-        return background;
-    }
-
-    @NotNull
-    @Override
-    public IDrawable getIcon() {
-        return icon;
+        super(
+            RECIPE_TYPE,
+            Component.translatable("emi.category.ytech.block_hit"),
+            guiHelper.createDrawableItemLike(Items.STONE),
+            84, 41
+        );
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, BlockHitRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 9).addIngredients(recipe.ingredient());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 61,  9).addItemStack(recipe.result());
-        builder.addSlot(RecipeIngredientRole.CATALYST, 29,  31).addIngredients(recipe.block());
+        builder.addSlot(RecipeIngredientRole.INPUT, 0, 5)
+                .setStandardSlotBackground()
+                .addIngredients(recipe.ingredient());
+        builder.addSlot(RecipeIngredientRole.CATALYST, 29,  24)
+                .setStandardSlotBackground()
+                .addIngredients(recipe.block());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 62,  5)
+                .setOutputSlotBackground()
+                .addItemStack(recipe.result());
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, @NotNull BlockHitRecipe recipe, @NotNull IFocusGroup focuses) {
+        builder.addRecipeArrow().setPosition(26, 5);
     }
 
     public static List<BlockHitRecipe> getRecipes(@NotNull RecipeManager recipeManager) {

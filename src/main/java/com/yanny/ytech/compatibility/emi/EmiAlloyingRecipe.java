@@ -39,7 +39,7 @@ public class EmiAlloyingRecipe extends BasicEmiRecipe {
     @Override
     public void addWidgets(WidgetHolder widgetHolder) {
         widgetHolder.addFillingArrow(54, 5, 50 * time).tooltip((mx, my) -> {
-            return List.of(ClientTooltipComponent.create(Component.translatable("emi.cooking.time", time / 20.0F).getVisualOrderText()));
+            return List.of(ClientTooltipComponent.create(Component.translatable("emi.alloying.time", time / 20.0F).getVisualOrderText()));
         });
         widgetHolder.addSlot(inputs.get(0), 10, 4);
         widgetHolder.addSlot(inputs.get(1), 28, 4);

@@ -1,6 +1,7 @@
 package com.yanny.ytech.compatibility.emi;
 
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
+import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
@@ -9,6 +10,7 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class EmiWorkspaceCraftingRecipe extends BasicEmiRecipe {
         super(CATEGORY, recipe.getId(), 154, 164);
         id = recipe.getId();
         inputs = recipe.recipeItems().stream().map(EmiIngredient::of).toList();
+        catalysts = List.of(EmiIngredient.of(Ingredient.of(YTechItemTags.SHARP_FLINTS)));
         outputs = List.of(EmiStack.of(recipe.result()));
     }
 
@@ -42,6 +45,7 @@ public class EmiWorkspaceCraftingRecipe extends BasicEmiRecipe {
         }
 
         widgetHolder.addTexture(EmiTexture.EMPTY_ARROW, 96, 74);
+        widgetHolder.addSlot(catalysts.get(0), 99, 98).catalyst(true);
         widgetHolder.addSlot(outputs.get(0), 128, 69).large(true).recipeContext(this);
     }
 }

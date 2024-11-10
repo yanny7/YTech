@@ -1,25 +1,22 @@
 package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.SmeltingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
@@ -27,62 +24,49 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
+public class SmeltingRecipeCategory extends AbstractRecipeCategory<SmeltingRecipe> {
     public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "smelting", SmeltingRecipe.class);
 
-    @NotNull private final Font font = Minecraft.getInstance().font;
-    @NotNull private final IDrawable background;
-    @NotNull private final IDrawable icon;
-    @NotNull private final Component localizedName;
-
     public SmeltingRecipeCategory(IGuiHelper guiHelper) {
-        ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
-        background = guiHelper.createDrawable(location, 0, 138, 82, 62);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.PRIMITIVE_SMELTER.get()));
-        localizedName = Component.translatable("emi.category.ytech.smelting");
-    }
-
-    @NotNull
-    @Override
-    public RecipeType<SmeltingRecipe> getRecipeType() {
-        return RECIPE_TYPE;
-    }
-
-    @NotNull
-    @Override
-    public Component getTitle() {
-        return localizedName;
-    }
-
-    @NotNull
-    @Override
-    public IDrawable getBackground() {
-        return background;
-    }
-
-    @NotNull
-    @Override
-    public IDrawable getIcon() {
-        return icon;
+        super(
+                RECIPE_TYPE,
+                Component.translatable("emi.category.ytech.smelting"),
+                guiHelper.createDrawableItemLike(YTechItems.PRIMITIVE_SMELTER.get()),
+                94, 41
+        );
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SmeltingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addItemStacks(Arrays.stream(recipe.ingredient().getItems()).map((i) -> i.copyWithCount(recipe.inputCount())).toList());
-        builder.addSlot(RecipeIngredientRole.INPUT, 28, 41).addIngredients(recipe.mold());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 61,  23).addItemStack(recipe.result());
+        builder.addSlot(RecipeIngredientRole.INPUT, 10, 5)
+                .setStandardSlotBackground()
+                .addItemStacks(Arrays.stream(recipe.ingredient().getItems()).map((i) -> i.copyWithCount(recipe.inputCount())).toList());
+        builder.addSlot(RecipeIngredientRole.CATALYST, 39,  24)
+                .setStandardSlotBackground()
+                .addIngredients(recipe.mold());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 72, 5)
+                .setOutputSlotBackground()
+                .addItemStack(recipe.result());
     }
 
     @Override
-    public void draw(@NotNull SmeltingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        String smeltingText = (recipe.smeltingTime() / 20) + "s";
-        String temperatureText = recipe.minTemperature() + "°C";
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, SmeltingRecipe recipe, @NotNull IFocusGroup focuses) {
+        builder.addAnimatedRecipeArrow(recipe.smeltingTime()).setPosition(36, 5);
+        builder.addWidget(new TemperatureWidget(0, 2, 4000));
+        builder.addAnimatedRecipeFlame(1600).setPosition(10, 24);
+    }
 
-        int stringWidth = font.width(smeltingText);
-        guiGraphics.drawString(font, smeltingText, getWidth() - stringWidth, getHeight() - 8, 0xFF808080, false);
+    @Override
+    public void getTooltip(@NotNull ITooltipBuilder tooltip, @NotNull SmeltingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
 
-        stringWidth = font.width(temperatureText);
-        guiGraphics.drawString(font, temperatureText, getWidth() - stringWidth, 0, 0xFF808080, false);
+        if (mouseX >= 36 && mouseX <= 54 + 24 && mouseY >= 5 && mouseY <= 5 + 17) {
+            tooltip.add(Component.translatable("emi.smelting.time", recipe.smeltingTime() / 20.0F));
+        }
+
+        if (mouseX >= 0 && mouseX <= 8 && mouseY >= 2 && mouseY <= 2 + 38) {
+            tooltip.add(Component.translatable("emi.smelting.temperature", recipe.minTemperature()));
+        }
     }
 
     public static List<SmeltingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {

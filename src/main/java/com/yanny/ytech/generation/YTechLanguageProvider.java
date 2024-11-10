@@ -299,7 +299,11 @@ class YTechLanguageProvider extends LanguageProvider {
         add("emi.category.ytech.workspace_crafting", "Workspace Crafting");
         add("emi.category.ytech.chopping", "Chopping");
 
+        add("emi.alloying.time", "%s s");
+        add("emi.drying.time", "%s s");
+        add("emi.smelting.time", "%s s");
         add("emi.alloying.temperature", "%s °C");
+        add("emi.smelting.temperature", "%s °C");
         add("emi.chopping.hit_count", "%s time(s)");
         add("emi.tanning.hit_count", "%s time(s)");
 
