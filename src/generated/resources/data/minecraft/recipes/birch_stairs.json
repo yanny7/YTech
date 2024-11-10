@@ -4,7 +4,7 @@
   "group": "wooden_stairs",
   "key": {
     "B": {
-      "tag": "ytech:bolts/wooden"
+      "tag": "forge:bolts/wooden"
     },
     "P": {
       "item": "minecraft:birch_planks"
@@ -13,7 +13,7 @@
       "item": "minecraft:birch_slab"
     },
     "W": {
-      "tag": "ytech:saws"
+      "tag": "forge:saws"
     }
   },
   "pattern": [

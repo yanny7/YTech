@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "F": {
-      "tag": "ytech:files"
+      "tag": "forge:files"
     },
     "P": {
-      "tag": "ytech:plates/gold"
+      "tag": "forge:plates/gold"
     },
     "S": {
       "item": "minecraft:stick"

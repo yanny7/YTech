@@ -7,6 +7,6 @@
     "item": "ytech:copper_plate"
   },
   "tool": {
-    "tag": "ytech:hammers"
+    "tag": "forge:hammers"
   }
 }

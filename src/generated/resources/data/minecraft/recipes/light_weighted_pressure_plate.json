@@ -3,13 +3,13 @@
   "category": "redstone",
   "key": {
     "B": {
-      "tag": "ytech:bolts/gold"
+      "tag": "forge:bolts/gold"
     },
     "P": {
-      "tag": "ytech:plates/gold"
+      "tag": "forge:plates/gold"
     },
     "W": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     }
   },
   "pattern": [

@@ -3,10 +3,10 @@
   "category": "redstone",
   "key": {
     "I": {
-      "tag": "ytech:rods/iron"
+      "tag": "forge:rods/iron"
     },
     "W": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     }
   },
   "pattern": [

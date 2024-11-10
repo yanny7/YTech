@@ -6,7 +6,7 @@
       "item": "minecraft:stick"
     },
     "S": {
-      "tag": "ytech:plates/iron"
+      "tag": "forge:plates/iron"
     },
     "T": {
       "tag": "ytech:leather_strips"

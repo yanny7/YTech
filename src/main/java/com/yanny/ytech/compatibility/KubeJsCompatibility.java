@@ -52,6 +52,7 @@ public class KubeJsCompatibility extends KubeJSPlugin {
     public void registerRecipeSchemas(RegisterRecipeSchemasEvent event) {
         event.register(ref(YTechRecipeTypes.ALLOYING), AlloyingJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.BLOCK_HIT), BlockHitJS.SCHEMA);
+        event.register(ref(YTechRecipeTypes.CHOPPING), ChoppingJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.DRYING), DryingJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.HAMMERING), HammeringJS.SCHEMA);
         event.register(ref(YTechRecipeTypes.MILLING), MillingJS.SCHEMA);
@@ -72,8 +73,8 @@ public class KubeJsCompatibility extends KubeJSPlugin {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT1 = YTECH_INPUT.key("ingredient1");
         private static final RecipeKey<InputItem> INGREDIENT2 = YTECH_INPUT.key("ingredient2");
-        private static final RecipeKey<Integer> MIN_TEMPERATURE = NumberComponent.INT.key("minTemp").optional(1000).exclude();
-        private static final RecipeKey<Integer> SMELTING_TIME = NumberComponent.INT.key("smeltingTime").optional(200).exclude();
+        private static final RecipeKey<Integer> MIN_TEMPERATURE = NumberComponent.INT.key("minTemp").optional(1000).exclude().alwaysWrite();
+        private static final RecipeKey<Integer> SMELTING_TIME = NumberComponent.INT.key("smeltingTime").optional(200).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(AlloyingJS.class, AlloyingJS::new, RESULT, INGREDIENT1, INGREDIENT2, MIN_TEMPERATURE, SMELTING_TIME);
     }
 
@@ -84,24 +85,32 @@ public class KubeJsCompatibility extends KubeJSPlugin {
         private static final RecipeSchema SCHEMA = new RecipeSchema(BlockHitJS.class, BlockHitJS::new, RESULT, INGREDIENT, BLOCK);
     }
 
+    private static class ChoppingJS extends RecipeJS {
+        private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
+        private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
+        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool");
+        private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount").optional(3).exclude().alwaysWrite();
+        private static final RecipeSchema SCHEMA = new RecipeSchema(ChoppingJS.class, ChoppingJS::new, RESULT, INGREDIENT, TOOL, HIT_COUNT);
+    }
+
     private static class DryingJS extends RecipeJS {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
-        private static final RecipeKey<Integer> DRYING_TIME = NumberComponent.INT.key("dryingTime").optional(1200).exclude();
+        private static final RecipeKey<Integer> DRYING_TIME = NumberComponent.INT.key("dryingTime").optional(1200).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(DryingJS.class, DryingJS::new, RESULT, INGREDIENT, DRYING_TIME);
     }
 
     private static class HammeringJS extends RecipeJS {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
-        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").optional(InputItem.EMPTY).exclude();
+        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").optional(InputItem.EMPTY).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(HammeringJS.class, HammeringJS::new, RESULT, INGREDIENT, TOOL);
     }
 
     private static class MillingJS extends RecipeJS {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
-        private static final RecipeKey<Float> BONUS_CHANCE = NumberComponent.FLOAT.key("bonusChance").optional(0.5f).exclude();
+        private static final RecipeKey<Float> BONUS_CHANCE = NumberComponent.FLOAT.key("bonusChance").optional(0.5f).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(MillingJS.class, MillingJS::new, RESULT, INGREDIENT, BONUS_CHANCE);
     }
 
@@ -114,18 +123,18 @@ public class KubeJsCompatibility extends KubeJSPlugin {
     private static class SmeltingJS extends RecipeJS {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
-        private static final RecipeKey<Integer> INPUT_COUNT = NumberComponent.INT.key("inputCount").optional(1).exclude();
-        private static final RecipeKey<InputItem> MOLD = ItemComponents.INPUT.key("mold").allowEmpty().optional(InputItem.EMPTY).exclude();
-        private static final RecipeKey<Integer> MIN_TEMP = NumberComponent.INT.key("minTemp").optional(1000).exclude();
-        private static final RecipeKey<Integer> SMELTING_TIME = NumberComponent.INT.key("smeltingTime").optional(200).exclude();
+        private static final RecipeKey<Integer> INPUT_COUNT = NumberComponent.INT.key("inputCount").optional(1).exclude().alwaysWrite();
+        private static final RecipeKey<InputItem> MOLD = ItemComponents.INPUT.key("mold").allowEmpty().optional(InputItem.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<Integer> MIN_TEMP = NumberComponent.INT.key("minTemp").optional(1000).exclude().alwaysWrite();
+        private static final RecipeKey<Integer> SMELTING_TIME = NumberComponent.INT.key("smeltingTime").optional(200).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(SmeltingJS.class, SmeltingJS::new, RESULT, INGREDIENT, INPUT_COUNT, MOLD, MIN_TEMP, SMELTING_TIME);
     }
 
     private static class TanningJS extends RecipeJS {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
-        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").optional(InputItem.EMPTY).exclude();
-        private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount").optional(5).exclude();
+        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").optional(InputItem.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount").optional(5).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(TanningJS.class, TanningJS::new, RESULT, INGREDIENT, TOOL, HIT_COUNT);
     }
 

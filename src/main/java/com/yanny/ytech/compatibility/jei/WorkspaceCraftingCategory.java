@@ -24,18 +24,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class CraftingWorkspaceCategory implements IRecipeCategory<WorkspaceCraftingRecipe> {
+public class WorkspaceCraftingCategory implements IRecipeCategory<WorkspaceCraftingRecipe> {
     public static final RecipeType<WorkspaceCraftingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "workspace_crafting", WorkspaceCraftingRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
     private final Component localizedName;
 
-    public CraftingWorkspaceCategory(IGuiHelper guiHelper) {
+    public WorkspaceCraftingCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Utils.modLoc("textures/gui/workspace_crafting.png");
         background = guiHelper.createDrawable(location, 0, 0, 150, 144);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.CRAFTING_WORKSPACE.get()));
-        localizedName = Component.translatable("gui.ytech.category.workspace_crafting");
+        localizedName = Component.translatable("emi.category.ytech.workspace_crafting");
     }
 
     @NotNull

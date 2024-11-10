@@ -3,19 +3,19 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/tin"
+      "tag": "forge:plates/tin"
     },
     "B": {
-      "tag": "ytech:bolts/tin"
+      "tag": "forge:bolts/tin"
     },
     "F": {
-      "tag": "ytech:files"
+      "tag": "forge:files"
     },
     "L": {
       "tag": "ytech:leather_strips"
     },
     "R": {
-      "tag": "ytech:rods/tin"
+      "tag": "forge:rods/tin"
     }
   },
   "pattern": [

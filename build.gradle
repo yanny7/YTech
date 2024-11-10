@@ -39,8 +39,12 @@ repositories {
             includeGroup "dev.latvian.mods"
         }
     }
-    maven {
+    maven { // Objenesis
         url = "https://repo1.maven.org/maven2/"
+    }
+    maven { // EMI
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
     }
 }
 
@@ -171,6 +175,10 @@ dependencies {
     // these two are unfortunately needed since fg.deobf doesn't respect transitive dependencies yet
     implementation "dev.latvian.mods:rhino-neoforge:${rhino_version}"
     implementation "dev.architectury:architectury-neoforge:${architectury_version}"
+
+    // EMI
+    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
+    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

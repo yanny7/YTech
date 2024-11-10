@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/copper"
+      "tag": "forge:plates/copper"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     },
     "S": {
       "item": "minecraft:stick"

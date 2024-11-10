@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#forge:hammers/bronze",
+    "#forge:hammers/copper",
+    "#forge:hammers/gold",
+    "#forge:hammers/iron",
+    "#forge:hammers/lead",
+    "#forge:hammers/stone",
+    "#forge:hammers/tin"
+  ]
+}

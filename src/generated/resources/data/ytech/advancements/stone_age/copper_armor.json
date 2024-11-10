@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:boots/copper"
+            "tag": "forge:boots/copper"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:chestplates/copper"
+            "tag": "forge:chestplates/copper"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:helmets/copper"
+            "tag": "forge:helmets/copper"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:leggings/copper"
+            "tag": "forge:leggings/copper"
           }
         ]
       },

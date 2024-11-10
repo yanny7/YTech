@@ -64,6 +64,10 @@ public class TopCompatibility {
                             probeInfo.horizontal().item(blockEntity.getItem());
                         } else if (entity instanceof FirePitBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
                             probeInfo.horizontal().text(Component.translatable("text.ytech.top.fire_pit.progress", Integer.toString(blockEntity.getProgress())));
+                        } else if (entity instanceof TreeStumpBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
+                            probeInfo.horizontal().text(Component.translatable("text.ytech.top.tree_stump.progress", Integer.toString(blockEntity.getProgress())));
+                        } else if (entity instanceof AmphoraBlockEntity blockEntity) {
+                            probeInfo.horizontal().item(blockEntity.getItem());
                         }
                     }
                 }

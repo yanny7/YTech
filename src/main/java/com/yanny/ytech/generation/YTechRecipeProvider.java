@@ -81,6 +81,18 @@ class YTechRecipeProvider extends RecipeProvider {
         mcSplitByAxeRecipe(recipeConsumer, Items.BAMBOO_BLOCK, Items.BAMBOO_PLANKS);
         mcSplitByAxeRecipe(recipeConsumer, Items.WARPED_STEM, Items.WARPED_PLANKS);
 
+        mcSplitByChoppingRecipe(recipeConsumer, Items.ACACIA_LOG, Items.ACACIA_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.BIRCH_LOG, Items.BIRCH_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.CHERRY_LOG, Items.CHERRY_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.JUNGLE_LOG, Items.JUNGLE_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.OAK_LOG, Items.OAK_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.DARK_OAK_LOG, Items.DARK_OAK_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.MANGROVE_LOG, Items.MANGROVE_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.SPRUCE_LOG, Items.SPRUCE_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.CRIMSON_STEM, Items.CRIMSON_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.BAMBOO_BLOCK, Items.BAMBOO_PLANKS);
+        mcSplitByChoppingRecipe(recipeConsumer, Items.WARPED_STEM, Items.WARPED_PLANKS);
+
         mcFenceRecipe(recipeConsumer, Items.ACACIA_PLANKS, Items.ACACIA_FENCE);
         mcFenceRecipe(recipeConsumer, Items.BIRCH_PLANKS, Items.BIRCH_FENCE);
         mcFenceRecipe(recipeConsumer, Items.CHERRY_PLANKS, Items.CHERRY_FENCE);
@@ -304,6 +316,7 @@ class YTechRecipeProvider extends RecipeProvider {
         registerThatchBlockRecipe(recipeConsumer);
         registerThatchBlockSlabRecipe(recipeConsumer);
         registerThatchBlockStairsRecipe(recipeConsumer);
+        registerTreeStumpRecipe(recipeConsumer);
 
         YTechItems.DRYING_RACKS.forEach((material, item) -> DryingRackBlock.registerRecipe(recipeConsumer, item, material));
         YTechItems.RAW_STORAGE_BLOCKS.forEach((material, item) -> registerRawStorageBlockRecipe(recipeConsumer, item, material));
@@ -320,6 +333,7 @@ class YTechRecipeProvider extends RecipeProvider {
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_CLAY_BUCKETS, YTechItems.CLAY_BUCKET.get(), 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_DECORATED_POTS, Items.DECORATED_POT, 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_FLOWER_POTS, Items.FLOWER_POT, 1000, 200);
+        smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_AMPHORAE, YTechItems.AMPHORA.get(), 1000, 200);
 
         hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, Items.IRON_INGOT);
 
@@ -344,6 +358,7 @@ class YTechRecipeProvider extends RecipeProvider {
         potteryRecipe(recipeConsumer, 2, YTechItems.UNFIRED_FLOWER_POT);
         potteryRecipe(recipeConsumer, 3, YTechItems.UNFIRED_CLAY_BUCKET);
         potteryRecipe(recipeConsumer, 4, YTechItems.UNFIRED_DECORATED_POT);
+        potteryRecipe(recipeConsumer, 5, YTechItems.UNFIRED_AMPHORA);
 
         wcChestRecipe(recipeConsumer);
         wcFurnaceRecipe(recipeConsumer);
@@ -416,12 +431,19 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private void mcSplitBySawRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull Item result) {
-        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 2)
+        RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 3)
                 .requires(input)
                 .requires(YTechItemTags.SAWS.tag)
                 .group(Utils.loc(result).getPath())
                 .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.loc(result));
+    }
+
+    private void mcSplitByChoppingRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull Item result) {
+        ChoppingRecipe.Builder.chopping(input, YTechItemTags.AXES.tag, 3, result, 2)
+                .group(Utils.loc(result).getPath())
+                .unlockedBy(RecipeProvider.getHasName(input), RecipeProvider.has(input))
+                .save(recipeConsumer, Utils.modLoc(Utils.loc(result).getPath() + "_from_chopping"));
     }
 
     private void mcSplitByAxeRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull Item input, @NotNull Item result) {
@@ -693,7 +715,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private void mcLeadRecipe(@NotNull RecipeOutput recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, Items.LEAD)
                 .define('L', YTechItemTags.LEATHER_STRIPS)
-                .define('S', Items.STRING)
+                .define('S', Tags.Items.STRING)
                 .pattern("LL ")
                 .pattern("LS ")
                 .pattern("  L")
@@ -705,7 +727,7 @@ class YTechRecipeProvider extends RecipeProvider {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, Items.FISHING_ROD)
                 .define('B', YTechItemTags.BOLTS.tag)
                 .define('S', Items.STICK)
-                .define('T', Items.STRING)
+                .define('T', Tags.Items.STRING)
                 .pattern("  S")
                 .pattern(" ST")
                 .pattern("S B")
@@ -819,7 +841,7 @@ class YTechRecipeProvider extends RecipeProvider {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.COMBAT, Items.BOW)
                 .define('#', YTechItemTags.KNIVES.tag)
                 .define('S', Items.STICK)
-                .define('W', Items.STRING)
+                .define('W', Tags.Items.STRING)
                 .pattern(" SW")
                 .pattern("S#W")
                 .pattern(" SW")
@@ -945,7 +967,6 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("BBB")
                 .unlockedBy(RecipeProvider.getHasName(Items.CLAY_BALL), RecipeProvider.has(Items.CLAY_BALL))
                 .save(recipeConsumer, YTechItems.UNFIRED_BRICK.getId());
-
     }
 
     private static void registerUnlitTorchRecipe(RecipeOutput recipeConsumer) {
@@ -1037,10 +1058,10 @@ class YTechRecipeProvider extends RecipeProvider {
 
     private static void registerBoneNeedleRecipe(RecipeOutput recipeConsumer) {
         RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.BONE_NEEDLE.get())
-                .define('T', YTechItemTags.BONE)
+                .define('T', Tags.Items.BONES)
                 .define('#', YTechItemTags.SHARP_FLINTS)
                 .pattern("#T")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.BONE))
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.BONES))
                 .save(recipeConsumer, YTechItems.BONE_NEEDLE.getId());
     }
 
@@ -1660,6 +1681,23 @@ class YTechRecipeProvider extends RecipeProvider {
                 .save(recipeConsumer, YTechBlocks.THATCH_STAIRS.getId());
     }
 
+    private static void registerTreeStumpRecipe(RecipeOutput recipeConsumer) {
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.TREE_STUMP.get())
+                .define('C', ItemTags.LOGS)
+                .define('S', Items.SMOOTH_STONE)
+                .bottomPattern("SSS")
+                .bottomPattern("SSS")
+                .bottomPattern("SSS")
+                .middlePattern("CCC")
+                .middlePattern("CCC")
+                .middlePattern("CCC")
+                .topPattern("CCC")
+                .topPattern("CCC")
+                .topPattern("CCC")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.LOGS))
+                .save(recipeConsumer, YTechItems.TREE_STUMP.getId());
+    }
+
     private static void registerRawStorageBlockRecipe(RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
         if (!VANILLA_METALS.contains(material)) {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
@@ -1683,12 +1721,13 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void wcChestRecipe(RecipeOutput recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(Items.CHEST)
                 .define('C', ItemTags.PLANKS)
+                .define('B', ItemTags.WOODEN_BUTTONS)
                 .bottomPattern("CCC")
                 .bottomPattern("CCC")
                 .bottomPattern("CCC")
                 .middlePattern("CCC")
                 .middlePattern("C C")
-                .middlePattern("CCC")
+                .middlePattern("CBC")
                 .topPattern("CCC")
                 .topPattern("CCC")
                 .topPattern("CCC")
@@ -1836,7 +1875,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void wcLoomRecipe(RecipeOutput recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(Items.LOOM)
                 .define('P', ItemTags.PLANKS)
-                .define('S', Items.STRING)
+                .define('S', Tags.Items.STRING)
                 .bottomPattern("P P")
                 .bottomPattern("   ")
                 .bottomPattern("P P")

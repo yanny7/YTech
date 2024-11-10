@@ -3,19 +3,19 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/copper"
+      "tag": "forge:plates/copper"
     },
     "B": {
-      "tag": "ytech:bolts/copper"
+      "tag": "forge:bolts/copper"
     },
     "F": {
-      "tag": "ytech:files"
+      "tag": "forge:files"
     },
     "L": {
       "tag": "ytech:leather_strips"
     },
     "R": {
-      "tag": "ytech:rods/copper"
+      "tag": "forge:rods/copper"
     }
   },
   "pattern": [

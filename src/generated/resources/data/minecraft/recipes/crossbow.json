@@ -9,13 +9,13 @@
       "item": "minecraft:tripwire_hook"
     },
     "&": {
-      "tag": "ytech:rods/iron"
+      "tag": "forge:rods/iron"
     },
     "F": {
-      "tag": "ytech:knives"
+      "tag": "forge:knives"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"

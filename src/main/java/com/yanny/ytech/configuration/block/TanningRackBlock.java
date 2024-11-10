@@ -91,7 +91,7 @@ public class TanningRackBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                  @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof  TanningRackBlockEntity tanningRack) {
+        if (level.getBlockEntity(pos) instanceof TanningRackBlockEntity tanningRack) {
             return tanningRack.onUse(state, level, pos, player, hand, hitResult);
         } else {
             throw new IllegalStateException("Invalid holder type!");

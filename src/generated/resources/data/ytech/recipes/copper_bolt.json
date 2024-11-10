@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "ytech:rods/copper"
+      "tag": "forge:rods/copper"
     },
     "S": {
-      "tag": "ytech:saws"
+      "tag": "forge:saws"
     }
   },
   "pattern": [

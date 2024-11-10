@@ -4,13 +4,13 @@
   "group": "wooden_pressure_plate",
   "key": {
     "B": {
-      "tag": "ytech:bolts/wooden"
+      "tag": "forge:bolts/wooden"
     },
     "P": {
       "item": "minecraft:dark_oak_planks"
     },
     "W": {
-      "tag": "ytech:saws"
+      "tag": "forge:saws"
     }
   },
   "pattern": [

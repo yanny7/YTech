@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 public class YTechBlocks {
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(YTechMod.MOD_ID);
 
+    public static final DeferredBlock<Block> AMPHORA = BLOCKS.register("amphora", AmphoraBlock::new);
     public static final DeferredBlock<Block> AQUEDUCT = BLOCKS.register("aqueduct", AqueductBlock::new);
     public static final DeferredBlock<Block> AQUEDUCT_FERTILIZER = BLOCKS.register("aqueduct_fertilizer", AqueductFertilizerBlock::new);
     public static final DeferredBlock<Block> AQUEDUCT_HYDRATOR = BLOCKS.register("aqueduct_hydrator", AqueductHydratorBlock::new);
@@ -40,6 +41,7 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> THATCH = registerBlock("thatch", Blocks.HAY_BLOCK);
     public static final DeferredBlock<Block> THATCH_SLAB = registerSlab("thatch_slab", Blocks.HAY_BLOCK);
     public static final DeferredBlock<Block> THATCH_STAIRS = registerStairs("thatch_stairs", YTechBlocks.THATCH, Blocks.HAY_BLOCK);
+    public static final DeferredBlock<Block> TREE_STUMP = BLOCKS.register("tree_stump", TreeStumpBlock::new);
 
     public static final MaterialBlock DEEPSLATE_ORES = new DeepslateOreMaterialBlock();
     public static final MaterialBlock DRYING_RACKS = new MaterialBlock("drying_rack", NameHolder.suffix("drying_rack"), MaterialType.ALL_WOODS, DryingRackBlock::new);

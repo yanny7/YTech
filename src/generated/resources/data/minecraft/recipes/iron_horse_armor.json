@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "ytech:hammers"
+      "tag": "forge:hammers"
     },
     "L": {
-      "tag": "ytech:plates/iron"
+      "tag": "forge:plates/iron"
     },
     "S": {
       "tag": "ytech:leather_strips"

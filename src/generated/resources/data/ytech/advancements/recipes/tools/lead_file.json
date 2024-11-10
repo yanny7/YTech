@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:plates/lead"
+            "tag": "forge:plates/lead"
           }
         ]
       },

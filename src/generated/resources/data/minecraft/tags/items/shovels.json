@@ -1,8 +1,8 @@
 {
   "values": [
-    "#ytech:shovels/bronze",
-    "#ytech:shovels/copper",
-    "#ytech:shovels/lead",
-    "#ytech:shovels/tin"
+    "#forge:shovels/bronze",
+    "#forge:shovels/copper",
+    "#forge:shovels/lead",
+    "#forge:shovels/tin"
   ]
 }
