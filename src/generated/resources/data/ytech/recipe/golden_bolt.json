@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "ytech:rods/gold"
+      "tag": "c:rods/gold"
     },
     "S": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   },
   "pattern": [

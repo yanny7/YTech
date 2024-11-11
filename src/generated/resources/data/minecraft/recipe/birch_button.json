@@ -4,7 +4,7 @@
   "group": "wooden_button",
   "ingredients": [
     {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     },
     {
       "item": "minecraft:birch_planks"

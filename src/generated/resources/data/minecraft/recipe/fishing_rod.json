@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "B": {
-      "tag": "ytech:bolts"
+      "tag": "c:bolts"
     },
     "S": {
       "item": "minecraft:stick"
     },
     "T": {
-      "item": "minecraft:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [

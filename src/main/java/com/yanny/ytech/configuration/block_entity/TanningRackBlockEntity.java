@@ -48,7 +48,9 @@ public class TanningRackBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                progressHandler.setupCrafting(level, holdingItemStack, TanningRecipe::hitCount);
+                if (!progressHandler.setupCrafting(level, holdingItemStack, TanningRecipe::hitCount)) {
+                    progressHandler.setupCrafting(level, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TanningRecipe::hitCount);
+                }
             } else {
                 Function<TanningRecipe, Boolean> canProcess = (recipe) -> recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack);
                 Function<TanningRecipe, Float> getStep = (recipe) -> 1F;

@@ -4,16 +4,16 @@
   "group": "wooden_trapdoor",
   "key": {
     "B": {
-      "tag": "ytech:bolts/wooden"
+      "tag": "c:bolts/wooden"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     },
     "P": {
       "item": "minecraft:crimson_planks"
     },
     "W": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   },
   "pattern": [

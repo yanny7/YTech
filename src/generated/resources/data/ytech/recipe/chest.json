@@ -1,6 +1,9 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
+    "B": {
+      "tag": "minecraft:wooden_buttons"
+    },
     "C": {
       "tag": "minecraft:planks"
     }
@@ -14,7 +17,7 @@
     "middle": [
       "CCC",
       "C C",
-      "CCC"
+      "CBC"
     ],
     "top": [
       "CCC",

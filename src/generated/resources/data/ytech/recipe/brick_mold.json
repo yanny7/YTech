@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "ytech:plates/wooden"
+      "tag": "c:plates/wooden"
     },
     "I": {
-      "tag": "ytech:bolts/wooden"
+      "tag": "c:bolts/wooden"
     }
   },
   "pattern": [

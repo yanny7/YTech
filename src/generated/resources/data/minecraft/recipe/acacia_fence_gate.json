@@ -4,10 +4,10 @@
   "group": "wooden_fence_gate",
   "key": {
     "B": {
-      "tag": "ytech:bolts/wooden"
+      "tag": "c:bolts/wooden"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     },
     "P": {
       "item": "minecraft:acacia_planks"
@@ -16,7 +16,7 @@
       "item": "minecraft:stick"
     },
     "W": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   },
   "pattern": [

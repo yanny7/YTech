@@ -15,6 +15,7 @@ public class YTechRecipeTypes {
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<AlloyingRecipe>> ALLOYING = create("alloying");
     public static final DeferredHolder<RecipeType<?>, RecipeType<BlockHitRecipe>> BLOCK_HIT = create("block_hit");
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ChoppingRecipe>> CHOPPING = create("chopping");
     public static final DeferredHolder<RecipeType<?>, RecipeType<DryingRecipe>> DRYING = create("drying");
     public static final DeferredHolder<RecipeType<?>, RecipeType<HammeringRecipe>> HAMMERING = create("hammering");
     public static final DeferredHolder<RecipeType<?>, RecipeType<MillingRecipe>> MILLING = create("milling");

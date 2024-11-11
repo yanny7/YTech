@@ -40,7 +40,7 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 138, 82, 62);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.PRIMITIVE_SMELTER.get()));
-        localizedName = Component.translatable("gui.ytech.category.smelting");
+        localizedName = Component.translatable("emi.category.ytech.smelting");
     }
 
     @NotNull

@@ -4,13 +4,13 @@
   "group": "bed",
   "key": {
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     },
     "P": {
       "tag": "minecraft:wooden_slabs"
     },
     "S": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     },
     "W": {
       "item": "minecraft:black_wool"

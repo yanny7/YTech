@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/gold"
+      "tag": "c:plates/gold"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     }
   },
   "pattern": [

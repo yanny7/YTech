@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class YTechBlockEntityTypes {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, YTechMod.MOD_ID);
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmphoraBlockEntity>> AMPHORA = register("amphora", AmphoraBlockEntity::new, YTechBlocks.AMPHORA);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductBlockEntity>> AQUEDUCT = register("aqueduct", AqueductBlockEntity::new, YTechBlocks.AQUEDUCT);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductFertilizerBlockEntity>> AQUEDUCT_FERTILIZER = register("aqueduct_fertilizer", AqueductFertilizerBlockEntity::new, YTechBlocks.AQUEDUCT_FERTILIZER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductHydratorBlockEntity>> AQUEDUCT_HYDRATOR = register("aqueduct_hydrator", (pos, state) -> new AqueductHydratorBlockEntity(YTechBlockEntityTypes.AQUEDUCT_HYDRATOR.get(), pos, state), YTechBlocks.AQUEDUCT_HYDRATOR);
@@ -30,6 +31,7 @@ public class YTechBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PrimitiveAlloySmelterBlockEntity>> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", PrimitiveAlloySmelterBlockEntity::new, YTechBlocks.PRIMITIVE_ALLOY_SMELTER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PrimitiveSmelterBlockEntity>> PRIMITIVE_SMELTER = register("primitive_smelter", PrimitiveSmelterBlockEntity::new, YTechBlocks.PRIMITIVE_SMELTER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TanningRackBlockEntity>> TANNING_RACK = register("tanning_rack", TanningRackBlockEntity::new, YTechBlocks.TANNING_RACKS);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TreeStumpBlockEntity>> TREE_STUMP = register("tree_stump", TreeStumpBlockEntity::new, YTechBlocks.TREE_STUMP);
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

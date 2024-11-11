@@ -48,7 +48,7 @@ public class MillingRecipeCategory implements IRecipeCategory<MillingRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 200, 82, 47);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.MILLSTONE.get()));
-        localizedName = Component.translatable("gui.ytech.category.milling");
+        localizedName = Component.translatable("emi.category.ytech.milling");
     }
 
     @NotNull

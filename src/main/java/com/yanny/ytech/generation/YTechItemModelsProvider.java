@@ -57,6 +57,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.RAW_HIDE);
         simpleItem(YTechItems.RHINO_HORN);
         simpleItem(YTechItems.SHARP_FLINT);
+        unfiredAmphoraItem();
         simpleItem(YTechItems.UNFIRED_BRICK);
         simpleItem(YTechItems.UNFIRED_CLAY_BUCKET);
         decoratedPotItem();
@@ -240,6 +241,55 @@ class YTechItemModelsProvider extends ItemModelProvider {
                 .texture("particle", Utils.modBlockLoc("unfired_decorated_pot_side"))
                 .texture("0", Utils.modBlockLoc("unfired_decorated_pot_base"))
                 .texture("1", Utils.modBlockLoc("unfired_decorated_pot_side"));
+    }
+
+    private void unfiredAmphoraItem() {
+        getBuilder(Utils.getPath(YTechItems.UNFIRED_AMPHORA))
+                .parent(getExistingFile(Utils.mcBlockLoc("block")))
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(5, 13, 11, 16).texture("#1");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#0");
+                    }
+                })
+                .from(5, 0, 5).to(11, 3, 11)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(3, 4, 13, 14).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(3, 3, 13, 13).texture("#0");
+                    }
+                })
+                .from(3, 6, 3).to(13, 16, 13)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(6, 2, 10, 4).texture("#1");
+                    }
+                })
+                .from(5.999f, 16, 5.999f).to(10.001f, 18, 10.001f)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(4, 10, 12, 13).texture("#1");
+                        case DOWN -> faceBuilder.uvs(4, 4, 12, 12).texture("#2");
+                    }
+                })
+                .from(4, 3, 4).to(12, 6, 12)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(5, 0, 11, 2).texture("#1");
+                        case UP -> faceBuilder.uvs(5, 5, 11, 11).texture("#2");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#0");
+                    }
+                })
+                .from(4.999f, 18, 4.999f).to(11.001f, 19.999f, 11.001f)
+                .end()
+                .texture("particle", Utils.modBlockLoc("unfired_amphora/amphora_side"))
+                .texture("0", Utils.modBlockLoc("unfired_amphora/amphora_base"))
+                .texture("1", Utils.modBlockLoc("unfired_amphora/amphora_side"))
+                .texture("2", Utils.modBlockLoc("unfired_amphora/amphora_top"));
     }
 
     private void spawnEggModel(DeferredItem<Item> item) {

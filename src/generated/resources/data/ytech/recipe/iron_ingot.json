@@ -8,6 +8,6 @@
     "id": "minecraft:iron_ingot"
   },
   "tool": {
-    "tag": "ytech:hammers"
+    "tag": "c:hammers"
   }
 }

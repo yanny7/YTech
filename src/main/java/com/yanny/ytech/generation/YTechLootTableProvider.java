@@ -65,6 +65,7 @@ class YTechLootTableProvider extends LootTableProvider {
 
         @Override
         protected void generate() {
+            dropSelf(YTechBlocks.AMPHORA);
             dropSelf(YTechBlocks.AQUEDUCT);
             dropSelf(YTechBlocks.AQUEDUCT_FERTILIZER);
             dropSelf(YTechBlocks.AQUEDUCT_HYDRATOR);
@@ -85,6 +86,7 @@ class YTechLootTableProvider extends LootTableProvider {
             dropSelf(YTechBlocks.THATCH);
             registerSlabLootTable(YTechBlocks.THATCH_SLAB);
             dropSelf(YTechBlocks.THATCH_STAIRS);
+            dropSelf(YTechBlocks.TREE_STUMP);
 
             registerMaterialLootTable(YTechBlocks.DEEPSLATE_ORES, this::oreLoot, MaterialType.VANILLA_METALS);
             registerMaterialLootTable(YTechBlocks.DRYING_RACKS, this::dropSelf);
@@ -102,6 +104,7 @@ class YTechLootTableProvider extends LootTableProvider {
         protected Iterable<Block> getKnownBlocks() {
             return Stream.of(
                     Stream.of(
+                            YTechBlocks.AMPHORA,
                             YTechBlocks.AQUEDUCT,
                             YTechBlocks.AQUEDUCT_FERTILIZER,
                             YTechBlocks.AQUEDUCT_HYDRATOR,
@@ -121,7 +124,8 @@ class YTechLootTableProvider extends LootTableProvider {
                             YTechBlocks.TERRACOTTA_BRICK_STAIRS,
                             YTechBlocks.THATCH,
                             YTechBlocks.THATCH_SLAB,
-                            YTechBlocks.THATCH_STAIRS
+                            YTechBlocks.THATCH_STAIRS,
+                            YTechBlocks.TREE_STUMP
                     ).map(DeferredBlock::get),
                     filteredStream(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS).map(Map.Entry::getValue).map(DeferredBlock::get),
                     YTechBlocks.DRYING_RACKS.entries().stream().map(Map.Entry::getValue).map(DeferredBlock::get),

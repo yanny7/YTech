@@ -3,19 +3,19 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/gold"
+      "tag": "c:plates/gold"
     },
     "B": {
-      "tag": "ytech:bolts/gold"
+      "tag": "c:bolts/gold"
     },
     "F": {
-      "tag": "ytech:files"
+      "tag": "c:files"
     },
     "L": {
       "tag": "ytech:leather_strips"
     },
     "R": {
-      "tag": "ytech:rods/gold"
+      "tag": "c:rods/gold"
     }
   },
   "pattern": [

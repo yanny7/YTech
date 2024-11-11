@@ -5,7 +5,7 @@
       "tag": "minecraft:planks"
     },
     "S": {
-      "item": "minecraft:string"
+      "tag": "c:strings"
     }
   },
   "pattern": {

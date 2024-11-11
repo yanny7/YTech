@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:knives"
+      "tag": "c:knives"
     },
     "S": {
       "item": "minecraft:stick"
     },
     "W": {
-      "item": "minecraft:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [

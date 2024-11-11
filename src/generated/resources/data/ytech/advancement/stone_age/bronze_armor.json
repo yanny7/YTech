@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:boots/bronze"
+            "items": "#c:boots/bronze"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:chestplates/bronze"
+            "items": "#c:chestplates/bronze"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:helmets/bronze"
+            "items": "#c:helmets/bronze"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:leggings/bronze"
+            "items": "#c:leggings/bronze"
           }
         ]
       },

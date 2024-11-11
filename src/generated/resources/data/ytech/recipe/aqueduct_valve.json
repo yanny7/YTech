@@ -6,13 +6,13 @@
       "tag": "ytech:terracotta_bricks"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     },
     "R": {
-      "tag": "ytech:rods"
+      "tag": "c:rods"
     },
     "S": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   },
   "pattern": [

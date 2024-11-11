@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#c:files/bronze",
+    "#c:files/copper",
+    "#c:files/gold",
+    "#c:files/iron",
+    "#c:files/lead",
+    "#c:files/tin"
+  ]
+}

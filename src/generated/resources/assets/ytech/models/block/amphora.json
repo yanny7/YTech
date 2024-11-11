@@ -1,0 +1,255 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#0"
+        },
+        "east": {
+          "texture": "#1"
+        },
+        "north": {
+          "texture": "#1"
+        },
+        "south": {
+          "texture": "#1"
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "#1"
+        }
+      },
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        3,
+        11
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#0"
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            3.0,
+            4.0,
+            13.0,
+            14.0
+          ]
+        },
+        "north": {
+          "texture": "#1",
+          "uv": [
+            3.0,
+            4.0,
+            13.0,
+            14.0
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            3.0,
+            4.0,
+            13.0,
+            14.0
+          ]
+        },
+        "up": {
+          "texture": "#0"
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            3.0,
+            4.0,
+            13.0,
+            14.0
+          ]
+        }
+      },
+      "from": [
+        3,
+        6,
+        3
+      ],
+      "to": [
+        13,
+        16,
+        13
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            4.0
+          ]
+        },
+        "north": {
+          "texture": "#1",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            4.0
+          ]
+        }
+      },
+      "from": [
+        5.999,
+        16,
+        5.999
+      ],
+      "to": [
+        10.001,
+        18,
+        10.001
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#2"
+        },
+        "east": {
+          "texture": "#1"
+        },
+        "north": {
+          "texture": "#1"
+        },
+        "south": {
+          "texture": "#1"
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "#1"
+        }
+      },
+      "from": [
+        4,
+        3,
+        4
+      ],
+      "to": [
+        12,
+        6,
+        12
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#0",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            5.0,
+            0.0,
+            11.0,
+            2.0
+          ]
+        },
+        "north": {
+          "texture": "#1",
+          "uv": [
+            5.0,
+            0.0,
+            11.0,
+            2.0
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            5.0,
+            0.0,
+            11.0,
+            2.0
+          ]
+        },
+        "up": {
+          "texture": "#2",
+          "uv": [
+            5.0,
+            5.0,
+            11.0,
+            11.0
+          ]
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            5.0,
+            0.0,
+            11.0,
+            2.0
+          ]
+        }
+      },
+      "from": [
+        4.999,
+        18,
+        4.999
+      ],
+      "to": [
+        11.001,
+        19.999,
+        11.001
+      ]
+    }
+  ],
+  "textures": {
+    "0": "ytech:block/amphora/amphora_base",
+    "1": "ytech:block/amphora/amphora_side",
+    "2": "ytech:block/amphora/amphora_top",
+    "particle": "ytech:block/amphora/amphora_side"
+  }
+}

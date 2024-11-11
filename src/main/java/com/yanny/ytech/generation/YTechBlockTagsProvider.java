@@ -27,6 +27,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
+        tag(YTechBlockTags.AMPHORAE).add(YTechBlocks.AMPHORA.get());
         tag(YTechBlockTags.AQUEDUCTS).add(YTechBlocks.AQUEDUCT.get());
         tag(YTechBlockTags.AQUEDUCT_FERTILIZERS).add(YTechBlocks.AQUEDUCT_FERTILIZER.get());
         tag(YTechBlockTags.AQUEDUCT_HYDRATORS).add(YTechBlocks.AQUEDUCT_HYDRATOR.get());
@@ -48,6 +49,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.THATCH).add(YTechBlocks.THATCH.get());
         tag(YTechBlockTags.THATCH_SLABS).add(YTechBlocks.THATCH_SLAB.get());
         tag(YTechBlockTags.THATCH_STAIRS).add(YTechBlocks.THATCH_STAIRS.get());
+        tag(YTechBlockTags.TREE_STUMPS).add(YTechBlocks.TREE_STUMP.get());
 
         tag(YTechBlockTags.AUROCHS_RAID_BLOCKS).add(Blocks.WHEAT);
         tag(YTechBlockTags.DEER_RAID_BLOCKS).add(Blocks.WHEAT);

@@ -3,13 +3,13 @@
   "category": "redstone",
   "key": {
     "B": {
-      "tag": "ytech:bolts/iron"
+      "tag": "c:bolts/iron"
     },
     "P": {
-      "tag": "ytech:plates/iron"
+      "tag": "c:plates/iron"
     },
     "W": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     }
   },
   "pattern": [

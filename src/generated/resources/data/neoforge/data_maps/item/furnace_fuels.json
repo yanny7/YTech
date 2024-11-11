@@ -1,10 +1,13 @@
 {
   "values": {
+    "#c:bolts/wooden": {
+      "burn_time": 100
+    },
+    "#c:plates/wooden": {
+      "burn_time": 200
+    },
     "#ytech:baskets": {
       "burn_time": 300
-    },
-    "#ytech:bolts/wooden": {
-      "burn_time": 100
     },
     "#ytech:drying_racks/acacia": {
       "burn_time": 300
@@ -41,9 +44,6 @@
     },
     "#ytech:lava_buckets": {
       "burn_time": 20000
-    },
-    "#ytech:plates/wooden": {
-      "burn_time": 200
     },
     "#ytech:tanning_racks/acacia": {
       "burn_time": 300

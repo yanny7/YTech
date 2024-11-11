@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#c:knives/bronze",
+    "#c:knives/copper",
+    "#c:knives/flint",
+    "#c:knives/gold",
+    "#c:knives/iron",
+    "#c:knives/lead",
+    "#c:knives/tin"
+  ]
+}

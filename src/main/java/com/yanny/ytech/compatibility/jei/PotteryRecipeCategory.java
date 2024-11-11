@@ -35,7 +35,7 @@ public class PotteryRecipeCategory implements IRecipeCategory<PotteryRecipe> {
         ResourceLocation location = Utils.modLoc("textures/gui/jei.png");
         background = guiHelper.createDrawable(location, 0, 0, 82, 34);
         icon = guiHelper.createDrawableItemStack(new ItemStack(YTechItems.POTTERY_WHEEL.get()));
-        localizedName = Component.translatable("gui.ytech.category.pottery");
+        localizedName = Component.translatable("emi.category.ytech.pottery");
     }
 
     @NotNull

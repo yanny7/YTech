@@ -4,7 +4,7 @@
   "group": "wooden_stairs",
   "key": {
     "B": {
-      "tag": "ytech:bolts/wooden"
+      "tag": "c:bolts/wooden"
     },
     "P": {
       "item": "minecraft:jungle_planks"
@@ -13,7 +13,7 @@
       "item": "minecraft:jungle_slab"
     },
     "W": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   },
   "pattern": [

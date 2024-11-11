@@ -3,19 +3,19 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/bronze"
+      "tag": "c:plates/bronze"
     },
     "B": {
-      "tag": "ytech:bolts/bronze"
+      "tag": "c:bolts/bronze"
     },
     "F": {
-      "tag": "ytech:files"
+      "tag": "c:files"
     },
     "L": {
       "tag": "ytech:leather_strips"
     },
     "R": {
-      "tag": "ytech:rods/bronze"
+      "tag": "c:rods/bronze"
     }
   },
   "pattern": [

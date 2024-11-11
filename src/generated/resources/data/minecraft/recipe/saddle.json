@@ -6,10 +6,10 @@
       "tag": "ytech:bone_needles"
     },
     "I": {
-      "tag": "ytech:rods/iron"
+      "tag": "c:rods/iron"
     },
     "K": {
-      "tag": "ytech:knives"
+      "tag": "c:knives"
     },
     "L": {
       "item": "minecraft:leather"

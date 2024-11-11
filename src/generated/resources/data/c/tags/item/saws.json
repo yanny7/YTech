@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#c:saws/bronze",
+    "#c:saws/copper",
+    "#c:saws/gold",
+    "#c:saws/iron",
+    "#c:saws/lead",
+    "#c:saws/tin"
+  ]
+}

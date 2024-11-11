@@ -4,16 +4,16 @@
   "group": "wooden_door",
   "key": {
     "B": {
-      "tag": "ytech:bolts/wooden"
+      "tag": "c:bolts/wooden"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     },
     "P": {
       "item": "minecraft:acacia_planks"
     },
     "W": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   },
   "pattern": [

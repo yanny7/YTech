@@ -4,19 +4,19 @@
   "group": "boat",
   "key": {
     "F": {
-      "tag": "ytech:files"
+      "tag": "c:files"
     },
     "H": {
-      "tag": "ytech:hammers"
+      "tag": "c:hammers"
     },
     "I": {
-      "tag": "ytech:rods"
+      "tag": "c:rods"
     },
     "P": {
       "item": "minecraft:spruce_planks"
     },
     "S": {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   },
   "pattern": [

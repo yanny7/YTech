@@ -3,19 +3,19 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/lead"
+      "tag": "c:plates/lead"
     },
     "B": {
-      "tag": "ytech:bolts/lead"
+      "tag": "c:bolts/lead"
     },
     "F": {
-      "tag": "ytech:files"
+      "tag": "c:files"
     },
     "L": {
       "tag": "ytech:leather_strips"
     },
     "R": {
-      "tag": "ytech:rods/lead"
+      "tag": "c:rods/lead"
     }
   },
   "pattern": [

@@ -1,0 +1,158 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#1"
+        },
+        "east": {
+          "texture": "#0"
+        },
+        "north": {
+          "texture": "#0"
+        },
+        "south": {
+          "texture": "#0"
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "#0"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "up": {
+          "texture": "#1"
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        2,
+        0
+      ],
+      "to": [
+        16,
+        4,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "#2",
+          "uv": [
+            0.0,
+            0.0,
+            12.0,
+            12.0
+          ]
+        },
+        "north": {
+          "texture": "#2",
+          "uv": [
+            0.0,
+            0.0,
+            12.0,
+            12.0
+          ]
+        },
+        "south": {
+          "texture": "#2",
+          "uv": [
+            0.0,
+            0.0,
+            12.0,
+            12.0
+          ]
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#3"
+        },
+        "west": {
+          "texture": "#2",
+          "uv": [
+            0.0,
+            0.0,
+            12.0,
+            12.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        4,
+        2
+      ],
+      "to": [
+        14,
+        16,
+        14
+      ]
+    }
+  ],
+  "textures": {
+    "0": "minecraft:block/smooth_stone_slab_side",
+    "1": "minecraft:block/smooth_stone",
+    "2": "minecraft:block/oak_log",
+    "3": "ytech:block/tree_stump_top",
+    "particle": "minecraft:block/oak_log"
+  }
+}

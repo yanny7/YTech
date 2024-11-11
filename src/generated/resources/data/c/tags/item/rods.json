@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#c:rods/bronze",
+    "#c:rods/copper",
+    "#c:rods/gold",
+    "#c:rods/iron",
+    "#c:rods/lead",
+    "#c:rods/tin"
+  ]
+}

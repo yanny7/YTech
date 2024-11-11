@@ -7,11 +7,11 @@
       "item": "minecraft:crimson_stem"
     },
     {
-      "tag": "ytech:saws"
+      "tag": "c:saws"
     }
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "minecraft:crimson_planks"
   }
 }

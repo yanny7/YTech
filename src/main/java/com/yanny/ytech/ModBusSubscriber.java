@@ -23,6 +23,8 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -120,6 +122,7 @@ public class ModBusSubscriber {
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.MILLSTONE.get(), MillstoneRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.POTTERS_WHEEL.get(), PottersWheelRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TANNING_RACK.get(), TanningRackRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.TREE_STUMP.get(), TreeStumpRenderer::new);
 
         event.registerEntityRenderer(YTechEntityTypes.FLINT_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.FLINT)));
         event.registerEntityRenderer(YTechEntityTypes.COPPER_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.COPPER)));
@@ -227,6 +230,12 @@ public class ModBusSubscriber {
 
             return null;
         }, YTechBlocks.AQUEDUCT.get());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, YTechBlockEntityTypes.AMPHORA.get(), (amphoraBlockEntity, direction) -> {
+            if (!amphoraBlockEntity.isRemoved() && direction == Direction.UP) {
+                return amphoraBlockEntity.getItemHandler();
+            }
+            return null;
+        });
     }
 
     @SubscribeEvent

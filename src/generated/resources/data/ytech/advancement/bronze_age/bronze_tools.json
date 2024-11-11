@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:axes/bronze"
+            "items": "#c:axes/bronze"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:pickaxes/bronze"
+            "items": "#c:pickaxes/bronze"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:shovels/bronze"
+            "items": "#forge:shovels/bronze"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#ytech:swords/bronze"
+            "items": "#forge:swords/bronze"
           }
         ]
       },

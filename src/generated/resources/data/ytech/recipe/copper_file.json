@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "ytech:plates/copper"
+      "tag": "c:plates/copper"
     },
     "S": {
       "item": "minecraft:stick"

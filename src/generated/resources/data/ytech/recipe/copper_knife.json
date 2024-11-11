@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "F": {
-      "tag": "ytech:files"
+      "tag": "c:files"
     },
     "P": {
-      "tag": "ytech:plates/copper"
+      "tag": "c:plates/copper"
     },
     "S": {
       "item": "minecraft:stick"
