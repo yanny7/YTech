@@ -6,7 +6,7 @@
 - Added EMI compatibility
 - Moved some YTech tags to Forge namespace
 - Added Amphora for storing up to 8 stacks of same item
-- Changed Chest recipe to require wooden Button
+- Changed Chest recipe to require wooden Button and iron Rods
 - Updated JEI plugin
 - Fixed KubeJS recipes with omitted default value
 

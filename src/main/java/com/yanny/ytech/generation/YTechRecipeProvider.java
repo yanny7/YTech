@@ -1723,6 +1723,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void wcChestRecipe(Consumer<FinishedRecipe> recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(Items.CHEST)
                 .define('C', ItemTags.PLANKS)
+                .define('R', YTechItemTags.RODS.get(IRON))
                 .define('B', ItemTags.WOODEN_BUTTONS)
                 .bottomPattern("CCC")
                 .bottomPattern("CCC")
@@ -1730,7 +1731,7 @@ class YTechRecipeProvider extends RecipeProvider {
                 .middlePattern("CCC")
                 .middlePattern("C C")
                 .middlePattern("CBC")
-                .topPattern("CCC")
+                .topPattern("RRR")
                 .topPattern("CCC")
                 .topPattern("CCC")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
