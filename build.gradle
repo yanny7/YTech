@@ -239,7 +239,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    implementation fg.deobf(project.dependencies.create("mcjty.theoneprobe:theoneprobe:${minecraft_version}-${top_version}") {
+    implementation fg.deobf(project.dependencies.create("mcjty.theoneprobe:theoneprobe:${top_version}") {
         transitive = false
     })
 
@@ -257,7 +257,7 @@ dependencies {
 
     // EMI
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
-    //runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
+    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -266,11 +266,23 @@ dependencies {
 // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
 def replaceProperties = [
-        minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-        neoforge_version: neoforge_version, neoforge_version_range: neoforge_version_range,
+        minecraft_version: minecraft_version,
+        minecraft_version_range: minecraft_version_range,
+        neoforge_version: neoforge_version,
+        neoforge_version_range: neoforge_version_range,
         loader_version_range: loader_version_range,
-        mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-        mod_authors: mod_authors, mod_description: mod_description
+        mod_id: mod_id,
+        mod_name: mod_name,
+        mod_license: mod_license,
+        mod_version: mod_version,
+        mod_authors: mod_authors,
+        mod_description: mod_description,
+
+        jei_version_range: jei_version_range,
+        top_version_range: top_version_range,
+        curios_version_range: curios_version_range,
+        kubejs_version_range: kubejs_version_range,
+        emi_version_range: emi_version_range
 ]
 processResources {
     inputs.properties replaceProperties
