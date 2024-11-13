@@ -372,6 +372,7 @@ class YTechRecipeProvider extends RecipeProvider {
         wcLoomRecipe(recipeConsumer);
         wcSmokerRecipe(recipeConsumer);
         wcComposterRecipe(recipeConsumer);
+        wcWoodenBoxRecipe(recipeConsumer);
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -1922,5 +1923,21 @@ class YTechRecipeProvider extends RecipeProvider {
                 .topPattern("LLL")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.modLoc(Items.COMPOSTER));
+    }
+
+    private static void wcWoodenBoxRecipe(RecipeOutput recipeConsumer) {
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.WOODEN_BOX.get())
+                .define('L', ItemTags.PLANKS)
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .middlePattern("LLL")
+                .middlePattern("L L")
+                .middlePattern("LLL")
+                .topPattern("   ")
+                .topPattern("   ")
+                .topPattern("   ")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.modLoc(YTechItems.WOODEN_BOX));
     }
 }

@@ -84,6 +84,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(
+                        YTechBlocks.AMPHORA.get(),
                         YTechBlocks.AQUEDUCT.get(),
                         YTechBlocks.AQUEDUCT_FERTILIZER.get(),
                         YTechBlocks.AQUEDUCT_HYDRATOR.get(),
@@ -112,7 +113,8 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(sortedMaterials(YTechBlocks.DRYING_RACKS))
                 .add(sortedMaterials(YTechBlocks.TANNING_RACKS))
-                .add(YTechBlocks.POTTERS_WHEEL.get());
+                .add(YTechBlocks.POTTERS_WHEEL.get())
+                .add(YTechBlocks.WOODEN_BOX.get());
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(
                 YTechBlocks.AQUEDUCT.get(),
