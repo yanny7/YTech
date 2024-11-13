@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -68,6 +69,12 @@ public class TopCompatibility {
                             probeInfo.horizontal().text(Component.translatable("text.ytech.top.tree_stump.progress", Integer.toString(blockEntity.getProgress())));
                         } else if (entity instanceof AmphoraBlockEntity blockEntity) {
                             probeInfo.horizontal().item(blockEntity.getItem());
+                        } else if (entity instanceof WoodenBoxBlockEntity blockEntity) {
+                            ItemStack item = blockEntity.getItem(probeHitData.getPos(), probeHitData.getSideHit(), probeHitData.getHitVec());
+
+                            if (!item.isEmpty()) {
+                                probeInfo.horizontal().item(item).text(Component.translatable(item.getDescriptionId()));
+                            }
                         }
                     }
                 }

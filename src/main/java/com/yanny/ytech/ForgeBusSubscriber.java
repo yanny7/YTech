@@ -2,7 +2,9 @@ package com.yanny.ytech;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
+import com.yanny.ytech.configuration.block.CraftingWorkspaceBlock;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
+import com.yanny.ytech.configuration.block.WoodenBoxBlock;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechMobEffects;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -17,13 +19,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -44,9 +46,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.Objects;
-
-import static com.yanny.ytech.configuration.block.CraftingWorkspaceBlock.BOX;
-import static com.yanny.ytech.configuration.block.CraftingWorkspaceBlock.getPosition;
 
 @Mod.EventBusSubscriber(modid = YTechMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeBusSubscriber {
@@ -142,38 +141,68 @@ public class ForgeBusSubscriber {
         Level level = Minecraft.getInstance().level;
         Player player = Minecraft.getInstance().player;
 
-        if (level != null && player != null && level.getBlockState(event.getTarget().getBlockPos()).is(YTechBlocks.CRAFTING_WORKSPACE.get())) {
-            Vec3 camera = event.getCamera().getPosition();
-            PoseStack poseStack = event.getPoseStack();
-            ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
-            boolean isBlock = itemStack.getItem() instanceof BlockItem;
+        if (level != null && player != null) {
+            if (level.getBlockState(event.getTarget().getBlockPos()).is(YTechBlocks.CRAFTING_WORKSPACE.get())) {
+                Vec3 camera = event.getCamera().getPosition();
+                PoseStack poseStack = event.getPoseStack();
+                ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
 
-            int[] position = getPosition(event.getTarget(), itemStack.isEmpty());
+                int[] position = CraftingWorkspaceBlock.getPosition(event.getTarget(), itemStack.isEmpty());
 
-            if (position == null) {
-                return;
+                if (position == null) {
+                    return;
+                }
+
+                poseStack.pushPose();
+                poseStack.translate(-camera.x, -camera.y, -camera.z);
+                poseStack.translate(position[0] / 3.0, position[1] / 3.0, position[2] / 3.0);
+
+                float cR = 0.1f;
+                float cG = 1.0f;
+                float cB = 0.1f;
+                BlockPos target = event.getTarget().getBlockPos();
+                LevelRenderer.renderLineBox(
+                        poseStack,
+                        event.getMultiBufferSource().getBuffer(RenderType.LINES),
+                        CraftingWorkspaceBlock.BOX.bounds().move(target),
+                        cR,
+                        cG,
+                        cB,
+                        1f
+                );
+
+                poseStack.popPose();
+            } else if (level.getBlockState(event.getTarget().getBlockPos()).is(YTechBlocks.WOODEN_BOX.get())) {
+                Vec3 camera = event.getCamera().getPosition();
+                PoseStack poseStack = event.getPoseStack();
+                BlockHitResult hitResult = event.getTarget();
+
+                int[] position = WoodenBoxBlock.getPosition(event.getTarget());
+
+                if (position == null || hitResult.getDirection() != Direction.UP) {
+                    return;
+                }
+
+                poseStack.pushPose();
+                poseStack.translate(-camera.x, -camera.y, -camera.z);
+                poseStack.translate(1/8.0 + position[0] / 4.0, 8/16.0, 1/8.0 + position[1] / 4.0);
+
+                float cR = 0.1f;
+                float cG = 0.1f;
+                float cB = 0.1f;
+                BlockPos target = event.getTarget().getBlockPos();
+                LevelRenderer.renderLineBox(
+                        poseStack,
+                        event.getMultiBufferSource().getBuffer(RenderType.LINES),
+                        WoodenBoxBlock.BOX.bounds().move(target),
+                        cR,
+                        cG,
+                        cB,
+                        0.5f
+                );
+
+                poseStack.popPose();
             }
-
-            poseStack.pushPose();
-            poseStack.translate(-camera.x, -camera.y, -camera.z);
-            poseStack.translate(position[0] / 3.0, position[1] / 3.0, position[2] / 3.0);
-
-            float cR = isBlock ? 0.1f : 1.0f;
-            float cG = isBlock ? 1.0f : 0.1f;
-            float cB = 0.1f;
-            BlockPos target = event.getTarget().getBlockPos();
-            LevelRenderer.renderLineBox(
-                    poseStack,
-                    event.getMultiBufferSource().getBuffer(RenderType.LINES),
-                    BOX.bounds().move(target),
-                    cR,
-                    cG,
-                    cB,
-                    1f
-            );
-
-            poseStack.popPose();
-            event.setCanceled(false);
         }
     }
 

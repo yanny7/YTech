@@ -6,6 +6,9 @@
     },
     "C": {
       "tag": "minecraft:planks"
+    },
+    "R": {
+      "tag": "forge:rods/iron"
     }
   },
   "pattern": {
@@ -20,7 +23,7 @@
       "CBC"
     ],
     "top": [
-      "CCC",
+      "RRR",
       "CCC",
       "CCC"
     ]

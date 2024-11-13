@@ -161,7 +161,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    implementation project.dependencies.create("mcjty.theoneprobe:theoneprobe:1.20.4_neo-${top_version}") {
+    implementation project.dependencies.create("mcjty.theoneprobe:theoneprobe:${top_version}") {
         transitive = false
     }
     // Compile against only the API artifact
@@ -197,7 +197,13 @@ tasks.withType(ProcessResources).configureEach {
             mod_license            : mod_license,
             mod_version            : mod_version,
             mod_authors            : mod_authors,
-            mod_description        : mod_description
+            mod_description        : mod_description,
+
+            jei_version_range: jei_version_range,
+            top_version_range: top_version_range,
+            curios_version_range: curios_version_range,
+            kubejs_version_range: kubejs_version_range,
+            emi_version_range: emi_version_range
     ]
     inputs.properties replaceProperties
 
