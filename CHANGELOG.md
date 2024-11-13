@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.8.0]
 
 - Added Tree Stump
 - Added EMI compatibility
