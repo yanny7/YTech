@@ -51,6 +51,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
         registerSlabBlockState(this, YTechBlocks.THATCH_SLAB, Utils.getPath(YTechBlocks.THATCH));
         registerStairsBlockState(this, YTechBlocks.THATCH_STAIRS, Utils.getPath(YTechBlocks.THATCH));
         TreeStumpBlock.registerModel(this);
+        WoodenBoxBlock.registerModel(this);
 
         registerMaterialBlockState(this, "deepslate_ore", YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         YTechBlocks.DRYING_RACKS.entries().forEach((entry) -> DryingRackBlock.registerModel(this, entry.getValue(), entry.getKey()));

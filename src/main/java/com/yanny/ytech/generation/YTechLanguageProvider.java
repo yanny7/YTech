@@ -102,6 +102,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH_SLAB, "Thatch Slab");
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
         addBlock(YTechBlocks.TREE_STUMP, "Tree Stump");
+        addBlock(YTechBlocks.WOODEN_BOX, "Wooden Box");
 
         addTypedItem(YTechItems.CLAY_MOLDS, NameHolder.suffix("Clay Mold"), YTechLanguageProvider::getName);
         addTypedItem(YTechItems.PATTERNS, NameHolder.suffix("Pattern"), YTechLanguageProvider::getName);
@@ -324,7 +325,8 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.info.missing_curios", "Missing CuriosAPI, item is useless now");
 
         add("text.ytech.hover.amphora1", "Right-click to insert stackable items");
-        add("text.ytech.hover.amphora2", "Right-click while sneaking to extract items");
+        add("text.ytech.hover.amphora2", "Right-click with empty hand to extract single item");
+        add("text.ytech.hover.amphora3", "Right-click with empty hand while sneaking to extract stack");
         add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");
         add("text.ytech.hover.primitive_smelter", "Increase temperature by adding chimneys");
         add("text.ytech.hover.chimney", "Increases temperature in smelter by %s °C");

@@ -66,7 +66,7 @@ public class YTechItems {
     public static final RegistryObject<Item> VENISON = ITEMS.register("venison", () -> foodItem(2, 0.3f));
     public static final RegistryObject<Item> WATER_CLAY_BUCKET = ITEMS.register("water_clay_bucket", () -> new ClayBucketItem(() -> Fluids.WATER, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 
-    public static final RegistryObject<Item> AMPHORA = ITEMS.register("amphora", () -> descriptionItem(YTechBlocks.AMPHORA, List.of(Component.translatable("text.ytech.hover.amphora1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.amphora2").withStyle(DARK_GRAY))));
+    public static final RegistryObject<Item> AMPHORA = ITEMS.register("amphora", () -> descriptionItem(YTechBlocks.AMPHORA, List.of(Component.translatable("text.ytech.hover.amphora1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.amphora2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.amphora3").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> AQUEDUCT = ITEMS.register("aqueduct", YTechItems::aqueductBlockItem);
     public static final RegistryObject<Item> AQUEDUCT_FERTILIZER = ITEMS.register("aqueduct_fertilizer", YTechItems::aqueductFertilizerBlockItem);
     public static final RegistryObject<Item> AQUEDUCT_HYDRATOR = ITEMS.register("aqueduct_hydrator", YTechItems::aqueductHydratorBlockItem);
@@ -89,6 +89,7 @@ public class YTechItems {
     public static final RegistryObject<Item> THATCH_SLAB = ITEMS.register("thatch_slab", () -> burnableBlockItem(YTechBlocks.THATCH_SLAB, 100));
     public static final RegistryObject<Item> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> burnableBlockItem(YTechBlocks.THATCH_STAIRS, 200));
     public static final RegistryObject<Item> TREE_STUMP = ITEMS.register("tree_stump", () -> blockItem(YTechBlocks.TREE_STUMP));
+    public static final RegistryObject<Item> WOODEN_BOX = ITEMS.register("wooden_box", () -> blockItem(YTechBlocks.WOODEN_BOX));
 
     public static final RegistryObject<Item> CHLORITE_BRACELET = ITEMS.register("chlorite_bracelet", ChloriteBraceletItem::new);
     public static final RegistryObject<Item> LION_MAN = ITEMS.register("lion_man", LionManItem::new);

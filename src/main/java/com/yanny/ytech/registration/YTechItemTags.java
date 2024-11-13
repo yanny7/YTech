@@ -94,6 +94,7 @@ public class YTechItemTags {
     public static final TagKey<Item> THATCH_SLABS = create(YTechBlockTags.THATCH_SLABS);
     public static final TagKey<Item> THATCH_STAIRS = create(YTechBlockTags.THATCH_STAIRS);
     public static final TagKey<Item> TREE_STUMPS = create(YTechBlockTags.TREE_STUMPS);
+    public static final TagKey<Item> WOODEN_BOXES = create(YTechBlockTags.WOODEN_BOXES);
 
     public static final TagKey<Item> CURIOS_BRACELETS = create("curios", "bracelet");
     public static final TagKey<Item> CURIOS_CHARMS = create("curios", "charm");

@@ -64,6 +64,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                             ItemStack itemStack = items.get(i);
 
                             if (position == null || itemStack.isEmpty()) {
+                                i++;
                                 continue;
                             }
 

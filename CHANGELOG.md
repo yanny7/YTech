@@ -9,6 +9,7 @@
 - Changed Chest recipe to require wooden Button and iron Rods
 - Updated JEI plugin
 - Fixed KubeJS recipes with omitted default value
+- Added Wooden Box storing 9 stacks of items
 
 ## [0.7.1]
 
