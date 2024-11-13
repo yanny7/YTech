@@ -131,7 +131,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTypedItem(YTechItems.RODS, NameHolder.suffix("Rod"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SAWS, NameHolder.suffix("Saw"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SAW_BLADES, NameHolder.suffix("Saw Blade"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.SHEARS, NameHolder.suffix("Shears"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
+        addTypedItem(YTechItems.SHEARS, NameHolder.suffix("Shears"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::ironFilter);
         addTypedItem(YTechItems.SHOVELS, NameHolder.suffix("Shovel"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.SPEARS, NameHolder.suffix("Spear"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
@@ -428,6 +428,10 @@ class YTechLanguageProvider extends LanguageProvider {
 
     private static boolean goldIronWoodLeatherFilter(Map.Entry<MaterialType, RegistryObject<Item>> entry) {
         return !EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.WOODEN, MaterialType.LEATHER).contains(entry.getKey());
+    }
+
+    private static boolean ironFilter(Map.Entry<MaterialType, RegistryObject<Item>> entry) {
+        return !EnumSet.of(MaterialType.IRON).contains(entry.getKey());
     }
 
     private static String getMaterialName(NameHolder nameHolder, MaterialType material) {

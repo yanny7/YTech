@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed missing Golden Shears translation
+
 ## [0.8.0]
 
 - Added Tree Stump
