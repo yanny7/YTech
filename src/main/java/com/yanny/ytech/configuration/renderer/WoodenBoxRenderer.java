@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,7 +23,7 @@ public class WoodenBoxRenderer implements BlockEntityRenderer<WoodenBoxBlockEnti
     @Override
     public void render(@NotNull WoodenBoxBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
         Level level = blockEntity.getLevel();
-        BlockPos pos = blockEntity.getBlockPos();
+        Direction direction = blockEntity.getBlockState().getValue(WoodenBoxBlock.HORIZONTAL_FACING);
         int i = 0;
 
         poseStack.pushPose();
@@ -50,6 +50,7 @@ public class WoodenBoxRenderer implements BlockEntityRenderer<WoodenBoxBlockEnti
                     poseStack.translate(0.5, 0.5, 0.5);
                     poseStack.pushPose();
 
+                    poseStack.rotateAround(Axis.YN.rotationDegrees(direction.toYRot()), 0, 0, 0);
                     poseStack.rotateAround(Axis.XN.rotationDegrees(90), 0,0,0);
 
                     ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();

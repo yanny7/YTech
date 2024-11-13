@@ -8,6 +8,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +16,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -29,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 public class WoodenBoxBlock extends Block implements EntityBlock {
     public static final VoxelShape BOX = Shapes.box(0, 0, 0, 1/4.0, 1/4.0, 1/4.0);
     private static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 12/16.0, 1);
+    public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public WoodenBoxBlock() {
         super(Properties.copy(Blocks.OAK_PLANKS));
@@ -74,6 +79,16 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
         }
 
         super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        return this.defaultBlockState().setValue(HORIZONTAL_FACING, pContext.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(HORIZONTAL_FACING);
     }
 
     public static int getIndex(int @Nullable [] position) {
@@ -170,7 +185,7 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
                 .texture("particle", Utils.modBlockLoc("wooden_box"))
                 .texture("0", Utils.mcBlockLoc("oak_planks"))
                 .texture("1", Utils.modBlockLoc("wooden_box"));
-        provider.simpleBlock(YTechBlocks.WOODEN_BOX.get(), model);
+        provider.horizontalBlock(YTechBlocks.WOODEN_BOX.get(), model);
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.WOODEN_BOX)).parent(model);
     }
 }

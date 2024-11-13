@@ -3,6 +3,7 @@
 ## []
 
 - Fixed missing Golden Shears translation
+- Improved Wooden Box to be directional (horizontally)
 
 ## [0.8.0]
 

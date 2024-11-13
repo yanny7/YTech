@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "ytech:block/wooden_box",
+      "y": 90
+    },
+    "facing=north": {
       "model": "ytech:block/wooden_box"
+    },
+    "facing=south": {
+      "model": "ytech:block/wooden_box",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "ytech:block/wooden_box",
+      "y": 270
     }
   }
 }
