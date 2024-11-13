@@ -61,7 +61,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
     }
 
     public CraftingWorkspaceBlock() {
-        super(Properties.of().dynamicShape().noOcclusion().noLootTable().noTerrainParticles());
+        super(Properties.of().strength(2).noOcclusion().noLootTable());
     }
 
     @NotNull
@@ -254,6 +254,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
                 })
                 .from(1.25f, 1.75f, 0.75f).to(14.75f, 2.75f, 0.75f).rotation().angle(0).axis(Direction.Axis.Y).origin(1.25f, 0.75f, -0.5f).end()
                 .end()
+                .texture("particle", Utils.modBlockLoc("horizontal_rope"))
                 .texture("0", Utils.mcBlockLoc("oak_planks"))
                 .texture("1", Utils.modBlockLoc("horizontal_rope"));
         provider.getVariantBuilder(YTechBlocks.CRAFTING_WORKSPACE.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());

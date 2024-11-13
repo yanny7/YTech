@@ -524,6 +524,7 @@
   ],
   "textures": {
     "0": "minecraft:block/oak_planks",
-    "1": "ytech:block/horizontal_rope"
+    "1": "ytech:block/horizontal_rope",
+    "particle": "ytech:block/horizontal_rope"
   }
 }
