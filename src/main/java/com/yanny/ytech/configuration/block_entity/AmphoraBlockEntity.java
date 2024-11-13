@@ -78,8 +78,8 @@ public class AmphoraBlockEntity extends BlockEntity {
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         } else {
-            if (holdingItem.isEmpty() && player.isCrouching()) {
-                Block.popResourceFromFace(level, pos, hitResult.getDirection(), itemHandler.extractItem(0, item.getMaxStackSize(), false));
+            if (holdingItem.isEmpty()) {
+                Block.popResourceFromFace(level, pos, hitResult.getDirection(), itemHandler.extractItem(0, player.isCrouching() ? item.getMaxStackSize() : 1, false));
             } else {
                 player.setItemInHand(hand, itemHandler.insertItem(0, holdingItem, false));
             }

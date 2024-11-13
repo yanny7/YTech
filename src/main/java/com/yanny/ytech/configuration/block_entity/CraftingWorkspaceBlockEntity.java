@@ -75,7 +75,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
             BlockPos fakePos = new BlockPos(pos[0] + 1, pos[1] + 1, pos[2] + 1);
             boolean wasChange = false;
 
-            if ((bitmask >> index & 1) == 0 && !itemStack.isEmpty() && !itemStack.is(YTechItemTags.HAMMERS.tag)) {
+            if ((bitmask >> index & 1) == 0 && !itemStack.isEmpty() && !itemStack.is(YTechItemTags.SHARP_FLINTS)) {
                 bitmask |= 1 << index;
 
                 if (itemStack.getItem() instanceof BlockItem blockItem) {
@@ -107,7 +107,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
                 itemList.set(index, ItemStack.EMPTY);
                 bitmask &= ~(1 << index);
                 wasChange = true;
-            } else if (itemStack.is(YTechItemTags.HAMMERS.tag)) {
+            } else if (itemStack.is(YTechItemTags.SHARP_FLINTS)) {
                 return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit);
             }
 
@@ -116,7 +116,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
                 pLevel.blockEntityChanged(pPos);
                 return ItemInteractionResult.CONSUME;
             }
-        } else if (itemStack.is(YTechItemTags.HAMMERS.tag)) {
+        } else if (itemStack.is(YTechItemTags.SHARP_FLINTS)) {
             return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit);
         }
 

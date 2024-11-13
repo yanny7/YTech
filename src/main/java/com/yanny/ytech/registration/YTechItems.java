@@ -90,6 +90,7 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> THATCH_SLAB = ITEMS.register("thatch_slab", () -> burnableBlockItem(YTechBlocks.THATCH_SLAB, 100));
     public static final DeferredItem<BlockItem> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> burnableBlockItem(YTechBlocks.THATCH_STAIRS, 200));
     public static final DeferredItem<BlockItem> TREE_STUMP = ITEMS.register("tree_stump", () -> blockItem(YTechBlocks.TREE_STUMP));
+    public static final DeferredItem<BlockItem> WOODEN_BOX = ITEMS.register("wooden_box", () -> blockItem(YTechBlocks.WOODEN_BOX));
 
     public static final DeferredItem<Item> CHLORITE_BRACELET = ITEMS.register("chlorite_bracelet", ChloriteBraceletItem::new);
     public static final DeferredItem<Item> LION_MAN = ITEMS.register("lion_man", LionManItem::new);

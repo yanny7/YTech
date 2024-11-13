@@ -1,21 +1,20 @@
 package com.yanny.ytech.compatibility.jei;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -24,61 +23,46 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class WorkspaceCraftingCategory implements IRecipeCategory<WorkspaceCraftingRecipe> {
+public class WorkspaceCraftingCategory extends AbstractRecipeCategory<WorkspaceCraftingRecipe> {
     public static final RecipeType<WorkspaceCraftingRecipe> RECIPE_TYPE = RecipeType.create(YTechMod.MOD_ID, "workspace_crafting", WorkspaceCraftingRecipe.class);
 
-    private final IDrawable background;
-    private final IDrawable icon;
-    private final Component localizedName;
-
     public WorkspaceCraftingCategory(IGuiHelper guiHelper) {
-        ResourceLocation location = Utils.modLoc("textures/gui/workspace_crafting.png");
-        background = guiHelper.createDrawable(location, 0, 0, 150, 144);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(YTechBlocks.CRAFTING_WORKSPACE.get()));
-        localizedName = Component.translatable("emi.category.ytech.workspace_crafting");
-    }
-
-    @NotNull
-    @Override
-    public RecipeType<WorkspaceCraftingRecipe> getRecipeType() {
-        return RECIPE_TYPE;
-    }
-
-    @NotNull
-    @Override
-    public Component getTitle() {
-        return localizedName;
-    }
-
-    @NotNull
-    @Override
-    public IDrawable getBackground() {
-        return background;
-    }
-
-    @NotNull
-    @Override
-    public IDrawable getIcon() {
-        return icon;
+        super(
+                RECIPE_TYPE,
+                Component.translatable("emi.category.ytech.workspace_crafting"),
+                guiHelper.createDrawableItemLike(YTechItems.CRAFTING_WORKSPACE.get()),
+                152, 163
+        );
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, WorkspaceCraftingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 129,  65).addItemStack(recipe.result());
-        builder.addSlot(RecipeIngredientRole.CATALYST, 96,  84).addIngredients(Ingredient.of(YTechItemTags.SHARP_FLINTS));
+        builder.addSlot(RecipeIngredientRole.CATALYST, 99,  93)
+                .setStandardSlotBackground()
+                .addIngredients(Ingredient.of(YTechItemTags.SHARP_FLINTS));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 132,  73)
+                .setOutputSlotBackground()
+                .addItemStack(recipe.result());
 
         int i = 0;
-        int posX = 64;
-        int posY = 113;
+        int posX = 72;
+        int posY = 128;
 
         for (int y = 0; y < 3; y++) {
             for (int z = 2; z >= 0; z--) {
                 for (int x = 0; x < 3; x++) {
-                    builder.addSlot(RecipeIngredientRole.INPUT, posX - x * 16 - z * 16, posY + x * 8 - z * 8 - y * 49).addIngredients(recipe.getIngredients().get(i));
+                    builder.addSlot(RecipeIngredientRole.INPUT, posX - x * 18 - z * 18, posY + x * 9 - z * 9 - y * 55)
+                            .setStandardSlotBackground()
+                            .addIngredients(recipe.getIngredients().get(i));
                     i++;
                 }
             }
         }
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, @NotNull WorkspaceCraftingRecipe recipe, @NotNull IFocusGroup focuses) {
+        builder.addRecipeArrow().setPosition(96, 74);
     }
 
     public static List<WorkspaceCraftingRecipe> getRecipes(@NotNull RecipeManager recipeManager) {
