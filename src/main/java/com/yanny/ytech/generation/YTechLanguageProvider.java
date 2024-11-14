@@ -103,6 +103,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH, "Thatch");
         addBlock(YTechBlocks.THATCH_SLAB, "Thatch Slab");
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
+        addBlock(YTechBlocks.TOOL_RACK, "Tool Rack");
         addBlock(YTechBlocks.TREE_STUMP, "Tree Stump");
         addBlock(YTechBlocks.WOODEN_BOX, "Wooden Box");
 
@@ -133,7 +134,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTypedItem(YTechItems.RODS, NameHolder.suffix("Rod"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SAWS, NameHolder.suffix("Saw"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SAW_BLADES, NameHolder.suffix("Saw Blade"), YTechLanguageProvider::getMaterialName);
-        addTypedItem(YTechItems.SHEARS, NameHolder.suffix("Shears"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
+        addTypedItem(YTechItems.SHEARS, NameHolder.suffix("Shears"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::ironFilter);
         addTypedItem(YTechItems.SHOVELS, NameHolder.suffix("Shovel"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.SPEARS, NameHolder.suffix("Spear"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
@@ -233,7 +234,9 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.THATCH, "Thatch");
         addTag(YTechItemTags.THATCH_SLABS, "Thatch Slabs");
         addTag(YTechItemTags.THATCH_STAIRS, "Thatch Stairs");
+        addTag(YTechItemTags.TOOL_RACKS, "Tool Racks");
         addTag(YTechItemTags.TREE_STUMPS, "Tree Stumps");
+        addTag(YTechItemTags.WOODEN_BOXES, "Wooden Boxes");
 
         addTag(YTechItemTags.CHLORITE_BRACELETS, "Chlorite Bracelets");
         addTag(YTechItemTags.LION_MANS, "Lion Mans");
@@ -284,6 +287,19 @@ class YTechLanguageProvider extends LanguageProvider {
             add(type.titleId(), type.title());
             add(type.descriptionId(), type.description());
         }
+
+        addJadeTranslation(YTechBlocks.BRONZE_ANVIL, "Bronze Anvil");
+        addJadeTranslation(Utils.modLoc("drying_racks"), "Drying Racks");
+        addJadeTranslation(YTechBlocks.MILLSTONE, "Millstone");
+        addJadeTranslation(Utils.modLoc("tanning_racks"), "Tanning Racks");
+        addJadeTranslation(Utils.modLoc("primitive_machines"), "Primitive Machines");
+        addJadeTranslation(Utils.modLoc("irrigation"), "Irrigation");
+        addJadeTranslation(YTechBlocks.POTTERS_WHEEL, "Potter's Wheel");
+        addJadeTranslation(YTechBlocks.FIRE_PIT, "Fire Pit");
+        addJadeTranslation(YTechBlocks.TREE_STUMP, "Tree Stump");
+        addJadeTranslation(YTechBlocks.AMPHORA, "Amphora");
+        addJadeTranslation(YTechBlocks.WOODEN_BOX, "Wooden Box");
+        addJadeTranslation(YTechBlocks.TOOL_RACK, "Tool Rack");
 
         add("effect.ytech.abyss_walker", "Abyss Walker");
         add("effect.ytech.lions_heart", "Lion's Heart");
@@ -432,6 +448,10 @@ class YTechLanguageProvider extends LanguageProvider {
         return !EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.WOODEN, MaterialType.LEATHER).contains(entry.getKey());
     }
 
+    private static boolean ironFilter(Map.Entry<MaterialType, DeferredItem<Item>> entry) {
+        return !EnumSet.of(MaterialType.IRON).contains(entry.getKey());
+    }
+
     private static String getMaterialName(NameHolder nameHolder, MaterialType material) {
         String key = nameHolder.prefix() != null ? nameHolder.prefix() + " " : "";
 
@@ -465,5 +485,13 @@ class YTechLanguageProvider extends LanguageProvider {
         key += partType.name;
         key += nameHolder.suffix() != null ? " " + nameHolder.suffix() : "";
         return key;
+    }
+
+    private void addJadeTranslation(DeferredBlock<Block> block, String name) {
+        add("config.jade.plugin_" + YTechMod.MOD_ID + "." + block.getId().getPath(), name);
+    }
+
+    private void addJadeTranslation(ResourceLocation group, String name) {
+        add("config.jade.plugin_" + YTechMod.MOD_ID + "." + group.getPath(), name);
     }
 }

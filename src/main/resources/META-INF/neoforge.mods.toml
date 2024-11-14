@@ -58,7 +58,7 @@ issueTrackerURL="https://github.com/yanny7/ytech/issues" #optional
 
 [[dependencies.${mod_id}]]
     modId="minecraft"
-    type="required" #mandatory
+    type="required"
     versionRange="${minecraft_version_range}"
     ordering="AFTER"
     side="BOTH"
@@ -95,6 +95,13 @@ issueTrackerURL="https://github.com/yanny7/ytech/issues" #optional
     modId="emi"
     type="optional"
     versionRange="${emi_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="jade"
+    type="optional"
+    versionRange="${jade_version_range}"
     ordering="NONE"
     side="BOTH"
 

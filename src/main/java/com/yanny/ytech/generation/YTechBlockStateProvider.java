@@ -50,6 +50,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
         registerSimpleBlockState(this, YTechBlocks.THATCH);
         registerSlabBlockState(this, YTechBlocks.THATCH_SLAB, Utils.getPath(YTechBlocks.THATCH));
         registerStairsBlockState(this, YTechBlocks.THATCH_STAIRS, Utils.getPath(YTechBlocks.THATCH));
+        ToolRackBlock.registerModel(this);
         TreeStumpBlock.registerModel(this);
         WoodenBoxBlock.registerModel(this);
 

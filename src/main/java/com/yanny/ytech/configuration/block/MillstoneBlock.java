@@ -116,7 +116,7 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#side");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("slab");
+                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#slab");
                     }
                 })
                 .from(0, 0, 0).to(16, 2, 16).end()

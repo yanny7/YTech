@@ -49,6 +49,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.THATCH).add(YTechBlocks.THATCH.get());
         tag(YTechBlockTags.THATCH_SLABS).add(YTechBlocks.THATCH_SLAB.get());
         tag(YTechBlockTags.THATCH_STAIRS).add(YTechBlocks.THATCH_STAIRS.get());
+        tag(YTechBlockTags.TOOL_RACKS).add(YTechBlocks.TOOL_RACK.get());
         tag(YTechBlockTags.TREE_STUMPS).add(YTechBlocks.TREE_STUMP.get());
         tag(YTechBlockTags.WOODEN_BOXES).add(YTechBlocks.WOODEN_BOX.get());
 
@@ -114,6 +115,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                 .add(sortedMaterials(YTechBlocks.DRYING_RACKS))
                 .add(sortedMaterials(YTechBlocks.TANNING_RACKS))
                 .add(YTechBlocks.POTTERS_WHEEL.get())
+                .add(YTechBlocks.TOOL_RACK.get())
                 .add(YTechBlocks.WOODEN_BOX.get());
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(

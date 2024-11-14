@@ -86,6 +86,7 @@ class YTechLootTableProvider extends LootTableProvider {
             dropSelf(YTechBlocks.THATCH);
             registerSlabLootTable(YTechBlocks.THATCH_SLAB);
             dropSelf(YTechBlocks.THATCH_STAIRS);
+            dropSelf(YTechBlocks.TOOL_RACK);
             dropSelf(YTechBlocks.TREE_STUMP);
             dropSelf(YTechBlocks.WOODEN_BOX);
 
@@ -127,6 +128,7 @@ class YTechLootTableProvider extends LootTableProvider {
                             YTechBlocks.THATCH_SLAB,
                             YTechBlocks.THATCH_STAIRS,
                             YTechBlocks.TREE_STUMP,
+                            YTechBlocks.TOOL_RACK,
                             YTechBlocks.WOODEN_BOX
                     ).map(DeferredBlock::get),
                     filteredStream(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS).map(Map.Entry::getValue).map(DeferredBlock::get),

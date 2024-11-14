@@ -35,6 +35,7 @@ public class YTechBlockTags {
     public static final TagKey<Block> THATCH = create("thatch");
     public static final TagKey<Block> THATCH_SLABS = create("thatch_slabs");
     public static final TagKey<Block> THATCH_STAIRS = create("thatch_stairs");
+    public static final TagKey<Block> TOOL_RACKS = create("tool_racks");
     public static final TagKey<Block> TREE_STUMPS = create("tree_stumps");
     public static final TagKey<Block> WOODEN_BOXES = create("wooden_boxes");
 

@@ -172,7 +172,7 @@
     {
       "faces": {
         "down": {
-          "texture": "minecraft:slab"
+          "texture": "#slab"
         },
         "east": {
           "texture": "#side"
