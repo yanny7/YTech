@@ -61,7 +61,7 @@ public class TopCompatibility {
                             addPrimitiveSmelterInfo(probeInfo, blockEntity);
                         } else if (entity instanceof IIrrigationBlockEntity blockEntity) {
                             addIrrigationInfo(probeInfo, blockEntity);
-                        } else if (entity instanceof PottersWheelBlockEntity blockEntity) {
+                        } else if (entity instanceof PottersWheelBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
                             probeInfo.horizontal().item(blockEntity.getItem());
                         } else if (entity instanceof FirePitBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
                             probeInfo.horizontal().text(Component.translatable("text.ytech.top.fire_pit.progress", Integer.toString(blockEntity.getProgress())));

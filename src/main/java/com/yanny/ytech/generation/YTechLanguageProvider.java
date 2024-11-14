@@ -286,6 +286,19 @@ class YTechLanguageProvider extends LanguageProvider {
             add(type.descriptionId(), type.description());
         }
 
+        addJadeTranslation(YTechBlocks.BRONZE_ANVIL, "Bronze Anvil");
+        addJadeTranslation(Utils.modLoc("drying_racks"), "Drying Racks");
+        addJadeTranslation(YTechBlocks.MILLSTONE, "Millstone");
+        addJadeTranslation(Utils.modLoc("tanning_racks"), "Tanning Racks");
+        addJadeTranslation(Utils.modLoc("primitive_machines"), "Primitive Machines");
+        addJadeTranslation(Utils.modLoc("irrigation"), "Irrigation");
+        addJadeTranslation(YTechBlocks.POTTERS_WHEEL, "Potter's Wheel");
+        addJadeTranslation(YTechBlocks.FIRE_PIT, "Fire Pit");
+        addJadeTranslation(YTechBlocks.TREE_STUMP, "Tree Stump");
+        addJadeTranslation(YTechBlocks.AMPHORA, "Amphora");
+        addJadeTranslation(YTechBlocks.WOODEN_BOX, "Wooden Box");
+        addJadeTranslation(YTechBlocks.TOOL_RACK, "Tool Rack");
+
         add("effect.ytech.abyss_walker", "Abyss Walker");
         add("effect.ytech.lions_heart", "Lion's Heart");
         add("effect.ytech.lucky_stone", "Lucky Stone");
@@ -470,5 +483,13 @@ class YTechLanguageProvider extends LanguageProvider {
         key += partType.name;
         key += nameHolder.suffix() != null ? " " + nameHolder.suffix() : "";
         return key;
+    }
+
+    private void addJadeTranslation(RegistryObject<Block> block, String name) {
+        add("config.jade.plugin_" + YTechMod.MOD_ID + "." + block.getId().getPath(), name);
+    }
+
+    private void addJadeTranslation(ResourceLocation group, String name) {
+        add("config.jade.plugin_" + YTechMod.MOD_ID + "." + group.getPath(), name);
     }
 }
