@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## [0.8.1]
+
+- Fixed wrongly requiring all optional mods
+
 ## [0.8.0]
 
 - Added Tree Stump
