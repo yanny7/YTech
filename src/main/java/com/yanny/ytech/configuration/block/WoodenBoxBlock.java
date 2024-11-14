@@ -25,6 +25,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
@@ -37,11 +38,6 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
 
     public WoodenBoxBlock() {
         super(Properties.copy(Blocks.OAK_PLANKS));
-    }
-
-    @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
-        return true;
     }
 
     @SuppressWarnings("deprecation")
@@ -185,7 +181,7 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
                 .texture("particle", Utils.modBlockLoc("wooden_box"))
                 .texture("0", Utils.mcBlockLoc("oak_planks"))
                 .texture("1", Utils.modBlockLoc("wooden_box"));
-        provider.horizontalBlock(YTechBlocks.WOODEN_BOX.get(), model);
+        provider.getVariantBuilder(YTechBlocks.WOODEN_BOX.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.WOODEN_BOX)).parent(model);
     }
 }

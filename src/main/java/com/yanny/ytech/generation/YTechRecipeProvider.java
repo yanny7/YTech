@@ -375,6 +375,7 @@ class YTechRecipeProvider extends RecipeProvider {
         wcSmokerRecipe(recipeConsumer);
         wcComposterRecipe(recipeConsumer);
         wcWoodenBoxRecipe(recipeConsumer);
+        wcToolRackRecipe(recipeConsumer);
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -1941,5 +1942,22 @@ class YTechRecipeProvider extends RecipeProvider {
                 .topPattern("   ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.modLoc(YTechItems.WOODEN_BOX));
+    }
+
+    private static void wcToolRackRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.TOOL_RACK.get())
+                .define('L', ItemTags.PLANKS)
+                .define('B', YTechItemTags.BOLTS.tag)
+                .bottomPattern("LLL")
+                .bottomPattern("BBB")
+                .bottomPattern("   ")
+                .middlePattern("LLL")
+                .middlePattern("BBB")
+                .middlePattern("   ")
+                .topPattern("LLL")
+                .topPattern("BBB")
+                .topPattern("   ")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
+                .save(recipeConsumer, Utils.modLoc(YTechItems.TOOL_RACK));
     }
 }

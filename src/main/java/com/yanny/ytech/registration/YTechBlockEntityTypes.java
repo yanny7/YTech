@@ -30,6 +30,7 @@ public class YTechBlockEntityTypes {
     public static final RegistryObject<BlockEntityType<PrimitiveAlloySmelterBlockEntity>> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", PrimitiveAlloySmelterBlockEntity::new, YTechBlocks.PRIMITIVE_ALLOY_SMELTER);
     public static final RegistryObject<BlockEntityType<PrimitiveSmelterBlockEntity>> PRIMITIVE_SMELTER = register("primitive_smelter", PrimitiveSmelterBlockEntity::new, YTechBlocks.PRIMITIVE_SMELTER);
     public static final RegistryObject<BlockEntityType<TanningRackBlockEntity>> TANNING_RACK = register("tanning_rack", TanningRackBlockEntity::new, YTechBlocks.TANNING_RACKS);
+    public static final RegistryObject<BlockEntityType<ToolRackBlockEntity>> TOOL_RACK = register("tool_rack", ToolRackBlockEntity::new, YTechBlocks.TOOL_RACK);
     public static final RegistryObject<BlockEntityType<TreeStumpBlockEntity>> TREE_STUMP = register("tree_stump", TreeStumpBlockEntity::new, YTechBlocks.TREE_STUMP);
     public static final RegistryObject<BlockEntityType<WoodenBoxBlockEntity>> WOODEN_BOX = register("wooden_box", WoodenBoxBlockEntity::new, YTechBlocks.WOODEN_BOX);
 

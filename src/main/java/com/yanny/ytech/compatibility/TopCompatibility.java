@@ -75,6 +75,12 @@ public class TopCompatibility {
                             if (!item.isEmpty()) {
                                 probeInfo.horizontal().item(item).text(Component.translatable(item.getDescriptionId()));
                             }
+                        } else if (entity instanceof ToolRackBlockEntity blockEntity) {
+                            ItemStack item = blockEntity.getItem(probeHitData.getPos(), probeHitData.getSideHit(), probeHitData.getHitVec());
+
+                            if (!item.isEmpty()) {
+                                probeInfo.horizontal().item(item).text(Component.translatable(item.getDescriptionId()));
+                            }
                         }
                     }
                 }

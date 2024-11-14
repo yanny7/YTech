@@ -1,0 +1,31 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "B": {
+      "tag": "forge:bolts"
+    },
+    "L": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "LLL",
+      "BBB",
+      "   "
+    ],
+    "middle": [
+      "LLL",
+      "BBB",
+      "   "
+    ],
+    "top": [
+      "LLL",
+      "BBB",
+      "   "
+    ]
+  },
+  "result": {
+    "item": "ytech:tool_rack"
+  }
+}

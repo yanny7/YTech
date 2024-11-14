@@ -78,6 +78,7 @@ public class ModBusSubscriber {
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.MILLSTONE.get(), MillstoneRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.POTTERS_WHEEL.get(), PottersWheelRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TANNING_RACK.get(), TanningRackRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.TOOL_RACK.get(), ToolRackRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TREE_STUMP.get(), TreeStumpRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.WOODEN_BOX.get(), WoodenBoxRenderer::new);
 

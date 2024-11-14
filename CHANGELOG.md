@@ -4,6 +4,7 @@
 
 - Fixed missing Golden Shears translation
 - Improved Wooden Box to be directional (horizontally)
+- Added Tool Rack
 
 ## [0.8.0]
 

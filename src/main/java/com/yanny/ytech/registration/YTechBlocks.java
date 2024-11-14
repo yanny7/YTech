@@ -40,6 +40,7 @@ public class YTechBlocks {
     public static final RegistryObject<Block> THATCH = registerBlock("thatch", Blocks.HAY_BLOCK);
     public static final RegistryObject<Block> THATCH_SLAB = registerSlab("thatch_slab", Blocks.HAY_BLOCK);
     public static final RegistryObject<Block> THATCH_STAIRS = registerStairs("thatch_stairs", YTechBlocks.THATCH, Blocks.HAY_BLOCK);
+    public static final RegistryObject<Block> TOOL_RACK = BLOCKS.register("tool_rack", ToolRackBlock::new);
     public static final RegistryObject<Block> TREE_STUMP = BLOCKS.register("tree_stump", TreeStumpBlock::new);
     public static final RegistryObject<Block> WOODEN_BOX = BLOCKS.register("wooden_box", WoodenBoxBlock::new);
 

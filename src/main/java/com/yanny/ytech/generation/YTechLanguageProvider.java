@@ -101,6 +101,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH, "Thatch");
         addBlock(YTechBlocks.THATCH_SLAB, "Thatch Slab");
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
+        addBlock(YTechBlocks.TOOL_RACK, "Tool Rack");
         addBlock(YTechBlocks.TREE_STUMP, "Tree Stump");
         addBlock(YTechBlocks.WOODEN_BOX, "Wooden Box");
 
@@ -231,7 +232,9 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.THATCH, "Thatch");
         addTag(YTechItemTags.THATCH_SLABS, "Thatch Slabs");
         addTag(YTechItemTags.THATCH_STAIRS, "Thatch Stairs");
+        addTag(YTechItemTags.TOOL_RACKS, "Tool Racks");
         addTag(YTechItemTags.TREE_STUMPS, "Tree Stumps");
+        addTag(YTechItemTags.WOODEN_BOXES, "Wooden Boxes");
 
         addTag(YTechItemTags.CHLORITE_BRACELETS, "Chlorite Bracelets");
         addTag(YTechItemTags.LION_MANS, "Lion Mans");
