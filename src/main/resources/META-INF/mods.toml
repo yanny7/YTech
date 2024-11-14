@@ -98,3 +98,10 @@ issueTrackerURL="https://github.com/yanny7/ytech/issues" #optional
     versionRange="${emi_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="jade"
+    mandatory=false
+    versionRange="${jade_version_range}"
+    ordering="NONE"
+    side="BOTH"
