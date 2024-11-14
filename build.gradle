@@ -46,6 +46,12 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
+    maven { // Jade
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 base {
@@ -179,6 +185,9 @@ dependencies {
     // EMI
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+
+    // Jade
+    implementation "curse.maven:jade-324717:${jade_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -203,7 +212,8 @@ tasks.withType(ProcessResources).configureEach {
             top_version_range: top_version_range,
             curios_version_range: curios_version_range,
             kubejs_version_range: kubejs_version_range,
-            emi_version_range: emi_version_range
+            emi_version_range: emi_version_range,
+            jade_version_range: jade_version_range
     ]
     inputs.properties replaceProperties
 

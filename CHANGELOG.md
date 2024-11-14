@@ -1,5 +1,13 @@
 # YTech Changelog
 
+## []
+
+- Fixed missing Golden Shears translation
+- Improved Wooden Box to be directional (horizontally)
+- Added Tool Rack
+- Added Jade compatibility
+- Fixed missing Millstone bottom texture
+
 ## [0.8.0]
 
 - Added Tree Stump
