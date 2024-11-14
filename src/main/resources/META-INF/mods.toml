@@ -58,38 +58,50 @@ issueTrackerURL="https://github.com/yanny7/ytech/issues" #optional
 
 [[dependencies.${mod_id}]]
     modId="minecraft"
-    type="required" #mandatory
+    type="required"
     versionRange="${minecraft_version_range}"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="jei"
+    type="optional"
     versionRange="${jei_version_range}"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="theoneprobe"
+    type="optional"
     versionRange="${top_version_range}"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="curios"
+    type="optional"
     versionRange="${curios_version_range}"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="kubejs"
+    type="optional"
     versionRange="${kubejs_version_range}"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="emi"
+    type="optional"
     versionRange="${emi_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="jade"
+    type="optional"
+    versionRange="${jade_version_range}"
     ordering="NONE"
     side="BOTH"
 
