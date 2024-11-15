@@ -1,62 +1,31 @@
 package com.yanny.ytech.configuration;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class YTechConfigSpec {
-    private final ForgeConfigSpec.ConfigValue<Boolean> makeBlocksRequireValidTool;
-    private final ForgeConfigSpec.ConfigValue<List<? extends String>> makeBlocksRequireValidToolTags;
-    private final ForgeConfigSpec.ConfigValue<Boolean> craftSharpFlintByRightClickingOnStone;
+    private final ForgeConfigSpec.BooleanValue noDryingDuringRain;
 
-    private final ForgeConfigSpec.ConfigValue<Boolean> noDryingDuringRain;
-    private final ForgeConfigSpec.ConfigValue<List<? extends String>> slowDryingBiomeTags;
-    private final ForgeConfigSpec.ConfigValue<List<? extends String>> fastDryingBiomeTags;
+    private final ForgeConfigSpec.IntValue baseFluidStoragePerBlock;
+    private final ForgeConfigSpec.BooleanValue rainingFillAqueduct;
+    private final ForgeConfigSpec.IntValue rainingFillAmount;
+    private final ForgeConfigSpec.IntValue rainingFillPerNthTick;
+    private final ForgeConfigSpec.BooleanValue validBlockForRaining;
+    private final ForgeConfigSpec.IntValue valveFillAmount;
+    private final ForgeConfigSpec.IntValue valveFillPerNthTick;
+    private final ForgeConfigSpec.IntValue hydratorDrainAmount;
+    private final ForgeConfigSpec.IntValue hydratorDrainPerNthTick;
+    private final ForgeConfigSpec.IntValue fertilizerDuration;
+    private final ForgeConfigSpec.IntValue applyFertilizerChance;
 
-    private final ForgeConfigSpec.ConfigValue<Integer> baseFluidStoragePerBlock;
-    private final ForgeConfigSpec.ConfigValue<Boolean> rainingFillAqueduct;
-    private final ForgeConfigSpec.ConfigValue<Integer> rainingFillAmount;
-    private final ForgeConfigSpec.ConfigValue<Integer> rainingFillPerNthTick;
-    private final ForgeConfigSpec.ConfigValue<Boolean> validBlockForRaining;
-    private final ForgeConfigSpec.ConfigValue<Integer> valveFillAmount;
-    private final ForgeConfigSpec.ConfigValue<Integer> valveFillPerNthTick;
-    private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainAmount;
-    private final ForgeConfigSpec.ConfigValue<Integer> hydratorDrainPerNthTick;
-    private final ForgeConfigSpec.ConfigValue<Integer> fertilizerDuration;
-    private final ForgeConfigSpec.ConfigValue<Integer> applyFertilizerChance;
-
-    private final ForgeConfigSpec.ConfigValue<Integer> minBreedingGenerations;
+    private final ForgeConfigSpec.IntValue minBreedingGenerations;
     private final ForgeConfigSpec.DoubleValue domesticChance;
     private final ForgeConfigSpec.BooleanValue removeVanillaMobs;
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
-        builder.push("general");
-            makeBlocksRequireValidTool = builder.comment("If mod can change behaviour of specified blocks to require valid tool for harvesting")
-                    .worldRestart().define("makeBlocksRequireValidTool", true);
-            makeBlocksRequireValidToolTags = builder.comment("List of block tags that will require valid tool for harvesting")
-                    .worldRestart().defineListAllowEmpty("makeBlocksRequireValidToolTags", YTechConfigSpec::getMinecraftBlocksRequiringValidTool, YTechConfigSpec::validateResourceLocation);
-            craftSharpFlintByRightClickingOnStone = builder.comment("Enables crafting Sharp Flint by right-clicking on stone")
-                    .worldRestart().define("craftSharpFlintByRightClickingOnStone", true);
-        builder.pop();
         builder.push("dryingRack");
             noDryingDuringRain = builder.comment("If Drying Rack should stop working during rain")
                     .worldRestart().define("noDryingDuringRain", true);
-            slowDryingBiomeTags = builder.comment("List of biome tags, where will be drying 2x slower")
-                    .worldRestart().defineListAllowEmpty("slowDryingBiomeTags", YTechConfigSpec::getSlowDryingBiomeTags, YTechConfigSpec::validateResourceLocation);
-            fastDryingBiomeTags = builder.comment("List of biome tags, where will be drying 2x faster")
-                    .worldRestart().defineListAllowEmpty("fastDryingBiomeTags", YTechConfigSpec::getFastDryingBiomeTags, YTechConfigSpec::validateResourceLocation);
         builder.pop();
         builder.push("irrigation");
             builder.push("aqueduct");
@@ -100,29 +69,8 @@ public class YTechConfigSpec {
         builder.pop();
     }
 
-    public boolean shouldRequireValidTool() {
-        return makeBlocksRequireValidTool.get();
-    }
-
-    @NotNull
-    public Set<TagKey<Block>> getBlocksRequiringValidTool() {
-        return makeBlocksRequireValidToolTags.get().stream().map(value -> TagKey.create(Registries.BLOCK, new ResourceLocation(value))).collect(Collectors.toSet());
-    }
-
-    public boolean enableCraftingSharpFlint() {
-        return craftSharpFlintByRightClickingOnStone.get();
-    }
-
     public boolean noDryingDuringRain() {
         return noDryingDuringRain.get();
-    }
-
-    public Set<TagKey<Biome>> getSlowDryingBiomes() {
-        return slowDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
-    }
-
-    public Set<TagKey<Biome>> getFastDryingBiomes() {
-        return fastDryingBiomeTags.get().stream().map(ResourceLocation::new).map((v) -> TagKey.create(Registries.BIOME, v)).collect(Collectors.toSet());
     }
 
     public int getBaseFluidStoragePerBlock() {
@@ -179,31 +127,5 @@ public class YTechConfigSpec {
 
     public boolean removeVanillaMobs() {
         return removeVanillaMobs.get();
-    }
-
-    @NotNull
-    private static List<String> getMinecraftBlocksRequiringValidTool() {
-        return Stream.of(
-                BlockTags.LOGS,
-                BlockTags.DIRT
-        ).map(tag -> tag.location().toString()).collect(Collectors.toList());
-    }
-
-    @NotNull
-    private static List<String> getFastDryingBiomeTags() {
-        return Stream.of(
-                Tags.Biomes.IS_DRY
-        ).map(value -> Objects.requireNonNull(value.location()).toString()).collect(Collectors.toList());
-    }
-
-    @NotNull
-    private static List<String> getSlowDryingBiomeTags() {
-        return Stream.of(
-                Tags.Biomes.IS_WET
-        ).map(value -> Objects.requireNonNull(value.location()).toString()).collect(Collectors.toList());
-    }
-
-    private static boolean validateResourceLocation(@NotNull Object object) {
-        return object instanceof String resourceLocation && ResourceLocation.isValidResourceLocation(resourceLocation);
     }
 }

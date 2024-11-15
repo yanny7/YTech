@@ -7,6 +7,7 @@
 - Added Tool Rack
 - Added Jade compatibility
 - Fixed missing Millstone bottom texture
+- Moved some configuration options to tags
 
 ## [0.8.0]
 

@@ -67,5 +67,8 @@ class YTechBiomeTagsProvider extends BiomeTagsProvider {
                 .addTag(BiomeTags.IS_TAIGA)
                 .addTag(BiomeTags.IS_BEACH)
                 .addTag(BiomeTags.IS_SAVANNA);
+
+        tag(YTechBiomeTags.FAST_DRYING_BIOMES).addTag(Tags.Biomes.IS_DRY);
+        tag(YTechBiomeTags.SLOW_DRYING_BIOMES).addTag(Tags.Biomes.IS_WET);
     }
 }

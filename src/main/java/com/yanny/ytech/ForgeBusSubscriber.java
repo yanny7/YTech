@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import com.yanny.ytech.configuration.block.CraftingWorkspaceBlock;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
 import com.yanny.ytech.configuration.block.WoodenBoxBlock;
+import com.yanny.ytech.registration.YTechBlockTags;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechMobEffects;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -84,9 +85,9 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onServerStarting(@NotNull ServerStartingEvent event) {
-        if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
-            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((tag) -> Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTag(tag).forEach(ForgeBusSubscriber::setBlockRequireValidTool));
-        }
+        Objects.requireNonNull(ForgeRegistries.BLOCKS.tags())
+                .getTag(YTechBlockTags.REQUIRE_VALID_TOOL)
+                .forEach(ForgeBusSubscriber::setBlockRequireValidTool);
     }
 
     @SubscribeEvent
@@ -112,19 +113,17 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onPlayerLeftClickBlock(@NotNull PlayerInteractEvent.LeftClickBlock event) {
-        if (YTechMod.CONFIGURATION.enableCraftingSharpFlint()) {
-            Player player = event.getEntity();
-            Level level = event.getLevel();
-            ItemStack heldItem = player.getMainHandItem();
-            BlockState blockState = level.getBlockState(event.getPos());
-            Direction direction = event.getFace();
+        Player player = event.getEntity();
+        Level level = event.getLevel();
+        ItemStack heldItem = player.getMainHandItem();
+        BlockState blockState = level.getBlockState(event.getPos());
+        Direction direction = event.getFace();
 
-            if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
-                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
-                    Block.popResourceFromFace(level, event.getPos(), direction, recipe.result().copy());
-                    heldItem.shrink(1);
-                });
-            }
+        if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new SimpleContainer(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                Block.popResourceFromFace(level, event.getPos(), direction, recipe.result().copy());
+                heldItem.shrink(1);
+            });
         }
     }
 
