@@ -28,6 +28,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
         super(properties);
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     public RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;

@@ -34,6 +34,7 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
         super(Properties.copy(Blocks.TERRACOTTA));
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {

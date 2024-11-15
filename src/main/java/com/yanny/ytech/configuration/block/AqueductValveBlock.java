@@ -48,6 +48,7 @@ public class AqueductValveBlock extends IrrigationBlock {
         return new AqueductValveBlockEntity(pos, blockState);
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
