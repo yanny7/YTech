@@ -5,15 +5,15 @@
         "model": "ytech:block/aqueduct_hydrator"
       },
       "when": {
-        "waterlogged": "false"
+        "activated": "false"
       }
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_hydrator_waterlogged"
+        "model": "ytech:block/aqueduct_hydrator_activated"
       },
       "when": {
-        "waterlogged": "true"
+        "activated": "true"
       }
     },
     {

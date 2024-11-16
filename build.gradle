@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.gradle' version '[6.0.13, 6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = mod_version
@@ -23,6 +24,15 @@ jarJar.enable()
 // 'all' is the default classifier
 tasks.named('jarJar') {
     // ...
+}
+
+mixin {
+    // MixinGradle Settings
+    add sourceSets.main, "mixins.${mod_id}.refmap.json"
+    config "mixins.${mod_id}.json"
+
+    debug.verbose = true
+    debug.export = true
 }
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
@@ -221,6 +231,9 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.neoforged:forge:${minecraft_version}-${neoforge_version}"
+
+    // Apply Mixin AP
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     minecraftLibrary "org.objenesis:objenesis:3.4"
 

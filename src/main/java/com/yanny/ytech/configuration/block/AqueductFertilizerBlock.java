@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -66,7 +65,7 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
                 .texture("0", fertilizerTexture)
                 .texture("2", bricksTexture)
                 .texture("particle", fertilizerTexture);
-        ModelFile waterlogged = provider.models().getBuilder(name + "_waterlogged")
+        ModelFile activated = provider.models().getBuilder(name + "_activated")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -105,8 +104,8 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
                 .texture("particle", fertilizerTexture);
 
         MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.AQUEDUCT_FERTILIZER.get());
-        builder.part().modelFile(base).addModel().condition(BlockStateProperties.WATERLOGGED, false).end();
-        builder.part().modelFile(waterlogged).addModel().condition(BlockStateProperties.WATERLOGGED, true).end();
+        builder.part().modelFile(base).addModel().condition(AqueductConsumerBlock.ACTIVATED, false).end();
+        builder.part().modelFile(activated).addModel().condition(AqueductConsumerBlock.ACTIVATED, true).end();
         PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(overlay).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
 
         provider.itemModels().getBuilder(name).parent(inventory);

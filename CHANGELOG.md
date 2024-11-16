@@ -9,8 +9,9 @@
 - Fixed missing Millstone bottom texture
 - Moved some configuration options to tags
 - Finite water source
-- Aqueduct Valve slowly consumes water around
+- Aqueduct Valve slowly consumes water source
 - Crops need hydrated farmland to grow
+- Farmland has chance to consume water source
 
 ## [0.8.0]
 

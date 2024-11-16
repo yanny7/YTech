@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
@@ -58,7 +57,7 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
                 .texture("0", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"))
                 .texture("2", Utils.modBlockLoc("terracotta_bricks"))
                 .texture("particle", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"));
-        ModelFile waterlogged = provider.models().getBuilder(name + "_waterlogged")
+        ModelFile activated = provider.models().getBuilder(name + "_activated")
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -97,8 +96,8 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
                 .texture("particle", Utils.modBlockLoc("aqueduct/aqueduct_hydrator"));
 
         MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.AQUEDUCT_HYDRATOR.get());
-        builder.part().modelFile(base).addModel().condition(BlockStateProperties.WATERLOGGED, false).end();
-        builder.part().modelFile(waterlogged).addModel().condition(BlockStateProperties.WATERLOGGED, true).end();
+        builder.part().modelFile(base).addModel().condition(AqueductConsumerBlock.ACTIVATED, false).end();
+        builder.part().modelFile(activated).addModel().condition(AqueductConsumerBlock.ACTIVATED, true).end();
         PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(overlay).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
 
         provider.itemModels().getBuilder(name).parent(inventory);

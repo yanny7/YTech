@@ -7,6 +7,7 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.BooleanValue noDryingDuringRain;
     private final ForgeConfigSpec.BooleanValue finiteWaterSource;
     private final ForgeConfigSpec.BooleanValue cropsNeedWateredFarmland;
+    private final ForgeConfigSpec.BooleanValue farmlandConsumesWater;
 
     private final ForgeConfigSpec.IntValue baseFluidStoragePerBlock;
     private final ForgeConfigSpec.BooleanValue rainingFillAqueduct;
@@ -25,13 +26,17 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.BooleanValue removeVanillaMobs;
 
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
-        builder.push("dryingRack");
-        noDryingDuringRain = builder.comment("If Drying Rack should stop working during rain")
-                .worldRestart().define("noDryingDuringRain", true);
+        builder.push("waterBehavior");
         finiteWaterSource = builder.comment("If water sources are finite")
                 .worldRestart().define("finiteWaterSource", true);
         cropsNeedWateredFarmland = builder.comment("If crops need watered farmland for growing")
                 .worldRestart().define("cropsNeedWateredFarmland", true);
+        farmlandConsumesWater = builder.comment("If hydrating farmland causes removing water source")
+                .worldRestart().define("farmlandConsumesWater", true);
+        builder.pop();
+        builder.push("dryingRack");
+        noDryingDuringRain = builder.comment("If Drying Rack should stop working during rain")
+                .worldRestart().define("noDryingDuringRain", true);
         builder.pop();
         builder.push("irrigation");
         builder.push("aqueduct");
@@ -75,16 +80,20 @@ public class YTechConfigSpec {
         builder.pop();
     }
 
-    public boolean noDryingDuringRain() {
-        return noDryingDuringRain.get();
-    }
-
     public boolean hasFiniteWaterSource() {
         return finiteWaterSource.get();
     }
 
     public boolean cropsNeedWateredFarmland() {
         return cropsNeedWateredFarmland.get();
+    }
+
+    public boolean farmlandConsumesWater() {
+        return farmlandConsumesWater.get();
+    }
+
+    public boolean noDryingDuringRain() {
+        return noDryingDuringRain.get();
     }
 
     public int getBaseFluidStoragePerBlock() {
