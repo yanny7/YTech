@@ -10,6 +10,7 @@
 - Moved some configuration options to tags
 - Finite water source
 - Aqueduct Valve slowly consumes water around
+- Crops need hydrated farmland to grow
 
 ## [0.8.0]
 

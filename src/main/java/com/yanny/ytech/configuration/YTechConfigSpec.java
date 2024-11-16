@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class YTechConfigSpec {
     private final ForgeConfigSpec.BooleanValue noDryingDuringRain;
     private final ForgeConfigSpec.BooleanValue finiteWaterSource;
+    private final ForgeConfigSpec.BooleanValue cropsNeedWateredFarmland;
 
     private final ForgeConfigSpec.IntValue baseFluidStoragePerBlock;
     private final ForgeConfigSpec.BooleanValue rainingFillAqueduct;
@@ -29,6 +30,8 @@ public class YTechConfigSpec {
                 .worldRestart().define("noDryingDuringRain", true);
         finiteWaterSource = builder.comment("If water sources are finite")
                 .worldRestart().define("finiteWaterSource", true);
+        cropsNeedWateredFarmland = builder.comment("If crops need watered farmland for growing")
+                .worldRestart().define("cropsNeedWateredFarmland", true);
         builder.pop();
         builder.push("irrigation");
         builder.push("aqueduct");
@@ -78,6 +81,10 @@ public class YTechConfigSpec {
 
     public boolean hasFiniteWaterSource() {
         return finiteWaterSource.get();
+    }
+
+    public boolean cropsNeedWateredFarmland() {
+        return cropsNeedWateredFarmland.get();
     }
 
     public int getBaseFluidStoragePerBlock() {

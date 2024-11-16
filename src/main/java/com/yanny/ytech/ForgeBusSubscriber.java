@@ -20,8 +20,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -210,6 +212,17 @@ public class ForgeBusSubscriber {
         if (event.getState().getFluidState().is(Fluids.WATER) && YTechMod.CONFIGURATION.hasFiniteWaterSource()
                 && !event.getLevel().getBiome(event.getPos()).is(YTechBiomeTags.INFINITE_WATER_SOURCE_BIOMES)) {
             event.setResult(Event.Result.DENY);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCropGrowEvent(@NotNull BlockEvent.CropGrowEvent.Pre event) {
+        if (YTechMod.CONFIGURATION.cropsNeedWateredFarmland()) {
+            BlockState blockState = event.getLevel().getBlockState(event.getPos().below());
+
+            if (blockState.hasProperty(BlockStateProperties.MOISTURE) && blockState.getValue(BlockStateProperties.MOISTURE) < FarmBlock.MAX_MOISTURE) {
+                event.setCanceled(true);
+            }
         }
     }
 
