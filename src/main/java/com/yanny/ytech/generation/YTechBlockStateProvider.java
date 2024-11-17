@@ -52,6 +52,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
         registerStairsBlockState(this, YTechBlocks.THATCH_STAIRS, Utils.getPath(YTechBlocks.THATCH));
         ToolRackBlock.registerModel(this);
         TreeStumpBlock.registerModel(this);
+        WellPulleyBlock.registerModel(this);
         WoodenBoxBlock.registerModel(this);
 
         registerMaterialBlockState(this, "deepslate_ore", YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);

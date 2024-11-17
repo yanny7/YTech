@@ -103,6 +103,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
         addBlock(YTechBlocks.TOOL_RACK, "Tool Rack");
         addBlock(YTechBlocks.TREE_STUMP, "Tree Stump");
+        addBlock(YTechBlocks.WELL_PULLEY, "Well Pulley");
         addBlock(YTechBlocks.WOODEN_BOX, "Wooden Box");
 
         addTypedItem(YTechItems.CLAY_MOLDS, NameHolder.suffix("Clay Mold"), YTechLanguageProvider::getName);
@@ -234,6 +235,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.THATCH_STAIRS, "Thatch Stairs");
         addTag(YTechItemTags.TOOL_RACKS, "Tool Racks");
         addTag(YTechItemTags.TREE_STUMPS, "Tree Stumps");
+        addTag(YTechItemTags.WELL_PULLEYS, "Well Pulleys");
         addTag(YTechItemTags.WOODEN_BOXES, "Wooden Boxes");
 
         addTag(YTechItemTags.CHLORITE_BRACELETS, "Chlorite Bracelets");
@@ -375,6 +377,9 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.chlorite_bracelet", "Oldest piece of jewellery of its kind in the world, crafted by an extinct branch of early humans known as Denisovans. Increases luck when worn");
         add("text.ytech.hover.unlit_torch1", "Right-click on fire source to lit a torch");
         add("text.ytech.hover.unlit_torch2", "Right-click while sneaking on machine that can be lit (e.g. Furnace) to lit a torch");
+        add("text.ytech.hover.well_pulley1", "Adds water to connected Aqueduct network when right-clicked");
+        add("text.ytech.hover.well_pulley2", "Must be placed on full block");
+        add("text.ytech.hover.well_pulley3", "Has double output in wet biome and half output in dry biome");
 
         add("text.ytech.top.drying_rack.progress", "Progress: %s%%");
         add("text.ytech.top.entity.generation", "Generation: %s");

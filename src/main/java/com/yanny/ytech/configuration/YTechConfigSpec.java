@@ -20,6 +20,7 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.IntValue hydratorDrainPerNthTick;
     private final ForgeConfigSpec.IntValue fertilizerDuration;
     private final ForgeConfigSpec.IntValue applyFertilizerChance;
+    private final ForgeConfigSpec.IntValue wellPulleyGeneration;
 
     private final ForgeConfigSpec.IntValue minBreedingGenerations;
     private final ForgeConfigSpec.DoubleValue domesticChance;
@@ -68,6 +69,10 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("fertilizerDuration", 600, 1, Integer.MAX_VALUE);
         applyFertilizerChance = builder.comment("How often should be applied bone meal effect (1 / n chance per tick)")
                 .worldRestart().defineInRange("applyFertilizerChance", 60, 1, Integer.MAX_VALUE);
+        builder.pop();
+        builder.push("wellPulley");
+        wellPulleyGeneration = builder.comment("How much water Well Pulley generate each 10 ticks")
+                .worldRestart().defineInRange("wellPulleyGeneration", 100, 1, Integer.MAX_VALUE);
         builder.pop();
         builder.pop();
         builder.push("wildAnimalsBreeding");
@@ -138,6 +143,10 @@ public class YTechConfigSpec {
 
     public int getApplyFertilizerChance() {
         return applyFertilizerChance.get();
+    }
+
+    public int getWellPulleyGeneration() {
+        return wellPulleyGeneration.get();
     }
 
     public int getMinBreedingGenerations() {

@@ -12,6 +12,7 @@
 - Aqueduct Valve slowly consumes water source
 - Crops need hydrated farmland to grow
 - Farmland has chance to consume water source
+- Added Well Pulley
 
 ## [0.8.0]
 

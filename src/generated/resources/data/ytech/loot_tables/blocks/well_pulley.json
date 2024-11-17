@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "ytech:well_pulley",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "well": "base"
+              }
+            }
+          ],
+          "name": "ytech:well_pulley"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ytech:blocks/well_pulley"
+}

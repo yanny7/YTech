@@ -1,6 +1,7 @@
 package com.yanny.ytech.compatibility;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.block.WellPulleyBlock;
 import com.yanny.ytech.configuration.block_entity.*;
 import com.yanny.ytech.configuration.entity.AurochsEntity;
 import com.yanny.ytech.configuration.entity.FowlEntity;
@@ -8,6 +9,7 @@ import com.yanny.ytech.configuration.entity.MouflonEntity;
 import com.yanny.ytech.configuration.entity.WildBoarEntity;
 import com.yanny.ytech.network.irrigation.IIrrigationBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
+import com.yanny.ytech.registration.YTechBlocks;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -80,6 +82,10 @@ public class TopCompatibility {
 
                             if (!item.isEmpty()) {
                                 probeInfo.horizontal().item(item).text(Component.translatable(item.getDescriptionId()));
+                            }
+                        } else if (blockState.is(YTechBlocks.WELL_PULLEY.get()) && blockState.getValue(WellPulleyBlock.WELL_PART) == WellPulleyBlock.WellPulleyPart.TOP) {
+                            if (level.getBlockEntity(probeHitData.getPos().below()) instanceof WellPulleyBlockEntity blockEntity) {
+                                addIrrigationInfo(probeInfo, blockEntity);
                             }
                         }
                     }

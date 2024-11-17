@@ -90,6 +90,7 @@ public class YTechItems {
     public static final RegistryObject<Item> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> burnableBlockItem(YTechBlocks.THATCH_STAIRS, 200));
     public static final RegistryObject<Item> TOOL_RACK = ITEMS.register("tool_rack", () -> blockItem(YTechBlocks.TOOL_RACK));
     public static final RegistryObject<Item> TREE_STUMP = ITEMS.register("tree_stump", () -> blockItem(YTechBlocks.TREE_STUMP));
+    public static final RegistryObject<Item> WELL_PULLEY = ITEMS.register("well_pulley", () -> descriptionItem(YTechBlocks.WELL_PULLEY, List.of(Component.translatable("text.ytech.hover.well_pulley1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley3").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> WOODEN_BOX = ITEMS.register("wooden_box", () -> blockItem(YTechBlocks.WOODEN_BOX));
 
     public static final RegistryObject<Item> CHLORITE_BRACELET = ITEMS.register("chlorite_bracelet", ChloriteBraceletItem::new);

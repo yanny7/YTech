@@ -91,6 +91,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
         tag(YTechItemTags.TOOL_RACKS).add(YTechItems.TOOL_RACK.get());
         tag(YTechItemTags.TREE_STUMPS).add(YTechItems.TREE_STUMP.get());
+        tag(YTechItemTags.WELL_PULLEYS).add(YTechItems.WELL_PULLEY.get());
         tag(YTechItemTags.WOODEN_BOXES).add(YTechItems.WOODEN_BOX.get());
 
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);

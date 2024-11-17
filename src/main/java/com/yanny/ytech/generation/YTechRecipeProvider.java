@@ -376,6 +376,7 @@ class YTechRecipeProvider extends RecipeProvider {
         wcComposterRecipe(recipeConsumer);
         wcWoodenBoxRecipe(recipeConsumer);
         wcToolRackRecipe(recipeConsumer);
+        wcWellPulleyRecipe(recipeConsumer);
 
         removeVanillaRecipes(recipeConsumer);
     }
@@ -1959,5 +1960,25 @@ class YTechRecipeProvider extends RecipeProvider {
                 .topPattern("   ")
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.PLANKS))
                 .save(recipeConsumer, Utils.modLoc(YTechItems.TOOL_RACK));
+    }
+
+    private static void wcWellPulleyRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.WELL_PULLEY.get())
+                .define('L', ItemTags.LOGS)
+                .define('P', ItemTags.PLANKS)
+                .define('B', YTechItemTags.TERRACOTTA_BRICKS)
+                .define('T', YTechItemTags.GRASS_TWINES)
+                .define('V', YTechItemTags.AQUEDUCT_VALVES)
+                .bottomPattern("BBB")
+                .bottomPattern("BVB")
+                .bottomPattern("BBB")
+                .middlePattern("   ")
+                .middlePattern("LTL")
+                .middlePattern("   ")
+                .topPattern("   ")
+                .topPattern("LPL")
+                .topPattern("   ")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
+                .save(recipeConsumer, Utils.modLoc(YTechItems.WELL_PULLEY));
     }
 }
