@@ -71,6 +71,10 @@ class YTechBiomeTagsProvider extends BiomeTagsProvider {
         tag(YTechBiomeTags.FAST_DRYING_BIOMES).addTag(Tags.Biomes.IS_DRY);
         tag(YTechBiomeTags.SLOW_DRYING_BIOMES).addTag(Tags.Biomes.IS_WET);
 
+        tag(YTechBiomeTags.WELL_DRY_BIOMES).addTag(Tags.Biomes.IS_DRY);
+        tag(YTechBiomeTags.WELL_WET_BIOMES).addTag(Tags.Biomes.IS_WET);
+        tag(YTechBiomeTags.WELL_DISABLED_BIOMES);
+
         tag(YTechBiomeTags.INFINITE_WATER_SOURCE_BIOMES);
     }
 }

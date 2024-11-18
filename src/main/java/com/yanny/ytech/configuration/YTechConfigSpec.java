@@ -21,6 +21,8 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.IntValue fertilizerDuration;
     private final ForgeConfigSpec.IntValue applyFertilizerChance;
     private final ForgeConfigSpec.IntValue wellPulleyGeneration;
+    private final ForgeConfigSpec.DoubleValue wetBiomeBonus;
+    private final ForgeConfigSpec.DoubleValue dryBiomeBonus;
 
     private final ForgeConfigSpec.IntValue minBreedingGenerations;
     private final ForgeConfigSpec.DoubleValue domesticChance;
@@ -73,6 +75,10 @@ public class YTechConfigSpec {
         builder.push("wellPulley");
         wellPulleyGeneration = builder.comment("How much water Well Pulley generate each 10 ticks")
                 .worldRestart().defineInRange("wellPulleyGeneration", 100, 1, Integer.MAX_VALUE);
+        wetBiomeBonus = builder.comment("Bonus for Well Pulley generation in wet biome")
+                .worldRestart().defineInRange("wetBiomeBonus", 2.0, Double.MIN_VALUE, Double.MAX_VALUE);
+        dryBiomeBonus = builder.comment("Bonus for Well Pulley generation in dry biome")
+                .worldRestart().defineInRange("dryBiomeBonus", 0.5, Double.MIN_VALUE, Double.MAX_VALUE);
         builder.pop();
         builder.pop();
         builder.push("wildAnimalsBreeding");
@@ -147,6 +153,14 @@ public class YTechConfigSpec {
 
     public int getWellPulleyGeneration() {
         return wellPulleyGeneration.get();
+    }
+
+    public double getWellPulleyWetBonus() {
+        return wetBiomeBonus.get();
+    }
+
+    public double getWellPulleyDryBonus() {
+        return dryBiomeBonus.get();
     }
 
     public int getMinBreedingGenerations() {

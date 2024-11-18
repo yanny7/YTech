@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.block.WellPulleyBlock;
 import com.yanny.ytech.network.irrigation.NetworkType;
+import com.yanny.ytech.registration.YTechBiomeTags;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 public class WellPulleyBlockEntity extends IrrigationBlockEntity {
@@ -112,17 +112,22 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
 
     private int getNoiseFlow(@NotNull Level level) {
         Holder<Biome> biome = level.getBiome(worldPosition);
-        double biomeModifier = 1;
-        double noiseValue = WATER_SOURCE_NOISE.getValue(worldPosition.getX() * 0.01, worldPosition.getZ() * 0.01, false);
-        boolean dryBiome = biome.is(Tags.Biomes.IS_DRY);
-        boolean wetBiome = biome.is(Tags.Biomes.IS_WET);
 
-        if (dryBiome) {
-            biomeModifier = 0.5;
-        } else if (wetBiome) {
-            biomeModifier = 2;
+        if (!biome.is(YTechBiomeTags.WELL_DISABLED_BIOMES)) {
+            double biomeModifier = 1;
+            double waterAbundance = getWaterAbundance(worldPosition);
+            boolean dryBiome = biome.is(YTechBiomeTags.WELL_DRY_BIOMES);
+            boolean wetBiome = biome.is(YTechBiomeTags.WELL_WET_BIOMES);
+
+            if (dryBiome) {
+                biomeModifier = YTechMod.CONFIGURATION.getWellPulleyDryBonus();
+            } else if (wetBiome) {
+                biomeModifier = YTechMod.CONFIGURATION.getWellPulleyWetBonus();
+            }
+
+            return (int) Math.max(Math.round(waterAbundance * YTechMod.CONFIGURATION.getWellPulleyGeneration() * biomeModifier), 1);
         }
 
-        return (int) Math.max(Math.round(noiseValue * YTechMod.CONFIGURATION.getWellPulleyGeneration() * biomeModifier), 1);
+        return 1;
     }
 }
