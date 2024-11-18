@@ -6,6 +6,8 @@ import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -48,6 +50,13 @@ public class HammeringRecipeCategory extends AbstractRecipeCategory<HammeringRec
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, @NotNull HammeringRecipe recipe, @NotNull IFocusGroup focuses) {
         builder.addRecipeArrow().setPosition(26, 5);
+    }
+
+    @Override
+    public void getTooltip(@NotNull ITooltipBuilder tooltip, @NotNull HammeringRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        if (mouseX >= 26 && mouseX <= 26 + 24 && mouseY >= 5 && mouseY <= 5 + 17) {
+            tooltip.add(Component.translatable("emi.hammering.hit_count", recipe.hitCount()));
+        }
     }
 
     public static List<HammeringRecipe> getRecipes(@NotNull RecipeManager recipeManager) {

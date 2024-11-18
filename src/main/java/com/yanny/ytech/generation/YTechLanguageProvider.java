@@ -327,6 +327,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("emi.smelting.temperature", "%s °C");
         add("emi.chopping.hit_count", "%s time(s)");
         add("emi.tanning.hit_count", "%s time(s)");
+        add("emi.hammering.hit_count", "%s time(s)");
 
         add("sound.ytech.saber_tooth_tiger.ambient", "Saber-Toothed Tiger Roars");
         add("sound.ytech.saber_tooth_tiger.hurt", "Saber-Toothed Tiger Hurts");

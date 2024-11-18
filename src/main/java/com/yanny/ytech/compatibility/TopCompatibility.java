@@ -51,8 +51,8 @@ public class TopCompatibility {
                     if (!level.isClientSide) {
                         BlockEntity entity = level.getBlockEntity(probeHitData.getPos());
 
-                        if (entity instanceof BronzeAnvilBlockEntity blockEntity && blockEntity.getItemStackHandler().getStackInSlot(0).getCount() >= 0) {
-                            probeInfo.horizontal().item(blockEntity.getItemStackHandler().getStackInSlot(0));
+                        if (entity instanceof BronzeAnvilBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
+                            probeInfo.horizontal().item(blockEntity.getItem());
                         } else if (entity instanceof DryingRackBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
                             probeInfo.horizontal().text(Component.translatable("text.ytech.top.drying_rack.progress", Integer.toString(blockEntity.getProgress())));
                         } else if (entity instanceof MillstoneBlockEntity blockEntity && !blockEntity.getInputItem().isEmpty()) {

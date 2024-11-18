@@ -14,6 +14,7 @@
 - Farmland has chance to consume water source
 - Added Well Pulley
 - Added Divining Rod for detecting water abundance for Well Pulley
+- Added hit count to Hammering recipe
 
 ## [0.8.0]
 

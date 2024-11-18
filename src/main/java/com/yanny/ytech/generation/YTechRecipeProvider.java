@@ -338,7 +338,7 @@ class YTechRecipeProvider extends RecipeProvider {
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_FLOWER_POTS, Items.FLOWER_POT, 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_AMPHORAE, YTechItems.AMPHORA.get(), 1000, 200);
 
-        hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, Items.IRON_INGOT);
+        hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, 4, Items.IRON_INGOT);
 
         registerBlockHitRecipe(recipeConsumer, Items.FLINT, Tags.Items.STONE, YTechItems.SHARP_FLINT.get());
         registerBlockHitRecipe(recipeConsumer, YTechItems.UNLIT_TORCH.get(), YTechItemTags.FIRE_SOURCE, Items.TORCH);
@@ -899,8 +899,8 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void hammeringRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, @NotNull Item result) {
-        HammeringRecipe.Builder.hammering(input, result)
+    private void hammeringRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull TagKey<Item> input, int hitCount, @NotNull Item result) {
+        HammeringRecipe.Builder.hammering(input, hitCount, result)
                 .tool(Ingredient.of(YTechItemTags.HAMMERS.tag))
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(input))
                 .save(recipeConsumer, Utils.modLoc(result));
@@ -1495,7 +1495,7 @@ class YTechRecipeProvider extends RecipeProvider {
                     .pattern("H")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(material)))
                     .save(recipeConsumer, item.getId());
-            HammeringRecipe.Builder.hammering(YTechItemTags.INGOTS.get(material), item.get())
+            HammeringRecipe.Builder.hammering(YTechItemTags.INGOTS.get(material), 2, item.get())
                     .tool(Ingredient.of(YTechItemTags.HAMMERS.tag))
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(material)))
                     .save(recipeConsumer, Utils.modLoc(Utils.getPath(item) + "_from_hammering"));

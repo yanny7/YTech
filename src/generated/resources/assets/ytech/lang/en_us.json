@@ -148,6 +148,7 @@
   "emi.category.ytech.workspace_crafting": "Workspace Crafting",
   "emi.chopping.hit_count": "%s time(s)",
   "emi.drying.time": "%s s",
+  "emi.hammering.hit_count": "%s time(s)",
   "emi.smelting.temperature": "%s °C",
   "emi.smelting.time": "%s s",
   "emi.tanning.hit_count": "%s time(s)",
