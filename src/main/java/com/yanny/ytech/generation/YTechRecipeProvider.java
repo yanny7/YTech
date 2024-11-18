@@ -251,6 +251,7 @@ class YTechRecipeProvider extends RecipeProvider {
         registerBreadDoughRecipe(recipeConsumer);
         registerBrickMoldRecipe(recipeConsumer);
         registerCookedVenisonRecipe(recipeConsumer);
+        registerDiviningRodRecipe(recipeConsumer);
         registerFlourRecipe(recipeConsumer);
         registerGrassTwineRecipe(recipeConsumer);
         registerIronBloomRecipe(recipeConsumer);
@@ -1100,6 +1101,17 @@ class YTechRecipeProvider extends RecipeProvider {
         SimpleCookingRecipeBuilder.smoking(Ingredient.of(YTechItemTags.VENISON), RecipeCategory.FOOD, YTechItems.COOKED_VENISON.get(), 0.35f, 100)
                 .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.VENISON))
                 .save(recipeConsumer, Utils.modLoc(Utils.getPath(YTechItems.COOKED_VENISON) + "_using_smoker"));
+    }
+
+    private static void registerDiviningRodRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechItems.DIVINING_ROD.get())
+                .define('S', Items.STICK)
+                .define('T', YTechItemTags.GRASS_TWINES)
+                .define('F', YTechItemTags.SHARP_FLINTS)
+                .pattern("SS")
+                .pattern("TF")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.SHARP_FLINTS))
+                .save(recipeConsumer, YTechItems.DIVINING_ROD.getId());
     }
 
     private static void registerFlourRecipe(Consumer<FinishedRecipe> recipeConsumer) {

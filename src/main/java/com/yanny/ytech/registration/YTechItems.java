@@ -38,6 +38,7 @@ public class YTechItems {
     public static final RegistryObject<Item> BRICK_MOLD = ITEMS.register("brick_mold", () -> new Item(new Item.Properties().durability(256)));
     public static final RegistryObject<Item> CLAY_BUCKET = ITEMS.register("clay_bucket", () -> new ClayBucketItem(() -> Fluids.EMPTY, new Item.Properties().stacksTo(8)));
     public static final RegistryObject<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> foodItem(7, 0.8f));
+    public static final RegistryObject<Item> DIVINING_ROD = ITEMS.register("divining_rod", DiviningRodItem::new);
     public static final RegistryObject<Item> DRIED_BEEF = ITEMS.register("dried_beef", () -> foodItem(6, 0.7f));
     public static final RegistryObject<Item> DRIED_CHICKEN = ITEMS.register("dried_chicken", () -> foodItem(4, 0.5f));
     public static final RegistryObject<Item> DRIED_COD = ITEMS.register("dried_cod", () -> foodItem(4, 0.5f));

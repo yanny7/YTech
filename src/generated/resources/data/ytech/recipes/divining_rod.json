@@ -1,0 +1,23 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "F": {
+      "tag": "ytech:sharp_flints"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "tag": "ytech:grass_twines"
+    }
+  },
+  "pattern": [
+    "SS",
+    "TF"
+  ],
+  "result": {
+    "item": "ytech:divining_rod"
+  },
+  "show_notification": true
+}

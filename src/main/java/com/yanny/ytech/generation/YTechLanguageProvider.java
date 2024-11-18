@@ -35,6 +35,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.BRICK_MOLD, "Brick Mold");
         addItem(YTechItems.CLAY_BUCKET, "Clay Bucket");
         addItem(YTechItems.COOKED_VENISON, "Cooked Venison");
+        addItem(YTechItems.DIVINING_ROD, "Divining Rod");
         addItem(YTechItems.DRIED_BEEF, "Dried Beef");
         addItem(YTechItems.DRIED_CHICKEN, "Dried Chicken");
         addItem(YTechItems.DRIED_COD, "Dried Cod");
@@ -166,6 +167,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.BRICK_MOLDS, "Brick Molds");
         addTag(YTechItemTags.CLAY_BUCKETS, "Clay Buckets");
         addTag(YTechItemTags.COOKED_VENISON, "Cooked Venison");
+        addTag(YTechItemTags.DIVINING_RODS, "Divining Rods");
         addTag(YTechItemTags.DRIED_BEEFS, "Dried Beefs");
         addTag(YTechItemTags.DRIED_CHICKENS, "Dried Chicken");
         addTag(YTechItemTags.DRIED_CODS, "Dried Cods");

@@ -106,6 +106,10 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
         tag.putInt(TAG_TIMER, timer);
     }
 
+    public static double getWaterAbundance(BlockPos pos) {
+        return WATER_SOURCE_NOISE.getValue(pos.getX() * 0.01, pos.getZ() * 0.01, false);
+    }
+
     private int getNoiseFlow(@NotNull Level level) {
         Holder<Biome> biome = level.getBiome(worldPosition);
         double biomeModifier = 1;
