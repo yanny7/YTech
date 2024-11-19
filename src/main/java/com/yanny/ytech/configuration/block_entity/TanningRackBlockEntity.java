@@ -3,11 +3,13 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
+import com.yanny.ytech.registration.YTechSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -62,6 +64,7 @@ public class TanningRackBlockEntity extends BlockEntity {
                     progressHandler.clear();
                 } else {
                     player.getItemInHand(hand).hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(hand));
+                    level.playSound(null, pos, YTechSoundEvents.TANNING_RACK_USE.get(), SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
                 }
             }
 

@@ -37,6 +37,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.BRICK_MOLD, "Brick Mold");
         addItem(YTechItems.CLAY_BUCKET, "Clay Bucket");
         addItem(YTechItems.COOKED_VENISON, "Cooked Venison");
+        addItem(YTechItems.DIVINING_ROD, "Divining Rod");
         addItem(YTechItems.DRIED_BEEF, "Dried Beef");
         addItem(YTechItems.DRIED_CHICKEN, "Dried Chicken");
         addItem(YTechItems.DRIED_COD, "Dried Cod");
@@ -105,6 +106,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.THATCH_STAIRS, "Thatch Stairs");
         addBlock(YTechBlocks.TOOL_RACK, "Tool Rack");
         addBlock(YTechBlocks.TREE_STUMP, "Tree Stump");
+        addBlock(YTechBlocks.WELL_PULLEY, "Well Pulley");
         addBlock(YTechBlocks.WOODEN_BOX, "Wooden Box");
 
         addTypedItem(YTechItems.CLAY_MOLDS, NameHolder.suffix("Clay Mold"), YTechLanguageProvider::getName);
@@ -167,6 +169,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.BRICK_MOLDS, "Brick Molds");
         addTag(YTechItemTags.CLAY_BUCKETS, "Clay Buckets");
         addTag(YTechItemTags.COOKED_VENISON, "Cooked Venison");
+        addTag(YTechItemTags.DIVINING_RODS, "Divining Rods");
         addTag(YTechItemTags.DRIED_BEEFS, "Dried Beefs");
         addTag(YTechItemTags.DRIED_CHICKENS, "Dried Chicken");
         addTag(YTechItemTags.DRIED_CODS, "Dried Cods");
@@ -236,6 +239,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.THATCH_STAIRS, "Thatch Stairs");
         addTag(YTechItemTags.TOOL_RACKS, "Tool Racks");
         addTag(YTechItemTags.TREE_STUMPS, "Tree Stumps");
+        addTag(YTechItemTags.WELL_PULLEYS, "Well Pulleys");
         addTag(YTechItemTags.WOODEN_BOXES, "Wooden Boxes");
 
         addTag(YTechItemTags.CHLORITE_BRACELETS, "Chlorite Bracelets");
@@ -325,6 +329,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("emi.smelting.temperature", "%s °C");
         add("emi.chopping.hit_count", "%s time(s)");
         add("emi.tanning.hit_count", "%s time(s)");
+        add("emi.hammering.hit_count", "%s time(s)");
 
         add("sound.ytech.saber_tooth_tiger.ambient", "Saber-Toothed Tiger Roars");
         add("sound.ytech.saber_tooth_tiger.hurt", "Saber-Toothed Tiger Hurts");
@@ -338,6 +343,11 @@ class YTechLanguageProvider extends LanguageProvider {
         add("sound.ytech.woolly_rhino.ambient", "Woolly Rhino Grunts");
         add("sound.ytech.woolly_rhino.hurt", "Woolly Rhino Hurts");
         add("sound.ytech.woolly_rhino.death", "Woolly Rhino Dies");
+
+        add("sound.ytech.bronze_anvil.use", "Bronze Anvil Used");
+        add("sound.ytech.tanning_rack.use", "Tanning Rack Used");
+        add("sound.ytech.tree_stump.use", "Tree Stump Used");
+        add("sound.ytech.well_pulley.use", "Well Pulley Used");
 
         add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint.");
         add("text.ytech.info.missing_curios", "Missing CuriosAPI, item is useless now");
@@ -377,6 +387,9 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.chlorite_bracelet", "Oldest piece of jewellery of its kind in the world, crafted by an extinct branch of early humans known as Denisovans. Increases luck when worn");
         add("text.ytech.hover.unlit_torch1", "Right-click on fire source to lit a torch");
         add("text.ytech.hover.unlit_torch2", "Right-click while sneaking on machine that can be lit (e.g. Furnace) to lit a torch");
+        add("text.ytech.hover.well_pulley1", "Adds water to connected Aqueduct network when right-clicked");
+        add("text.ytech.hover.well_pulley2", "Must be placed on full block");
+        add("text.ytech.hover.well_pulley3", "Has double output in wet biome and half output in dry biome");
 
         add("text.ytech.top.drying_rack.progress", "Progress: %s%%");
         add("text.ytech.top.entity.generation", "Generation: %s");

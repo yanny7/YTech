@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AqueductConsumerBlockEntity extends IrrigationBlockEntity {
@@ -38,7 +37,7 @@ public abstract class AqueductConsumerBlockEntity extends IrrigationBlockEntity 
     }
 
     public boolean isHydrating() {
-        return getBlockState().getValue(BlockStateProperties.WATERLOGGED);
+        return getBlockState().getValue(AqueductConsumerBlock.ACTIVATED);
     }
 
     public abstract void tick(@NotNull ServerLevel level);

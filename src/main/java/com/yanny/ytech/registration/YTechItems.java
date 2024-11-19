@@ -40,6 +40,7 @@ public class YTechItems {
     public static final DeferredItem<Item> BRICK_MOLD = ITEMS.registerSimpleItem("brick_mold", new Item.Properties().durability(256));
     public static final DeferredItem<Item> CLAY_BUCKET = ITEMS.register("clay_bucket", () -> new ClayBucketItem(() -> Fluids.EMPTY, new Item.Properties().stacksTo(8)));
     public static final DeferredItem<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> foodItem(7, 0.8f));
+    public static final DeferredItem<Item> DIVINING_ROD = ITEMS.register("divining_rod", DiviningRodItem::new);
     public static final DeferredItem<Item> DRIED_BEEF = ITEMS.register("dried_beef", () -> foodItem(6, 0.7f));
     public static final DeferredItem<Item> DRIED_CHICKEN = ITEMS.register("dried_chicken", () -> foodItem(4, 0.5f));
     public static final DeferredItem<Item> DRIED_COD = ITEMS.register("dried_cod", () -> foodItem(4, 0.5f));
@@ -92,6 +93,7 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> THATCH_STAIRS = ITEMS.register("thatch_stairs", () -> burnableBlockItem(YTechBlocks.THATCH_STAIRS, 200));
     public static final DeferredItem<BlockItem> TOOL_RACK = ITEMS.register("tool_rack", () -> blockItem(YTechBlocks.TOOL_RACK));
     public static final DeferredItem<BlockItem> TREE_STUMP = ITEMS.register("tree_stump", () -> blockItem(YTechBlocks.TREE_STUMP));
+    public static final DeferredItem<BlockItem> WELL_PULLEY = ITEMS.register("well_pulley", () -> descriptionItem(YTechBlocks.WELL_PULLEY, List.of(Component.translatable("text.ytech.hover.well_pulley1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley3").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> WOODEN_BOX = ITEMS.register("wooden_box", () -> blockItem(YTechBlocks.WOODEN_BOX));
 
     public static final DeferredItem<Item> CHLORITE_BRACELET = ITEMS.register("chlorite_bracelet", ChloriteBraceletItem::new);

@@ -7,6 +7,15 @@
 - Added Tool Rack
 - Added Jade compatibility
 - Fixed missing Millstone bottom texture
+- Moved some configuration options to tags
+- Finite water source
+- Aqueduct Valve slowly consumes water source
+- Crops need hydrated farmland to grow
+- Farmland has chance to consume water source
+- Added Well Pulley
+- Added Divining Rod for detecting water abundance for Well Pulley
+- Added hit count to Hammering recipe
+- Added sounds to multiple blocks
 
 ## [0.8.0]
 

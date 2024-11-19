@@ -4,6 +4,7 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.JsonOps;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
+import com.yanny.ytech.configuration.block.WellPulleyBlock;
 import com.yanny.ytech.configuration.entity.DeerEntity;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechEntityTypes;
@@ -84,6 +85,7 @@ class YTechLootTableProvider extends LootTableProvider {
             dropSelf(YTechBlocks.THATCH_STAIRS);
             dropSelf(YTechBlocks.TOOL_RACK);
             dropSelf(YTechBlocks.TREE_STUMP);
+            registerWellPulleyLootTable();
             dropSelf(YTechBlocks.WOODEN_BOX);
 
             registerMaterialLootTable(YTechBlocks.DEEPSLATE_ORES, this::oreLoot, MaterialType.VANILLA_METALS);
@@ -125,6 +127,7 @@ class YTechLootTableProvider extends LootTableProvider {
                             YTechBlocks.THATCH_STAIRS,
                             YTechBlocks.TREE_STUMP,
                             YTechBlocks.TOOL_RACK,
+                            YTechBlocks.WELL_PULLEY,
                             YTechBlocks.WOODEN_BOX
                     ).map(DeferredBlock::get),
                     filteredStream(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS).map(Map.Entry::getValue).map(DeferredBlock::get),
@@ -181,6 +184,10 @@ class YTechLootTableProvider extends LootTableProvider {
                                             )
                             )
             );
+        }
+
+        private void registerWellPulleyLootTable() {
+            add(YTechBlocks.WELL_PULLEY.get(), b -> createSinglePropConditionTable(b, WellPulleyBlock.WELL_PART, WellPulleyBlock.WellPulleyPart.BASE));
         }
     }
 

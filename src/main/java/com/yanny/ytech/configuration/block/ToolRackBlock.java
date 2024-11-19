@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ToolRackBlock extends Block implements EntityBlock {
-    public static final VoxelShape BOX = Shapes.box(0, 0, 0, 1/4.0, 1/4.0, 1/4.0);
     private static final VoxelShape SHAPE_WEST = Shapes.box(0, 0, 0, 2/16.0, 1, 1);
     private static final VoxelShape SHAPE_EAST = Shapes.box(14/16.0, 0, 0, 1, 1, 1);
     private static final VoxelShape SHAPE_SOUTH = Shapes.box(0, 0, 0, 1, 1, 2/16.0);

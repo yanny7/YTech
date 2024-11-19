@@ -104,7 +104,8 @@ public class KubeJsCompatibility extends KubeJSPlugin {
         private static final RecipeKey<OutputItem> RESULT = ItemComponents.OUTPUT.key("result");
         private static final RecipeKey<InputItem> INGREDIENT = ItemComponents.INPUT.key("ingredient");
         private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool").allowEmpty().optional(InputItem.EMPTY).exclude().alwaysWrite();
-        private static final RecipeSchema SCHEMA = new RecipeSchema(HammeringJS.class, HammeringJS::new, RESULT, INGREDIENT, TOOL);
+        private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount").optional(2).exclude().alwaysWrite();
+        private static final RecipeSchema SCHEMA = new RecipeSchema(HammeringJS.class, HammeringJS::new, RESULT, INGREDIENT, HIT_COUNT, TOOL);
     }
 
     private static class MillingJS extends RecipeJS {

@@ -37,6 +37,7 @@ public class YTechBlockTags {
     public static final TagKey<Block> THATCH_STAIRS = create("thatch_stairs");
     public static final TagKey<Block> TOOL_RACKS = create("tool_racks");
     public static final TagKey<Block> TREE_STUMPS = create("tree_stumps");
+    public static final TagKey<Block> WELL_PULLEYS = create("well_pulleys");
     public static final TagKey<Block> WOODEN_BOXES = create("wooden_boxes");
 
     public static final TagKey<Block> AUROCHS_RAID_BLOCKS = create("aurochs_raid_blocks");
@@ -46,6 +47,8 @@ public class YTechBlockTags {
 
     public static final TagKey<Block> FIRE_SOURCE = create("fire_source");
     public static final TagKey<Block> SOUL_FIRE_SOURCE = create("soul_fire_source");
+
+    public static final TagKey<Block> REQUIRE_VALID_TOOL = create("require_valid_tool");
 
     public static final MaterialTag DEEPSLATE_ORES = new DeepslateOreMaterialTag();
     public static final MaterialTag DRYING_RACKS = new MaterialTag("drying_racks", YTechBlocks.DRYING_RACKS);

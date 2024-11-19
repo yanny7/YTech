@@ -5,15 +5,15 @@
         "model": "ytech:block/aqueduct_fertilizer"
       },
       "when": {
-        "waterlogged": "false"
+        "activated": "false"
       }
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_fertilizer_waterlogged"
+        "model": "ytech:block/aqueduct_fertilizer_activated"
       },
       "when": {
-        "waterlogged": "true"
+        "activated": "true"
       }
     },
     {

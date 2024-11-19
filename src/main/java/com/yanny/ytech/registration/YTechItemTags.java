@@ -25,6 +25,7 @@ public class YTechItemTags {
     public static final TagKey<Item> BRICK_MOLDS = create("brick_molds");
     public static final TagKey<Item> CLAY_BUCKETS = create("clay_buckets");
     public static final TagKey<Item> COOKED_VENISON = create("cooked_venison");
+    public static final TagKey<Item> DIVINING_RODS = create("divining_rods");
     public static final TagKey<Item> DRIED_BEEFS = create("dried_beefs");
     public static final TagKey<Item> DRIED_CHICKENS = create("dried_chickens");
     public static final TagKey<Item> DRIED_CODS = create("dried_cods");
@@ -95,6 +96,7 @@ public class YTechItemTags {
     public static final TagKey<Item> THATCH_STAIRS = create(YTechBlockTags.THATCH_STAIRS);
     public static final TagKey<Item> TOOL_RACKS = create(YTechBlockTags.TOOL_RACKS);
     public static final TagKey<Item> TREE_STUMPS = create(YTechBlockTags.TREE_STUMPS);
+    public static final TagKey<Item> WELL_PULLEYS = create(YTechBlockTags.WELL_PULLEYS);
     public static final TagKey<Item> WOODEN_BOXES = create(YTechBlockTags.WOODEN_BOXES);
 
     public static final TagKey<Item> CURIOS_BRACELETS = create("curios", "bracelet");

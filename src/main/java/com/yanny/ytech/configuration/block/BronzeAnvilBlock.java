@@ -19,7 +19,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -80,13 +79,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof BronzeAnvilBlockEntity anvil) {
-                NonNullList<ItemStack> items = NonNullList.withSize(anvil.getItemStackHandler().getSlots(), ItemStack.EMPTY);
-
-                for (int index = 0; index < anvil.getItemStackHandler().getSlots(); index++) {
-                    items.set(index, anvil.getItemStackHandler().getStackInSlot(index));
-                }
-
-                Containers.dropContents(level, pos, items);
+                Containers.dropContents(level, pos, NonNullList.withSize(1, anvil.getItem()));
             }
         }
 

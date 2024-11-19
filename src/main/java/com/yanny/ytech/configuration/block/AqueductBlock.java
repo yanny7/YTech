@@ -80,6 +80,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         this.shapesCache = this.getShapeForEachState(AqueductBlock::calculateShape);
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {

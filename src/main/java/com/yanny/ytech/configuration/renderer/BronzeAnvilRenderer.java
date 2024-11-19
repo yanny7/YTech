@@ -38,7 +38,7 @@ public class BronzeAnvilRenderer implements BlockEntityRenderer<BronzeAnvilBlock
         poseStack.translate(1, 1, 0);
 
         if (level != null) {
-            ItemStack input = anvil.getItemStackHandler().getStackInSlot(0);
+            ItemStack input = anvil.getItem();
 
             if (!input.isEmpty()) {
                 BakedModel bakedmodel = itemRenderer.getModel(input, level, null, 0);

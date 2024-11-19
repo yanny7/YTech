@@ -4,8 +4,10 @@ import com.yanny.ytech.compatibility.CuriosCapability;
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
+import com.yanny.ytech.configuration.block_entity.WellPulleyBlockEntity;
 import com.yanny.ytech.configuration.entity.*;
 import com.yanny.ytech.configuration.item.BasketItem;
+import com.yanny.ytech.configuration.item.DiviningRodItem;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.*;
 import com.yanny.ytech.configuration.renderer.*;
@@ -70,6 +72,8 @@ public class ModBusSubscriber {
         event.enqueueWork(() -> {
             ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
                     (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
+            ItemProperties.register(YTechItems.DIVINING_ROD.get(), DiviningRodItem.ABUNDANCE_PREDICATE,
+                    (stack, level, entity, seed) -> entity != null ? (float) WellPulleyBlockEntity.getWaterAbundance(entity.getOnPos()) : 1);
             YTechItems.SPEARS.values().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
                     (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
 

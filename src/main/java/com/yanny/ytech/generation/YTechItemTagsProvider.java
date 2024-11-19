@@ -39,6 +39,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.BRICK_MOLDS).add(YTechItems.BRICK_MOLD.get());
         tag(YTechItemTags.CLAY_BUCKETS).add(YTechItems.CLAY_BUCKET.get());
         tag(YTechItemTags.COOKED_VENISON).add(YTechItems.COOKED_VENISON.get());
+        tag(YTechItemTags.DIVINING_RODS).add(YTechItems.DIVINING_ROD.get());
         tag(YTechItemTags.DRIED_BEEFS).add(YTechItems.DRIED_BEEF.get());
         tag(YTechItemTags.DRIED_CHICKENS).add(YTechItems.DRIED_CHICKEN.get());
         tag(YTechItemTags.DRIED_CODS).add(YTechItems.DRIED_COD.get());
@@ -91,6 +92,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.THATCH_STAIRS).add(YTechItems.THATCH_STAIRS.get());
         tag(YTechItemTags.TOOL_RACKS).add(YTechItems.TOOL_RACK.get());
         tag(YTechItemTags.TREE_STUMPS).add(YTechItems.TREE_STUMP.get());
+        tag(YTechItemTags.WELL_PULLEYS).add(YTechItems.WELL_PULLEY.get());
         tag(YTechItemTags.WOODEN_BOXES).add(YTechItems.WOODEN_BOX.get());
 
         tag(YTechItemTags.FERTILIZER).add(Items.BONE_MEAL);

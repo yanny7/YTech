@@ -1,0 +1,41 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "B": {
+      "tag": "ytech:terracotta_bricks"
+    },
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "T": {
+      "tag": "ytech:grass_twines"
+    },
+    "V": {
+      "tag": "ytech:aqueduct_valves"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "BBB",
+      "BVB",
+      "BBB"
+    ],
+    "middle": [
+      "   ",
+      "LTL",
+      "   "
+    ],
+    "top": [
+      "   ",
+      "LPL",
+      "   "
+    ]
+  },
+  "result": {
+    "Count": 1,
+    "id": "ytech:well_pulley"
+  }
+}

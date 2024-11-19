@@ -51,6 +51,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.THATCH_STAIRS).add(YTechBlocks.THATCH_STAIRS.get());
         tag(YTechBlockTags.TOOL_RACKS).add(YTechBlocks.TOOL_RACK.get());
         tag(YTechBlockTags.TREE_STUMPS).add(YTechBlocks.TREE_STUMP.get());
+        tag(YTechBlockTags.WELL_PULLEYS).add(YTechBlocks.WELL_PULLEY.get());
         tag(YTechBlockTags.WOODEN_BOXES).add(YTechBlocks.WOODEN_BOX.get());
 
         tag(YTechBlockTags.AUROCHS_RAID_BLOCKS).add(Blocks.WHEAT);
@@ -64,6 +65,8 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                 .addTag(YTechBlockTags.PRIMITIVE_SMELTERS)
                 .addTag(YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
         tag(YTechBlockTags.SOUL_FIRE_SOURCE).add(Blocks.SOUL_FIRE, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH);
+
+        tag(YTechBlockTags.REQUIRE_VALID_TOOL).addTag(BlockTags.LOGS).addTag(BlockTags.DIRT);
 
         materialOreTag(YTechBlocks.DEEPSLATE_ORES, YTechBlockTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         materialTag(YTechBlocks.DRYING_RACKS, YTechBlockTags.DRYING_RACKS);
@@ -99,7 +102,8 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                         YTechBlocks.REINFORCED_BRICK_CHIMNEY.get(),
                         YTechBlocks.TERRACOTTA_BRICKS.get(),
                         YTechBlocks.TERRACOTTA_BRICK_SLAB.get(),
-                        YTechBlocks.TERRACOTTA_BRICK_STAIRS.get()
+                        YTechBlocks.TERRACOTTA_BRICK_STAIRS.get(),
+                        YTechBlocks.WELL_PULLEY.get()
                 )
                 .add(filteredMaterials(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS))
                 .add(filteredMaterials(YTechBlocks.NETHER_ORES, EnumSet.of(MaterialType.GOLD)))
