@@ -7,6 +7,9 @@
       "tag": "forge:saws"
     },
     {
+      "tag": "forge:bolts/wooden"
+    },
+    {
       "item": "minecraft:oak_planks"
     }
   ],

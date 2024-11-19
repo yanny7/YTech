@@ -542,6 +542,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private void mcButtonRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull Item planks, @NotNull Item result) {
         RemainingShapelessRecipe.Builder.shapeless(RecipeCategory.REDSTONE, result)
                 .requires(YTechItemTags.SAWS.tag)
+                .requires(YTechItemTags.BOLTS.get(WOODEN))
                 .requires(planks)
                 .group("wooden_button")
                 .unlockedBy(Utils.getHasName(), has(ItemTags.PLANKS))
