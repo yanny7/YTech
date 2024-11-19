@@ -15,6 +15,7 @@
 - Added Well Pulley
 - Added Divining Rod for detecting water abundance for Well Pulley
 - Added hit count to Hammering recipe
+- Added sounds to multiple blocks
 
 ## [0.8.0]
 

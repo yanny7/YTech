@@ -7,10 +7,12 @@ import com.yanny.ytech.network.irrigation.NetworkType;
 import com.yanny.ytech.registration.YTechBiomeTags;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -71,6 +73,7 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
                 YTechMod.IRRIGATION_PROPAGATOR.server().changed(this);
             }
 
+            level.playSound(null, worldPosition, YTechSoundEvents.WELL_PULLEY_USE.get(), SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
             level.blockEntityChanged(worldPosition);
             return InteractionResult.CONSUME;
         }

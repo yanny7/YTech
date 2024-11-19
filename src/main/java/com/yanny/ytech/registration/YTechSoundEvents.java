@@ -24,6 +24,11 @@ public class YTechSoundEvents {
     public static final RegistryObject<SoundEvent> WOOLLY_RHINO_HURT = register("entity.woolly_rhino.hurt");
     public static final RegistryObject<SoundEvent> WOOLLY_RHINO_DEATH = register("entity.woolly_rhino.death");
 
+    public static final RegistryObject<SoundEvent> BRONZE_ANVIL_USE = register("block.bronze_anvil.use");
+    public static final RegistryObject<SoundEvent> TANNING_RACK_USE = register("block.tanning_rack.use");
+    public static final RegistryObject<SoundEvent> TREE_STUMP_USE = register("block.tree_stump.use");
+    public static final RegistryObject<SoundEvent> WELL_PULLEY_USE = register("block.well_pulley.use");
+
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);
     }

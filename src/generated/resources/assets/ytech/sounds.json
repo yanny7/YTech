@@ -1,4 +1,43 @@
 {
+  "block.bronze_anvil.use": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.anvil.use",
+        "pitch": 2.5
+      }
+    ],
+    "subtitle": "sound.ytech.bronze_anvil.use"
+  },
+  "block.tanning_rack.use": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.hoe.till",
+        "pitch": 2.5
+      }
+    ],
+    "subtitle": "sound.ytech.tanning_rack.use"
+  },
+  "block.tree_stump.use": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.axe.strip",
+        "pitch": 2.0
+      }
+    ],
+    "subtitle": "sound.ytech.tree_stump.use"
+  },
+  "block.well_pulley.use": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.water.ambient"
+      }
+    ],
+    "subtitle": "sound.ytech.well_pulley.use"
+  },
   "entity.saber_tooth_tiger.ambient": {
     "sounds": [
       {

@@ -4,7 +4,9 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.YTechSoundEvents;
 import net.minecraft.data.PackOutput;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 
 public class YTechSoundDefinitionProvider extends SoundDefinitionsProvider {
@@ -101,6 +103,34 @@ public class YTechSoundDefinitionProvider extends SoundDefinitionsProvider {
                 .with(
                         sound(Utils.modLoc("entity/woolly_rhino/death"))
                                 .volume(0.5)
+                )
+        );
+
+        add(YTechSoundEvents.BRONZE_ANVIL_USE, definition()
+                .subtitle("sound.ytech.bronze_anvil.use")
+                .with(
+                        sound(SoundEvents.ANVIL_USE.getLocation(), SoundDefinition.SoundType.EVENT)
+                                .pitch(2.5)
+                )
+        );
+        add(YTechSoundEvents.TANNING_RACK_USE, definition()
+                .subtitle("sound.ytech.tanning_rack.use")
+                .with(
+                        sound(SoundEvents.HOE_TILL.getLocation(), SoundDefinition.SoundType.EVENT)
+                                .pitch(2.5)
+                )
+        );
+        add(YTechSoundEvents.TREE_STUMP_USE, definition()
+                .subtitle("sound.ytech.tree_stump.use")
+                .with(
+                        sound(SoundEvents.AXE_STRIP.getLocation(), SoundDefinition.SoundType.EVENT)
+                                .pitch(2.0)
+                )
+        );
+        add(YTechSoundEvents.WELL_PULLEY_USE, definition()
+                .subtitle("sound.ytech.well_pulley.use")
+                .with(
+                        sound(SoundEvents.WATER_AMBIENT.getLocation(), SoundDefinition.SoundType.EVENT)
                 )
         );
     }
