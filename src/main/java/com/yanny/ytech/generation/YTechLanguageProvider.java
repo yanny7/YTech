@@ -342,6 +342,11 @@ class YTechLanguageProvider extends LanguageProvider {
         add("sound.ytech.woolly_rhino.hurt", "Woolly Rhino Hurts");
         add("sound.ytech.woolly_rhino.death", "Woolly Rhino Dies");
 
+        add("sound.ytech.bronze_anvil.use", "Bronze Anvil Used");
+        add("sound.ytech.tanning_rack.use", "Tanning Rack Used");
+        add("sound.ytech.tree_stump.use", "Tree Stump Used");
+        add("sound.ytech.well_pulley.use", "Well Pulley Used");
+
         add("text.ytech.info.grass_fibers", "Grass fibers are obtained by breaking grass with Sharp Flint.");
         add("text.ytech.info.missing_curios", "Missing CuriosAPI, item is useless now");
 
