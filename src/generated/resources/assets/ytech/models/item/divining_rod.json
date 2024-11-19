@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "ytech:item/divining_rod_some_water",
+      "predicate": {
+        "ytech:right_spot": 0.25
+      }
+    },
+    {
+      "model": "ytech:item/divining_rod_more_water",
+      "predicate": {
+        "ytech:right_spot": 0.5
+      }
+    },
+    {
+      "model": "ytech:item/divining_rod_plenty_water",
+      "predicate": {
+        "ytech:right_spot": 0.75
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "ytech:item/divining_rod/no_water"
+  }
+}

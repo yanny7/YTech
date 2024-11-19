@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
+import com.yanny.ytech.registration.YTechBiomeTags;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
@@ -70,9 +71,9 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
         Function<DryingRecipe, Float> getStep = (recipe) -> {
             Holder<Biome> biome = level.getBiome(pos);
 
-            if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getSlowDryingBiomes().contains(t))) {
+            if (biome.is(YTechBiomeTags.SLOW_DRYING_BIOMES)) {
                 return 0.5F;
-            } else if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getFastDryingBiomes().contains(t))) {
+            } else if (biome.is(YTechBiomeTags.FAST_DRYING_BIOMES)) {
                 return 2F;
             }
 

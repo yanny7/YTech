@@ -1,0 +1,89 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley_base"
+      },
+      "when": {
+        "well": "base"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley"
+      },
+      "when": {
+        "activated": "false",
+        "facing": "north|south",
+        "well": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley",
+        "y": 90
+      },
+      "when": {
+        "activated": "false",
+        "facing": "east|west",
+        "well": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley_activated"
+      },
+      "when": {
+        "activated": "true",
+        "facing": "north|south",
+        "well": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley_activated",
+        "y": 90
+      },
+      "when": {
+        "activated": "true",
+        "facing": "east|west",
+        "well": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley_overlay"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley_overlay",
+        "y": 180
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley_overlay",
+        "y": 270
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ytech:block/well_pulley_overlay",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    }
+  ]
+}

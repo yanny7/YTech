@@ -53,9 +53,9 @@ public class JadeCompatibility implements IWailaPlugin {
 
         @Override
         public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
-            if (blockAccessor.getBlockEntity() instanceof BronzeAnvilBlockEntity blockEntity && blockEntity.getItemStackHandler().getStackInSlot(0).getCount() >= 0) {
+            if (blockAccessor.getBlockEntity() instanceof BronzeAnvilBlockEntity blockEntity && !blockEntity.getItem().isEmpty()) {
                 IElementHelper elements = IElementHelper.get();
-                iTooltip.add(elements.item(blockEntity.getItemStackHandler().getStackInSlot(0)));
+                iTooltip.add(elements.item(blockEntity.getItem()));
             }
         }
 

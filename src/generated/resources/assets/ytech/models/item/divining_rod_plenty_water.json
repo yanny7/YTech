@@ -1,0 +1,6 @@
+{
+  "parent": "ytech:item/divining_rod",
+  "textures": {
+    "layer0": "ytech:item/divining_rod/plenty_water"
+  }
+}

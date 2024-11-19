@@ -3,84 +3,75 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.configuration.recipe.HammeringRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
+import com.yanny.ytech.registration.YTechSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static net.minecraft.world.entity.LivingEntity.getSlotForHand;
 
 public class BronzeAnvilBlockEntity extends BlockEntity {
-    private static final String TAG_ITEMS = "items";
-    private static final int SLOT_INPUT = 0;
-
-    private final RecipeManager.CachedCheck<RecipeInput, HammeringRecipe> quickCheck;
-    @NotNull protected final ItemStackHandler itemStackHandler;
+    private final SimpleProgressHandler<HammeringRecipe> progressHandler;
 
     public BronzeAnvilBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.BRONZE_ANVIL.get(), pos, blockState);
-        quickCheck = RecipeManager.createCheck(YTechRecipeTypes.HAMMERING.get());
-        itemStackHandler = new ItemStackHandler(1) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                setChanged();
-            }
-        };
+        progressHandler = new SimpleProgressHandler<>(YTechRecipeTypes.HAMMERING.get());
+    }
+
+    public int getProgress() {
+        return progressHandler.getProgress();
+    }
+
+    public ItemStack getItem() {
+        return progressHandler.getItem();
     }
 
     public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                        @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
-            ItemStack hammeringItem = itemStackHandler.getStackInSlot(0);
 
-            if (hammeringItem.isEmpty()) {
-                quickCheck.getRecipeFor(new SingleRecipeInput(holdingItemStack), level).ifPresent((recipe) -> {
-                    itemStackHandler.setStackInSlot(SLOT_INPUT, holdingItemStack.split(holdingItemStack.getMaxStackSize()));
-                    setChanged(level, pos, Blocks.AIR.defaultBlockState());
-                    level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                });
+            if (progressHandler.isEmpty()) {
+                if (!progressHandler.setupCrafting(level, holdingItemStack, HammeringRecipe::hitCount)) {
+                    progressHandler.setupCrafting(level, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), HammeringRecipe::hitCount);
+                }
             } else {
-                if (hammeringItem.is(holdingItemStack.getItem()) && hammeringItem.getCount() < hammeringItem.getMaxStackSize()) {
-                    hammeringItem.grow(holdingItemStack.split(hammeringItem.getMaxStackSize() - hammeringItem.getCount()).getCount());
-                    setChanged(level, pos, Blocks.AIR.defaultBlockState());
-                    level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                } else if (holdingItemStack.isEmpty()) {
-                    Block.popResourceFromFace(level, pos, hitResult.getDirection(), itemStackHandler.extractItem(0, hammeringItem.getMaxStackSize(), false));
-                    setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
-                    level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                Function<HammeringRecipe, Boolean> canProcess = (recipe) -> recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack);
+                Function<HammeringRecipe, Float> getStep = (recipe) -> 1F;
+                BiConsumer<SingleRecipeInput, HammeringRecipe> onFinish = (container, recipe) -> {
+                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
+                };
+
+                if (!progressHandler.tick(level, canProcess, getStep, onFinish)) {
+                    Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
+                    progressHandler.clear();
                 } else {
-                    quickCheck.getRecipeFor(new SingleRecipeInput(hammeringItem), level).ifPresent((recipe) -> {
-                        if (recipe.value().tool().test(holdingItemStack)) {
-                            hammeringItem.split(1);
-                            holdingItemStack.hurtAndBreak(1, player, getSlotForHand(hand));
-                            level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
-                            Block.popResourceFromFace(level, pos, hitResult.getDirection(), recipe.value().result().copy());
-                            setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
-                            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-                        }
-                    });
+                    player.getItemInHand(hand).hurtAndBreak(1, player, getSlotForHand(hand));
+                    level.playSound(null, pos, YTechSoundEvents.BRONZE_ANVIL_USE.get(), SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
                 }
             }
+
+            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+            level.blockEntityChanged(pos);
         }
 
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -89,10 +80,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
     @Override
     public void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
         super.loadAdditional(tag, provider);
-
-        if (tag.contains(TAG_ITEMS)) {
-            itemStackHandler.deserializeNBT(provider, tag.getCompound(TAG_ITEMS));
-        }
+        progressHandler.load(tag, provider);
     }
 
     @NotNull
@@ -109,14 +97,9 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @NotNull
-    public ItemStackHandler getItemStackHandler() {
-        return itemStackHandler;
-    }
-
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
         super.saveAdditional(tag, provider);
-        tag.put(TAG_ITEMS, itemStackHandler.serializeNBT(provider));
+        progressHandler.save(tag, provider);
     }
 }

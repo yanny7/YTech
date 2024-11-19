@@ -10,7 +10,6 @@ import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.Containers;
@@ -76,13 +75,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof BronzeAnvilBlockEntity anvil) {
-                NonNullList<ItemStack> items = NonNullList.withSize(anvil.getItemStackHandler().getSlots(), ItemStack.EMPTY);
-
-                for (int index = 0; index < anvil.getItemStackHandler().getSlots(); index++) {
-                    items.set(index, anvil.getItemStackHandler().getStackInSlot(index));
-                }
-
-                Containers.dropContents(level, pos, items);
+                Containers.dropContents(level, pos, NonNullList.withSize(1, anvil.getItem()));
             }
         }
 

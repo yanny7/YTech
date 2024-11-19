@@ -2,7 +2,7 @@
   "type": "ytech:workspace_crafting",
   "key": {
     "B": {
-      "tag": "forge:bolts"
+      "tag": "c:bolts"
     },
     "L": {
       "tag": "minecraft:planks"
@@ -26,7 +26,7 @@
     ]
   },
   "result": {
-    "Count": 1,
+    "count": 1,
     "id": "ytech:tool_rack"
   }
 }

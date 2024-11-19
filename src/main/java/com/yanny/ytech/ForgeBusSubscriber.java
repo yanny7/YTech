@@ -6,15 +6,14 @@ import com.yanny.ytech.configuration.block.CraftingWorkspaceBlock;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
 import com.yanny.ytech.configuration.block.WoodenBoxBlock;
 import com.yanny.ytech.configuration.recipe.YTechRecipeInput;
-import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechMobEffects;
-import com.yanny.ytech.registration.YTechRecipeTypes;
+import com.yanny.ytech.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -23,8 +22,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -39,6 +41,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.level.block.CreateFluidSourceEvent;
+import net.neoforged.neoforge.event.level.block.CropGrowEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import org.jetbrains.annotations.NotNull;
@@ -83,9 +87,9 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onServerStarting(@NotNull ServerStartingEvent event) {
-        if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
-            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((tag) -> BuiltInRegistries.BLOCK.getTag(tag).ifPresent(block -> block.stream().forEach(blockHolder -> setBlockRequireValidTool(blockHolder.value()))));
-        }
+        BuiltInRegistries.BLOCK.getTag(YTechBlockTags.REQUIRE_VALID_TOOL).ifPresent((h) -> {
+            h.stream().map(Holder::value).forEach(ForgeBusSubscriber::setBlockRequireValidTool);
+        });
     }
 
     @SubscribeEvent
@@ -114,19 +118,17 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onPlayerLeftClickBlock(@NotNull PlayerInteractEvent.LeftClickBlock event) {
-        if (YTechMod.CONFIGURATION.enableCraftingSharpFlint()) {
-            Player player = event.getEntity();
-            Level level = event.getLevel();
-            ItemStack heldItem = player.getMainHandItem();
-            BlockState blockState = level.getBlockState(event.getPos());
-            Direction direction = event.getFace();
+        Player player = event.getEntity();
+        Level level = event.getLevel();
+        ItemStack heldItem = player.getMainHandItem();
+        BlockState blockState = level.getBlockState(event.getPos());
+        Direction direction = event.getFace();
 
-            if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
-                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new YTechRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
-                    Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
-                    heldItem.shrink(1);
-                });
-            }
+        if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
+            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new YTechRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
+                heldItem.shrink(1);
+            });
         }
     }
 
@@ -204,6 +206,25 @@ public class ForgeBusSubscriber {
                 );
 
                 poseStack.popPose();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCreateFluidSourceEvent(@NotNull CreateFluidSourceEvent event) {
+        if (event.getState().getFluidState().is(Fluids.WATER) && YTechMod.CONFIGURATION.hasFiniteWaterSource()
+                && !event.getLevel().getBiome(event.getPos()).is(YTechBiomeTags.INFINITE_WATER_SOURCE_BIOMES)) {
+            event.setCanConvert(false);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCropGrowEvent(@NotNull CropGrowEvent.Pre event) {
+        if (YTechMod.CONFIGURATION.cropsNeedWateredFarmland()) {
+            BlockState blockState = event.getLevel().getBlockState(event.getPos().below());
+
+            if (blockState.hasProperty(BlockStateProperties.MOISTURE) && blockState.getValue(BlockStateProperties.MOISTURE) < FarmBlock.MAX_MOISTURE) {
+                event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
             }
         }
     }

@@ -1,5 +1,6 @@
 {
   "type": "ytech:hammering",
+  "hitCount": 2,
   "ingredient": {
     "tag": "c:ingots/iron"
   },

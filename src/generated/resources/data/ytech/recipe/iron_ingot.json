@@ -1,5 +1,6 @@
 {
   "type": "ytech:hammering",
+  "hitCount": 4,
   "ingredient": {
     "tag": "ytech:iron_blooms"
   },

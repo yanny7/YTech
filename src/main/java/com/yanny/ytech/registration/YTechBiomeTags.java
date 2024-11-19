@@ -16,6 +16,15 @@ public class YTechBiomeTags {
     public static final TagKey<Biome> WOOLLY_MAMMOTH_BIOMES = create("woolly_mammoth_native_biome");
     public static final TagKey<Biome> WOOLLY_RHINO_BIOMES = create("woolly_rhino_native_biome");
 
+    public static final TagKey<Biome> FAST_DRYING_BIOMES = create("fast_drying_biomes");
+    public static final TagKey<Biome> SLOW_DRYING_BIOMES = create("slow_drying_biomes");
+
+    public static final TagKey<Biome> WELL_DRY_BIOMES = create("well_dry_biomes");
+    public static final TagKey<Biome> WELL_WET_BIOMES = create("well_wet_biomes");
+    public static final TagKey<Biome> WELL_DISABLED_BIOMES = create("well_disabled_biomes");
+
+    public static final TagKey<Biome> INFINITE_WATER_SOURCE_BIOMES = create("infinite_water_source_biomes");
+
     private static TagKey<Biome> create(String name) {
         return TagKey.create(Registries.BIOME, Utils.modLoc(name));
     }

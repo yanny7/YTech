@@ -14,6 +14,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -47,6 +48,7 @@ public class AqueductValveBlock extends IrrigationBlock {
         return new AqueductValveBlockEntity(pos, blockState);
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
@@ -87,6 +89,19 @@ public class AqueductValveBlock extends IrrigationBlock {
     public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (level.getBlockEntity(pos) instanceof AqueductValveBlockEntity valveBlockEntity && valveBlockEntity.getFlow() > 0 && random.nextInt(10) == 0) {
             level.playLocalSound(pos, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
+        }
+    }
+
+    @Override
+    public boolean isRandomlyTicking(@NotNull BlockState state) {
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (level.getBlockEntity(pos) instanceof AqueductValveBlockEntity blockEntity) {
+            blockEntity.randomTick(level);
         }
     }
 

@@ -33,6 +33,7 @@ public class YTechBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TanningRackBlockEntity>> TANNING_RACK = register("tanning_rack", TanningRackBlockEntity::new, YTechBlocks.TANNING_RACKS);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ToolRackBlockEntity>> TOOL_RACK = register("tool_rack", ToolRackBlockEntity::new, YTechBlocks.TOOL_RACK);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TreeStumpBlockEntity>> TREE_STUMP = register("tree_stump", TreeStumpBlockEntity::new, YTechBlocks.TREE_STUMP);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WellPulleyBlockEntity>> WELL_PULLEY = register("well_pulley", WellPulleyBlockEntity::new, YTechBlocks.WELL_PULLEY);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WoodenBoxBlockEntity>> WOODEN_BOX = register("wooden_box", WoodenBoxBlockEntity::new, YTechBlocks.WOODEN_BOX);
 
     public static void register(IEventBus eventBus) {
@@ -40,11 +41,13 @@ public class YTechBlockEntityTypes {
     }
 
     private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, YTechBlocks.MaterialBlock blocks) {
+        //noinspection DataFlowIssue
         return BLOCK_ENTITIES.register(name, () -> BlockEntityType.Builder.of(supplier, blocks.blocks().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(null));
     }
 
     @SafeVarargs
     private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, DeferredBlock<Block>... blocks) {
+        //noinspection DataFlowIssue
         return BLOCK_ENTITIES.register(name, () -> BlockEntityType.Builder.of(supplier, Arrays.stream(blocks).map(DeferredHolder::get).toArray(Block[]::new)).build(null));
     }
 }

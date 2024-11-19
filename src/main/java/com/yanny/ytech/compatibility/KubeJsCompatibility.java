@@ -80,7 +80,8 @@ public class KubeJsCompatibility implements KubeJSPlugin {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
         private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
         private static final RecipeKey<Ingredient> TOOL = IngredientComponent.INGREDIENT.key("tool", ComponentRole.INPUT).allowEmpty().optional(Ingredient.EMPTY).exclude().alwaysWrite();
-        private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, TOOL);
+        private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount", ComponentRole.OTHER).optional(3).exclude().alwaysWrite();
+        private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, TOOL, HIT_COUNT);
     }
 
     private static class MillingJS {

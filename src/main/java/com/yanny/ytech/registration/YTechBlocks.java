@@ -43,6 +43,7 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> THATCH_STAIRS = registerStairs("thatch_stairs", YTechBlocks.THATCH, Blocks.HAY_BLOCK);
     public static final DeferredBlock<Block> TOOL_RACK = BLOCKS.register("tool_rack", ToolRackBlock::new);
     public static final DeferredBlock<Block> TREE_STUMP = BLOCKS.register("tree_stump", TreeStumpBlock::new);
+    public static final DeferredBlock<Block> WELL_PULLEY = BLOCKS.register("well_pulley", WellPulleyBlock::new);
     public static final DeferredBlock<Block> WOODEN_BOX = BLOCKS.register("wooden_box", WoodenBoxBlock::new);
 
     public static final MaterialBlock DEEPSLATE_ORES = new DeepslateOreMaterialBlock();
