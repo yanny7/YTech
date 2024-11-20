@@ -17,6 +17,7 @@
 - Added hit count to Hammering recipe
 - Added sounds to multiple blocks
 - Using Potter's Wheel and Well Pulley exhaust player
+- Added Chinese translation (@lyuxc-unknow)
 
 ## [0.8.0]
 
