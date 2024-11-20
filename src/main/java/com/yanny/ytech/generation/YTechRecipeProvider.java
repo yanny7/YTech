@@ -1639,7 +1639,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void registerTerracottaBricksRecipe(Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICKS.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICKS.get(), 4)
                 .define('B', Items.TERRACOTTA)
                 .pattern("BB")
                 .pattern("BB")

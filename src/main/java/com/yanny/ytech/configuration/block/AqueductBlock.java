@@ -342,7 +342,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     }
 
     public static void registerRecipe(Consumer<FinishedRecipe> recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT.get(), 2)
                 .define('#', YTechItemTags.TERRACOTTA_BRICKS)
                 .pattern("# #")
                 .pattern("# #")
