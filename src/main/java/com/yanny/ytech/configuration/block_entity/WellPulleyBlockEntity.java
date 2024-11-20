@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -53,11 +54,6 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
         return 0;
     }
 
-    @Override
-    public boolean validForRainFilling() {
-        return false;
-    }
-
     @NotNull
     @Override
     public NetworkType getNetworkType() {
@@ -65,7 +61,7 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
     }
 
     @NotNull
-    public ItemInteractionResult onUse(@NotNull Level level, @NotNull BlockState aboveState) {
+    public ItemInteractionResult onUse(@NotNull Level level, @NotNull BlockState aboveState, @NotNull Player player) {
         if (aboveState.is(YTechBlocks.WELL_PULLEY.get())) {
             timer = 20;
 
@@ -76,6 +72,7 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
 
             level.playSound(null, worldPosition, YTechSoundEvents.WELL_PULLEY_USE.get(), SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
             level.blockEntityChanged(worldPosition);
+            player.causeFoodExhaustion(0.5f);
             return ItemInteractionResult.CONSUME;
         }
 

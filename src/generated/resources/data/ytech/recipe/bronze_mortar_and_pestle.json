@@ -3,14 +3,14 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "c:stones"
+      "tag": "c:plates/bronze"
     },
-    "I": {
-      "tag": "c:ingots/bronze"
+    "P": {
+      "tag": "ytech:pebbles"
     }
   },
   "pattern": [
-    " I ",
+    " P ",
     "# #",
     " # "
   ],

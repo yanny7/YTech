@@ -2,6 +2,7 @@ package com.yanny.ytech.registration;
 
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
+import com.yanny.ytech.configuration.block.AqueductBlock;
 import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
 import com.yanny.ytech.configuration.item.*;
 import net.minecraft.ChatFormatting;
@@ -69,7 +70,6 @@ public class YTechItems {
     public static final DeferredItem<Item> WATER_CLAY_BUCKET = ITEMS.register("water_clay_bucket", () -> new ClayBucketItem(Fluids.WATER, new Item.Properties().craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 
     public static final DeferredItem<BlockItem> AMPHORA = ITEMS.register("amphora", () -> descriptionItem(YTechBlocks.AMPHORA, List.of(Component.translatable("text.ytech.hover.amphora1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.amphora2").withStyle(DARK_GRAY))));
-    public static final DeferredItem<BlockItem> AQUEDUCT = ITEMS.register("aqueduct", YTechItems::aqueductBlockItem);
     public static final DeferredItem<BlockItem> AQUEDUCT_FERTILIZER = ITEMS.register("aqueduct_fertilizer", YTechItems::aqueductFertilizerBlockItem);
     public static final DeferredItem<BlockItem> AQUEDUCT_HYDRATOR = ITEMS.register("aqueduct_hydrator", YTechItems::aqueductHydratorBlockItem);
     public static final DeferredItem<BlockItem> AQUEDUCT_VALVE = ITEMS.register("aqueduct_valve", YTechItems::aqueductValveBlockItem);
@@ -143,6 +143,7 @@ public class YTechItems {
     public static final TypedItem<MaterialType> SPEARS = new MaterialItem("spear", NameHolder.suffix("spear"), Utils.merge(MaterialType.ALL_HARD_METALS, MaterialType.FLINT), (type) -> new SpearItem(SpearType.BY_MATERIAL_TYPE.get(type)));
     public static final TypedItem<MaterialType> SWORDS = new SwordMaterialItem();
 
+    public static final TypedItem<MaterialType> AQUEDUCTS = new MaterialItem(YTechBlocks.AQUEDUCTS, YTechItems::aqueductBlockItem);
     public static final TypedItem<MaterialType> DEEPSLATE_ORES = new DeepslateOreMaterialItem();
     public static final TypedItem<MaterialType> DRYING_RACKS = new MaterialItem(YTechBlocks.DRYING_RACKS, YTechItems::dryingRackBlockItem);
     public static final TypedItem<MaterialType> GRAVEL_DEPOSITS = new MaterialItem(YTechBlocks.GRAVEL_DEPOSITS, YTechItems::blockItem);
@@ -506,12 +507,12 @@ public class YTechItems {
         }
     }
 
-    private static BlockItem aqueductBlockItem() {
-        return new BlockItem(YTechBlocks.AQUEDUCT.get(), new Item.Properties()) {
+    private static BlockItem aqueductBlockItem(DeferredBlock<Block> block) {
+        return new BlockItem(block.get(), new Item.Properties()) {
             @Override
             public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
                 super.appendHoverText(stack, context, tooltipComponents, isAdvanced);
-                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct1", CONFIGURATION.getBaseFluidStoragePerBlock()).withStyle(DARK_GRAY));
+                tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct1", ((AqueductBlock)block.get()).getCapacity()).withStyle(DARK_GRAY));
 
                 if (CONFIGURATION.shouldRainingFillAqueduct()) {
                     tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct2",

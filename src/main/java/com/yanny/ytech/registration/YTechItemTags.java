@@ -74,7 +74,6 @@ public class YTechItemTags {
     public static final TagKey<Item> WOOLLY_RHINO_TEMP_ITEMS = create("woolly_rhino_temp_items");
 
     public static final TagKey<Item> AMPHORAE = create(YTechBlockTags.AMPHORAE);
-    public static final TagKey<Item> AQUEDUCTS = create(YTechBlockTags.AQUEDUCTS);
     public static final TagKey<Item> AQUEDUCT_FERTILIZERS = create(YTechBlockTags.AQUEDUCT_FERTILIZERS);
     public static final TagKey<Item> AQUEDUCT_HYDRATORS = create(YTechBlockTags.AQUEDUCT_HYDRATORS);
     public static final TagKey<Item> AQUEDUCT_VALVES = create(YTechBlockTags.AQUEDUCT_VALVES);
@@ -142,6 +141,7 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
     public static final TypedTag<MaterialType> SWORDS = new MaterialTag("swords", "forge", ItemTags.SWORDS, YTechItems.SWORDS);
 
+    public static final TypedTag<MaterialType> AQUEDUCTS = new MaterialTag(YTechBlockTags.AQUEDUCTS);
     public static final TypedTag<MaterialType> DEEPSLATE_ORES = new DeepslateOreMaterialTag();
     public static final TypedTag<MaterialType> DRYING_RACKS = new MaterialTag(YTechBlockTags.DRYING_RACKS);
     public static final TypedTag<MaterialType> GRAVEL_DEPOSITS = new MaterialTag(YTechBlockTags.GRAVEL_DEPOSITS);

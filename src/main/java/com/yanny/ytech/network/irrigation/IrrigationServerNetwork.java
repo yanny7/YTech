@@ -34,11 +34,12 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     private static final String TAG_BLOCK_POS = "pos";
     private static final String TAG_FLOW = "flow";
     private static final String TAG_FLUID_TANK = "fluidHolder";
+    private static final String TAG_CAPACITY = "capacity";
     private static final Logger LOGGER = LogUtils.getLogger();
 
     @NotNull private final HashMap<BlockPos, Integer> providers = new HashMap<>();
     @NotNull private final Set<BlockPos> consumers = new HashSet<>();
-    @NotNull private final Set<BlockPos> storages = new HashSet<>();
+    @NotNull private final HashMap<BlockPos, Integer> storages = new HashMap<>();
     @NotNull private final Set<BlockPos> filledByRain = new HashSet<>();
     @NotNull private final FluidTank fluidHandler;
     private int inflow = 0;
@@ -83,13 +84,14 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
             tag.getList(TAG_CONSUMERS, ListTag.TAG_COMPOUND).forEach((t) -> consumers.add(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS))));
         }
         if (tag.contains(TAG_STORAGES) && tag.getTagType(TAG_STORAGES) != 0) {
-            tag.getList(TAG_STORAGES, ListTag.TAG_COMPOUND).forEach((t) -> storages.add(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS))));
+            tag.getList(TAG_STORAGES, ListTag.TAG_COMPOUND).forEach((t) ->
+                    storages.put(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS)), ((CompoundTag) t).getInt(TAG_CAPACITY)));
         }
         if (tag.contains(TAG_FILLED_BY_RAIN) && tag.getTagType(TAG_FILLED_BY_RAIN) != 0) {
             tag.getList(TAG_FILLED_BY_RAIN, ListTag.TAG_COMPOUND).forEach((t) -> filledByRain.add(NetworkUtils.loadBlockPos(((CompoundTag) t).getCompound(TAG_BLOCK_POS))));
         }
         if (tag.contains(TAG_FLUID_TANK) && tag.getTagType(TAG_FLUID_TANK) != 0) {
-            fluidHandler.setCapacity(storages.size() * YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock());
+            fluidHandler.setCapacity(storages.values().stream().mapToInt(Integer::intValue).sum());
             fluidHandler.readFromNBT(provider, tag.getCompound(TAG_FLUID_TANK));
         }
 
@@ -106,10 +108,10 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         ListTag storagesTag = new ListTag();
         ListTag filledByRainTag = new ListTag();
 
-        providers.forEach((pos, stress) -> {
+        providers.forEach((pos, flow) -> {
             CompoundTag t = new CompoundTag();
             t.put(TAG_BLOCK_POS, NetworkUtils.saveBlockPos(pos));
-            t.putInt(TAG_FLOW, stress);
+            t.putInt(TAG_FLOW, flow);
             providersTag.add(t);
         });
         consumers.forEach((pos) -> {
@@ -117,9 +119,10 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
             t.put(TAG_BLOCK_POS, NetworkUtils.saveBlockPos(pos));
             consumersTag.add(t);
         });
-        storages.forEach((pos) -> {
+        storages.forEach((pos, capacity) -> {
             CompoundTag t = new CompoundTag();
             t.put(TAG_BLOCK_POS, NetworkUtils.saveBlockPos(pos));
+            t.putInt(TAG_CAPACITY, capacity);
             storagesTag.add(t);
         });
         filledByRain.forEach((pos) -> {
@@ -151,8 +154,8 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
                 addBlockEntity(irrigationBlockEntity);
             }
         });
-        network.storages.forEach((pos) -> {
-            storages.add(pos);
+        network.storages.forEach((pos, value) -> {
+            storages.put(pos, value);
 
             if (level.getBlockEntity(pos) instanceof IIrrigationBlockEntity irrigationBlockEntity) {
                 addBlockEntity(irrigationBlockEntity);
@@ -209,7 +212,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         Level level = blockEntity.getLevel();
         Map<BlockPos, Integer> providerBlocks = new HashMap<>(providers);
         Set<BlockPos> consumerBlocks = new HashSet<>(consumers);
-        Set<BlockPos> storageBlocks = new HashSet<>(storages);
+        Map<BlockPos, Integer> storageBlocks = new HashMap<>(storages);
         Set<BlockPos> filledByRainBlocks = new HashSet<>(filledByRain);
         BlockPos blockPos = blockEntity.getBlockPos();
         double fluidPerBlock = storageBlockCount() > 0 ? fluidHandler.getFluidAmount() / (double)storageBlockCount() : 0;
@@ -221,7 +224,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         filledByRainBlocks.remove(blockPos);
         removeBlockEntity(blockEntity);
 
-        List<BlockPos> neighbors = blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.contains(pos) || storageBlocks.contains(pos)).collect(Collectors.toList());
+        List<BlockPos> neighbors = blockEntity.getValidNeighbors().stream().filter(pos -> providerBlocks.containsKey(pos) || consumerBlocks.contains(pos) || storageBlocks.containsKey(pos)).collect(Collectors.toList());
 
         if ((neighbors.size() == 1) || (providerBlocks.isEmpty() && consumerBlocks.isEmpty() && storageBlocks.isEmpty()) || level == null) { // if we are not splitting
             fluidHandler.setFluid(new FluidStack(Fluids.WATER, (int) (storageBlockCount() * fluidPerBlock)));
@@ -238,7 +241,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         return neighbors.stream()
                 .map((pos) -> {
                     if ((providerBlocks.isEmpty() && consumerBlocks.isEmpty() && storageBlocks.isEmpty())
-                            || (!providerBlocks.containsKey(pos) && !consumerBlocks.contains(pos) && !storageBlocks.contains(pos))) {
+                            || (!providerBlocks.containsKey(pos) && !consumerBlocks.contains(pos) && !storageBlocks.containsKey(pos))) {
                         return null;
                     }
 
@@ -258,7 +261,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     @Override
     protected boolean isValidPosition(@NotNull IIrrigationBlockEntity blockEntity, @NotNull BlockPos pos) {
-        if (providers.containsKey(pos) || consumers.contains(pos) || storages.contains(pos)) {
+        if (providers.containsKey(pos) || consumers.contains(pos) || storages.containsKey(pos)) {
             Level level = blockEntity.getLevel();
 
             if (level != null && level.isLoaded(pos)) {
@@ -343,9 +346,10 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
 
     private void addStorage(@NotNull IIrrigationBlockEntity entity) {
         BlockPos blockPos = entity.getBlockPos();
+        int capacity = entity.getCapacity();
 
-        storages.add(blockPos);
-        fluidHandler.setCapacity(YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock() * storages.size());
+        storages.put(blockPos, capacity);
+        fluidHandler.setCapacity(fluidHandler.getCapacity() + capacity);
     }
 
     private void removeProvider(@NotNull IIrrigationBlockEntity entity) {
@@ -386,7 +390,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
     }
 
     private static void insertConnectedPositions(@NotNull IrrigationServerNetwork network, @NotNull Map<BlockPos, Integer> providerBlocks,
-                                                 @NotNull Set<BlockPos> consumerBlocks, @NotNull Set<BlockPos> storageBlocks,
+                                                 @NotNull Set<BlockPos> consumerBlocks, @NotNull Map<BlockPos, Integer> storageBlocks,
                                                  @NotNull Set<BlockPos> filledByRainBlocks, @NotNull BlockPos from, @NotNull Level level) {
         BlockEntity blockEntity = level.getBlockEntity(from);
 
@@ -397,7 +401,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
             storageBlocks.remove(from);
             filledByRainBlocks.remove(from);
             block.getValidNeighbors().forEach((pos) -> {
-                if (providerBlocks.containsKey(pos) || consumerBlocks.contains(pos) || storageBlocks.contains(pos)) {
+                if (providerBlocks.containsKey(pos) || consumerBlocks.contains(pos) || storageBlocks.containsKey(pos)) {
                     insertConnectedPositions(network, providerBlocks, consumerBlocks, storageBlocks, filledByRainBlocks, pos, level);
                 }
             });

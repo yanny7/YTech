@@ -1,0 +1,14 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "c:cobblestones/normal"
+  },
+  "inputCount": 1,
+  "minTemp": 1300,
+  "mold": [],
+  "result": {
+    "count": 1,
+    "id": "minecraft:stone"
+  },
+  "smeltingTime": 200
+}

@@ -3,7 +3,6 @@ package com.yanny.ytech;
 import com.yanny.ytech.compatibility.CuriosCapability;
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SpearType;
-import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
 import com.yanny.ytech.configuration.block_entity.WellPulleyBlockEntity;
 import com.yanny.ytech.configuration.data_component.BasketContents;
 import com.yanny.ytech.configuration.entity.*;
@@ -224,17 +223,15 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void onRegisterCap(@NotNull RegisterCapabilitiesEvent event) {
-        event.registerBlock(Capabilities.FluidHandler.BLOCK, (level, pos, state, be, side) -> {
-            if (!level.isClientSide && be instanceof IrrigationBlockEntity irrigationBlockEntity) {
-                IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(irrigationBlockEntity);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, YTechBlockEntityTypes.AQUEDUCT.get(), (blockEntity, direction) -> {
+            IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
 
-                if (network != null) {
-                    return network.getFluidHandler();
-                }
+            if (network != null) {
+                return network.getFluidHandler();
             }
 
             return null;
-        }, YTechBlocks.AQUEDUCT.get());
+        });
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, YTechBlockEntityTypes.AMPHORA.get(), (amphoraBlockEntity, direction) -> {
             if (!amphoraBlockEntity.isRemoved() && direction == Direction.UP) {
                 return amphoraBlockEntity.getItemHandler();

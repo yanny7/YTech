@@ -4,15 +4,18 @@
   "key": {
     "#": {
       "tag": "ytech:terracotta_bricks"
+    },
+    "H": {
+      "tag": "c:hammers"
     }
   },
   "pattern": [
     "# #",
-    "# #",
+    "#H#",
     "###"
   ],
   "result": {
-    "count": 1,
-    "id": "ytech:aqueduct"
+    "count": 2,
+    "id": "ytech:terracotta_aqueduct"
   }
 }

@@ -56,11 +56,6 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     }
 
     @Override
-    public boolean validForRainFilling() {
-        return false;
-    }
-
-    @Override
     public @NotNull NetworkType getNetworkType() {
         return NetworkType.PROVIDER;
     }

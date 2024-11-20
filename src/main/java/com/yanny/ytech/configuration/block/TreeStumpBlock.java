@@ -73,18 +73,11 @@ public class TreeStumpBlock extends Block implements EntityBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#1").cullface(direction);
-                    }
-                })
-                .from(0, 0, 0).to(16, 2, 16).end()
-                .element().allFaces((direction, faceBuilder) -> {
-                    switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 2).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 4).texture("#1");
                         case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
                     }
                 })
-                .from(0, 2, 0).to(16, 4, 16)
+                .from(0, 0, 0).to(16, 4, 16)
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -95,12 +88,10 @@ public class TreeStumpBlock extends Block implements EntityBlock {
                 .from(2, 4, 2).to(14, 16, 14)
                 .end()
                 .texture("particle", Utils.mcBlockLoc("oak_log"))
-                .texture("0", Utils.mcBlockLoc("smooth_stone_slab_side"))
-                .texture("1", Utils.mcBlockLoc("smooth_stone"))
+                .texture("1", Utils.mcBlockLoc("cobblestone"))
                 .texture("2", Utils.mcBlockLoc("oak_log"))
                 .texture("3", Utils.modBlockLoc("tree_stump_top"));
         provider.simpleBlock(YTechBlocks.TREE_STUMP.get(), model);
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.TREE_STUMP)).parent(model);
-
     }
 }

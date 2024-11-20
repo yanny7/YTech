@@ -5,7 +5,7 @@
       "tag": "minecraft:logs"
     },
     "S": {
-      "item": "minecraft:smooth_stone"
+      "tag": "c:cobblestones/normal"
     }
   },
   "pattern": {
