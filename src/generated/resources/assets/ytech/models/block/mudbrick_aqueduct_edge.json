@@ -16,7 +16,13 @@
           "texture": "#0"
         },
         "up": {
-          "texture": "#0"
+          "texture": "#0",
+          "uv": [
+            2.0,
+            0.0,
+            4.0,
+            2.0
+          ]
         },
         "west": {
           "texture": "#0"
@@ -35,7 +41,7 @@
     }
   ],
   "textures": {
-    "0": "ytech:block/terracotta_bricks",
-    "particle": "ytech:block/terracotta_bricks"
+    "0": "minecraft:block/mud_bricks",
+    "particle": "minecraft:block/mud_bricks"
   }
 }

@@ -14,13 +14,13 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class YTechBlocks {
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(YTechMod.MOD_ID);
 
     public static final DeferredBlock<Block> AMPHORA = BLOCKS.register("amphora", AmphoraBlock::new);
-    public static final DeferredBlock<Block> AQUEDUCT = BLOCKS.register("aqueduct", AqueductBlock::new);
     public static final DeferredBlock<Block> AQUEDUCT_FERTILIZER = BLOCKS.register("aqueduct_fertilizer", AqueductFertilizerBlock::new);
     public static final DeferredBlock<Block> AQUEDUCT_HYDRATOR = BLOCKS.register("aqueduct_hydrator", AqueductHydratorBlock::new);
     public static final DeferredBlock<Block> AQUEDUCT_VALVE = BLOCKS.register("aqueduct_valve", AqueductValveBlock::new);
@@ -46,6 +46,7 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> WELL_PULLEY = BLOCKS.register("well_pulley", WellPulleyBlock::new);
     public static final DeferredBlock<Block> WOODEN_BOX = BLOCKS.register("wooden_box", WoodenBoxBlock::new);
 
+    public static final MaterialBlock AQUEDUCTS = new MaterialBlock("aqueduct", NameHolder.suffix("aqueduct"), MaterialType.AQUEDUCT_MATERIALS, AqueductBlock::new);
     public static final MaterialBlock DEEPSLATE_ORES = new DeepslateOreMaterialBlock();
     public static final MaterialBlock DRYING_RACKS = new MaterialBlock("drying_rack", NameHolder.suffix("drying_rack"), MaterialType.ALL_WOODS, DryingRackBlock::new);
     public static final MaterialBlock GRAVEL_DEPOSITS = new MaterialBlock("gravel_deposit", NameHolder.suffix("gravel_deposit"), MaterialType.ALL_DEPOSIT_ORES, () -> new ColoredFallingBlock(new ColorRGBA(-8356741), BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)));
@@ -77,7 +78,7 @@ public class YTechBlocks {
         protected final NameHolder nameHolder;
         protected final Map<MaterialType, DeferredBlock<Block>> blocks;
 
-        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Supplier<Block> itemSupplier) {
+        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Function<MaterialType, Block> itemSupplier) {
             this.group = group;
             this.nameHolder = nameHolder;
             blocks = new HashMap<>();
@@ -91,8 +92,12 @@ public class YTechBlocks {
                 }
 
                 key += nameHolder.suffix() != null ? "_" + nameHolder.suffix() : "";
-                blocks.put(type, BLOCKS.register(key, itemSupplier));
+                blocks.put(type, BLOCKS.register(key, () -> itemSupplier.apply(type)));
             });
+        }
+
+        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Supplier<Block> itemSupplier) {
+            this(group, nameHolder, materialTypes, (m) -> itemSupplier.get());
         }
 
         public DeferredBlock<Block> of(MaterialType material) {

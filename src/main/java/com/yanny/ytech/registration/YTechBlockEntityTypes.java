@@ -17,7 +17,7 @@ public class YTechBlockEntityTypes {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, YTechMod.MOD_ID);
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmphoraBlockEntity>> AMPHORA = register("amphora", AmphoraBlockEntity::new, YTechBlocks.AMPHORA);
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductBlockEntity>> AQUEDUCT = register("aqueduct", AqueductBlockEntity::new, YTechBlocks.AQUEDUCT);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductBlockEntity>> AQUEDUCT = register("aqueduct", AqueductBlockEntity::new, YTechBlocks.AQUEDUCTS);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductFertilizerBlockEntity>> AQUEDUCT_FERTILIZER = register("aqueduct_fertilizer", AqueductFertilizerBlockEntity::new, YTechBlocks.AQUEDUCT_FERTILIZER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductHydratorBlockEntity>> AQUEDUCT_HYDRATOR = register("aqueduct_hydrator", (pos, state) -> new AqueductHydratorBlockEntity(YTechBlockEntityTypes.AQUEDUCT_HYDRATOR.get(), pos, state), YTechBlocks.AQUEDUCT_HYDRATOR);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AqueductValveBlockEntity>> AQUEDUCT_VALVE = register("aqueduct_valve", AqueductValveBlockEntity::new, YTechBlocks.AQUEDUCT_VALVE);

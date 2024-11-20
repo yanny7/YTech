@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ytech:aqueduct"
+          "name": "ytech:terracotta_aqueduct"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ytech:blocks/aqueduct"
+  "random_sequence": "ytech:blocks/terracotta_aqueduct"
 }

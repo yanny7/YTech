@@ -69,7 +69,6 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.WATER_BUCKETS).add(Items.WATER_BUCKET, YTechItems.WATER_CLAY_BUCKET.get());
 
         tag(YTechItemTags.AMPHORAE).add(YTechItems.AMPHORA.get());
-        tag(YTechItemTags.AQUEDUCTS).add(YTechItems.AQUEDUCT.get());
         tag(YTechItemTags.AQUEDUCT_FERTILIZERS).add(YTechItems.AQUEDUCT_FERTILIZER.get());
         tag(YTechItemTags.AQUEDUCT_HYDRATORS).add(YTechItems.AQUEDUCT_HYDRATOR.get());
         tag(YTechItemTags.AQUEDUCT_VALVES).add(YTechItems.AQUEDUCT_VALVE.get());
@@ -164,6 +163,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         typedTag(YTechItems.SPEARS, YTechItemTags.SPEARS);
         typedTag(YTechItems.SWORDS, YTechItemTags.SWORDS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
 
+        typedTag(YTechItems.AQUEDUCTS, YTechItemTags.AQUEDUCTS);
         materialOreTag(YTechItems.DEEPSLATE_ORES, YTechItemTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         typedTag(YTechItems.DRYING_RACKS, YTechItemTags.DRYING_RACKS);
         typedTag(YTechItems.GRAVEL_DEPOSITS, YTechItemTags.GRAVEL_DEPOSITS);

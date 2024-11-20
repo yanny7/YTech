@@ -296,7 +296,6 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.SPEARS.forEach((material, item) -> registerSpearRecipe(recipeConsumer, item, material));
         YTechItems.SWORDS.forEach((key, item) -> registerSwordRecipe(recipeConsumer, item, key));
 
-        AqueductBlock.registerRecipe(recipeConsumer);
         AqueductFertilizerBlock.registerRecipe(recipeConsumer);
         AqueductHydratorBlock.registerRecipe(recipeConsumer);
         AqueductValveBlock.registerRecipe(recipeConsumer);
@@ -319,6 +318,7 @@ class YTechRecipeProvider extends RecipeProvider {
         registerThatchBlockStairsRecipe(recipeConsumer);
         registerTreeStumpRecipe(recipeConsumer);
 
+        YTechItems.AQUEDUCTS.forEach((material, item) -> AqueductBlock.registerRecipe(recipeConsumer, item, material));
         YTechItems.DRYING_RACKS.forEach((material, item) -> DryingRackBlock.registerRecipe(recipeConsumer, item, material));
         YTechItems.RAW_STORAGE_BLOCKS.forEach((material, item) -> registerRawStorageBlockRecipe(recipeConsumer, item, material));
         YTechItems.STORAGE_BLOCKS.forEach((material, item) -> registerStorageBlockRecipe(recipeConsumer, item, material));
@@ -335,6 +335,8 @@ class YTechRecipeProvider extends RecipeProvider {
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_DECORATED_POTS, Items.DECORATED_POT, 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_FLOWER_POTS, Items.FLOWER_POT, 1000, 200);
         smeltingRecipe(recipeConsumer, YTechItemTags.UNFIRED_AMPHORAE, YTechItems.AMPHORA.get(), 1000, 200);
+
+        smeltingRecipe(recipeConsumer, Tags.Items.COBBLESTONE_NORMAL, Items.STONE, 1300, 200);
 
         hammeringRecipe(recipeConsumer, YTechItemTags.IRON_BLOOMS, 4, Items.IRON_INGOT);
 
@@ -403,6 +405,9 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.RAW_IRON);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.IRON_ORE);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
+
+        removeVanillaRecipe(recipeConsumer, Items.STONE);
+        removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.STONE, Items.COBBLESTONE);
 
         removeVanillaRecipe(recipeConsumer, Items.FLOWER_POT);
         removeVanillaRecipe(recipeConsumer, Items.TORCH);
@@ -1425,18 +1430,18 @@ class YTechRecipeProvider extends RecipeProvider {
     public static void registerMortarAndPestleRecipe(@NotNull RecipeOutput recipeConsumer, @NotNull DeferredItem<Item> item, MaterialType material) {
         if (material == MaterialType.STONE) {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
-                    .define('I', Items.STICK)
-                    .define('#', Tags.Items.STONE)
-                    .pattern(" I ")
+                    .define('P', YTechItemTags.PEBBLES)
+                    .define('#', ItemTags.PLANKS)
+                    .pattern(" P ")
                     .pattern("# #")
                     .pattern(" # ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(Tags.Items.STONE))
                     .save(recipeConsumer, item.getId());
         } else {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
-                    .define('I', YTechItemTags.INGOTS.get(material))
-                    .define('#', Tags.Items.STONE)
-                    .pattern(" I ")
+                    .define('P', YTechItemTags.PEBBLES)
+                    .define('#', YTechItemTags.PLATES.get(material))
+                    .pattern(" P ")
                     .pattern("# #")
                     .pattern(" # ")
                     .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(material)))
@@ -1637,7 +1642,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void registerTerracottaBricksRecipe(RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICKS.get())
+        RemainingShapedRecipe.Builder.shaped(RecipeCategory.BUILDING_BLOCKS, YTechBlocks.TERRACOTTA_BRICKS.get(), 4)
                 .define('B', Items.TERRACOTTA)
                 .pattern("BB")
                 .pattern("BB")
@@ -1700,7 +1705,7 @@ class YTechRecipeProvider extends RecipeProvider {
     private static void registerTreeStumpRecipe(RecipeOutput recipeConsumer) {
         WorkspaceCraftingRecipe.Builder.recipe(YTechItems.TREE_STUMP.get())
                 .define('C', ItemTags.LOGS)
-                .define('S', Items.SMOOTH_STONE)
+                .define('S', Tags.Items.COBBLESTONE_NORMAL)
                 .bottomPattern("SSS")
                 .bottomPattern("SSS")
                 .bottomPattern("SSS")

@@ -88,7 +88,7 @@ public class WellPulleyBlock extends IrrigationBlock {
         }
 
         if (level.getBlockEntity(basePos) instanceof WellPulleyBlockEntity blockEntity) {
-            return blockEntity.onUse(level, aboveState);
+            return blockEntity.onUse(level, aboveState, player);
         } else {
             throw new IllegalStateException("Invalid holder type!");
         }

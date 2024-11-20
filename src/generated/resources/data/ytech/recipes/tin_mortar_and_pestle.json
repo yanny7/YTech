@@ -3,14 +3,14 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:stone"
+      "tag": "forge:plates/tin"
     },
-    "I": {
-      "tag": "forge:ingots/tin"
+    "P": {
+      "tag": "ytech:pebbles"
     }
   },
   "pattern": [
-    " I ",
+    " P ",
     "# #",
     " # "
   ],

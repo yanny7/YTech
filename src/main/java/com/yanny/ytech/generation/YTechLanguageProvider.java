@@ -83,7 +83,6 @@ class YTechLanguageProvider extends LanguageProvider {
         addItem(YTechItems.WOOLLY_RHINO_SPAWN_EGG, "Woolly Rhino Spawn Egg");
 
         addBlock(YTechBlocks.AMPHORA, "Amphora");
-        addBlock(YTechBlocks.AQUEDUCT, "Aqueduct");
         addBlock(YTechBlocks.AQUEDUCT_FERTILIZER, "Aqueduct Fertilizer");
         addBlock(YTechBlocks.AQUEDUCT_HYDRATOR, "Aqueduct Hydrator");
         addBlock(YTechBlocks.AQUEDUCT_VALVE, "Aqueduct Valve");
@@ -141,6 +140,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTypedItem(YTechItems.SPEARS, NameHolder.suffix("Spear"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.SWORDS, NameHolder.suffix("Sword"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
 
+        addMaterialBlock(YTechBlocks.AQUEDUCTS, NameHolder.suffix("Aqueduct"));
         addMaterialBlock(YTechBlocks.DEEPSLATE_ORES, NameHolder.both("Deepslate", "Ore"), YTechLanguageProvider::vanillaMaterialsFilter);
         addMaterialBlock(YTechBlocks.DRYING_RACKS, NameHolder.suffix("Drying Rack"));
         addMaterialBlock(YTechBlocks.GRAVEL_DEPOSITS, NameHolder.suffix("Gravel Deposit"));
@@ -216,7 +216,6 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.WOOLLY_RHINO_TEMP_ITEMS, "Woolly Rhino Temptation Items");
 
         addTag(YTechItemTags.AMPHORAE, "Amphorae");
-        addTag(YTechItemTags.AQUEDUCTS, "Aqueducts");
         addTag(YTechItemTags.AQUEDUCT_FERTILIZERS, "Aqueduct Fertilizers");
         addTag(YTechItemTags.AQUEDUCT_HYDRATORS, "Aqueduct Hydrators");
         addTag(YTechItemTags.AQUEDUCT_VALVES, "Aqueduct Valves");
@@ -280,6 +279,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.SPEARS, NameHolder.suffix("Spears"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.SWORDS, NameHolder.suffix("Swords"), YTechLanguageProvider::getMaterialName);
 
+        addTag(YTechItemTags.AQUEDUCTS, NameHolder.suffix("Aqueducts"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.DRYING_RACKS, NameHolder.suffix("Drying Racks"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.GRAVEL_DEPOSITS, NameHolder.suffix("Gravel Deposits"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.SAND_DEPOSITS, NameHolder.suffix("Sand Deposits"), YTechLanguageProvider::getMaterialName);

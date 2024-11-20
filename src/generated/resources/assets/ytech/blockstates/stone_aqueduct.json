@@ -2,12 +2,12 @@
   "multipart": [
     {
       "apply": {
-        "model": "ytech:block/aqueduct"
+        "model": "ytech:block/stone_aqueduct"
       }
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_side"
+        "model": "ytech:block/stone_aqueduct_side"
       },
       "when": {
         "north": "true"
@@ -15,7 +15,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_side",
+        "model": "ytech:block/stone_aqueduct_side",
         "y": 180
       },
       "when": {
@@ -24,7 +24,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_side",
+        "model": "ytech:block/stone_aqueduct_side",
         "y": 270
       },
       "when": {
@@ -33,7 +33,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_side",
+        "model": "ytech:block/stone_aqueduct_side",
         "y": 90
       },
       "when": {
@@ -42,7 +42,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_edge"
+        "model": "ytech:block/stone_aqueduct_edge"
       },
       "when": {
         "north_west": "true"
@@ -50,7 +50,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_edge",
+        "model": "ytech:block/stone_aqueduct_edge",
         "y": 90
       },
       "when": {
@@ -59,7 +59,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_edge",
+        "model": "ytech:block/stone_aqueduct_edge",
         "y": 180
       },
       "when": {
@@ -68,7 +68,7 @@
     },
     {
       "apply": {
-        "model": "ytech:block/aqueduct_edge",
+        "model": "ytech:block/stone_aqueduct_edge",
         "y": 270
       },
       "when": {

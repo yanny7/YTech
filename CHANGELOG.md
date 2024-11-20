@@ -16,6 +16,13 @@
 - Added Divining Rod for detecting water abundance for Well Pulley
 - Added hit count to Hammering recipe
 - Added sounds to multiple blocks
+- Using Potter's Wheel and Well Pulley exhaust player
+- Added Chinese translation (@lyuxc-unknow)
+- Modified recipe for Terracotta Bricks and Aqueduct
+- Added Mudbrick (500mB) and Stone Aqueduct (2000mB), Aqueduct renamed to Terracotta Aqueduct (1000mB)
+- Changed recipes for Mortar and Pestle
+- Changed recipe for Stone
+- Changed recipe for Tree Stump
 
 ## [0.8.0]
 

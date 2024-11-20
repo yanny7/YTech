@@ -28,7 +28,6 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(YTechBlockTags.AMPHORAE).add(YTechBlocks.AMPHORA.get());
-        tag(YTechBlockTags.AQUEDUCTS).add(YTechBlocks.AQUEDUCT.get());
         tag(YTechBlockTags.AQUEDUCT_FERTILIZERS).add(YTechBlocks.AQUEDUCT_FERTILIZER.get());
         tag(YTechBlockTags.AQUEDUCT_HYDRATORS).add(YTechBlocks.AQUEDUCT_HYDRATOR.get());
         tag(YTechBlockTags.AQUEDUCT_VALVES).add(YTechBlocks.AQUEDUCT_VALVE.get());
@@ -68,6 +67,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
         tag(YTechBlockTags.REQUIRE_VALID_TOOL).addTag(BlockTags.LOGS).addTag(BlockTags.DIRT);
 
+        materialTag(YTechBlocks.AQUEDUCTS, YTechBlockTags.AQUEDUCTS);
         materialOreTag(YTechBlocks.DEEPSLATE_ORES, YTechBlockTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         materialTag(YTechBlocks.DRYING_RACKS, YTechBlockTags.DRYING_RACKS);
         materialTag(YTechBlocks.GRAVEL_DEPOSITS, YTechBlockTags.GRAVEL_DEPOSITS);
@@ -89,7 +89,6 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(
                         YTechBlocks.AMPHORA.get(),
-                        YTechBlocks.AQUEDUCT.get(),
                         YTechBlocks.AQUEDUCT_FERTILIZER.get(),
                         YTechBlocks.AQUEDUCT_HYDRATOR.get(),
                         YTechBlocks.AQUEDUCT_VALVE.get(),
@@ -105,6 +104,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                         YTechBlocks.TERRACOTTA_BRICK_STAIRS.get(),
                         YTechBlocks.WELL_PULLEY.get()
                 )
+                .add(filteredMaterials(YTechBlocks.AQUEDUCTS, MaterialType.AQUEDUCT_MATERIALS))
                 .add(filteredMaterials(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS))
                 .add(filteredMaterials(YTechBlocks.NETHER_ORES, EnumSet.of(MaterialType.GOLD)))
                 .add(filteredMaterials(YTechBlocks.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS))
@@ -123,7 +123,6 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                 .add(YTechBlocks.WOODEN_BOX.get());
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(
-                YTechBlocks.AQUEDUCT.get(),
                 YTechBlocks.AQUEDUCT_FERTILIZER.get(),
                 YTechBlocks.AQUEDUCT_HYDRATOR.get(),
                 YTechBlocks.AQUEDUCT_VALVE.get(),

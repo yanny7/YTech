@@ -1,0 +1,21 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:stone_bricks"
+    },
+    "H": {
+      "tag": "forge:hammers"
+    }
+  },
+  "pattern": [
+    "# #",
+    "#H#",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "item": "ytech:stone_aqueduct"
+  }
+}

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "ytech:terracotta_bricks"
+      "item": "minecraft:mud_bricks"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "ytech:aqueduct"
+    "count": 2,
+    "item": "ytech:mudbrick_aqueduct"
   }
 }

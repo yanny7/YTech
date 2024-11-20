@@ -16,16 +16,6 @@ public abstract class AqueductConsumerBlockEntity extends IrrigationBlockEntity 
     }
 
     @Override
-    public int getFlow() {
-        return 0;
-    }
-
-    @Override
-    public boolean validForRainFilling() {
-        return false;
-    }
-
-    @Override
     public @NotNull NetworkType getNetworkType() {
         return NetworkType.CONSUMER;
     }

@@ -29,7 +29,6 @@ class YTechBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         AmphoraBlock.registerModel(this);
-        AqueductBlock.registerModel(this);
         AqueductFertilizerBlock.registerModel(this);
         AqueductHydratorBlock.registerModel(this);
         AqueductValveBlock.registerModel(this);
@@ -55,6 +54,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
         WellPulleyBlock.registerModel(this);
         WoodenBoxBlock.registerModel(this);
 
+        YTechBlocks.AQUEDUCTS.entries().forEach((entry) -> AqueductBlock.registerModel(this, entry.getValue(), entry.getKey()));
         registerMaterialBlockState(this, "deepslate_ore", YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         YTechBlocks.DRYING_RACKS.entries().forEach((entry) -> DryingRackBlock.registerModel(this, entry.getValue(), entry.getKey()));
         registerMaterialBlockState(this, "gravel_deposit", YTechBlocks.GRAVEL_DEPOSITS);
