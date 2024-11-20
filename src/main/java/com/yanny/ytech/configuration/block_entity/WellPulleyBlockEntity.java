@@ -53,11 +53,6 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
         return 0;
     }
 
-    @Override
-    public boolean validForRainFilling() {
-        return false;
-    }
-
     @NotNull
     @Override
     public NetworkType getNetworkType() {

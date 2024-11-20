@@ -20,7 +20,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "ytech:aqueduct"
+      "item": "ytech:terracotta_aqueduct"
     },
     "show_toast": false,
     "title": {

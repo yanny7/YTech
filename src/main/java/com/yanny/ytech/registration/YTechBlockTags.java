@@ -14,7 +14,6 @@ import java.util.function.Function;
 
 public class YTechBlockTags {
     public static final TagKey<Block> AMPHORAE = create("amphorae");
-    public static final TagKey<Block> AQUEDUCTS = create("aqueducts");
     public static final TagKey<Block> AQUEDUCT_FERTILIZERS = create("aqueduct_fertilizers");
     public static final TagKey<Block> AQUEDUCT_HYDRATORS = create("aqueduct_hydrators");
     public static final TagKey<Block> AQUEDUCT_VALVES = create("aqueduct_valves");
@@ -50,6 +49,7 @@ public class YTechBlockTags {
 
     public static final TagKey<Block> REQUIRE_VALID_TOOL = create("require_valid_tool");
 
+    public static final MaterialTag AQUEDUCTS = new MaterialTag("aqueducts", YTechBlocks.AQUEDUCTS);
     public static final MaterialTag DEEPSLATE_ORES = new DeepslateOreMaterialTag();
     public static final MaterialTag DRYING_RACKS = new MaterialTag("drying_racks", YTechBlocks.DRYING_RACKS);
     public static final MaterialTag GRAVEL_DEPOSITS = new MaterialTag("gravel_deposits", YTechBlocks.GRAVEL_DEPOSITS);

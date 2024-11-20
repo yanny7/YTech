@@ -8,6 +8,7 @@ import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,11 +21,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AqueductBlockEntity extends IrrigationBlockEntity {
+    public static final String TAG_CAPACITY = "capacity";
+
+    private int capacity;
     @NotNull private final AABB renderBox;
     @Nullable private LazyOptional<IFluidHandler> lazyFluidHandler;
 
     public AqueductBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
+        this(pos, blockState, 0);
+    }
+
+    public AqueductBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState, int capacity) {
         super(YTechBlockEntityTypes.AQUEDUCT.get(), pos, blockState, ((AqueductBlock)blockState.getBlock()).getValidNeighbors(blockState, pos));
+        this.capacity = capacity;
         renderBox = new AABB(pos, pos.offset(1, 1, 1));
     }
 
@@ -41,9 +50,8 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
         }
     }
 
-    @Override
-    public int getFlow() {
-        return 0;
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
@@ -77,7 +85,19 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
         }
     }
 
+    @Override
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+        capacity = tag.getInt(TAG_CAPACITY);
+    }
+
     public void onRandomTick() {
         YTechMod.IRRIGATION_PROPAGATOR.server().changed(this);
+    }
+
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt(TAG_CAPACITY, capacity);
     }
 }

@@ -48,8 +48,8 @@ public enum AdvancementType {
             .display(YTechBlocks.PRIMITIVE_SMELTER.get(), FrameType.TASK, "Smelter Time", "Craft smelter and some chimneys to be able melt crushed ore.")
             .hasOneOfTags(YTechItemTags.PRIMITIVE_SMELTERS)),
     IRRIGATION_SYSTEM(new Builder(AdvancementType.STONE_AGE_GROUP, "irrigation_system").parent(() -> FIRST_STEPS.advancement)
-            .display(YTechBlocks.AQUEDUCT.get(), FrameType.TASK, "Irrigation System", "Craft aqueduct for long distance water transportation.")
-            .hasOneOfTags(YTechItemTags.AQUEDUCTS)),
+            .display(YTechBlocks.AQUEDUCTS.of(MaterialType.TERRACOTTA).get(), FrameType.TASK, "Irrigation System", "Craft aqueduct for long distance water transportation.")
+            .hasOneOfTags(YTechItemTags.AQUEDUCTS.tag)),
     BETTER_THAN_NOTHING(new Builder(AdvancementType.STONE_AGE_GROUP, "better_than_nothing").parent(() -> GRASS_HUNT.advancement)
             .display(YTechItems.KNIVES.get(MaterialType.FLINT).get(), FrameType.TASK, "Better Than Nothing", "Craft flint knife.")
             .hasOneOfTags(YTechItemTags.KNIVES.get(MaterialType.FLINT))),

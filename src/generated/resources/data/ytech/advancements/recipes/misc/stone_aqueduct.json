@@ -5,7 +5,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "ytech:terracotta_bricks"
+            "items": [
+              "minecraft:stone_bricks"
+            ]
           }
         ]
       },
@@ -13,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ytech:aqueduct"
+        "recipe": "ytech:stone_aqueduct"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "ytech:aqueduct"
+      "ytech:stone_aqueduct"
     ]
   },
   "sends_telemetry_event": false

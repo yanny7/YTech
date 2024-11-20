@@ -62,7 +62,6 @@ class YTechLootTableProvider extends LootTableProvider {
         @Override
         protected void generate() {
             dropSelf(YTechBlocks.AMPHORA);
-            dropSelf(YTechBlocks.AQUEDUCT);
             dropSelf(YTechBlocks.AQUEDUCT_FERTILIZER);
             dropSelf(YTechBlocks.AQUEDUCT_HYDRATOR);
             dropSelf(YTechBlocks.AQUEDUCT_VALVE);
@@ -87,6 +86,7 @@ class YTechLootTableProvider extends LootTableProvider {
             registerWellPulleyLootTable();
             dropSelf(YTechBlocks.WOODEN_BOX);
 
+            registerMaterialLootTable(YTechBlocks.AQUEDUCTS, this::dropSelf);
             registerMaterialLootTable(YTechBlocks.DEEPSLATE_ORES, this::oreLoot, MaterialType.VANILLA_METALS);
             registerMaterialLootTable(YTechBlocks.DRYING_RACKS, this::dropSelf);
             registerMaterialLootTable(YTechBlocks.GRAVEL_DEPOSITS, (block, material) -> depositLootProvider(block, material, Items.GRAVEL));
@@ -104,7 +104,6 @@ class YTechLootTableProvider extends LootTableProvider {
             return Stream.of(
                     Stream.of(
                             YTechBlocks.AMPHORA,
-                            YTechBlocks.AQUEDUCT,
                             YTechBlocks.AQUEDUCT_FERTILIZER,
                             YTechBlocks.AQUEDUCT_HYDRATOR,
                             YTechBlocks.AQUEDUCT_VALVE,
@@ -129,6 +128,7 @@ class YTechLootTableProvider extends LootTableProvider {
                             YTechBlocks.WELL_PULLEY,
                             YTechBlocks.WOODEN_BOX
                     ).map(RegistryObject::get),
+                    YTechBlocks.AQUEDUCTS.entries().stream().map(Map.Entry::getValue).map(RegistryObject::get),
                     filteredStream(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS).map(Map.Entry::getValue).map(RegistryObject::get),
                     YTechBlocks.DRYING_RACKS.entries().stream().map(Map.Entry::getValue).map(RegistryObject::get),
                     YTechBlocks.GRAVEL_DEPOSITS.entries().stream().map(Map.Entry::getValue).map(RegistryObject::get),
