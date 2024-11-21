@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.9.0]
 
 - Fixed missing Golden Shears translation
 - Improved Wooden Box to be directional (horizontally)
