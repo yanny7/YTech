@@ -10,12 +10,14 @@
           "texture": "#0"
         },
         "north": {
+          "cullface": "north",
           "texture": "#0"
         },
         "south": {
           "texture": "#0"
         },
         "up": {
+          "cullface": "up",
           "rotation": 180,
           "texture": "#0"
         },

@@ -117,7 +117,7 @@ public class AmphoraBlock extends Block implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(5, 13, 11, 16).texture("#1");
-                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#0");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#0").cullface(direction);
                     }
                 })
                 .from(5, 0, 5).to(11, 3, 11)

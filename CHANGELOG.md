@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.9.0]
 
 - Fixed missing Golden Shears translation
 - Improved Wooden Box to be directional (horizontally)
@@ -23,6 +23,8 @@
 - Changed recipes for Mortar and Pestle
 - Changed recipe for Stone
 - Changed recipe for Tree Stump
+- Added recipe for Mud using Water Bucket
+- Changed recipe for Glass
 
 ## [0.8.0]
 

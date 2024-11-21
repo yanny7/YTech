@@ -1,0 +1,20 @@
+{
+  "type": "ytech:alloying",
+  "ingredient1": {
+    "count": 1,
+    "ingredient": {
+      "tag": "forge:crushed_materials/galena"
+    }
+  },
+  "ingredient2": {
+    "count": 1,
+    "ingredient": {
+      "tag": "minecraft:smelts_to_glass"
+    }
+  },
+  "minTemp": 800,
+  "result": {
+    "item": "minecraft:glass"
+  },
+  "smeltingTime": 200
+}
