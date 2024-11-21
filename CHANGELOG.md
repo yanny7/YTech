@@ -24,6 +24,7 @@
 - Changed recipe for Stone
 - Changed recipe for Tree Stump
 - Added recipe for Mud using Water Bucket
+- Changed recipe for Glass
 
 ## [0.8.0]
 

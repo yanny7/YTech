@@ -328,6 +328,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.TANNING_RACKS.forEach((material, item) -> TanningRackBlock.registerRecipe(recipeConsumer, item, material));
 
         alloyingRecipe(recipeConsumer, YTechItemTags.INGOTS.get(COPPER), 9, YTechItemTags.INGOTS.get(TIN), 1, YTechItems.INGOTS.get(BRONZE).get(), 10, Math.max(COPPER.meltingTemp, TIN.meltingTemp), 200);
+        alloyingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(GALENA), 1, ItemTags.SMELTS_TO_GLASS, 1, Items.GLASS, 1, 800, 200);
 
         smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(COPPER), 1, YTechItemTags.MOLDS.get(PartType.INGOT), Items.COPPER_INGOT, COPPER.meltingTemp, 200, "smelting");
         smeltingRecipe(recipeConsumer, YTechItemTags.CRUSHED_MATERIALS.get(GOLD), 1, YTechItemTags.MOLDS.get(PartType.INGOT), Items.GOLD_INGOT, GOLD.meltingTemp, 200, "smelting");
@@ -409,6 +410,7 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.IRON_ORE);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.IRON_INGOT, Items.DEEPSLATE_IRON_ORE);
 
+        removeVanillaRecipe(recipeConsumer, Items.GLASS);
         removeVanillaRecipe(recipeConsumer, Items.STONE);
         removeVanillaSmeltingBlastingRecipe(recipeConsumer, Items.STONE, Items.COBBLESTONE);
 

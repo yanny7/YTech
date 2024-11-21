@@ -59,6 +59,7 @@
     "ytech:golden_bolt",
     "ytech:dried_porkchop",
     "ytech:stone_from_smelting",
-    "ytech:mud"
+    "ytech:mud",
+    "ytech:glass_from_alloying"
   ]
 }
