@@ -366,7 +366,7 @@ public class IrrigationServerNetwork extends ServerNetwork<IrrigationServerNetwo
         BlockPos blockPos = entity.getBlockPos();
 
         storages.remove(blockPos);
-        fluidHandler.setCapacity(YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock() * storages.size());
+        fluidHandler.setCapacity(fluidHandler.getCapacity() - entity.getCapacity());
     }
 
     private void clear() {
