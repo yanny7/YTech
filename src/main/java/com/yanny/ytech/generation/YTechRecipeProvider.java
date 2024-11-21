@@ -240,6 +240,7 @@ class YTechRecipeProvider extends RecipeProvider {
         mcCrossbowRecipe(recipeConsumer);
         mcCampfireRecipe(recipeConsumer);
         mcSoulCampfireRecipe(recipeConsumer);
+        mcMudRecipe(recipeConsumer);
 
         /*
          * MOD RECIPES
@@ -633,6 +634,14 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("LLL")
                 .unlockedBy(RecipeProvider.getHasName(Items.SOUL_TORCH), has(Items.SOUL_TORCH))
                 .save(recipeConsumer, Utils.loc(Items.SOUL_CAMPFIRE));
+    }
+
+    private void mcMudRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Items.MUD, 3)
+                .requires(Items.DIRT, 3)
+                .requires(YTechItemTags.WATER_BUCKETS)
+                .unlockedBy(RecipeProvider.getHasName(Items.DIRT), has(Items.DIRT))
+                .save(recipeConsumer, Utils.modLoc(Items.MUD));
     }
 
     private void mcCampfireRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {

@@ -23,6 +23,7 @@
 - Changed recipes for Mortar and Pestle
 - Changed recipe for Stone
 - Changed recipe for Tree Stump
+- Added recipe for Mud using Water Bucket
 
 ## [0.8.0]
 
