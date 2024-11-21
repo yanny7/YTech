@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_dirt",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_dirt"
     ]
   ],
   "rewards": {
     "recipes": [
       "ytech:mud"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
