@@ -17,7 +17,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
@@ -71,9 +70,10 @@ public class AqueductRenderer implements BlockEntityRenderer<AqueductBlockEntity
 
         if (network != null && network.getCapacity() > 0 && network.getAmount() > 0) {
             float height = 2/16f + (network.getAmount() / (float)network.getCapacity()) * (12.0f/16.0f);
-            renderFluidBlock(blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.TRANSLUCENT), height, packedOverlay);
+            renderFluidBlock(blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.entityTranslucent(InventoryMenu.BLOCK_ATLAS)), height, packedOverlay);
         }
     }
+
     private static BakedQuad createQuad(List<Vec3> vectors, float[] cols, TextureAtlasSprite sprite, Direction face, float u1, float u2, float v1, float v2) {
         QuadBakingVertexConsumer quadBaker = new QuadBakingVertexConsumer();
         Vec3 normal = Vec3.atLowerCornerOf(face.getNormal());

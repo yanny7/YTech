@@ -23,6 +23,7 @@
 - Changed recipes for Mortar and Pestle
 - Changed recipe for Stone
 - Changed recipe for Tree Stump
+- Fixed water rendering in Aqueduct
 
 ## [0.8.1]
 
