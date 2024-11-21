@@ -233,7 +233,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(3, 0, 5, 1).texture("#2");
                         case WEST -> faceBuilder.uvs(2, 1, 4, 2).texture("#2");
                         case UP -> faceBuilder.uvs(11, 2, 13, 4).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(13, 8, 15, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(13, 8, 15, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
                 .from(3.47487f, 0, 11.8033f).to(5.47487f, 1, 13.8033f).rotation().angle(45).axis(Direction.Axis.Y).origin(4.47487f, 0.5f, 12.8033f).end()
@@ -242,7 +242,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                     switch(direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
                 .from(1.35355f, 0, 9.68198f).to(3.35355f, 1, 11.68198f).rotation().angle(22.5f).axis(Direction.Axis.Y).origin(2.35355f, 0.5f, 10.68198f).end()
@@ -252,7 +252,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case EAST, WEST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case UP -> faceBuilder.uvs(10, 6, 13, 8).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
                 .from(13, 0, 7).to(15, 1, 10).rotation().angle(0).axis(Direction.Axis.Y).origin(14, 0.5f, 8.5f).end()
@@ -262,7 +262,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 6, 3, 8).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2").cullface(direction);
                     }
                 })
                 .from(9.63693f, 0, 10.84404f).to(12.63693f, 1, 12.84404f).rotation().angle(45).axis(Direction.Axis.Y).origin(11.13693f, 0.5f, 11.84404f).end()
@@ -271,7 +271,8 @@ public class FirePitBlock extends Block implements EntityBlock {
                     switch(direction) {
                         case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case UP -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2").cullface(direction);
                     }
                 })
                 .from(6.63173f, 0, 0.83883f).to(9.63173f, 1, 2.83883f).rotation().angle(0).axis(Direction.Axis.Y).origin(8.13173f, 0.5f, 1.83883f).end()
@@ -283,7 +284,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(13, 6, 16, 8).texture("#2");
                         case WEST -> faceBuilder.uvs(10, 6, 13, 8).texture("#2");
                         case UP -> faceBuilder.uvs(9, 2, 12, 5).texture("#2");
-                        case DOWN -> faceBuilder.uvs(11, 9, 14, 12).texture("#2");
+                        case DOWN -> faceBuilder.uvs(11, 9, 14, 12).texture("#2").cullface(direction);
                     }
                 })
                 .from(2.74264f, 0, 2.03553f).to(5.74264f, 2, 5.03553f).rotation().angle(45).axis(Direction.Axis.Y).origin(4.24264f, 1, 3.53553f).end()
@@ -295,20 +296,20 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(3, 9, 5, 11).texture("#2");
                         case WEST -> faceBuilder.uvs(11, 1, 13, 3).texture("#2");
                         case UP -> faceBuilder.uvs(4, 1, 6, 3).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 4, 9, 6).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 4, 9, 6).texture("#2").cullface(direction);
                     }
                 })
-                .from(12.10022f, 0.25f, 4.54521f).to(14.10022f, 2.25f, 6.54521f).rotation().angle(22.5f).axis(Direction.Axis.Y).origin(13.10022f, 1.25f, 5.54521f).end()
+                .from(12.10022f, 0, 4.54521f).to(14.10022f, 2, 6.54521f).rotation().angle(22.5f).axis(Direction.Axis.Y).origin(13.10022f, 1.25f, 5.54521f).end()
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 4, 2, 6).texture("#2");
                         case EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
                         case UP -> faceBuilder.uvs(4, 9, 6, 11).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 8, 9, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 8, 9, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
-                .from(10.12655f, 0.25f, 2.03034f).to(12.12655f, 2.25f, 4.03034f).rotation().angle(-45).axis(Direction.Axis.Y).origin(11.12655f, 1.25f, 3.03034f).end()
+                .from(10.12655f, 0, 2.03034f).to(12.12655f, 2, 4.03034f).rotation().angle(-45).axis(Direction.Axis.Y).origin(11.12655f, 1.25f, 3.03034f).end()
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -317,7 +318,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(4, 0, 6, 2).texture("#2");
                         case WEST -> faceBuilder.uvs(9, 2, 12, 4).texture("#2");
                         case UP -> faceBuilder.uvs(11, 6, 13, 9).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 7, 9, 10).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 7, 9, 10).texture("#2").cullface(direction);
                     }
                 })
                 .from(0.83581f, 0, 6.1924f).to(2.83581f, 2, 9.1924f).rotation().angle(0).axis(Direction.Axis.Y).origin(1.83581f, 1, 7.6924f).end()
@@ -329,7 +330,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(0, 2, 3, 4).texture("#2");
                         case WEST -> faceBuilder.uvs(5, 2, 7, 4).texture("#2");
                         case UP -> faceBuilder.uvs(4, 4, 7, 6).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 3, 10, 5).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 3, 10, 5).texture("#2").cullface(direction);
                     }
                 })
                 .from(6.19657f, 0, 13.0391f).to(9.19657f, 2, 15.0391f).rotation().angle(0).axis(Direction.Axis.Y).origin(7.69657f, 1, 14.0391f).end()
@@ -346,8 +347,9 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
                         case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
                         case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
-                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1").cullface(direction);
+                        case UP -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3").cullface(direction);
                     }
                 })
                 .from(0, 0, 7).to(2, 14, 9)
@@ -355,10 +357,11 @@ public class FirePitBlock extends Block implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
-                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1").cullface(direction);
                         case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
                         case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case UP -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3").cullface(direction);
                     }
                 })
                 .from(14, 0, 7).to(16, 14, 9)
@@ -385,7 +388,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(3, 0, 5, 1).texture("#2");
                         case WEST -> faceBuilder.uvs(2, 1, 4, 2).texture("#2");
                         case UP -> faceBuilder.uvs(11, 2, 13, 4).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(13, 8, 15, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(13, 8, 15, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
                 .from(3.47487f, 0, 11.8033f).to(5.47487f, 1, 13.8033f).rotation().angle(45).axis(Direction.Axis.Y).origin(4.47487f, 0.5f, 12.8033f).end()
@@ -394,7 +397,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                     switch(direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 2, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
                 .from(1.35355f, 0, 9.68198f).to(3.35355f, 1, 11.68198f).rotation().angle(22.5f).axis(Direction.Axis.Y).origin(2.35355f, 0.5f, 10.68198f).end()
@@ -404,7 +407,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case EAST, WEST -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case UP -> faceBuilder.uvs(10, 6, 13, 8).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
                 .from(13, 0, 7).to(15, 1, 10).rotation().angle(0).axis(Direction.Axis.Y).origin(14, 0.5f, 8.5f).end()
@@ -414,7 +417,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
                         case UP -> faceBuilder.uvs(0, 6, 3, 8).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2").cullface(direction);
                     }
                 })
                 .from(9.63693f, 0, 10.84404f).to(12.63693f, 1, 12.84404f).rotation().angle(45).axis(Direction.Axis.Y).origin(11.13693f, 0.5f, 11.84404f).end()
@@ -423,7 +426,8 @@ public class FirePitBlock extends Block implements EntityBlock {
                     switch(direction) {
                         case NORTH, SOUTH -> faceBuilder.uvs(0, 0, 3, 1).texture("#2");
                         case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 1).texture("#2");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case UP -> faceBuilder.uvs(0, 0, 3, 2).texture("#2");
+                        case DOWN -> faceBuilder.uvs(0, 0, 3, 2).texture("#2").cullface(direction);
                     }
                 })
                 .from(6.63173f, 0, 0.83883f).to(9.63173f, 1, 2.83883f).rotation().angle(0).axis(Direction.Axis.Y).origin(8.13173f, 0.5f, 1.83883f).end()
@@ -435,7 +439,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(13, 6, 16, 8).texture("#2");
                         case WEST -> faceBuilder.uvs(10, 6, 13, 8).texture("#2");
                         case UP -> faceBuilder.uvs(9, 2, 12, 5).texture("#2");
-                        case DOWN -> faceBuilder.uvs(11, 9, 14, 12).texture("#2");
+                        case DOWN -> faceBuilder.uvs(11, 9, 14, 12).texture("#2").cullface(direction);
                     }
                 })
                 .from(2.74264f, 0, 2.03553f).to(5.74264f, 2, 5.03553f).rotation().angle(45).axis(Direction.Axis.Y).origin(4.24264f, 1, 3.53553f).end()
@@ -447,20 +451,20 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(3, 9, 5, 11).texture("#2");
                         case WEST -> faceBuilder.uvs(11, 1, 13, 3).texture("#2");
                         case UP -> faceBuilder.uvs(4, 1, 6, 3).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 4, 9, 6).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 4, 9, 6).texture("#2").cullface(direction);
                     }
                 })
-                .from(12.10022f, 0.25f, 4.54521f).to(14.10022f, 2.25f, 6.54521f).rotation().angle(22.5f).axis(Direction.Axis.Y).origin(13.10022f, 1.25f, 5.54521f).end()
+                .from(12.10022f, 0, 4.54521f).to(14.10022f, 2, 6.54521f).rotation().angle(22.5f).axis(Direction.Axis.Y).origin(13.10022f, 1.25f, 5.54521f).end()
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 4, 2, 6).texture("#2");
                         case EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
                         case UP -> faceBuilder.uvs(4, 9, 6, 11).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 8, 9, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 8, 9, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#2").cullface(direction);
                     }
                 })
-                .from(10.12655f, 0.25f, 2.03034f).to(12.12655f, 2.25f, 4.03034f).rotation().angle(-45).axis(Direction.Axis.Y).origin(11.12655f, 1.25f, 3.03034f).end()
+                .from(10.12655f, 0, 2.03034f).to(12.12655f, 2, 4.03034f).rotation().angle(-45).axis(Direction.Axis.Y).origin(11.12655f, 1.25f, 3.03034f).end()
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
@@ -469,7 +473,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(4, 0, 6, 2).texture("#2");
                         case WEST -> faceBuilder.uvs(9, 2, 12, 4).texture("#2");
                         case UP -> faceBuilder.uvs(11, 6, 13, 9).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 7, 9, 10).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 7, 9, 10).texture("#2").cullface(direction);
                     }
                 })
                 .from(0.83581f, 0, 6.1924f).to(2.83581f, 2, 9.1924f).rotation().angle(0).axis(Direction.Axis.Y).origin(1.83581f, 1, 7.6924f).end()
@@ -481,7 +485,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(0, 2, 3, 4).texture("#2");
                         case WEST -> faceBuilder.uvs(5, 2, 7, 4).texture("#2");
                         case UP -> faceBuilder.uvs(4, 4, 7, 6).texture("#2");
-                        case DOWN -> faceBuilder.uvs(7, 3, 10, 5).texture("#2");
+                        case DOWN -> faceBuilder.uvs(7, 3, 10, 5).texture("#2").cullface(direction);
                     }
                 })
                 .from(6.19657f, 0, 13.0391f).to(9.19657f, 2, 15.0391f).rotation().angle(0).axis(Direction.Axis.Y).origin(7.69657f, 1, 14.0391f).end()
@@ -498,8 +502,9 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
                         case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
                         case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
-                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1").cullface(direction);
+                        case UP -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3").cullface(direction);
                     }
                 })
                 .from(0, 0, 7).to(2, 14, 9)
@@ -507,10 +512,11 @@ public class FirePitBlock extends Block implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(8, 0, 10, 14).texture("#1");
-                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1");
+                        case EAST -> faceBuilder.uvs(10, 0, 12, 14).texture("#1").cullface(direction);
                         case SOUTH -> faceBuilder.uvs(12, 0, 14, 14).texture("#1");
                         case WEST -> faceBuilder.uvs(14, 0, 16, 14).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case UP -> faceBuilder.uvs(5, 5, 11, 11).texture("#3");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#3").cullface(direction);
                     }
                 })
                 .from(14, 0, 7).to(16, 14, 9)
@@ -537,7 +543,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case EAST -> faceBuilder.uvs(9, 4, 13, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case WEST -> faceBuilder.uvs(2, 0, 6, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case UP -> faceBuilder.uvs(0, 0, 4, 10).texture("#3");
-                        case DOWN -> faceBuilder.uvs(1, 3, 5, 13).texture("#3");
+                        case DOWN -> faceBuilder.uvs(1, 3, 5, 13).texture("#3").cullface(direction);
                     }
                 })
                 .from(8.25f, 0, 4.25f).to(10.25f, 2, 10.25f).end()
@@ -547,7 +553,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                         case EAST -> faceBuilder.uvs(4, 5, 8, 15).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case WEST -> faceBuilder.uvs(0, 2, 4, 12).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#3");
                         case UP -> faceBuilder.uvs(7, 5, 11, 15).texture("#3");
-                        case DOWN -> faceBuilder.uvs(2, 6, 6, 16).texture("#3");
+                        case DOWN -> faceBuilder.uvs(2, 6, 6, 16).texture("#3").cullface(direction);
                     }
                 })
                 .from(5.25f, 0, 5).to(7.25f, 2, 11).end()

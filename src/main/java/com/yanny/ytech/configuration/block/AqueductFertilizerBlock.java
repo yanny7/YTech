@@ -53,8 +53,8 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 16).texture("#2").cullface(direction);
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0").cullface(direction);
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()
@@ -65,8 +65,8 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, WEST, SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#4");
+                        case NORTH, EAST, WEST, SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#2").cullface(direction);
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#4").cullface(direction);
                     }
                 })
                 .from(0, 0, 0).to(16, 16, 16).end()

@@ -128,20 +128,20 @@ public class DryingRackBlock extends Block implements EntityBlock {
                         case NORTH -> faceBuilder.uvs(8, 0, 10, 16).texture("#2");
                         case EAST -> faceBuilder.uvs(10, 0, 12, 16).texture("#2");
                         case SOUTH -> faceBuilder.uvs(12, 0, 14, 16).texture("#2");
-                        case WEST -> faceBuilder.uvs(14, 0, 16, 16).texture("#2");
-                        case UP -> faceBuilder.uvs(8, 0, 10, 2).texture("#2");
-                        case DOWN -> faceBuilder.uvs(8, 14, 10, 16).texture("#2");
+                        case WEST -> faceBuilder.uvs(14, 0, 16, 16).texture("#2").cullface(direction);
+                        case UP -> faceBuilder.uvs(8, 0, 10, 2).texture("#2").cullface(direction);
+                        case DOWN -> faceBuilder.uvs(8, 14, 10, 16).texture("#2").cullface(direction);
                     }
                 })
                 .from(0, 0, 7).to(2, 16, 9).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 0, 2, 16).texture("#2");
-                        case EAST -> faceBuilder.uvs(2, 0, 4, 16).texture("#2");
+                        case EAST -> faceBuilder.uvs(2, 0, 4, 16).texture("#2").cullface(direction);
                         case SOUTH -> faceBuilder.uvs(4, 0, 6, 16).texture("#2");
                         case WEST -> faceBuilder.uvs(6, 0, 8, 16).texture("#2");
-                        case UP -> faceBuilder.uvs(0, 0, 2, 2).texture("#2");
-                        case DOWN -> faceBuilder.uvs(0, 14, 2, 16).texture("#2");
+                        case UP -> faceBuilder.uvs(0, 0, 2, 2).texture("#2").cullface(direction);
+                        case DOWN -> faceBuilder.uvs(0, 14, 2, 16).texture("#2").cullface(direction);
                     }
                 })
                 .from(14, 0, 7).to(16, 16, 9).end()

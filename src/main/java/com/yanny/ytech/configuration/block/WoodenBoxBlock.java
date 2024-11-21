@@ -134,17 +134,19 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1").cullface(direction);
+                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#1").cullface(direction);
                     }
                 })
                 .from(0, 0, 0).to(16, 6, 16)
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, SOUTH -> faceBuilder.uvs(0, 4, 16, 10).texture("#1");
-                        case EAST -> faceBuilder.uvs(14, 4, 16, 10).texture("#1");
-                        case WEST -> faceBuilder.uvs(0, 4, 2, 10).texture("#1");
+                        case NORTH -> faceBuilder.uvs(0, 4, 16, 10).texture("#1").cullface(direction);
+                        case SOUTH -> faceBuilder.uvs(0, 4, 16, 10).texture("#1");
+                        case EAST -> faceBuilder.uvs(14, 4, 16, 10).texture("#1").cullface(direction);
+                        case WEST -> faceBuilder.uvs(0, 4, 2, 10).texture("#1").cullface(direction);
                         case UP -> faceBuilder.uvs(0, 1, 16, 3).texture("#0");
                     }
                 })
@@ -152,9 +154,10 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, SOUTH -> faceBuilder.uvs(0, 4, 16, 10).texture("#1");
-                        case EAST -> faceBuilder.uvs(0, 4, 2, 10).texture("#1");
-                        case WEST -> faceBuilder.uvs(14, 4, 16, 10).texture("#1");
+                        case NORTH -> faceBuilder.uvs(0, 4, 16, 10).texture("#1");
+                        case SOUTH -> faceBuilder.uvs(0, 4, 16, 10).texture("#1").cullface(direction);
+                        case EAST -> faceBuilder.uvs(0, 4, 2, 10).texture("#1").cullface(direction);
+                        case WEST -> faceBuilder.uvs(14, 4, 16, 10).texture("#1").cullface(direction);
                         case UP -> faceBuilder.uvs(0, 13, 16, 15).texture("#0");
                     }
                 })
@@ -162,7 +165,8 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case EAST, WEST -> faceBuilder.uvs(2, 4, 14, 10).texture("#1");
+                        case EAST -> faceBuilder.uvs(2, 4, 14, 10).texture("#1");
+                        case WEST -> faceBuilder.uvs(2, 4, 14, 10).texture("#1").cullface(direction);
                         case UP -> faceBuilder.uvs(0, 1, 12, 3).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#0");
                     }
                 })
@@ -170,7 +174,8 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case EAST, WEST -> faceBuilder.uvs(2, 4, 14, 10).texture("#1");
+                        case WEST -> faceBuilder.uvs(2, 4, 14, 10).texture("#1");
+                        case EAST -> faceBuilder.uvs(2, 4, 14, 10).texture("#1").cullface(direction);
                         case UP -> faceBuilder.uvs(1, 12, 13, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#0");
                     }
                 })

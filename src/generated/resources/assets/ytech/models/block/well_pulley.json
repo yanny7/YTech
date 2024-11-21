@@ -28,6 +28,7 @@
           "texture": "#0"
         },
         "up": {
+          "cullface": "up",
           "texture": "#1",
           "uv": [
             6.0,
@@ -37,6 +38,7 @@
           ]
         },
         "west": {
+          "cullface": "west",
           "texture": "#0",
           "uv": [
             0.0,
@@ -63,6 +65,7 @@
           "texture": "minecraft:missingno"
         },
         "east": {
+          "cullface": "east",
           "texture": "#0",
           "uv": [
             0.0,
@@ -84,6 +87,7 @@
           ]
         },
         "up": {
+          "cullface": "up",
           "texture": "#1",
           "uv": [
             6.0,

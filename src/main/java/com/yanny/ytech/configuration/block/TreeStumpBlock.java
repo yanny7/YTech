@@ -73,8 +73,9 @@ public class TreeStumpBlock extends Block implements EntityBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 4).texture("#1");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 16, 4).texture("#1").cullface(direction);
                         case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#1").cullface(direction);
                     }
                 })
                 .from(0, 0, 0).to(16, 4, 16)

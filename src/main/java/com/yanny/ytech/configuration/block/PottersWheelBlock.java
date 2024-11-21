@@ -98,7 +98,7 @@ public class PottersWheelBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(4, 11, 16, 14).texture("#0");
                         case WEST -> faceBuilder.uvs(2, 11, 14, 14).texture("#0");
                         case UP -> faceBuilder.uvs(2, 2, 14, 14).texture("#1");
-                        case DOWN -> faceBuilder.uvs(0, 0, 12, 12).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 12, 12).texture("#1").cullface(direction);
                     }
                 })
                 .from(2, 0, 2).to(14, 3, 14).rotation().angle(0).axis(Direction.Axis.Y).origin(8, 0, 8).end()
