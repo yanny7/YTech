@@ -289,8 +289,9 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0").cullface(direction);
+                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0").cullface(direction);
                     }
                 })
                 .from(0, 0, 0).to(16, 2, 16).end()
@@ -300,10 +301,11 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, SOUTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0");
+                        case NORTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0").cullface(direction);
                         case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
                         case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case UP -> faceBuilder.uvs(2, 0, 14, 2).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#0");
+                        case UP -> faceBuilder.uvs(2, 0, 14, 2).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#0").cullface(direction);
                     }
                 })
                 .from(2, 2, 0).to(14, 16, 2).end()
@@ -313,9 +315,11 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
-                        case SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case UP -> faceBuilder.uvs(2, 0, 4, 2).texture("#0");
+                        case NORTH -> faceBuilder.uvs(14, 0, 16, 14).texture("#0").cullface(direction);
+                        case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0").cullface(direction);
+                        case UP -> faceBuilder.uvs(2, 0, 4, 2).texture("#0").cullface(direction);
                     }
                 })
                 .from(0, 2, 0).to(2, 16, 2).end()

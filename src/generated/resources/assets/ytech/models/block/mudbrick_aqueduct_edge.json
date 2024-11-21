@@ -10,12 +10,14 @@
           "texture": "#0"
         },
         "north": {
+          "cullface": "north",
           "texture": "#0"
         },
         "south": {
           "texture": "#0"
         },
         "up": {
+          "cullface": "up",
           "texture": "#0",
           "uv": [
             2.0,
@@ -25,6 +27,7 @@
           ]
         },
         "west": {
+          "cullface": "west",
           "texture": "#0"
         }
       },

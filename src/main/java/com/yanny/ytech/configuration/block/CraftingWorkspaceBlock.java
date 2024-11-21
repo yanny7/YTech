@@ -189,7 +189,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(7, 1, 8, 4).texture("#0");
                         case WEST -> faceBuilder.uvs(3, 5, 4, 8).texture("#0");
                         case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#0");
-                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0");
+                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0").cullface(direction);
                     }
                 })
                 .from(0.25f, 0, 0.25f).to(1.25f, 3, 1.25f).rotation().angle(0).axis(Direction.Axis.Y).origin(0.25f, 0, 0.25f).end()
@@ -201,7 +201,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(7, 1, 8, 4).texture("#0");
                         case WEST -> faceBuilder.uvs(3, 5, 4, 8).texture("#0");
                         case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#0");
-                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0");
+                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0").cullface(direction);
                     }
                 })
                 .from(14.75f, 0, 0.25f).to(15.75f, 3, 1.25f).rotation().angle(0).axis(Direction.Axis.Y).origin(14.75f, 0, 0.25f).end()
@@ -213,7 +213,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(7, 1, 8, 4).texture("#0");
                         case WEST -> faceBuilder.uvs(3, 5, 4, 8).texture("#0");
                         case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#0");
-                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0");
+                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0").cullface(direction);
                     }
                 })
                 .from(0.25f, 0, 14.75f).to(1.25f, 3, 15.75f).rotation().angle(0).axis(Direction.Axis.Y).origin(0.25f, 0, 14.75f).end()
@@ -225,7 +225,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
                         case SOUTH -> faceBuilder.uvs(7, 1, 8, 4).texture("#0");
                         case WEST -> faceBuilder.uvs(3, 5, 4, 8).texture("#0");
                         case UP -> faceBuilder.uvs(0, 0, 1, 1).texture("#0");
-                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0");
+                        case DOWN -> faceBuilder.uvs(6, 3, 7, 4).texture("#0").cullface(direction);
                     }
                 })
                 .from(14.75f, 0, 14.75f).to(15.75f, 3, 15.75f).rotation().angle(0).axis(Direction.Axis.Y).origin(14.75f, 0, 14.75f).end()

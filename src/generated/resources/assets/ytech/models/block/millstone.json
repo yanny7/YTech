@@ -63,6 +63,7 @@
           "texture": "minecraft:missingno"
         },
         "east": {
+          "cullface": "east",
           "texture": "#side",
           "uv": [
             0.0,
@@ -72,6 +73,7 @@
           ]
         },
         "north": {
+          "cullface": "north",
           "texture": "#side",
           "uv": [
             0.0,
@@ -81,6 +83,7 @@
           ]
         },
         "south": {
+          "cullface": "south",
           "texture": "#side",
           "uv": [
             0.0,
@@ -93,6 +96,7 @@
           "texture": "minecraft:missingno"
         },
         "west": {
+          "cullface": "west",
           "texture": "#side",
           "uv": [
             0.0,
@@ -119,6 +123,7 @@
           "texture": "minecraft:missingno"
         },
         "east": {
+          "cullface": "east",
           "texture": "#side",
           "uv": [
             0.0,
@@ -128,6 +133,7 @@
           ]
         },
         "north": {
+          "cullface": "north",
           "texture": "#side",
           "uv": [
             0.0,
@@ -137,6 +143,7 @@
           ]
         },
         "south": {
+          "cullface": "south",
           "texture": "#side",
           "uv": [
             0.0,
@@ -149,6 +156,7 @@
           "texture": "minecraft:missingno"
         },
         "west": {
+          "cullface": "west",
           "texture": "#side",
           "uv": [
             0.0,
@@ -172,21 +180,26 @@
     {
       "faces": {
         "down": {
+          "cullface": "down",
           "texture": "#slab"
         },
         "east": {
+          "cullface": "east",
           "texture": "#side"
         },
         "north": {
+          "cullface": "north",
           "texture": "#side"
         },
         "south": {
+          "cullface": "south",
           "texture": "#side"
         },
         "up": {
           "texture": "minecraft:missingno"
         },
         "west": {
+          "cullface": "west",
           "texture": "#side"
         }
       },

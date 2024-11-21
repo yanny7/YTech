@@ -267,16 +267,18 @@ public class WellPulleyBlock extends IrrigationBlock {
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0");
-                        case UP -> faceBuilder.uvs(6, 6, 10, 10).texture("#1");
+                        case NORTH, EAST, SOUTH -> faceBuilder.uvs(0, 0, 4, 16).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0").cullface(direction);
+                        case UP -> faceBuilder.uvs(6, 6, 10, 10).texture("#1").cullface(direction);
                     }
                 })
                 .from(0, 0, 6).to(4, 16, 10)
                 .end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0");
-                        case UP -> faceBuilder.uvs(6, 6, 10, 10).texture("#1");
+                        case NORTH, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0");
+                        case EAST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0").cullface(direction);
+                        case UP -> faceBuilder.uvs(6, 6, 10, 10).texture("#1").cullface(direction);
                     }
                 })
                 .from(12, 0, 6).to(16, 16, 10)

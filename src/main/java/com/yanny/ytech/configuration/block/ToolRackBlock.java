@@ -150,9 +150,9 @@ public class ToolRackBlock extends Block implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
-                        case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 16).texture("#1");
-                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 2).texture("#1");
+                        case EAST, WEST -> faceBuilder.uvs(0, 0, 2, 16).texture("#1").cullface(direction);
+                        case SOUTH -> faceBuilder.uvs(0, 0, 16, 16).texture("#1").cullface(direction);
+                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 2).texture("#1").cullface(direction);
                     }
                 })
                 .from(0, 0, 14).to(16, 16, 16)
