@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.9.1]
 
 - Fixed crash when equipped copper/bronze armor
 
