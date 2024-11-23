@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Changed Stone Mortar and Pestle recipe
+
 ## [0.9.1]
 
 - Fixed crash when equipped copper/bronze armor

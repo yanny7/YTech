@@ -1444,7 +1444,7 @@ class YTechRecipeProvider extends RecipeProvider {
         if (material == MaterialType.STONE) {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
                     .define('P', YTechItemTags.PEBBLES)
-                    .define('#', ItemTags.PLANKS)
+                    .define('#', Tags.Items.COBBLESTONE)
                     .pattern(" P ")
                     .pattern("# #")
                     .pattern(" # ")
