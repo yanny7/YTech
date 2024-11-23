@@ -79,7 +79,7 @@ public enum YTechArmorMaterial {
 
             @NotNull
             public String getName() {
-                return material.name;
+                return Utils.modLoc(material.key).toString();
             }
 
             public float getToughness() {

@@ -139,7 +139,7 @@ public class ForgeBusSubscriber {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public static void on(RenderHighlightEvent.Block event) {
+    public static void onRenderHighlightEvent(RenderHighlightEvent.Block event) {
         Level level = Minecraft.getInstance().level;
         Player player = Minecraft.getInstance().player;
 
