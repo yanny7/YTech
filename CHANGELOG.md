@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed crash when equipped copper/bronze armor
+
 ## [0.9.0]
 
 - Fixed missing Golden Shears translation
