@@ -36,14 +36,14 @@ public class YTechArmorMaterials {
                             SoundEvents.ARMOR_EQUIP_IRON,
                             () -> material.getTier().getRepairIngredient(),
                             List.of(new ArmorMaterial.Layer(Utils.modLoc(material.key))),
-                            0,//material.thoughness,
-                            0//material.knockbackResistance
+                            0,
+                            0
                     )));
                 }
             });
         }
 
-        public DeferredHolder<ArmorMaterial, ArmorMaterial> of(MaterialType material) {
+        public DeferredHolder<ArmorMaterial, ArmorMaterial> get(MaterialType material) {
             return Objects.requireNonNull(armors.get(material), material.key);
         }
     }
