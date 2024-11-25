@@ -4,6 +4,7 @@
 
 - Changed Stone Mortar and Pestle recipe
 - Fixed crash on crop grow
+- Fixed spawning vanilla mobs even when disabled
 
 ## [0.9.1]
 
