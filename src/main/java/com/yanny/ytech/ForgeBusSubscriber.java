@@ -221,7 +221,7 @@ public class ForgeBusSubscriber {
             BlockState blockState = event.getLevel().getBlockState(event.getPos().below());
 
             if (blockState.hasProperty(BlockStateProperties.MOISTURE) && blockState.getValue(BlockStateProperties.MOISTURE) < FarmBlock.MAX_MOISTURE) {
-                event.setCanceled(true);
+                event.setResult(Event.Result.DENY);
             }
         }
     }

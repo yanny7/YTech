@@ -3,6 +3,7 @@
 ## []
 
 - Changed Stone Mortar and Pestle recipe
+- Fixed crash on crop grow
 
 ## [0.9.1]
 
