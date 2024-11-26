@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.9.2]
 
 - Changed Stone Mortar and Pestle recipe
 - Fixed crash on crop grow
