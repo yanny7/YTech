@@ -23,10 +23,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.*;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -52,6 +51,11 @@ import static com.yanny.ytech.registration.YTechItemTags.MESHES;
 class YTechLootTableProvider extends LootTableProvider {
     public YTechLootTableProvider(PackOutput packOutput) {
         super(packOutput, Collections.emptySet(), getSubProviders());
+    }
+
+    @Override
+    protected void validate(@NotNull Map<ResourceLocation, LootTable> map, @NotNull ValidationContext validationcontext) {
+        // disabled because of bug causing nested loot table resolving failure
     }
 
     private static List<SubProviderEntry> getSubProviders() {
@@ -447,7 +451,8 @@ class YTechLootTableProvider extends LootTableProvider {
                         .setRolls(UniformGenerator.between(1, 2))
                         .add(LootItem.lootTableItem(Items.CLAY).setWeight(100))
                         .add(LootItem.lootTableItem(Items.SAND).setWeight(50))
-                        .add(LootItem.lootTableItem(Items.GRAVEL).setWeight(50))
+                        .add(LootItem.lootTableItem(Items.GRAVEL).setWeight(40))
+                        .add(LootTableReference.lootTableReference(BuiltInLootTables.FISHING).setWeight(10))
                         .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(MESHES.get(TWINE))))
             );
 

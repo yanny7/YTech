@@ -25,7 +25,12 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:gravel",
-          "weight": 50
+          "weight": 40
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:gameplay/fishing",
+          "weight": 10
         }
       ],
       "rolls": {
