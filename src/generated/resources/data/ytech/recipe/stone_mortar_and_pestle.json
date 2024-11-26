@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "minecraft:planks"
+      "tag": "c:cobblestones"
     },
     "P": {
       "tag": "ytech:pebbles"
