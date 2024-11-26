@@ -3,6 +3,7 @@
 ## []
 
 - Added Strainer for obtaining Galena/Cassiterite
+- Removed generation of Galena/Cassiterite ores in world
 
 ## [0.9.2]
 
