@@ -38,20 +38,19 @@ public class MachineContainerMenu<T extends AbstractContainerMenu> extends Abstr
     @NotNull
     @Override
     public ItemStack quickMoveStack(@NotNull Player player, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = slots.get(index);
+        ItemStack quickMovedStack = ItemStack.EMPTY;
+        Slot quickMovedSlot = slots.get(index);
         int slotCount = itemStackHandler.getSlots();
 
-        if (slot.hasItem()) {
-            ItemStack stack = slot.getItem();
-            itemstack = stack.copy();
+        if (quickMovedSlot.hasItem()) {
+            ItemStack stack = quickMovedSlot.getItem();
+            quickMovedStack = stack.copy();
 
             if (index < slotCount) {
                 if (!moveItemStackTo(stack, slotCount, Inventory.INVENTORY_SIZE + slotCount, true)) {
                     return ItemStack.EMPTY;
                 }
-            }
-            if (!moveItemStackTo(stack, 0, inputSlots, false)) {
+            } else if (!moveItemStackTo(stack, 0, inputSlots, false)) {
                 if (index < Inventory.INVENTORY_SIZE - 9 + slotCount) {
                     if (!moveItemStackTo(stack, Inventory.INVENTORY_SIZE - 9 + slotCount, Inventory.INVENTORY_SIZE + slotCount, false)) {
                         return ItemStack.EMPTY;
@@ -62,19 +61,19 @@ public class MachineContainerMenu<T extends AbstractContainerMenu> extends Abstr
             }
 
             if (stack.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
+                quickMovedSlot.set(ItemStack.EMPTY);
             } else {
-                slot.setChanged();
+                quickMovedSlot.setChanged();
             }
 
-            if (stack.getCount() == itemstack.getCount()) {
+            if (stack.getCount() == quickMovedStack.getCount()) {
                 return ItemStack.EMPTY;
             }
 
-            slot.onTake(player, stack);
+            quickMovedSlot.onTake(player, stack);
         }
 
-        return itemstack;
+        return quickMovedStack;
     }
 
     @Override

@@ -79,6 +79,8 @@ public class MachineItemStackHandler extends ItemStackHandler {
         if (size != getSlots()) {
             throw new IllegalStateException("Invalid size of slots, expected " + size + ", found " + getSlots());
         }
+
+        stacks.clear();
     }
 
     public static class Builder {
