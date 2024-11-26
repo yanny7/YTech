@@ -21,7 +21,9 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -40,22 +42,30 @@ public class StrainerBlockEntity extends MachineBlockEntity {
     }
 
     public void onRandomTick(ServerLevel serverLevel, BlockPos pos) {
-        MinecraftServer server = serverLevel.getServer();
-        LootTable table = server.getLootData().getLootTable(Utils.modLoc("fishing/strainer"));
-        ItemStack mesh = itemStackHandler.getStackInSlot(0);
-        ObjectArrayList<ItemStack> randomItems = table.getRandomItems(new LootParams.Builder(serverLevel)
-                .withParameter(LootContextParams.ORIGIN, pos.getCenter())
-                .withParameter(LootContextParams.TOOL, itemStackHandler.getStackInSlot(0))
-                .create(LootContextParamSets.FISHING)
-        );
+        BlockState aboveState = serverLevel.getBlockState(pos.above());
 
-        if (mesh.hurt(1, serverLevel.random, null)) {
-            mesh.shrink(1);
-            mesh.setDamageValue(0);
+        if (aboveState.is(Blocks.WATER) && !aboveState.getFluidState().isSource()) {
+            float flowingLevel = aboveState.getFluidState().getValue(BlockStateProperties.LEVEL_FLOWING);
+
+            if (serverLevel.random.nextDouble() <= flowingLevel / 7) {
+                MinecraftServer server = serverLevel.getServer();
+                LootTable table = server.getLootData().getLootTable(Utils.modLoc("fishing/strainer"));
+                ItemStack mesh = itemStackHandler.getStackInSlot(0);
+                ObjectArrayList<ItemStack> randomItems = table.getRandomItems(new LootParams.Builder(serverLevel)
+                        .withParameter(LootContextParams.ORIGIN, pos.getCenter())
+                        .withParameter(LootContextParams.TOOL, itemStackHandler.getStackInSlot(0))
+                        .create(LootContextParamSets.FISHING)
+                );
+
+                if (mesh.hurt(1, serverLevel.random, null)) {
+                    mesh.shrink(1);
+                    mesh.setDamageValue(0);
+                }
+
+                itemStackHandler.setStackInSlot(0, mesh);
+                itemStackHandler.outputOperation(() -> randomItems.forEach((itemStack) -> ItemHandlerHelper.insertItemStacked(itemStackHandler, itemStack, false)));
+            }
         }
-
-        itemStackHandler.setStackInSlot(0, mesh);
-        itemStackHandler.outputOperation(() -> randomItems.forEach((itemStack) -> ItemHandlerHelper.insertItemStacked(itemStackHandler, itemStack, false)));
     }
 
     @NotNull
