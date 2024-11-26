@@ -39,6 +39,8 @@ public enum MaterialType implements IType {
     OAK_WOOD(new Builder("oak", "Oak", () -> Tiers.WOOD).group("wooden")),
     SPRUCE_WOOD(new Builder("spruce", "Spruce", () -> Tiers.WOOD).group("wooden")),
 
+    //other
+    TWINE(new Builder("twine", "Twine", () -> Tiers.WOOD)),
     FLINT(new Builder("flint", "Flint", () -> Tiers.STONE)),
     ANTLER(new Builder("antler", "Antler", () -> Tiers.STONE)),
     STONE(new Builder("stone", "Stone", () -> Tiers.STONE)),
@@ -53,6 +55,7 @@ public enum MaterialType implements IType {
     public static final EnumSet<MaterialType> ALL_DEPOSIT_ORES = EnumSet.of(GOLD, CASSITERITE);
     public static final EnumSet<MaterialType> ALL_HARD_METALS = EnumSet.of(BRONZE, COPPER, IRON); // used for arrow heads
     public static final EnumSet<MaterialType> AQUEDUCT_MATERIALS = EnumSet.of(MUDBRICK, STONE, TERRACOTTA);
+    public static final EnumSet<MaterialType> MESH_MATERIALS = EnumSet.of(TWINE, COPPER, BRONZE);
     public static final EnumSet<MaterialType> VANILLA_METALS = EnumSet.of(COPPER, GOLD, IRON);
 
     @NotNull public final String key;

@@ -8,11 +8,16 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
@@ -23,6 +28,19 @@ public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
                 .requiresCorrectToolForDrops()
                 .strength(3.5F)
                 .lightLevel((state) -> state.getValue(LIT) ? 13 : 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
+        stateBuilder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
+        return defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
+                .setValue(BlockStateProperties.LIT, false);
     }
 
     @SuppressWarnings("deprecation")
@@ -56,6 +74,11 @@ public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
 
     @Override
     public boolean hasClientTicker() {
+        return true;
+    }
+
+    @Override
+    public boolean hasServerTicker() {
         return true;
     }
 }

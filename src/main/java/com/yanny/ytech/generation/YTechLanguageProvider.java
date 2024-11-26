@@ -95,6 +95,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addBlock(YTechBlocks.PRIMITIVE_SMELTER, "Primitive Smelter");
         addBlock(YTechBlocks.REINFORCED_BRICKS, "Reinforced Bricks");
         addBlock(YTechBlocks.REINFORCED_BRICK_CHIMNEY, "Reinforced Brick Chimney");
+        addBlock(YTechBlocks.STRAINER, "Strainer");
         addBlock(YTechBlocks.TERRACOTTA_BRICKS, "Terracotta Bricks");
         addBlock(YTechBlocks.TERRACOTTA_BRICK_SLAB, "Terracotta Brick Slab");
         addBlock(YTechBlocks.TERRACOTTA_BRICK_STAIRS, "Terracotta Brick Stairs");
@@ -126,6 +127,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTypedItem(YTechItems.INGOTS, NameHolder.suffix("Ingot"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::vanillaMaterialsFilter);
         addTypedItem(YTechItems.KNIVES, NameHolder.suffix("Knife"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.LEGGINGS, NameHolder.suffix("Leggings"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
+        addTypedItem(YTechItems.MESHES, NameHolder.suffix("Mesh"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.MORTAR_AND_PESTLES, NameHolder.suffix("Mortar and Pestle"), YTechLanguageProvider::getMaterialName);
         addTypedItem(YTechItems.PICKAXES, NameHolder.suffix("Pickaxe"), YTechLanguageProvider::getMaterialName, YTechLanguageProvider::goldIronWoodLeatherFilter);
         addTypedItem(YTechItems.PLATES, NameHolder.suffix("Plate"), YTechLanguageProvider::getMaterialName);
@@ -187,6 +189,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.RAW_HIDES, "Raw Hides");
         addTag(YTechItemTags.RHINO_HORNS, "Rhino Horns");
         addTag(YTechItemTags.SHARP_FLINTS, "Sharp Flints");
+        addTag(YTechItemTags.UNFIRED_AMPHORAE, "Unfired Amphorae");
         addTag(YTechItemTags.UNFIRED_BRICKS, "Unfired Bricks");
         addTag(YTechItemTags.UNFIRED_CLAY_BUCKETS, "Unfired Clay Buckets");
         addTag(YTechItemTags.UNFIRED_DECORATED_POTS, "Unfired Decorated Pots");
@@ -228,6 +231,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.PRIMITIVE_SMELTERS, "Primitive Smelters");
         addTag(YTechItemTags.REINFORCED_BRICKS, "Reinforced Bricks");
         addTag(YTechItemTags.REINFORCED_BRICK_CHIMNEYS, "Reinforced Brick Chimneys");
+        addTag(YTechItemTags.STRAINERS, "Strainers");
         addTag(YTechItemTags.TERRACOTTA_BRICKS, "Terracotta Bricks");
         addTag(YTechItemTags.TERRACOTTA_BRICK_SLABS, "Terracotta Brick Slabs");
         addTag(YTechItemTags.TERRACOTTA_BRICK_STAIRS, "Terracotta Brick Stairs");
@@ -264,6 +268,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addTag(YTechItemTags.HOES, NameHolder.suffix("Hoes"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.INGOTS, NameHolder.suffix("Ingots"), YTechLanguageProvider::getMaterialName, MaterialType.VANILLA_METALS);
         addTag(YTechItemTags.KNIVES, NameHolder.suffix("Knives"), YTechLanguageProvider::getMaterialName);
+        addTag(YTechItemTags.MESHES, NameHolder.suffix("Meshes"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.MORTAR_AND_PESTLES, NameHolder.suffix("Mortar and Pestles"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.LEGGINGS, NameHolder.suffix("Leggings"), YTechLanguageProvider::getMaterialName);
         addTag(YTechItemTags.PICKAXES, NameHolder.suffix("Pickaxes"), YTechLanguageProvider::getMaterialName);

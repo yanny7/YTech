@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Added Strainer for obtaining Galena/Cassiterite
+
 ## [0.9.2]
 
 - Changed Stone Mortar and Pestle recipe

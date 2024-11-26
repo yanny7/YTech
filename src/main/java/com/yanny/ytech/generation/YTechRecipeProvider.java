@@ -287,6 +287,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.INGOTS.forEach((material, item) -> registerIngotRecipe(recipeConsumer, item, material));
         YTechItems.KNIVES.forEach((material, item) -> registerKnifeRecipe(recipeConsumer, item, material));
         YTechItems.LEGGINGS.forEach((material, item) -> registerLeggingsRecipe(recipeConsumer, item, material));
+        YTechItems.MESHES.forEach((material, item) -> registerMeshRecipe(recipeConsumer, item, material));
         YTechItems.MORTAR_AND_PESTLES.forEach((material, item) -> registerMortarAndPestleRecipe(recipeConsumer, item, material));
         YTechItems.PICKAXES.forEach((material, item) -> registerPickaxeRecipe(recipeConsumer, item, material));
         YTechItems.PLATES.forEach((material, item) -> registerPlateRecipe(recipeConsumer, item, material));
@@ -313,6 +314,7 @@ class YTechRecipeProvider extends RecipeProvider {
         PrimitiveSmelterBlock.registerRecipe(recipeConsumer);
         registerReinforcedBricksRecipe(recipeConsumer);
         ReinforcedBrickChimneyBlock.registerRecipe(recipeConsumer);
+        registerStrainerRecipe(recipeConsumer);
         registerTerracottaBricksRecipe(recipeConsumer);
         registerTerracottaBrickSlabRecipe(recipeConsumer);
         registerTerracottaBrickStairsRecipe(recipeConsumer);
@@ -1440,6 +1442,27 @@ class YTechRecipeProvider extends RecipeProvider {
                     .save(recipeConsumer, item.getId());
         }
     }
+
+    public static void registerMeshRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
+        if (material == TWINE) {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
+                    .define('T', YTechItemTags.GRASS_TWINES)
+                    .pattern("TTT")
+                    .pattern("TTT")
+                    .pattern("TTT")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.GRASS_TWINES))
+                    .save(recipeConsumer, item.getId());
+        } else {
+            RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, item.get())
+                    .define('R', YTechItemTags.RODS.get(material))
+                    .pattern("RRR")
+                    .pattern("RRR")
+                    .pattern("RRR")
+                    .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.RODS.get(material)))
+                    .save(recipeConsumer, item.getId());
+        }
+    }
+
     public static void registerMortarAndPestleRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
         if (material == MaterialType.STONE) {
             RemainingShapedRecipe.Builder.shaped(RecipeCategory.TOOLS, item.get())
@@ -1652,6 +1675,23 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern("#P#")
                 .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
                 .save(recipeConsumer, YTechBlocks.REINFORCED_BRICKS.getId());
+    }
+
+    private static void registerStrainerRecipe(Consumer<FinishedRecipe> recipeConsumer) {
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.STRAINER.get())
+                .define('L', ItemTags.LOGS)
+                .define('W', YTechItemTags.WOODEN_BOXES)
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .middlePattern("LLL")
+                .middlePattern("LWL")
+                .middlePattern("LLL")
+                .topPattern("L L")
+                .topPattern("   ")
+                .topPattern("L L")
+                .unlockedBy(Utils.getHasName(), RecipeProvider.has(ItemTags.LOGS))
+                .save(recipeConsumer, YTechBlocks.STRAINER.getId());
     }
 
     private static void registerTerracottaBricksRecipe(Consumer<FinishedRecipe> recipeConsumer) {

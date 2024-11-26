@@ -6,18 +6,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -41,24 +37,11 @@ public abstract class MachineBlock extends BaseEntityBlock {
             if (hasClientTicker()) {
                 return createTickerHelper(entityType, entityType, MachineBlock::createMachineClientTicker);
             }
-        } else {
+        } else if (hasServerTicker()) {
             return createTickerHelper(entityType, entityType, MachineBlock::createMachineServerTicker);
         }
 
         return null;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
-        stateBuilder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT);
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
-        return defaultBlockState()
-                .setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
-                .setValue(BlockStateProperties.LIT, false);
     }
 
     @SuppressWarnings("deprecation")
@@ -72,6 +55,10 @@ public abstract class MachineBlock extends BaseEntityBlock {
     }
 
     public boolean hasClientTicker() {
+        return false;
+    }
+
+    public boolean hasServerTicker() {
         return false;
     }
 

@@ -87,6 +87,7 @@ public class YTechItemTags {
     public static final TagKey<Item> PRIMITIVE_SMELTERS = create(YTechBlockTags.PRIMITIVE_SMELTERS);
     public static final TagKey<Item> REINFORCED_BRICKS = create(YTechBlockTags.REINFORCED_BRICKS);
     public static final TagKey<Item> REINFORCED_BRICK_CHIMNEYS = create(YTechBlockTags.REINFORCED_BRICK_CHIMNEYS);
+    public static final TagKey<Item> STRAINERS = create(YTechBlockTags.STRAINERS);
     public static final TagKey<Item> TERRACOTTA_BRICKS = create(YTechBlockTags.TERRACOTTA_BRICKS);
     public static final TagKey<Item> TERRACOTTA_BRICK_SLABS = create(YTechBlockTags.TERRACOTTA_BRICK_SLABS);
     public static final TagKey<Item> TERRACOTTA_BRICK_STAIRS = create(YTechBlockTags.TERRACOTTA_BRICK_STAIRS);
@@ -127,6 +128,7 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> HOES = new MaterialTag("hoes", "forge", ItemTags.HOES, YTechItems.HOES);
     public static final TypedTag<MaterialType> INGOTS = new IngotMaterialTag();
     public static final TypedTag<MaterialType> KNIVES = new MaterialTag("knives", "forge", YTechItems.KNIVES);
+    public static final TypedTag<MaterialType> MESHES = new MaterialTag("meshes", YTechItems.MESHES);
     public static final TypedTag<MaterialType> MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", "forge", YTechItems.MORTAR_AND_PESTLES);
     public static final TypedTag<MaterialType> LEGGINGS = new MaterialTag("leggings", "forge", Tags.Items.ARMORS_LEGGINGS, YTechItems.LEGGINGS);
     public static final TypedTag<MaterialType> PICKAXES = new MaterialTag("pickaxes", "forge", ItemTags.PICKAXES, YTechItems.PICKAXES);

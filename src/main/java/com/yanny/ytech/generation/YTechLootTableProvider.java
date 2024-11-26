@@ -2,6 +2,7 @@ package com.yanny.ytech.generation;
 
 import com.google.gson.JsonPrimitive;
 import com.yanny.ytech.configuration.MaterialType;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
 import com.yanny.ytech.configuration.block.WellPulleyBlock;
 import com.yanny.ytech.configuration.entity.DeerEntity;
@@ -13,6 +14,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -42,6 +46,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.yanny.ytech.configuration.MaterialType.*;
+import static com.yanny.ytech.registration.YTechItemTags.MESHES;
+
 class YTechLootTableProvider extends LootTableProvider {
     public YTechLootTableProvider(PackOutput packOutput) {
         super(packOutput, Collections.emptySet(), getSubProviders());
@@ -50,7 +57,8 @@ class YTechLootTableProvider extends LootTableProvider {
     private static List<SubProviderEntry> getSubProviders() {
         return List.of(
                 new LootTableProvider.SubProviderEntry(YTechBlockLootSub::new, LootContextParamSets.BLOCK),
-                new LootTableProvider.SubProviderEntry(YTechEntityLootSub::new, LootContextParamSets.ENTITY)
+                new LootTableProvider.SubProviderEntry(YTechEntityLootSub::new, LootContextParamSets.ENTITY),
+                new LootTableProvider.SubProviderEntry(YTechFishingLootSub::new, LootContextParamSets.FISHING)
         );
     }
 
@@ -425,6 +433,70 @@ class YTechLootTableProvider extends LootTableProvider {
                                     )
                     )
             );
+        }
+    }
+
+    private static class YTechFishingLootSub implements LootTableSubProvider {
+        private final Map<ResourceLocation, LootTable.Builder> map = new HashMap<>();
+
+        private void generateStrainerLootTable() {
+            LootTable.Builder builder = LootTable.lootTable();
+
+            builder.withPool(
+                LootPool.lootPool()
+                        .setRolls(UniformGenerator.between(1, 2))
+                        .add(LootItem.lootTableItem(Items.CLAY).setWeight(100))
+                        .add(LootItem.lootTableItem(Items.SAND).setWeight(50))
+                        .add(LootItem.lootTableItem(Items.GRAVEL).setWeight(50))
+                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(MESHES.get(TWINE))))
+            );
+
+            builder.withPool(
+                    LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(Items.CLAY).setWeight(70))
+                            .add(LootItem.lootTableItem(Items.SAND).setWeight(50))
+                            .when(LootItemRandomChanceCondition.randomChance(0.7f))
+                            .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(MESHES.get(COPPER))))
+            );
+            addPool(builder, MESHES.get(COPPER), 0.3f, YTechItems.RAW_MATERIALS.get(CASSITERITE).get());
+            addPool(builder, MESHES.get(COPPER), 0.2f, YTechItems.RAW_MATERIALS.get(GALENA).get());
+            addPool(builder, MESHES.get(COPPER), 0.1f, YTechItems.RAW_MATERIALS.get(COPPER).get());
+
+            builder.withPool(
+                    LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(Items.CLAY))
+                            .when(LootItemRandomChanceCondition.randomChance(0.3f))
+                            .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(MESHES.get(BRONZE))))
+            );
+            addPool(builder, MESHES.get(BRONZE), 0.3f, YTechItems.RAW_MATERIALS.get(CASSITERITE).get());
+            addPool(builder, MESHES.get(BRONZE), 0.2f, YTechItems.RAW_MATERIALS.get(GALENA).get());
+            addPool(builder, MESHES.get(BRONZE), 0.1f, YTechItems.RAW_MATERIALS.get(COPPER).get());
+            addPool(builder, MESHES.get(BRONZE), 0.05f, YTechItems.RAW_MATERIALS.get(GOLD).get());
+            addPool(builder, MESHES.get(BRONZE), 0.05f, YTechItems.RAW_MATERIALS.get(IRON).get());
+
+            add(Utils.modLoc("strainer"), builder);
+        }
+
+        private void addPool(LootTable.Builder builder, TagKey<Item> tool, float chance,Item item) {
+            builder.withPool(
+                    LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1.0F))
+                            .add(LootItem.lootTableItem(item).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1f))))
+                            .when(LootItemRandomChanceCondition.randomChance(chance))
+                            .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(tool)))
+            );
+        }
+
+        private void add(ResourceLocation location, LootTable.Builder builder) {
+            map.put(location, builder);
+        }
+
+        @Override
+        public void generate(@NotNull BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
+            generateStrainerLootTable();
+            map.forEach((k, v) -> biConsumer.accept(k.withPrefix("fishing/"), v));
         }
     }
 

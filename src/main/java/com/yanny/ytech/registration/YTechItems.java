@@ -58,7 +58,7 @@ public class YTechItems {
     public static final RegistryObject<Item> PEBBLE = ITEMS.register("pebble", PebbleItem::new);
     public static final RegistryObject<Item> RAW_HIDE = ITEMS.register("raw_hide", YTechItems::simpleItem);
     public static final RegistryObject<Item> RHINO_HORN = ITEMS.register("rhino_horn", YTechItems::simpleItem);
-    public static final RegistryObject<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolCanHurtItem(Tiers.WOOD));
+    public static final RegistryObject<Item> SHARP_FLINT = ITEMS.register("sharp_flint", () -> toolCanHurtItem(MaterialType.WOODEN));
     public static final RegistryObject<Item> UNFIRED_AMPHORA = ITEMS.register("unfired_amphora", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_BRICK = ITEMS.register("unfired_brick", YTechItems::simpleItem);
     public static final RegistryObject<Item> UNFIRED_CLAY_BUCKET = ITEMS.register("unfired_clay_bucket", YTechItems::simpleItem);
@@ -83,6 +83,7 @@ public class YTechItems {
     public static final RegistryObject<Item> PRIMITIVE_SMELTER = ITEMS.register("primitive_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
     public static final RegistryObject<Item> REINFORCED_BRICKS = ITEMS.register("reinforced_bricks", () -> blockItem(YTechBlocks.REINFORCED_BRICKS));
     public static final RegistryObject<Item> REINFORCED_BRICK_CHIMNEY = ITEMS.register("reinforced_brick_chimney", () -> descriptionItem(YTechBlocks.REINFORCED_BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))));
+    public static final RegistryObject<Item> STRAINER = ITEMS.register("strainer", () -> descriptionItem(YTechBlocks.STRAINER, List.of()));
     public static final RegistryObject<Item> TERRACOTTA_BRICKS = ITEMS.register("terracotta_bricks", () -> blockItem(YTechBlocks.TERRACOTTA_BRICKS));
     public static final RegistryObject<Item> TERRACOTTA_BRICK_SLAB = ITEMS.register("terracotta_brick_slab", () -> blockItem(YTechBlocks.TERRACOTTA_BRICK_SLAB));
     public static final RegistryObject<Item> TERRACOTTA_BRICK_STAIRS = ITEMS.register("terracotta_brick_stairs", () -> blockItem(YTechBlocks.TERRACOTTA_BRICK_STAIRS));
@@ -123,19 +124,20 @@ public class YTechItems {
     public static final TypedItem<MaterialType> BOOTS = new BootsMaterialItem();
     public static final TypedItem<MaterialType> CHESTPLATES = new ChestplatesMaterialItem();
     public static final TypedItem<MaterialType> CRUSHED_MATERIALS = new MaterialItem("crushed_material", NameHolder.prefix("crushed"), MaterialType.ALL_ORES, (type) -> simpleItem());
-    public static final TypedItem<MaterialType> FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
-    public static final TypedItem<MaterialType> HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolCanHurtItem(type.getTier()));
+    public static final TypedItem<MaterialType> FILES = new MaterialItem("file", NameHolder.suffix("file"), MaterialType.ALL_METALS, YTechItems::toolCanHurtItem);
+    public static final TypedItem<MaterialType> HAMMERS = new MaterialItem("hammer", NameHolder.suffix("hammer"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), YTechItems::toolCanHurtItem);
     public static final TypedItem<MaterialType> HELMETS = new HelmetMaterialItem();
     public static final TypedItem<MaterialType> HOES = new HoeMaterialItem();
     public static final TypedItem<MaterialType> INGOTS = new IngotMaterialItem();
     public static final TypedItem<MaterialType> KNIVES = new MaterialItem("knife", NameHolder.suffix("knife"), Utils.merge(MaterialType.ALL_METALS, MaterialType.FLINT), YTechItems::knifeItem);
     public static final TypedItem<MaterialType> LEGGINGS = new LeggingsMaterialItem();
-    public static final TypedItem<MaterialType> MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), (type) -> toolItem(type.getTier()));
+    public static final TypedItem<MaterialType> MESHES = new MaterialItem("mesh", NameHolder.suffix("mesh"), MaterialType.MESH_MATERIALS, YTechItems::toolItem);
+    public static final TypedItem<MaterialType> MORTAR_AND_PESTLES = new MaterialItem("mortar_and_pestle", NameHolder.suffix("mortar_and_pestle"), Utils.merge(MaterialType.ALL_METALS, MaterialType.STONE), YTechItems::toolItem);
     public static final TypedItem<MaterialType> PICKAXES = new PickaxeMaterialItem();
     public static final TypedItem<MaterialType> PLATES = new MaterialItem("plate", NameHolder.suffix("plate"), Utils.merge(MaterialType.ALL_METALS, MaterialType.WOODEN), (type) -> burnableSimpleItem(type, 200));
     public static final TypedItem<MaterialType> RAW_MATERIALS = new RawMaterialItem();
     public static final TypedItem<MaterialType> RODS = new MaterialItem("rod", NameHolder.suffix("rod"), MaterialType.ALL_METALS, (type) -> simpleItem());
-    public static final TypedItem<MaterialType> SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, (type) -> toolCanHurtItem(type.getTier()));
+    public static final TypedItem<MaterialType> SAWS = new MaterialItem("saw", NameHolder.suffix("saw"), MaterialType.ALL_METALS, YTechItems::toolCanHurtItem);
     public static final TypedItem<MaterialType> SAW_BLADES = new MaterialItem("saw_blade", NameHolder.suffix("saw_blade"), EnumSet.of(MaterialType.IRON), (type) -> simpleItem());
     public static final TypedItem<MaterialType> SHEARS = new ShearsMaterialItem();
     public static final TypedItem<MaterialType> SHOVELS = new ShovelMaterialItem();
@@ -196,12 +198,12 @@ public class YTechItems {
         };
     }
 
-    private static Item toolItem(Tier tier) {
-        return new ToolItem(tier, false, new Item.Properties());
+    private static Item toolItem(MaterialType material) {
+        return new ToolItem(material.getTier(), false, new Item.Properties());
     }
 
-    private static Item toolCanHurtItem(Tier tier) {
-        return new ToolItem(tier, true, new Item.Properties());
+    private static Item toolCanHurtItem(MaterialType material) {
+        return new ToolItem(material.getTier(), true, new Item.Properties());
     }
 
     private static Item axeItem(MaterialType material) {

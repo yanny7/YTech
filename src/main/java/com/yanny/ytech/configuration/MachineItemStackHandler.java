@@ -28,6 +28,7 @@ import java.util.Objects;
 public class MachineItemStackHandler extends ItemStackHandler {
     @NotNull private final List<SlotHolder> inputSlotHolder;
     @NotNull private final List<SlotHolder> outputSlotHolder;
+    boolean outputOperation;
 
     MachineItemStackHandler(@NotNull List<SlotHolder> inputSlotHolder, @NotNull List<SlotHolder> outputSlotHolder, @NotNull NonNullList<ItemStack> stacks) {
         super(stacks);
@@ -59,6 +60,16 @@ public class MachineItemStackHandler extends ItemStackHandler {
         return inputSlotHolder.size();
     }
 
+    /**
+     * Allow inserting into output slot without restrictions
+     * @param runnable block of code that can operate on output slots
+     */
+    public void outputOperation(Runnable runnable) {
+        outputOperation = true;
+        runnable.run();
+        outputOperation = false;
+    }
+
     @Override
     public void setSize(int size) {
         if (size != getSlots()) {
@@ -71,9 +82,7 @@ public class MachineItemStackHandler extends ItemStackHandler {
         final List<SlotHolder> outputSlotHolder = new ArrayList<>();
         @Nullable Runnable onChangeListener;
 
-        public Builder() {
-
-        }
+        public Builder() {}
 
         public Builder addInputSlot(int x, int y, TriPredicate<MachineItemStackHandler, Integer, ItemStack> isItemValid) {
             inputSlotHolder.add(new SlotHolder(x, y, isItemValid));
@@ -81,7 +90,7 @@ public class MachineItemStackHandler extends ItemStackHandler {
         }
 
         public Builder addInputSlot(int x, int y) {
-            inputSlotHolder.add(new SlotHolder(x, y, ((itemStackHandler, slot, itemStack) -> true)));
+            inputSlotHolder.add(new SlotHolder(x, y, (itemStackHandler, slot, itemStack) -> true));
             return this;
         }
 
@@ -96,9 +105,17 @@ public class MachineItemStackHandler extends ItemStackHandler {
         }
 
         public MachineItemStackHandler build() {
+            NonNullList<ItemStack> stacks = NonNullList.withSize(inputSlotHolder.size() + outputSlotHolder.size(), ItemStack.EMPTY);
+            return build(stacks);
+        }
+
+        public MachineItemStackHandler build(NonNullList<ItemStack> stacks) {
             Objects.requireNonNull(onChangeListener, "Missing onChangeListener");
 
-            NonNullList<ItemStack> stacks = NonNullList.withSize(inputSlotHolder.size() + outputSlotHolder.size(), ItemStack.EMPTY);
+            if (stacks.size() != inputSlotHolder.size() + outputSlotHolder.size()) {
+                throw new IllegalStateException("Stack count doesn't match slot count!");
+            }
+
             return new MachineItemStackHandler(inputSlotHolder, outputSlotHolder, stacks) {
                 @Override
                 protected void onContentsChanged(int slot) {
@@ -107,6 +124,10 @@ public class MachineItemStackHandler extends ItemStackHandler {
 
                 @Override
                 public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                    if (outputOperation) {
+                        return slot >= inputSlotHolder.size();
+                    }
+
                     if (slot < inputSlotHolder.size()) {
                         return inputSlotHolder.get(slot).isItemValid.test(this, slot, stack);
                     } else {

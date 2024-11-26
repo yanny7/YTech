@@ -1,0 +1,18 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "T": {
+      "tag": "ytech:grass_twines"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "TTT",
+    "TTT"
+  ],
+  "result": {
+    "item": "ytech:twine_mesh"
+  },
+  "show_notification": true
+}

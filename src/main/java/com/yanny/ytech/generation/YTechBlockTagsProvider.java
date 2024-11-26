@@ -42,6 +42,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.PRIMITIVE_SMELTERS).add(YTechBlocks.PRIMITIVE_SMELTER.get());
         tag(YTechBlockTags.REINFORCED_BRICKS).add(YTechBlocks.REINFORCED_BRICKS.get());
         tag(YTechBlockTags.REINFORCED_BRICK_CHIMNEYS).add(YTechBlocks.REINFORCED_BRICK_CHIMNEY.get());
+        tag(YTechBlockTags.STRAINERS).add(YTechBlocks.STRAINER.get());
         tag(YTechBlockTags.TERRACOTTA_BRICKS).add(YTechBlocks.TERRACOTTA_BRICKS.get());
         tag(YTechBlockTags.TERRACOTTA_BRICK_SLABS).add(YTechBlocks.TERRACOTTA_BRICK_SLAB.get());
         tag(YTechBlockTags.TERRACOTTA_BRICK_STAIRS).add(YTechBlocks.TERRACOTTA_BRICK_STAIRS.get());
@@ -119,6 +120,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                 .add(sortedMaterials(YTechBlocks.DRYING_RACKS))
                 .add(sortedMaterials(YTechBlocks.TANNING_RACKS))
                 .add(YTechBlocks.POTTERS_WHEEL.get())
+                .add(YTechBlocks.STRAINER.get())
                 .add(YTechBlocks.TOOL_RACK.get())
                 .add(YTechBlocks.WOODEN_BOX.get());
 

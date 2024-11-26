@@ -57,7 +57,7 @@ public class PrimitiveSmelterBlockEntity extends AbstractPrimitiveMachineBlockEn
     @Override
     public MachineItemStackHandler createItemStackHandler() {
         return new MachineItemStackHandler.Builder()
-                .addInputSlot(55, 16, (itemStackHandler, slot, itemStack) -> true)
+                .addInputSlot(55, 16)
                 .addInputSlot(55, 52, (itemStackHandler, slot, itemStack) -> ForgeHooks.getBurnTime(itemStack, RecipeType.BLASTING) > 0)
                 .addInputSlot(88, 52, (itemStackHandler, slot, itemStack) -> itemStack.is(YTechItemTags.CLAY_MOLDS.tag) || itemStack.is(YTechItemTags.SAND_MOLDS.tag))
                 .addOutputSlot(116, 35)
