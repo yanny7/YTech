@@ -4,6 +4,7 @@
 
 - Added Strainer for obtaining Galena/Cassiterite
 - Removed generation of Galena/Cassiterite ores in world
+- Fixed missing item dropping on block destroy
 
 ## [0.9.2]
 

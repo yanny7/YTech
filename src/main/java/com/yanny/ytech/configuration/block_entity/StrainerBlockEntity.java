@@ -30,6 +30,10 @@ public class StrainerBlockEntity extends MachineBlockEntity {
         super(YTechBlockEntityTypes.STRAINER.get(), pPos, pBlockState);
     }
 
+    public boolean hasMesh() {
+        return !itemStackHandler.getStackInSlot(0).isEmpty();
+    }
+
     public void onRandomTick(ServerLevel serverLevel, BlockPos pos) {
         MinecraftServer server = serverLevel.getServer();
         LootTable table = server.getLootData().getLootTable(Utils.modLoc("fishing/strainer"));

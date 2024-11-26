@@ -33,7 +33,7 @@ public class StrainerRenderer implements BlockEntityRenderer<StrainerBlockEntity
         BlockState blockState = blockEntity.getBlockState();
         Level level = blockEntity.getLevel();
 
-        if (level != null) {
+        if (level != null && blockEntity.hasMesh()) {
             poseStack.pushPose();
             poseStack.translate(0, 1, 0);
 

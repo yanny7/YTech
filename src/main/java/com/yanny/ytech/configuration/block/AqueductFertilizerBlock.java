@@ -13,6 +13,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -44,6 +45,17 @@ public class AqueductFertilizerBlock extends AqueductHydratorBlock {
             NetworkHooks.openScreen((ServerPlayer) player, getMenuProvider(state, level, pos), pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (!level.isClientSide && level.getBlockEntity(pos) instanceof AqueductFertilizerBlockEntity blockEntity) {
+                Containers.dropContents(level, pos, blockEntity.getItemStackHandler().getItems());
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {

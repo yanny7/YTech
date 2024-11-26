@@ -36,6 +36,10 @@ public class MachineItemStackHandler extends ItemStackHandler {
         this.outputSlotHolder = outputSlotHolder;
     }
 
+    public NonNullList<ItemStack> getItems() {
+        return stacks;
+    }
+
     public int getX(int slot) {
         validateSlotIndex(slot);
 
