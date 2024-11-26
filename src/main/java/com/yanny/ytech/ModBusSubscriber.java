@@ -220,6 +220,6 @@ public class ModBusSubscriber {
     }
 
     public static boolean removeAnimalPredicate(EntityType<? extends Animal> pAnimal, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
-        return YTechMod.CONFIGURATION.removeVanillaMobs();
+        return !YTechMod.CONFIGURATION.removeVanillaMobs();
     }
 }
