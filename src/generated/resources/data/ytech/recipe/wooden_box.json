@@ -1,0 +1,29 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "L": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "LLL",
+      "LLL",
+      "LLL"
+    ],
+    "middle": [
+      "LLL",
+      "L L",
+      "LLL"
+    ],
+    "top": [
+      "   ",
+      "   ",
+      "   "
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:wooden_box"
+  }
+}

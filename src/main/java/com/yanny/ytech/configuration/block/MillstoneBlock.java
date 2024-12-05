@@ -98,20 +98,20 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .from(0, 6, 0).to(16, 8, 16).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 6, 16, 8).texture("#side");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 6, 16, 8).texture("#side").cullface(direction);
                     }
                 })
                 .from(0, 4, 0).to(16, 6, 16).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 8, 16, 10).texture("#side");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 8, 16, 10).texture("#side").cullface(direction);
                     }
                 })
                 .from(0, 2, 0).to(16, 4, 16).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#side");
-                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("slab");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#side").cullface(direction);
+                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#slab").cullface(direction);
                     }
                 })
                 .from(0, 0, 0).to(16, 2, 16).end()

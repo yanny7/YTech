@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#c:hammers/bronze",
+    "#c:hammers/copper",
+    "#c:hammers/gold",
+    "#c:hammers/iron",
+    "#c:hammers/lead",
+    "#c:hammers/stone",
+    "#c:hammers/tin"
+  ]
+}

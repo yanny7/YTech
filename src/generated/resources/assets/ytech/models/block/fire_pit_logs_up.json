@@ -4,6 +4,7 @@
     {
       "faces": {
         "down": {
+          "cullface": "down",
           "texture": "#3",
           "uv": [
             1.0,
@@ -76,6 +77,7 @@
     {
       "faces": {
         "down": {
+          "cullface": "down",
           "texture": "#3",
           "uv": [
             2.0,

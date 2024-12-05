@@ -4,6 +4,7 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.JsonOps;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.block.GrassBedBlock;
+import com.yanny.ytech.configuration.block.WellPulleyBlock;
 import com.yanny.ytech.configuration.entity.DeerEntity;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechEntityTypes;
@@ -65,7 +66,7 @@ class YTechLootTableProvider extends LootTableProvider {
 
         @Override
         protected void generate() {
-            dropSelf(YTechBlocks.AQUEDUCT);
+            dropSelf(YTechBlocks.AMPHORA);
             dropSelf(YTechBlocks.AQUEDUCT_FERTILIZER);
             dropSelf(YTechBlocks.AQUEDUCT_HYDRATOR);
             dropSelf(YTechBlocks.AQUEDUCT_VALVE);
@@ -85,7 +86,12 @@ class YTechLootTableProvider extends LootTableProvider {
             dropSelf(YTechBlocks.THATCH);
             registerSlabLootTable(YTechBlocks.THATCH_SLAB);
             dropSelf(YTechBlocks.THATCH_STAIRS);
+            dropSelf(YTechBlocks.TOOL_RACK);
+            dropSelf(YTechBlocks.TREE_STUMP);
+            registerWellPulleyLootTable();
+            dropSelf(YTechBlocks.WOODEN_BOX);
 
+            registerMaterialLootTable(YTechBlocks.AQUEDUCTS, this::dropSelf);
             registerMaterialLootTable(YTechBlocks.DEEPSLATE_ORES, this::oreLoot, MaterialType.VANILLA_METALS);
             registerMaterialLootTable(YTechBlocks.DRYING_RACKS, this::dropSelf);
             registerMaterialLootTable(YTechBlocks.GRAVEL_DEPOSITS, (block, material) -> depositLootProvider(block, material, Items.GRAVEL));
@@ -102,7 +108,7 @@ class YTechLootTableProvider extends LootTableProvider {
         protected Iterable<Block> getKnownBlocks() {
             return Stream.of(
                     Stream.of(
-                            YTechBlocks.AQUEDUCT,
+                            YTechBlocks.AMPHORA,
                             YTechBlocks.AQUEDUCT_FERTILIZER,
                             YTechBlocks.AQUEDUCT_HYDRATOR,
                             YTechBlocks.AQUEDUCT_VALVE,
@@ -121,8 +127,13 @@ class YTechLootTableProvider extends LootTableProvider {
                             YTechBlocks.TERRACOTTA_BRICK_STAIRS,
                             YTechBlocks.THATCH,
                             YTechBlocks.THATCH_SLAB,
-                            YTechBlocks.THATCH_STAIRS
+                            YTechBlocks.THATCH_STAIRS,
+                            YTechBlocks.TREE_STUMP,
+                            YTechBlocks.TOOL_RACK,
+                            YTechBlocks.WELL_PULLEY,
+                            YTechBlocks.WOODEN_BOX
                     ).map(DeferredBlock::get),
+                    YTechBlocks.AQUEDUCTS.entries().stream().map(Map.Entry::getValue).map(DeferredBlock::get),
                     filteredStream(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS).map(Map.Entry::getValue).map(DeferredBlock::get),
                     YTechBlocks.DRYING_RACKS.entries().stream().map(Map.Entry::getValue).map(DeferredBlock::get),
                     YTechBlocks.GRAVEL_DEPOSITS.entries().stream().map(Map.Entry::getValue).map(DeferredBlock::get),
@@ -182,6 +193,10 @@ class YTechLootTableProvider extends LootTableProvider {
                                             )
                             )
             );
+        }
+
+        private void registerWellPulleyLootTable() {
+            add(YTechBlocks.WELL_PULLEY.get(), b -> createSinglePropConditionTable(b, WellPulleyBlock.WELL_PART, WellPulleyBlock.WellPulleyPart.BASE));
         }
     }
 

@@ -1,5 +1,6 @@
 {
   "values": [
-    "ytech:ingot_mold"
+    "#ytech:clay_molds/ingot",
+    "#ytech:sand_molds/ingot"
   ]
 }

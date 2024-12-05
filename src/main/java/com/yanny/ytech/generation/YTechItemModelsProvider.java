@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.IType;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.item.BasketItem;
+import com.yanny.ytech.configuration.item.DiviningRodItem;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.client.renderer.block.model.BlockModel;
@@ -28,17 +29,15 @@ class YTechItemModelsProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        basketItem();
-        clayBucketItem(YTechItems.LAVA_CLAY_BUCKET);
-        clayBucketItem(YTechItems.WATER_CLAY_BUCKET);
-
         simpleItem(YTechItems.ANTLER);
+        basketItem();
         simpleItem(YTechItems.BEESWAX);
         simpleItem(YTechItems.BONE_NEEDLE);
         simpleItem(YTechItems.BREAD_DOUGH);
         simpleItem(YTechItems.BRICK_MOLD);
         simpleItem(YTechItems.CLAY_BUCKET);
         simpleItem(YTechItems.COOKED_VENISON);
+        diviningRodItem();
         simpleItem(YTechItems.DRIED_BEEF);
         simpleItem(YTechItems.DRIED_CHICKEN);
         simpleItem(YTechItems.DRIED_COD);
@@ -51,18 +50,21 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleItem(YTechItems.GRASS_FIBERS);
         simpleItem(YTechItems.GRASS_TWINE);
         simpleItem(YTechItems.IRON_BLOOM);
+        clayBucketItem(YTechItems.LAVA_CLAY_BUCKET);
         simpleItem(YTechItems.LEATHER_STRIPS);
         simpleItem(YTechItems.MAMMOTH_TUSK);
         simpleItem(YTechItems.PEBBLE);
         simpleItem(YTechItems.RAW_HIDE);
         simpleItem(YTechItems.RHINO_HORN);
         simpleItem(YTechItems.SHARP_FLINT);
+        unfiredAmphoraItem();
         simpleItem(YTechItems.UNFIRED_BRICK);
         simpleItem(YTechItems.UNFIRED_CLAY_BUCKET);
         decoratedPotItem();
         simpleItem(YTechItems.UNFIRED_FLOWER_POT);
         simpleItem(YTechItems.UNLIT_TORCH);
         simpleItem(YTechItems.VENISON);
+        clayBucketItem(YTechItems.WATER_CLAY_BUCKET);
 
         simpleItem(YTechItems.CHLORITE_BRACELET);
         simpleItem(YTechItems.LION_MAN);
@@ -80,7 +82,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         spawnEggModel(YTechItems.WOOLLY_MAMMOTH_SPAWN_EGG);
         spawnEggModel(YTechItems.WOOLLY_RHINO_SPAWN_EGG);
 
-        simpleTypedItem(YTechItems.MOLDS);
+        simpleTypedItem(YTechItems.CLAY_MOLDS);
         simpleTypedItem(YTechItems.PATTERNS);
         simpleTypedItem(YTechItems.SAND_MOLDS);
         simpleTypedItem(YTechItems.UNFIRED_MOLDS);
@@ -90,16 +92,16 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleTypedItem(YTechItems.ARROWS);
         simpleTypedItem(YTechItems.AXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         simpleTypedItem(YTechItems.BOLTS);
-        simpleTypedItem(YTechItems.BOOTS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
-        simpleTypedItem(YTechItems.CHESTPLATES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.BOOTS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
+        simpleTypedItem(YTechItems.CHESTPLATES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
         simpleTypedItem(YTechItems.CRUSHED_MATERIALS);
         simpleTypedItem(YTechItems.FILES, "item/handheld");
         simpleTypedItem(YTechItems.HAMMERS, "item/handheld");
-        simpleTypedItem(YTechItems.HELMETS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.HELMETS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
         simpleTypedItem(YTechItems.HOES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         simpleTypedItem(YTechItems.INGOTS, MaterialType.VANILLA_METALS, "item/generated");
         simpleTypedItem(YTechItems.KNIVES);
-        simpleTypedItem(YTechItems.LEGGINGS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/generated");
+        simpleTypedItem(YTechItems.LEGGINGS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
         simpleTypedItem(YTechItems.MORTAR_AND_PESTLES);
         simpleTypedItem(YTechItems.PICKAXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         simpleTypedItem(YTechItems.PLATES);
@@ -107,7 +109,8 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleTypedItem(YTechItems.RODS);
         simpleTypedItem(YTechItems.SAWS, "item/handheld");
         simpleTypedItem(YTechItems.SAW_BLADES);
-        simpleTypedItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
+        simpleTypedItem(YTechItems.SHEARS, EnumSet.of(MaterialType.IRON), "item/handheld");
+        simpleTypedItem(YTechItems.SHOVELS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.WOODEN), "item/handheld");
         spearItem();
         simpleTypedItem(YTechItems.SWORDS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
     }
@@ -156,6 +159,24 @@ class YTechItemModelsProvider extends ItemModelProvider {
 
         builder.override().predicate(BasketItem.FILLED_PREDICATE, 0.0001f).model(model).end();
         builder.texture("layer0", Utils.modItemLoc(Utils.getPath(YTechItems.BASKET)));
+    }
+
+    private void diviningRodItem() {
+        ItemModelBuilder builder = getBuilder(Utils.getPath(YTechItems.DIVINING_ROD)).parent(new ModelFile.UncheckedModelFile("item/generated"));
+        ModelFile someWater = getBuilder(Utils.getPath(YTechItems.DIVINING_ROD) + "_some_water")
+                .parent(builder)
+                .texture("layer0", Utils.modItemLoc("divining_rod/some_water"));
+        ModelFile moreWater = getBuilder(Utils.getPath(YTechItems.DIVINING_ROD) + "_more_water")
+                .parent(builder)
+                .texture("layer0", Utils.modItemLoc("divining_rod/more_water"));
+        ModelFile plentyWater = getBuilder(Utils.getPath(YTechItems.DIVINING_ROD) + "_plenty_water")
+                .parent(builder)
+                .texture("layer0", Utils.modItemLoc("divining_rod/plenty_water"));
+
+        builder.override().predicate(DiviningRodItem.ABUNDANCE_PREDICATE, 0.25f).model(someWater).end();
+        builder.override().predicate(DiviningRodItem.ABUNDANCE_PREDICATE, 0.5f).model(moreWater).end();
+        builder.override().predicate(DiviningRodItem.ABUNDANCE_PREDICATE, 0.75f).model(plentyWater).end();
+        builder.texture("layer0", Utils.modItemLoc("divining_rod/no_water"));
     }
 
     private void clayBucketItem(@NotNull DeferredItem<Item> item) {
@@ -239,6 +260,55 @@ class YTechItemModelsProvider extends ItemModelProvider {
                 .texture("particle", Utils.modBlockLoc("unfired_decorated_pot_side"))
                 .texture("0", Utils.modBlockLoc("unfired_decorated_pot_base"))
                 .texture("1", Utils.modBlockLoc("unfired_decorated_pot_side"));
+    }
+
+    private void unfiredAmphoraItem() {
+        getBuilder(Utils.getPath(YTechItems.UNFIRED_AMPHORA))
+                .parent(getExistingFile(Utils.mcBlockLoc("block")))
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(5, 13, 11, 16).texture("#1");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#0");
+                    }
+                })
+                .from(5, 0, 5).to(11, 3, 11)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(3, 4, 13, 14).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(3, 3, 13, 13).texture("#0");
+                    }
+                })
+                .from(3, 6, 3).to(13, 16, 13)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(6, 2, 10, 4).texture("#1");
+                    }
+                })
+                .from(5.999f, 16, 5.999f).to(10.001f, 18, 10.001f)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(4, 10, 12, 13).texture("#1");
+                        case DOWN -> faceBuilder.uvs(4, 4, 12, 12).texture("#2");
+                    }
+                })
+                .from(4, 3, 4).to(12, 6, 12)
+                .end()
+                .element().allFaces((direction, faceBuilder) -> {
+                    switch(direction) {
+                        case NORTH, WEST, SOUTH, EAST -> faceBuilder.uvs(5, 0, 11, 2).texture("#1");
+                        case UP -> faceBuilder.uvs(5, 5, 11, 11).texture("#2");
+                        case DOWN -> faceBuilder.uvs(5, 5, 11, 11).texture("#0");
+                    }
+                })
+                .from(4.999f, 18, 4.999f).to(11.001f, 19.999f, 11.001f)
+                .end()
+                .texture("particle", Utils.modBlockLoc("unfired_amphora/amphora_side"))
+                .texture("0", Utils.modBlockLoc("unfired_amphora/amphora_base"))
+                .texture("1", Utils.modBlockLoc("unfired_amphora/amphora_side"))
+                .texture("2", Utils.modBlockLoc("unfired_amphora/amphora_top"));
     }
 
     private void spawnEggModel(DeferredItem<Item> item) {

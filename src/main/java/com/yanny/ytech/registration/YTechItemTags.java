@@ -25,6 +25,7 @@ public class YTechItemTags {
     public static final TagKey<Item> BRICK_MOLDS = create("brick_molds");
     public static final TagKey<Item> CLAY_BUCKETS = create("clay_buckets");
     public static final TagKey<Item> COOKED_VENISON = create("cooked_venison");
+    public static final TagKey<Item> DIVINING_RODS = create("divining_rods");
     public static final TagKey<Item> DRIED_BEEFS = create("dried_beefs");
     public static final TagKey<Item> DRIED_CHICKENS = create("dried_chickens");
     public static final TagKey<Item> DRIED_CODS = create("dried_cods");
@@ -44,6 +45,7 @@ public class YTechItemTags {
     public static final TagKey<Item> RAW_HIDES = create("raw_hides");
     public static final TagKey<Item> RHINO_HORNS = create("rhino_horns");
     public static final TagKey<Item> SHARP_FLINTS = create("sharp_flints");
+    public static final TagKey<Item> UNFIRED_AMPHORAE = create("unfired_amphorae");
     public static final TagKey<Item> UNFIRED_BRICKS = create("unfired_bricks");
     public static final TagKey<Item> UNFIRED_CLAY_BUCKETS = create("unfired_clay_buckets");
     public static final TagKey<Item> UNFIRED_DECORATED_POTS = create("unfired_decorated_pots");
@@ -52,14 +54,13 @@ public class YTechItemTags {
     public static final TagKey<Item> VENISON = create("venison");
     public static final TagKey<Item> WATER_BUCKETS = create("water_buckets");
 
-    public static final TagKey<Item> BONE = create("bone");
-    public static final TagKey<Item> DEER_FOOD = create("deer_food");
     public static final TagKey<Item> FERTILIZER = create("fertilizer");
     public static final TagKey<Item> FIRE_SOURCE = create("fire_source");
     public static final TagKey<Item> SOUL_FIRE_SOURCE = create("soul_fire_source");
 
     public static final TagKey<Item> AUROCHS_FOOD = create("aurochs_food");
     public static final TagKey<Item> AUROCHS_TEMP_ITEMS = create("aurochs_temp_items");
+    public static final TagKey<Item> DEER_FOOD = create("deer_food");
     public static final TagKey<Item> DEER_TEMP_ITEMS = create("deer_temp_items");
     public static final TagKey<Item> FOWL_FOOD = create("fowl_food");
     public static final TagKey<Item> FOWL_TEMP_ITEMS = create("fowl_temp_items");
@@ -72,12 +73,13 @@ public class YTechItemTags {
     public static final TagKey<Item> WOOLLY_MAMMOTH_TEMP_ITEMS = create("woolly_mammoth_temp_items");
     public static final TagKey<Item> WOOLLY_RHINO_TEMP_ITEMS = create("woolly_rhino_temp_items");
 
-    public static final TagKey<Item> AQUEDUCTS = create(YTechBlockTags.AQUEDUCTS);
+    public static final TagKey<Item> AMPHORAE = create(YTechBlockTags.AMPHORAE);
     public static final TagKey<Item> AQUEDUCT_FERTILIZERS = create(YTechBlockTags.AQUEDUCT_FERTILIZERS);
     public static final TagKey<Item> AQUEDUCT_HYDRATORS = create(YTechBlockTags.AQUEDUCT_HYDRATORS);
     public static final TagKey<Item> AQUEDUCT_VALVES = create(YTechBlockTags.AQUEDUCT_VALVES);
     public static final TagKey<Item> BRICK_CHIMNEYS = create(YTechBlockTags.BRICK_CHIMNEYS);
     public static final TagKey<Item> BRONZE_ANVILS = create(YTechBlockTags.BRONZE_ANVILS);
+    public static final TagKey<Item> CRAFTING_WORKSPACES = create(YTechBlockTags.CRAFTING_WORKSPACES);
     public static final TagKey<Item> FIRE_PITS = create(YTechBlockTags.FIRE_PITS);
     public static final TagKey<Item> GRASS_BEDS = create(YTechBlockTags.GRASS_BEDS);
     public static final TagKey<Item> MILLSTONES = create(YTechBlockTags.MILLSTONES);
@@ -92,6 +94,10 @@ public class YTechItemTags {
     public static final TagKey<Item> THATCH = create(YTechBlockTags.THATCH);
     public static final TagKey<Item> THATCH_SLABS = create(YTechBlockTags.THATCH_SLABS);
     public static final TagKey<Item> THATCH_STAIRS = create(YTechBlockTags.THATCH_STAIRS);
+    public static final TagKey<Item> TOOL_RACKS = create(YTechBlockTags.TOOL_RACKS);
+    public static final TagKey<Item> TREE_STUMPS = create(YTechBlockTags.TREE_STUMPS);
+    public static final TagKey<Item> WELL_PULLEYS = create(YTechBlockTags.WELL_PULLEYS);
+    public static final TagKey<Item> WOODEN_BOXES = create(YTechBlockTags.WOODEN_BOXES);
 
     public static final TagKey<Item> CURIOS_BRACELETS = create("curios", "bracelet");
     public static final TagKey<Item> CURIOS_CHARMS = create("curios", "charm");
@@ -103,37 +109,41 @@ public class YTechItemTags {
     public static final TagKey<Item> VENUS_OF_HOHLE_FELS = create("venus_of_hohle_fels");
     public static final TagKey<Item> WILD_HORSES = create("wild_horse");
 
-    public static final TypedTag<PartType> MOLDS = new PartTag("molds", YTechItems.MOLDS);
+    public static final TypedTag<PartType> CLAY_MOLDS = new PartTag("clay_molds", YTechItems.CLAY_MOLDS);
     public static final TypedTag<PartType> PATTERNS = new PartTag("patterns", YTechItems.PATTERNS);
     public static final TypedTag<PartType> SAND_MOLDS = new PartTag("sand_molds", YTechItems.SAND_MOLDS);
     public static final TypedTag<PartType> UNFIRED_MOLDS = new PartTag("unfired_molds", YTechItems.UNFIRED_MOLDS);
 
+    public static final TypedTag<PartType> MOLDS = new PartTag("molds", PartType.ALL_PARTS);
+
     public static final MultiTypedTag<MaterialType, PartType> PARTS = new MaterialPartTag("parts", YTechItems.PARTS);
 
     public static final TypedTag<MaterialType> ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
-    public static final TypedTag<MaterialType> AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
-    public static final TypedTag<MaterialType> BOLTS = new MaterialTag("bolts", YTechItems.BOLTS);
-    public static final TypedTag<MaterialType> BOOTS = new MaterialTag("boots", ItemTags.FOOT_ARMOR, YTechItems.BOOTS);
-    public static final TypedTag<MaterialType> CHESTPLATES = new MaterialTag("chestplates", ItemTags.CHEST_ARMOR, YTechItems.CHESTPLATES);
+    public static final TypedTag<MaterialType> AXES = new MaterialTag("axes", "c", ItemTags.AXES, YTechItems.AXES);
+    public static final TypedTag<MaterialType> BOLTS = new MaterialTag("bolts", "c", YTechItems.BOLTS);
+    public static final TypedTag<MaterialType> BOOTS = new MaterialTag("boots", "c", ItemTags.FOOT_ARMOR, YTechItems.BOOTS);
+    public static final TypedTag<MaterialType> CHESTPLATES = new MaterialTag("chestplates", "c", ItemTags.CHEST_ARMOR, YTechItems.CHESTPLATES);
     public static final TypedTag<MaterialType> CRUSHED_MATERIALS = new MaterialTag("crushed_materials", "c", YTechItems.CRUSHED_MATERIALS);
-    public static final TypedTag<MaterialType> FILES = new MaterialTag("files", YTechItems.FILES);
-    public static final TypedTag<MaterialType> HAMMERS = new MaterialTag("hammers", YTechItems.HAMMERS);
-    public static final TypedTag<MaterialType> HELMETS = new MaterialTag("helmets", ItemTags.HEAD_ARMOR, YTechItems.HELMETS);
-    public static final TypedTag<MaterialType> HOES = new MaterialTag("hoes", ItemTags.HOES, YTechItems.HOES);
+    public static final TypedTag<MaterialType> FILES = new MaterialTag("files", "c", YTechItems.FILES);
+    public static final TypedTag<MaterialType> HAMMERS = new MaterialTag("hammers", "c", YTechItems.HAMMERS);
+    public static final TypedTag<MaterialType> HELMETS = new MaterialTag("helmets", "c", ItemTags.HEAD_ARMOR, YTechItems.HELMETS);
+    public static final TypedTag<MaterialType> HOES = new MaterialTag("hoes", "c", ItemTags.HOES, YTechItems.HOES);
     public static final TypedTag<MaterialType> INGOTS = new IngotMaterialTag();
-    public static final TypedTag<MaterialType> KNIVES = new MaterialTag("knives", YTechItems.KNIVES);
-    public static final TypedTag<MaterialType> MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", YTechItems.MORTAR_AND_PESTLES);
-    public static final TypedTag<MaterialType> LEGGINGS = new MaterialTag("leggings", ItemTags.LEG_ARMOR, YTechItems.LEGGINGS);
-    public static final TypedTag<MaterialType> PICKAXES = new MaterialTag("pickaxes", ItemTags.PICKAXES, YTechItems.PICKAXES);
-    public static final TypedTag<MaterialType> PLATES = new MaterialTag("plates", YTechItems.PLATES);
+    public static final TypedTag<MaterialType> KNIVES = new MaterialTag("knives", "c", YTechItems.KNIVES);
+    public static final TypedTag<MaterialType> MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", "c", YTechItems.MORTAR_AND_PESTLES);
+    public static final TypedTag<MaterialType> LEGGINGS = new MaterialTag("leggings", "c", ItemTags.LEG_ARMOR, YTechItems.LEGGINGS);
+    public static final TypedTag<MaterialType> PICKAXES = new MaterialTag("pickaxes", "c", ItemTags.PICKAXES, YTechItems.PICKAXES);
+    public static final TypedTag<MaterialType> PLATES = new MaterialTag("plates", "c", YTechItems.PLATES);
     public static final TypedTag<MaterialType> RAW_MATERIALS = new RawMaterialTag();
-    public static final TypedTag<MaterialType> RODS = new MaterialTag("rods", YTechItems.RODS);
-    public static final TypedTag<MaterialType> SAWS = new MaterialTag("saws", YTechItems.SAWS);
+    public static final TypedTag<MaterialType> RODS = new MaterialTag("rods", "c", Tags.Items.RODS, YTechItems.RODS);
+    public static final TypedTag<MaterialType> SAWS = new MaterialTag("saws", "c", YTechItems.SAWS);
+    public static final TypedTag<MaterialType> SHEARS = new MaterialTag("shears", "c", YTechItems.SHEARS);
     public static final TypedTag<MaterialType> SAW_BLADES = new MaterialTag("saw_blades", YTechItems.SAW_BLADES);
-    public static final TypedTag<MaterialType> SHOVELS = new MaterialTag("shovels", ItemTags.SHOVELS, YTechItems.SHOVELS);
+    public static final TypedTag<MaterialType> SHOVELS = new MaterialTag("shovels", "forge", ItemTags.SHOVELS, YTechItems.SHOVELS);
     public static final TypedTag<MaterialType> SPEARS = new MaterialTag("spears", YTechItems.SPEARS);
-    public static final TypedTag<MaterialType> SWORDS = new MaterialTag("swords", ItemTags.SWORDS, YTechItems.SWORDS);
+    public static final TypedTag<MaterialType> SWORDS = new MaterialTag("swords", "forge", ItemTags.SWORDS, YTechItems.SWORDS);
 
+    public static final TypedTag<MaterialType> AQUEDUCTS = new MaterialTag(YTechBlockTags.AQUEDUCTS);
     public static final TypedTag<MaterialType> DEEPSLATE_ORES = new DeepslateOreMaterialTag();
     public static final TypedTag<MaterialType> DRYING_RACKS = new MaterialTag(YTechBlockTags.DRYING_RACKS);
     public static final TypedTag<MaterialType> GRAVEL_DEPOSITS = new MaterialTag(YTechBlockTags.GRAVEL_DEPOSITS);
@@ -194,11 +204,19 @@ public class YTechItemTags {
         public Set<Map.Entry<E, Map<F, TagKey<Item>>>> entrySet() {
             return tags.entrySet();
         }
+
+        public @NotNull Set<Entry<F, TagKey<Item>>> entrySubSet() {
+            return categoryTags.entrySet();
+        }
     }
 
     public static class PartTag extends TypedTag<PartType> {
         public PartTag(String name, YTechItems.TypedItem<PartType> item) {
             super(name, YTechMod.MOD_ID, create(name), EnumSet.copyOf(item.keySet()), (type) -> type.key);
+        }
+
+        public PartTag(String name, EnumSet<PartType> parts) {
+            super(name, YTechMod.MOD_ID, create(name), parts, (type) -> type.key);
         }
     }
 
@@ -208,7 +226,7 @@ public class YTechItemTags {
         }
 
         public MaterialTag(String name, String namespace, YTechItems.TypedItem<MaterialType> item) {
-            this(name, namespace, create(name), item);
+            this(name, namespace, create(namespace, name), item);
         }
 
         public MaterialTag(String name, TagKey<Item> tag, YTechItems.TypedItem<MaterialType> item) {
@@ -235,7 +253,7 @@ public class YTechItemTags {
     private static class MaterialPartTag extends MultiTypedTag<MaterialType, PartType> {
         public MaterialPartTag(String name, YTechItems.MultiTypedItem<MaterialType, PartType> multiTypedItem) {
             super(create(name));
-            for (PartType part : PartType.ALL_PARTS) {
+            for (PartType part : Utils.exclude(PartType.ALL_PARTS, PartType.INGOT)) {
                 for (MaterialType material : multiTypedItem.keySet()) {
                     tags.computeIfAbsent(material, (t) -> new HashMap<>()).put(part, ItemTags.create(Utils.modLoc(name + "/" + part.key + "s/" + material.key)));
                 }

@@ -44,7 +44,6 @@ public class YTechMod {
         YTechDataComponentTypes.register(modEventBus);
         YTechSoundEvents.register(modEventBus);
         YTechMobEffects.register(modEventBus);
-        YTechIngredientTypes.register(modEventBus);
         YTechRecipeBookCategories.register(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);

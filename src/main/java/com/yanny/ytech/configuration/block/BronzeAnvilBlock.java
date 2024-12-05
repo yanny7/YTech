@@ -70,13 +70,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof BronzeAnvilBlockEntity anvil) {
-                NonNullList<ItemStack> items = NonNullList.withSize(anvil.getItemStackHandler().getSlots(), ItemStack.EMPTY);
-
-                for (int index = 0; index < anvil.getItemStackHandler().getSlots(); index++) {
-                    items.set(index, anvil.getItemStackHandler().getStackInSlot(index));
-                }
-
-                Containers.dropContents(level, pos, items);
+                Containers.dropContents(level, pos, NonNullList.withSize(1, anvil.getItem()));
             }
         }
 
@@ -155,7 +149,8 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(2, 12, 14, 16).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
+                        case UP -> faceBuilder.uvs(2, 0, 14, 12).texture("#1");
+                        case DOWN -> faceBuilder.uvs(2, 0, 14, 12).texture("#1").cullface(direction);
                     }
                 })
                 .from(2, 0, 2).to(14, 4, 14).end()
@@ -178,9 +173,9 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .from(6, 5, 4).to(10, 10, 12).end()
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, SOUTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
+                        case NORTH, SOUTH -> faceBuilder.uvs(10, 0, 16, 10).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1").cullface(direction);
                         case EAST, WEST -> faceBuilder.uvs(0, 10, 16, 16).texture("#1");
-                        case UP -> faceBuilder.uvs(3, 0, 13, 16).texture("#2");
+                        case UP -> faceBuilder.uvs(3, 0, 13, 16).texture("#2").cullface(direction);
                         case DOWN -> faceBuilder.uvs(0, 1, 16, 11).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
                     }
                 })

@@ -1,10 +1,11 @@
 package com.yanny.ytech;
 
 import com.yanny.ytech.configuration.SpearType;
-import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
+import com.yanny.ytech.configuration.block_entity.WellPulleyBlockEntity;
 import com.yanny.ytech.configuration.data_component.BasketContents;
 import com.yanny.ytech.configuration.entity.*;
 import com.yanny.ytech.configuration.item.BasketItem;
+import com.yanny.ytech.configuration.item.DiviningRodItem;
 import com.yanny.ytech.configuration.item.SpearItem;
 import com.yanny.ytech.configuration.model.*;
 import com.yanny.ytech.configuration.renderer.*;
@@ -21,6 +22,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -65,6 +67,8 @@ public class ModBusSubscriber {
         event.enqueueWork(() -> {
             ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
                     (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
+            ItemProperties.register(YTechItems.DIVINING_ROD.get(), DiviningRodItem.ABUNDANCE_PREDICATE,
+                    (stack, level, entity, seed) -> entity != null ? (float) WellPulleyBlockEntity.getWaterAbundance(entity.getOnPos()) : 1);
             YTechItems.SPEARS.values().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
                     (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && ItemStack.isSameItemSameComponents(entity.getUseItem(), stack) ? 1.0F : 0.0F));
         });
@@ -104,10 +108,14 @@ public class ModBusSubscriber {
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.AQUEDUCT.get(), AqueductRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.BRONZE_ANVIL.get(), BronzeAnvilRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.DRYING_RACK.get(), DryingRackRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.CRAFTING_WORKSPACE.get(), CraftingWorkspaceRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.FIRE_PIT.get(), FirePitRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.MILLSTONE.get(), MillstoneRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.POTTERS_WHEEL.get(), PottersWheelRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TANNING_RACK.get(), TanningRackRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.TOOL_RACK.get(), ToolRackRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.TREE_STUMP.get(), TreeStumpRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.WOODEN_BOX.get(), WoodenBoxRenderer::new);
 
         event.registerEntityRenderer(YTechEntityTypes.FLINT_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.FLINT)));
         event.registerEntityRenderer(YTechEntityTypes.COPPER_SPEAR.get(), context -> new SpearRenderer(context, LAYER_LOCATIONS.get(SpearType.COPPER)));
@@ -204,17 +212,21 @@ public class ModBusSubscriber {
 
     @SubscribeEvent
     public static void onRegisterCap(@NotNull RegisterCapabilitiesEvent event) {
-        event.registerBlock(Capabilities.FluidHandler.BLOCK, (level, pos, state, be, side) -> {
-            if (!level.isClientSide && be instanceof IrrigationBlockEntity irrigationBlockEntity) {
-                IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(irrigationBlockEntity);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, YTechBlockEntityTypes.AQUEDUCT.get(), (blockEntity, direction) -> {
+            IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
 
-                if (network != null) {
-                    return network.getFluidHandler();
-                }
+            if (network != null) {
+                return network.getFluidHandler();
             }
 
             return null;
-        }, YTechBlocks.AQUEDUCT.get());
+        });
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, YTechBlockEntityTypes.AMPHORA.get(), (amphoraBlockEntity, direction) -> {
+            if (!amphoraBlockEntity.isRemoved() && direction == Direction.UP) {
+                return amphoraBlockEntity.getItemHandler();
+            }
+            return null;
+        });
     }
 
     @SubscribeEvent

@@ -19,6 +19,8 @@ These dependencies are optional, but highly recommended:
 - Just Enough Items - You can see all changed recipes
 - Curios API - Needed for jewelry effects, otherwise items are useless
 - KubeJS - Easy way to add/modify/remove YTech recipes (API described on [wiki](https://github.com/yanny7/YTech/wiki))
+- EMI - You can browse all recipes
+- Jade - Provides more information about in-world blocks and entities
 
 All bugs report on [GitHub](https://github.com/yanny7/ytech).
 

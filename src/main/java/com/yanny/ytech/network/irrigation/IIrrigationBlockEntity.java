@@ -7,7 +7,17 @@ import org.jetbrains.annotations.NotNull;
 public interface IIrrigationBlockEntity extends INetworkBlockEntity {
     void onRemove();
     void onChangedState(@NotNull BlockState oldBlockState, @NotNull BlockState newBlockState);
-    int getFlow();
-    boolean validForRainFilling();
     @NotNull NetworkType getNetworkType();
+
+    default int getFlow() {
+        return 0;
+    }
+
+    default int getCapacity() {
+        return 0;
+    }
+
+    default boolean validForRainFilling() {
+        return false;
+    }
 }

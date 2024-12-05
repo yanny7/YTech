@@ -1,0 +1,14 @@
+{
+  "type": "ytech:smelting",
+  "ingredient": {
+    "tag": "ytech:unfired_amphorae"
+  },
+  "inputCount": 1,
+  "minTemp": 1000,
+  "mold": [],
+  "result": {
+    "count": 1,
+    "id": "ytech:amphora"
+  },
+  "smeltingTime": 200
+}

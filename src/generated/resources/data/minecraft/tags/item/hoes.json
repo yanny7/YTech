@@ -1,8 +1,8 @@
 {
   "values": [
-    "#ytech:hoes/bronze",
-    "#ytech:hoes/copper",
-    "#ytech:hoes/lead",
-    "#ytech:hoes/tin"
+    "#c:hoes/bronze",
+    "#c:hoes/copper",
+    "#c:hoes/lead",
+    "#c:hoes/tin"
   ]
 }

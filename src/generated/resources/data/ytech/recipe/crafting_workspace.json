@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "tag": "ytech:grass_twines"
+    }
+  },
+  "pattern": [
+    "TT",
+    "SS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:crafting_workspace"
+  }
+}

@@ -1,9 +1,9 @@
 {
   "values": [
-    "#ytech:axes/bronze",
-    "#ytech:axes/copper",
-    "#ytech:axes/flint",
-    "#ytech:axes/lead",
-    "#ytech:axes/tin"
+    "#c:axes/bronze",
+    "#c:axes/copper",
+    "#c:axes/flint",
+    "#c:axes/lead",
+    "#c:axes/tin"
   ]
 }

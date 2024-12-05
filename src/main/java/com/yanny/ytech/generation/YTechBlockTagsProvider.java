@@ -27,12 +27,13 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        tag(YTechBlockTags.AQUEDUCTS).add(YTechBlocks.AQUEDUCT.get());
+        tag(YTechBlockTags.AMPHORAE).add(YTechBlocks.AMPHORA.get());
         tag(YTechBlockTags.AQUEDUCT_FERTILIZERS).add(YTechBlocks.AQUEDUCT_FERTILIZER.get());
         tag(YTechBlockTags.AQUEDUCT_HYDRATORS).add(YTechBlocks.AQUEDUCT_HYDRATOR.get());
         tag(YTechBlockTags.AQUEDUCT_VALVES).add(YTechBlocks.AQUEDUCT_VALVE.get());
         tag(YTechBlockTags.BRICK_CHIMNEYS).add(YTechBlocks.BRICK_CHIMNEY.get());
         tag(YTechBlockTags.BRONZE_ANVILS).add(YTechBlocks.BRONZE_ANVIL.get());
+        tag(YTechBlockTags.CRAFTING_WORKSPACES).add(YTechBlocks.CRAFTING_WORKSPACE.get());
         tag(YTechBlockTags.FIRE_PITS).add(YTechBlocks.FIRE_PIT.get());
         tag(YTechBlockTags.GRASS_BEDS).add(YTechBlocks.GRASS_BED.get());
         tag(YTechBlockTags.MILLSTONES).add(YTechBlocks.MILLSTONE.get());
@@ -47,6 +48,10 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(YTechBlockTags.THATCH).add(YTechBlocks.THATCH.get());
         tag(YTechBlockTags.THATCH_SLABS).add(YTechBlocks.THATCH_SLAB.get());
         tag(YTechBlockTags.THATCH_STAIRS).add(YTechBlocks.THATCH_STAIRS.get());
+        tag(YTechBlockTags.TOOL_RACKS).add(YTechBlocks.TOOL_RACK.get());
+        tag(YTechBlockTags.TREE_STUMPS).add(YTechBlocks.TREE_STUMP.get());
+        tag(YTechBlockTags.WELL_PULLEYS).add(YTechBlocks.WELL_PULLEY.get());
+        tag(YTechBlockTags.WOODEN_BOXES).add(YTechBlocks.WOODEN_BOX.get());
 
         tag(YTechBlockTags.AUROCHS_RAID_BLOCKS).add(Blocks.WHEAT);
         tag(YTechBlockTags.DEER_RAID_BLOCKS).add(Blocks.WHEAT);
@@ -55,9 +60,14 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
         tag(YTechBlockTags.FIRE_SOURCE)
                 .add(Blocks.FIRE, Blocks.CAMPFIRE, Blocks.LANTERN, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.FURNACE, Blocks.BLAST_FURNACE)
-                .addTags(YTechBlockTags.FIRE_PITS, YTechBlockTags.PRIMITIVE_SMELTERS, YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
+                .addTag(YTechBlockTags.FIRE_PITS)
+                .addTag(YTechBlockTags.PRIMITIVE_SMELTERS)
+                .addTag(YTechBlockTags.PRIMITIVE_ALLOY_SMELTERS);
         tag(YTechBlockTags.SOUL_FIRE_SOURCE).add(Blocks.SOUL_FIRE, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH);
 
+        tag(YTechBlockTags.REQUIRE_VALID_TOOL).addTag(BlockTags.LOGS).addTag(BlockTags.DIRT);
+
+        materialTag(YTechBlocks.AQUEDUCTS, YTechBlockTags.AQUEDUCTS);
         materialOreTag(YTechBlocks.DEEPSLATE_ORES, YTechBlockTags.DEEPSLATE_ORES, MaterialType.VANILLA_METALS);
         materialTag(YTechBlocks.DRYING_RACKS, YTechBlockTags.DRYING_RACKS);
         materialTag(YTechBlocks.GRAVEL_DEPOSITS, YTechBlockTags.GRAVEL_DEPOSITS);
@@ -78,7 +88,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(
-                        YTechBlocks.AQUEDUCT.get(),
+                        YTechBlocks.AMPHORA.get(),
                         YTechBlocks.AQUEDUCT_FERTILIZER.get(),
                         YTechBlocks.AQUEDUCT_HYDRATOR.get(),
                         YTechBlocks.AQUEDUCT_VALVE.get(),
@@ -91,8 +101,10 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                         YTechBlocks.REINFORCED_BRICK_CHIMNEY.get(),
                         YTechBlocks.TERRACOTTA_BRICKS.get(),
                         YTechBlocks.TERRACOTTA_BRICK_SLAB.get(),
-                        YTechBlocks.TERRACOTTA_BRICK_STAIRS.get()
+                        YTechBlocks.TERRACOTTA_BRICK_STAIRS.get(),
+                        YTechBlocks.WELL_PULLEY.get()
                 )
+                .add(filteredMaterials(YTechBlocks.AQUEDUCTS, MaterialType.AQUEDUCT_MATERIALS))
                 .add(filteredMaterials(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS))
                 .add(filteredMaterials(YTechBlocks.NETHER_ORES, EnumSet.of(MaterialType.GOLD)))
                 .add(filteredMaterials(YTechBlocks.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS))
@@ -106,10 +118,11 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(sortedMaterials(YTechBlocks.DRYING_RACKS))
                 .add(sortedMaterials(YTechBlocks.TANNING_RACKS))
-                .add(YTechBlocks.POTTERS_WHEEL.get());
+                .add(YTechBlocks.POTTERS_WHEEL.get())
+                .add(YTechBlocks.TOOL_RACK.get())
+                .add(YTechBlocks.WOODEN_BOX.get());
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(
-                YTechBlocks.AQUEDUCT.get(),
                 YTechBlocks.AQUEDUCT_FERTILIZER.get(),
                 YTechBlocks.AQUEDUCT_HYDRATOR.get(),
                 YTechBlocks.AQUEDUCT_VALVE.get(),

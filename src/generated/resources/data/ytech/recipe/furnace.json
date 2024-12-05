@@ -1,0 +1,32 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "A": {
+      "item": "minecraft:campfire"
+    },
+    "C": {
+      "tag": "c:cobblestones/normal"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ],
+    "middle": [
+      "CCC",
+      "CAC",
+      "C C"
+    ],
+    "top": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:furnace"
+  }
+}

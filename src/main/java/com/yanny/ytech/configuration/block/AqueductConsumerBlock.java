@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -30,10 +29,12 @@ import java.util.List;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public abstract class AqueductConsumerBlock extends IrrigationBlock {
+    public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
     public AqueductConsumerBlock(Properties properties) {
         super(properties);
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
@@ -48,7 +49,7 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
-        BlockState state = defaultBlockState().setValue(WATERLOGGED, false);
+        BlockState state = defaultBlockState().setValue(ACTIVATED, false);
         Level level = blockPlaceContext.getLevel();
         BlockPos pos = blockPlaceContext.getClickedPos();
         boolean hasNorthConnection = isValidForConnection(level, pos, Direction.NORTH);
@@ -109,21 +110,9 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
         }
     }
 
-    @NotNull
-    @Override
-    public FluidState getFluidState(@NotNull BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.defaultFluidState() : Fluids.EMPTY.defaultFluidState();
-    }
-
-    @Override
-    public boolean onDestroyedByPlayer(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                       boolean willHarvest, @NotNull FluidState fluid) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, Fluids.EMPTY.defaultFluidState()); // prevent fluid spawning after block break
-    }
-
     @Override
     protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> stateBuilder) {
-        stateBuilder.add(EAST).add(WEST).add(SOUTH).add(NORTH).add(WATERLOGGED);
+        stateBuilder.add(EAST).add(WEST).add(SOUTH).add(NORTH).add(ACTIVATED);
     }
 
     protected static void createAqueductConsumerTicker(@NotNull Level level, @NotNull BlockEntity blockEntity) {

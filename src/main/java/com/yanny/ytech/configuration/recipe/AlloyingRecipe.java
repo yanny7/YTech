@@ -22,16 +22,20 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<RecipeInput> {
+public record AlloyingRecipe(SizedIngredient ingredient1, SizedIngredient ingredient2, int minTemperature, int smeltingTime, ItemStack result) implements Recipe<RecipeInput> {
     @Override
     public boolean matches(@NotNull RecipeInput recipeInput, @NotNull Level level) {
         return (ingredient1.test(recipeInput.getItem(0)) && ingredient2.test(recipeInput.getItem(1))) ||
@@ -78,8 +82,8 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
     public static class Serializer implements RecipeSerializer<AlloyingRecipe> {
         private static final MapCodec<AlloyingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(
-                        Ingredient.CODEC.fieldOf("ingredient1").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient1),
-                        Ingredient.CODEC.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
+                        SizedIngredient.NESTED_CODEC.fieldOf("ingredient1").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient1),
+                        SizedIngredient.NESTED_CODEC.fieldOf("ingredient2").forGetter((alloyingRecipe) -> alloyingRecipe.ingredient2),
                         Codec.INT.fieldOf("minTemp").forGetter((alloyingRecipe) -> alloyingRecipe.minTemperature),
                         Codec.INT.fieldOf("smeltingTime").forGetter((alloyingRecipe) -> alloyingRecipe.smeltingTime),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((alloyingRecipe) -> alloyingRecipe.result)
@@ -103,8 +107,8 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
 
         @NotNull
         private static AlloyingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
-            Ingredient ingredient1 = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient ingredient2 = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            SizedIngredient ingredient1 = SizedIngredient.STREAM_CODEC.decode(buffer);
+            SizedIngredient ingredient2 = SizedIngredient.STREAM_CODEC.decode(buffer);
             ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             int minTemperature = buffer.readInt();
             int smeltingTime = buffer.readInt();
@@ -112,8 +116,8 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
         }
 
         private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull AlloyingRecipe recipe) {
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient1);
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient2);
+            SizedIngredient.STREAM_CODEC.encode(buffer, recipe.ingredient1);
+            SizedIngredient.STREAM_CODEC.encode(buffer, recipe.ingredient2);
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeInt(recipe.minTemperature);
             buffer.writeInt(recipe.smeltingTime);
@@ -121,18 +125,18 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
     }
 
     public static class Builder implements RecipeBuilder {
-        private final Ingredient ingredient1;
-        private final Ingredient ingredient2;
+        private final SizedIngredient ingredient1;
+        private final SizedIngredient ingredient2;
         private final int minTemperature;
         private final int smeltingTime;
         private final Item result;
         private final int count;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull YTechIngredient ingredient1, @NotNull YTechIngredient ingredient2, int minTemperature,
+        Builder(@NotNull SizedIngredient ingredient1, @NotNull SizedIngredient ingredient2, int minTemperature,
                 int smeltingTime, @NotNull Item result, int count) {
-            this.ingredient1 = ingredient1.toVanilla();
-            this.ingredient2 = ingredient2.toVanilla();
+            this.ingredient1 = ingredient1;
+            this.ingredient2 = ingredient2;
             this.minTemperature = minTemperature;
             this.smeltingTime = smeltingTime;
             this.result = result;
@@ -141,12 +145,12 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
 
         public static Builder alloying(HolderGetter<Item> items, @NotNull TagKey<Item> input1, int count1, @NotNull TagKey<Item> input2, int count2, int minTemperature,
                                        int smeltingTime, @NotNull Item result, int count) {
-            return new Builder(YTechIngredient.of(items.getOrThrow(input1), count1), YTechIngredient.of(items.getOrThrow(input2), count2), minTemperature, smeltingTime, result, count);
+            return new Builder(SizedIngredient.of(items.getOrThrow(input1), count1), SizedIngredient.of(items.getOrThrow(input2), count2), minTemperature, smeltingTime, result, count);
         }
 
         public static Builder alloying(HolderGetter<Item> items, @NotNull TagKey<Item> input1, int count1, @NotNull ItemLike input2, int count2, int minTemperature,
                                        int smeltingTime, @NotNull Item result, int count) {
-            return new Builder(YTechIngredient.of(items.getOrThrow(input1), count1), YTechIngredient.of(input2, count2), minTemperature, smeltingTime, result, count);
+            return new Builder(SizedIngredient.of(items.getOrThrow(input1), count1), SizedIngredient.of(items.getOrThrow(input2), count2), minTemperature, smeltingTime, result, count);
         }
 
         @NotNull

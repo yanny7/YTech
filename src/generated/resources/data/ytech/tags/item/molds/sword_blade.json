@@ -1,5 +1,6 @@
 {
   "values": [
-    "ytech:sword_blade_mold"
+    "#ytech:clay_molds/sword_blade",
+    "#ytech:sand_molds/sword_blade"
   ]
 }

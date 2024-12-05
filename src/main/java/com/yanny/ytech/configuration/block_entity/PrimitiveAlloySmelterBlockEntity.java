@@ -3,7 +3,6 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.recipe.AlloyingRecipe;
-import com.yanny.ytech.configuration.recipe.YTechIngredient;
 import com.yanny.ytech.configuration.recipe.YTechRecipeInput;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
@@ -16,7 +15,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -32,12 +32,14 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
     private static final int SLOT_FUEL = 2;
     private static final int SLOT_OUTPUT = 3;
 
-    @Nullable private ItemStack recipeInputLeft = ItemStack.EMPTY;
+    private final RecipeManager.CachedCheck<RecipeInput, AlloyingRecipe> quickCheck;
 
+    @Nullable private ItemStack recipeInputLeft = ItemStack.EMPTY;
     @Nullable private ItemStack recipeInputRight = ItemStack.EMPTY;
 
     public PrimitiveAlloySmelterBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER.get(), pos, blockState, YTechRecipeTypes.ALLOYING.get());
+        quickCheck = RecipeManager.createCheck(YTechRecipeTypes.ALLOYING.get());
     }
 
     @Override
@@ -117,18 +119,18 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             ItemStack inputLeft = itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT);
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
-            serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 AlloyingRecipe r = recipe.value();
 
                 if (r.minTemperature() <= temperature && (result.isEmpty()
                         || (ItemStack.isSameItemSameComponents(result, r.result()) && result.getMaxStackSize() > result.getCount() + r.result().getCount()))) {
                     if (r.ingredient1().test(inputLeft) && r.ingredient2().test(inputRight)) {
-                        recipeInputLeft = inputLeft.split(getIngredientCount(r.ingredient1()));
-                        recipeInputRight = inputRight.split(getIngredientCount(r.ingredient2()));
+                        recipeInputLeft = inputLeft.split(r.ingredient1().count());
+                        recipeInputRight = inputRight.split(r.ingredient2().count());
                     } else {
-                        recipeInputLeft = inputLeft.split(getIngredientCount(r.ingredient2()));
-                        recipeInputRight = inputRight.split(getIngredientCount(r.ingredient1()));
+                        recipeInputLeft = inputLeft.split(r.ingredient2().count());
+                        recipeInputRight = inputRight.split(r.ingredient1().count());
                     }
 
                     leftSmelting = smeltingTime = r.smeltingTime();
@@ -144,7 +146,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         if (level instanceof ServerLevel serverLevel && recipeInputLeft != null && recipeInputRight != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {
@@ -177,14 +179,6 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             return serverLevel.recipeAccess().recipes.byType(YTechRecipeTypes.ALLOYING.get()).stream().anyMatch((recipe) -> recipe.value().matchesPartially(new YTechRecipeInput(itemStack1, itemStack2)));
         } else {
             return false;
-        }
-    }
-
-    private int getIngredientCount(Ingredient ingredient) {
-        if (ingredient.isCustom() && ingredient.getCustomIngredient() instanceof YTechIngredient customIngredient) {
-            return customIngredient.getCount();
-        } else {
-            return 1;
         }
     }
 }

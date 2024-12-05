@@ -1,5 +1,6 @@
 {
   "values": [
-    "ytech:hammer_head_mold"
+    "#ytech:clay_molds/hammer_head",
+    "#ytech:sand_molds/hammer_head"
   ]
 }

@@ -1,5 +1,6 @@
 package com.yanny.ytech.configuration.recipe;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.configuration.Utils;
@@ -30,15 +31,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack result) implements Recipe<RecipeInput> {
+public record HammeringRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<SingleRecipeInput> {
     @Override
-    public boolean matches(@NotNull RecipeInput recipeInput, @NotNull Level level) {
+    public boolean matches(@NotNull SingleRecipeInput recipeInput, @NotNull Level level) {
         return ingredient.test(recipeInput.getItem(0));
     }
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull RecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
+    public ItemStack assemble(@NotNull SingleRecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -71,6 +72,7 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
                 instance.group(
                         Ingredient.CODEC.fieldOf("ingredient").forGetter((hammeringRecipe) -> hammeringRecipe.ingredient),
                         Ingredient.CODEC.fieldOf("tool").forGetter((hammeringRecipe) -> hammeringRecipe.tool),
+                        Codec.INT.fieldOf("hitCount").forGetter((tanningRecipe) -> tanningRecipe.hitCount),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((hammeringRecipe) -> hammeringRecipe.result)
                 ).apply(instance, HammeringRecipe::new)
         );
@@ -94,13 +96,15 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
         private static HammeringRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             Ingredient tool = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            int hitCount = buffer.readInt();
             ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
-            return new HammeringRecipe(ingredient, tool, result);
+            return new HammeringRecipe(ingredient, tool, hitCount, result);
         }
 
         private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull HammeringRecipe recipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tool);
+            buffer.writeInt(recipe.hitCount);
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
         }
     }
@@ -108,17 +112,22 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
         private final Ingredient tool;
+        int hitCount;
         private final Item result;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull Ingredient ingredient, @NotNull Ingredient tool, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, int hitCount, @NotNull Item result) {
             this.ingredient = ingredient;
-            this.tool = tool;
+            this.hitCount = hitCount;
             this.result = result;
         }
 
-        public static Builder hammering(@NotNull HolderGetter<Item> items, @NotNull TagKey<Item> input, @NotNull TagKey<Item> tool, @NotNull Item result) {
-            return new Builder(Ingredient.of(items.getOrThrow(input)), Ingredient.of(items.getOrThrow(tool)), result);
+        public static Builder hammering(@NotNull TagKey<Item> input, int hitCount, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), hitCount, result);
+        }
+
+        public static Builder hammering(@NotNull ItemLike input, int hitCount, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), hitCount, result);
         }
 
         public static Builder hammering(@NotNull HolderGetter<Item> items, @NotNull ItemLike input, @NotNull TagKey<Item> tool, @NotNull Item result) {
@@ -152,7 +161,7 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
             this.criteria.forEach(builder::addCriterion);
             recipeOutput.accept(
                     recipeId,
-                    new HammeringRecipe(ingredient, tool, new ItemStack(result)),
+                    new HammeringRecipe(ingredient, tool, hitCount, new ItemStack(result)),
                     builder.build(Utils.modLoc("recipes/hammering/" + recipeId.location().getPath()))
             );
         }

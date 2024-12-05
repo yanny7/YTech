@@ -32,7 +32,7 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(1, 0, 15, 16).texture("#0");
-                        case UP, DOWN -> faceBuilder.uvs(1, 1, 15, 15).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(1, 1, 15, 15).texture("#1").cullface(direction);
                     }
                 })
                 .from(1, 0, 1).to(15, 16, 15).end()

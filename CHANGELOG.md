@@ -1,5 +1,74 @@
 # YTech Changelog
 
+## [0.9.2]
+
+- Changed Stone Mortar and Pestle recipe
+- Fixed crash on crop grow
+- Fixed spawning vanilla mobs even when disabled
+
+## [0.9.1]
+
+- Fixed crash when equipped copper/bronze armor
+
+## [0.9.0]
+
+- Fixed missing Golden Shears translation
+- Improved Wooden Box to be directional (horizontally)
+- Added Tool Rack
+- Added Jade compatibility
+- Fixed missing Millstone bottom texture
+- Moved some configuration options to tags
+- Finite water source
+- Aqueduct Valve slowly consumes water source
+- Crops need hydrated farmland to grow
+- Farmland has chance to consume water source
+- Added Well Pulley
+- Added Divining Rod for detecting water abundance for Well Pulley
+- Added hit count to Hammering recipe
+- Added sounds to multiple blocks
+- Using Potter's Wheel and Well Pulley exhaust player
+- Added Chinese translation (@lyuxc-unknow)
+- Modified recipe for Terracotta Bricks and Aqueduct
+- Added Mudbrick (500mB) and Stone Aqueduct (2000mB), Aqueduct renamed to Terracotta Aqueduct (1000mB)
+- Changed recipes for Mortar and Pestle
+- Changed recipe for Stone
+- Changed recipe for Tree Stump
+- Fixed water rendering in Aqueduct
+- Added recipe for Mud using Water Bucket
+- Changed recipe for Glass
+
+## [0.8.1]
+
+- Fixed wrongly requiring all optional mods
+
+## [0.8.0]
+
+- Added Tree Stump
+- Added EMI compatibility
+- Moved some YTech tags to Forge namespace
+- Added Amphora for storing up to 8 stacks of same item
+- Changed Chest recipe to require wooden Button and iron Rods
+- Updated JEI plugin
+- Fixed KubeJS recipes with omitted default value
+- Added Wooden Box storing 9 stacks of items
+
+## [0.7.1]
+
+- Fixed Shears tag namespace
+- Fixed crash due to missing library
+
+## [0.7.0]
+
+- Changed mob spawn biomes
+- Fixed blocks not correctly saving state
+- Added in-world crafting using Crafting Workspace
+- Added Shears
+- Fixed vanilla mobs spawning and added biomes where Aurochs, Deer, Fowl, Mouflon, Wild Boar and Terror Bird spawns
+
+## [0.6.1]
+
+- Fixed item duplication in FirePit and Drying Rack
+
 ## [0.6.0]
 
 - Added Bone Needle and changed leather armor and saddle recipe

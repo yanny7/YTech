@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block_entity;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
+import com.yanny.ytech.registration.YTechSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,7 +50,9 @@ public class TanningRackBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                progressHandler.setupCrafting(serverLevel, holdingItemStack, TanningRecipe::hitCount);
+                if (!progressHandler.setupCrafting(serverLevel, holdingItemStack, TanningRecipe::hitCount)) {
+                    progressHandler.setupCrafting(serverLevel, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TanningRecipe::hitCount);
+                }
             } else {
                 Function<TanningRecipe, Boolean> canProcess = (recipe) -> recipe.tool().items().isEmpty() || recipe.tool().test(holdingItemStack);
                 Function<TanningRecipe, Float> getStep = (recipe) -> 1F;
@@ -63,11 +65,12 @@ public class TanningRackBlockEntity extends BlockEntity {
                     progressHandler.clear();
                 } else {
                     player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                    level.playSound(null, pos, YTechSoundEvents.TANNING_RACK_USE.get(), SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
                 }
             }
 
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            level.blockEntityChanged(pos);
         }
 
         return InteractionResult.SUCCESS;

@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
@@ -16,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -38,11 +40,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,10 +75,21 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     private static final BooleanProperty SOUTH_WEST = BooleanProperty.create("south_west");
 
     private final Map<BlockState, VoxelShape> shapesCache;
+    private final MaterialType material;
 
-    public AqueductBlock(Properties properties) {
+    public AqueductBlock(Properties properties, MaterialType material) {
         super(properties);
         this.shapesCache = this.getShapeForEachState(AqueductBlock::calculateShape);
+        this.material = material;
+    }
+
+    public int getCapacity() {
+        return switch (material) {
+            case MUDBRICK -> YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock();
+            case TERRACOTTA -> YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock() * 2;
+            case STONE -> YTechMod.CONFIGURATION.getBaseFluidStoragePerBlock() * 4;
+            default -> throw new IllegalStateException(String.format("Missing material type %s", material));
+        };
     }
 
     @NotNull
@@ -142,7 +158,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
-        return new AqueductBlockEntity(pos, blockState);
+        return new AqueductBlockEntity(pos, blockState, getCapacity());
     }
 
     @NotNull
@@ -154,7 +170,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
             if (network != null) {
                 FluidTank tank = network.getFluidHandler();
 
-                if (tank.getFluidAmount() > 1000) {
+                if (tank.getFluidAmount() >= 1000) {
                     tank.drain(1000, IFluidHandler.FluidAction.EXECUTE);
                     return new ItemStack(Items.WATER_BUCKET);
                 }
@@ -250,15 +266,24 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getUnitVec3i())).toList();
     }
 
-    public static void registerModel(@NotNull BlockStateProvider provider) {
-        ResourceLocation bricks = Utils.modBlockLoc("terracotta_bricks");
-        String name = Utils.getPath(YTechBlocks.AQUEDUCT);
+    public static void registerModel(@NotNull BlockStateProvider provider, @NotNull DeferredBlock<Block> block, MaterialType material) {
+        ResourceLocation bricks;
+
+        switch (material) {
+            case MUDBRICK -> bricks = Utils.mcBlockLoc("mud_bricks");
+            case TERRACOTTA -> bricks = Utils.modBlockLoc("terracotta_bricks");
+            case STONE -> bricks = Utils.mcBlockLoc("stone_bricks");
+            default -> throw new IllegalStateException();
+        }
+
+        String name = Utils.getPath(block);
         ModelFile base = provider.models().getBuilder(name)
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 14, 16, 16).texture("#0").cullface(direction);
+                        case UP -> faceBuilder.uvs(0, 0, 16, 16).texture("#0");
+                        case DOWN -> faceBuilder.uvs(0, 0, 16, 16).texture("#0").cullface(direction);
                     }
                 })
                 .from(0, 0, 0).to(16, 2, 16).end()
@@ -268,10 +293,11 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, SOUTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0");
+                        case NORTH -> faceBuilder.uvs(2, 0, 14, 14).texture("#0").cullface(direction);
                         case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
                         case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case UP -> faceBuilder.uvs(2, 0, 14, 2).texture("#0");
+                        case UP -> faceBuilder.uvs(2, 0, 14, 2).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).texture("#0").cullface(direction);
                     }
                 })
                 .from(2, 2, 0).to(14, 16, 2).end()
@@ -281,16 +307,18 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
                 .parent(provider.models().getExistingFile(Utils.mcBlockLoc("block")))
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
-                        case NORTH, EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
-                        case SOUTH, WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
-                        case UP -> faceBuilder.uvs(0, 0, 2, 2).texture("#0");
+                        case NORTH -> faceBuilder.uvs(14, 0, 16, 14).texture("#0").cullface(direction);
+                        case EAST -> faceBuilder.uvs(14, 0, 16, 14).texture("#0");
+                        case SOUTH -> faceBuilder.uvs(0, 0, 2, 14).texture("#0");
+                        case WEST -> faceBuilder.uvs(0, 0, 2, 14).texture("#0").cullface(direction);
+                        case UP -> faceBuilder.uvs(2, 0, 4, 2).texture("#0").cullface(direction);
                     }
                 })
                 .from(0, 2, 0).to(2, 16, 2).end()
                 .texture("particle", bricks)
                 .texture("0", bricks);
 
-        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(YTechBlocks.AQUEDUCT.get()).part().modelFile(base).addModel().end();
+        MultiPartBlockStateBuilder builder = provider.getMultipartBuilder(block.get()).part().modelFile(base).addModel().end();
 
         PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(side).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
         builder.part().modelFile(edge).rotationY(ANGLE_BY_DIRECTION.get(Direction.NORTH)).addModel().condition(NORTH_WEST, true).end();

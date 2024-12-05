@@ -200,7 +200,8 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
                         case EAST -> faceBuilder.uvs(9, 2, 11, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
                         case SOUTH -> faceBuilder.uvs(1, 2, 3, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
                         case WEST -> faceBuilder.uvs(9, 0, 11, 14).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).texture("#1");
-                        case UP, DOWN -> faceBuilder.uvs(0, 0, 12, 14).texture("#1");
+                        case UP -> faceBuilder.uvs(0, 0, 12, 14).texture("#1");
+                        case DOWN -> faceBuilder.uvs(0, 0, 12, 14).texture("#1").cullface(direction);
                     }
                 })
                 .from(2, 0, 0).to(14, 2, 14).end()

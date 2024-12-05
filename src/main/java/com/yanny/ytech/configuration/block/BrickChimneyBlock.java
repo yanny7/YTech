@@ -65,7 +65,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
                 .element().allFaces((direction, faceBuilder) -> {
                     switch(direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(3, 0, 13, 16).texture("#0");
-                        case UP, DOWN -> faceBuilder.uvs(3, 3, 13, 13).texture("#1");
+                        case UP, DOWN -> faceBuilder.uvs(3, 3, 13, 13).texture("#1").cullface(direction);
                     }
                 })
                 .from(3, 0, 3).to(13, 16, 13).end()

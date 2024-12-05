@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "ytech:block/aqueduct/aqueduct_well",
+    "side": "ytech:block/terracotta_bricks"
+  }
+}

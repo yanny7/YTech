@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.YTechMod;
+import com.yanny.ytech.configuration.block.AqueductConsumerBlock;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,8 +12,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.FarmlandWaterManager;
+import net.neoforged.neoforge.common.ticket.AABBTicket;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +24,8 @@ public class AqueductHydratorBlockEntity extends AqueductConsumerBlockEntity {
     private static final String TAG_TIMER = "timer";
 
     protected int timer = 0;
+
+    private AABBTicket ticket = null;
 
     public AqueductHydratorBlockEntity(@NotNull BlockEntityType<? extends BlockEntity> entityType, @NotNull BlockPos pos, @NotNull BlockState blockState) {
         super(entityType, pos, blockState);
@@ -33,9 +38,19 @@ public class AqueductHydratorBlockEntity extends AqueductConsumerBlockEntity {
     }
 
     public void tick(@NotNull ServerLevel level) {
+        if (ticket == null) {
+            ticket = createTicket(level);
+        }
+
         if ((!isHydrating() || timer == 0) && level.getGameTime() % 20 == 0) {
             if (drainLiquid(level)) {
-                BlockState blockState = getBlockState().setValue(BlockStateProperties.WATERLOGGED, true);
+                BlockState blockState = getBlockState().setValue(AqueductConsumerBlock.ACTIVATED, true);
+
+                if (ticket == null) {
+                    ticket = createTicket(level);
+                } else {
+                    ticket.validate();
+                }
 
                 timer = YTechMod.CONFIGURATION.getHydratorDrainPerNthTick();
                 level.setBlock(worldPosition, blockState, Block.UPDATE_ALL);
@@ -46,7 +61,11 @@ public class AqueductHydratorBlockEntity extends AqueductConsumerBlockEntity {
 
             if (timer == 0) {
                 if (!drainLiquid(level)) {
-                    BlockState blockState = getBlockState().setValue(BlockStateProperties.WATERLOGGED, false);
+                    BlockState blockState = getBlockState().setValue(AqueductConsumerBlock.ACTIVATED, false);
+
+                    if (ticket != null) {
+                        ticket.invalidate();
+                    }
 
                     level.setBlock(worldPosition, blockState, Block.UPDATE_ALL);
                     YTechMod.IRRIGATION_PROPAGATOR.server().changed(this);
@@ -79,5 +98,9 @@ public class AqueductHydratorBlockEntity extends AqueductConsumerBlockEntity {
         }
 
         return false;
+    }
+
+    private AABBTicket createTicket(ServerLevel level) {
+        return FarmlandWaterManager.addAABBTicket(level, AABB.ofSize(worldPosition.getCenter(), 9, 1, 9));
     }
 }

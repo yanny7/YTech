@@ -4,21 +4,27 @@
     {
       "faces": {
         "down": {
+          "cullface": "down",
           "texture": "#0"
         },
         "east": {
+          "cullface": "east",
           "texture": "#2"
         },
         "north": {
+          "cullface": "north",
           "texture": "#2"
         },
         "south": {
+          "cullface": "south",
           "texture": "#2"
         },
         "up": {
+          "cullface": "up",
           "texture": "#0"
         },
         "west": {
+          "cullface": "west",
           "texture": "#2"
         }
       },

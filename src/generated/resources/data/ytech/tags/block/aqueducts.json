@@ -1,5 +1,7 @@
 {
   "values": [
-    "ytech:aqueduct"
+    "#ytech:aqueducts/mudbrick",
+    "#ytech:aqueducts/stone",
+    "#ytech:aqueducts/terracotta"
   ]
 }

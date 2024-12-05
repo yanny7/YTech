@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#c:bolts/bronze",
+    "#c:bolts/copper",
+    "#c:bolts/gold",
+    "#c:bolts/iron",
+    "#c:bolts/lead",
+    "#c:bolts/tin",
+    "#c:bolts/wooden"
+  ]
+}

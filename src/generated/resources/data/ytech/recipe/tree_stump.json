@@ -1,0 +1,32 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "C": {
+      "tag": "minecraft:logs"
+    },
+    "S": {
+      "tag": "c:cobblestones/normal"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "SSS",
+      "SSS",
+      "SSS"
+    ],
+    "middle": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ],
+    "top": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:tree_stump"
+  }
+}

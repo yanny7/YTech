@@ -14,10 +14,6 @@ public enum PartType implements IType {
 
     public static final EnumSet<PartType> ALL_PARTS = EnumSet.allOf(PartType.class);
 
-    static {
-        ALL_PARTS.remove(PartType.INGOT);
-    }
-
     @NotNull public final String key;
     @NotNull public final String name;
     public final int ingotCount;

@@ -13,12 +13,13 @@ import java.util.*;
 import java.util.function.Function;
 
 public class YTechBlockTags {
-    public static final TagKey<Block> AQUEDUCTS = create("aqueducts");
+    public static final TagKey<Block> AMPHORAE = create("amphorae");
     public static final TagKey<Block> AQUEDUCT_FERTILIZERS = create("aqueduct_fertilizers");
     public static final TagKey<Block> AQUEDUCT_HYDRATORS = create("aqueduct_hydrators");
     public static final TagKey<Block> AQUEDUCT_VALVES = create("aqueduct_valves");
     public static final TagKey<Block> BRICK_CHIMNEYS = create("brick_chimneys");
     public static final TagKey<Block> BRONZE_ANVILS = create("bronze_anvils");
+    public static final TagKey<Block> CRAFTING_WORKSPACES = create("crafting_workspaces");
     public static final TagKey<Block> FIRE_PITS = create("fire_pits");
     public static final TagKey<Block> GRASS_BEDS = create("grass_beds");
     public static final TagKey<Block> MILLSTONES = create("millstones");
@@ -33,6 +34,10 @@ public class YTechBlockTags {
     public static final TagKey<Block> THATCH = create("thatch");
     public static final TagKey<Block> THATCH_SLABS = create("thatch_slabs");
     public static final TagKey<Block> THATCH_STAIRS = create("thatch_stairs");
+    public static final TagKey<Block> TOOL_RACKS = create("tool_racks");
+    public static final TagKey<Block> TREE_STUMPS = create("tree_stumps");
+    public static final TagKey<Block> WELL_PULLEYS = create("well_pulleys");
+    public static final TagKey<Block> WOODEN_BOXES = create("wooden_boxes");
 
     public static final TagKey<Block> AUROCHS_RAID_BLOCKS = create("aurochs_raid_blocks");
     public static final TagKey<Block> DEER_RAID_BLOCKS = create("deer_raid_blocks");
@@ -42,6 +47,9 @@ public class YTechBlockTags {
     public static final TagKey<Block> FIRE_SOURCE = create("fire_source");
     public static final TagKey<Block> SOUL_FIRE_SOURCE = create("soul_fire_source");
 
+    public static final TagKey<Block> REQUIRE_VALID_TOOL = create("require_valid_tool");
+
+    public static final MaterialTag AQUEDUCTS = new MaterialTag("aqueducts", YTechBlocks.AQUEDUCTS);
     public static final MaterialTag DEEPSLATE_ORES = new DeepslateOreMaterialTag();
     public static final MaterialTag DRYING_RACKS = new MaterialTag("drying_racks", YTechBlocks.DRYING_RACKS);
     public static final MaterialTag GRAVEL_DEPOSITS = new MaterialTag("gravel_deposits", YTechBlocks.GRAVEL_DEPOSITS);

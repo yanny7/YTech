@@ -1,0 +1,534 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#0",
+          "uv": [
+            6.0,
+            3.0,
+            7.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            2.0,
+            1.0,
+            3.0,
+            4.0
+          ]
+        },
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            1.0,
+            1.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            7.0,
+            1.0,
+            8.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            3.0,
+            5.0,
+            4.0,
+            8.0
+          ]
+        }
+      },
+      "from": [
+        0.25,
+        0,
+        0.25
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          0.25,
+          0,
+          0.25
+        ]
+      },
+      "to": [
+        1.25,
+        3,
+        1.25
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#0",
+          "uv": [
+            6.0,
+            3.0,
+            7.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            2.0,
+            1.0,
+            3.0,
+            4.0
+          ]
+        },
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            1.0,
+            1.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            7.0,
+            1.0,
+            8.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            3.0,
+            5.0,
+            4.0,
+            8.0
+          ]
+        }
+      },
+      "from": [
+        14.75,
+        0,
+        0.25
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          14.75,
+          0,
+          0.25
+        ]
+      },
+      "to": [
+        15.75,
+        3,
+        1.25
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#0",
+          "uv": [
+            6.0,
+            3.0,
+            7.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            2.0,
+            1.0,
+            3.0,
+            4.0
+          ]
+        },
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            1.0,
+            1.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            7.0,
+            1.0,
+            8.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            3.0,
+            5.0,
+            4.0,
+            8.0
+          ]
+        }
+      },
+      "from": [
+        0.25,
+        0,
+        14.75
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          0.25,
+          0,
+          14.75
+        ]
+      },
+      "to": [
+        1.25,
+        3,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#0",
+          "uv": [
+            6.0,
+            3.0,
+            7.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            2.0,
+            1.0,
+            3.0,
+            4.0
+          ]
+        },
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            1.0,
+            1.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            7.0,
+            1.0,
+            8.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            3.0,
+            5.0,
+            4.0,
+            8.0
+          ]
+        }
+      },
+      "from": [
+        14.75,
+        0,
+        14.75
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          14.75,
+          0,
+          14.75
+        ]
+      },
+      "to": [
+        15.75,
+        3,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        },
+        "north": {
+          "texture": "minecraft:missingno"
+        },
+        "south": {
+          "texture": "minecraft:missingno"
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        }
+      },
+      "from": [
+        0.75,
+        1.75,
+        1.25
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          -0.25,
+          0.75,
+          1.25
+        ]
+      },
+      "to": [
+        0.75,
+        2.75,
+        14.75
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        },
+        "north": {
+          "texture": "minecraft:missingno"
+        },
+        "south": {
+          "texture": "minecraft:missingno"
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        }
+      },
+      "from": [
+        15.25,
+        1.75,
+        1.25
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          14.25,
+          0.75,
+          1.25
+        ]
+      },
+      "to": [
+        15.25,
+        2.75,
+        14.75
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "minecraft:missingno"
+        },
+        "north": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "minecraft:missingno"
+        }
+      },
+      "from": [
+        1.25,
+        1.75,
+        15.25
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          1.25,
+          0.75,
+          14
+        ]
+      },
+      "to": [
+        14.75,
+        2.75,
+        15.25
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "minecraft:missingno"
+        },
+        "east": {
+          "texture": "minecraft:missingno"
+        },
+        "north": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#1",
+          "uv": [
+            2.0,
+            3.0,
+            14.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "minecraft:missingno"
+        },
+        "west": {
+          "texture": "minecraft:missingno"
+        }
+      },
+      "from": [
+        1.25,
+        1.75,
+        0.75
+      ],
+      "rotation": {
+        "angle": 0.0,
+        "axis": "y",
+        "origin": [
+          1.25,
+          0.75,
+          -0.5
+        ]
+      },
+      "to": [
+        14.75,
+        2.75,
+        0.75
+      ]
+    }
+  ],
+  "textures": {
+    "0": "minecraft:block/oak_planks",
+    "1": "ytech:block/horizontal_rope",
+    "particle": "ytech:block/horizontal_rope"
+  }
+}

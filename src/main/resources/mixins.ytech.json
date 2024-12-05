@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.yanny.ytech.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinFarmlandBlock"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

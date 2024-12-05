@@ -1,0 +1,35 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "B": {
+      "tag": "minecraft:wooden_buttons"
+    },
+    "C": {
+      "tag": "minecraft:planks"
+    },
+    "R": {
+      "tag": "c:rods/iron"
+    }
+  },
+  "pattern": {
+    "bottom": [
+      "CCC",
+      "CCC",
+      "CCC"
+    ],
+    "middle": [
+      "CCC",
+      "C C",
+      "CBC"
+    ],
+    "top": [
+      "RRR",
+      "CCC",
+      "CCC"
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:chest"
+  }
+}
