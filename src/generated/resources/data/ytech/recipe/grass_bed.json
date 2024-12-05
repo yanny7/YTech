@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "tag": "ytech:thatch_slabs"
-    },
-    "S": {
-      "tag": "ytech:grass_fibers"
-    }
+    "G": "#ytech:thatch_slabs",
+    "S": "#ytech:grass_fibers"
   },
   "pattern": [
     "SSS",

@@ -2,12 +2,8 @@
   "type": "ytech:remaining_part_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:sand"
-    },
-    {
-      "tag": "ytech:parts/sword_blades"
-    }
+    "#minecraft:sand",
+    "#ytech:parts/sword_blades"
   ],
   "result": {
     "count": 1,

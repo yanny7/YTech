@@ -1,20 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "building",
   "group": "wooden_stairs",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "P": {
-      "item": "minecraft:mangrove_planks"
-    },
-    "S": {
-      "item": "minecraft:mangrove_slab"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "B": "#ytech:bolts/wooden",
+    "P": "minecraft:mangrove_planks",
+    "S": "minecraft:mangrove_slab",
+    "W": "#ytech:saws"
   },
   "pattern": [
     "PW",

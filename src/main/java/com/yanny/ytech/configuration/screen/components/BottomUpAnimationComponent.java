@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.screen.components;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.NotNull;
 
 class BottomUpAnimationComponent implements IComponent {
@@ -31,10 +32,10 @@ class BottomUpAnimationComponent implements IComponent {
     public void render(@NotNull GuiGraphics graphics, int left, int top) {
         int height = Math.min(Math.round((value / (float)maxValue) * vHeight), vHeight);
         int offset = Math.max(vHeight - height, 0);
-        graphics.blit(GUI, left + x, top + y, uOffset, vOffset, uWidth, vHeight);
+        graphics.blit(RenderType::guiTextured, GUI, left + x, top + y, uOffset, vOffset, uWidth, vHeight, 256, 256);
 
         if (renderAnimation) {
-            graphics.blit(GUI, left + x, top + y + offset, uAnimationOffset, vAnimationOffset + offset, uWidth, vHeight - offset);
+            graphics.blit(RenderType::guiTextured, GUI, left + x, top + y + offset, uAnimationOffset, vAnimationOffset + offset, uWidth, vHeight - offset, 256, 256);
         }
     }
 

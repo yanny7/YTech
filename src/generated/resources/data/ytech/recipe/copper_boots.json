@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "ytech:plates/copper"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    }
+    "#": "#ytech:plates/copper",
+    "H": "#ytech:hammers"
   },
   "pattern": [
     "#H#",

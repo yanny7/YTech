@@ -1,23 +1,19 @@
 package com.yanny.ytech.configuration.model;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.entity.WoollyMammothEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class WoollyMammothModel extends EntityModel<WoollyMammothEntity> {
+public class WoollyMammothModel extends EntityModel<LivingEntityRenderState> {
     @NotNull public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Utils.modLoc("woolly_mammoth"), "main");
 
     @NotNull private final ModelPart head;
@@ -28,7 +24,7 @@ public class WoollyMammothModel extends EntityModel<WoollyMammothEntity> {
     @NotNull private final ModelPart br_foot;
 
     public WoollyMammothModel(@NotNull ModelPart root) {
-        super(RenderType::entityCutoutNoCull);
+        super(root);
         this.head = root.getChild("head");
         this.body = root.getChild("body");
         this.fl_foot = root.getChild("fl_foot");
@@ -38,23 +34,16 @@ public class WoollyMammothModel extends EntityModel<WoollyMammothEntity> {
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packetLight, int packetOverlay, int color) {
-        parts().forEach((modelPart) -> modelPart.render(poseStack, vertexConsumer, packetLight, packetOverlay, color));
-    }
-
-    @Override
-    public void setupAnim(@NotNull WoollyMammothEntity entity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        this.head.xRot = pHeadPitch * ((float)Math.PI / 180F);
-        this.head.yRot = pNetHeadYaw * ((float)Math.PI / 180F);
+    public void setupAnim(@NotNull LivingEntityRenderState state) {
+        super.setupAnim(state);
+        this.head.xRot = state.xRot * 0.017453292F;
+        this.head.yRot = state.yRot * 0.017453292F;
+        float pLimbSwing = state.walkAnimationPos;
+        float pLimbSwingAmount = state.walkAnimationSpeed;
         this.fl_foot.xRot = Mth.cos(pLimbSwing * 0.6662F) * 1.4F * pLimbSwingAmount;
         this.bl_foot.xRot = Mth.cos(pLimbSwing * 0.6662F + (float)Math.PI) * 1.4F * pLimbSwingAmount;
         this.fr_foot.xRot = Mth.cos(pLimbSwing * 0.6662F + (float)Math.PI) * 1.4F * pLimbSwingAmount;
         this.br_foot.xRot = Mth.cos(pLimbSwing * 0.6662F) * 1.4F * pLimbSwingAmount;
-    }
-
-    @NotNull
-    private Iterable<ModelPart> parts() {
-        return ImmutableList.of(head, body, fl_foot, bl_foot, fr_foot, br_foot);
     }
 
     @NotNull

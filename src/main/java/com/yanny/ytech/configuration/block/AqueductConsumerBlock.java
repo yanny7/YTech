@@ -11,17 +11,17 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,8 +30,8 @@ import java.util.List;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public abstract class AqueductConsumerBlock extends IrrigationBlock {
-    public AqueductConsumerBlock() {
-        super(Properties.ofFullCopy(Blocks.TERRACOTTA));
+    public AqueductConsumerBlock(Properties properties) {
+        super(properties);
     }
 
     @NotNull
@@ -41,7 +41,7 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
     }
 
     @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState state) {
         return false;
     }
 
@@ -66,8 +66,8 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
 
     @NotNull
     @Override
-    public BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState,
-                                  @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+    public BlockState updateShape(@NotNull BlockState state, @NotNull LevelReader level, @NotNull ScheduledTickAccess tickAccess, @NotNull BlockPos pos,
+                                  @NotNull Direction direction, @NotNull BlockPos neighborPos, @NotNull BlockState neighborState, @NotNull RandomSource random) {
         boolean hasNorthConnection = isValidForConnection(level, pos, Direction.NORTH);
         boolean hasEastConnection = isValidForConnection(level, pos, Direction.EAST);
         boolean hasSouthConnection = isValidForConnection(level, pos, Direction.SOUTH);
@@ -83,8 +83,8 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
 
     @Override
     public void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock,
-                                @NotNull BlockPos neighborPos, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+                                @Nullable Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
 
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof AqueductConsumerBlockEntity blockEntity) {
             IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
@@ -97,7 +97,7 @@ public abstract class AqueductConsumerBlock extends IrrigationBlock {
 
     @Override
     public List<BlockPos> getValidNeighbors(@NotNull BlockState blockState, @NotNull BlockPos pos) {
-        return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getNormal())).toList();
+        return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getUnitVec3i())).toList();
     }
 
     @Override

@@ -52,7 +52,7 @@ public class NetworkUtils {
 
     @NotNull
     public static List<BlockPos> getDirections(@NotNull List<Direction> validDirections, @NotNull BlockPos position, @NotNull Direction currentDirection) {
-        return validDirections.stream().map((direction -> position.offset(rotateDirection(currentDirection, direction).getNormal()))).collect(Collectors.toList());
+        return validDirections.stream().map((direction -> position.offset(rotateDirection(currentDirection, direction).getUnitVec3i()))).collect(Collectors.toList());
     }
 
     @NotNull

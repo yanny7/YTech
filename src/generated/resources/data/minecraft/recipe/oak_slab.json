@@ -3,12 +3,8 @@
   "category": "building",
   "group": "oak_slab",
   "ingredients": [
-    {
-      "item": "minecraft:oak_planks"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:oak_planks",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

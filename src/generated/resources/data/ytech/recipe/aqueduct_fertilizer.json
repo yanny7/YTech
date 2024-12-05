@@ -1,28 +1,14 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:aqueduct_hydrators"
-    },
-    "B": {
-      "tag": "ytech:bolts/bronze"
-    },
-    "C": {
-      "tag": "c:chests"
-    },
-    "F": {
-      "tag": "ytech:files"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "R": {
-      "tag": "ytech:rods/bronze"
-    },
-    "S": {
-      "tag": "ytech:plates/bronze"
-    }
+    "#": "#ytech:aqueduct_hydrators",
+    "B": "#ytech:bolts/bronze",
+    "C": "#c:chests",
+    "F": "#ytech:files",
+    "H": "#ytech:hammers",
+    "R": "#ytech:rods/bronze",
+    "S": "#ytech:plates/bronze"
   },
   "pattern": [
     "HCF",

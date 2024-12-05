@@ -3,8 +3,8 @@ package com.yanny.ytech.configuration.tooltip;
 import com.yanny.ytech.configuration.data_component.BasketContents;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -26,7 +26,7 @@ public class ClientBasketTooltip implements ClientTooltipComponent {
     }
 
     @Override
-    public int getHeight() {
+    public int getHeight(@NotNull Font font) {
         return this.backgroundHeight() + MARGIN_Y;
     }
 
@@ -44,10 +44,10 @@ public class ClientBasketTooltip implements ClientTooltipComponent {
     }
 
     @Override
-    public void renderImage(@NotNull Font font, int x, int y, GuiGraphics guiGraphics) {
+    public void renderImage(@NotNull Font font, int x, int y, int w, int h, GuiGraphics guiGraphics) {
         int i = this.gridSizeX();
         int j = this.gridSizeY();
-        guiGraphics.blitSprite(BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
+        guiGraphics.blitSprite((r) -> RenderType.gui(), BACKGROUND_SPRITE, x, y, w, h);
         boolean flag = this.contents.weight().compareTo(Fraction.ONE) >= 0;
         int k = 0;
 
@@ -69,13 +69,13 @@ public class ClientBasketTooltip implements ClientTooltipComponent {
             p_283625_.renderItem(itemstack, p_283180_ + BORDER_WIDTH, p_282972_ + BORDER_WIDTH, p_282547_);
             p_283625_.renderItemDecorations(p_281863_, itemstack, p_283180_ + BORDER_WIDTH, p_282972_ + BORDER_WIDTH);
             if (p_282547_ == 0) {
-                AbstractContainerScreen.renderSlotHighlight(p_283625_, p_283180_ + BORDER_WIDTH, p_282972_ + BORDER_WIDTH, 0);
+                //AbstractContainerScreen.renderSlotHighlight(p_283625_, p_283180_ + BORDER_WIDTH, p_282972_ + BORDER_WIDTH, 0); //FIXME
             }
         }
     }
 
     private void blit(GuiGraphics p_281273_, int p_282428_, int p_281897_, ClientBasketTooltip.Texture p_281917_) {
-        p_281273_.blitSprite(p_281917_.sprite, p_282428_, p_281897_, 0, p_281917_.w, p_281917_.h);
+        p_281273_.blitSprite((r) -> RenderType.gui(), p_281917_.sprite, p_282428_, p_281897_, 0, p_281917_.w, p_281917_.h);
     }
 
     private int gridSizeX() {

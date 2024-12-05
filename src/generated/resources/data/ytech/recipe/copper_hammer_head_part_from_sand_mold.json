@@ -1,13 +1,9 @@
 {
   "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "c:ingots/copper"
-  },
+  "ingredient": "#c:ingots/copper",
   "inputCount": 18,
   "minTemp": 1085,
-  "mold": {
-    "tag": "ytech:sand_molds/hammer_head"
-  },
+  "mold": "#ytech:sand_molds/hammer_head",
   "result": {
     "count": 1,
     "id": "ytech:copper_hammer_head_part"

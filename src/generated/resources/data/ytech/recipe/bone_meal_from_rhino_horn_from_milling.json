@@ -1,9 +1,7 @@
 {
   "type": "ytech:milling",
   "bonusChance": 0.2,
-  "ingredient": {
-    "tag": "ytech:rhino_horns"
-  },
+  "ingredient": "#ytech:rhino_horns",
   "result": {
     "count": 5,
     "id": "minecraft:bone_meal"

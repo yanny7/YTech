@@ -3,12 +3,8 @@
   "category": "building",
   "group": "cherry_planks",
   "ingredients": [
-    {
-      "item": "minecraft:cherry_log"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:cherry_log",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

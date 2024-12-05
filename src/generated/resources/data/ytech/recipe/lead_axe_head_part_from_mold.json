@@ -1,13 +1,9 @@
 {
   "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "c:ingots/lead"
-  },
+  "ingredient": "#c:ingots/lead",
   "inputCount": 3,
   "minTemp": 327,
-  "mold": {
-    "tag": "ytech:molds/axe_head"
-  },
+  "mold": "#ytech:molds/axe_head",
   "result": {
     "count": 1,
     "id": "ytech:lead_axe_head_part"

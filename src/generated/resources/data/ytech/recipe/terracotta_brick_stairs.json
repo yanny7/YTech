@@ -1,10 +1,8 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "tag": "ytech:terracotta_bricks"
-    }
+    "B": "#ytech:terracotta_bricks"
   },
   "pattern": [
     "B  ",

@@ -1,11 +1,8 @@
 {
   "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "ytech:unfired_molds/hammer_head"
-  },
+  "ingredient": "#ytech:unfired_molds/hammer_head",
   "inputCount": 1,
   "minTemp": 1000,
-  "mold": [],
   "result": {
     "count": 1,
     "id": "ytech:hammer_head_mold"

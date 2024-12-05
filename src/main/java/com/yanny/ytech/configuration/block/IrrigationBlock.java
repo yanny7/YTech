@@ -8,7 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -62,8 +62,8 @@ public abstract class IrrigationBlock extends BaseEntityBlock {
         throw new RuntimeException("Not implemented yet!");
     }
 
-    static boolean isValidForConnection(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull Direction direction) {
-        BlockPos neighborPos = pos.offset(direction.getNormal());
+    static boolean isValidForConnection(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull Direction direction) {
+        BlockPos neighborPos = pos.offset(direction.getUnitVec3i());
         BlockState blockState = level.getBlockState(neighborPos);
 
         if (blockState.getBlock() instanceof IrrigationBlock irrigationBlock) {

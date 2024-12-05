@@ -1,20 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "group": "wooden_fence",
   "key": {
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "item": "minecraft:cherry_planks"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "H": "#ytech:hammers",
+    "P": "minecraft:cherry_planks",
+    "S": "minecraft:stick",
+    "W": "#ytech:saws"
   },
   "pattern": [
     "H W",

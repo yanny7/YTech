@@ -2,9 +2,7 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/raw_cassiterite"
-    }
+    "#c:storage_blocks/raw_cassiterite"
   ],
   "result": {
     "count": 9,

@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "tag": "c:storage_blocks/bronze"
-    },
-    "I": {
-      "tag": "c:ingots/bronze"
-    }
+    "B": "#c:storage_blocks/bronze",
+    "I": "#c:ingots/bronze"
   },
   "pattern": [
     "BBB",

@@ -13,8 +13,8 @@ import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GOLD;
 
 public class LionManItem extends Item {
-    public LionManItem() {
-        super(new Properties().stacksTo(1).durability(0));
+    public LionManItem(Properties properties) {
+        super(properties.stacksTo(1));
     }
 
     @Override

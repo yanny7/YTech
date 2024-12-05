@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "-": {
-      "item": "minecraft:stone_slab"
-    },
-    "F": {
-      "tag": "ytech:files"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
-      "tag": "minecraft:planks"
-    }
+    "#": "minecraft:stick",
+    "-": "minecraft:stone_slab",
+    "F": "#ytech:files",
+    "H": "#ytech:hammers",
+    "S": "#minecraft:planks"
   },
   "pattern": [
     "H F",

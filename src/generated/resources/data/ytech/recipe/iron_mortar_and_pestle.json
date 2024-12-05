@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:stones"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "#": "#c:stones",
+    "I": "#c:ingots/iron"
   },
   "pattern": [
     " I ",

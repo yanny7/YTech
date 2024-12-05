@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '1.0.17'
+    id 'net.neoforged.moddev' version '2.0.42-beta'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -138,7 +138,7 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
-dependencies {
+dependencies {/*
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
@@ -170,7 +170,7 @@ dependencies {
     implementation "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
 
     // these two are unfortunately needed since fg.deobf doesn't respect transitive dependencies yet
-    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
+    implementation "dev.architectury:architectury-neoforge:${architectury_version}"*/
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

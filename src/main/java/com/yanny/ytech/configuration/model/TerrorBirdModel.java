@@ -1,23 +1,19 @@
 package com.yanny.ytech.configuration.model;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.entity.TerrorBirdEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class TerrorBirdModel extends EntityModel<TerrorBirdEntity> {
+public class TerrorBirdModel extends EntityModel<LivingEntityRenderState> {
     @NotNull public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Utils.modLoc("terror_bird"), "main");
 
     @NotNull private final ModelPart head;
@@ -26,7 +22,7 @@ public class TerrorBirdModel extends EntityModel<TerrorBirdEntity> {
     @NotNull private final ModelPart r_foot;
 
     public TerrorBirdModel(@NotNull ModelPart root) {
-        super(RenderType::entityCutoutNoCull);
+        super(root);
         this.head = root.getChild("head");
         this.body = root.getChild("body");
         this.l_foot = root.getChild("l_foot");
@@ -34,21 +30,13 @@ public class TerrorBirdModel extends EntityModel<TerrorBirdEntity> {
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packetLight, int packetOverlay, int color) {
-        parts().forEach((modelPart) -> modelPart.render(poseStack, vertexConsumer, packetLight, packetOverlay, color));
-    }
-
-    @Override
-    public void setupAnim(@NotNull TerrorBirdEntity entity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        this.head.xRot = pHeadPitch * ((float)Math.PI / 180F);
-        this.head.yRot = pNetHeadYaw * ((float)Math.PI / 180F);
+    public void setupAnim(@NotNull LivingEntityRenderState state) {
+        this.head.xRot = state.xRot * 0.017453292F;
+        this.head.yRot = state.yRot * 0.017453292F;
+        float pLimbSwing = state.walkAnimationSpeed;
+        float pLimbSwingAmount = state.walkAnimationPos;
         this.r_foot.xRot = Mth.cos(pLimbSwing * 0.6662F) * 1.4F * pLimbSwingAmount;
         this.l_foot.xRot = Mth.cos(pLimbSwing * 0.6662F + 3.1415927F) * 1.4F * pLimbSwingAmount;
-    }
-
-    @NotNull
-    private Iterable<ModelPart> parts() {
-        return ImmutableList.of(head, body, l_foot, r_foot);
     }
 
     @NotNull

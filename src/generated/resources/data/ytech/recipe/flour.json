@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:crops/wheat"
-    },
-    {
-      "tag": "ytech:mortar_and_pestles"
-    }
+    "#c:crops/wheat",
+    "#ytech:mortar_and_pestles"
   ],
   "result": {
     "count": 1,

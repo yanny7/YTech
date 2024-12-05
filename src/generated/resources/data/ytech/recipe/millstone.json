@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": {
-      "tag": "ytech:sharp_flints"
-    },
-    "S": {
-      "item": "minecraft:smooth_stone_slab"
-    },
-    "W": {
-      "tag": "minecraft:logs"
-    }
+    "F": "#ytech:sharp_flints",
+    "S": "minecraft:smooth_stone_slab",
+    "W": "#minecraft:logs"
   },
   "pattern": [
     "WF",

@@ -41,11 +41,11 @@ public class YTechMod {
         YTechRecipeSerializers.register(modEventBus);
         YTechGLMCodecs.register(modEventBus);
         YTechCreativeTabs.register(modEventBus);
-        YTechArmorMaterials.register(modEventBus);
         YTechDataComponentTypes.register(modEventBus);
         YTechSoundEvents.register(modEventBus);
         YTechMobEffects.register(modEventBus);
         YTechIngredientTypes.register(modEventBus);
+        YTechRecipeBookCategories.register(modEventBus);
 
         modEventBus.addListener(Registration::addCreative);
         modEventBus.addListener(DataGeneration::generate);

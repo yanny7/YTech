@@ -2,9 +2,7 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/tin"
-    }
+    "#c:storage_blocks/tin"
   ],
   "result": {
     "count": 9,

@@ -1,19 +1,11 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:knives"
-    },
-    "L": {
-      "item": "minecraft:leather"
-    },
-    "S": {
-      "tag": "ytech:leather_strips"
-    },
-    "X": {
-      "item": "minecraft:saddle"
-    }
+    "#": "#ytech:knives",
+    "L": "minecraft:leather",
+    "S": "#ytech:leather_strips",
+    "X": "minecraft:saddle"
   },
   "pattern": [
     "L#L",

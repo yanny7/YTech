@@ -128,6 +128,8 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         typedTag(YTechItems.SAND_MOLDS, YTechItemTags.SAND_MOLDS);
         typedTag(YTechItems.UNFIRED_MOLDS, YTechItemTags.UNFIRED_MOLDS);
 
+        multiTypedTag(YTechItems.PARTS, YTechItemTags.PARTS);
+
         typedTag(YTechItems.ARROWS, YTechItemTags.ARROWS);
         typedTag(YTechItems.AXES, YTechItemTags.AXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         typedTag(YTechItems.BOLTS, YTechItemTags.BOLTS);
@@ -161,8 +163,6 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         materialOreTag(YTechItems.STONE_ORES, YTechItemTags.STONE_ORES, MaterialType.VANILLA_METALS);
         typedTag(YTechItems.STORAGE_BLOCKS, YTechItemTags.STORAGE_BLOCKS, MaterialType.VANILLA_METALS);
         typedTag(YTechItems.TANNING_RACKS, YTechItemTags.TANNING_RACKS);
-
-        multiTypedTag(YTechItems.PARTS, YTechItemTags.PARTS);
 
         tag(ItemTags.ANVIL).add(YTechItems.BRONZE_ANVIL.get());
         tag(ItemTags.BEDS).add(YTechItems.GRASS_BED.get());

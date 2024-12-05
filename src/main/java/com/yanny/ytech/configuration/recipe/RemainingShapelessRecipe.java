@@ -1,20 +1,22 @@
 package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -23,13 +25,15 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class RemainingShapelessRecipe extends ShapelessRecipe {
-    public RemainingShapelessRecipe(String p_249640_, CraftingBookCategory p_249390_, ItemStack p_252071_, NonNullList<Ingredient> p_250689_) {
+    public RemainingShapelessRecipe(String p_249640_, CraftingBookCategory p_249390_, ItemStack p_252071_, List<Ingredient> p_250689_) {
         super(p_249640_, p_249390_, p_252071_, p_250689_);
     }
 
     public RemainingShapelessRecipe(ShapelessRecipe recipe) {
-        super(recipe.getGroup(), recipe.category(), recipe.getResultItem(null), recipe.getIngredients());
+        super(recipe.group(), recipe.category(), recipe.result, recipe.ingredients);
     }
 
     @NotNull
@@ -39,9 +43,10 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
 
         for(int i = 0; i < list.size(); ++i) {
             ItemStack item = container.getItem(i);
+            ItemStack craftingRemainder = item.getCraftingRemainder();
 
-            if (item.hasCraftingRemainingItem()) {
-                list.set(i, item.getCraftingRemainingItem());
+            if (!craftingRemainder.isEmpty()) {
+                list.set(i, craftingRemainder);
             } else if (item.isDamageableItem()) {
                 ItemStack result = item.copy();
                 list.set(i, result);
@@ -59,32 +64,24 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
 
     @NotNull
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return YTechRecipeSerializers.REMAINING_SHAPELESS.get();
+    public RecipeSerializer<ShapelessRecipe> getSerializer() {
+        return (RecipeSerializer<ShapelessRecipe>) ((Object)YTechRecipeSerializers.REMAINING_SHAPELESS.get());
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapelessRecipe> {
         private static final MapCodec<RemainingShapelessRecipe> CODEC = RecordCodecBuilder.mapCodec(
-                (instance) -> instance.group(Codec.STRING.optionalFieldOf("group", "").forGetter(ShapelessRecipe::getGroup),
-                        CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter((recipe) -> recipe.category),
+                (instance) -> instance.group(Codec.STRING.optionalFieldOf("group", "").forGetter(ShapelessRecipe::group),
+                        CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(ShapelessRecipe::category),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((recipe) -> recipe.result),
-                        Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(
-                                (ingredients) -> {
-                                    Ingredient[] aingredient = ingredients.toArray(Ingredient[]::new);
-
-                                    if (aingredient.length == 0) {
-                                        return DataResult.error(() -> "No ingredients for shapeless recipe");
-                                    } else {
-                                        return aingredient.length > 3*3 ? DataResult.error(() -> {
-                                            return "Too many ingredients for shapeless recipe. The maximum is: %s".formatted(3*3);
-                                        }) : DataResult.success(NonNullList.of(Ingredient.EMPTY, aingredient));
-                                    }
-                                },
-                                DataResult::success).forGetter(ShapelessRecipe::getIngredients)
+                        Codec.lazyInitialized(() -> Ingredient.CODEC.listOf(1, 9)).fieldOf("ingredients").forGetter((recipe) -> recipe.ingredients)
                 ).apply(instance, RemainingShapelessRecipe::new)
         );
-        private static final StreamCodec<RegistryFriendlyByteBuf, RemainingShapelessRecipe> STREAM_CODEC = StreamCodec.of(
-                Serializer::toNetwork, Serializer::fromNetwork
+        private static final StreamCodec<RegistryFriendlyByteBuf, RemainingShapelessRecipe> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.STRING_UTF8, ShapelessRecipe::group,
+                CraftingBookCategory.STREAM_CODEC, ShapelessRecipe::category,
+                ItemStack.STREAM_CODEC, (recipe) -> recipe.result,
+                Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), (recipe) -> recipe.ingredients,
+                RemainingShapelessRecipe::new
         );
 
         @NotNull
@@ -98,32 +95,27 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
         public StreamCodec<RegistryFriendlyByteBuf, RemainingShapelessRecipe> streamCodec() {
             return STREAM_CODEC;
         }
-
-        @NotNull
-        private static RemainingShapelessRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf friendlyByteBuf) {
-            return new RemainingShapelessRecipe(ShapelessRecipe.Serializer.fromNetwork(friendlyByteBuf));
-        }
-
-        private static void toNetwork(@NotNull RegistryFriendlyByteBuf buf, @NotNull RemainingShapelessRecipe recipe) {
-            ShapelessRecipe.Serializer.toNetwork(buf, recipe);
-        }
     }
 
     public static class Builder extends ShapelessRecipeBuilder {
-        public Builder(RecipeCategory pCategory, ItemLike pResult, int pCount) {
-            super(pCategory, pResult, pCount);
+        public Builder(HolderGetter<Item> holderGetter, RecipeCategory pCategory, ItemStack pResult) {
+            super(holderGetter, pCategory, pResult);
         }
 
-        public static Builder shapeless(@NotNull RecipeCategory pCategory, ItemLike pResult) {
-            return new Builder(pCategory, pResult, 1);
+        public static Builder shapeless(@NotNull HolderGetter<Item> holderGetter, @NotNull RecipeCategory pCategory, @NotNull ItemStack pResult) {
+            return new Builder(holderGetter, pCategory, pResult);
         }
 
-        public static Builder shapeless(@NotNull RecipeCategory pCategory, ItemLike pResult, int pCount) {
-            return new Builder(pCategory, pResult, pCount);
+        public static Builder shapeless(@NotNull HolderGetter<Item> holderGetter, @NotNull RecipeCategory pCategory, ItemLike pResult) {
+            return shapeless(holderGetter, pCategory, pResult, 1);
+        }
+
+        public static Builder shapeless(@NotNull HolderGetter<Item> holderGetter, @NotNull RecipeCategory pCategory, ItemLike pResult, int pCount) {
+            return new Builder(holderGetter, pCategory, pResult.asItem().getDefaultInstance().copyWithCount(pCount));
         }
 
         @Override
-        public void save(@NotNull RecipeOutput consumer, @NotNull ResourceLocation id) {
+        public void save(@NotNull RecipeOutput consumer, @NotNull ResourceKey<Recipe<?>> id) {
             super.save(new RecipeOutput() {
                 @NotNull
                 @Override
@@ -132,7 +124,12 @@ public class RemainingShapelessRecipe extends ShapelessRecipe {
                 }
 
                 @Override
-                public void accept(@NotNull ResourceLocation id, @NotNull Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, ICondition @NotNull ... iConditions) {
+                public void includeRootAdvancement() {
+                    consumer.includeRootAdvancement();
+                }
+
+                @Override
+                public void accept(@NotNull ResourceKey<Recipe<?>> id, @NotNull Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, ICondition @NotNull ... iConditions) {
                     consumer.accept(id, new RemainingShapelessRecipe((ShapelessRecipe) recipe), advancementHolder);
                 }
             }, id);

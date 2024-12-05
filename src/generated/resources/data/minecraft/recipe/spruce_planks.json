@@ -3,12 +3,8 @@
   "category": "building",
   "group": "spruce_planks",
   "ingredients": [
-    {
-      "item": "minecraft:spruce_log"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:spruce_log",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

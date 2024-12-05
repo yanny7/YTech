@@ -1,23 +1,13 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "group": "boat",
   "key": {
-    "F": {
-      "tag": "ytech:files"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "I": {
-      "tag": "ytech:rods"
-    },
-    "P": {
-      "item": "minecraft:dark_oak_planks"
-    },
-    "S": {
-      "tag": "ytech:saws"
-    }
+    "F": "#ytech:files",
+    "H": "#ytech:hammers",
+    "I": "#ytech:rods",
+    "P": "minecraft:dark_oak_planks",
+    "S": "#ytech:saws"
   },
   "pattern": [
     "HFS",

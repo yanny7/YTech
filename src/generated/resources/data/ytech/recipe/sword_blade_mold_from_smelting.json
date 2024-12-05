@@ -1,11 +1,8 @@
 {
   "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "ytech:unfired_molds/sword_blade"
-  },
+  "ingredient": "#ytech:unfired_molds/sword_blade",
   "inputCount": 1,
   "minTemp": 1000,
-  "mold": [],
   "result": {
     "count": 1,
     "id": "ytech:sword_blade_mold"

@@ -1,13 +1,8 @@
 package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -20,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
     private static final VoxelShape SHAPE = Shapes.box(1/16.0, 0, 1/16.0, 15/16.0, 1, 15/16.0);
+
+    public ReinforcedBrickChimneyBlock(Properties properties) {
+        super(properties);
+    }
 
     @NotNull
     @Override
@@ -42,15 +41,5 @@ public class ReinforcedBrickChimneyBlock extends BrickChimneyBlock {
                 .texture("1", Utils.modBlockLoc("machine/primitive_smelter_top"));
         provider.getVariantBuilder(YTechBlocks.REINFORCED_BRICK_CHIMNEY.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.REINFORCED_BRICK_CHIMNEY)).parent(model);
-    }
-
-    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.REINFORCED_BRICK_CHIMNEY.get())
-                .define('#', YTechItemTags.REINFORCED_BRICKS)
-                .pattern(" # ")
-                .pattern("# #")
-                .pattern(" # ")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.REINFORCED_BRICKS))
-                .save(recipeConsumer, Utils.modLoc(Utils.getPath(YTechBlocks.REINFORCED_BRICK_CHIMNEY)));
     }
 }

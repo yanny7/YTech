@@ -7,9 +7,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
@@ -45,37 +46,40 @@ public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker
         return progressHandler.getProgress();
     }
 
-    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide) {
+    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (level instanceof ServerLevel serverLevel) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                progressHandler.setupCrafting(level, holdingItemStack, AbstractCookingRecipe::getCookingTime);
+                progressHandler.setupCrafting(serverLevel, holdingItemStack, AbstractCookingRecipe::cookingTime);
             } else {
                 Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
+                progressHandler.clear();
             }
 
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     @Override
     public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull FirePitBlockEntity blockEntity) {
-        int heatLevel = state.getValue(BlockStateProperties.LEVEL);
-        Function<CampfireCookingRecipe, Boolean> canProcess = (recipe) -> state.getValue(BlockStateProperties.LIT) && heatLevel > 0;
-        Function<CampfireCookingRecipe, Float> getStep = (recipe) -> heatLevel / 15f;
-        BiConsumer<SingleRecipeInput, CampfireCookingRecipe> onFinish = (container, recipe) -> {
-            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
-            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
-        };
+        if (level instanceof ServerLevel serverLevel) {
+            int heatLevel = state.getValue(BlockStateProperties.LEVEL);
+            Function<CampfireCookingRecipe, Boolean> canProcess = (recipe) -> state.getValue(BlockStateProperties.LIT) && heatLevel > 0;
+            Function<CampfireCookingRecipe, Float> getStep = (recipe) -> heatLevel / 15f;
+            BiConsumer<SingleRecipeInput, CampfireCookingRecipe> onFinish = (container, recipe) -> {
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
+                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            };
 
-        if (progressHandler.tick(level, canProcess, getStep, onFinish)) {
-            setChanged(level, pos, state);
+            if (progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
+                setChanged(level, pos, state);
+            }
         }
     }
 

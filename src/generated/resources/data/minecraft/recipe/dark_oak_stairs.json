@@ -1,20 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "building",
   "group": "wooden_stairs",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "P": {
-      "item": "minecraft:dark_oak_planks"
-    },
-    "S": {
-      "item": "minecraft:dark_oak_slab"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "B": "#ytech:bolts/wooden",
+    "P": "minecraft:dark_oak_planks",
+    "S": "minecraft:dark_oak_slab",
+    "W": "#ytech:saws"
   },
   "pattern": [
     "PW",

@@ -114,7 +114,7 @@ public abstract class WildDangerousEntity extends WildAnimalEntity implements Ne
     }
 
     @Override
-    protected void customServerAiStep() {
+    protected void customServerAiStep(@NotNull ServerLevel level) {
         AttributeInstance attributeInstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
 
         if (attributeInstance != null) {
@@ -139,7 +139,7 @@ public abstract class WildDangerousEntity extends WildAnimalEntity implements Ne
             this.lastHurtByPlayerTime = this.tickCount;
         }
 
-        super.customServerAiStep();
+        super.customServerAiStep(level);
     }
 
     private void maybePlayFirstAngerSound() {

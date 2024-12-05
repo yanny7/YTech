@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.entity;
 
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechSoundEvents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -54,7 +55,7 @@ public class WoollyMammothEntity extends WildDangerousEntity {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new TemptGoal(this, 1.25D, Ingredient.of(YTechItemTags.WOOLLY_MAMMOTH_TEMP_ITEMS), false));
+        goalSelector.addGoal(1, new TemptGoal(this, 1.25D, Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(YTechItemTags.WOOLLY_MAMMOTH_TEMP_ITEMS)), false));
         goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
         goalSelector.addGoal(4, new RandomLookAroundGoal(this));
@@ -66,6 +67,7 @@ public class WoollyMammothEntity extends WildDangerousEntity {
                 .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.ARMOR, 2.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
-                .add(Attributes.ATTACK_DAMAGE, 8.0);
+                .add(Attributes.ATTACK_DAMAGE, 8.0)
+                .add(Attributes.TEMPT_RANGE, 10.0);
     }
 }

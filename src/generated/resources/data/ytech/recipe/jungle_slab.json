@@ -3,12 +3,8 @@
   "category": "building",
   "group": "jungle_slab",
   "ingredients": [
-    {
-      "item": "minecraft:jungle_planks"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:jungle_planks",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

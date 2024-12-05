@@ -2,18 +2,14 @@ package com.yanny.ytech.configuration.block;
 
 import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -49,11 +46,11 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 public class GrassBedBlock extends HorizontalDirectionalBlock {
-    private static final MapCodec<GrassBedBlock> CODEC = simpleCodec((prop) -> new GrassBedBlock());
+    private static final MapCodec<GrassBedBlock> CODEC = simpleCodec(GrassBedBlock::new);
     private static final VoxelShape BASE = Block.box(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
 
-    public GrassBedBlock() {
-        super(Properties.of().sound(SoundType.WOOD).strength(0.2F).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY));
+    public GrassBedBlock(Properties properties) {
+        super(properties.sound(SoundType.WOOD).strength(0.2F).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY));
     }
 
     @NotNull
@@ -69,17 +66,17 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
 
     @NotNull
     @Override
-    protected ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
-                                              @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+                                          @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.isClientSide) {
-            return ItemInteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         } else {
             if (state.getValue(PART) != HEAD) {
                 pos = pos.relative(state.getValue(FACING));
                 state = level.getBlockState(pos);
 
                 if (!state.is(this)) {
-                    return ItemInteractionResult.CONSUME;
+                    return InteractionResult.CONSUME;
                 }
             }
 
@@ -93,20 +90,20 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
 
                 Vec3 center = pos.getCenter();
                 level.explode(null, level.damageSources().badRespawnPointExplosion(center), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (state.getValue(OCCUPIED)) {
                 if (!this.kickVillagerOutOfBed(level, pos)) {
                     player.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
                 }
 
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }  else {
                 player.startSleepInBed(pos).ifLeft((sleepingProblem) -> {
                     if (sleepingProblem.getMessage() != null) {
                         player.displayClientMessage(sleepingProblem.getMessage(), true);
                     }
                 });
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
     }
@@ -124,11 +121,12 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
 
     @NotNull
     @Override
-    public BlockState updateShape(BlockState state, @NotNull Direction pFacing, @NotNull BlockState pFacingState, @NotNull LevelAccessor level, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pFacingPos) {
-        if (pFacing == getNeighbourDirection(state.getValue(PART), state.getValue(FACING))) {
-            return pFacingState.is(this) && pFacingState.getValue(PART) != state.getValue(PART) ? state.setValue(OCCUPIED, pFacingState.getValue(OCCUPIED)) : Blocks.AIR.defaultBlockState();
+    public BlockState updateShape(@NotNull BlockState state, @NotNull LevelReader level, @NotNull ScheduledTickAccess tickAccess, @NotNull BlockPos pos,
+                                  @NotNull Direction direction, @NotNull BlockPos neighborPos, @NotNull BlockState neighborState, @NotNull RandomSource random) {
+        if (direction == getNeighbourDirection(state.getValue(PART), state.getValue(FACING))) {
+            return neighborState.is(this) && neighborState.getValue(PART) != state.getValue(PART) ? state.setValue(OCCUPIED, neighborState.getValue(OCCUPIED)) : Blocks.AIR.defaultBlockState();
         } else {
-            return super.updateShape(state, pFacing, pFacingState, level, pCurrentPos, pFacingPos);
+            return super.updateShape(state, level, tickAccess, pos, direction, neighborPos, neighborState, random);
         }
     }
 
@@ -249,16 +247,5 @@ public class GrassBedBlock extends HorizontalDirectionalBlock {
 
     public static void registerLootTable(@NotNull BlockLootSubProvider provider) {
         provider.add(YTechBlocks.GRASS_BED.get(), b -> provider.createSinglePropConditionTable(b, PART, HEAD));
-    }
-
-    public static void registerRecipe(RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.GRASS_BED.get())
-                .define('G', YTechItemTags.THATCH_SLABS)
-                .define('S', YTechItemTags.GRASS_FIBERS)
-                .pattern("SSS")
-                .pattern("GGG")
-                .pattern("GGG")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.THATCH_SLABS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.GRASS_BED));
     }
 }

@@ -3,12 +3,8 @@
   "category": "building",
   "group": "warped_slab",
   "ingredients": [
-    {
-      "item": "minecraft:warped_planks"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:warped_planks",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

@@ -1,19 +1,11 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "tag": "minecraft:stone_crafting_materials"
-    },
-    "F": {
-      "item": "minecraft:campfire"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
-      "item": "minecraft:cobblestone_slab"
-    }
+    "C": "#minecraft:stone_crafting_materials",
+    "F": "minecraft:campfire",
+    "H": "#ytech:hammers",
+    "S": "minecraft:cobblestone_slab"
   },
   "pattern": [
     "SHS",

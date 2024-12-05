@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "S": {
-      "tag": "ytech:plates/copper"
-    },
-    "T": {
-      "tag": "ytech:leather_strips"
-    }
+    "#": "minecraft:stick",
+    "S": "#ytech:plates/copper",
+    "T": "#ytech:leather_strips"
   },
   "pattern": [
     " TS",

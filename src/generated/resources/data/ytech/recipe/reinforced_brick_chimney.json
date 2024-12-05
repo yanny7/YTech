@@ -1,10 +1,8 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:reinforced_bricks"
-    }
+    "#": "#ytech:reinforced_bricks"
   },
   "pattern": [
     " # ",

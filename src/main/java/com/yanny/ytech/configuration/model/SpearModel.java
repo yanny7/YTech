@@ -1,7 +1,5 @@
 package com.yanny.ytech.configuration.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.registration.YTechItems;
@@ -38,11 +36,8 @@ public class SpearModel extends Model {
       }
    }
 
-   @NotNull private final ModelPart root;
-
    public SpearModel(@NotNull ModelPart root) {
-      super(RenderType::entitySolid);
-      this.root = root;
+      super(root, RenderType::entitySolid);
    }
 
    @NotNull
@@ -60,10 +55,5 @@ public class SpearModel extends Model {
               .addBox(-0.5F, -3.0F, -0.5F, 1.0F, 1.0F, 1.0F), PartPose.ZERO);
 
       return LayerDefinition.create(meshDefinition, 32, 32);
-   }
-
-   @Override
-   public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-      this.root.render(poseStack, buffer, packedLight, packedOverlay, color);
    }
 }

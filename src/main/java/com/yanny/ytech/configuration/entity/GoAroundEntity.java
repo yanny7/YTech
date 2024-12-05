@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -93,7 +94,7 @@ public class GoAroundEntity extends Mob implements IEntityWithComplexSpawn {
     public void stopRiding() {
         super.stopRiding();
 
-        if (!level().isClientSide && getRemovalReason() == null) {
+        if (level() instanceof ServerLevel serverLevel && getRemovalReason() == null) {
             if (this.millstoneBlockEntity != null) {
                 this.millstoneBlockEntity.removeLeash();
             } else {
@@ -101,7 +102,7 @@ public class GoAroundEntity extends Mob implements IEntityWithComplexSpawn {
             }
 
             this.remove(RemovalReason.DISCARDED);
-            this.spawnAtLocation(Items.LEAD);
+            this.spawnAtLocation(serverLevel, Items.LEAD);
         }
     }
 

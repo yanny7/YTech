@@ -2,6 +2,8 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
@@ -9,12 +11,13 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -39,33 +42,34 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
         return result.copy();
     }
 
+    @NotNull
     @Override
-    public boolean canCraftInDimensions(int w, int h) {
-        return true;
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
     }
 
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.HAMMERING.get();
     }
 
     @NotNull
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<HammeringRecipe> getSerializer() {
         return YTechRecipeSerializers.HAMMERING.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<HammeringRecipe> getType() {
         return YTechRecipeTypes.HAMMERING.get();
     }
 
     public static class Serializer implements RecipeSerializer<HammeringRecipe> {
         private static final MapCodec<HammeringRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(
-                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((hammeringRecipe) -> hammeringRecipe.ingredient),
+                        Ingredient.CODEC.fieldOf("ingredient").forGetter((hammeringRecipe) -> hammeringRecipe.ingredient),
                         Ingredient.CODEC.fieldOf("tool").forGetter((hammeringRecipe) -> hammeringRecipe.tool),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((hammeringRecipe) -> hammeringRecipe.result)
                 ).apply(instance, HammeringRecipe::new)
@@ -103,26 +107,22 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
-        private Ingredient tool = Ingredient.EMPTY;
+        private final Ingredient tool;
         private final Item result;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull Ingredient ingredient, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, @NotNull Ingredient tool, @NotNull Item result) {
             this.ingredient = ingredient;
+            this.tool = tool;
             this.result = result;
         }
 
-        public static Builder hammering(@NotNull TagKey<Item> input, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), result);
+        public static Builder hammering(@NotNull HolderGetter<Item> items, @NotNull TagKey<Item> input, @NotNull TagKey<Item> tool, @NotNull Item result) {
+            return new Builder(Ingredient.of(items.getOrThrow(input)), Ingredient.of(items.getOrThrow(tool)), result);
         }
 
-        public static Builder hammering(@NotNull ItemLike input, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), result);
-        }
-
-        public Builder tool(@NotNull Ingredient tool) {
-            this.tool = tool;
-            return this;
+        public static Builder hammering(@NotNull HolderGetter<Item> items, @NotNull ItemLike input, @NotNull TagKey<Item> tool, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), Ingredient.of(items.getOrThrow(tool)), result);
         }
 
         @NotNull
@@ -145,20 +145,20 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, ItemStack 
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput recipeOutput, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
-            Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
+            Advancement.Builder builder = recipeOutput.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
             this.criteria.forEach(builder::addCriterion);
-            finishedRecipeConsumer.accept(
+            recipeOutput.accept(
                     recipeId,
                     new HammeringRecipe(ingredient, tool, new ItemStack(result)),
-                    builder.build(recipeId.withPrefix("recipes/hammering/"))
+                    builder.build(Utils.modLoc("recipes/hammering/" + recipeId.location().getPath()))
             );
         }
 
         //Makes sure that this recipe is valid and obtainable.
-        private void ensureValid(@NotNull ResourceLocation id) {
+        private void ensureValid(@NotNull ResourceKey<Recipe<?>> id) {
             if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

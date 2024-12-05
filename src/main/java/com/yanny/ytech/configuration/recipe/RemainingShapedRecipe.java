@@ -6,14 +6,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -28,7 +30,7 @@ public class RemainingShapedRecipe extends ShapedRecipe {
     }
 
     public RemainingShapedRecipe(ShapedRecipe recipe) {
-        super(recipe.getGroup(), recipe.category(), recipe.pattern, recipe.getResultItem(null), recipe.showNotification());
+        super(recipe.group(), recipe.category(), recipe.pattern, recipe.result, recipe.showNotification());
     }
 
     @NotNull
@@ -38,9 +40,10 @@ public class RemainingShapedRecipe extends ShapedRecipe {
 
         for(int i = 0; i < list.size(); ++i) {
             ItemStack item = container.getItem(i);
+            ItemStack craftingRemainder = item.getCraftingRemainder();
 
-            if (item.hasCraftingRemainingItem()) {
-                list.set(i, item.getCraftingRemainingItem());
+            if (!craftingRemainder.isEmpty()) {
+                list.set(i, craftingRemainder);
             } else if (item.isDamageableItem()) {
                 ItemStack result = item.copy();
                 list.set(i, result);
@@ -58,17 +61,17 @@ public class RemainingShapedRecipe extends ShapedRecipe {
 
     @NotNull
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<RemainingShapedRecipe> getSerializer() {
         return YTechRecipeSerializers.REMAINING_SHAPED.get();
     }
 
     public static class Serializer implements RecipeSerializer<RemainingShapedRecipe> {
         private static final MapCodec<RemainingShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 (instance) -> instance.group(
-                        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::getGroup),
+                        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::group),
                         CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(ShapedRecipe::category),
                         ShapedRecipePattern.MAP_CODEC.forGetter((recipe) -> recipe.pattern),
-                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((p_311730_) -> p_311730_.getResultItem(null)),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter((p_311730_) -> p_311730_.result),
                         Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(ShapedRecipe::showNotification)
                 ).apply(instance, RemainingShapedRecipe::new)
         );
@@ -99,20 +102,12 @@ public class RemainingShapedRecipe extends ShapedRecipe {
     }
 
     public static class Builder extends ShapedRecipeBuilder {
-        public Builder(RecipeCategory pCategory, ItemLike pResult, int pCount) {
-            super(pCategory, pResult, pCount);
-        }
-
-        public static Builder shaped(@NotNull RecipeCategory pCategory, ItemLike pResult) {
-            return shaped(pCategory, pResult, 1);
-        }
-
-        public static Builder shaped(@NotNull RecipeCategory pCategory, ItemLike pResult, int pCount) {
-            return new Builder(pCategory, pResult, pCount);
+        public Builder(HolderGetter<Item> holderGetter, RecipeCategory pCategory, ItemLike pResult, int pCount) {
+            super(holderGetter, pCategory, pResult, pCount);
         }
 
         @Override
-        public void save(@NotNull RecipeOutput consumer, @NotNull ResourceLocation id) {
+        public void save(@NotNull RecipeOutput consumer, @NotNull ResourceKey<Recipe<?>> id) {
             super.save(new RecipeOutput() {
                 @NotNull
                 @Override
@@ -121,7 +116,12 @@ public class RemainingShapedRecipe extends ShapedRecipe {
                 }
 
                 @Override
-                public void accept(@NotNull ResourceLocation id, @NotNull Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, ICondition @NotNull ... iConditions) {
+                public void includeRootAdvancement() {
+                    consumer.includeRootAdvancement();
+                }
+
+                @Override
+                public void accept(@NotNull ResourceKey<Recipe<?>> id, @NotNull Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, ICondition @NotNull ... iConditions) {
                     consumer.accept(id, new RemainingShapedRecipe((ShapedRecipe) recipe), advancementHolder);
                 }
             }, id);

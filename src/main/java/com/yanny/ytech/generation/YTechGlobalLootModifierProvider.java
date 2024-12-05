@@ -10,6 +10,7 @@ import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
@@ -31,7 +32,7 @@ public class YTechGlobalLootModifierProvider extends GlobalLootModifierProvider 
         add("grass_drops_fibers", new AddItemModifier(
                 new LootItemCondition[] {
                         LootItemRandomChanceCondition.randomChance(0.1f).build(),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(YTechItemTags.SHARP_FLINTS)).build(),
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), YTechItemTags.SHARP_FLINTS)).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.SHORT_GRASS).build()
                 },
                 YTechItems.GRASS_FIBERS.get()
@@ -58,7 +59,7 @@ public class YTechGlobalLootModifierProvider extends GlobalLootModifierProvider 
         add(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(entityType)).getPath() + "_replace_leather_by_raw_hide", new ReplaceItemModifier(
                 new LootItemCondition[] {
                         LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityType)).build()).build()
+                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(BuiltInRegistries.ENTITY_TYPE, entityType)).build()).build()
                 },
                 Items.LEATHER,
                 YTechItems.RAW_HIDE.get()

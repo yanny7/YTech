@@ -2,9 +2,7 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/bronze"
-    }
+    "#c:storage_blocks/bronze"
   ],
   "result": {
     "count": 9,

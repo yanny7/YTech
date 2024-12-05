@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "ytech:plates/bronze"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "#": "#ytech:plates/bronze",
+    "S": "minecraft:stick"
   },
   "pattern": [
     "#",

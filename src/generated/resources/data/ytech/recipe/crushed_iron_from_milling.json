@@ -1,9 +1,7 @@
 {
   "type": "ytech:milling",
   "bonusChance": 0.5,
-  "ingredient": {
-    "tag": "c:raw_materials/iron"
-  },
+  "ingredient": "#c:raw_materials/iron",
   "result": {
     "count": 1,
     "id": "ytech:crushed_iron"

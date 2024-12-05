@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "tag": "ytech:bolts/copper"
-    },
-    "B": {
-      "item": "minecraft:bricks"
-    },
-    "P": {
-      "tag": "ytech:plates/copper"
-    }
+    "#": "#ytech:bolts/copper",
+    "B": "minecraft:bricks",
+    "P": "#ytech:plates/copper"
   },
   "pattern": [
     "#P#",

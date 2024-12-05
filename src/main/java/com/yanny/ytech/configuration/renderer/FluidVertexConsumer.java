@@ -19,7 +19,7 @@ public final class FluidVertexConsumer implements VertexConsumer {
 
     public FluidVertexConsumer(@NotNull MultiBufferSource buffer, @NotNull FluidState fluid, @NotNull PoseStack.Pose pose) {
         RenderType renderType = ItemBlockRenderTypes.getRenderLayer(fluid);
-        VertexConsumer superParent = buffer.getBuffer(RenderTypeHelper.getEntityRenderType(renderType, false));
+        VertexConsumer superParent = buffer.getBuffer(RenderTypeHelper.getEntityRenderType(renderType));
         this.parent = new RemappingVertexPipeline(superParent, DefaultVertexFormat.NEW_ENTITY);
         this.pose = pose;
     }

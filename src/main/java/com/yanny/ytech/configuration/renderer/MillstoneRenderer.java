@@ -10,8 +10,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -19,10 +17,10 @@ import org.jetbrains.annotations.NotNull;
 @OnlyIn(Dist.CLIENT)
 public class MillstoneRenderer implements BlockEntityRenderer<MillstoneBlockEntity> {
     private static final ResourceLocation KNOT_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/lead_knot.png");
-    private final LeashKnotModel<LeashFenceKnotEntity> model;
+    private final LeashKnotModel model;
 
     public MillstoneRenderer(BlockEntityRendererProvider.Context context) {
-        this.model = new LeashKnotModel<>(context.bakeLayer(ModelLayers.LEASH_KNOT));
+        this.model = new LeashKnotModel(context.bakeLayer(ModelLayers.LEASH_KNOT));
     }
 
     @Override

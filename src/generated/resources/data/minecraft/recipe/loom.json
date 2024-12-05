@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "tag": "ytech:bolts"
-    },
-    "S": {
-      "tag": "minecraft:planks"
-    },
-    "~": {
-      "item": "minecraft:string"
-    }
+    "B": "#ytech:bolts",
+    "S": "#minecraft:planks",
+    "~": "minecraft:string"
   },
   "pattern": [
     "~~",

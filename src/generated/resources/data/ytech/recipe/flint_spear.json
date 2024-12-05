@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "S": {
-      "item": "minecraft:flint"
-    },
-    "T": {
-      "tag": "ytech:leather_strips"
-    }
+    "#": "minecraft:stick",
+    "S": "minecraft:flint",
+    "T": "#ytech:leather_strips"
   },
   "pattern": [
     " TS",

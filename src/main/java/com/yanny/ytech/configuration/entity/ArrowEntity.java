@@ -63,7 +63,7 @@ public class ArrowEntity extends AbstractArrow {
         super.tick();
 
         if (this.level().isClientSide) {
-            if (this.inGround) {
+            if (this.isInGround()) {
                 if (this.inGroundTime % 5 == 0) {
                     this.makeParticle(1);
                 }

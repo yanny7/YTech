@@ -1,13 +1,9 @@
 {
   "type": "ytech:hammering",
-  "ingredient": {
-    "tag": "c:ingots/gold"
-  },
+  "ingredient": "#c:ingots/gold",
   "result": {
     "count": 1,
     "id": "ytech:golden_plate"
   },
-  "tool": {
-    "tag": "ytech:hammers"
-  }
+  "tool": "#ytech:hammers"
 }

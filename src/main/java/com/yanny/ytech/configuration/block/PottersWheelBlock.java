@@ -2,25 +2,18 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PottersWheelBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -44,8 +37,8 @@ public class PottersWheelBlock extends Block implements EntityBlock {
             Shapes.box(4/16.0, 11/16.0, 4/16.0, 12/16.0, 14/16.0, 12/16.0)
     );
 
-    public PottersWheelBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(MapColor.TERRACOTTA_BROWN));
+    public PottersWheelBlock(BlockBehaviour.Properties properties) {
+        super(properties.mapColor(MapColor.TERRACOTTA_BROWN));
     }
 
     @NotNull
@@ -68,8 +61,8 @@ public class PottersWheelBlock extends Block implements EntityBlock {
 
     @NotNull
     @Override
-    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                           @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof  PottersWheelBlockEntity pottersWheel) {
             return pottersWheel.onUse(state, level, pos, player, hand);
         } else {
@@ -131,18 +124,5 @@ public class PottersWheelBlock extends Block implements EntityBlock {
                 .texture("1", Utils.mcBlockLoc("oak_planks"));
         provider.getVariantBuilder(YTechBlocks.POTTERS_WHEEL.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.POTTERS_WHEEL)).parent(model);
-    }
-
-    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.POTTERS_WHEEL.get())
-                .define('W', ItemTags.LOGS)
-                .define('S', ItemTags.WOODEN_SLABS)
-                .define('A', YTechItemTags.AXES.tag)
-                .define('B', YTechItemTags.SAWS.tag)
-                .pattern("ASB")
-                .pattern(" W ")
-                .pattern("SSS")
-                .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.POTTERS_WHEEL));
     }
 }

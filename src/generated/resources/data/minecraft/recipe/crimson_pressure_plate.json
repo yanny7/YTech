@@ -1,17 +1,11 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "P": {
-      "item": "minecraft:crimson_planks"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "B": "#ytech:bolts/wooden",
+    "P": "minecraft:crimson_planks",
+    "W": "#ytech:saws"
   },
   "pattern": [
     " W ",

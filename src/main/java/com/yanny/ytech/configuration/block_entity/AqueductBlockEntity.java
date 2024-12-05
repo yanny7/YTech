@@ -32,7 +32,7 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
         if (level instanceof ServerLevel) {
             Holder<Biome> biome = level.getBiome(worldPosition);
             return !YTechMod.CONFIGURATION.isValidBlockForRaining() || (level.canSeeSky(worldPosition.above())
-                    && biome.value().getPrecipitationAt(worldPosition) == Biome.Precipitation.RAIN);
+                    && biome.value().getPrecipitationAt(worldPosition, level.getSeaLevel()) == Biome.Precipitation.RAIN);
         }
 
         return false;

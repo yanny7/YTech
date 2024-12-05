@@ -187,7 +187,7 @@ public class YTechDatapackProvider extends DatapackBuiltinEntriesProvider {
                         new RuleBasedBlockStateProvider(
                                 BlockStateProvider.simple(block),
                                 List.of(new RuleBasedBlockStateProvider.Rule(
-                                        BlockPredicate.matchesBlocks(Direction.DOWN.getNormal(), Blocks.AIR),
+                                        BlockPredicate.matchesBlocks(Direction.DOWN.getUnitVec3i(), Blocks.AIR),
                                         BlockStateProvider.simple(Blocks.SANDSTONE)
                                 ))
                         ),

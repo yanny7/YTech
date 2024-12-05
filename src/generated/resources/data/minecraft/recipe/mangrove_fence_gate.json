@@ -1,23 +1,13 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "group": "wooden_fence_gate",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "item": "minecraft:mangrove_planks"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "B": "#ytech:bolts/wooden",
+    "H": "#ytech:hammers",
+    "P": "minecraft:mangrove_planks",
+    "S": "minecraft:stick",
+    "W": "#ytech:saws"
   },
   "pattern": [
     "H W",

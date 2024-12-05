@@ -1,19 +1,11 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/iron"
-    },
-    "I": {
-      "tag": "ytech:rods/iron"
-    },
-    "S": {
-      "item": "minecraft:stone"
-    },
-    "W": {
-      "tag": "ytech:saw_blades/iron"
-    }
+    "B": "#ytech:bolts/iron",
+    "I": "#ytech:rods/iron",
+    "S": "minecraft:stone",
+    "W": "#ytech:saw_blades/iron"
   },
   "pattern": [
     "IWB",

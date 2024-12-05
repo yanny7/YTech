@@ -2,16 +2,11 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.FirePitBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -19,7 +14,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +24,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -56,8 +54,8 @@ public class FirePitBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_UP = Shapes.box(0, 0, 7/16.0, 1, 14/16.0, 9/16.0);
     private static final VoxelShape SHAPE = Shapes.join(SHAPE_DOWN, SHAPE_UP, BooleanOp.OR);
 
-    public FirePitBlock() {
-        super(Properties.ofFullCopy(Blocks.STONE).sound(SoundType.WOOD).noOcclusion().hasPostProcess(FirePitBlock::always).lightLevel(FirePitBlock::getLightLevel));
+    public FirePitBlock(Properties properties) {
+        super(properties.sound(SoundType.WOOD).noOcclusion().hasPostProcess(FirePitBlock::always).lightLevel(FirePitBlock::getLightLevel));
     }
 
     @NotNull
@@ -67,7 +65,7 @@ public class FirePitBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState pState) {
         return true;
     }
 
@@ -96,7 +94,6 @@ public class FirePitBlock extends Block implements EntityBlock {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
@@ -158,7 +155,7 @@ public class FirePitBlock extends Block implements EntityBlock {
 
     @NotNull
     @Override
-    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
+    public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (!state.getValue(LIT) && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.STICK) && player.getItemInHand(InteractionHand.OFF_HAND).is(Items.STICK)) {
             player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
             player.getItemInHand(InteractionHand.OFF_HAND).shrink(1);
@@ -172,21 +169,21 @@ public class FirePitBlock extends Block implements EntityBlock {
                 }
             }
 
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         }
 
         ItemStack itemStack = player.getItemInHand(hand);
-        int burnTime = itemStack.getBurnTime(null);
+        int burnTime = itemStack.getBurnTime(null, level.fuelValues());
 
         if (burnTime > 0 && state.getValue(LEVEL) < 15) {
             itemStack.shrink(1);
             level.setBlock(pos, state.setValue(LEVEL, Math.min(15, state.getValue(LEVEL) + (int) Math.log10(burnTime))), Block.UPDATE_ALL);
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         } else if (level.getBlockEntity(pos) instanceof FirePitBlockEntity blockEntity) {
             return blockEntity.onUse(state, level, pos, player, hand, hit);
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable
@@ -207,7 +204,7 @@ public class FirePitBlock extends Block implements EntityBlock {
     public void onProjectileHit(@NotNull Level level, @NotNull BlockState state, @NotNull BlockHitResult hit, @NotNull Projectile projectile) {
         BlockPos pos = hit.getBlockPos();
 
-        if (!level.isClientSide && projectile.isOnFire() && projectile.mayInteract(level, pos) && !state.getValue(LIT)) {
+        if (level instanceof ServerLevel serverLevel && projectile.isOnFire() && projectile.mayInteract(serverLevel, pos) && !state.getValue(LIT)) {
             level.setBlock(pos, state.setValue(LIT, true), Block.UPDATE_ALL);
         }
     }
@@ -589,16 +586,6 @@ public class FirePitBlock extends Block implements EntityBlock {
 
         provider.itemModels().getBuilder(name).parent(provider.itemModels().getExistingFile(Utils.mcItemLoc("generated")))
                 .texture("layer0", Utils.modItemLoc("fire_pit"));
-    }
-
-    public static void registerRecipe(RecipeOutput consumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.FIRE_PIT.get())
-                .define('S', Items.STICK)
-                .define('P', YTechItemTags.PEBBLES)
-                .pattern("SS")
-                .pattern("PP")
-                .unlockedBy("has_pebble", RecipeProvider.has(YTechItemTags.PEBBLES))
-                .save(consumer, Utils.modLoc(YTechBlocks.FIRE_PIT));
     }
 
     private static boolean always(BlockState s, BlockGetter g, BlockPos p) {

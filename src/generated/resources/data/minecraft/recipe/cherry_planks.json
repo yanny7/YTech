@@ -3,12 +3,8 @@
   "category": "building",
   "group": "cherry_planks",
   "ingredients": [
-    {
-      "item": "minecraft:cherry_log"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:cherry_log",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

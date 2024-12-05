@@ -4,6 +4,7 @@ import com.yanny.ytech.configuration.MachineItemStackHandler;
 import com.yanny.ytech.configuration.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.NotNull;
@@ -34,10 +35,10 @@ public class AbstractScreenHandler<T extends AbstractContainerMenu> {
     }
 
     public void render(@NotNull GuiGraphics guiGraphics) {
-        guiGraphics.blit(GUI, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderType::guiTextured, GUI, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
 
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            guiGraphics.blit(GUI, leftPos + itemStackHandler.getX(i) - 1, topPos + itemStackHandler.getY(i) - 1, 7, 83, 18, 18);
+            guiGraphics.blit(RenderType::guiTextured, GUI, leftPos + itemStackHandler.getX(i) - 1, topPos + itemStackHandler.getY(i) - 1, 7, 83, 18, 18, 256, 256);
         }
 
         components.forEach(component -> component.render(guiGraphics, leftPos, topPos));

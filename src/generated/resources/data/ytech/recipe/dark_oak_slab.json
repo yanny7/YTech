@@ -3,12 +3,8 @@
   "category": "building",
   "group": "dark_oak_slab",
   "ingredients": [
-    {
-      "item": "minecraft:dark_oak_planks"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:dark_oak_planks",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

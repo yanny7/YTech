@@ -1,20 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "group": "wooden_door",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "item": "minecraft:bamboo_planks"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "B": "#ytech:bolts/wooden",
+    "H": "#ytech:hammers",
+    "P": "minecraft:bamboo_planks",
+    "W": "#ytech:saws"
   },
   "pattern": [
     "PPH",

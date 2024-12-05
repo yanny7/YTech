@@ -1,13 +1,9 @@
 {
   "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "c:crushed_materials/gold"
-  },
+  "ingredient": "#c:crushed_materials/gold",
   "inputCount": 1,
   "minTemp": 1064,
-  "mold": {
-    "tag": "ytech:molds/ingot"
-  },
+  "mold": "#ytech:molds/ingot",
   "result": {
     "count": 1,
     "id": "minecraft:gold_ingot"

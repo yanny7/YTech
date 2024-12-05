@@ -10,10 +10,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -44,9 +45,9 @@ public class PottersWheelBlockEntity extends BlockEntity {
         this.items = new ItemStackHandler(1);
     }
 
-    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                       @NotNull InteractionHand hand) {
-        if (!level.isClientSide) {
+    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                   @NotNull InteractionHand hand) {
+        if (level instanceof ServerLevel serverLevel) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (player.isCrouching()) {
@@ -70,7 +71,7 @@ public class PottersWheelBlockEntity extends BlockEntity {
                         holdingItemStack.shrink(1);
                         level.playSound(null, pos, SoundEvents.SLIME_SQUISH, SoundSource.BLOCKS, level.random.nextFloat() * 0.25F + 0.75F, 1.0f);
 
-                        Optional<RecipeHolder<PotteryRecipe>> recipes = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.POTTERY.get(), new SingleRecipeInput(items.getStackInSlot(0)), level);
+                        Optional<RecipeHolder<PotteryRecipe>> recipes = serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.POTTERY.get(), new SingleRecipeInput(items.getStackInSlot(0)), level);
 
                         result = recipes.map((m) -> m.value().result()).orElse(null);
                         level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
@@ -87,7 +88,7 @@ public class PottersWheelBlockEntity extends BlockEntity {
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

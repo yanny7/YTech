@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "tag": "ytech:rods"
-    },
-    "P": {
-      "tag": "ytech:plates"
-    },
-    "T": {
-      "item": "minecraft:torch"
-    }
+    "I": "#ytech:rods",
+    "P": "#ytech:plates",
+    "T": "minecraft:torch"
   },
   "pattern": [
     " P ",

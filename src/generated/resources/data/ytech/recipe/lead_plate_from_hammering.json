@@ -1,13 +1,9 @@
 {
   "type": "ytech:hammering",
-  "ingredient": {
-    "tag": "c:ingots/lead"
-  },
+  "ingredient": "#c:ingots/lead",
   "result": {
     "count": 1,
     "id": "ytech:lead_plate"
   },
-  "tool": {
-    "tag": "ytech:hammers"
-  }
+  "tool": "#ytech:hammers"
 }

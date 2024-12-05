@@ -1,9 +1,7 @@
 {
   "type": "ytech:drying",
   "dryingTime": 1200,
-  "ingredient": {
-    "item": "minecraft:beef"
-  },
+  "ingredient": "minecraft:beef",
   "result": {
     "count": 1,
     "id": "ytech:dried_beef"

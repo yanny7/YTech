@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -21,8 +22,12 @@ public class PebbleEntity extends ThrowableItemProjectile {
         super(entityType, level);
     }
 
-    public PebbleEntity(Level level, LivingEntity shooter) {
-        super(YTechEntityTypes.PEBBLE.get(), shooter, level);
+    public PebbleEntity(Level level, LivingEntity shooter, ItemStack itemStack) {
+        super(YTechEntityTypes.PEBBLE.get(), shooter, level, itemStack);
+    }
+
+    public PebbleEntity(Level level, double x, double y, double z, ItemStack itemStack) {
+        super(YTechEntityTypes.PEBBLE.get(), x, y, z, level, itemStack);
     }
 
     @NotNull

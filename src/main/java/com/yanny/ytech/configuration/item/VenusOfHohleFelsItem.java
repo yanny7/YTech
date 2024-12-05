@@ -13,8 +13,8 @@ import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GOLD;
 
 public class VenusOfHohleFelsItem extends Item {
-    public VenusOfHohleFelsItem() {
-        super(new Properties().stacksTo(1).durability(0));
+    public VenusOfHohleFelsItem(Properties properties) {
+        super(properties.stacksTo(1));
     }
 
     @Override

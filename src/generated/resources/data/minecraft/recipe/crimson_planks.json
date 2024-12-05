@@ -3,12 +3,8 @@
   "category": "building",
   "group": "crimson_planks",
   "ingredients": [
-    {
-      "item": "minecraft:crimson_stem"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:crimson_stem",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

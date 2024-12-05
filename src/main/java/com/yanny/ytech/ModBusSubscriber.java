@@ -1,7 +1,5 @@
 package com.yanny.ytech;
 
-import com.yanny.ytech.compatibility.CuriosCapability;
-import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block_entity.IrrigationBlockEntity;
 import com.yanny.ytech.configuration.data_component.BasketContents;
@@ -24,20 +22,19 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -62,14 +59,6 @@ import static com.yanny.ytech.configuration.model.SpearModel.*;
 public class ModBusSubscriber {
     private static final String PROTOCOL_VERSION = "1";
 
-    @SubscribeEvent
-    public static void commonSetupEvent(@NotNull FMLCommonSetupEvent event) {
-        if (ModList.get().isLoaded("curios")) {
-            CuriosCapability.register();
-        }
-        TopCompatibility.register();
-    }
-
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
@@ -77,7 +66,7 @@ public class ModBusSubscriber {
             ItemProperties.register(YTechItems.BASKET.get(), BasketItem.FILLED_PREDICATE,
                     (stack, level, entity, seed) -> BasketItem.getFullnessDisplay(stack));
             YTechItems.SPEARS.values().forEach((item) -> ItemProperties.register(item.get(), SpearItem.THROWING_PREDICATE,
-                    (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F));
+                    (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && ItemStack.isSameItemSameComponents(entity.getUseItem(), stack) ? 1.0F : 0.0F));
         });
     }
 
@@ -235,7 +224,7 @@ public class ModBusSubscriber {
         YTechMod.IRRIGATION_PROPAGATOR = IrrigationUtils.registerIrrigationPropagator(registrar);
     }
 
-    public static boolean removeAnimalPredicate(EntityType<? extends Animal> pAnimal, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+    public static boolean removeAnimalPredicate(EntityType<? extends Animal> pAnimal, LevelAccessor pLevel, EntitySpawnReason pSpawnType, BlockPos pPos, RandomSource pRandom) {
         return !YTechMod.CONFIGURATION.removeVanillaMobs();
     }
 }

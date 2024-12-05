@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/gold"
-    },
-    "P": {
-      "tag": "ytech:plates/gold"
-    },
-    "W": {
-      "tag": "ytech:hammers"
-    }
+    "B": "#ytech:bolts/gold",
+    "P": "#ytech:plates/gold",
+    "W": "#ytech:hammers"
   },
   "pattern": [
     " W ",

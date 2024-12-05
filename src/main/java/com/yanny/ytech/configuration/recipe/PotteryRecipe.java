@@ -3,6 +3,8 @@ package com.yanny.ytech.configuration.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
@@ -15,7 +17,7 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,27 +43,28 @@ public record PotteryRecipe(int count, ItemStack result) implements Recipe<Recip
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int w, int h) {
-        return true;
-    }
-
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
-    }
-
-    @NotNull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<PotteryRecipe> getSerializer() {
         return YTechRecipeSerializers.POTTERY.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<PotteryRecipe> getType() {
         return YTechRecipeTypes.POTTERY.get();
+    }
+
+    @NotNull
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @NotNull
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.POTTERY.get();
     }
 
     public static class Serializer implements RecipeSerializer<PotteryRecipe> {
@@ -134,7 +137,7 @@ public record PotteryRecipe(int count, ItemStack result) implements Recipe<Recip
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
@@ -142,12 +145,12 @@ public record PotteryRecipe(int count, ItemStack result) implements Recipe<Recip
             finishedRecipeConsumer.accept(
                     recipeId,
                     new PotteryRecipe(count, new ItemStack(result)),
-                    builder.build(recipeId.withPrefix("recipes/pottery/"))
+                    builder.build(Utils.modLoc("recipes/pottery/" + recipeId.location().getPath()))
             );
         }
 
         //Makes sure that this recipe is valid and obtainable.
-        private void ensureValid(@NotNull ResourceLocation id) {
+        private void ensureValid(@NotNull ResourceKey<Recipe<?>> id) {
             if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

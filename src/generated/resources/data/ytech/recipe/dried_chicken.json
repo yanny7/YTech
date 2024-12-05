@@ -1,9 +1,7 @@
 {
   "type": "ytech:drying",
   "dryingTime": 1200,
-  "ingredient": {
-    "item": "minecraft:chicken"
-  },
+  "ingredient": "minecraft:chicken",
   "result": {
     "count": 1,
     "id": "ytech:dried_chicken"

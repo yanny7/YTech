@@ -2,15 +2,9 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "equipment",
   "ingredients": [
-    {
-      "item": "minecraft:stick"
-    },
-    {
-      "tag": "ytech:parts/axe_heads/tin"
-    },
-    {
-      "tag": "ytech:hammers"
-    }
+    "minecraft:stick",
+    "#ytech:parts/axe_heads/tin",
+    "#ytech:hammers"
   ],
   "result": {
     "count": 1,

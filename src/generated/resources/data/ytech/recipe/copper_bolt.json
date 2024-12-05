@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:rods/copper"
-    },
-    "S": {
-      "tag": "ytech:saws"
-    }
+    "#": "#ytech:rods/copper",
+    "S": "#ytech:saws"
   },
   "pattern": [
     "# ",

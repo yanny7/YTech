@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -72,7 +71,7 @@ public class ForgeBusSubscriber {
     @SubscribeEvent
     public static void onServerStarting(@NotNull ServerStartingEvent event) {
         if (YTechMod.CONFIGURATION.shouldRequireValidTool()) {
-            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((tag) -> BuiltInRegistries.BLOCK.getTag(tag).ifPresent(block -> block.stream().forEach(blockHolder -> setBlockRequireValidTool(blockHolder.value()))));
+            YTechMod.CONFIGURATION.getBlocksRequiringValidTool().forEach((tag) -> BuiltInRegistries.BLOCK.get(tag).ifPresent(block -> block.stream().forEach(blockHolder -> setBlockRequireValidTool(blockHolder.value()))));
         }
     }
 
@@ -102,15 +101,14 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onPlayerLeftClickBlock(@NotNull PlayerInteractEvent.LeftClickBlock event) {
-        if (YTechMod.CONFIGURATION.enableCraftingSharpFlint()) {
+        if (YTechMod.CONFIGURATION.enableCraftingSharpFlint() && event.getLevel() instanceof ServerLevel level) {
             Player player = event.getEntity();
-            Level level = event.getLevel();
             ItemStack heldItem = player.getMainHandItem();
             BlockState blockState = level.getBlockState(event.getPos());
             Direction direction = event.getFace();
 
             if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
-                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new YTechRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                level.recipeAccess().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new YTechRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
                     Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
                     heldItem.shrink(1);
                 });

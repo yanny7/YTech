@@ -3,12 +3,8 @@
   "category": "building",
   "group": "birch_slab",
   "ingredients": [
-    {
-      "item": "minecraft:birch_planks"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:birch_planks",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

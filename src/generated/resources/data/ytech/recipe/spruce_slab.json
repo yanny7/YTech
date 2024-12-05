@@ -3,12 +3,8 @@
   "category": "building",
   "group": "spruce_slab",
   "ingredients": [
-    {
-      "item": "minecraft:spruce_planks"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:spruce_planks",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "tag": "minecraft:axes"
-    },
-    "P": {
-      "tag": "ytech:plates/wooden"
-    },
-    "S": {
-      "tag": "minecraft:planks"
-    }
+    "A": "#minecraft:axes",
+    "P": "#ytech:plates/wooden",
+    "S": "#minecraft:planks"
   },
   "pattern": [
     "SPS",

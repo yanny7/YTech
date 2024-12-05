@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/iron"
-    },
-    "C": {
-      "tag": "ytech:plates/iron"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    }
+    "B": "#ytech:bolts/iron",
+    "C": "#ytech:plates/iron",
+    "H": "#ytech:hammers"
   },
   "pattern": [
     "CCH",

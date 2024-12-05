@@ -3,12 +3,8 @@
   "category": "building",
   "group": "mangrove_slab",
   "ingredients": [
-    {
-      "item": "minecraft:mangrove_planks"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:mangrove_planks",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

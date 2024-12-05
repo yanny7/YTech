@@ -1,20 +1,19 @@
 package com.yanny.ytech.configuration.model;
 
-import com.google.common.collect.ImmutableList;
 import com.yanny.ytech.configuration.Utils;
-import com.yanny.ytech.configuration.entity.FowlEntity;
-import net.minecraft.client.model.AgeableListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.ChickenRenderState;
 import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class FowlModel extends AgeableListModel<FowlEntity> {
+public class FowlModel extends EntityModel<ChickenRenderState> {
     @NotNull public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Utils.modLoc("fowl"), "main");
 
     @NotNull private final ModelPart head;
@@ -25,7 +24,7 @@ public class FowlModel extends AgeableListModel<FowlEntity> {
     @NotNull private final ModelPart r_foot;
 
     public FowlModel(@NotNull ModelPart root) {
-        super(false, 5.0F, 2.0F);
+        super(root);
         this.body = root.getChild("body");
         this.head = root.getChild("head");
         this.l_wing = root.getChild("l_wing");
@@ -34,27 +33,21 @@ public class FowlModel extends AgeableListModel<FowlEntity> {
         this.r_foot = root.getChild("r_foot");
     }
 
-    @NotNull
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of(head);
+    @Override
+    public void setupAnim(@NotNull ChickenRenderState state) {
+        super.setupAnim(state);
+        float f = (Mth.sin(state.flap) + 1.0F) * state.flapSpeed;
+        this.head.xRot = state.xRot * 0.017453292F;
+        this.head.yRot = state.yRot * 0.017453292F;
+        float f1 = state.walkAnimationSpeed;
+        float f2 = state.walkAnimationPos;
+        this.r_foot.xRot = Mth.cos(f2 * 0.6662F) * 1.4F * f1;
+        this.l_foot.xRot = Mth.cos(f2 * 0.6662F + 3.1415927F) * 1.4F * f1;
+        this.r_wing.zRot = f;
+        this.l_wing.zRot = -f;
     }
 
     @NotNull
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(body, l_wing, r_wing, l_foot, r_foot);
-    }
-
-    public void setupAnim(@NotNull FowlEntity entity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        this.head.xRot = pHeadPitch * 0.017453292F;
-        this.head.yRot = pNetHeadYaw * 0.017453292F;
-        this.r_foot.xRot = Mth.cos(pLimbSwing * 0.6662F) * 1.4F * pLimbSwingAmount;
-        this.l_foot.xRot = Mth.cos(pLimbSwing * 0.6662F + 3.1415927F) * 1.4F * pLimbSwingAmount;
-        this.r_wing.zRot = pAgeInTicks;
-        this.l_wing.zRot = -pAgeInTicks;
-    }
-
-    @NotNull
-
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();

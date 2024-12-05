@@ -2,9 +2,9 @@ package com.yanny.ytech.configuration.block_entity;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -43,7 +43,7 @@ class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
         item = ItemStack.EMPTY;
     }
 
-    public void setupCrafting(@NotNull Level level, ItemStack input, Function<R, Integer> recipeTimeGetter) {
+    public void setupCrafting(@NotNull ServerLevel level, ItemStack input, Function<R, Integer> recipeTimeGetter) {
         cookingProgress = 0;
         quickCheck.getRecipeFor(new SingleRecipeInput(input), level).ifPresent((recipe) -> {
             cookingTime = recipeTimeGetter.apply(recipe.value());
@@ -51,7 +51,7 @@ class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
         });
     }
 
-    public boolean tick(@NotNull Level level, Function<R, Boolean> canProcess, Function<R, Float> recipeStepGetter, BiConsumer<SingleRecipeInput, R> onFinish) {
+    public boolean tick(@NotNull ServerLevel level, Function<R, Boolean> canProcess, Function<R, Float> recipeStepGetter, BiConsumer<SingleRecipeInput, R> onFinish) {
         if (!item.isEmpty()) {
             SingleRecipeInput recipeInput = new SingleRecipeInput(item);
             Optional<RecipeHolder<R>> recipeHolder =  quickCheck.getRecipeFor(recipeInput, level);
@@ -64,7 +64,7 @@ class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
                     cookingProgress += recipeStepGetter.apply(recipe);
 
                     if (cookingProgress >= cookingTime) {
-                        ItemStack result = recipe.getResultItem(level.registryAccess());
+                        ItemStack result = recipe.assemble(recipeInput, level.registryAccess());
 
                         if (result.isItemEnabled(level.enabledFeatures())) {
                             clear();
@@ -83,23 +83,26 @@ class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
     public void load(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
         if (tag.contains(TAG_ITEM)) {
             item = ItemStack.parse(provider, tag.getCompound(TAG_ITEM)).orElse(ItemStack.EMPTY);
+        } else {
+            item = ItemStack.EMPTY;
         }
 
         if (tag.contains(TAG_TIME)) {
             cookingProgress = tag.getFloat(TAG_TIME);
+        } else {
+            cookingProgress = 0;
         }
 
         if (tag.contains(TAG_TOTAL_TIME)) {
             cookingTime = tag.getInt(TAG_TOTAL_TIME);
+        } else {
+            cookingTime = 0;
         }
     }
 
     public void save(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider) {
-        CompoundTag itemTag = new CompoundTag();
-
         if (!item.isEmpty()) {
-            item.save(provider, tag);
-            tag.put(TAG_ITEM, itemTag);
+            tag.put(TAG_ITEM, item.save(provider, tag));
         }
 
         tag.putFloat(TAG_TIME, cookingProgress);

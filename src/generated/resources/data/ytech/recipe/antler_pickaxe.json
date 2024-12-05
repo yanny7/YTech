@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "equipment",
   "ingredients": [
-    {
-      "tag": "ytech:antlers"
-    },
-    {
-      "tag": "ytech:sharp_flints"
-    }
+    "#ytech:antlers",
+    "#ytech:sharp_flints"
   ],
   "result": {
     "count": 1,

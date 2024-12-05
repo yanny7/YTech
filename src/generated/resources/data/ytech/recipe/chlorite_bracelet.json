@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "ytech:pebbles"
-    },
-    {
-      "tag": "ytech:sharp_flints"
-    }
+    "#ytech:pebbles",
+    "#ytech:sharp_flints"
   ],
   "result": {
     "count": 1,

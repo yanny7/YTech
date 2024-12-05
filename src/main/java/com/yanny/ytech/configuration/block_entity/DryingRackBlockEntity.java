@@ -11,9 +11,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -46,46 +47,49 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
         return progressHandler.getItem();
     }
 
-    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide) {
+    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (level instanceof ServerLevel serverLevel) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                progressHandler.setupCrafting(level, holdingItemStack, DryingRecipe::dryingTime);
+                progressHandler.setupCrafting(serverLevel, holdingItemStack, DryingRecipe::dryingTime);
             } else {
                 Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
+                progressHandler.clear();
             }
 
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     @Override
     public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull DryingRackBlockEntity blockEntity) {
-        Function<DryingRecipe, Boolean> canProcess = (recipe) -> !(level.isRaining() && YTechMod.CONFIGURATION.noDryingDuringRain());
-        Function<DryingRecipe, Float> getStep = (recipe) -> {
-            Holder<Biome> biome = level.getBiome(pos);
+        if (level instanceof ServerLevel serverLevel) {
+            Function<DryingRecipe, Boolean> canProcess = (recipe) -> !(level.isRaining() && YTechMod.CONFIGURATION.noDryingDuringRain());
+            Function<DryingRecipe, Float> getStep = (recipe) -> {
+                Holder<Biome> biome = level.getBiome(pos);
 
-            if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getSlowDryingBiomes().contains(t))) {
-                return 0.5F;
-            } else if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getFastDryingBiomes().contains(t))) {
-                return 2F;
+                if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getSlowDryingBiomes().contains(t))) {
+                    return 0.5F;
+                } else if (biome.tags().anyMatch(t -> YTechMod.CONFIGURATION.getFastDryingBiomes().contains(t))) {
+                    return 2F;
+                }
+
+                return 1F;
+            };
+            BiConsumer<SingleRecipeInput, DryingRecipe> onFinish = (container, recipe) -> {
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
+                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            };
+
+            if (progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
+                setChanged(level, pos, state);
             }
-
-            return 1F;
-        };
-        BiConsumer<SingleRecipeInput, DryingRecipe> onFinish = (container, recipe) -> {
-            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
-            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
-        };
-
-        if (progressHandler.tick(level, canProcess, getStep, onFinish)) {
-            setChanged(level, pos, state);
         }
     }
 

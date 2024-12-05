@@ -72,8 +72,8 @@ public class SpearEntity extends AbstractArrow {
 
         if (loyalty > 0 && (dealtDamage || isNoPhysics()) && entity != null) {
             if (!isAcceptableReturnOwner()) {
-                if (!level().isClientSide && pickup == AbstractArrow.Pickup.ALLOWED) {
-                    spawnAtLocation(getPickupItem(), 0.1F);
+                if (level() instanceof ServerLevel serverLevel && pickup == AbstractArrow.Pickup.ALLOWED) {
+                    spawnAtLocation(serverLevel, getPickupItem(), 0.1F);
                 }
 
                 discard();
@@ -138,7 +138,7 @@ public class SpearEntity extends AbstractArrow {
 
         this.dealtDamage = true;
 
-        if (entity.hurt(damagesource, damage)) {
+        if (entity.hurtOrSimulate(damagesource, damage)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }

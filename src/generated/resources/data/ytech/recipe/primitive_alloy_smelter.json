@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:bricks"
-    },
-    "S": {
-      "tag": "ytech:primitive_smelters"
-    }
+    "B": "minecraft:bricks",
+    "S": "#ytech:primitive_smelters"
   },
   "pattern": [
     "BBB",

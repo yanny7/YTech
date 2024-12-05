@@ -3,12 +3,8 @@
   "category": "building",
   "group": "crimson_slab",
   "ingredients": [
-    {
-      "item": "minecraft:crimson_planks"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:crimson_planks",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

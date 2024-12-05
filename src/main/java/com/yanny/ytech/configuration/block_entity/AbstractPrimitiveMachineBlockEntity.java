@@ -79,11 +79,13 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
             ItemStack fuel = itemStackHandler.getStackInSlot(getFuelSlot());
 
             if (!fuel.isEmpty() && ((hasItemsInInput() && isValidRecipeInInput()) || hasActiveRecipe())) {
-                leftBurningTime = burningTime = fuel.getBurnTime(recipeType);
+                ItemStack craftingRemainder = fuel.getCraftingRemainder();
+
+                leftBurningTime = burningTime = fuel.getBurnTime(recipeType, level.fuelValues());
                 isBurning = true;
 
-                if (fuel.hasCraftingRemainingItem()) {
-                    itemStackHandler.setStackInSlot(getFuelSlot(), fuel.getCraftingRemainingItem());
+                if (!craftingRemainder.isEmpty()) {
+                    itemStackHandler.setStackInSlot(getFuelSlot(), craftingRemainder);
                 }
 
                 fuel.shrink(1);

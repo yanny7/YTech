@@ -2,15 +2,10 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
@@ -23,6 +18,10 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock {
+    public PrimitiveSmelterBlock(Properties properties) {
+        super(properties);
+    }
+
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState pState) {
@@ -47,16 +46,5 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock {
                 .partialState().with(HORIZONTAL_FACING, Direction.SOUTH).with(LIT, true).setModels(ConfiguredModel.builder().modelFile(modelLit).rotationY(180).build())
                 .partialState().with(HORIZONTAL_FACING, Direction.WEST).with(LIT, true).setModels(ConfiguredModel.builder().modelFile(modelLit).rotationY(270).build());
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.PRIMITIVE_SMELTER)).parent(model);
-    }
-
-    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.PRIMITIVE_SMELTER.get())
-                .define('#', Items.FURNACE)
-                .define('B', Items.BRICKS)
-                .pattern("BBB")
-                .pattern("B#B")
-                .pattern("BBB")
-                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.PRIMITIVE_SMELTER));
     }
 }

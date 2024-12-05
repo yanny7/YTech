@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -21,28 +22,41 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
-public class GoAroundRenderer extends MobRenderer<GoAroundEntity, CowModel<GoAroundEntity>> {
+public class GoAroundRenderer extends MobRenderer<GoAroundEntity, GoAroundRenderer.GoAroundRenderState, CowModel> {
     private static final ResourceLocation COW_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/cow/cow.png");
 
     public GoAroundRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new CowModel<>(pContext.bakeLayer(ModelLayers.COW)), 0.1F);
+        super(pContext, new CowModel(pContext.bakeLayer(ModelLayers.COW)), 0.1F);
+    }
+
+    @NotNull
+    @Override
+    public GoAroundRenderState createRenderState() {
+        return new GoAroundRenderState();
     }
 
     @Override
-    public void render(@NotNull GoAroundEntity pEntity, float pEntityYaw, float pPartialTicks, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
-        MillstoneBlockEntity leashEntity = pEntity.getDevice();
-        Mob entity = (Mob) pEntity.getVehicle();
+    public void render(@NotNull GoAroundRenderState state, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
+        MillstoneBlockEntity leashEntity = state.millstone;
+        Mob entity = state.mob;
 
         if (leashEntity != null && entity != null) {
-            double offset = pEntity.getY() - entity.getY();
-            this.renderLeash2(entity, offset, pPartialTicks, pPoseStack, pBuffer, leashEntity);
+            double offset = state.y - entity.getY();
+            this.renderLeash2(entity, offset, state.partialTick, pPoseStack, pBuffer, leashEntity);
         }
     }
 
     @NotNull
     @Override
-    public ResourceLocation getTextureLocation(@NotNull GoAroundEntity mimicEntity) {
+    public ResourceLocation getTextureLocation(@NotNull GoAroundRenderState state) {
         return COW_LOCATION;
+    }
+
+    @Override
+    public void extractRenderState(@NotNull GoAroundEntity goAroundEntity, @NotNull GoAroundRenderState renderState, float p_361157_) {
+        super.extractRenderState(goAroundEntity, renderState, p_361157_);
+        renderState.millstone = goAroundEntity.getDevice();
+        renderState.mob = (Mob) goAroundEntity.getVehicle();
     }
 
     public void renderLeash2(Mob pEntityLiving, double offset, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, BlockEntity pLeashHolder) {
@@ -86,5 +100,11 @@ public class GoAroundRenderer extends MobRenderer<GoAroundEntity, CowModel<GoAro
 
     private int getBlockLightLevel2(Entity pEntity, BlockPos pPos) {
         return pEntity.isOnFire() ? 15 : pEntity.level().getBrightness(LightLayer.BLOCK, pPos);
+
+    }
+
+    public static class GoAroundRenderState extends LivingEntityRenderState {
+        MillstoneBlockEntity millstone;
+        Mob mob;
     }
 }

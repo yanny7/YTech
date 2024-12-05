@@ -5,7 +5,9 @@ import com.yanny.ytech.configuration.goal.RaidGardenGoal;
 import com.yanny.ytech.registration.YTechBlockTags;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -147,7 +149,7 @@ public class AurochsEntity extends WildDangerousEntity implements IRaidGarden {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new PanicGoal(this, 1.25));
         goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(YTechItemTags.AUROCHS_TEMP_ITEMS), false));
+        goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(YTechItemTags.AUROCHS_TEMP_ITEMS)), false));
         goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         goalSelector.addGoal(5, new AvoidEntityGoal<>(this, SaberToothTigerEntity.class, 8.0F, 2.2D, 2.2D));
         goalSelector.addGoal(6, eatBlockGoal);
@@ -158,9 +160,10 @@ public class AurochsEntity extends WildDangerousEntity implements IRaidGarden {
         registerTargetGoals();
     }
 
-    protected void customServerAiStep() {
+    @Override
+    protected void customServerAiStep(@NotNull ServerLevel level) {
         eatAnimationTick = eatBlockGoal.getEatAnimationTick();
-        super.customServerAiStep();
+        super.customServerAiStep(level);
 
         if (moreWheatTicks > 0) {
             moreWheatTicks -= random.nextInt(3);
@@ -175,6 +178,7 @@ public class AurochsEntity extends WildDangerousEntity implements IRaidGarden {
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
                 .add(Attributes.ARMOR, 1.0)
-                .add(Attributes.ATTACK_DAMAGE, 5.0);
+                .add(Attributes.ATTACK_DAMAGE, 5.0)
+                .add(Attributes.TEMPT_RANGE, 10.0);
     }
 }

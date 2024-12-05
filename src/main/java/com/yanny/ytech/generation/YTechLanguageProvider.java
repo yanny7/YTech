@@ -4,7 +4,7 @@ import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.NameHolder;
 import com.yanny.ytech.configuration.PartType;
-import com.yanny.ytech.configuration.YtechAdvancementType;
+import com.yanny.ytech.configuration.YTechAdvancementType;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItems;
@@ -152,7 +152,7 @@ class YTechLanguageProvider extends LanguageProvider {
         addEntityType(YTechEntityTypes.WOOLLY_MAMMOTH, "Woolly Mammoth");
         addEntityType(YTechEntityTypes.WOOLLY_RHINO, "Woolly Rhino");
 
-        for (YtechAdvancementType type : YtechAdvancementType.values()) {
+        for (YTechAdvancementType type : YTechAdvancementType.values()) {
             add(type.titleId(), type.title());
             add(type.descriptionId(), type.description());
         }

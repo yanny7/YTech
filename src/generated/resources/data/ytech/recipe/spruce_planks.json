@@ -3,12 +3,8 @@
   "category": "building",
   "group": "spruce_planks",
   "ingredients": [
-    {
-      "item": "minecraft:spruce_log"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:spruce_log",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

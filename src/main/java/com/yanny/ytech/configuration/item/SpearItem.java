@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.item;
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.entity.SpearEntity;
+import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -15,7 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,8 +28,8 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.ProjectileItem;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
@@ -46,11 +47,12 @@ public class SpearItem extends Item implements ProjectileItem {
     public static final ResourceLocation THROWING_PREDICATE = Utils.modLoc("throwing");
     private final SpearType spearType;
 
-    public SpearItem(SpearType spearType) {
-        super(new Properties()
+    public SpearItem(SpearType spearType, Properties properties) {
+        super(properties
                 .durability(spearType.durability)
                 .attributes(createAttributes(spearType))
-                .component(DataComponents.TOOL, createToolProperties()));
+                .component(DataComponents.TOOL, createToolProperties())
+                .overrideModel(Utils.modLoc(Utils.getPath(YTechItems.SPEARS.get(spearType.materialType)) + "_in_hand")));
         this.spearType = spearType;
     }
 
@@ -61,8 +63,8 @@ public class SpearItem extends Item implements ProjectileItem {
 
     @NotNull
     @Override
-    public UseAnim getUseAnimation(@NotNull ItemStack stack) {
-        return UseAnim.SPEAR;
+    public ItemUseAnimation getUseAnimation(@NotNull ItemStack stack) {
+        return ItemUseAnimation.SPEAR;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
+    public boolean releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
             int throwTime = this.getUseDuration(stack, entity) - timeLeft;
 
@@ -135,20 +137,22 @@ public class SpearItem extends Item implements ProjectileItem {
                 }
             }
         }
+
+        return false;
     }
 
     @NotNull
     @Override
-    public InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public InteractionResult use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
 
         if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
-            return InteractionResultHolder.fail(itemstack);
+            return InteractionResult.FAIL;
         } else if (EnchantmentHelper.getTridentSpinAttackStrength(itemstack, player) > 0 && !player.isInWaterOrRain()) {
-            return InteractionResultHolder.fail(itemstack);
+            return InteractionResult.FAIL;
         } else {
             player.startUsingItem(hand);
-            return InteractionResultHolder.consume(itemstack);
+            return InteractionResult.CONSUME;
         }
     }
 
@@ -156,11 +160,6 @@ public class SpearItem extends Item implements ProjectileItem {
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
         return true;
-    }
-
-    @Override
-    public int getEnchantmentValue(@NotNull ItemStack itemStack) {
-        return 1;
     }
 
     @NotNull

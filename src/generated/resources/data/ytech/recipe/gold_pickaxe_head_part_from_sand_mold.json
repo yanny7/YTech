@@ -1,13 +1,9 @@
 {
   "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "c:ingots/gold"
-  },
+  "ingredient": "#c:ingots/gold",
   "inputCount": 3,
   "minTemp": 1064,
-  "mold": {
-    "tag": "ytech:sand_molds/pickaxe_head"
-  },
+  "mold": "#ytech:sand_molds/pickaxe_head",
   "result": {
     "count": 1,
     "id": "ytech:gold_pickaxe_head_part"

@@ -3,12 +3,8 @@
   "category": "building",
   "group": "warped_slab",
   "ingredients": [
-    {
-      "item": "minecraft:warped_planks"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:warped_planks",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

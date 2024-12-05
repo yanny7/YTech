@@ -6,6 +6,7 @@ import com.yanny.ytech.configuration.goal.IRaidGarden;
 import com.yanny.ytech.configuration.goal.RaidGardenGoal;
 import com.yanny.ytech.registration.YTechBlockTags;
 import com.yanny.ytech.registration.YTechItemTags;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -42,7 +43,7 @@ public class DeerEntity extends Animal implements IRaidGarden {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull EntitySpawnReason reason, @Nullable SpawnGroupData spawnData) {
         entityData.set(DATA_HAS_ANTLERS_ID, random.nextBoolean());
         return super.finalizeSpawn(level, difficulty, reason, spawnData);
     }
@@ -59,9 +60,9 @@ public class DeerEntity extends Animal implements IRaidGarden {
     }
 
     @Override
-    public void customServerAiStep() {
+    protected void customServerAiStep(@NotNull ServerLevel level) {
         eatAnimationTick = eatBlockGoal.getEatAnimationTick();
-        super.customServerAiStep();
+        super.customServerAiStep(level);
 
         if (moreWheatTicks > 0) {
             moreWheatTicks -= random.nextInt(3);
@@ -154,7 +155,7 @@ public class DeerEntity extends Animal implements IRaidGarden {
         eatBlockGoal = new EatBlockGoal(this);
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
-        goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.of(YTechItemTags.DEER_TEMP_ITEMS), true));
+        goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(YTechItemTags.DEER_TEMP_ITEMS)), true));
         goalSelector.addGoal(3, new AvoidEntityGoal<>(this, SaberToothTigerEntity.class, 12.0F, 2.2D, 2.2D));
         goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.2D, 2.2D));
         goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Wolf.class, 10.0F, 2.2D, 2.2D));
@@ -168,7 +169,8 @@ public class DeerEntity extends Animal implements IRaidGarden {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.3F);
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.TEMPT_RANGE, 10.0);
     }
 
     public static String hasAntlersStr() {

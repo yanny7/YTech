@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 public class UnlitTorchItem extends Item {
-    public UnlitTorchItem() {
-        super(new Properties());
+    public UnlitTorchItem(Properties properties) {
+        super(properties);
     }
 
     @NotNull

@@ -1,11 +1,7 @@
 {
   "type": "ytech:block_hit",
-  "block": {
-    "tag": "c:stones"
-  },
-  "ingredient": {
-    "item": "minecraft:flint"
-  },
+  "block": "#c:stones",
+  "ingredient": "minecraft:flint",
   "result": {
     "count": 1,
     "id": "ytech:sharp_flint"

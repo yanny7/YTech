@@ -3,12 +3,8 @@
   "category": "building",
   "group": "jungle_slab",
   "ingredients": [
-    {
-      "item": "minecraft:jungle_planks"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:jungle_planks",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

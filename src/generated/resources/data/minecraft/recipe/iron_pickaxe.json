@@ -1,22 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "tag": "ytech:plates/iron"
-    },
-    "R": {
-      "tag": "ytech:rods/iron"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "#": "#c:ingots/iron",
+    "H": "#ytech:hammers",
+    "P": "#ytech:plates/iron",
+    "R": "#ytech:rods/iron",
+    "S": "minecraft:stick"
   },
   "pattern": [
     "P#R",

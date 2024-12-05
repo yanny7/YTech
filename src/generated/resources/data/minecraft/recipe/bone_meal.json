@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:bone"
-    },
-    {
-      "tag": "ytech:mortar_and_pestles"
-    }
+    "minecraft:bone",
+    "#ytech:mortar_and_pestles"
   ],
   "result": {
     "count": 1,

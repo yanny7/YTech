@@ -1,13 +1,9 @@
 {
   "type": "ytech:smelting",
-  "ingredient": {
-    "tag": "c:ingots/tin"
-  },
+  "ingredient": "#c:ingots/tin",
   "inputCount": 2,
   "minTemp": 232,
-  "mold": {
-    "tag": "ytech:sand_molds/sword_blade"
-  },
+  "mold": "#ytech:sand_molds/sword_blade",
   "result": {
     "count": 1,
     "id": "ytech:tin_sword_blade_part"

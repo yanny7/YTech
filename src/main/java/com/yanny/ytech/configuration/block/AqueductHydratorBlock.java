@@ -1,17 +1,11 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductHydratorBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -27,6 +21,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class AqueductHydratorBlock extends AqueductConsumerBlock {
+    public AqueductHydratorBlock(Properties properties) {
+        super(properties);
+    }
+
     @NotNull
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState blockState) {
@@ -101,18 +99,5 @@ public class AqueductHydratorBlock extends AqueductConsumerBlock {
         PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(overlay).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
 
         provider.itemModels().getBuilder(name).parent(inventory);
-    }
-
-    public static void registerRecipe(RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT_HYDRATOR.get())
-                .define('#', YTechItemTags.TERRACOTTA_BRICKS)
-                .define('R', YTechItemTags.RODS.get(MaterialType.COPPER))
-                .define('S', YTechItemTags.PLATES.get(MaterialType.COPPER))
-                .define('H', YTechItemTags.HAMMERS.tag)
-                .pattern("#R#")
-                .pattern("SHS")
-                .pattern("#R#")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.AQUEDUCT_HYDRATOR));
     }
 }

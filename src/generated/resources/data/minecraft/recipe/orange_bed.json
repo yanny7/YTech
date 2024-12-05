@@ -1,20 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "group": "bed",
   "key": {
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "tag": "minecraft:wooden_slabs"
-    },
-    "S": {
-      "tag": "ytech:saws"
-    },
-    "W": {
-      "item": "minecraft:orange_wool"
-    }
+    "H": "#ytech:hammers",
+    "P": "#minecraft:wooden_slabs",
+    "S": "#ytech:saws",
+    "W": "minecraft:orange_wool"
   },
   "pattern": [
     "H S",

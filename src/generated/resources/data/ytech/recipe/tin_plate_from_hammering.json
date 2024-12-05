@@ -1,13 +1,9 @@
 {
   "type": "ytech:hammering",
-  "ingredient": {
-    "tag": "c:ingots/tin"
-  },
+  "ingredient": "#c:ingots/tin",
   "result": {
     "count": 1,
     "id": "ytech:tin_plate"
   },
-  "tool": {
-    "tag": "ytech:hammers"
-  }
+  "tool": "#ytech:hammers"
 }

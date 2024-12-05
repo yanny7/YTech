@@ -3,6 +3,8 @@ package com.yanny.ytech.configuration.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
@@ -10,12 +12,13 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -39,33 +42,34 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int w, int h) {
-        return true;
-    }
-
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
-    }
-
-    @NotNull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<TanningRecipe> getSerializer() {
         return YTechRecipeSerializers.TANNING.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<TanningRecipe> getType() {
         return YTechRecipeTypes.TANNING.get();
+    }
+
+    @NotNull
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @NotNull
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.TANNING.get();
     }
 
     public static class Serializer implements RecipeSerializer<TanningRecipe> {
         private static final MapCodec<TanningRecipe> CODEC = RecordCodecBuilder.mapCodec((recipe) ->
                 recipe.group(
-                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((tanningRecipe) -> tanningRecipe.ingredient),
+                        Ingredient.CODEC.fieldOf("ingredient").forGetter((tanningRecipe) -> tanningRecipe.ingredient),
                         Ingredient.CODEC.fieldOf("tool").forGetter((tanningRecipe) -> tanningRecipe.tool),
                         Codec.INT.fieldOf("hitCount").forGetter((tanningRecipe) -> tanningRecipe.hitCount),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((tanningRecipe) -> tanningRecipe.result)
@@ -106,24 +110,20 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
 
     public static class Builder implements RecipeBuilder {
         private final Ingredient ingredient;
-        private Ingredient tool = Ingredient.EMPTY;
+        private final Ingredient tool;
         private final int hitCount;
         private final Item result;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull Ingredient ingredient, int hitCount, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, Ingredient tool, int hitCount, @NotNull Item result) {
             this.ingredient = ingredient;
+            this.tool = tool;
             this.hitCount = hitCount;
             this.result = result;
         }
 
-        public static Builder tanning(@NotNull TagKey<Item> input, int hitCount, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), hitCount, result);
-        }
-
-        public Builder tool(@NotNull Ingredient tool) {
-            this.tool = tool;
-            return this;
+        public static Builder tanning(@NotNull HolderGetter<Item> items, @NotNull TagKey<Item> input, @NotNull TagKey<Item> tool, int hitCount, @NotNull Item result) {
+            return new Builder(Ingredient.of(items.getOrThrow(input)), Ingredient.of(items.getOrThrow(tool)), hitCount, result);
         }
 
         @NotNull
@@ -146,7 +146,7 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
@@ -154,12 +154,12 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
             finishedRecipeConsumer.accept(
                     recipeId,
                     new TanningRecipe(ingredient, tool, hitCount, new ItemStack(result)),
-                    builder.build(recipeId.withPrefix("recipes/tanning/"))
+                    builder.build(Utils.modLoc("recipes/tanning/" + recipeId.location().getPath()))
             );
         }
 
         //Makes sure that this recipe is valid and obtainable.
-        private void ensureValid(@NotNull ResourceLocation id) {
+        private void ensureValid(@NotNull ResourceKey<Recipe<?>> id) {
             if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

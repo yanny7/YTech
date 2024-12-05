@@ -3,12 +3,8 @@
   "category": "building",
   "group": "bamboo_planks",
   "ingredients": [
-    {
-      "item": "minecraft:bamboo_block"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:bamboo_block",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

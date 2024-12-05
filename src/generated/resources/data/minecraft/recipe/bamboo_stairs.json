@@ -1,20 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "building",
   "group": "wooden_stairs",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "P": {
-      "item": "minecraft:bamboo_planks"
-    },
-    "S": {
-      "item": "minecraft:bamboo_slab"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "B": "#ytech:bolts/wooden",
+    "P": "minecraft:bamboo_planks",
+    "S": "minecraft:bamboo_slab",
+    "W": "#ytech:saws"
   },
   "pattern": [
     "PW",

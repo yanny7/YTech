@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:plates/wooden"
-    },
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "S": {
-      "tag": "ytech:saws"
-    }
+    "#": "#ytech:plates/wooden",
+    "B": "#ytech:bolts/wooden",
+    "S": "#ytech:saws"
   },
   "pattern": [
     "B#B",

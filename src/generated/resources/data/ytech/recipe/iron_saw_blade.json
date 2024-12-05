@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "tag": "ytech:plates/iron"
-    }
+    "H": "#ytech:hammers",
+    "P": "#ytech:plates/iron"
   },
   "pattern": [
     " P ",

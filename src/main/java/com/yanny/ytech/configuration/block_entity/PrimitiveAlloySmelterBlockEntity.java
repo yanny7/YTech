@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -55,7 +56,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         return new MachineItemStackHandler.Builder()
                 .addInputSlot(45, 16, this::canInput)
                 .addInputSlot(65, 16, this::canInput)
-                .addInputSlot(55, 52, (itemStackHandler, slot, itemStack) -> itemStack.getBurnTime(RecipeType.BLASTING) > 0)
+                .addInputSlot(55, 52, (itemStackHandler, slot, itemStack) -> itemStack.getBurnTime(RecipeType.BLASTING, level.fuelValues()) > 0)
                 .addOutputSlot(116, 35)
                 .setOnChangeListener(this::setChanged)
                 .build();
@@ -112,11 +113,11 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
 
     @Override
     protected void startRecipe(@NotNull AtomicBoolean hasChanged) {
-        if (level != null) {
+        if (level instanceof ServerLevel serverLevel) {
             ItemStack inputLeft = itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT);
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
+            serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 AlloyingRecipe r = recipe.value();
 
@@ -140,10 +141,10 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
 
     @Override
     protected void finishRecipe() {
-        if (level != null && recipeInputLeft != null && recipeInputRight != null) {
+        if (level instanceof ServerLevel serverLevel && recipeInputLeft != null && recipeInputRight != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            level.getRecipeManager().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
+            serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.ALLOYING.get(), new YTechRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {
@@ -157,11 +158,11 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
 
     @Override
     protected boolean isValidRecipeInInput() {
-        if (level != null) {
+        if (level instanceof ServerLevel serverLevel) {
             ItemStack inputLeft = itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT);
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
-            return level.getRecipeManager().getAllRecipesFor(YTechRecipeTypes.ALLOYING.get()).stream()
+            return serverLevel.recipeAccess().recipes.byType(YTechRecipeTypes.ALLOYING.get()).stream()
                     .anyMatch((recipe) -> recipe.value().matches(new YTechRecipeInput(inputLeft, inputRight), level));
         }
 
@@ -172,8 +173,8 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         ItemStack itemStack1 = slot != SLOT_INPUT_LEFT ? itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT) : itemStack;
         ItemStack itemStack2 = slot != SLOT_INPUT_RIGHT ? itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT) : itemStack;
 
-        if (level != null) {
-            return level.getRecipeManager().getAllRecipesFor(YTechRecipeTypes.ALLOYING.get()).stream().anyMatch((recipe) -> recipe.value().matchesPartially(new YTechRecipeInput(itemStack1, itemStack2)));
+        if (level instanceof ServerLevel serverLevel) {
+            return serverLevel.recipeAccess().recipes.byType(YTechRecipeTypes.ALLOYING.get()).stream().anyMatch((recipe) -> recipe.value().matchesPartially(new YTechRecipeInput(itemStack1, itemStack2)));
         } else {
             return false;
         }

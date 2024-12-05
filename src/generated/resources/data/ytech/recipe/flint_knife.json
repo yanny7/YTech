@@ -2,15 +2,9 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "equipment",
   "ingredients": [
-    {
-      "item": "minecraft:stick"
-    },
-    {
-      "item": "minecraft:flint"
-    },
-    {
-      "tag": "ytech:leather_strips"
-    }
+    "minecraft:stick",
+    "minecraft:flint",
+    "#ytech:leather_strips"
   ],
   "result": {
     "count": 1,

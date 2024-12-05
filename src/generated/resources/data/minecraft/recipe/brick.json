@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.3,
-  "ingredient": {
-    "tag": "ytech:unfired_bricks"
-  },
+  "ingredient": "#ytech:unfired_bricks",
   "result": {
     "count": 1,
     "id": "minecraft:brick"

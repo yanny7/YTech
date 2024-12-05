@@ -3,12 +3,8 @@
   "category": "building",
   "group": "bamboo_planks",
   "ingredients": [
-    {
-      "item": "minecraft:bamboo_block"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:bamboo_block",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

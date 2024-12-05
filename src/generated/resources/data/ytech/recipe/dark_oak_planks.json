@@ -3,12 +3,8 @@
   "category": "building",
   "group": "dark_oak_planks",
   "ingredients": [
-    {
-      "item": "minecraft:dark_oak_log"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:dark_oak_log",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

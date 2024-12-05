@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:clay"
-    },
-    {
-      "tag": "ytech:patterns/pickaxe_head"
-    }
+    "minecraft:clay",
+    "#ytech:patterns/pickaxe_head"
   ],
   "result": {
     "count": 1,

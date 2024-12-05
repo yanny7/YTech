@@ -1,11 +1,7 @@
 {
   "type": "ytech:block_hit",
-  "block": {
-    "tag": "ytech:soul_fire_source"
-  },
-  "ingredient": {
-    "item": "ytech:unlit_torch"
-  },
+  "block": "#ytech:soul_fire_source",
+  "ingredient": "ytech:unlit_torch",
   "result": {
     "count": 1,
     "id": "minecraft:soul_torch"

@@ -2,15 +2,9 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "equipment",
   "ingredients": [
-    {
-      "item": "minecraft:stick"
-    },
-    {
-      "tag": "ytech:parts/hammer_heads/gold"
-    },
-    {
-      "tag": "ytech:hammers"
-    }
+    "minecraft:stick",
+    "#ytech:parts/hammer_heads/gold",
+    "#ytech:hammers"
   ],
   "result": {
     "count": 1,

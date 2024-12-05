@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "tag": "ytech:flours"
-    },
-    "B": {
-      "item": "minecraft:sugar"
-    },
-    "C": {
-      "item": "minecraft:milk_bucket"
-    },
-    "D": {
-      "item": "minecraft:egg"
-    }
+    "A": "#ytech:flours",
+    "B": "minecraft:sugar",
+    "C": "minecraft:milk_bucket",
+    "D": "minecraft:egg"
   },
   "pattern": [
     "CCC",

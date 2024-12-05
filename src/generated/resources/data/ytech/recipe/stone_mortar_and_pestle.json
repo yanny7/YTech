@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:stones"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "#c:stones",
+    "I": "minecraft:stick"
   },
   "pattern": [
     " I ",

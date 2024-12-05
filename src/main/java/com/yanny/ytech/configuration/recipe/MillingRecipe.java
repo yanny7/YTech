@@ -3,6 +3,8 @@ package com.yanny.ytech.configuration.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
@@ -10,12 +12,13 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,33 +43,34 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonus
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int w, int h) {
-        return true;
-    }
-
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
-    }
-
-    @NotNull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<MillingRecipe> getSerializer() {
         return YTechRecipeSerializers.MILLING.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<MillingRecipe> getType() {
         return YTechRecipeTypes.MILLING.get();
+    }
+
+    @NotNull
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @NotNull
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.MILLING.get();
     }
 
     public static class Serializer implements RecipeSerializer<MillingRecipe> {
         private static final MapCodec<MillingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(
-                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((millingRecipe) -> millingRecipe.ingredient),
+                        Ingredient.CODEC.fieldOf("ingredient").forGetter((millingRecipe) -> millingRecipe.ingredient),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((millingRecipe) -> millingRecipe.result),
                         Codec.FLOAT.fieldOf("bonusChance").forGetter((smeltingRecipe) -> smeltingRecipe.bonusChance)
                 ).apply(instance, MillingRecipe::new)
@@ -115,8 +119,8 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonus
             this.count = count;
         }
 
-        public static Builder milling(@NotNull TagKey<Item> input, @NotNull Item result, int count) {
-            return new Builder(Ingredient.of(input), result, count);
+        public static Builder milling(@NotNull HolderGetter<Item> items, @NotNull TagKey<Item> input, @NotNull Item result, int count) {
+            return new Builder(Ingredient.of(items.getOrThrow(input)), result, count);
         }
 
         public static Builder milling(@NotNull ItemLike input, @NotNull Item result, int count) {
@@ -148,7 +152,7 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonus
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
@@ -156,12 +160,12 @@ public record MillingRecipe(Ingredient ingredient, ItemStack result, float bonus
             finishedRecipeConsumer.accept(
                     recipeId,
                     new MillingRecipe(ingredient, new ItemStack(result, count), bonusChance),
-                    builder.build(recipeId.withPrefix("recipes/milling/"))
+                    builder.build(Utils.modLoc("recipes/milling/" + recipeId.location().getPath()))
             );
         }
 
         //Makes sure that this recipe is valid and obtainable.
-        private void ensureValid(@NotNull ResourceLocation id) {
+        private void ensureValid(@NotNull ResourceKey<Recipe<?>> id) {
             if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

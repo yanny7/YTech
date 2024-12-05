@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:cobblestone"
-    },
-    {
-      "tag": "ytech:hammers"
-    }
+    "minecraft:cobblestone",
+    "#ytech:hammers"
   ],
   "result": {
     "count": 1,

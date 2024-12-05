@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "ytech:pebbles"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "T": {
-      "tag": "ytech:leather_strips"
-    }
+    "#": "#ytech:pebbles",
+    "S": "minecraft:stick",
+    "T": "#ytech:leather_strips"
   },
   "pattern": [
     " #T",

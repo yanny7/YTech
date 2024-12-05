@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
@@ -35,11 +36,11 @@ public abstract class WildAnimalEntity extends Animal {
 
             if (nextGeneration > YTechMod.CONFIGURATION.getMinBreedingGenerations()
                     && random.nextDouble() < (nextGeneration - YTechMod.CONFIGURATION.getMinBreedingGenerations()) * YTechMod.CONFIGURATION.getDomesticChance()) {
-                return getDomesticBreedOffspring().create(serverLevel);
+                return getDomesticBreedOffspring().create(serverLevel, EntitySpawnReason.BREEDING);
             }
         }
 
-        return (AgeableMob) getType().create(serverLevel);
+        return (AgeableMob) getType().create(serverLevel, EntitySpawnReason.BREEDING);
     }
 
     @Override

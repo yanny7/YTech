@@ -8,10 +8,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -42,14 +43,14 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
         };
     }
 
-    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide) {
+    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (level instanceof ServerLevel serverLevel) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
             ItemStack hammeringItem = itemStackHandler.getStackInSlot(0);
 
             if (hammeringItem.isEmpty()) {
-                level.getRecipeManager().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SingleRecipeInput(holdingItemStack), level).ifPresent((recipe) -> {
+                serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SingleRecipeInput(holdingItemStack), level).ifPresent((recipe) -> {
                     itemStackHandler.setStackInSlot(SLOT_INPUT, holdingItemStack.split(holdingItemStack.getMaxStackSize()));
                     setChanged(level, pos, Blocks.AIR.defaultBlockState());
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
@@ -64,7 +65,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
                     setChanged(level, worldPosition, Blocks.AIR.defaultBlockState());
                     level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                 } else {
-                    level.getRecipeManager().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SingleRecipeInput(hammeringItem), level).ifPresent((recipe) -> {
+                    serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.HAMMERING.get(), new SingleRecipeInput(hammeringItem), level).ifPresent((recipe) -> {
                         if (recipe.value().tool().test(holdingItemStack)) {
                             hammeringItem.split(1);
                             holdingItemStack.hurtAndBreak(1, player, getSlotForHand(hand));
@@ -78,7 +79,7 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

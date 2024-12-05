@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.screen.components;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.NotNull;
 
 class LeftRightAnimationComponent implements IComponent {
@@ -31,10 +32,10 @@ class LeftRightAnimationComponent implements IComponent {
     public void render(@NotNull GuiGraphics graphics, int left, int top) {
         int width = Math.min(Math.round((value / (float)maxValue) * uWidth), uWidth);
         int offset = Math.max(uWidth - width, 0);
-        graphics.blit(GUI, left + x, top + y, uOffset, vOffset, uWidth, vHeight);
+        graphics.blit(RenderType::guiTextured, GUI, left + x, top + y, uOffset, vOffset, uWidth, vHeight, 256, 256);
 
         if (renderAnimation) {
-            graphics.blit(GUI, left + x, top + y, uAnimationOffset, vAnimationOffset, uWidth - offset, vHeight);
+            graphics.blit(RenderType::guiTextured, GUI, left + x, top + y, uAnimationOffset, vAnimationOffset, uWidth - offset, vHeight, 256, 256);
         }
     }
 

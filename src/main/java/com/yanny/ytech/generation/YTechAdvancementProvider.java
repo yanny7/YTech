@@ -1,6 +1,6 @@
 package com.yanny.ytech.generation;
 
-import com.yanny.ytech.configuration.YtechAdvancementType;
+import com.yanny.ytech.configuration.YTechAdvancementType;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -24,8 +24,8 @@ class YTechAdvancementProvider extends AdvancementProvider {
     private static class CustomAdvancementProvider implements AdvancementGenerator {
         @Override
         public void generate(@NotNull HolderLookup.Provider registries, @NotNull Consumer<AdvancementHolder> saver, @NotNull ExistingFileHelper existingFileHelper) {
-            for (YtechAdvancementType type : YtechAdvancementType.values()) {
-                type.generate(saver, existingFileHelper);
+            for (YTechAdvancementType type : YTechAdvancementType.values()) {
+                type.generate(registries, saver, existingFileHelper);
             }
         }
     }

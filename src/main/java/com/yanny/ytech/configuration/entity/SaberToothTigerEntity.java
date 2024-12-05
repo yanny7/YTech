@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.entity;
 
 import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechSoundEvents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -55,20 +56,21 @@ public class SaberToothTigerEntity extends Animal {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new TemptGoal(this, 1.25D, Ingredient.of(YTechItemTags.SABER_TOOTH_TIGER_TEMP_ITEMS), false));
+        goalSelector.addGoal(1, new TemptGoal(this, 1.25D, Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(YTechItemTags.SABER_TOOTH_TIGER_TEMP_ITEMS)), false));
         goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, false));
         goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Animal.class, true, (entity) -> !(entity instanceof SaberToothTigerEntity)));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Animal.class, true, (entity, level) -> !(entity instanceof SaberToothTigerEntity)));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
-                .add(Attributes.ATTACK_DAMAGE, 8.0);
+                .add(Attributes.ATTACK_DAMAGE, 8.0)
+                .add(Attributes.TEMPT_RANGE, 10.0);
     }
 }

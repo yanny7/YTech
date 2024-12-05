@@ -9,7 +9,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
-    public AbstractPrimitiveMachineBlock() {
-        super(BlockBehaviour.Properties.of()
+    public AbstractPrimitiveMachineBlock(Properties properties) {
+        super(properties
                 .mapColor(MapColor.COLOR_RED)
                 .requiresCorrectToolForDrops()
                 .strength(3.5F)

@@ -2,17 +2,11 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.BrickChimneyBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,12 +23,12 @@ import org.jetbrains.annotations.Nullable;
 public class BrickChimneyBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(3/16.0, 0, 3/16.0, 13/16.0, 1, 13/16.0);
 
-    public BrickChimneyBlock() {
-        super(Properties.ofFullCopy(Blocks.BRICKS).strength(2.0f, 2.0f));
+    public BrickChimneyBlock(Properties properties) {
+        super(properties.strength(2.0f, 2.0f));
     }
 
     @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState blockState) {
         return true;
     }
 
@@ -58,7 +52,7 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
 
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
-        if (!level.isClientSide && !state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof  BrickChimneyBlockEntity blockEntity) {
+        if (!level.isClientSide && !state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof BrickChimneyBlockEntity blockEntity) {
             blockEntity.onRemove();
         }
 
@@ -80,15 +74,5 @@ public class BrickChimneyBlock extends Block implements EntityBlock {
                 .texture("1", Utils.modBlockLoc("machine/primitive_smelter_top"));
         provider.getVariantBuilder(YTechBlocks.BRICK_CHIMNEY.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.BRICK_CHIMNEY)).parent(model);
-    }
-
-    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.BRICK_CHIMNEY.get())
-                .define('B', Items.BRICKS)
-                .pattern(" B ")
-                .pattern("B B")
-                .pattern(" B ")
-                .unlockedBy(RecipeProvider.getHasName(Items.BRICKS), RecipeProvider.has(Items.BRICKS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.BRICK_CHIMNEY));
     }
 }

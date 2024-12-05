@@ -3,12 +3,8 @@
   "category": "building",
   "group": "mangrove_slab",
   "ingredients": [
-    {
-      "item": "minecraft:mangrove_planks"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:mangrove_planks",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

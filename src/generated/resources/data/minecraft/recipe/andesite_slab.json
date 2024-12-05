@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:andesite"
-    },
-    {
-      "tag": "ytech:hammers"
-    }
+    "minecraft:andesite",
+    "#ytech:hammers"
   ],
   "result": {
     "count": 1,

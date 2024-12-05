@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:sharp_flints"
-    },
-    "T": {
-      "tag": "ytech:mammoth_tusks"
-    }
+    "#": "#ytech:sharp_flints",
+    "T": "#ytech:mammoth_tusks"
   },
   "pattern": [
     "T#"

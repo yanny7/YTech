@@ -1,0 +1,13 @@
+{
+  "type": "ytech:remaining_shapeless_crafting",
+  "category": "misc",
+  "group": "wooden_bolt",
+  "ingredients": [
+    "minecraft:stick",
+    "#minecraft:axes"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:wooden_bolt"
+  }
+}

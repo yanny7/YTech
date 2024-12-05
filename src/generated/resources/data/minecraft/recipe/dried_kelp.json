@@ -1,0 +1,9 @@
+{
+  "type": "ytech:drying",
+  "dryingTime": 1200,
+  "ingredient": "minecraft:kelp",
+  "result": {
+    "count": 1,
+    "id": "minecraft:dried_kelp"
+  }
+}

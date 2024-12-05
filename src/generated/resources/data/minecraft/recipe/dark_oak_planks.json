@@ -3,12 +3,8 @@
   "category": "building",
   "group": "dark_oak_planks",
   "ingredients": [
-    {
-      "item": "minecraft:dark_oak_log"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:dark_oak_log",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

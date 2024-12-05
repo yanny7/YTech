@@ -108,6 +108,8 @@ public class YTechItemTags {
     public static final TypedTag<PartType> SAND_MOLDS = new PartTag("sand_molds", YTechItems.SAND_MOLDS);
     public static final TypedTag<PartType> UNFIRED_MOLDS = new PartTag("unfired_molds", YTechItems.UNFIRED_MOLDS);
 
+    public static final MultiTypedTag<MaterialType, PartType> PARTS = new MaterialPartTag("parts", YTechItems.PARTS);
+
     public static final TypedTag<MaterialType> ARROWS = new MaterialTag("arrows", ItemTags.ARROWS, YTechItems.ARROWS);
     public static final TypedTag<MaterialType> AXES = new MaterialTag("axes", ItemTags.AXES, YTechItems.AXES);
     public static final TypedTag<MaterialType> BOLTS = new MaterialTag("bolts", YTechItems.BOLTS);
@@ -141,8 +143,6 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> STONE_ORES = new StoneOreMaterialTag();
     public static final TypedTag<MaterialType> STORAGE_BLOCKS = new StorageBlockMaterialTag();
     public static final TypedTag<MaterialType> TANNING_RACKS = new MaterialTag(YTechBlockTags.TANNING_RACKS);
-
-    public static final MultiTypedTag<MaterialType, PartType> PARTS = new MaterialPartTag("parts", YTechItems.PARTS);
 
     private static TagKey<Item> create(String name) {
         return ItemTags.create(Utils.modLoc(name));
@@ -189,8 +189,9 @@ public class YTechItemTags {
             return Objects.requireNonNull(categoryTags.get(type), type.key());
         }
 
+        @NotNull
         @Override
-        public @NotNull Set<Entry<E, Map<F, TagKey<Item>>>> entrySet() {
+        public Set<Map.Entry<E, Map<F, TagKey<Item>>>> entrySet() {
             return tags.entrySet();
         }
     }

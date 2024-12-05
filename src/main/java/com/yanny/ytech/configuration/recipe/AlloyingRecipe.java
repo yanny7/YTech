@@ -3,6 +3,8 @@ package com.yanny.ytech.configuration.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
@@ -10,12 +12,13 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -48,27 +51,28 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int w, int h) {
-        return true;
-    }
-
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
-    }
-
-    @NotNull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<AlloyingRecipe> getSerializer() {
         return YTechRecipeSerializers.ALLOYING.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<AlloyingRecipe> getType() {
         return YTechRecipeTypes.ALLOYING.get();
+    }
+
+    @NotNull
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @NotNull
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.ALLOYING.get();
     }
 
     public static class Serializer implements RecipeSerializer<AlloyingRecipe> {
@@ -135,14 +139,14 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
             this.count = count;
         }
 
-        public static Builder alloying(@NotNull TagKey<Item> input1, int count1, @NotNull TagKey<Item> input2, int count2, int minTemperature,
+        public static Builder alloying(HolderGetter<Item> items, @NotNull TagKey<Item> input1, int count1, @NotNull TagKey<Item> input2, int count2, int minTemperature,
                                        int smeltingTime, @NotNull Item result, int count) {
-            return new Builder(YTechIngredient.of(input1, count1), YTechIngredient.of(input2, count2), minTemperature, smeltingTime, result, count);
+            return new Builder(YTechIngredient.of(items.getOrThrow(input1), count1), YTechIngredient.of(items.getOrThrow(input2), count2), minTemperature, smeltingTime, result, count);
         }
 
-        public static Builder alloying(@NotNull TagKey<Item> input1, int count1, @NotNull ItemLike input2, int count2, int minTemperature,
+        public static Builder alloying(HolderGetter<Item> items, @NotNull TagKey<Item> input1, int count1, @NotNull ItemLike input2, int count2, int minTemperature,
                                        int smeltingTime, @NotNull Item result, int count) {
-            return new Builder(YTechIngredient.of(input1, count1), YTechIngredient.of(input2, count2), minTemperature, smeltingTime, result, count);
+            return new Builder(YTechIngredient.of(items.getOrThrow(input1), count1), YTechIngredient.of(input2, count2), minTemperature, smeltingTime, result, count);
         }
 
         @NotNull
@@ -165,7 +169,7 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
@@ -179,12 +183,12 @@ public record AlloyingRecipe(Ingredient ingredient1, Ingredient ingredient2, int
                             smeltingTime,
                             new ItemStack(result, count)
                     ),
-                    builder.build(recipeId.withPrefix("recipes/alloying/"))
+                    builder.build(Utils.modLoc("recipes/alloying/" + recipeId.location().getPath()))
             );
         }
 
         //Makes sure that this recipe is valid and obtainable.
-        private void ensureValid(@NotNull ResourceLocation id) {
+        private void ensureValid(@NotNull ResourceKey<Recipe<?>> id) {
             if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

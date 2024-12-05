@@ -3,30 +3,24 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductValveBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.network.generic.NetworkUtils;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.redstone.Orientation;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +31,8 @@ import java.util.List;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 public class AqueductValveBlock extends IrrigationBlock {
-    public AqueductValveBlock() {
-        super(Properties.ofFullCopy(Blocks.TERRACOTTA));
+    public AqueductValveBlock(Properties properties) {
+        super(properties);
     }
 
     @NotNull
@@ -54,7 +48,7 @@ public class AqueductValveBlock extends IrrigationBlock {
     }
 
     @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState state) {
         return false;
     }
 
@@ -66,8 +60,8 @@ public class AqueductValveBlock extends IrrigationBlock {
 
     @Override
     public void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock,
-                                @NotNull BlockPos neighborPos, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+                                @Nullable Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
 
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof AqueductValveBlockEntity blockEntity) {
             IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(blockEntity);
@@ -105,18 +99,5 @@ public class AqueductValveBlock extends IrrigationBlock {
                 .texture("particle", valveTexture);
         provider.horizontalBlock(YTechBlocks.AQUEDUCT_VALVE.get(), model);
         provider.itemModels().getBuilder(name).parent(model);
-    }
-
-    public static void registerRecipe(RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT_VALVE.get())
-                .define('#', YTechItemTags.TERRACOTTA_BRICKS)
-                .define('R', YTechItemTags.RODS.tag)
-                .define('H', YTechItemTags.HAMMERS.tag)
-                .define('S', YTechItemTags.SAWS.tag)
-                .pattern("###")
-                .pattern("HRS")
-                .pattern("###")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.AQUEDUCT_VALVE));
     }
 }

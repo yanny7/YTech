@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:brick_molds"
-    },
-    "B": {
-      "item": "minecraft:clay_ball"
-    }
+    "#": "#ytech:brick_molds",
+    "B": "minecraft:clay_ball"
   },
   "pattern": [
     "BBB",

@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "F": {
-      "tag": "ytech:files"
-    },
-    "P": {
-      "tag": "ytech:plates/lead"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "F": "#ytech:files",
+    "P": "#ytech:plates/lead",
+    "S": "minecraft:stick"
   },
   "pattern": [
     "FP",

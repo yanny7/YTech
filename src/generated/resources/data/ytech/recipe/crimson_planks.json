@@ -3,12 +3,8 @@
   "category": "building",
   "group": "crimson_planks",
   "ingredients": [
-    {
-      "item": "minecraft:crimson_stem"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:crimson_stem",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

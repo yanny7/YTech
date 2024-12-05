@@ -1,9 +1,7 @@
 {
   "type": "ytech:drying",
   "dryingTime": 1200,
-  "ingredient": {
-    "item": "minecraft:cod"
-  },
+  "ingredient": "minecraft:cod",
   "result": {
     "count": 1,
     "id": "ytech:dried_cod"

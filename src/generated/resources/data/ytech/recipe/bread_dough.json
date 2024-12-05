@@ -2,18 +2,10 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "ytech:flours"
-    },
-    {
-      "tag": "ytech:flours"
-    },
-    {
-      "tag": "ytech:flours"
-    },
-    {
-      "tag": "ytech:water_buckets"
-    }
+    "#ytech:flours",
+    "#ytech:flours",
+    "#ytech:flours",
+    "#ytech:water_buckets"
   ],
   "result": {
     "count": 1,

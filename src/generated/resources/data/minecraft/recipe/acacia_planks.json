@@ -3,12 +3,8 @@
   "category": "building",
   "group": "acacia_planks",
   "ingredients": [
-    {
-      "item": "minecraft:acacia_log"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:acacia_log",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

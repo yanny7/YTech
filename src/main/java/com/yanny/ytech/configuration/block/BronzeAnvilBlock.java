@@ -1,21 +1,15 @@
 package com.yanny.ytech.configuration.block;
 
 import com.mojang.serialization.MapCodec;
-import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -51,8 +45,8 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     private static final VoxelShape X_AXIS_AABB = Shapes.or(BASE, X_LEG1, X_LEG2, X_TOP);
     private static final VoxelShape Z_AXIS_AABB = Shapes.or(BASE, Z_LEG1, Z_LEG2, Z_TOP);
 
-    public BronzeAnvilBlock() {
-        super(Properties.ofFullCopy(Blocks.ANVIL));
+    public BronzeAnvilBlock(Properties properties) {
+        super(properties);
     }
 
     @Nullable
@@ -63,8 +57,8 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
 
     @NotNull
     @Override
-    protected ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                              @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                          @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof BronzeAnvilBlockEntity anvil) {
             return anvil.onUse(state, level, pos, player, hand, hitResult);
         } else {
@@ -196,16 +190,5 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
                 .texture("2", Utils.modBlockLoc("bronze_anvil_top"));
         provider.horizontalBlock(YTechBlocks.BRONZE_ANVIL.get(), model);
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.BRONZE_ANVIL)).parent(model);
-    }
-
-    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.BRONZE_ANVIL.get())
-                .define('B', YTechItemTags.STORAGE_BLOCKS.get(MaterialType.BRONZE))
-                .define('I', YTechItemTags.INGOTS.get(MaterialType.BRONZE))
-                .pattern("BBB")
-                .pattern(" I ")
-                .pattern("III")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.INGOTS.get(MaterialType.BRONZE)))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.BRONZE_ANVIL));
     }
 }

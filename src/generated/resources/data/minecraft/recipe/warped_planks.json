@@ -3,12 +3,8 @@
   "category": "building",
   "group": "warped_planks",
   "ingredients": [
-    {
-      "item": "minecraft:warped_stem"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:warped_stem",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

@@ -1,9 +1,7 @@
 {
   "type": "ytech:drying",
   "dryingTime": 1200,
-  "ingredient": {
-    "item": "minecraft:porkchop"
-  },
+  "ingredient": "minecraft:porkchop",
   "result": {
     "count": 1,
     "id": "ytech:dried_porkchop"

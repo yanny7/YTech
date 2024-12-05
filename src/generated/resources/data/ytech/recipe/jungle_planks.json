@@ -3,12 +3,8 @@
   "category": "building",
   "group": "jungle_planks",
   "ingredients": [
-    {
-      "item": "minecraft:jungle_log"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:jungle_log",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

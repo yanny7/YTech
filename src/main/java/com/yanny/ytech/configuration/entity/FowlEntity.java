@@ -6,7 +6,9 @@ import com.yanny.ytech.registration.YTechBlockTags;
 import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -50,8 +52,8 @@ public class FowlEntity extends WildAnimalEntity implements IRaidGarden {
     }
 
     @Override
-    public void customServerAiStep() {
-        super.customServerAiStep();
+    protected void customServerAiStep(@NotNull ServerLevel level) {
+        super.customServerAiStep(level);
 
         if (moreWheatTicks > 0) {
             moreWheatTicks -= random.nextInt(3);
@@ -152,7 +154,7 @@ public class FowlEntity extends WildAnimalEntity implements IRaidGarden {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.of(YTechItemTags.FOWL_TEMP_ITEMS), false));
+        goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(YTechItemTags.FOWL_TEMP_ITEMS)), false));
         goalSelector.addGoal(3, new FollowParentGoal(this, 1.25D));
         goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.2D, 2.2D));
         goalSelector.addGoal(4, new AvoidEntityGoal<>(this, SaberToothTigerEntity.class, 8.0F, 2.2D, 2.2D));
@@ -166,6 +168,7 @@ public class FowlEntity extends WildAnimalEntity implements IRaidGarden {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.3F);
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.TEMPT_RANGE, 10.0);
     }
 }

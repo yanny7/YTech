@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:granite"
-    },
-    {
-      "tag": "ytech:hammers"
-    }
+    "minecraft:granite",
+    "#ytech:hammers"
   ],
   "result": {
     "count": 1,

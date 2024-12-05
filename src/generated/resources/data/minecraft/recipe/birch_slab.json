@@ -3,12 +3,8 @@
   "category": "building",
   "group": "birch_slab",
   "ingredients": [
-    {
-      "item": "minecraft:birch_planks"
-    },
-    {
-      "tag": "ytech:saws"
-    }
+    "minecraft:birch_planks",
+    "#ytech:saws"
   ],
   "result": {
     "count": 2,

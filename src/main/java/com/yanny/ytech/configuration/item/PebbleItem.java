@@ -1,15 +1,21 @@
 package com.yanny.ytech.configuration.item;
 
 import com.yanny.ytech.configuration.entity.PebbleEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -18,9 +24,9 @@ import java.util.List;
 
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 
-public class PebbleItem extends Item {
-    public PebbleItem() {
-        super(new Properties());
+public class PebbleItem extends Item implements ProjectileItem {
+    public PebbleItem(Item.Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -30,23 +36,23 @@ public class PebbleItem extends Item {
     }
 
     @NotNull
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EGG_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
-        if (!level.isClientSide) {
-            PebbleEntity pebble = new PebbleEntity(level, player);
-            pebble.setItem(itemInHand);
-            pebble.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.0F, 2.0F);
-            level.addFreshEntity(pebble);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+
+        if (level instanceof ServerLevel serverlevel) {
+            Projectile.spawnProjectileFromRotation(Snowball::new, serverlevel, itemInHand, player, 0.0F, 1.5F, 1.0F);
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
+        itemInHand.consume(1, player);
+        return InteractionResult.SUCCESS;
+    }
 
-        if (!player.getAbilities().instabuild) {
-            itemInHand.shrink(1);
-        }
-
-        return InteractionResultHolder.sidedSuccess(itemInHand, level.isClientSide());
+    @NotNull
+    @Override
+    public Projectile asProjectile(@NotNull Level level, @NotNull Position position, @NotNull ItemStack itemStack, @NotNull Direction direction) {
+        return new PebbleEntity(level, position.x(), position.y(), position.z(), itemStack);
     }
 }

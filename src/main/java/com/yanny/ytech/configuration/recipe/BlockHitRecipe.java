@@ -2,6 +2,8 @@ package com.yanny.ytech.configuration.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
@@ -9,12 +11,13 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -39,34 +42,35 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int w, int h) {
-        return true;
-    }
-
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
-    }
-
-    @NotNull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<BlockHitRecipe> getSerializer() {
         return YTechRecipeSerializers.BLOCK_HIT.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<BlockHitRecipe> getType() {
         return YTechRecipeTypes.BLOCK_HIT.get();
+    }
+
+    @NotNull
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @NotNull
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.BLOCK_HIT.get();
     }
 
     public static class Serializer implements RecipeSerializer<BlockHitRecipe> {
         private static final MapCodec<BlockHitRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(
-                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((blockHitRecipe) -> blockHitRecipe.ingredient),
-                        Ingredient.CODEC_NONEMPTY.fieldOf("block").forGetter((blockHitRecipe) -> blockHitRecipe.block),
+                        Ingredient.CODEC.fieldOf("ingredient").forGetter((blockHitRecipe) -> blockHitRecipe.ingredient),
+                        Ingredient.CODEC.fieldOf("block").forGetter((blockHitRecipe) -> blockHitRecipe.block),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((blockHitRecipe) -> blockHitRecipe.result)
                 ).apply(instance, BlockHitRecipe::new)
         );
@@ -113,8 +117,8 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
             this.result = result;
         }
 
-        public static Builder blockUse(@NotNull ItemLike input, TagKey<Item> block, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), Ingredient.of(block), result);
+        public static Builder blockUse(@NotNull HolderGetter<Item> items, @NotNull ItemLike input, TagKey<Item> block, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), Ingredient.of(items.getOrThrow(block)), result);
         }
 
         @NotNull
@@ -137,7 +141,7 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
@@ -145,12 +149,12 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
             finishedRecipeConsumer.accept(
                     recipeId,
                     new BlockHitRecipe(ingredient, block, new ItemStack(result)),
-                    builder.build(recipeId.withPrefix("recipes/block_hit/"))
+                    builder.build(Utils.modLoc("recipes/block_hit/" + recipeId.location().getPath()))
             );
         }
 
         //Makes sure that this recipe is valid and obtainable.
-        private void ensureValid(@NotNull ResourceLocation id) {
+        private void ensureValid(@NotNull ResourceKey<Recipe<?>> id) {
             if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

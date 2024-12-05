@@ -21,7 +21,7 @@ public class YTechCreativeTabs {
     }
 
     private static DeferredHolder<CreativeModeTab, CreativeModeTab> registerCreativeTab() {
-        Supplier<ItemStack> iconSupplier = () -> new ItemStack(YTechBlocks.PRIMITIVE_SMELTER.get());
+        Supplier<ItemStack> iconSupplier = () -> new ItemStack(YTechItems.PRIMITIVE_SMELTER.get());
         return CREATIVE_TABS.register(YTechMod.MOD_ID, () -> CreativeModeTab.builder().title(Component.translatable("creativeTab.ytech.title")).icon(iconSupplier).build());
     }
 }

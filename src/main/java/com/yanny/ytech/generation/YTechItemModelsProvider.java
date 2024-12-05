@@ -168,7 +168,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         YTechItems.SPEARS.forEach((material, item) -> {
             String texture = Utils.modItemLoc(YTechItems.SPEARS.getGroup() + "/" + material.key).getPath();
 
-            getBuilder(Utils.getPath(item))
+            ItemModelBuilder i = getBuilder(Utils.getPath(item))
                     .parent(new ModelFile.UncheckedModelFile("item/generated"))
                     .texture("layer0", texture);
 

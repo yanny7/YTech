@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "ytech:bolts/copper"
-    },
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "#": "#ytech:bolts/copper",
+    "F": "minecraft:feather",
+    "S": "minecraft:stick"
   },
   "pattern": [
     "#",

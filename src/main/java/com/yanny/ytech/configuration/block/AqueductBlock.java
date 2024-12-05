@@ -3,16 +3,11 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -24,10 +19,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -75,8 +71,8 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
     private final Map<BlockState, VoxelShape> shapesCache;
 
-    public AqueductBlock() {
-        super(Properties.ofFullCopy(Blocks.TERRACOTTA));
+    public AqueductBlock(Properties properties) {
+        super(properties);
         this.shapesCache = this.getShapeForEachState(AqueductBlock::calculateShape);
     }
 
@@ -123,8 +119,8 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
     @NotNull
     @Override
-    public BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState,
-                                  @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+    public BlockState updateShape(@NotNull BlockState state, @NotNull LevelReader level, @NotNull ScheduledTickAccess tickAccess, @NotNull BlockPos pos,
+                                  @NotNull Direction direction, @NotNull BlockPos neighborPos, @NotNull BlockState neighborState, @NotNull RandomSource random) {
         boolean hasNorthConnection = isValidForConnection(level, pos, Direction.NORTH);
         boolean hasEastConnection = isValidForConnection(level, pos, Direction.EAST);
         boolean hasSouthConnection = isValidForConnection(level, pos, Direction.SOUTH);
@@ -233,7 +229,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     }
 
     @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState state) {
         return false;
     }
 
@@ -251,7 +247,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
 
     @Override
     public List<BlockPos> getValidNeighbors(@NotNull BlockState blockState, @NotNull BlockPos pos) {
-        return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getNormal())).toList();
+        return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getUnitVec3i())).toList();
     }
 
     public static void registerModel(@NotNull BlockStateProvider provider) {
@@ -335,17 +331,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
         provider.itemModels().getBuilder(name).parent(itemModel);
     }
 
-    public static void registerRecipe(RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.AQUEDUCT.get())
-                .define('#', YTechItemTags.TERRACOTTA_BRICKS)
-                .pattern("# #")
-                .pattern("# #")
-                .pattern("###")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.TERRACOTTA_BRICKS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.AQUEDUCT));
-    }
-
-    private static boolean hasSide(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BooleanProperty property) {
+    private static boolean hasSide(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BooleanProperty property) {
         BlockState blockState = level.getBlockState(pos);
         boolean isIrrigation = blockState.getBlock() instanceof AqueductBlock;
         return isIrrigation && blockState.hasProperty(property) && blockState.getValue(property);

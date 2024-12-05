@@ -1,22 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "H": {
-      "tag": "ytech:bone_needles"
-    },
-    "I": {
-      "tag": "ytech:rods/iron"
-    },
-    "K": {
-      "tag": "ytech:knives"
-    },
-    "L": {
-      "item": "minecraft:leather"
-    },
-    "S": {
-      "tag": "ytech:leather_strips"
-    }
+    "H": "#ytech:bone_needles",
+    "I": "#ytech:rods/iron",
+    "K": "#ytech:knives",
+    "L": "minecraft:leather",
+    "S": "#ytech:leather_strips"
   },
   "pattern": [
     "LLL",

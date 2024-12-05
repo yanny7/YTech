@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "ytech:bone_needles"
-    },
-    "L": {
-      "item": "minecraft:leather"
-    },
-    "S": {
-      "tag": "ytech:leather_strips"
-    }
+    "#": "#ytech:bone_needles",
+    "L": "minecraft:leather",
+    "S": "#ytech:leather_strips"
   },
   "pattern": [
     " # ",

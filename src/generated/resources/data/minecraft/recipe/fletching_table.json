@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": {
-      "item": "minecraft:flint"
-    },
-    "K": {
-      "tag": "ytech:knives"
-    },
-    "S": {
-      "tag": "minecraft:planks"
-    }
+    "F": "minecraft:flint",
+    "K": "#ytech:knives",
+    "S": "#minecraft:planks"
   },
   "pattern": [
     "KF",

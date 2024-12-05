@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "wooden_button",
   "ingredients": [
-    {
-      "tag": "ytech:saws"
-    },
-    {
-      "item": "minecraft:birch_planks"
-    }
+    "#ytech:saws",
+    "minecraft:birch_planks"
   ],
   "result": {
     "count": 1,

@@ -1,23 +1,13 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "group": "tanning_rack_wooden",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "F": {
-      "tag": "minecraft:axes"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "T": {
-      "tag": "ytech:grass_twines"
-    },
-    "W": {
-      "tag": "minecraft:cherry_logs"
-    }
+    "B": "#ytech:bolts/wooden",
+    "F": "#minecraft:axes",
+    "S": "minecraft:stick",
+    "T": "#ytech:grass_twines",
+    "W": "#minecraft:cherry_logs"
   },
   "pattern": [
     "TST",

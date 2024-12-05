@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "c:ingots/copper"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    }
+    "#": "#c:ingots/copper",
+    "H": "#ytech:hammers"
   },
   "pattern": [
     "#",

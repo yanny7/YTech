@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "tag": "ytech:bread_doughs"
-  },
+  "ingredient": "#ytech:bread_doughs",
   "result": {
     "count": 1,
     "id": "minecraft:bread"

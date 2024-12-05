@@ -1,18 +1,14 @@
 {
   "type": "ytech:alloying",
   "ingredient1": {
-    "type": "ytech:ingredient",
+    "neoforge:ingredient_type": "ytech:ingredient",
     "count": 9,
-    "ingredient": {
-      "tag": "c:ingots/copper"
-    }
+    "ingredient": "#c:ingots/copper"
   },
   "ingredient2": {
-    "type": "ytech:ingredient",
+    "neoforge:ingredient_type": "ytech:ingredient",
     "count": 1,
-    "ingredient": {
-      "tag": "c:ingots/tin"
-    }
+    "ingredient": "#c:ingots/tin"
   },
   "minTemp": 1085,
   "result": {

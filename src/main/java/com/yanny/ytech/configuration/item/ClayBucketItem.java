@@ -8,7 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
@@ -33,14 +33,14 @@ public class ClayBucketItem extends BucketItem {
     }
 
     @NotNull
-    public InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
+    public InteractionResult use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
         BlockHitResult blockHitResult = getPlayerPOVHitResult(level, player, content == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
 
         if (blockHitResult.getType() == HitResult.Type.MISS) {
-            return InteractionResultHolder.pass(itemInHand);
+            return InteractionResult.PASS;
         } else if (blockHitResult.getType() != HitResult.Type.BLOCK) {
-            return InteractionResultHolder.pass(itemInHand);
+            return InteractionResult.PASS;
         } else {
             BlockPos blockPos = blockHitResult.getBlockPos();
             Direction direction = blockHitResult.getDirection();
@@ -54,7 +54,7 @@ public class ClayBucketItem extends BucketItem {
                     if (!blockState.hasProperty(BlockStateProperties.WATERLOGGED)) {
                         if (blockState.getBlock() instanceof LiquidBlock liquidBlock) {
                             if (!liquidBlock.fluid.isSame(Fluids.WATER) && !liquidBlock.fluid.isSame(Fluids.LAVA)) {
-                                return InteractionResultHolder.fail(itemInHand);
+                                return InteractionResult.FAIL;
                             }
                         }
                     }
@@ -68,7 +68,7 @@ public class ClayBucketItem extends BucketItem {
                             } else if (pickedItemStack.is(Items.LAVA_BUCKET)) {
                                 pickedItemStack = new ItemStack(YTechItems.LAVA_CLAY_BUCKET.get());
                             } else {
-                                return InteractionResultHolder.fail(itemInHand);
+                                return InteractionResult.FAIL;
                             }
 
                             player.awardStat(Stats.ITEM_USED.get(this));
@@ -81,11 +81,11 @@ public class ClayBucketItem extends BucketItem {
                                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, pickedItemStack);
                             }
 
-                            return InteractionResultHolder.sidedSuccess(filledResult, level.isClientSide());
+                            return InteractionResult.SUCCESS.heldItemTransformedTo(filledResult);
                         }
                     }
 
-                    return InteractionResultHolder.fail(itemInHand);
+                    return InteractionResult.FAIL;
                 } else {
                     BlockState blockState = level.getBlockState(blockPos);
                     BlockPos placePos = canBlockContainFluid(player, level, blockPos, blockState) ? blockPos : relativePos;
@@ -98,23 +98,23 @@ public class ClayBucketItem extends BucketItem {
                         }
 
                         player.awardStat(Stats.ITEM_USED.get(this));
-                        return InteractionResultHolder.sidedSuccess(getEmptySuccessItem(itemInHand, player), level.isClientSide());
+                        return InteractionResult.SUCCESS.heldItemTransformedTo(getEmptySuccessItem(itemInHand, player));
                     } else {
-                        return InteractionResultHolder.fail(itemInHand);
+                        return InteractionResult.FAIL;
                     }
                 }
             } else {
-                return InteractionResultHolder.fail(itemInHand);
+                return InteractionResult.FAIL;
             }
         }
     }
 
     @NotNull
     public static ItemStack getEmptySuccessItem(@NotNull ItemStack bucketItemStack, Player player) {
-        if (bucketItemStack.is(YTechItemTags.LAVA_BUCKETS) && !player.getAbilities().instabuild) {
+        if (bucketItemStack.is(YTechItemTags.LAVA_BUCKETS) && !player.hasInfiniteMaterials()) {
             return ItemStack.EMPTY;
         }
 
-        return !player.getAbilities().instabuild ? new ItemStack(YTechItems.CLAY_BUCKET.get()) : bucketItemStack;
+        return !player.hasInfiniteMaterials() ? new ItemStack(YTechItems.CLAY_BUCKET.get()) : bucketItemStack;
     }
 }

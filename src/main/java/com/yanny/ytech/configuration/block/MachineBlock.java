@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -24,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public abstract class MachineBlock extends BaseEntityBlock {
-    public MachineBlock(BlockBehaviour.Properties properties) {
+    public MachineBlock(Properties properties) {
         super(properties);
     }
 
@@ -72,7 +71,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
         if (!level.isClientSide) {
             player.openMenu(Objects.requireNonNull(getMenuProvider(state, level, pos)), pos);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     public boolean hasClientTicker() {

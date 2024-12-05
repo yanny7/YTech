@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "ytech:plates/wooden"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "#": "#ytech:plates/wooden",
+    "S": "minecraft:stick"
   },
   "pattern": [
     "#",

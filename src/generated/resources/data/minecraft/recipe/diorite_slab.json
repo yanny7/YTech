@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:diorite"
-    },
-    {
-      "tag": "ytech:hammers"
-    }
+    "minecraft:diorite",
+    "#ytech:hammers"
   ],
   "result": {
     "count": 1,

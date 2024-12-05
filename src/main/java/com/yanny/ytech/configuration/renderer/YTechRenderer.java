@@ -9,18 +9,14 @@ import com.yanny.ytech.registration.YTechItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HalfTransparentBlock;
-import net.minecraft.world.level.block.StainedGlassPaneBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -29,22 +25,21 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.yanny.ytech.configuration.model.SpearModel.*;
+import static com.yanny.ytech.configuration.model.SpearModel.LAYER_LOCATIONS;
+import static com.yanny.ytech.configuration.model.SpearModel.MODEL_LOCATIONS;
 
 @OnlyIn(Dist.CLIENT)
 public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
     @NotNull public static final BlockEntityWithoutLevelRenderer INSTANCE = new YTechRenderer();
 
-    @NotNull private final ItemModelShaper itemModelShaper;
     @NotNull private final ItemRenderer itemRenderer;
-    @NotNull private final BakedModel missingModel;
+    private final ModelManager modelManager;
     private final Map<SpearType, SpearModel> spearModels = new HashMap<>();
 
     private YTechRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-        itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
+        modelManager = Minecraft.getInstance().getModelManager();
         itemRenderer = Minecraft.getInstance().getItemRenderer();
-        missingModel = Minecraft.getInstance().getModelManager().getMissingModel();
 
         for (SpearType type : SpearType.values()) {
             spearModels.put(type, new SpearModel(Minecraft.getInstance().getEntityModels().bakeLayer(LAYER_LOCATIONS.get(type))));
@@ -74,7 +69,7 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
             if (is2dModel) {
                 for (SpearType spearType : spearModels.keySet()) {
                     if (stack.is(YTechItems.SPEARS.get(spearType.materialType).get())) {
-                        bakedModel = itemModelShaper.getModelManager().getModel(MODEL_LOCATIONS.get(spearType));
+                        bakedModel = modelManager.getModel(MODEL_LOCATIONS.get(spearType));
                         break;
                     }
                 }
@@ -87,30 +82,13 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
                 if (stack.is(YTechItems.SPEARS.get(entry.getKey().materialType).get()) && !is2dModel) {
                     poseStack.pushPose();
                     poseStack.scale(1.0F, -1.0F, -1.0F);
-                    VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, entry.getValue().renderType(SpearType.TEXTURE_LOCATION), false, stack.hasFoil());
+                    VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, entry.getValue().renderType(SpearType.TEXTURE_LOCATION), false, stack.hasFoil());
                     entry.getValue().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 0xFFFFFFFF);
                     poseStack.popPose();
                 } else {
-                    boolean isFabulous;
-
-                    if (displayContext != ItemDisplayContext.GUI && !displayContext.firstPerson() && stack.getItem() instanceof BlockItem) {
-                        Block block = ((BlockItem)stack.getItem()).getBlock();
-
-                        isFabulous = !(block instanceof HalfTransparentBlock) && !(block instanceof StainedGlassPaneBlock);
-                    } else {
-                        isFabulous = true;
-                    }
-
-                    for (var model : bakedModel.getRenderPasses(stack, isFabulous)) {
-                        for (var rendertype : model.getRenderTypes(stack, isFabulous)) {
-                            VertexConsumer vertexConsumer;
-
-                            if (isFabulous) {
-                                vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, rendertype, true, stack.hasFoil());
-                            } else {
-                                vertexConsumer = ItemRenderer.getFoilBuffer(buffer, rendertype, true, stack.hasFoil());
-                            }
-
+                    for (var model : bakedModel.getRenderPasses(stack)) {
+                        for (var rendertype : model.getRenderTypes(stack)) {
+                            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, rendertype, true, stack.hasFoil());
                             itemRenderer.renderModelLists(model, stack, packedLight, packedOverlay, poseStack, vertexConsumer);
                         }
                     }
@@ -131,23 +109,9 @@ public class YTechRenderer extends BlockEntityWithoutLevelRenderer {
                              boolean pLeftHand, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, @Nullable Level pLevel,
                              int packedLight, int packedOverlay, int seed) {
         if (!stack.isEmpty()) {
-            BakedModel bakedmodel = getModel(stack, pLevel, pEntity, seed);
-            render(stack, displayContext, pLeftHand, poseStack, buffer, packedLight, packedOverlay, bakedmodel);
+            BakedModel bakedmodel = itemRenderer.getModel(stack, pLevel, pEntity, seed);
+            BakedModel modelOverride = bakedmodel.overrides().findOverride(stack, (ClientLevel) pLevel, pEntity, seed);
+            render(stack, displayContext, pLeftHand, poseStack, buffer, packedLight, packedOverlay, modelOverride == null ? bakedmodel : modelOverride);
         }
-    }
-
-    @NotNull
-    public BakedModel getModel(@NotNull ItemStack stack, @Nullable Level level, @Nullable LivingEntity pEntity, int seed) {
-        BakedModel bakedModel = itemModelShaper.getItemModel(stack);
-
-        for (SpearType spearType : spearModels.keySet()) {
-            if (stack.is(YTechItems.SPEARS.get(spearType.materialType).get())) {
-                bakedModel = itemModelShaper.getModelManager().getModel(MODEL_IN_HAND_LOCATIONS.get(spearType));
-            }
-        }
-
-        ClientLevel clientlevel = level instanceof ClientLevel ? (ClientLevel)level : null;
-        BakedModel modelOverride = bakedModel.getOverrides().resolve(bakedModel, stack, clientlevel, pEntity, seed);
-        return modelOverride == null ? missingModel : modelOverride;
     }
 }

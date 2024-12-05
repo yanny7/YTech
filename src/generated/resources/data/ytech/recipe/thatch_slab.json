@@ -1,10 +1,8 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "tag": "ytech:thatch"
-    }
+    "B": "#ytech:thatch"
   },
   "pattern": [
     "BBB"

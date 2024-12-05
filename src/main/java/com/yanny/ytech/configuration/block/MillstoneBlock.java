@@ -2,21 +2,14 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
-import com.yanny.ytech.configuration.recipe.RemainingShapedRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -42,8 +35,8 @@ public class MillstoneBlock extends Block implements EntityBlock {
             Shapes.box(6/16.0, 0.5, 6/16.0, 10/16.0, 1.0, 10/16.0)
     );
 
-    public MillstoneBlock() {
-        super(BlockBehaviour.Properties.of()
+    public MillstoneBlock(BlockBehaviour.Properties properties) {
+        super(properties
                 .mapColor(MapColor.STONE)
                 .requiresCorrectToolForDrops()
                 .strength(3.5F));
@@ -69,8 +62,8 @@ public class MillstoneBlock extends Block implements EntityBlock {
 
     @NotNull
     @Override
-    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                           @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof  MillstoneBlockEntity millstone) {
             return millstone.onUse(level, pos, player, hand);
         } else {
@@ -139,17 +132,5 @@ public class MillstoneBlock extends Block implements EntityBlock {
                 .texture("top", Utils.mcBlockLoc("oak_log"));
         provider.getVariantBuilder(YTechBlocks.MILLSTONE.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.MILLSTONE)).parent(model);
-    }
-
-    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        RemainingShapedRecipe.Builder.shaped(RecipeCategory.MISC, YTechBlocks.MILLSTONE.get())
-                .define('W', ItemTags.LOGS)
-                .define('S', Items.SMOOTH_STONE_SLAB)
-                .define('F', YTechItemTags.SHARP_FLINTS)
-                .pattern("WF")
-                .pattern("S ")
-                .pattern("S ")
-                .unlockedBy("has_logs", RecipeProvider.has(ItemTags.LOGS))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.MILLSTONE));
     }
 }

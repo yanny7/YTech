@@ -1,20 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "group": "wooden_trapdoor",
   "key": {
-    "B": {
-      "tag": "ytech:bolts/wooden"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "P": {
-      "item": "minecraft:spruce_planks"
-    },
-    "W": {
-      "tag": "ytech:saws"
-    }
+    "B": "#ytech:bolts/wooden",
+    "H": "#ytech:hammers",
+    "P": "minecraft:spruce_planks",
+    "W": "#ytech:saws"
   },
   "pattern": [
     "HBW",

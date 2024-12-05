@@ -2,27 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "$": {
-      "item": "minecraft:tripwire_hook"
-    },
-    "&": {
-      "tag": "ytech:rods/iron"
-    },
-    "F": {
-      "tag": "ytech:knives"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
-      "tag": "minecraft:wooden_slabs"
-    },
-    "~": {
-      "tag": "ytech:leather_strips"
-    }
+    "#": "minecraft:stick",
+    "$": "minecraft:tripwire_hook",
+    "&": "#ytech:rods/iron",
+    "F": "#ytech:knives",
+    "H": "#ytech:hammers",
+    "S": "#minecraft:wooden_slabs",
+    "~": "#ytech:leather_strips"
   },
   "pattern": [
     "#&#",

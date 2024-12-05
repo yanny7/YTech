@@ -1,9 +1,7 @@
 {
   "type": "ytech:drying",
   "dryingTime": 1200,
-  "ingredient": {
-    "item": "minecraft:salmon"
-  },
+  "ingredient": "minecraft:salmon",
   "result": {
     "count": 1,
     "id": "ytech:dried_salmon"

@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "I": {
-      "tag": "ytech:rods/iron"
-    },
-    "W": {
-      "tag": "ytech:hammers"
-    }
+    "I": "#ytech:rods/iron",
+    "W": "#ytech:hammers"
   },
   "pattern": [
     "IW",

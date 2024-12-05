@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "tag": "c:storage_blocks/iron"
-    },
-    "F": {
-      "tag": "ytech:files"
-    },
-    "H": {
-      "tag": "ytech:hammers"
-    },
-    "S": {
-      "tag": "minecraft:planks"
-    }
+    "B": "#c:storage_blocks/iron",
+    "F": "#ytech:files",
+    "H": "#ytech:hammers",
+    "S": "#minecraft:planks"
   },
   "pattern": [
     "HF",

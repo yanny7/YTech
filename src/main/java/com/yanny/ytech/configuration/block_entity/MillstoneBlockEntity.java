@@ -10,10 +10,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -52,8 +53,8 @@ public class MillstoneBlockEntity extends BlockEntity {
         super(YTechBlockEntityTypes.MILLSTONE.get(), pos, blockState);
     }
 
-    public ItemInteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand) {
-        if (!level.isClientSide) {
+    public InteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand) {
+        if (level instanceof ServerLevel serverLevel) {
             if (!isLeashed) {
                 int x = pos.getX();
                 int y = pos.getY();
@@ -74,7 +75,7 @@ public class MillstoneBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (result.isEmpty() && isLeashed && !holdingItemStack.isEmpty()) {
-                Optional<RecipeHolder<MillingRecipe>> millingRecipe = level.getRecipeManager().getRecipeFor(YTechRecipeTypes.MILLING.get(), new SingleRecipeInput(holdingItemStack), level);
+                Optional<RecipeHolder<MillingRecipe>> millingRecipe = serverLevel.recipeAccess().getRecipeFor(YTechRecipeTypes.MILLING.get(), new SingleRecipeInput(holdingItemStack), level);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
@@ -93,7 +94,7 @@ public class MillstoneBlockEntity extends BlockEntity {
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

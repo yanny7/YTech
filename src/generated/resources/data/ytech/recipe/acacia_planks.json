@@ -3,12 +3,8 @@
   "category": "building",
   "group": "acacia_planks",
   "ingredients": [
-    {
-      "item": "minecraft:acacia_log"
-    },
-    {
-      "tag": "minecraft:axes"
-    }
+    "minecraft:acacia_log",
+    "#minecraft:axes"
   ],
   "result": {
     "count": 1,

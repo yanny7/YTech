@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
@@ -26,8 +27,8 @@ public class RaidGardenGoal<T extends PathfinderMob & IRaidGarden> extends MoveT
 
     @Override
     public boolean canUse() {
-        if (nextStartTick <= 0) {
-            if (!EventHooks.canEntityGrief(animal.level(), animal)) {
+        if (nextStartTick <= 0 && animal.level() instanceof ServerLevel serverLevel) {
+            if (!EventHooks.canEntityGrief(serverLevel, animal)) {
                 return false;
             }
 

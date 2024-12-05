@@ -1,13 +1,9 @@
 {
   "type": "ytech:hammering",
-  "ingredient": {
-    "tag": "c:ingots/copper"
-  },
+  "ingredient": "#c:ingots/copper",
   "result": {
     "count": 1,
     "id": "ytech:copper_plate"
   },
-  "tool": {
-    "tag": "ytech:hammers"
-  }
+  "tool": "#ytech:hammers"
 }

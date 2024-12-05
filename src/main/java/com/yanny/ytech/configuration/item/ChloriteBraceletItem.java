@@ -13,8 +13,8 @@ import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GOLD;
 
 public class ChloriteBraceletItem extends Item {
-    public ChloriteBraceletItem() {
-        super(new Properties().stacksTo(1).durability(0));
+    public ChloriteBraceletItem(Properties properties) {
+        super(properties.stacksTo(1));
     }
 
     @Override

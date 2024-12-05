@@ -10,7 +10,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -66,6 +68,16 @@ public class Utils {
     @NotNull
     public static ResourceLocation loc(@NotNull Item item) {
         return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
+    }
+
+    @NotNull
+    public static ResourceLocation loc(@NotNull DeferredItem<Item> item) {
+        return loc(item.get());
+    }
+
+    @NotNull
+    public static ResourceLocation loc(@NotNull DeferredBlock<Block> block) {
+        return loc(block.get());
     }
 
     @NotNull

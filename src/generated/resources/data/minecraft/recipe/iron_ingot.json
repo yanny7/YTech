@@ -1,0 +1,9 @@
+{
+  "type": "ytech:hammering",
+  "ingredient": "#ytech:iron_blooms",
+  "result": {
+    "count": 1,
+    "id": "minecraft:iron_ingot"
+  },
+  "tool": "#ytech:hammers"
+}

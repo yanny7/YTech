@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:clay"
-    },
-    {
-      "tag": "ytech:patterns/ingot"
-    }
+    "minecraft:clay",
+    "#ytech:patterns/ingot"
   ],
   "result": {
     "count": 1,

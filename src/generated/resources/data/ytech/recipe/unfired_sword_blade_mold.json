@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:clay"
-    },
-    {
-      "tag": "ytech:patterns/sword_blade"
-    }
+    "minecraft:clay",
+    "#ytech:patterns/sword_blade"
   ],
   "result": {
     "count": 1,

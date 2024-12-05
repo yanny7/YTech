@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:flours"
-    },
-    "X": {
-      "item": "minecraft:cocoa_beans"
-    }
+    "#": "#ytech:flours",
+    "X": "minecraft:cocoa_beans"
   },
   "pattern": [
     "#X#"

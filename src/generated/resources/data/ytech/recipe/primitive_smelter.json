@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:furnace"
-    },
-    "B": {
-      "item": "minecraft:bricks"
-    }
+    "#": "minecraft:furnace",
+    "B": "minecraft:bricks"
   },
   "pattern": [
     "BBB",

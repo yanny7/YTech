@@ -4,9 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yanny.ytech.registration.YTechIngredientTypes;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -15,11 +16,9 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class YTechIngredient implements ICustomIngredient {
-    public static final YTechIngredient EMPTY = new YTechIngredient(Ingredient.EMPTY, 0);
     public static final MapCodec<YTechIngredient> CODEC = RecordCodecBuilder.mapCodec((instance) ->
         instance.group(
                 Ingredient.CODEC.fieldOf("ingredient").forGetter((ingredient) -> ingredient.ingredient),
@@ -41,7 +40,7 @@ public class YTechIngredient implements ICustomIngredient {
         return new YTechIngredient(ingredient, count);
     }
 
-    public static YTechIngredient of(TagKey<Item> tag, int count) {
+    public static YTechIngredient of(HolderSet<Item> tag, int count) {
         return new YTechIngredient(Ingredient.of(tag), count);
     }
 
@@ -65,8 +64,8 @@ public class YTechIngredient implements ICustomIngredient {
 
     @NotNull
     @Override
-    public Stream<ItemStack> getItems() {
-        return Arrays.stream(ingredient.getItems()).peek((itemStack -> itemStack.setCount(count)));
+    public Stream<Holder<Item>> items() {
+        return ingredient.items().stream().peek(Holder::value);
     }
 
     @Override

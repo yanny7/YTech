@@ -17,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 public class MaterialArrowItem extends ArrowItem {
     @NotNull private final MaterialType material;
 
-    public MaterialArrowItem(@NotNull MaterialType material) {
-        super(new Properties());
+    public MaterialArrowItem(@NotNull MaterialType material, Properties properties) {
+        super(properties);
         this.material = material;
     }
 

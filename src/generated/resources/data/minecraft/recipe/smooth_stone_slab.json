@@ -2,12 +2,8 @@
   "type": "ytech:remaining_shapeless_crafting",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:smooth_stone"
-    },
-    {
-      "tag": "ytech:hammers"
-    }
+    "minecraft:smooth_stone",
+    "#ytech:hammers"
   ],
   "result": {
     "count": 1,

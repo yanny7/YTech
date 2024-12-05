@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:knives"
-    },
-    "P": {
-      "tag": "ytech:beeswaxes"
-    }
+    "#": "#ytech:knives",
+    "P": "#ytech:beeswaxes"
   },
   "pattern": [
     " #",
