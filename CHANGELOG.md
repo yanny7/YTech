@@ -5,6 +5,7 @@
 - Added Strainer for obtaining Galena/Cassiterite
 - Removed generation of Galena/Cassiterite ores in world
 - Fixed missing item dropping on block destroy
+- Added custom tag for Crafting Workbench Tool
 
 ## [0.9.2]
 

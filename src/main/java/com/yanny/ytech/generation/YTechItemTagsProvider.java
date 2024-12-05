@@ -102,6 +102,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
                 .addTag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS)
                 .addTag(YTechItemTags.PRIMITIVE_SMELTERS);
         tag(YTechItemTags.SOUL_FIRE_SOURCE).add(Items.SOUL_TORCH, Items.SOUL_LANTERN, Items.SOUL_CAMPFIRE);
+        tag(YTechItemTags.TOOL_FOR_CRAFTING_WORKBENCH).addTag(YTechItemTags.SHARP_FLINTS);
 
         tag(YTechItemTags.AUROCHS_FOOD).add(Items.WHEAT);
         tag(YTechItemTags.AUROCHS_TEMP_ITEMS).add(Items.WHEAT);

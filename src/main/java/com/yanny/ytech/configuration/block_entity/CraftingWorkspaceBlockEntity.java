@@ -105,7 +105,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
                 itemList.set(index, ItemStack.EMPTY);
                 bitmask &= ~(1 << index);
                 wasChange = true;
-            } else if (itemStack.is(YTechItemTags.SHARP_FLINTS)) {
+            } else if (itemStack.is(YTechItemTags.TOOL_FOR_CRAFTING_WORKBENCH)) {
                 return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit);
             }
 
@@ -114,7 +114,7 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
                 pLevel.blockEntityChanged(pPos);
                 return InteractionResult.CONSUME;
             }
-        } else if (itemStack.is(YTechItemTags.SHARP_FLINTS)) {
+        } else if (itemStack.is(YTechItemTags.TOOL_FOR_CRAFTING_WORKBENCH)) {
             return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit);
         }
 

@@ -57,6 +57,7 @@ public class YTechItemTags {
     public static final TagKey<Item> FERTILIZER = create("fertilizer");
     public static final TagKey<Item> FIRE_SOURCE = create("fire_source");
     public static final TagKey<Item> SOUL_FIRE_SOURCE = create("soul_fire_source");
+    public static final TagKey<Item> TOOL_FOR_CRAFTING_WORKBENCH = create("tool_for_crafting_workbench");
 
     public static final TagKey<Item> AUROCHS_FOOD = create("aurochs_food");
     public static final TagKey<Item> AUROCHS_TEMP_ITEMS = create("aurochs_temp_items");
