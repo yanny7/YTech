@@ -2,10 +2,9 @@ package com.yanny.ytech.configuration.item;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.data_component.BasketContents;
+import com.yanny.ytech.configuration.tooltip.BasketTooltip;
 import com.yanny.ytech.registration.YTechDataComponentTypes;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,13 +24,10 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.math.Fraction;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Optional;
 
 public class BasketItem extends Item {
@@ -44,8 +40,8 @@ public class BasketItem extends Item {
     }
 
     public static float getFullnessDisplay(@NotNull ItemStack stack) {
-        BasketContents bundleContents = stack.getOrDefault(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
-        return bundleContents.weight().floatValue();
+        BasketContents basketContents = stack.getOrDefault(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
+        return basketContents.weight().floatValue();
     }
 
     public boolean overrideStackedOnOther(@NotNull ItemStack stack, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player) {
@@ -97,33 +93,33 @@ public class BasketItem extends Item {
             toggleSelectedItem(stack, -1);
             return false;
         } else {
-            BundleContents bundleContents = stack.get(DataComponents.BUNDLE_CONTENTS);
+            BasketContents basketContents = stack.get(YTechDataComponentTypes.BASKET_CONTENTS);
 
-            if (bundleContents == null) {
+            if (basketContents == null) {
                 return false;
             } else {
-                BundleContents.Mutable bundlecontents$mutable = new BundleContents.Mutable(bundleContents);
+                BasketContents.Mutable basketContents$mutable = new BasketContents.Mutable(basketContents);
 
                 if (action == ClickAction.PRIMARY && !other.isEmpty()) {
-                    if (slot.allowModification(player) && bundlecontents$mutable.tryInsert(other) > 0) {
+                    if (slot.allowModification(player) && basketContents$mutable.tryInsert(other) > 0) {
                         playInsertSound(player);
                     } else {
                         playInsertFailSound(player);
                     }
 
-                    stack.set(DataComponents.BUNDLE_CONTENTS, bundlecontents$mutable.toImmutable());
+                    stack.set(YTechDataComponentTypes.BASKET_CONTENTS, basketContents$mutable.toImmutable());
                     this.broadcastChangesOnContainerMenu(player);
                     return true;
                 } else if (action == ClickAction.SECONDARY && other.isEmpty()) {
                     if (slot.allowModification(player)) {
-                        ItemStack itemstack = bundlecontents$mutable.removeOne();
+                        ItemStack itemstack = basketContents$mutable.removeOne();
                         if (itemstack != null) {
                             playRemoveOneSound(player);
                             access.set(itemstack);
                         }
                     }
 
-                    stack.set(DataComponents.BUNDLE_CONTENTS, bundlecontents$mutable.toImmutable());
+                    stack.set(YTechDataComponentTypes.BASKET_CONTENTS, basketContents$mutable.toImmutable());
                     this.broadcastChangesOnContainerMenu(player);
                     return true;
                 } else {
@@ -162,46 +158,46 @@ public class BasketItem extends Item {
     }
 
     public int getBarColor(@NotNull ItemStack stack) {
-        BundleContents bundleContents = stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
-        return bundleContents.weight().compareTo(Fraction.ONE) >= 0 ? FULL_BAR_COLOR : BAR_COLOR;
+        BasketContents basketContents = stack.getOrDefault(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
+        return basketContents.weight().compareTo(Fraction.ONE) >= 0 ? FULL_BAR_COLOR : BAR_COLOR;
     }
 
     public static void toggleSelectedItem(ItemStack stack, int index) {
-        BundleContents bundleContents = stack.get(DataComponents.BUNDLE_CONTENTS);
+        BasketContents basketContents = stack.get(YTechDataComponentTypes.BASKET_CONTENTS);
 
-        if (bundleContents != null) {
-            BundleContents.Mutable mutable = new BundleContents.Mutable(bundleContents);
+        if (basketContents != null) {
+            BasketContents.Mutable mutable = new BasketContents.Mutable(basketContents);
             mutable.toggleSelectedItem(index);
-            stack.set(DataComponents.BUNDLE_CONTENTS, mutable.toImmutable());
+            stack.set(YTechDataComponentTypes.BASKET_CONTENTS, mutable.toImmutable());
         }
 
     }
 
     public static boolean hasSelectedItem(ItemStack stack) {
-        BundleContents bundleContents = stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
-        return bundleContents.getSelectedItem() != -1;
+        BasketContents basketContents = stack.getOrDefault(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
+        return basketContents.getSelectedItem() != -1;
     }
 
     public static int getSelectedItem(ItemStack stack) {
-        BundleContents bundleContents = stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
-        return bundleContents.getSelectedItem();
+        BasketContents basketContents = stack.getOrDefault(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
+        return basketContents.getSelectedItem();
     }
 
     public static ItemStack getSelectedItemStack(ItemStack stack) {
-        BundleContents bundleContents = stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
-        return bundleContents.getItemUnsafe(bundleContents.getSelectedItem());
+        BasketContents basketContents = stack.getOrDefault(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
+        return basketContents.getItemUnsafe(basketContents.getSelectedItem());
     }
 
     public static int getNumberOfItemsToShow(ItemStack stack) {
-        BundleContents bundleContents = stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
-        return bundleContents.getNumberOfItemsToShow();
+        BasketContents basketContents = stack.getOrDefault(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
+        return basketContents.getNumberOfItemsToShow();
     }
 
     private boolean dropContent(@NotNull ItemStack stack, @NotNull Player player) {
-        BundleContents contents = stack.get(DataComponents.BUNDLE_CONTENTS);
+        BasketContents contents = stack.get(YTechDataComponentTypes.BASKET_CONTENTS);
 
         if (contents != null && !contents.isEmpty()) {
-            Optional<ItemStack> optional = removeOneItemFromBundle(stack, player, contents);
+            Optional<ItemStack> optional = removeOneItemFromBasket(stack, player, contents);
 
             if (optional.isPresent()) {
                 player.drop(optional.get(), true);
@@ -214,13 +210,13 @@ public class BasketItem extends Item {
         }
     }
 
-    private static Optional<ItemStack> removeOneItemFromBundle(ItemStack stack, Player player, BundleContents contents) {
-        BundleContents.Mutable mutable = new BundleContents.Mutable(contents);
+    private static Optional<ItemStack> removeOneItemFromBasket(ItemStack stack, Player player, BasketContents contents) {
+        BasketContents.Mutable mutable = new BasketContents.Mutable(contents);
         ItemStack itemStack = mutable.removeOne();
 
         if (itemStack != null) {
             playRemoveOneSound(player);
-            stack.set(DataComponents.BUNDLE_CONTENTS, mutable.toImmutable());
+            stack.set(YTechDataComponentTypes.BASKET_CONTENTS, mutable.toImmutable());
             return Optional.of(itemStack);
         } else {
             return Optional.empty();
@@ -246,31 +242,17 @@ public class BasketItem extends Item {
     @NotNull
     public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
         return !stack.has(DataComponents.HIDE_TOOLTIP) && !stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP)
-                ? Optional.ofNullable(stack.get(YTechDataComponentTypes.BASKET_CONTENTS)).map(BasketContents.BasketTooltip::new)
+                ? Optional.ofNullable(stack.get(YTechDataComponentTypes.BASKET_CONTENTS)).map(BasketTooltip::new)
                 : Optional.empty();
     }
 
-    /**
-     * Allows items to add custom lines of information to the mouseover description.
-     */
-    @Override
-    public void appendHoverText(ItemStack stack, @NotNull Item.TooltipContext tooltipContext, @NotNull List<Component> components, @NotNull TooltipFlag tooltipFlag) {
-        BasketContents bundleContents = stack.get(YTechDataComponentTypes.BASKET_CONTENTS);
-
-        if (bundleContents != null) {
-            int i = Mth.mulAndTruncate(bundleContents.weight(), BasketContents.MAX_WEIGHT);
-            components.add(Component.translatable("item.minecraft.bundle.fullness", i, BasketContents.MAX_WEIGHT).withStyle(ChatFormatting.GRAY));
-        }
-    }
-
-
     @SuppressWarnings("deprecation")
     public void onDestroyed(@NotNull ItemEntity itemEntity) {
-        BasketContents bundleContents = itemEntity.getItem().get(YTechDataComponentTypes.BASKET_CONTENTS);
+        BasketContents basketContents = itemEntity.getItem().get(YTechDataComponentTypes.BASKET_CONTENTS);
 
-        if (bundleContents != null) {
+        if (basketContents != null) {
             itemEntity.getItem().set(YTechDataComponentTypes.BASKET_CONTENTS, BasketContents.EMPTY);
-            ItemUtils.onContainerDestroyed(itemEntity, bundleContents.itemsCopy());
+            ItemUtils.onContainerDestroyed(itemEntity, basketContents.itemsCopy());
         }
     }
 

@@ -2,7 +2,6 @@ package com.yanny.ytech;
 
 import com.yanny.ytech.configuration.SpearType;
 import com.yanny.ytech.configuration.block_entity.WellPulleyBlockEntity;
-import com.yanny.ytech.configuration.data_component.BasketContents;
 import com.yanny.ytech.configuration.entity.*;
 import com.yanny.ytech.configuration.item.BasketItem;
 import com.yanny.ytech.configuration.item.DiviningRodItem;
@@ -12,10 +11,14 @@ import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
 import com.yanny.ytech.configuration.screen.PrimitiveAlloySmelterScreen;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
+import com.yanny.ytech.configuration.tooltip.BasketTooltip;
 import com.yanny.ytech.configuration.tooltip.ClientBasketTooltip;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationUtils;
-import com.yanny.ytech.registration.*;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechEntityTypes;
+import com.yanny.ytech.registration.YTechItems;
+import com.yanny.ytech.registration.YTechMenuTypes;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -85,7 +88,7 @@ public class ModBusSubscriber {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onRegisterClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
-        event.register(BasketContents.BasketTooltip.class, ClientBasketTooltip::new);
+        event.register(BasketTooltip.class, ClientBasketTooltip::new);
     }
 
     @OnlyIn(Dist.CLIENT)

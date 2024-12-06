@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.data_component;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.yanny.ytech.registration.YTechDataComponentTypes;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -30,14 +31,25 @@ public class BasketContents implements TooltipComponent {
     private static final int NO_STACK_INDEX = -1;
     final List<ItemStack> items;
     final Fraction weight;
+    final int selectedItem;
 
-    BasketContents(List<ItemStack> itemStacks, Fraction fraction) {
+    BasketContents(List<ItemStack> itemStacks, Fraction fraction, int selectedItem) {
         this.items = itemStacks;
         this.weight = fraction;
+        this.selectedItem = selectedItem;
+    }
+
+    private static DataResult<BasketContents> checkAndCreate(List<ItemStack> itemStacks) {
+        try {
+            Fraction fraction = computeContentWeight(itemStacks);
+            return DataResult.success(new BasketContents(itemStacks, fraction, -1));
+        } catch (ArithmeticException var2) {
+            return DataResult.error(() -> "Excessive total bundle weight");
+        }
     }
 
     public BasketContents(List<ItemStack> itemStacks) {
-        this(itemStacks, computeContentWeight(itemStacks));
+        this(itemStacks, computeContentWeight(itemStacks), -1);
     }
 
     private static Fraction computeContentWeight(List<ItemStack> itemStacks) {
@@ -58,6 +70,18 @@ public class BasketContents implements TooltipComponent {
             List<BeehiveBlockEntity.Occupant> list = itemStack.getOrDefault(DataComponents.BEES, List.of());
             return !list.isEmpty() ? Fraction.ONE : Fraction.getFraction(1, Math.min(itemStack.getMaxStackSize(), 16));
         }
+    }
+
+    public static boolean canItemBeInBundle(ItemStack itemStack) {
+        return !itemStack.isEmpty() && itemStack.getItem().canFitInsideContainerItems();
+    }
+
+    public int getNumberOfItemsToShow() {
+        int i = this.size();
+        int j = i > 12 ? 11 : 12;
+        int k = i % 4;
+        int l = k == 0 ? 0 : 4 - k;
+        return Math.min(i, j - l);
     }
 
     public ItemStack getItemUnsafe(int p_330802_) {
@@ -88,6 +112,14 @@ public class BasketContents implements TooltipComponent {
         return this.items.isEmpty();
     }
 
+    public int getSelectedItem() {
+        return this.selectedItem;
+    }
+
+    public boolean hasSelectedItem() {
+        return this.selectedItem != -1;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {
@@ -110,15 +142,18 @@ public class BasketContents implements TooltipComponent {
     public static class Mutable {
         private final List<ItemStack> items;
         private Fraction weight;
+        private int selectedItem;
 
-        public Mutable(BasketContents p_332039_) {
-            this.items = new ArrayList<>(p_332039_.items);
-            this.weight = p_332039_.weight;
+        public Mutable(BasketContents contents) {
+            this.items = new ArrayList<>(contents.items);
+            this.weight = contents.weight;
+            this.selectedItem = contents.selectedItem;
         }
 
         public BasketContents.Mutable clearItems() {
             this.items.clear();
             this.weight = Fraction.ZERO;
+            this.selectedItem = -1;
             return this;
         }
 
@@ -170,7 +205,11 @@ public class BasketContents implements TooltipComponent {
         public int tryTransfer(Slot p_330834_, Player p_331924_) {
             ItemStack itemstack = p_330834_.getItem();
             int i = this.getMaxAmountToAdd(itemstack);
-            return this.tryInsert(p_330834_.safeTake(itemstack.getCount(), i, p_331924_));
+            return BasketContents.canItemBeInBundle(itemstack) ? this.tryInsert(p_330834_.safeTake(itemstack.getCount(), i, p_331924_)) : 0;
+        }
+
+        public void toggleSelectedItem(int index) {
+            this.selectedItem = this.selectedItem != index && index < this.items.size() ? index : -1;
         }
 
         @Nullable
@@ -178,8 +217,10 @@ public class BasketContents implements TooltipComponent {
             if (this.items.isEmpty()) {
                 return null;
             } else {
-                ItemStack itemstack = this.items.removeFirst().copy();
+                int i = this.selectedItem != -1 && this.selectedItem < this.items.size() ? this.selectedItem : 0;
+                ItemStack itemstack = this.items.remove(i).copy();
                 this.weight = this.weight.subtract(BasketContents.getWeight(itemstack).multiplyBy(Fraction.getFraction(itemstack.getCount(), 1)));
+                this.toggleSelectedItem(-1);
                 return itemstack;
             }
         }
@@ -189,10 +230,7 @@ public class BasketContents implements TooltipComponent {
         }
 
         public BasketContents toImmutable() {
-            return new BasketContents(List.copyOf(this.items), this.weight);
+            return new BasketContents(List.copyOf(this.items), this.weight, selectedItem);
         }
-    }
-
-    public record BasketTooltip(BasketContents contents) implements TooltipComponent {
     }
 }
