@@ -1,20 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "#": "minecraft:stick",
-    "-": "minecraft:stone_slab",
-    "F": "#ytech:files",
-    "H": "#ytech:hammers",
-    "S": "#minecraft:planks"
-  },
-  "pattern": [
-    "H F",
-    "#-#",
-    "S S"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:grindstone"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

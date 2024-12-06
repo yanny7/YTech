@@ -1,12 +1,8 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
-    "C": {
-      "tag": "minecraft:logs"
-    },
-    "S": {
-      "tag": "c:cobblestones/normal"
-    }
+    "C": "#minecraft:logs",
+    "S": "#c:cobblestones/normal"
   },
   "pattern": {
     "bottom": [

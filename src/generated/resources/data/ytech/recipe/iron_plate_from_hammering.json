@@ -1,9 +1,10 @@
 {
   "type": "ytech:hammering",
+  "hitCount": 2,
   "ingredient": "#c:ingots/iron",
   "result": {
     "count": 1,
     "id": "ytech:iron_plate"
   },
-  "tool": "#ytech:hammers"
+  "tool": "#c:hammers"
 }

@@ -1,15 +1,25 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "ytech:workspace_crafting",
   "key": {
-    "B": "#c:storage_blocks/bronze",
-    "I": "#c:ingots/bronze"
+    "B": "#c:storage_blocks/bronze"
   },
-  "pattern": [
-    "BBB",
-    " I ",
-    "III"
-  ],
+  "pattern": {
+    "bottom": [
+      " B ",
+      "BBB",
+      " B "
+    ],
+    "middle": [
+      "   ",
+      " B ",
+      "   "
+    ],
+    "top": [
+      "BBB",
+      "BBB",
+      "BBB"
+    ]
+  },
   "result": {
     "count": 1,
     "id": "ytech:bronze_anvil"

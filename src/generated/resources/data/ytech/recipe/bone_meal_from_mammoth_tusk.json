@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     "#ytech:mammoth_tusks",
-    "#ytech:mortar_and_pestles"
+    "#c:mortar_and_pestles"
   ],
   "result": {
     "count": 5,

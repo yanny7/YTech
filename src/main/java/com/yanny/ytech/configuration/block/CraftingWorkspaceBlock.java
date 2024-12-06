@@ -4,21 +4,15 @@ import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.CraftingWorkspaceBlockEntity;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -60,8 +54,8 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
         SHAPE_CACHE.put(0, SHAPE_BASE);
     }
 
-    public CraftingWorkspaceBlock() {
-        super(Properties.of().strength(2).noOcclusion().noLootTable());
+    public CraftingWorkspaceBlock(Properties properties) {
+        super(properties.strength(2).noOcclusion().noLootTable());
     }
 
     @NotNull
@@ -86,7 +80,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
 
     @NotNull
     @Override
-    public ItemInteractionResult useItemOn(@NotNull ItemStack itemStack, @NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
+    public InteractionResult useItemOn(@NotNull ItemStack itemStack, @NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
         if (pLevel instanceof ServerLevel serverLevel) {
             Optional<CraftingWorkspaceBlockEntity> op = pLevel.getBlockEntity(pPos, YTechBlockEntityTypes.CRAFTING_WORKSPACE.get());
 
@@ -95,7 +89,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
             }
         }
 
-        return ItemInteractionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Nullable
@@ -105,7 +99,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState pState) {
         return true;
     }
 
@@ -132,7 +126,7 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
         BlockPos pos = hit.getBlockPos();
         Direction direction = hit.getDirection();
         Vec3 position = hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-        Vec3i normal = direction.getNormal();
+        Vec3i normal = direction.getUnitVec3i();
         int flag = emptyHand ? -1 : 1;
         double eps = 1 / 6.0;
         int x = (int) Math.floor(position.x * 3 + eps * normal.getX() * flag);
@@ -259,15 +253,5 @@ public class CraftingWorkspaceBlock extends Block implements EntityBlock {
                 .texture("1", Utils.modBlockLoc("horizontal_rope"));
         provider.getVariantBuilder(YTechBlocks.CRAFTING_WORKSPACE.get()).forAllStates((state) -> ConfiguredModel.builder().modelFile(model).build());
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.CRAFTING_WORKSPACE)).parent(model);
-    }
-
-    public static void registerRecipe(@NotNull RecipeOutput recipeConsumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, YTechBlocks.CRAFTING_WORKSPACE.get())
-                .define('T', YTechItemTags.GRASS_TWINES)
-                .define('S', Items.STICK)
-                .pattern("TT")
-                .pattern("SS")
-                .unlockedBy(Utils.getHasName(), RecipeProvider.has(YTechItemTags.GRASS_TWINES))
-                .save(recipeConsumer, Utils.modLoc(YTechBlocks.CRAFTING_WORKSPACE));
     }
 }

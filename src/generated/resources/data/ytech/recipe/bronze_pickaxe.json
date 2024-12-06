@@ -4,7 +4,7 @@
   "ingredients": [
     "minecraft:stick",
     "#ytech:parts/pickaxe_heads/bronze",
-    "#ytech:hammers"
+    "#c:hammers"
   ],
   "result": {
     "count": 1,

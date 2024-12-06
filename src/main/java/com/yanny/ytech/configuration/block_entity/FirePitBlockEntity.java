@@ -66,14 +66,15 @@ public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker
 
     @Override
     public void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull FirePitBlockEntity blockEntity) {
-        int heatLevel = state.getValue(BlockStateProperties.LEVEL);
-        Function<CampfireCookingRecipe, Boolean> canProcess = (recipe) -> state.getValue(BlockStateProperties.LIT) && heatLevel > 0;
-        Function<CampfireCookingRecipe, Float> getStep = (recipe) -> heatLevel / 15f;
-        BiConsumer<SingleRecipeInput, CampfireCookingRecipe> onFinish = (container, recipe) -> {
-            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
-            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.blockEntityChanged(pos);
-        };
+        if (level instanceof ServerLevel serverLevel) {
+            int heatLevel = state.getValue(BlockStateProperties.LEVEL);
+            Function<CampfireCookingRecipe, Boolean> canProcess = (recipe) -> state.getValue(BlockStateProperties.LIT) && heatLevel > 0;
+            Function<CampfireCookingRecipe, Float> getStep = (recipe) -> heatLevel / 15f;
+            BiConsumer<SingleRecipeInput, CampfireCookingRecipe> onFinish = (container, recipe) -> {
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
+                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                level.blockEntityChanged(pos);
+            };
 
             if (progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
                 setChanged(level, pos, state);

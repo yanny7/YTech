@@ -1,13 +1,9 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "ytech:terracotta_bricks"
-    },
-    "H": {
-      "tag": "c:hammers"
-    }
+    "#": "#ytech:terracotta_bricks",
+    "H": "#c:hammers"
   },
   "pattern": [
     "# #",

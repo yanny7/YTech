@@ -1,14 +1,10 @@
 {
   "type": "ytech:chopping",
   "hitCount": 3,
-  "ingredient": {
-    "item": "minecraft:warped_stem"
-  },
+  "ingredient": "minecraft:warped_stem",
   "result": {
     "count": 2,
     "id": "minecraft:warped_planks"
   },
-  "tool": {
-    "tag": "minecraft:axes"
-  }
+  "tool": "#minecraft:axes"
 }

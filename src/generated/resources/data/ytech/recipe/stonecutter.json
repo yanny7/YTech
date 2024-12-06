@@ -1,15 +1,9 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
-    "L": {
-      "tag": "minecraft:logs"
-    },
-    "P": {
-      "item": "minecraft:smooth_stone"
-    },
-    "S": {
-      "tag": "ytech:saw_blades"
-    }
+    "L": "#minecraft:logs",
+    "P": "minecraft:smooth_stone",
+    "S": "#ytech:saw_blades"
   },
   "pattern": {
     "bottom": [

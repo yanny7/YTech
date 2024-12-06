@@ -3,9 +3,9 @@
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "B": "#ytech:bolts/wooden",
+    "B": "#c:bolts/wooden",
     "P": "minecraft:warped_planks",
-    "W": "#ytech:saws"
+    "W": "#c:saws"
   },
   "pattern": [
     " W ",

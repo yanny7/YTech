@@ -3,10 +3,10 @@
   "category": "building",
   "group": "wooden_stairs",
   "key": {
-    "B": "#ytech:bolts/wooden",
+    "B": "#c:bolts/wooden",
     "P": "minecraft:bamboo_planks",
     "S": "minecraft:bamboo_slab",
-    "W": "#ytech:saws"
+    "W": "#c:saws"
   },
   "pattern": [
     "PW",

@@ -20,13 +20,13 @@ import java.util.function.Function;
 public class YTechBlocks {
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(YTechMod.MOD_ID);
 
-    public static final DeferredBlock<Block> AMPHORA = BLOCKS.registerBlock("amphora", AmphoraBlock::new);
+    public static final DeferredBlock<Block> AMPHORA = BLOCKS.registerBlock("amphora", AmphoraBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA));
     public static final DeferredBlock<Block> AQUEDUCT_FERTILIZER = BLOCKS.registerBlock("aqueduct_fertilizer", AqueductFertilizerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA));
     public static final DeferredBlock<Block> AQUEDUCT_HYDRATOR = BLOCKS.registerBlock("aqueduct_hydrator", AqueductHydratorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA));
     public static final DeferredBlock<Block> AQUEDUCT_VALVE = BLOCKS.registerBlock("aqueduct_valve", AqueductValveBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA));
     public static final DeferredBlock<Block> BRICK_CHIMNEY = BLOCKS.registerBlock("brick_chimney", BrickChimneyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS));
     public static final DeferredBlock<Block> BRONZE_ANVIL = BLOCKS.registerBlock("bronze_anvil", BronzeAnvilBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL));
-    public static final DeferredBlock<Block> CRAFTING_WORKSPACE = BLOCKS.registerBlock("crafting_workspace", CraftingWorkspaceBlock::new);
+    public static final DeferredBlock<Block> CRAFTING_WORKSPACE = BLOCKS.registerBlock("crafting_workspace", CraftingWorkspaceBlock::new, BlockBehaviour.Properties.of());
     public static final DeferredBlock<Block> FIRE_PIT = BLOCKS.registerBlock("fire_pit", FirePitBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
     public static final DeferredBlock<Block> GRASS_BED = BLOCKS.registerBlock("grass_bed", GrassBedBlock::new, BlockBehaviour.Properties.of());
     public static final DeferredBlock<Block> MILLSTONE = BLOCKS.registerBlock("millstone", MillstoneBlock::new, BlockBehaviour.Properties.of());
@@ -41,18 +41,18 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> THATCH = registerBlock("thatch", Blocks.HAY_BLOCK);
     public static final DeferredBlock<Block> THATCH_SLAB = registerSlab("thatch_slab", Blocks.HAY_BLOCK);
     public static final DeferredBlock<Block> THATCH_STAIRS = registerStairs("thatch_stairs", YTechBlocks.THATCH, Blocks.HAY_BLOCK);
-    public static final DeferredBlock<Block> TOOL_RACK = BLOCKS.register("tool_rack", ToolRackBlock::new);
-    public static final DeferredBlock<Block> TREE_STUMP = BLOCKS.register("tree_stump", TreeStumpBlock::new);
-    public static final DeferredBlock<Block> WELL_PULLEY = BLOCKS.register("well_pulley", WellPulleyBlock::new);
-    public static final DeferredBlock<Block> WOODEN_BOX = BLOCKS.register("wooden_box", WoodenBoxBlock::new);
+    public static final DeferredBlock<Block> TOOL_RACK = BLOCKS.registerBlock("tool_rack", ToolRackBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> TREE_STUMP = BLOCKS.registerBlock("tree_stump", TreeStumpBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD));
+    public static final DeferredBlock<Block> WELL_PULLEY = BLOCKS.registerBlock("well_pulley", WellPulleyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA));
+    public static final DeferredBlock<Block> WOODEN_BOX = BLOCKS.registerBlock("wooden_box", WoodenBoxBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
 
-    public static final MaterialBlock AQUEDUCTS = new MaterialBlock("aqueduct", NameHolder.suffix("aqueduct"), MaterialType.AQUEDUCT_MATERIALS, AqueductBlock::new);
+    public static final MaterialBlock AQUEDUCTS = new MaterialBlock("aqueduct", NameHolder.suffix("aqueduct"), MaterialType.AQUEDUCT_MATERIALS, AqueductBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA));
     public static final MaterialBlock DEEPSLATE_ORES = new DeepslateOreMaterialBlock();
     public static final MaterialBlock DRYING_RACKS = new MaterialBlock("drying_rack", NameHolder.suffix("drying_rack"), MaterialType.ALL_WOODS, DryingRackBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final MaterialBlock GRAVEL_DEPOSITS = new MaterialBlock("gravel_deposit", NameHolder.suffix("gravel_deposit"), MaterialType.ALL_DEPOSIT_ORES, (properties) -> new ColoredFallingBlock(new ColorRGBA(-8356741), properties), BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL));
+    public static final MaterialBlock GRAVEL_DEPOSITS = new MaterialBlock("gravel_deposit", NameHolder.suffix("gravel_deposit"), MaterialType.ALL_DEPOSIT_ORES, (type, properties) -> new ColoredFallingBlock(new ColorRGBA(-8356741), properties), BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL));
     public static final MaterialBlock NETHER_ORES = new NetherOreMaterialBlock();
     public static final MaterialBlock RAW_STORAGE_BLOCKS = new RawStorageBlockMaterialBlock();
-    public static final MaterialBlock SAND_DEPOSITS = new MaterialBlock("sand_deposit", NameHolder.suffix("sand_deposit"), MaterialType.ALL_DEPOSIT_ORES, (properties) -> new ColoredFallingBlock(new ColorRGBA(14406560), properties), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND));
+    public static final MaterialBlock SAND_DEPOSITS = new MaterialBlock("sand_deposit", NameHolder.suffix("sand_deposit"), MaterialType.ALL_DEPOSIT_ORES, (type, properties) -> new ColoredFallingBlock(new ColorRGBA(14406560), properties), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND));
     public static final MaterialBlock STONE_ORES = new StoneOreMaterialBlock();
     public static final MaterialBlock STORAGE_BLOCKS = new StorageBlockMaterialBlock();
     public static final MaterialBlock TANNING_RACKS = new MaterialBlock("tanning_rack", NameHolder.suffix("tanning_rack"), MaterialType.ALL_WOODS, TanningRackBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
@@ -78,7 +78,7 @@ public class YTechBlocks {
         protected final NameHolder nameHolder;
         protected final Map<MaterialType, DeferredBlock<Block>> blocks;
 
-        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, BiFunction<BlockBehaviour.Properties, MaterialType, Block> itemSupplier, BlockBehaviour.Properties properties) {
+        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, BiFunction<MaterialType, BlockBehaviour.Properties, Block> itemSupplier, BlockBehaviour.Properties properties) {
             this.group = group;
             this.nameHolder = nameHolder;
             blocks = new HashMap<>();
@@ -92,12 +92,12 @@ public class YTechBlocks {
                 }
 
                 key += nameHolder.suffix() != null ? "_" + nameHolder.suffix() : "";
-                blocks.put(type, BLOCKS.registerBlock(key, itemSupplier, properties));
+                blocks.put(type, BLOCKS.registerBlock(key, (props) -> itemSupplier.apply(type, props), properties));
             });
         }
 
-        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Supplier<Block> itemSupplier) {
-            this(group, nameHolder, materialTypes, (m) -> itemSupplier.get());
+        public MaterialBlock(String group, NameHolder nameHolder, EnumSet<MaterialType> materialTypes, Function<BlockBehaviour.Properties, Block> itemSupplier, BlockBehaviour.Properties properties) {
+            this(group, nameHolder, materialTypes, (m, p) -> itemSupplier.apply(p), properties);
         }
 
         public DeferredBlock<Block> of(MaterialType material) {

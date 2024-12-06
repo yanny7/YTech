@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#ytech:plates/tin",
-    "H": "#ytech:hammers",
+    "#": "#c:plates/tin",
+    "H": "#c:hammers",
     "S": "minecraft:stick"
   },
   "pattern": [

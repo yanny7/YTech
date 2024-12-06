@@ -1,10 +1,7 @@
 package com.yanny.ytech.generation;
 
 import com.yanny.ytech.YTechMod;
-import com.yanny.ytech.configuration.MaterialType;
-import com.yanny.ytech.configuration.NameHolder;
-import com.yanny.ytech.configuration.PartType;
-import com.yanny.ytech.configuration.YTechAdvancementType;
+import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechEntityTypes;
 import com.yanny.ytech.registration.YTechItemTags;

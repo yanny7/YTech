@@ -3,10 +3,10 @@
   "category": "misc",
   "group": "wooden_fence",
   "key": {
-    "H": "#ytech:hammers",
+    "H": "#c:hammers",
     "P": "minecraft:warped_planks",
     "S": "minecraft:stick",
-    "W": "#ytech:saws"
+    "W": "#c:saws"
   },
   "pattern": [
     "H W",

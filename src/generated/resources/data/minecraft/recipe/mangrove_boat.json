@@ -3,11 +3,11 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "F": "#ytech:files",
-    "H": "#ytech:hammers",
-    "I": "#ytech:rods",
+    "F": "#c:files",
+    "H": "#c:hammers",
+    "I": "#c:rods",
     "P": "minecraft:mangrove_planks",
-    "S": "#ytech:saws"
+    "S": "#c:saws"
   },
   "pattern": [
     "HFS",

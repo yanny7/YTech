@@ -1,14 +1,10 @@
 {
   "type": "ytech:chopping",
   "hitCount": 3,
-  "ingredient": {
-    "item": "minecraft:oak_log"
-  },
+  "ingredient": "minecraft:oak_log",
   "result": {
     "count": 2,
     "id": "minecraft:oak_planks"
   },
-  "tool": {
-    "tag": "minecraft:axes"
-  }
+  "tool": "#minecraft:axes"
 }

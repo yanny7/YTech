@@ -1,18 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "B": "#ytech:bolts/iron",
-    "I": "#ytech:rods/iron",
-    "S": "minecraft:stone",
-    "W": "#ytech:saw_blades/iron"
-  },
-  "pattern": [
-    "IWB",
-    "SSS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:stonecutter"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

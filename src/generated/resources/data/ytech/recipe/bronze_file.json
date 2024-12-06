@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#ytech:plates/bronze",
+    "#": "#c:plates/bronze",
     "S": "minecraft:stick"
   },
   "pattern": [

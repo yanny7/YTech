@@ -6,16 +6,18 @@ import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
@@ -27,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
@@ -47,17 +48,16 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class WellPulleyBlock extends IrrigationBlock {
     public static final EnumProperty<WellPulleyPart> WELL_PART = EnumProperty.create("well", WellPulleyPart.class);
-    public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVATED = AqueductConsumerBlock.ACTIVATED;
 
     private static final VoxelShape WELL_SHAPE_Z = Shapes.box(0, 0, 6/16.0, 1, 1, 10/16.0);
     private static final VoxelShape WELL_SHAPE_X = Shapes.box(6/16.0, 0, 0, 10/16.0, 1, 1);
 
-    public WellPulleyBlock() {
-        super(Properties.ofFullCopy(Blocks.TERRACOTTA).pushReaction(PushReaction.DESTROY));
+    public WellPulleyBlock(Properties properties) {
+        super(properties.pushReaction(PushReaction.DESTROY));
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
@@ -74,8 +74,8 @@ public class WellPulleyBlock extends IrrigationBlock {
 
     @NotNull
     @Override
-    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                           @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         BlockPos basePos = pos;
         BlockState aboveState = state;
 
@@ -102,7 +102,7 @@ public class WellPulleyBlock extends IrrigationBlock {
 
     @Override
     public List<BlockPos> getValidNeighbors(@NotNull BlockState blockState, @NotNull BlockPos pos) {
-        return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getNormal())).toList();
+        return Direction.Plane.HORIZONTAL.stream().map((dir) -> pos.offset(dir.getUnitVec3i())).toList();
     }
 
     @Override
@@ -153,11 +153,10 @@ public class WellPulleyBlock extends IrrigationBlock {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
-    public BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState,
-                                  @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+    public BlockState updateShape(@NotNull BlockState state, @NotNull LevelReader level, @NotNull ScheduledTickAccess tickAccess, @NotNull BlockPos pos,
+                                  @NotNull Direction direction, @NotNull BlockPos neighborPos, @NotNull BlockState neighborState, @NotNull RandomSource random) {
         if (state.getValue(WELL_PART) == WellPulleyPart.BASE) {
             if ((pos.above().equals(neighborPos) && !neighborState.is(YTechBlocks.WELL_PULLEY.get()))
                     || (pos.below().equals(neighborPos) && !neighborState.isCollisionShapeFullBlock(level, neighborPos))) {

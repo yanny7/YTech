@@ -3,9 +3,9 @@
   "category": "misc",
   "key": {
     "#": "#ytech:terracotta_bricks",
-    "H": "#ytech:hammers",
-    "R": "#ytech:rods/copper",
-    "S": "#ytech:plates/copper"
+    "H": "#c:hammers",
+    "R": "#c:rods/copper",
+    "S": "#c:plates/copper"
   },
   "pattern": [
     "#R#",

@@ -1,18 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "L": "minecraft:leather",
-    "P": "minecraft:paper",
-    "S": "#minecraft:planks"
-  },
-  "pattern": [
-    "PL",
-    "SS",
-    "SS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:cartography_table"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

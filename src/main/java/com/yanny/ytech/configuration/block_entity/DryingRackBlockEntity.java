@@ -73,19 +73,19 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             Function<DryingRecipe, Float> getStep = (recipe) -> {
                 Holder<Biome> biome = level.getBiome(pos);
 
-            if (biome.is(YTechBiomeTags.SLOW_DRYING_BIOMES)) {
-                return 0.5F;
-            } else if (biome.is(YTechBiomeTags.FAST_DRYING_BIOMES)) {
-                return 2F;
-            }
+                if (biome.is(YTechBiomeTags.SLOW_DRYING_BIOMES)) {
+                    return 0.5F;
+                } else if (biome.is(YTechBiomeTags.FAST_DRYING_BIOMES)) {
+                    return 2F;
+                }
 
-            return 1F;
-        };
-        BiConsumer<SingleRecipeInput, DryingRecipe> onFinish = (container, recipe) -> {
-            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
-            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            level.blockEntityChanged(pos);
-        };
+                return 1F;
+            };
+            BiConsumer<SingleRecipeInput, DryingRecipe> onFinish = (container, recipe) -> {
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
+                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+                level.blockEntityChanged(pos);
+            };
 
             if (progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
                 setChanged(level, pos, state);

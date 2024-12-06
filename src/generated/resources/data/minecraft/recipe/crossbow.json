@@ -4,9 +4,9 @@
   "key": {
     "#": "minecraft:stick",
     "$": "minecraft:tripwire_hook",
-    "&": "#ytech:rods/iron",
-    "F": "#ytech:knives",
-    "H": "#ytech:hammers",
+    "&": "#c:rods/iron",
+    "F": "#c:knives",
+    "H": "#c:hammers",
     "S": "#minecraft:wooden_slabs",
     "~": "#ytech:leather_strips"
   },

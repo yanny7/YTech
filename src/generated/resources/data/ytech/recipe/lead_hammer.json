@@ -4,7 +4,7 @@
   "ingredients": [
     "minecraft:stick",
     "#ytech:parts/hammer_heads/lead",
-    "#ytech:hammers"
+    "#c:hammers"
   ],
   "result": {
     "count": 1,

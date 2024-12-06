@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "#ytech:plates/wooden",
-    "I": "#ytech:bolts/wooden"
+    "#": "#c:plates/wooden",
+    "I": "#c:bolts/wooden"
   },
   "pattern": [
     "I#I",

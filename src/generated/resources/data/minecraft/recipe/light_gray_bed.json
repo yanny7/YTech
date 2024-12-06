@@ -3,9 +3,9 @@
   "category": "misc",
   "group": "bed",
   "key": {
-    "H": "#ytech:hammers",
+    "H": "#c:hammers",
     "P": "#minecraft:wooden_slabs",
-    "S": "#ytech:saws",
+    "S": "#c:saws",
     "W": "minecraft:light_gray_wool"
   },
   "pattern": [

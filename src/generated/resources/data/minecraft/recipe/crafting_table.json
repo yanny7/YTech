@@ -1,17 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "$": "#minecraft:axes",
-    "F": "minecraft:flint",
-    "P": "#minecraft:planks"
-  },
-  "pattern": [
-    "$F",
-    "PP"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:crafting_table"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

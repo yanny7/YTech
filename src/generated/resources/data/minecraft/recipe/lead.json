@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "L": "#ytech:leather_strips",
-    "S": "minecraft:string"
+    "S": "#c:strings"
   },
   "pattern": [
     "LL ",

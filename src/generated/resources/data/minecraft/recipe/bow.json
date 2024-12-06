@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#ytech:knives",
+    "#": "#c:knives",
     "S": "minecraft:stick",
-    "W": "minecraft:string"
+    "W": "#c:strings"
   },
   "pattern": [
     " SW",

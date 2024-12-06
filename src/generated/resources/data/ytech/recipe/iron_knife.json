@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "F": "#ytech:files",
-    "P": "#ytech:plates/iron",
+    "F": "#c:files",
+    "P": "#c:plates/iron",
     "S": "minecraft:stick"
   },
   "pattern": [

@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     "#c:crops/wheat",
-    "#ytech:mortar_and_pestles"
+    "#c:mortar_and_pestles"
   ],
   "result": {
     "count": 1,

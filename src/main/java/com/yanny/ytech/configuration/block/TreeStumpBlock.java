@@ -7,13 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,8 +29,8 @@ public class TreeStumpBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_TOP = Shapes.box(2/16.0, 4/16.0, 2/16.0, 14/16.0, 1, 14/16.0);
     private static final VoxelShape SHAPE = Shapes.or(SHAPE_BOTTOM, SHAPE_TOP);
 
-    public TreeStumpBlock() {
-        super(Properties.ofFullCopy(Blocks.OAK_WOOD));
+    public TreeStumpBlock(Properties properties) {
+        super(properties);
     }
 
     @NotNull
@@ -48,8 +47,8 @@ public class TreeStumpBlock extends Block implements EntityBlock {
 
     @NotNull
     @Override
-    public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                           @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof TreeStumpBlockEntity treeStumpBlockEntity) {
             return treeStumpBlockEntity.onUse(state, level, pos, player, hand, hitResult);
         } else {

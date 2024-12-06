@@ -1,16 +1,10 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": {
-      "tag": "ytech:sharp_flints"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "T": {
-      "tag": "ytech:grass_twines"
-    }
+    "F": "#ytech:sharp_flints",
+    "S": "minecraft:stick",
+    "T": "#ytech:grass_twines"
   },
   "pattern": [
     "SS",

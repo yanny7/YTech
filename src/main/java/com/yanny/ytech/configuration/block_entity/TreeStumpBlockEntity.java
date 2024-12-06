@@ -10,10 +10,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,23 +45,23 @@ public class TreeStumpBlockEntity extends BlockEntity {
         return progressHandler.getItem();
     }
 
-    public ItemInteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide) {
+    public InteractionResult onUse(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (level instanceof ServerLevel serverLevel) {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                if (!progressHandler.setupCrafting(level, holdingItemStack, ChoppingRecipe::hitCount)) {
-                    progressHandler.setupCrafting(level, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), ChoppingRecipe::hitCount);
+                if (!progressHandler.setupCrafting(serverLevel, holdingItemStack, ChoppingRecipe::hitCount)) {
+                    progressHandler.setupCrafting(serverLevel, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), ChoppingRecipe::hitCount);
                 }
             } else {
-                Function<ChoppingRecipe, Boolean> canProcess = (recipe) -> recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack);
+                Function<ChoppingRecipe, Boolean> canProcess = (recipe) -> recipe.tool().items().isEmpty() || recipe.tool().test(holdingItemStack);
                 Function<ChoppingRecipe, Float> getStep = (recipe) -> 1F;
                 BiConsumer<SingleRecipeInput, ChoppingRecipe> onFinish = (container, recipe) -> {
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
                 };
 
-                if (!progressHandler.tick(level, canProcess, getStep, onFinish)) {
+                if (!progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
                     Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
                     progressHandler.clear();
                 } else {
@@ -73,7 +74,7 @@ public class TreeStumpBlockEntity extends BlockEntity {
             level.blockEntityChanged(pos);
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

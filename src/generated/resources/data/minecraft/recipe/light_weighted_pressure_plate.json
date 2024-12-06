@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "B": "#ytech:bolts/gold",
-    "P": "#ytech:plates/gold",
-    "W": "#ytech:hammers"
+    "B": "#c:bolts/gold",
+    "P": "#c:plates/gold",
+    "W": "#c:hammers"
   },
   "pattern": [
     " W ",

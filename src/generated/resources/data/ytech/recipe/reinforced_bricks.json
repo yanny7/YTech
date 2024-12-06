@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "#ytech:bolts/copper",
+    "#": "#c:bolts/copper",
     "B": "minecraft:bricks",
-    "P": "#ytech:plates/copper"
+    "P": "#c:plates/copper"
   },
   "pattern": [
     "#P#",

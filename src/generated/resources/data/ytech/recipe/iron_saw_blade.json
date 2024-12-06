@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "H": "#ytech:hammers",
-    "P": "#ytech:plates/iron"
+    "H": "#c:hammers",
+    "P": "#c:plates/iron"
   },
   "pattern": [
     " P ",

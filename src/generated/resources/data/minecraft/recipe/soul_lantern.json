@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": "#ytech:rods",
-    "P": "#ytech:plates",
+    "I": "#c:rods",
+    "P": "#c:plates",
     "T": "minecraft:soul_torch"
   },
   "pattern": [

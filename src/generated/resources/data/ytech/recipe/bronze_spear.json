@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": "minecraft:stick",
-    "S": "#ytech:plates/bronze",
+    "S": "#c:plates/bronze",
     "T": "#ytech:leather_strips"
   },
   "pattern": [

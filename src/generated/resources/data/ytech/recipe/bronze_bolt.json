@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "#ytech:rods/bronze",
-    "S": "#ytech:saws"
+    "#": "#c:rods/bronze",
+    "S": "#c:saws"
   },
   "pattern": [
     "# ",

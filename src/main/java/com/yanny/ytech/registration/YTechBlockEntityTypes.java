@@ -41,13 +41,11 @@ public class YTechBlockEntityTypes {
     }
 
     private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, YTechBlocks.MaterialBlock blocks) {
-        //noinspection DataFlowIssue
         return BLOCK_ENTITIES.register(name, () -> new BlockEntityType<>(supplier, blocks.blocks().stream().map(DeferredHolder::get).toArray(Block[]::new)));
     }
 
     @SafeVarargs
     private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, DeferredBlock<Block>... blocks) {
-        //noinspection DataFlowIssue
-        return BLOCK_ENTITIES.register(name, () -> BlockEntityType.Builder.of(supplier, Arrays.stream(blocks).map(DeferredHolder::get).toArray(Block[]::new)).build(null));
+        return BLOCK_ENTITIES.register(name, () -> new BlockEntityType<>(supplier, Arrays.stream(blocks).map(DeferredHolder::get).toArray(Block[]::new)));
     }
 }

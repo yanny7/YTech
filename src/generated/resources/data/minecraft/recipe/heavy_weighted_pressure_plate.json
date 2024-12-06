@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "B": "#ytech:bolts/iron",
-    "P": "#ytech:plates/iron",
-    "W": "#ytech:hammers"
+    "B": "#c:bolts/iron",
+    "P": "#c:plates/iron",
+    "W": "#c:hammers"
   },
   "pattern": [
     " W ",

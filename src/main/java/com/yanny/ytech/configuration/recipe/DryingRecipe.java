@@ -61,6 +61,11 @@ public record DryingRecipe(Ingredient ingredient, int dryingTime, ItemStack resu
         return PlacementInfo.NOT_PLACEABLE;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @NotNull
     @Override
     public RecipeBookCategory recipeBookCategory() {

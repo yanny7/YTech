@@ -4,10 +4,10 @@
   "group": "jungle_planks",
   "ingredients": [
     "minecraft:jungle_log",
-    "#ytech:saws"
+    "#c:saws"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "minecraft:jungle_planks"
   }
 }

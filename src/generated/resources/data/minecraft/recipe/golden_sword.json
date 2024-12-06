@@ -4,7 +4,7 @@
   "ingredients": [
     "minecraft:stick",
     "#ytech:parts/sword_blades/gold",
-    "#ytech:hammers"
+    "#c:hammers"
   ],
   "result": {
     "count": 1,

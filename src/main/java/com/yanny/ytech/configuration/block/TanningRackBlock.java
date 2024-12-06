@@ -35,7 +35,7 @@ public class TanningRackBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.box(7/16.0, 0, 0, 9/16.0, 1, 1);
 
-    public TanningRackBlock(Properties properties) {
+    public TanningRackBlock(MaterialType material, Properties properties) {
         super(properties);
     }
 

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": "#ytech:rods/iron"
+    "C": "#c:rods/iron"
   },
   "pattern": [
     "CCC",

@@ -1,15 +1,9 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
-    "B": {
-      "tag": "minecraft:wooden_buttons"
-    },
-    "C": {
-      "tag": "minecraft:planks"
-    },
-    "R": {
-      "tag": "c:rods/iron"
-    }
+    "B": "#minecraft:wooden_buttons",
+    "C": "#minecraft:planks",
+    "R": "#c:rods/iron"
   },
   "pattern": {
     "bottom": [

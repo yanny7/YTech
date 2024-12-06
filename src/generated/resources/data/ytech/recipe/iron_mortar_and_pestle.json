@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#c:stones",
-    "I": "#c:ingots/iron"
+    "#": "#c:plates/iron",
+    "P": "#ytech:pebbles"
   },
   "pattern": [
-    " I ",
+    " P ",
     "# #",
     " # "
   ],

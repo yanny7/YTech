@@ -4,7 +4,7 @@
   "ingredients": [
     "minecraft:stick",
     "#ytech:parts/axe_heads/tin",
-    "#ytech:hammers"
+    "#c:hammers"
   ],
   "result": {
     "count": 1,

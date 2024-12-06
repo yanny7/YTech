@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#ytech:bolts/bronze",
+    "#": "#c:bolts/bronze",
     "F": "minecraft:feather",
     "S": "minecraft:stick"
   },

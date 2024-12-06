@@ -49,6 +49,11 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, int hitCou
         return PlacementInfo.NOT_PLACEABLE;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @NotNull
     @Override
     public RecipeBookCategory recipeBookCategory() {
@@ -116,22 +121,19 @@ public record HammeringRecipe(Ingredient ingredient, Ingredient tool, int hitCou
         private final Item result;
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        Builder(@NotNull Ingredient ingredient, int hitCount, @NotNull Item result) {
+        Builder(@NotNull Ingredient ingredient, Ingredient tool, int hitCount, @NotNull Item result) {
             this.ingredient = ingredient;
+            this.tool = tool;
             this.hitCount = hitCount;
             this.result = result;
         }
 
-        public static Builder hammering(@NotNull TagKey<Item> input, int hitCount, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), hitCount, result);
+        public static Builder hammering(@NotNull HolderGetter<Item> items, @NotNull TagKey<Item> input, @NotNull TagKey<Item> tool, int hitCount, @NotNull Item result) {
+            return new Builder(Ingredient.of(items.getOrThrow(input)), Ingredient.of(items.getOrThrow(tool)), hitCount, result);
         }
 
-        public static Builder hammering(@NotNull ItemLike input, int hitCount, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), hitCount, result);
-        }
-
-        public static Builder hammering(@NotNull HolderGetter<Item> items, @NotNull ItemLike input, @NotNull TagKey<Item> tool, @NotNull Item result) {
-            return new Builder(Ingredient.of(input), Ingredient.of(items.getOrThrow(tool)), result);
+        public static Builder hammering(@NotNull HolderGetter<Item> items, @NotNull ItemLike input, @NotNull TagKey<Item> tool, int hitCount, @NotNull Item result) {
+            return new Builder(Ingredient.of(input), Ingredient.of(items.getOrThrow(tool)), hitCount, result);
         }
 
         @NotNull

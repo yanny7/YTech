@@ -1,12 +1,10 @@
 {
   "type": "ytech:alloying",
   "ingredient1": {
-    "neoforge:ingredient_type": "ytech:ingredient",
     "count": 9,
     "ingredient": "#c:ingots/copper"
   },
   "ingredient2": {
-    "neoforge:ingredient_type": "ytech:ingredient",
     "count": 1,
     "ingredient": "#c:ingots/tin"
   },

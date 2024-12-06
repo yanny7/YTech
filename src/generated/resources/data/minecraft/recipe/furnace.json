@@ -1,19 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "C": "#minecraft:stone_crafting_materials",
-    "F": "minecraft:campfire",
-    "H": "#ytech:hammers",
-    "S": "minecraft:cobblestone_slab"
-  },
-  "pattern": [
-    "SHS",
-    "CFC",
-    "CCC"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:furnace"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

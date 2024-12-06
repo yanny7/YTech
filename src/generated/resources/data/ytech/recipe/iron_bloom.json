@@ -1,12 +1,10 @@
 {
   "type": "ytech:alloying",
   "ingredient1": {
-    "neoforge:ingredient_type": "ytech:ingredient",
     "count": 1,
     "ingredient": "#c:crushed_materials/iron"
   },
   "ingredient2": {
-    "neoforge:ingredient_type": "ytech:ingredient",
     "count": 1,
     "ingredient": "minecraft:charcoal"
   },

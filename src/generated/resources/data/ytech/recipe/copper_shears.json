@@ -1,22 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:plates/copper"
-    },
-    "B": {
-      "tag": "c:bolts/copper"
-    },
-    "F": {
-      "tag": "c:files"
-    },
-    "L": {
-      "tag": "ytech:leather_strips"
-    },
-    "R": {
-      "tag": "c:rods/copper"
-    }
+    "#": "#c:plates/copper",
+    "B": "#c:bolts/copper",
+    "F": "#c:files",
+    "L": "#ytech:leather_strips",
+    "R": "#c:rods/copper"
   },
   "pattern": [
     " #F",

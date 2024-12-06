@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": "#c:ingots/bronze",
-    "F": "#ytech:files"
+    "F": "#c:files"
   },
   "pattern": [
     "#",

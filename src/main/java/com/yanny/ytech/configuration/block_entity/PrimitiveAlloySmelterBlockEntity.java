@@ -119,7 +119,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
             ItemStack inputLeft = itemStackHandler.getStackInSlot(SLOT_INPUT_LEFT);
             ItemStack inputRight = itemStackHandler.getStackInSlot(SLOT_INPUT_RIGHT);
 
-            quickCheck.getRecipeFor(new YTechRecipeInput(inputLeft, inputRight), level).ifPresent((recipe) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(inputLeft, inputRight), serverLevel).ifPresent((recipe) -> {
                 ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
                 AlloyingRecipe r = recipe.value();
 
@@ -146,7 +146,7 @@ public class PrimitiveAlloySmelterBlockEntity extends AbstractPrimitiveMachineBl
         if (level instanceof ServerLevel serverLevel && recipeInputLeft != null && recipeInputRight != null) {
             ItemStack result = itemStackHandler.getStackInSlot(SLOT_OUTPUT);
 
-            quickCheck.getRecipeFor(new YTechRecipeInput(recipeInputLeft, recipeInputRight), level).ifPresent((r) -> {
+            quickCheck.getRecipeFor(new YTechRecipeInput(recipeInputLeft, recipeInputRight), serverLevel).ifPresent((r) -> {
                 if (result.isEmpty()) {
                     itemStackHandler.setStackInSlot(SLOT_OUTPUT, r.value().result().copy());
                 } else {

@@ -1,12 +1,8 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
-    "P": {
-      "tag": "minecraft:planks"
-    },
-    "T": {
-      "item": "minecraft:target"
-    }
+    "P": "#minecraft:planks",
+    "T": "minecraft:target"
   },
   "pattern": {
     "bottom": [

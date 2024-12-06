@@ -109,28 +109,28 @@ public class YTechSoundDefinitionProvider extends SoundDefinitionsProvider {
         add(YTechSoundEvents.BRONZE_ANVIL_USE, definition()
                 .subtitle("sound.ytech.bronze_anvil.use")
                 .with(
-                        sound(SoundEvents.ANVIL_USE.getLocation(), SoundDefinition.SoundType.EVENT)
+                        sound(SoundEvents.ANVIL_USE.location(), SoundDefinition.SoundType.EVENT)
                                 .pitch(2.5)
                 )
         );
         add(YTechSoundEvents.TANNING_RACK_USE, definition()
                 .subtitle("sound.ytech.tanning_rack.use")
                 .with(
-                        sound(SoundEvents.HOE_TILL.getLocation(), SoundDefinition.SoundType.EVENT)
+                        sound(SoundEvents.HOE_TILL.location(), SoundDefinition.SoundType.EVENT)
                                 .pitch(2.5)
                 )
         );
         add(YTechSoundEvents.TREE_STUMP_USE, definition()
                 .subtitle("sound.ytech.tree_stump.use")
                 .with(
-                        sound(SoundEvents.AXE_STRIP.getLocation(), SoundDefinition.SoundType.EVENT)
+                        sound(SoundEvents.AXE_STRIP.location(), SoundDefinition.SoundType.EVENT)
                                 .pitch(2.0)
                 )
         );
         add(YTechSoundEvents.WELL_PULLEY_USE, definition()
                 .subtitle("sound.ytech.well_pulley.use")
                 .with(
-                        sound(SoundEvents.WATER_AMBIENT.getLocation(), SoundDefinition.SoundType.EVENT)
+                        sound(SoundEvents.WATER_AMBIENT.location(), SoundDefinition.SoundType.EVENT)
                 )
         );
     }

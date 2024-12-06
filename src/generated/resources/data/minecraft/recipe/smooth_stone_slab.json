@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     "minecraft:smooth_stone",
-    "#ytech:hammers"
+    "#c:hammers"
   ],
   "result": {
     "count": 1,

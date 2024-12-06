@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#ytech:plates/tin",
+    "#": "#c:plates/tin",
     "S": "minecraft:stick"
   },
   "pattern": [

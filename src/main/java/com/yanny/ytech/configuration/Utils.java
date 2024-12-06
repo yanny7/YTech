@@ -71,7 +71,7 @@ public class Utils {
     }
 
     @NotNull
-    public static ResourceLocation loc(@NotNull DeferredItem<Item> item) {
+    public static ResourceLocation loc(@NotNull DeferredItem<? extends Item> item) {
         return loc(item.get());
     }
 

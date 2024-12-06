@@ -3,9 +3,9 @@
   "category": "equipment",
   "key": {
     "#": "#c:ingots/iron",
-    "H": "#ytech:hammers",
-    "P": "#ytech:plates/iron",
-    "R": "#ytech:rods/iron",
+    "H": "#c:hammers",
+    "P": "#c:plates/iron",
+    "R": "#c:rods/iron",
     "S": "minecraft:stick"
   },
   "pattern": [

@@ -4,10 +4,10 @@
   "group": "jungle_slab",
   "ingredients": [
     "minecraft:jungle_planks",
-    "#ytech:saws"
+    "#c:saws"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "minecraft:jungle_slab"
   }
 }

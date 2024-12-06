@@ -4,10 +4,10 @@
   "group": "crimson_planks",
   "ingredients": [
     "minecraft:crimson_stem",
-    "#ytech:saws"
+    "#c:saws"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "minecraft:crimson_planks"
   }
 }

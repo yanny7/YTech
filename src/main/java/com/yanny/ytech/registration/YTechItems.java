@@ -69,13 +69,13 @@ public class YTechItems {
     public static final DeferredItem<Item> VENISON = ITEMS.registerItem("venison", (properties) -> foodItem(2, 0.3f, properties));
     public static final DeferredItem<Item> WATER_CLAY_BUCKET = ITEMS.registerItem("water_clay_bucket", (properties) -> new ClayBucketItem(Fluids.WATER, properties.craftRemainder(YTechItems.CLAY_BUCKET.get()).stacksTo(1)));
 
-    public static final DeferredItem<BlockItem> AMPHORA = ITEMS.registerItem("amphora", () -> descriptionItem(YTechBlocks.AMPHORA, List.of(Component.translatable("text.ytech.hover.amphora1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.amphora2").withStyle(DARK_GRAY))));
+    public static final DeferredItem<BlockItem> AMPHORA = ITEMS.registerItem("amphora", (properties) -> descriptionItem(YTechBlocks.AMPHORA, List.of(Component.translatable("text.ytech.hover.amphora1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.amphora2").withStyle(DARK_GRAY)), properties.useBlockDescriptionPrefix()));
     public static final DeferredItem<BlockItem> AQUEDUCT_FERTILIZER = ITEMS.registerItem("aqueduct_fertilizer", YTechItems::aqueductFertilizerBlockItem);
     public static final DeferredItem<BlockItem> AQUEDUCT_HYDRATOR = ITEMS.registerItem("aqueduct_hydrator", YTechItems::aqueductHydratorBlockItem);
     public static final DeferredItem<BlockItem> AQUEDUCT_VALVE = ITEMS.registerItem("aqueduct_valve", YTechItems::aqueductValveBlockItem);
     public static final DeferredItem<BlockItem> BRICK_CHIMNEY = ITEMS.registerItem("brick_chimney", (properties) -> descriptionItem(YTechBlocks.BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY)), properties.useBlockDescriptionPrefix()));
     public static final DeferredItem<BlockItem> BRONZE_ANVIL = ITEMS.registerSimpleBlockItem(YTechBlocks.BRONZE_ANVIL, new Item.Properties().useBlockDescriptionPrefix());
-    public static final DeferredItem<BlockItem> CRAFTING_WORKSPACE = ITEMS.registerItem("crafting_workspace", () -> descriptionItem(YTechBlocks.CRAFTING_WORKSPACE, List.of(Component.translatable("text.ytech.hover.crafting_workbench1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench3").withStyle(DARK_GRAY))));
+    public static final DeferredItem<BlockItem> CRAFTING_WORKSPACE = ITEMS.registerItem("crafting_workspace", (properties) -> descriptionItem(YTechBlocks.CRAFTING_WORKSPACE, List.of(Component.translatable("text.ytech.hover.crafting_workbench1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench3").withStyle(DARK_GRAY)), properties.useBlockDescriptionPrefix()));
     public static final DeferredItem<BlockItem> FIRE_PIT = ITEMS.registerItem("fire_pit", YTechItems::firePitBlockItem);
     public static final DeferredItem<BlockItem> GRASS_BED = ITEMS.registerItem("grass_bed", YTechItems::grassBedBlockItem);
     public static final DeferredItem<BlockItem> MILLSTONE = ITEMS.registerItem("millstone", (properties) -> descriptionItem(YTechBlocks.MILLSTONE, List.of(Component.translatable("text.ytech.hover.millstone").withStyle(DARK_GRAY)), properties.useBlockDescriptionPrefix()));
@@ -90,10 +90,10 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> THATCH = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH, new Item.Properties().useBlockDescriptionPrefix());
     public static final DeferredItem<BlockItem> THATCH_SLAB = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_SLAB, new Item.Properties().useBlockDescriptionPrefix());
     public static final DeferredItem<BlockItem> THATCH_STAIRS = ITEMS.registerSimpleBlockItem(YTechBlocks.THATCH_STAIRS, new Item.Properties().useBlockDescriptionPrefix());
-    public static final DeferredItem<BlockItem> TOOL_RACK = ITEMS.registerItem("tool_rack", () -> blockItem(YTechBlocks.TOOL_RACK));
-    public static final DeferredItem<BlockItem> TREE_STUMP = ITEMS.registerItem("tree_stump", () -> blockItem(YTechBlocks.TREE_STUMP));
-    public static final DeferredItem<BlockItem> WELL_PULLEY = ITEMS.registerItem("well_pulley", () -> descriptionItem(YTechBlocks.WELL_PULLEY, List.of(Component.translatable("text.ytech.hover.well_pulley1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley3").withStyle(DARK_GRAY))));
-    public static final DeferredItem<BlockItem> WOODEN_BOX = ITEMS.registerItem("wooden_box", () -> blockItem(YTechBlocks.WOODEN_BOX));
+    public static final DeferredItem<BlockItem> TOOL_RACK = ITEMS.registerSimpleBlockItem(YTechBlocks.TOOL_RACK, new Item.Properties().useBlockDescriptionPrefix());
+    public static final DeferredItem<BlockItem> TREE_STUMP = ITEMS.registerSimpleBlockItem(YTechBlocks.TREE_STUMP, new Item.Properties().useBlockDescriptionPrefix());
+    public static final DeferredItem<BlockItem> WELL_PULLEY = ITEMS.registerItem("well_pulley", (properties) -> descriptionItem(YTechBlocks.WELL_PULLEY, List.of(Component.translatable("text.ytech.hover.well_pulley1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.well_pulley3").withStyle(DARK_GRAY)), properties.useBlockDescriptionPrefix()));
+    public static final DeferredItem<BlockItem> WOODEN_BOX = ITEMS.registerSimpleBlockItem(YTechBlocks.WOODEN_BOX, new Item.Properties().useBlockDescriptionPrefix());
 
     public static final DeferredItem<Item> CHLORITE_BRACELET = ITEMS.registerItem("chlorite_bracelet", ChloriteBraceletItem::new);
     public static final DeferredItem<Item> LION_MAN = ITEMS.registerItem("lion_man", LionManItem::new);
@@ -111,7 +111,7 @@ public class YTechItems {
     public static final DeferredItem<Item> WOOLLY_MAMMOTH_SPAWN_EGG = ITEMS.registerItem("woolly_mammoth_spawn_egg", (properties) -> new SpawnEggItem(YTechEntityTypes.WOOLLY_MAMMOTH.get(), 0x8a4a71, 0x6cc8ab, properties));
     public static final DeferredItem<Item> WOOLLY_RHINO_SPAWN_EGG = ITEMS.registerItem("woolly_rhino_spawn_egg", (properties) -> new SpawnEggItem(YTechEntityTypes.WOOLLY_RHINO.get(), 0x04b53a, 0x2f7415, properties));
 
-    public static final TypedItem<PartType> CLAY_MOLDS = new PartItem("clay_mold", NameHolder.suffix("mold"), (properties) -> new Item(properties.durability(16)));
+    public static final TypedItem<PartType> CLAY_MOLDS = new PartItem("clay_mold", NameHolder.suffix("clay_mold"), (properties) -> new Item(properties.durability(16)));
     public static final TypedItem<PartType> PATTERNS = new PartItem("pattern", NameHolder.suffix("pattern"), YTechItems::simpleItem);
     public static final TypedItem<PartType> SAND_MOLDS = new PartItem("sand_mold", NameHolder.suffix("sand_mold"), YTechItems::simpleItem);
     public static final TypedItem<PartType> UNFIRED_MOLDS = new PartItem("unfired_mold", NameHolder.both("unfired", "mold"), YTechItems::simpleItem);
@@ -204,8 +204,8 @@ public class YTechItems {
         return new PickaxeItem(YTechToolMaterials.get(material), 3.0F, -3.2f, properties);
     }
 
-    private static Item shearsItem(MaterialType materialType) {
-        return new ShearsItem(new Item.Properties().durability(materialType.getTier().getUses()));
+    private static Item shearsItem(MaterialType materialType, Item.Properties properties) {
+        return new ShearsItem(properties.durability(YTechToolMaterials.get(materialType).durability()));
     }
 
     private static Item shovelItem(MaterialType material, Item.Properties properties) {

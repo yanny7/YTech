@@ -60,6 +60,11 @@ public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount
         return PlacementInfo.NOT_PLACEABLE;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @NotNull
     @Override
     public RecipeBookCategory recipeBookCategory() {

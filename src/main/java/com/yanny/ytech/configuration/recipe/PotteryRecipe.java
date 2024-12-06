@@ -61,6 +61,11 @@ public record PotteryRecipe(int count, ItemStack result) implements Recipe<Recip
         return PlacementInfo.NOT_PLACEABLE;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @NotNull
     @Override
     public RecipeBookCategory recipeBookCategory() {

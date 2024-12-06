@@ -6,7 +6,6 @@ import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AqueductBlockEntity;
 import com.yanny.ytech.network.irrigation.IrrigationClientNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
-import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +16,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -47,7 +45,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,7 +74,7 @@ public class AqueductBlock extends IrrigationBlock implements BucketPickup, Liqu
     private final Map<BlockState, VoxelShape> shapesCache;
     private final MaterialType material;
 
-    public AqueductBlock(Properties properties, MaterialType material) {
+    public AqueductBlock(MaterialType material, Properties properties) {
         super(properties);
         this.shapesCache = this.getShapeForEachState(AqueductBlock::calculateShape);
         this.material = material;

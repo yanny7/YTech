@@ -1,18 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "A": "#minecraft:axes",
-    "P": "#ytech:plates/wooden",
-    "S": "#minecraft:planks"
-  },
-  "pattern": [
-    "SPS",
-    "SAS",
-    "SPS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:barrel"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

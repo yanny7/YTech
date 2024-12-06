@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#ytech:plates/lead",
-    "H": "#ytech:hammers",
+    "#": "#c:plates/lead",
+    "H": "#c:hammers",
     "S": "minecraft:stick"
   },
   "pattern": [

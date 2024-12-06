@@ -75,7 +75,7 @@ public class PottersWheelBlockEntity extends BlockEntity {
                         holdingItemStack.shrink(1);
                         level.playSound(null, pos, SoundEvents.SLIME_SQUISH, SoundSource.BLOCKS, level.random.nextFloat() * 0.25F + 0.75F, 1.0f);
 
-                        Optional<RecipeHolder<PotteryRecipe>> recipes = quickCheck.getRecipeFor(new SingleRecipeInput(items.getStackInSlot(0)), level);
+                        Optional<RecipeHolder<PotteryRecipe>> recipes = quickCheck.getRecipeFor(new SingleRecipeInput(items.getStackInSlot(0)), serverLevel);
 
                         result = recipes.map((m) -> m.value().result()).orElse(null);
                         player.causeFoodExhaustion(4f);

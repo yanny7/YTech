@@ -9,8 +9,8 @@ import com.yanny.ytech.configuration.recipe.YTechRecipeInput;
 import com.yanny.ytech.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmBlock;
@@ -86,9 +87,7 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onServerStarting(@NotNull ServerStartingEvent event) {
-        BuiltInRegistries.BLOCK.getTag(YTechBlockTags.REQUIRE_VALID_TOOL).ifPresent((h) -> {
-            h.stream().map(Holder::value).forEach(ForgeBusSubscriber::setBlockRequireValidTool);
-        });
+        BuiltInRegistries.BLOCK.getOrThrow(YTechBlockTags.REQUIRE_VALID_TOOL).stream().map(Holder::value).forEach(ForgeBusSubscriber::setBlockRequireValidTool);
     }
 
     @SubscribeEvent
@@ -117,17 +116,18 @@ public class ForgeBusSubscriber {
 
     @SubscribeEvent
     public static void onPlayerLeftClickBlock(@NotNull PlayerInteractEvent.LeftClickBlock event) {
-        Player player = event.getEntity();
-        Level level = event.getLevel();
-        ItemStack heldItem = player.getMainHandItem();
-        BlockState blockState = level.getBlockState(event.getPos());
-        Direction direction = event.getFace();
+        if (event.getLevel() instanceof ServerLevel level) {
+            Player player = event.getEntity();
+            ItemStack heldItem = player.getMainHandItem();
+            BlockState blockState = level.getBlockState(event.getPos());
+            Direction direction = event.getFace();
 
-        if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
-            level.recipeAccess().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new YTechRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
-                Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
-                heldItem.shrink(1);
-            });
+            if (!level.isClientSide && !player.isCreative() && direction != null && event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START && event.getHand() == InteractionHand.MAIN_HAND) {
+                level.recipeAccess().getRecipeFor(YTechRecipeTypes.BLOCK_HIT.get(), new YTechRecipeInput(heldItem, blockState.getBlock().asItem().getDefaultInstance()), level).ifPresent((recipe) -> {
+                    Block.popResourceFromFace(level, event.getPos(), direction, recipe.value().result().copy());
+                    heldItem.shrink(1);
+                });
+            }
         }
     }
 
@@ -164,7 +164,7 @@ public class ForgeBusSubscriber {
                 float cG = 1.0f;
                 float cB = 0.1f;
                 BlockPos target = event.getTarget().getBlockPos();
-                LevelRenderer.renderLineBox(
+                ShapeRenderer.renderLineBox(
                         poseStack,
                         event.getMultiBufferSource().getBuffer(RenderType.LINES),
                         CraftingWorkspaceBlock.BOX.bounds().move(target),
@@ -194,7 +194,7 @@ public class ForgeBusSubscriber {
                 float cG = 0.1f;
                 float cB = 0.1f;
                 BlockPos target = event.getTarget().getBlockPos();
-                LevelRenderer.renderLineBox(
+                ShapeRenderer.renderLineBox(
                         poseStack,
                         event.getMultiBufferSource().getBuffer(RenderType.LINES),
                         WoodenBoxBlock.BOX.bounds().move(target),

@@ -11,7 +11,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -53,17 +52,17 @@ public class BronzeAnvilBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                if (!progressHandler.setupCrafting(level, holdingItemStack, HammeringRecipe::hitCount)) {
-                    progressHandler.setupCrafting(level, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), HammeringRecipe::hitCount);
+                if (!progressHandler.setupCrafting(serverLevel, holdingItemStack, HammeringRecipe::hitCount)) {
+                    progressHandler.setupCrafting(serverLevel, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), HammeringRecipe::hitCount);
                 }
             } else {
-                Function<HammeringRecipe, Boolean> canProcess = (recipe) -> recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack);
+                Function<HammeringRecipe, Boolean> canProcess = (recipe) -> recipe.tool().items().isEmpty() || recipe.tool().test(holdingItemStack);
                 Function<HammeringRecipe, Float> getStep = (recipe) -> 1F;
                 BiConsumer<SingleRecipeInput, HammeringRecipe> onFinish = (container, recipe) -> {
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
                 };
 
-                if (!progressHandler.tick(level, canProcess, getStep, onFinish)) {
+                if (!progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
                     Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
                     progressHandler.clear();
                 } else {

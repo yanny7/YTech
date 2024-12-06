@@ -7,6 +7,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import it.unimi.dsi.fastutil.chars.CharArraySet;
@@ -16,13 +18,13 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
@@ -44,37 +46,37 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
 
     @NotNull
     @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return patternHolder.ingredients;
-    }
-
-    @NotNull
-    @Override
     public ItemStack assemble(@NotNull RecipeInput container, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int i, int i1) {
-        return false;
-    }
-
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
-    }
-
-    @NotNull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<WorkspaceCraftingRecipe> getSerializer() {
         return YTechRecipeSerializers.WORKSPACE_CRAFTING.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<WorkspaceCraftingRecipe> getType() {
         return YTechRecipeTypes.WORKSPACE_CRAFTING.get();
+    }
+
+    @NotNull
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.WORKSPACE_CRAFTING.get();
     }
 
     public static class Serializer implements RecipeSerializer<WorkspaceCraftingRecipe> {
@@ -115,6 +117,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
     }
 
     public static class Builder implements RecipeBuilder {
+        private final HolderGetter<Item> items;
         private final Item result;
         private final List<String> bottomRows = Lists.newArrayList();
         private final List<String> middleRows = Lists.newArrayList();
@@ -122,16 +125,17 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        protected Builder(ItemLike pResult) {
+        protected Builder(@NotNull HolderGetter<Item> items, ItemLike pResult) {
+            this.items = items;
             result = pResult.asItem();
         }
 
-        public static Builder recipe(ItemLike pResult) {
-            return new Builder(pResult);
+        public static Builder recipe(@NotNull HolderGetter<Item> items, ItemLike pResult) {
+            return new Builder(items, pResult);
         }
 
         public Builder define(Character pSymbol, TagKey<Item> pTag) {
-            return define(pSymbol, Ingredient.of(pTag));
+            return define(pSymbol, Ingredient.of(items.getOrThrow(pTag)));
         }
 
         public Builder define(Character pSymbol, ItemLike pItem) {
@@ -181,7 +185,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
@@ -189,7 +193,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
             finishedRecipeConsumer.accept(
                     recipeId,
                     new WorkspaceCraftingRecipe(PatternHolder.of(key, bottomRows, middleRows, topRows), new ItemStack(result)),
-                    builder.build(recipeId.withPrefix("recipes/workspace_crafting/"))
+                    builder.build(Utils.modLoc("recipes/workspace_crafting/" + recipeId.location().getPath()))
             );
         }
 
@@ -204,7 +208,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
             }
         }
 
-        private void ensureValid(ResourceLocation pId) {
+        private void ensureValid(ResourceKey<Recipe<?>> pId) {
             if (bottomRows.isEmpty()) {
                 throw new IllegalStateException("No pattern is defined for bottom layer for recipe " + pId + "!");
             }
@@ -231,7 +235,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
             }
         }
 
-        private void processList(ResourceLocation pId, List<String> rows, Set<Character> set) {
+        private void processList(ResourceKey<Recipe<?>> pId, List<String> rows, Set<Character> set) {
             for(String s : rows) {
                 for(int i = 0; i < s.length(); ++i) {
                     char c0 = s.charAt(i);
@@ -246,7 +250,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         }
     }
 
-    private record PatternHolder(NonNullList<Ingredient> ingredients, Optional<Pattern> data) {
+    private record PatternHolder(List<Optional<Ingredient>> ingredients, Optional<Pattern> data) {
         public static final MapCodec<PatternHolder> CODEC = Pattern.MAP_CODEC
                 .flatXmap(
                         PatternHolder::unpack,
@@ -261,7 +265,8 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
 
             // Facing NORTH
             for (int i = 0; i < 27; i++) {
-                if (!ingredients.get(i).test(container.getItem(i))) {
+                Optional<Ingredient> optional = ingredients.get(i);
+                if (!Ingredient.testOptionalIngredient(optional, container.getItem(i))) {
                     matches = false;
                 }
             }
@@ -275,7 +280,9 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
                 for (int y = 0; y < 3; y++) {
                     for (int x = 0; x < 3; x++) {
                         for (int z = 0; z < 3; z++) {
-                            if (!ingredients.get(i).test(container.getItem(x + z * 3 + y * 9))) {
+                            Optional<Ingredient> optional = ingredients.get(i);
+
+                            if (!Ingredient.testOptionalIngredient(optional, container.getItem(x + z * 3 + y * 9))) {
                                 matches = false;
                             }
 
@@ -294,7 +301,9 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
                 for (int y = 0; y < 3; y++) {
                     for (int z = 2; z >= 0; z--) {
                         for (int x = 2; x >= 0; x--) {
-                            if (!ingredients.get(i).test(container.getItem(x + z * 3 + y * 9))) {
+                            Optional<Ingredient> optional = ingredients.get(i);
+
+                            if (!Ingredient.testOptionalIngredient(optional, container.getItem(x + z * 3 + y * 9))) {
                                 matches = false;
                             }
 
@@ -313,7 +322,9 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
                 for (int y = 0; y < 3; y++) {
                     for (int x = 2; x >= 0; x--) {
                         for (int z = 2; z >= 0; z--) {
-                            if (!ingredients.get(i).test(container.getItem(x + z * 3 + y * 9))) {
+                            Optional<Ingredient> optional = ingredients.get(i);
+
+                            if (!Ingredient.testOptionalIngredient(optional, container.getItem(x + z * 3 + y * 9))) {
                                 matches = false;
                             }
 
@@ -328,8 +339,8 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         }
 
         private void toNetwork(RegistryFriendlyByteBuf p_320098_) {
-            for (Ingredient ingredient : this.ingredients) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(p_320098_, ingredient);
+            for (Optional<Ingredient> ingredient : this.ingredients) {
+                Ingredient.OPTIONAL_CONTENTS_STREAM_CODEC.encode(p_320098_, ingredient);
             }
         }
 
@@ -339,7 +350,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         }
 
         private static DataResult<PatternHolder> unpack(Pattern pattern) {
-            NonNullList<Ingredient> ingredients = NonNullList.withSize(27, Ingredient.EMPTY);
+            List<Optional<Ingredient>> ingredients = new ArrayList<>(27);
             CharSet charSet = new CharArraySet(pattern.keys.keySet());
             int i = 0;
 
@@ -348,14 +359,22 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
 
                 for (int l = 0; l < s.length(); l++) {
                     char c0 = s.charAt(l);
-                    Ingredient ingredient = c0 == ' ' ? Ingredient.EMPTY : pattern.keys.get(c0);
+                    Optional<Ingredient> optional;
 
-                    if (ingredient == null) {
-                        return DataResult.error(() -> "Pattern references symbol '" + c0 + "' but it's not defined in the key");
+                    if (c0 == ' ') {
+                        optional = Optional.empty();
+                    } else {
+                        Ingredient ingredient = pattern.keys.get(c0);
+
+                        if (ingredient == null) {
+                            return DataResult.error(() -> "Pattern references symbol '" + c0 + "' but it's not defined in the key");
+                        }
+
+                        optional = Optional.of(ingredient);
                     }
 
                     charSet.remove(c0);
-                    ingredients.set(i, ingredient);
+                    ingredients.add(optional);
                     i++;
                 }
             }
@@ -365,14 +384,22 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
 
                 for (int l = 0; l < s.length(); l++) {
                     char c0 = s.charAt(l);
-                    Ingredient ingredient = c0 == ' ' ? Ingredient.EMPTY : pattern.keys.get(c0);
+                    Optional<Ingredient> optional;
 
-                    if (ingredient == null) {
-                        return DataResult.error(() -> "Pattern references symbol '" + c0 + "' but it's not defined in the key");
+                    if (c0 == ' ') {
+                        optional = Optional.empty();
+                    } else {
+                        Ingredient ingredient = pattern.keys.get(c0);
+
+                        if (ingredient == null) {
+                            return DataResult.error(() -> "Pattern references symbol '" + c0 + "' but it's not defined in the key");
+                        }
+
+                        optional = Optional.of(ingredient);
                     }
 
                     charSet.remove(c0);
-                    ingredients.set(i, ingredient);
+                    ingredients.add(optional);
                     i++;
                 }
             }
@@ -382,14 +409,22 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
 
                 for (int l = 0; l < s.length(); l++) {
                     char c0 = s.charAt(l);
-                    Ingredient ingredient = c0 == ' ' ? Ingredient.EMPTY : pattern.keys.get(c0);
+                    Optional<Ingredient> optional;
 
-                    if (ingredient == null) {
-                        return DataResult.error(() -> "Pattern references symbol '" + c0 + "' but it's not defined in the key");
+                    if (c0 == ' ') {
+                        optional = Optional.empty();
+                    } else {
+                        Ingredient ingredient = pattern.keys.get(c0);
+
+                        if (ingredient == null) {
+                            return DataResult.error(() -> "Pattern references symbol '" + c0 + "' but it's not defined in the key");
+                        }
+
+                        optional = Optional.of(ingredient);
                     }
 
                     charSet.remove(c0);
-                    ingredients.set(i, ingredient);
+                    ingredients.add(optional);
                     i++;
                 }
             }
@@ -400,9 +435,13 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         }
 
         private static PatternHolder fromNetwork(RegistryFriendlyByteBuf p_319788_) {
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(27, Ingredient.EMPTY);
-            nonnulllist.replaceAll(p_319733_ -> Ingredient.CONTENTS_STREAM_CODEC.decode(p_319788_));
-            return new PatternHolder(nonnulllist, Optional.empty());
+            List<Optional<Ingredient>> list = new ArrayList<>(27);
+
+            for (int i = 0; i < 27; i++) {
+                list.add(Ingredient.OPTIONAL_CONTENTS_STREAM_CODEC.decode(p_319788_));
+            }
+
+            return new PatternHolder(list, Optional.empty());
         }
     }
 
@@ -446,7 +485,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         }, String::valueOf);
         public static final MapCodec<Pattern> MAP_CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
-                                ExtraCodecs.strictUnboundedMap(SYMBOL_CODEC, Ingredient.CODEC_NONEMPTY).fieldOf("key").forGetter(pattern -> pattern.keys),
+                                ExtraCodecs.strictUnboundedMap(SYMBOL_CODEC, Ingredient.CODEC).fieldOf("key").forGetter(pattern -> pattern.keys),
                                 Data.MAP_CODEC.fieldOf("pattern").forGetter(pattern -> pattern.data)
                         )
                         .apply(instance, Pattern::new)

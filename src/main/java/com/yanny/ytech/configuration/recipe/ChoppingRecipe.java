@@ -3,6 +3,8 @@ package com.yanny.ytech.configuration.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yanny.ytech.configuration.Utils;
+import com.yanny.ytech.registration.YTechRecipeBookCategories;
 import com.yanny.ytech.registration.YTechRecipeSerializers;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.advancements.Advancement;
@@ -10,12 +12,13 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,33 +43,39 @@ public record ChoppingRecipe(Ingredient ingredient, Ingredient tool, int hitCoun
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int i, int i1) {
-        return false;
-    }
-
     @NotNull
     @Override
-    public ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return result;
-    }
-
-    @NotNull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<ChoppingRecipe> getSerializer() {
         return YTechRecipeSerializers.CHOPPING.get();
     }
 
     @NotNull
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<ChoppingRecipe> getType() {
         return YTechRecipeTypes.CHOPPING.get();
+    }
+
+    @NotNull
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return YTechRecipeBookCategories.CHOPPING.get();
     }
 
     public static class Serializer implements RecipeSerializer<ChoppingRecipe> {
         private static final MapCodec<ChoppingRecipe> CODEC = RecordCodecBuilder.mapCodec((recipe) -> recipe.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((ChoppingRecipe) -> ChoppingRecipe.ingredient),
-                Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter((ChoppingRecipe) -> ChoppingRecipe.tool),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter((ChoppingRecipe) -> ChoppingRecipe.ingredient),
+                Ingredient.CODEC.fieldOf("tool").forGetter((ChoppingRecipe) -> ChoppingRecipe.tool),
                 Codec.INT.fieldOf("hitCount").forGetter((ChoppingRecipe) -> ChoppingRecipe.hitCount),
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter((ChoppingRecipe) -> ChoppingRecipe.result)
         ).apply(recipe, ChoppingRecipe::new));
@@ -119,12 +128,12 @@ public record ChoppingRecipe(Ingredient ingredient, Ingredient tool, int hitCoun
             this.count = count;
         }
 
-        public static Builder chopping(@NotNull TagKey<Item> input, TagKey<Item> tool, int hitCount, @NotNull Item result, int count) {
-            return new Builder(Ingredient.of(input), Ingredient.of(tool), hitCount, result, count);
+        public static Builder chopping(@NotNull HolderGetter<Item> items, @NotNull TagKey<Item> input, TagKey<Item> tool, int hitCount, @NotNull Item result, int count) {
+            return new Builder(Ingredient.of(items.getOrThrow(input)), Ingredient.of(items.getOrThrow(tool)), hitCount, result, count);
         }
 
-        public static Builder chopping(@NotNull ItemLike input, TagKey<Item> tool, int hitCount, @NotNull Item result, int count) {
-            return new Builder(Ingredient.of(input), Ingredient.of(tool), hitCount, result, count);
+        public static Builder chopping(@NotNull HolderGetter<Item> items, @NotNull ItemLike input, TagKey<Item> tool, int hitCount, @NotNull Item result, int count) {
+            return new Builder(Ingredient.of(input), Ingredient.of(items.getOrThrow(tool)), hitCount, result, count);
         }
 
         @NotNull
@@ -147,7 +156,7 @@ public record ChoppingRecipe(Ingredient ingredient, Ingredient tool, int hitCoun
         }
 
         @Override
-        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
+        public void save(@NotNull RecipeOutput finishedRecipeConsumer, @NotNull ResourceKey<Recipe<?>> recipeId) {
             ensureValid(recipeId);
             Advancement.Builder builder = finishedRecipeConsumer.advancement().addCriterion("has_the_recipe",
                     RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
@@ -155,12 +164,12 @@ public record ChoppingRecipe(Ingredient ingredient, Ingredient tool, int hitCoun
             finishedRecipeConsumer.accept(
                     recipeId,
                     new ChoppingRecipe(ingredient, tool, hitCount, new ItemStack(result, count)),
-                    builder.build(recipeId.withPrefix("recipes/chopping/"))
+                    builder.build(Utils.modLoc("recipes/chopping/" + recipeId.location().getPath()))
             );
         }
 
         //Makes sure that this recipe is valid and obtainable.
-        private void ensureValid(@NotNull ResourceLocation id) {
+        private void ensureValid(@NotNull ResourceKey<Recipe<?>> id) {
             if (this.criteria.isEmpty()) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }

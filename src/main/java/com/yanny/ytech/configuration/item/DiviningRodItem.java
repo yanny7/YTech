@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 public class DiviningRodItem extends Item {
     public static final ResourceLocation ABUNDANCE_PREDICATE = Utils.modLoc("right_spot");
 
-    public DiviningRodItem() {
-        super(new Properties().stacksTo(1));
+    public DiviningRodItem(Properties properties) {
+        super(properties.stacksTo(1));
     }
 }

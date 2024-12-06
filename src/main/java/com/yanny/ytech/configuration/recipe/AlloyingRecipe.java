@@ -22,10 +22,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -71,6 +68,11 @@ public record AlloyingRecipe(SizedIngredient ingredient1, SizedIngredient ingred
     @Override
     public PlacementInfo placementInfo() {
         return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 
     @NotNull
@@ -145,12 +147,12 @@ public record AlloyingRecipe(SizedIngredient ingredient1, SizedIngredient ingred
 
         public static Builder alloying(HolderGetter<Item> items, @NotNull TagKey<Item> input1, int count1, @NotNull TagKey<Item> input2, int count2, int minTemperature,
                                        int smeltingTime, @NotNull Item result, int count) {
-            return new Builder(SizedIngredient.of(items.getOrThrow(input1), count1), SizedIngredient.of(items.getOrThrow(input2), count2), minTemperature, smeltingTime, result, count);
+            return new Builder(new SizedIngredient(Ingredient.of(items.getOrThrow(input1)), count1), new SizedIngredient(Ingredient.of(items.getOrThrow(input2)), count2), minTemperature, smeltingTime, result, count);
         }
 
         public static Builder alloying(HolderGetter<Item> items, @NotNull TagKey<Item> input1, int count1, @NotNull ItemLike input2, int count2, int minTemperature,
                                        int smeltingTime, @NotNull Item result, int count) {
-            return new Builder(SizedIngredient.of(items.getOrThrow(input1), count1), SizedIngredient.of(items.getOrThrow(input2), count2), minTemperature, smeltingTime, result, count);
+            return new Builder(new SizedIngredient(Ingredient.of(items.getOrThrow(input1)), count1), SizedIngredient.of(input2, count2), minTemperature, smeltingTime, result, count);
         }
 
         @NotNull

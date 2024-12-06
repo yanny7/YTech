@@ -1,22 +1,12 @@
 {
-  "type": "ytech:remaining_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:plates/bronze"
-    },
-    "B": {
-      "tag": "c:bolts/bronze"
-    },
-    "F": {
-      "tag": "c:files"
-    },
-    "L": {
-      "tag": "ytech:leather_strips"
-    },
-    "R": {
-      "tag": "c:rods/bronze"
-    }
+    "#": "#c:plates/bronze",
+    "B": "#c:bolts/bronze",
+    "F": "#c:files",
+    "L": "#ytech:leather_strips",
+    "R": "#c:rods/bronze"
   },
   "pattern": [
     " #F",

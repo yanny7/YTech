@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#ytech:plates/bronze",
-    "H": "#ytech:hammers",
+    "#": "#c:plates/bronze",
+    "H": "#c:hammers",
     "S": "minecraft:stick"
   },
   "pattern": [

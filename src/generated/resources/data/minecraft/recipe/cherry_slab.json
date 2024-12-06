@@ -4,10 +4,10 @@
   "group": "cherry_slab",
   "ingredients": [
     "minecraft:cherry_planks",
-    "#ytech:saws"
+    "#c:saws"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "minecraft:cherry_slab"
   }
 }

@@ -126,7 +126,7 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     @Nullable
     private BlockPos findWaterSource(int waterLevel, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull Set<BlockPos> checkedBlocks) {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            BlockPos offsetPos = pos.offset(direction.getNormal());
+            BlockPos offsetPos = pos.offset(direction.getUnitVec3i());
             BlockState blockState = level.getBlockState(offsetPos);
             FluidState fluidState = blockState.getFluidState();
 

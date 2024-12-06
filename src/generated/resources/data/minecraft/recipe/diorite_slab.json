@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     "minecraft:diorite",
-    "#ytech:hammers"
+    "#c:hammers"
   ],
   "result": {
     "count": 1,

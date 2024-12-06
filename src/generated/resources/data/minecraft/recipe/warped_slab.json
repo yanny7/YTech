@@ -4,10 +4,10 @@
   "group": "warped_slab",
   "ingredients": [
     "minecraft:warped_planks",
-    "#ytech:saws"
+    "#c:saws"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "minecraft:warped_slab"
   }
 }

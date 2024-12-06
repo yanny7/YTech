@@ -62,6 +62,11 @@ public record SmeltingRecipe(Ingredient ingredient, int inputCount, Optional<Ing
         return PlacementInfo.NOT_PLACEABLE;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @NotNull
     @Override
     public RecipeBookCategory recipeBookCategory() {

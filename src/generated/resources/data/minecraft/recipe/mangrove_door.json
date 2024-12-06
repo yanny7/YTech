@@ -3,10 +3,10 @@
   "category": "redstone",
   "group": "wooden_door",
   "key": {
-    "B": "#ytech:bolts/wooden",
-    "H": "#ytech:hammers",
+    "B": "#c:bolts/wooden",
+    "H": "#c:hammers",
     "P": "minecraft:mangrove_planks",
-    "W": "#ytech:saws"
+    "W": "#c:saws"
   },
   "pattern": [
     "PPH",

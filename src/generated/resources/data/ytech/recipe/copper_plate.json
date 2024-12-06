@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": "#c:ingots/copper",
-    "H": "#ytech:hammers"
+    "H": "#c:hammers"
   },
   "pattern": [
     "#",

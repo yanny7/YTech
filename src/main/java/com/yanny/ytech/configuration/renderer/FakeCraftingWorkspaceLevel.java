@@ -5,24 +5,28 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.AbortableIterationConsumer;
 import net.minecraft.world.TickRateManager;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionBrewing;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeAccess;
 import net.minecraft.world.level.ColorResolver;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -58,7 +62,7 @@ public class FakeCraftingWorkspaceLevel extends Level {
     public FakeCraftingWorkspaceLevel() {
         // never be called - we use object construction without calling constructor
         //noinspection DataFlowIssue
-        super(null, null, null, null, null, false, false, 0, 0);
+        super(null, null, null, null, false, false, 0, 0);
     }
 
     public void init() {
@@ -167,6 +171,11 @@ public class FakeCraftingWorkspaceLevel extends Level {
         return level.getUncachedNoiseBiome(pX, pY, pZ);
     }
 
+    @Override
+    public int getSeaLevel() {
+        return 0;
+    }
+
     @Nullable
     @Override
     public BlockEntity getBlockEntity(@NotNull BlockPos pPos) {
@@ -214,8 +223,8 @@ public class FakeCraftingWorkspaceLevel extends Level {
 
     @NotNull
     @Override
-    public RecipeManager getRecipeManager() {
-        return level.getRecipeManager();
+    public RecipeAccess recipeAccess() {
+        return null;
     }
 
     @NotNull
@@ -227,6 +236,11 @@ public class FakeCraftingWorkspaceLevel extends Level {
     @NotNull
     @Override
     public PotionBrewing potionBrewing() {
+        return null;
+    }
+
+    @Override
+    public FuelValues fuelValues() {
         return null;
     }
 
@@ -285,6 +299,11 @@ public class FakeCraftingWorkspaceLevel extends Level {
 
     }
 
+    @Override
+    public void explode(@Nullable Entity entity, @Nullable DamageSource damageSource, @Nullable ExplosionDamageCalculator explosionDamageCalculator, double v, double v1, double v2, float v3, boolean b, ExplosionInteraction explosionInteraction, ParticleOptions particleOptions, ParticleOptions particleOptions1, Holder<SoundEvent> holder) {
+
+    }
+
     @NotNull
     @Override
     public String gatherChunkSourceStats() {
@@ -303,18 +322,13 @@ public class FakeCraftingWorkspaceLevel extends Level {
     }
 
     @Override
-    public int getMinBuildHeight() {
-        return level.getMinBuildHeight();
-    }
-
-    @Override
     public int getRawBrightness(@NotNull BlockPos pBlockPos, int pAmount) {
         return getLightEngine().getRawBrightness(originalPos, pAmount);
     }
 
     @Override
     public boolean canSeeSky(@NotNull BlockPos pBlockPos) {
-        return this.getBrightness(LightLayer.SKY, originalPos) >= this.getMaxLightLevel();
+        return this.getBrightness(LightLayer.SKY, originalPos) >= this.getLightEngine().getMaxLightSection();
     }
 
     public void setData(@NotNull BlockPos pos, @NotNull Level level, @NotNull NonNullList<ItemStack> items, NonNullList<BlockState> blockStates) {

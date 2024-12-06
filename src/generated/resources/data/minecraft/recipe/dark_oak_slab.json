@@ -4,10 +4,10 @@
   "group": "dark_oak_slab",
   "ingredients": [
     "minecraft:dark_oak_planks",
-    "#ytech:saws"
+    "#c:saws"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "minecraft:dark_oak_slab"
   }
 }

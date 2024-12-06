@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     "minecraft:granite",
-    "#ytech:hammers"
+    "#c:hammers"
   ],
   "result": {
     "count": 1,

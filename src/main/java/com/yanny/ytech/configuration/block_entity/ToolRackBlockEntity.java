@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -46,8 +46,8 @@ public class ToolRackBlockEntity extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
-    public ItemInteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public InteractionResult onUse(@NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                   @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         int[] hitPos = ToolRackBlock.getPosition(hitResult);
         ItemStack holdingItem = player.getItemInHand(hand);
 
@@ -58,7 +58,7 @@ public class ToolRackBlockEntity extends BlockEntity {
             if (item.isEmpty()) {
                 if (!holdingItem.isEmpty()) {
                     itemHandler.setStackInSlot(index, holdingItem.copyAndClear());
-                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                    return InteractionResult.SUCCESS;
                 }
             } else {
                 if (holdingItem.isEmpty()) {
@@ -67,11 +67,11 @@ public class ToolRackBlockEntity extends BlockEntity {
                     player.setItemInHand(hand, itemHandler.insertItem(index, holdingItem, false));
                 }
 
-                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     @Override

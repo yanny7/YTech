@@ -3,7 +3,8 @@
   "category": "redstone",
   "group": "wooden_button",
   "ingredients": [
-    "#ytech:saws",
+    "#c:saws",
+    "#c:bolts/wooden",
     "minecraft:cherry_planks"
   ],
   "result": {

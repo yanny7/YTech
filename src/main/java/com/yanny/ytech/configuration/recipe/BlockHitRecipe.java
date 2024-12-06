@@ -60,6 +60,11 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
         return PlacementInfo.NOT_PLACEABLE;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @NotNull
     @Override
     public RecipeBookCategory recipeBookCategory() {

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "ytech:bronze"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "ytech:bronze"
+      }
+    ]
+  }
+}

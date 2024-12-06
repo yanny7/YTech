@@ -13,7 +13,7 @@ public enum YTechArmorMaterials {
     IRON(MaterialType.IRON, ArmorMaterials.IRON),
     GOLD(MaterialType.GOLD, ArmorMaterials.GOLD),
     COPPER(MaterialType.COPPER, 100, 20, 0, 0, 1, 2, 3, 3, 3), //FIXME durability
-    BRONZE(MaterialType.BRONZE, 150, 25, 0, 1, 1, 2, 4, 3, 3),
+    BRONZE(MaterialType.BRONZE, 150, 25, 0, 0, 1, 2, 4, 3, 3),
     ;
 
     private static final Map<MaterialType, ArmorMaterial> ARMORS = new HashMap<>();

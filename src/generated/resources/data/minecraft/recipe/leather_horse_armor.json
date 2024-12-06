@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "#ytech:knives",
+    "#": "#c:knives",
     "L": "minecraft:leather",
     "S": "#ytech:leather_strips",
     "X": "minecraft:saddle"

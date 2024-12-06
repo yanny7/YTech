@@ -1,18 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "B": "#ytech:bolts",
-    "S": "#minecraft:planks",
-    "~": "minecraft:string"
-  },
-  "pattern": [
-    "~~",
-    "BB",
-    "SS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:loom"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

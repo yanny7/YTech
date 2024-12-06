@@ -1,12 +1,8 @@
 {
   "type": "ytech:workspace_crafting",
   "key": {
-    "A": {
-      "item": "minecraft:campfire"
-    },
-    "C": {
-      "tag": "c:cobblestones/normal"
-    }
+    "A": "minecraft:campfire",
+    "C": "#c:cobblestones/normal"
   },
   "pattern": {
     "bottom": [

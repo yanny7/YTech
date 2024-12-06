@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": "#c:ingots/tin",
-    "F": "#ytech:files"
+    "F": "#c:files"
   },
   "pattern": [
     "#",

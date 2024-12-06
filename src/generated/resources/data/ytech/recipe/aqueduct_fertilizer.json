@@ -3,12 +3,12 @@
   "category": "misc",
   "key": {
     "#": "#ytech:aqueduct_hydrators",
-    "B": "#ytech:bolts/bronze",
+    "B": "#c:bolts/bronze",
     "C": "#c:chests",
-    "F": "#ytech:files",
-    "H": "#ytech:hammers",
-    "R": "#ytech:rods/bronze",
-    "S": "#ytech:plates/bronze"
+    "F": "#c:files",
+    "H": "#c:hammers",
+    "R": "#c:rods/bronze",
+    "S": "#c:plates/bronze"
   },
   "pattern": [
     "HCF",

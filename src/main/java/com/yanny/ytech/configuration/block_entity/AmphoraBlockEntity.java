@@ -11,8 +11,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -30,7 +31,7 @@ public class AmphoraBlockEntity extends BlockEntity {
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Codec<ItemStack> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-                    ItemStack.ITEM_NON_AIR_CODEC.fieldOf("id").forGetter(ItemStack::getItemHolder),
+                    Item.CODEC.fieldOf("id").forGetter(ItemStack::getItemHolder),
                     ExtraCodecs.intRange(1, 64 * STACK_MULTIPLIER).fieldOf("count").orElse(1).forGetter(ItemStack::getCount),
                     DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(ItemStack::getComponentsPatch)
             ).apply(instance, ItemStack::new)
@@ -68,14 +69,14 @@ public class AmphoraBlockEntity extends BlockEntity {
         return itemHandler.getStackInSlot(0);
     }
 
-    public ItemInteractionResult useItemOn(@NotNull ItemStack holdingItem, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                           @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    public InteractionResult useItemOn(@NotNull ItemStack holdingItem, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+                                       @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         ItemStack item = itemHandler.getStackInSlot(0);
 
         if (item.isEmpty()) {
             if (!holdingItem.isEmpty()) {
                 itemHandler.setStackInSlot(0, holdingItem.copyAndClear());
-                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.SUCCESS;
             }
         } else {
             if (holdingItem.isEmpty()) {
@@ -84,10 +85,10 @@ public class AmphoraBlockEntity extends BlockEntity {
                 player.setItemInHand(hand, itemHandler.insertItem(0, holdingItem, false));
             }
 
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     @Override

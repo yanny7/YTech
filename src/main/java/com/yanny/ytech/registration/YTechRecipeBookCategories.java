@@ -12,12 +12,14 @@ public class YTechRecipeBookCategories {
 
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> ALLOYING = RECIPE_BOOK_CATEGORIES.register("alloying", RecipeBookCategory::new);
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> BLOCK_HIT = RECIPE_BOOK_CATEGORIES.register("block_hit", RecipeBookCategory::new);
+    public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> CHOPPING = RECIPE_BOOK_CATEGORIES.register("chopping", RecipeBookCategory::new);
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> DRYING = RECIPE_BOOK_CATEGORIES.register("drying", RecipeBookCategory::new);
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> HAMMERING = RECIPE_BOOK_CATEGORIES.register("hammering", RecipeBookCategory::new);
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> MILLING = RECIPE_BOOK_CATEGORIES.register("milling", RecipeBookCategory::new);
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> POTTERY = RECIPE_BOOK_CATEGORIES.register("pottery", RecipeBookCategory::new);
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> SMELTING = RECIPE_BOOK_CATEGORIES.register("smelting", RecipeBookCategory::new);
     public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> TANNING = RECIPE_BOOK_CATEGORIES.register("tanning", RecipeBookCategory::new);
+    public static final DeferredHolder<RecipeBookCategory, RecipeBookCategory> WORKSPACE_CRAFTING = RECIPE_BOOK_CATEGORIES.register("workspace_crafting", RecipeBookCategory::new);
 
     public static void register(IEventBus eventBus) {
         RECIPE_BOOK_CATEGORIES.register(eventBus);

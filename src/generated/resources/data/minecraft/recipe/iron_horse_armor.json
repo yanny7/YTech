@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "#ytech:hammers",
-    "L": "#ytech:plates/iron",
+    "#": "#c:hammers",
+    "L": "#c:plates/iron",
     "S": "#ytech:leather_strips",
     "X": "minecraft:saddle"
   },

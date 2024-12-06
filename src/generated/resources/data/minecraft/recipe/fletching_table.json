@@ -1,18 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "F": "minecraft:flint",
-    "K": "#ytech:knives",
-    "S": "#minecraft:planks"
-  },
-  "pattern": [
-    "KF",
-    "SS",
-    "SS"
-  ],
-  "result": {
-    "count": 1,
-    "id": "minecraft:fletching_table"
-  }
+  "type": "minecraft:crafting_special_tippedarrow",
+  "category": "misc"
 }

@@ -77,7 +77,7 @@ public class MillstoneBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (result.isEmpty() && isLeashed && !holdingItemStack.isEmpty()) {
-                Optional<RecipeHolder<MillingRecipe>> millingRecipe = quickCheck.getRecipeFor(new SingleRecipeInput(holdingItemStack), level);
+                Optional<RecipeHolder<MillingRecipe>> millingRecipe = quickCheck.getRecipeFor(new SingleRecipeInput(holdingItemStack), serverLevel);
 
                 millingRecipe.ifPresent((r) -> {
                     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;

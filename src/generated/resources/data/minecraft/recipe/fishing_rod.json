@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "B": "#ytech:bolts",
+    "B": "#c:bolts",
     "S": "minecraft:stick",
-    "T": "minecraft:string"
+    "T": "#c:strings"
   },
   "pattern": [
     "  S",

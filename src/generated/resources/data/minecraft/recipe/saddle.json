@@ -3,8 +3,8 @@
   "category": "misc",
   "key": {
     "H": "#ytech:bone_needles",
-    "I": "#ytech:rods/iron",
-    "K": "#ytech:knives",
+    "I": "#c:rods/iron",
+    "K": "#c:knives",
     "L": "minecraft:leather",
     "S": "#ytech:leather_strips"
   },
