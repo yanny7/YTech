@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Added Jade support for 1.21.3
+
 ## [0.9.2]
 
 - Changed Stone Mortar and Pestle recipe
