@@ -35,6 +35,7 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> PRIMITIVE_SMELTER = BLOCKS.registerBlock("primitive_smelter", PrimitiveSmelterBlock::new, BlockBehaviour.Properties.of());
     public static final DeferredBlock<Block> REINFORCED_BRICKS = registerBlock("reinforced_bricks", Blocks.BRICKS);
     public static final DeferredBlock<Block> REINFORCED_BRICK_CHIMNEY = BLOCKS.registerBlock("reinforced_brick_chimney", ReinforcedBrickChimneyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS));
+    public static final DeferredBlock<Block> STRAINER = BLOCKS.registerBlock("strainer", StrainerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD));
     public static final DeferredBlock<Block> TERRACOTTA_BRICKS = registerBlock("terracotta_bricks", Blocks.BRICKS);
     public static final DeferredBlock<Block> TERRACOTTA_BRICK_SLAB = registerSlab("terracotta_brick_slab", Blocks.BRICK_SLAB);
     public static final DeferredBlock<Block> TERRACOTTA_BRICK_STAIRS = registerStairs("terracotta_brick_stairs", YTechBlocks.TERRACOTTA_BRICKS, Blocks.BRICK_STAIRS);

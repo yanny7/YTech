@@ -1,0 +1,28 @@
+{
+  "type": "ytech:workspace_crafting",
+  "key": {
+    "L": "#minecraft:logs",
+    "W": "#ytech:wooden_boxes"
+  },
+  "pattern": {
+    "bottom": [
+      "LLL",
+      "LLL",
+      "LLL"
+    ],
+    "middle": [
+      "LLL",
+      "LWL",
+      "LLL"
+    ],
+    "top": [
+      "L L",
+      "   ",
+      "L L"
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "ytech:strainer"
+  }
+}

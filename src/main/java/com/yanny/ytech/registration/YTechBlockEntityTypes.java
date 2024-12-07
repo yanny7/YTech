@@ -30,6 +30,7 @@ public class YTechBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PottersWheelBlockEntity>> POTTERS_WHEEL = register("potters_wheel", PottersWheelBlockEntity::new, YTechBlocks.POTTERS_WHEEL);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PrimitiveAlloySmelterBlockEntity>> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", PrimitiveAlloySmelterBlockEntity::new, YTechBlocks.PRIMITIVE_ALLOY_SMELTER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PrimitiveSmelterBlockEntity>> PRIMITIVE_SMELTER = register("primitive_smelter", PrimitiveSmelterBlockEntity::new, YTechBlocks.PRIMITIVE_SMELTER);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StrainerBlockEntity>> STRAINER = register("strainer", StrainerBlockEntity::new, YTechBlocks.STRAINER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TanningRackBlockEntity>> TANNING_RACK = register("tanning_rack", TanningRackBlockEntity::new, YTechBlocks.TANNING_RACKS);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ToolRackBlockEntity>> TOOL_RACK = register("tool_rack", ToolRackBlockEntity::new, YTechBlocks.TOOL_RACK);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TreeStumpBlockEntity>> TREE_STUMP = register("tree_stump", TreeStumpBlockEntity::new, YTechBlocks.TREE_STUMP);

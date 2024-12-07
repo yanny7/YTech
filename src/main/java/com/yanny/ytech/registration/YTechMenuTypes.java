@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.IMenu;
 import com.yanny.ytech.configuration.container.AqueductFertilizerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveAlloySmelterContainerMenu;
 import com.yanny.ytech.configuration.container.PrimitiveSmelterContainerMenu;
+import com.yanny.ytech.configuration.container.StrainerContainerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -20,6 +21,7 @@ public class YTechMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<AqueductFertilizerMenu>> AQUEDUCT_FERTILIZER = register("aqueduct_fertilizer", ((windowId, inv, pos, itemStackHandler, data) -> new AqueductFertilizerMenu(windowId, inv.player, pos, itemStackHandler, data)));
     public static final DeferredHolder<MenuType<?>, MenuType<PrimitiveAlloySmelterContainerMenu>> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", ((windowId, inv, pos, itemStackHandler, data) -> new PrimitiveAlloySmelterContainerMenu(windowId, inv.player, pos, itemStackHandler, data)));
     public static final DeferredHolder<MenuType<?>, MenuType<PrimitiveSmelterContainerMenu>> PRIMITIVE_SMELTER = register("primitive_smelter", ((windowId, inv, pos, itemStackHandler, data) -> new PrimitiveSmelterContainerMenu(windowId, inv.player, pos, itemStackHandler, data)));
+    public static final DeferredHolder<MenuType<?>, MenuType<StrainerContainerMenu>> STRAINER = register("strainer", ((windowId, inv, pos, itemStackHandler, data) -> new StrainerContainerMenu(windowId, inv.player, pos, itemStackHandler, data)));
 
     public static void register(IEventBus eventBus) {
         MENU_TYPES.register(eventBus);

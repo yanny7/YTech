@@ -1,17 +1,18 @@
 package com.yanny.ytech.configuration.block;
 
-import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
@@ -25,21 +26,16 @@ public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
     }
 
     @Override
-    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock())) {
-            if (!level.isClientSide && level.getBlockEntity(pos) instanceof AbstractPrimitiveMachineBlockEntity smelter) {
-                NonNullList<ItemStack> items = NonNullList.withSize(smelter.getItemStackHandler().getSlots(), ItemStack.EMPTY);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
+        stateBuilder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT);
+    }
 
-                for (int index = 0; index < smelter.getItemStackHandler().getSlots(); index++) {
-                    items.set(index, smelter.getItemStackHandler().getStackInSlot(index));
-                }
-
-                Containers.dropContents(level, pos, items);
-                smelter.onRemove();
-            }
-        }
-
-        super.onRemove(state, level, pos, newState, movedByPiston);
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
+        return defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
+                .setValue(BlockStateProperties.LIT, false);
     }
 
     @Override
@@ -54,6 +50,11 @@ public abstract class AbstractPrimitiveMachineBlock extends MachineBlock {
 
     @Override
     public boolean hasClientTicker() {
+        return true;
+    }
+
+    @Override
+    public boolean hasServerTicker() {
         return true;
     }
 }

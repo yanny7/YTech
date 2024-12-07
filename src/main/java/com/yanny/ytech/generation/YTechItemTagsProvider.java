@@ -83,6 +83,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         tag(YTechItemTags.PRIMITIVE_SMELTERS).add(YTechItems.PRIMITIVE_SMELTER.get());
         tag(YTechItemTags.REINFORCED_BRICKS).add(YTechItems.REINFORCED_BRICKS.get());
         tag(YTechItemTags.REINFORCED_BRICK_CHIMNEYS).add(YTechItems.REINFORCED_BRICK_CHIMNEY.get());
+        tag(YTechItemTags.STRAINERS).add(YTechItems.STRAINER.get());
         tag(YTechItemTags.TERRACOTTA_BRICKS).add(YTechItems.TERRACOTTA_BRICKS.get());
         tag(YTechItemTags.TERRACOTTA_BRICK_SLABS).add(YTechItems.TERRACOTTA_BRICK_SLAB.get());
         tag(YTechItemTags.TERRACOTTA_BRICK_STAIRS).add(YTechItems.TERRACOTTA_BRICK_STAIRS.get());
@@ -101,6 +102,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
                 .addTag(YTechItemTags.PRIMITIVE_ALLOY_SMELTERS)
                 .addTag(YTechItemTags.PRIMITIVE_SMELTERS);
         tag(YTechItemTags.SOUL_FIRE_SOURCE).add(Items.SOUL_TORCH, Items.SOUL_LANTERN, Items.SOUL_CAMPFIRE);
+        tag(YTechItemTags.TOOL_FOR_CRAFTING_WORKBENCH).addTag(YTechItemTags.SHARP_FLINTS);
 
         tag(YTechItemTags.AUROCHS_FOOD).add(Items.WHEAT);
         tag(YTechItemTags.AUROCHS_TEMP_ITEMS).add(Items.WHEAT);
@@ -154,6 +156,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
         typedTag(YTechItems.INGOTS, YTechItemTags.INGOTS, MaterialType.VANILLA_METALS);
         typedTag(YTechItems.KNIVES, YTechItemTags.KNIVES);
         typedTag(YTechItems.LEGGINGS, YTechItemTags.LEGGINGS, EnumSet.of(MaterialType.GOLD, MaterialType.IRON, MaterialType.LEATHER));
+        typedTag(YTechItems.MESHES, YTechItemTags.MESHES);
         typedTag(YTechItems.MORTAR_AND_PESTLES, YTechItemTags.MORTAR_AND_PESTLES);
         typedTag(YTechItems.PICKAXES, YTechItemTags.PICKAXES, EnumSet.of(MaterialType.GOLD, MaterialType.IRON));
         typedTag(YTechItems.PLATES, YTechItemTags.PLATES);

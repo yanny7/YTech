@@ -43,6 +43,12 @@ public enum YTechToolMaterials {
     }
 
     public static ToolMaterial get(MaterialType type) {
-        return TOOLS.get(type);
+        ToolMaterial material = TOOLS.get(type);
+
+        if (material == null) {
+            throw new IllegalStateException("Undefined tool material " + type.key);
+        }
+
+        return material;
     }
 }

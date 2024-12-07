@@ -30,7 +30,7 @@ public class ToolItem extends Item {
         return new ToolItem(properties);
     }
 
-    public static Item knife(MaterialType materialType, Properties properties) {
+    public static Item toolAndWeapon(MaterialType materialType, Properties properties) {
         ToolMaterial toolMaterial = YTechToolMaterials.get(materialType);
         properties = toolMaterial.applyCommonProperties(properties);
         properties = properties.component(DataComponents.TOOL, new Tool(List.of(), 1.0F, 1));

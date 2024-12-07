@@ -57,6 +57,7 @@ public class YTechItemTags {
     public static final TagKey<Item> FERTILIZER = create("fertilizer");
     public static final TagKey<Item> FIRE_SOURCE = create("fire_source");
     public static final TagKey<Item> SOUL_FIRE_SOURCE = create("soul_fire_source");
+    public static final TagKey<Item> TOOL_FOR_CRAFTING_WORKBENCH = create("tool_for_crafting_workbench");
 
     public static final TagKey<Item> AUROCHS_FOOD = create("aurochs_food");
     public static final TagKey<Item> AUROCHS_TEMP_ITEMS = create("aurochs_temp_items");
@@ -88,6 +89,7 @@ public class YTechItemTags {
     public static final TagKey<Item> PRIMITIVE_SMELTERS = create(YTechBlockTags.PRIMITIVE_SMELTERS);
     public static final TagKey<Item> REINFORCED_BRICKS = create(YTechBlockTags.REINFORCED_BRICKS);
     public static final TagKey<Item> REINFORCED_BRICK_CHIMNEYS = create(YTechBlockTags.REINFORCED_BRICK_CHIMNEYS);
+    public static final TagKey<Item> STRAINERS = create(YTechBlockTags.STRAINERS);
     public static final TagKey<Item> TERRACOTTA_BRICKS = create(YTechBlockTags.TERRACOTTA_BRICKS);
     public static final TagKey<Item> TERRACOTTA_BRICK_SLABS = create(YTechBlockTags.TERRACOTTA_BRICK_SLABS);
     public static final TagKey<Item> TERRACOTTA_BRICK_STAIRS = create(YTechBlockTags.TERRACOTTA_BRICK_STAIRS);
@@ -130,6 +132,7 @@ public class YTechItemTags {
     public static final TypedTag<MaterialType> HOES = new MaterialTag("hoes", "c", ItemTags.HOES, YTechItems.HOES);
     public static final TypedTag<MaterialType> INGOTS = new IngotMaterialTag();
     public static final TypedTag<MaterialType> KNIVES = new MaterialTag("knives", "c", YTechItems.KNIVES);
+    public static final TypedTag<MaterialType> MESHES = new MaterialTag("meshes", YTechItems.MESHES);
     public static final TypedTag<MaterialType> MORTAR_AND_PESTLES = new MaterialTag("mortar_and_pestles", "c", YTechItems.MORTAR_AND_PESTLES);
     public static final TypedTag<MaterialType> LEGGINGS = new MaterialTag("leggings", "c", ItemTags.LEG_ARMOR, YTechItems.LEGGINGS);
     public static final TypedTag<MaterialType> PICKAXES = new MaterialTag("pickaxes", "c", ItemTags.PICKAXES, YTechItems.PICKAXES);

@@ -295,6 +295,7 @@ class YTechRecipeProvider extends RecipeProvider {
         YTechItems.INGOTS.forEach((material, item) -> registerIngotRecipe(item, material));
         YTechItems.KNIVES.forEach((material, item) -> registerKnifeRecipe(item, material));
         YTechItems.LEGGINGS.forEach((material, item) -> registerLeggingsRecipe(item, material));
+        YTechItems.MESHES.forEach((material, item) -> registerMeshRecipe(item, material));
         YTechItems.MORTAR_AND_PESTLES.forEach((material, item) -> registerMortarAndPestleRecipe(item, material));
         YTechItems.PICKAXES.forEach((material, item) -> registerPickaxeRecipe(item, material));
         YTechItems.PLATES.forEach((material, item) -> registerPlateRecipe(item, material));
@@ -321,6 +322,7 @@ class YTechRecipeProvider extends RecipeProvider {
         registerPrimitiveSmelterRecipe();
         registerReinforcedBricksRecipe();
         registerReinforcedBrickChimneyRecipe();
+        registerStrainerRecipe();
         registerTerracottaBricksRecipe();
         registerTerracottaBrickSlabRecipe();
         registerTerracottaBrickStairsRecipe();
@@ -437,7 +439,7 @@ class YTechRecipeProvider extends RecipeProvider {
         removeVanillaRecipe(Items.CHEST);
         removeVanillaRecipe(Items.BARREL);
         removeVanillaRecipe(Items.COMPOSTER);
-        
+
         SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(output, Utils.mcLoc("decorated_pot_simple").toString());
     }
 
@@ -1446,6 +1448,27 @@ class YTechRecipeProvider extends RecipeProvider {
                     .save(output, key(item));
         }
     }
+
+    public void registerMeshRecipe(@NotNull DeferredItem<Item> item, MaterialType material) {
+        if (material == TWINE) {
+            RemainingShapedRecipe.Builder.shaped(items, RecipeCategory.MISC, item.get())
+                    .define('T', YTechItemTags.GRASS_TWINES)
+                    .pattern("TTT")
+                    .pattern("TTT")
+                    .pattern("TTT")
+                    .unlockedBy(Utils.getHasName(), has(YTechItemTags.GRASS_TWINES))
+                    .save(output, key(item));
+        } else {
+            RemainingShapedRecipe.Builder.shaped(items, RecipeCategory.MISC, item.get())
+                    .define('R', YTechItemTags.RODS.get(material))
+                    .pattern("RRR")
+                    .pattern("RRR")
+                    .pattern("RRR")
+                    .unlockedBy(Utils.getHasName(), has(YTechItemTags.RODS.get(material)))
+                    .save(output, key(item));
+        }
+    }
+
     public void registerMortarAndPestleRecipe(@NotNull DeferredItem<Item> item, MaterialType material) {
         if (material == MaterialType.STONE) {
             RemainingShapedRecipe.Builder.shaped(items, RecipeCategory.TOOLS, item.get())
@@ -1859,6 +1882,23 @@ class YTechRecipeProvider extends RecipeProvider {
                 .pattern(" # ")
                 .unlockedBy(Utils.getHasName(), has(YTechItemTags.REINFORCED_BRICKS))
                 .save(output, key(YTechBlocks.REINFORCED_BRICK_CHIMNEY));
+    }
+
+    private void registerStrainerRecipe() {
+        WorkspaceCraftingRecipe.Builder.recipe(items, YTechItems.STRAINER.get())
+                .define('L', ItemTags.LOGS)
+                .define('W', YTechItemTags.WOODEN_BOXES)
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .bottomPattern("LLL")
+                .middlePattern("LLL")
+                .middlePattern("LWL")
+                .middlePattern("LLL")
+                .topPattern("L L")
+                .topPattern("   ")
+                .topPattern("L L")
+                .unlockedBy(Utils.getHasName(), has(ItemTags.LOGS))
+                .save(output, key(YTechBlocks.STRAINER));
     }
 
     private void registerTerracottaBricksRecipe() {
