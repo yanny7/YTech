@@ -3,6 +3,7 @@ package com.yanny.ytech;
 import com.yanny.ytech.compatibility.CuriosCapability;
 import com.yanny.ytech.compatibility.TopCompatibility;
 import com.yanny.ytech.configuration.SpearType;
+import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.WellPulleyBlockEntity;
 import com.yanny.ytech.configuration.data_component.BasketContents;
 import com.yanny.ytech.configuration.entity.*;
@@ -14,10 +15,14 @@ import com.yanny.ytech.configuration.renderer.*;
 import com.yanny.ytech.configuration.screen.AqueductFertilizerScreen;
 import com.yanny.ytech.configuration.screen.PrimitiveAlloySmelterScreen;
 import com.yanny.ytech.configuration.screen.PrimitiveSmelterScreen;
+import com.yanny.ytech.configuration.screen.StrainerScreen;
 import com.yanny.ytech.configuration.tooltip.ClientBasketTooltip;
 import com.yanny.ytech.network.irrigation.IrrigationServerNetwork;
 import com.yanny.ytech.network.irrigation.IrrigationUtils;
-import com.yanny.ytech.registration.*;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
+import com.yanny.ytech.registration.YTechEntityTypes;
+import com.yanny.ytech.registration.YTechItems;
+import com.yanny.ytech.registration.YTechMenuTypes;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -91,6 +96,7 @@ public class ModBusSubscriber {
         event.register(YTechMenuTypes.AQUEDUCT_FERTILIZER.get(), AqueductFertilizerScreen::new);
         event.register(YTechMenuTypes.PRIMITIVE_ALLOY_SMELTER.get(), PrimitiveAlloySmelterScreen::new);
         event.register(YTechMenuTypes.PRIMITIVE_SMELTER.get(), PrimitiveSmelterScreen::new);
+        event.register(YTechMenuTypes.STRAINER.get(), StrainerScreen::new);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -123,6 +129,7 @@ public class ModBusSubscriber {
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.FIRE_PIT.get(), FirePitRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.MILLSTONE.get(), MillstoneRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.POTTERS_WHEEL.get(), PottersWheelRenderer::new);
+        event.registerBlockEntityRenderer(YTechBlockEntityTypes.STRAINER.get(), StrainerRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TANNING_RACK.get(), TanningRackRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TOOL_RACK.get(), ToolRackRenderer::new);
         event.registerBlockEntityRenderer(YTechBlockEntityTypes.TREE_STUMP.get(), TreeStumpRenderer::new);
@@ -171,6 +178,8 @@ public class ModBusSubscriber {
         for (SpearType spearType : SpearType.values()) {
             event.register(MODEL_IN_HAND_LOCATIONS.get(spearType));
         }
+
+        event.register(ModelResourceLocation.standalone(Utils.modBlockLoc("strainer_net")));
     }
 
     @SubscribeEvent

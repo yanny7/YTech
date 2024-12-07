@@ -43,6 +43,7 @@ class YTechBlockStateProvider extends BlockStateProvider {
         PrimitiveSmelterBlock.registerModel(this);
         reinforcedBricksBlockState(this);
         ReinforcedBrickChimneyBlock.registerModel(this);
+        StrainerBlock.registerModel(this);
         registerSimpleBlockState(this, YTechBlocks.TERRACOTTA_BRICKS);
         registerSlabBlockState(this, YTechBlocks.TERRACOTTA_BRICK_SLAB, Utils.getPath(YTechBlocks.TERRACOTTA_BRICKS));
         registerStairsBlockState(this, YTechBlocks.TERRACOTTA_BRICK_STAIRS, Utils.getPath(YTechBlocks.TERRACOTTA_BRICKS));

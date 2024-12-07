@@ -1,0 +1,18 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "R": {
+      "tag": "c:rods/bronze"
+    }
+  },
+  "pattern": [
+    "RRR",
+    "RRR",
+    "RRR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ytech:bronze_mesh"
+  }
+}

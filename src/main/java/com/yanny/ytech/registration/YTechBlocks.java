@@ -35,6 +35,7 @@ public class YTechBlocks {
     public static final DeferredBlock<Block> PRIMITIVE_SMELTER = BLOCKS.register("primitive_smelter", PrimitiveSmelterBlock::new);
     public static final DeferredBlock<Block> REINFORCED_BRICKS = registerBlock("reinforced_bricks", Blocks.BRICKS);
     public static final DeferredBlock<Block> REINFORCED_BRICK_CHIMNEY = BLOCKS.register("reinforced_brick_chimney", ReinforcedBrickChimneyBlock::new);
+    public static final DeferredBlock<Block> STRAINER = BLOCKS.register("strainer", StrainerBlock::new);
     public static final DeferredBlock<Block> TERRACOTTA_BRICKS = registerBlock("terracotta_bricks", Blocks.BRICKS);
     public static final DeferredBlock<Block> TERRACOTTA_BRICK_SLAB = registerSlab("terracotta_brick_slab", Blocks.BRICK_SLAB);
     public static final DeferredBlock<Block> TERRACOTTA_BRICK_STAIRS = registerStairs("terracotta_brick_stairs", YTechBlocks.TERRACOTTA_BRICKS, Blocks.BRICK_STAIRS);

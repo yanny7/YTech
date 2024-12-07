@@ -102,6 +102,7 @@ class YTechItemModelsProvider extends ItemModelProvider {
         simpleTypedItem(YTechItems.INGOTS, MaterialType.VANILLA_METALS, "item/generated");
         simpleTypedItem(YTechItems.KNIVES);
         simpleTypedItem(YTechItems.LEGGINGS, EnumSet.of(MaterialType.IRON, MaterialType.GOLD, MaterialType.LEATHER), "item/generated");
+        simpleTypedItem(YTechItems.MESHES);
         simpleTypedItem(YTechItems.MORTAR_AND_PESTLES);
         simpleTypedItem(YTechItems.PICKAXES, EnumSet.of(MaterialType.IRON, MaterialType.GOLD), "item/handheld");
         simpleTypedItem(YTechItems.PLATES);
