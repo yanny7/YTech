@@ -28,6 +28,7 @@ public class YTechBlockTags {
     public static final TagKey<Block> PRIMITIVE_SMELTERS = create("primitive_smelters");
     public static final TagKey<Block> REINFORCED_BRICKS = create("reinforced_bricks");
     public static final TagKey<Block> REINFORCED_BRICK_CHIMNEYS = create("reinforced_brick_chimneys");
+    public static final TagKey<Block> STRAINERS = create("strainers");
     public static final TagKey<Block> TERRACOTTA_BRICKS = create("terracotta_bricks");
     public static final TagKey<Block> TERRACOTTA_BRICK_SLABS = create("terracotta_brick_slabs");
     public static final TagKey<Block> TERRACOTTA_BRICK_STAIRS = create("terracotta_brick_stairs");

@@ -3,27 +3,21 @@ package com.yanny.ytech.configuration.block;
 import com.mojang.serialization.MapCodec;
 import com.yanny.ytech.configuration.block_entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,16 +39,23 @@ public abstract class MachineBlock extends BaseEntityBlock {
             if (hasClientTicker()) {
                 return createTickerHelper(entityType, entityType, MachineBlock::createMachineClientTicker);
             }
-        } else {
+        } else if (hasServerTicker()) {
             return createTickerHelper(entityType, entityType, MachineBlock::createMachineServerTicker);
         }
 
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
-        stateBuilder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT);
+    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (!level.isClientSide && level.getBlockEntity(pos) instanceof MachineBlockEntity blockEntity) {
+                Containers.dropContents(level, pos, blockEntity.getItemStackHandler().getItems());
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
@@ -82,6 +83,10 @@ public abstract class MachineBlock extends BaseEntityBlock {
     }
 
     public boolean hasClientTicker() {
+        return false;
+    }
+
+    public boolean hasServerTicker() {
         return false;
     }
 

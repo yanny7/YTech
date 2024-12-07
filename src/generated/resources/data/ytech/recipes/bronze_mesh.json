@@ -1,0 +1,18 @@
+{
+  "type": "ytech:remaining_shaped_crafting",
+  "category": "misc",
+  "key": {
+    "R": {
+      "tag": "forge:rods/bronze"
+    }
+  },
+  "pattern": [
+    "RRR",
+    "RRR",
+    "RRR"
+  ],
+  "result": {
+    "item": "ytech:bronze_mesh"
+  },
+  "show_notification": true
+}
