@@ -6,6 +6,7 @@
 - Removed generation of Galena/Cassiterite ores in world
 - Fixed missing item dropping on block destroy
 - Added custom tag for Crafting Workbench Tool
+- Fixed Bronze tier speed, rebalanced Tin tier items
 
 ## [0.9.2]
 

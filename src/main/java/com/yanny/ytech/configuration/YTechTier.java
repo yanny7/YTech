@@ -13,8 +13,8 @@ import java.util.function.Supplier;
 public enum YTechTier implements Tier {
     COPPER(64, 5.0F, 0.5F, 10, () -> Ingredient.of(YTechItemTags.INGOTS.get(MaterialType.COPPER))),
     LEAD(32, 3.0F, 3.0F, 21, () -> Ingredient.of(YTechItemTags.INGOTS.get(MaterialType.LEAD))),
-    TIN(32, 10.0F, -1.0F, 16, () -> Ingredient.of(YTechItemTags.INGOTS.get(MaterialType.TIN))),
-    BRONZE(384, 32.0F, 1.5F, 15, () -> Ingredient.of(YTechItemTags.INGOTS.get(MaterialType.BRONZE))),
+    TIN(28, 16.0F, -1.0F, 16, () -> Ingredient.of(YTechItemTags.INGOTS.get(MaterialType.TIN))),
+    BRONZE(384, 5.5F, 1.5F, 15, () -> Ingredient.of(YTechItemTags.INGOTS.get(MaterialType.BRONZE))),
     ;
 
     private final int uses;
