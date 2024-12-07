@@ -6,8 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +25,6 @@ public abstract class MachineBlock extends BaseEntityBlock {
         super(properties);
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     public RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;
@@ -64,20 +62,16 @@ public abstract class MachineBlock extends BaseEntityBlock {
         throw new RuntimeException("Not implemented yet!");
     }
 
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
-        return defaultBlockState()
-                .setValue(BlockStateProperties.HORIZONTAL_FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
-                .setValue(BlockStateProperties.LIT, false);
-    }
-
     @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult trace) {
         if (!level.isClientSide) {
-            player.openMenu(getMenuProvider(state, level, pos), pos);
+            MenuProvider menuProvider = getMenuProvider(state, level, pos);
+
+            if (menuProvider != null) {
+                player.openMenu(menuProvider, pos);
+            }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
