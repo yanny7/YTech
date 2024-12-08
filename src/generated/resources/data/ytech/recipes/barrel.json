@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "minecraft:barrel"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:primitive_alloy_smelter"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

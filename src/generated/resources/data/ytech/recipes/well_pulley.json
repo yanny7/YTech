@@ -36,5 +36,8 @@
   },
   "result": {
     "item": "ytech:well_pulley"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

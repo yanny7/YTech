@@ -4,6 +4,7 @@ import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -51,7 +52,7 @@ public class PrimitiveSmelterBlock extends AbstractPrimitiveMachineBlock {
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechBlocks.PRIMITIVE_SMELTER.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, YTechBlocks.PRIMITIVE_SMELTER.get())
                 .define('A', Items.FURNACE)
                 .define('C', Items.BRICKS)
                 .bottomPattern("CCC")

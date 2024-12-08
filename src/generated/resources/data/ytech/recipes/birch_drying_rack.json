@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:birch_drying_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

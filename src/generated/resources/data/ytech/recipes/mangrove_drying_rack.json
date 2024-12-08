@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:mangrove_drying_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

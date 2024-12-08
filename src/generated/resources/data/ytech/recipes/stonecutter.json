@@ -30,5 +30,8 @@
   },
   "result": {
     "item": "minecraft:stonecutter"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

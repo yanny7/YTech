@@ -5,9 +5,9 @@
 - Added Strainer for obtaining Galena/Cassiterite
 - Removed generation of Galena/Cassiterite ores in world
 - Fixed missing item dropping on block destroy
-- Added custom tag for Crafting Workbench Tool
 - Fixed Bronze tier speed, rebalanced Tin tier items
 - Fixed Well Pulley item model
+- Added Tool for Crafting Workspace recipe
 
 ## [0.9.2]
 

@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:jungle_tanning_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

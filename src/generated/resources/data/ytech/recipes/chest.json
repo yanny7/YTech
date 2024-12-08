@@ -30,5 +30,8 @@
   },
   "result": {
     "item": "minecraft:chest"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

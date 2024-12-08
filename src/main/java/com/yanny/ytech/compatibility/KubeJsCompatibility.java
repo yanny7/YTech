@@ -149,12 +149,14 @@ public class KubeJsCompatibility extends KubeJSPlugin {
         private static final RecipeKey<String[]> TOP_PATTERN = StringComponent.NON_EMPTY.asArray().key("top");
         private static final RecipeKey<TinyMap<String, String[]>> PATTERN = new MapRecipeComponent<>(StringComponent.NON_EMPTY, StringComponent.NON_EMPTY.asArray(), true).key("pattern");
         private static final RecipeKey<TinyMap<Character, InputItem>> KEY = MapRecipeComponent.ITEM_PATTERN_KEY.key("key");
-        private static final RecipeSchema SCHEMA = new RecipeSchema(WorkspaceCraftingJS.class, WorkspaceCraftingJS::new, RESULT, PATTERN, KEY)
-                .constructor(RESULT, PATTERN, KEY)
-                .constructor((recipe, schema, keys, map) -> ((WorkspaceCraftingJS) recipe).mergeParams(map), RESULT, BOTTOM_PATTERN, MIDDLE_PATTERN, TOP_PATTERN, KEY);
+        private static final RecipeKey<InputItem> TOOL = ItemComponents.INPUT.key("tool");
+        private static final RecipeSchema SCHEMA = new RecipeSchema(WorkspaceCraftingJS.class, WorkspaceCraftingJS::new, RESULT, TOOL, PATTERN, KEY)
+                .constructor(RESULT, TOOL, PATTERN, KEY)
+                .constructor((recipe, schema, keys, map) -> ((WorkspaceCraftingJS) recipe).mergeParams(map), RESULT, TOOL, BOTTOM_PATTERN, MIDDLE_PATTERN, TOP_PATTERN, KEY);
 
         private void mergeParams(ComponentValueMap from) {
             setValue(RESULT, from.getValue(this, RESULT));
+            setValue(TOOL, from.getValue(this, TOOL));
             setValue(KEY, from.getValue(this, KEY));
 
             String[] bottom = from.getValue(this, BOTTOM_PATTERN);

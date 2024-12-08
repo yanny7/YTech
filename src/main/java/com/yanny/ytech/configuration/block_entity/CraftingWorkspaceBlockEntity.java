@@ -4,7 +4,6 @@ import com.yanny.ytech.configuration.block.CraftingWorkspaceBlock;
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.configuration.renderer.FakeCraftingWorkspaceLevel;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
-import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -71,29 +70,31 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
         if (pos != null) {
             int index = CraftingWorkspaceBlock.getIndex(pos);
             BlockPos fakePos = new BlockPos(pos[0] + 1, pos[1] + 1, pos[2] + 1);
-            boolean wasChange = false;
 
-            if ((bitmask >> index & 1) == 0 && !itemStack.isEmpty() && !itemStack.is(YTechItemTags.SHARP_FLINTS)) {
+            if ((bitmask >> index & 1) == 0 && !itemStack.isEmpty()) {
                 bitmask |= 1 << index;
 
-                if (itemStack.getItem() instanceof BlockItem blockItem) {
-                    FAKE_LEVEL.setData(pPos, pLevel, itemList, blockStates);
+                if (!constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit)) {
+                    if (itemStack.getItem() instanceof BlockItem blockItem) {
+                        FAKE_LEVEL.setData(pPos, pLevel, itemList, blockStates);
 
-                    Block block = blockItem.getBlock();
-                    BlockHitResult hit = new BlockHitResult(pHit.getLocation(), pHit.getDirection(), fakePos, true);
-                    BlockState state = block.getStateForPlacement(new BlockPlaceContext(FAKE_LEVEL, pPlayer, pHand, itemStack, hit));
+                        Block block = blockItem.getBlock();
+                        BlockHitResult hit = new BlockHitResult(pHit.getLocation(), pHit.getDirection(), fakePos, true);
+                        BlockState state = block.getStateForPlacement(new BlockPlaceContext(FAKE_LEVEL, pPlayer, pHand, itemStack, hit));
 
-                    if (state == null) {
-                        state = block.defaultBlockState();
+                        if (state == null) {
+                            state = block.defaultBlockState();
+                        }
+
+                        blockStates.set(index, state);
+                        updateNeighbors(state, pos, fakePos);
+                        FAKE_LEVEL.clearData();
                     }
 
-                    blockStates.set(index, state);
-                    updateNeighbors(state, pos, fakePos);
-                    FAKE_LEVEL.clearData();
+                    itemList.set(index, itemStack.split(1));
+                } else {
+                    return InteractionResult.CONSUME;
                 }
-
-                itemList.set(index, itemStack.split(1));
-                wasChange = true;
             } else if ((bitmask >> index & 1) == 1 && itemStack.isEmpty()) {
                 Block.popResourceFromFace(pLevel, pPos, pHit.getDirection(), itemList.get(index));
 
@@ -104,21 +105,16 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
 
                 itemList.set(index, ItemStack.EMPTY);
                 bitmask &= ~(1 << index);
-                wasChange = true;
-            } else if (itemStack.is(YTechItemTags.TOOL_FOR_CRAFTING_WORKBENCH)) {
-                return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit);
+            } else {
+                return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit) ? InteractionResult.CONSUME : InteractionResult.PASS;
             }
 
-            if (wasChange) {
-                pLevel.sendBlockUpdated(pPos, pState, pState, Block.UPDATE_ALL);
-                pLevel.blockEntityChanged(pPos);
-                return InteractionResult.CONSUME;
-            }
-        } else if (itemStack.is(YTechItemTags.TOOL_FOR_CRAFTING_WORKBENCH)) {
-            return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit);
+            pLevel.sendBlockUpdated(pPos, pState, pState, Block.UPDATE_ALL);
+            pLevel.blockEntityChanged(pPos);
+            return InteractionResult.CONSUME;
+        } else {
+            return constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit) ? InteractionResult.CONSUME : InteractionResult.PASS;
         }
-
-        return InteractionResult.PASS;
     }
 
     public int getBitmask() {
@@ -177,28 +173,30 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
         pTag.put(TAG_BLOCK_STATES, states);
     }
 
-    private InteractionResult constructBlock(@NotNull ItemStack itemStack, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
+    private boolean constructBlock(@NotNull ItemStack itemStack, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
         Container container = new SimpleContainer(itemList.toArray(ItemStack[]::new));
         Optional<WorkspaceCraftingRecipe> op = pLevel.getRecipeManager().getRecipeFor(YTechRecipeTypes.WORKSPACE_CRAFTING.get(), container, pLevel);
 
         if (op.isPresent()) {
-            BlockItem item = (BlockItem) op.get().assemble(container, pLevel.registryAccess()).getItem();
-            BlockState blockState = item.getBlock().getStateForPlacement(new BlockPlaceContext(pPlayer, pHand, ItemStack.EMPTY, pHit));
+            if (op.get().tool().test(itemStack)) {
+                BlockItem item = (BlockItem) op.get().assemble(container, pLevel.registryAccess()).getItem();
+                BlockState blockState = item.getBlock().getStateForPlacement(new BlockPlaceContext(pPlayer, pHand, ItemStack.EMPTY, pHit));
 
-            if (blockState == null) {
-                blockState = item.getBlock().defaultBlockState();
+                if (blockState == null) {
+                    blockState = item.getBlock().defaultBlockState();
+                }
+
+                itemList.clear();
+                pLevel.setBlock(pPos, blockState, Block.UPDATE_ALL);
+                pLevel.blockEntityChanged(pPos);
+                pLevel.playSound(null, pPos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f);
+                pLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState), pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5, 200, 0.3F, 0.3F, 0.3F, 0.15F);
+                itemStack.hurtAndBreak(1, pPlayer, e -> e.broadcastBreakEvent(pHand));
+                return true;
             }
-
-            itemList.clear();
-            pLevel.setBlock(pPos, blockState, Block.UPDATE_ALL);
-            pLevel.blockEntityChanged(pPos);
-            pLevel.playSound(null, pPos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f);
-            pLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState), pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5, 200, 0.3F, 0.3F, 0.3F, 0.15F);
-            itemStack.hurtAndBreak(1, pPlayer, e -> e.broadcastBreakEvent(pHand));
-            return InteractionResult.CONSUME;
         }
 
-        return InteractionResult.PASS;
+        return false;
     }
 
     private void updateNeighbors(BlockState state, int[] pos, BlockPos fakePos) {

@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "minecraft:smithing_table"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

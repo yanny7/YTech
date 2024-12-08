@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:birch_tanning_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

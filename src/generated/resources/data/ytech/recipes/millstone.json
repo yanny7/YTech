@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:millstone"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

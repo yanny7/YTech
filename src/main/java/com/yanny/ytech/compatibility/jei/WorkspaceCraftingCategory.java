@@ -3,7 +3,6 @@ package com.yanny.ytech.compatibility.jei;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
-import com.yanny.ytech.registration.YTechItemTags;
 import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -16,7 +15,6 @@ import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +36,7 @@ public class WorkspaceCraftingCategory extends AbstractRecipeCategory<WorkspaceC
     public void setRecipe(IRecipeLayoutBuilder builder, WorkspaceCraftingRecipe recipe, @NotNull IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.CATALYST, 99,  93)
                 .setStandardSlotBackground()
-                .addIngredients(Ingredient.of(YTechItemTags.SHARP_FLINTS));
+                .addIngredients(recipe.tool());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 132,  73)
                 .setOutputSlotBackground()
                 .addItemStack(recipe.result());

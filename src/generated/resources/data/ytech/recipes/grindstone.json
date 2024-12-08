@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "minecraft:grindstone"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

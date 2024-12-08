@@ -155,7 +155,7 @@ public class TanningRackBlock extends Block implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer, @NotNull RegistryObject<Item> item, MaterialType material) {
-        WorkspaceCraftingRecipe.Builder.recipe(item.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.AXES.tag, item.get())
                 .define('W', Utils.getLogFromMaterial(material))
                 .define('T', YTechItemTags.GRASS_TWINES)
                 .bottomPattern("   ")

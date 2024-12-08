@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "minecraft:cartography_table"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

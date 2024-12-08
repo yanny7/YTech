@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredient> recipeItems, ItemStack result) implements Recipe<Container> {
+public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredient> recipeItems, Ingredient tool, ItemStack result) implements Recipe<Container> {
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
         boolean matches = true;
@@ -151,8 +151,9 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
             Map<String, Ingredient> keys = keyFromJson(GsonHelper.getAsJsonObject(pJson, "key"));
             String[][] pattern = patternFromJson(GsonHelper.getAsJsonObject(pJson, "pattern"));
             NonNullList<Ingredient> ingredients = dissolvePattern(pattern, keys);
+            Ingredient tool = Ingredient.fromJson(GsonHelper.getAsJsonObject(pJson, "tool"));
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
-            return new WorkspaceCraftingRecipe(recipeId, ingredients, result);
+            return new WorkspaceCraftingRecipe(recipeId, ingredients, tool, result);
         }
 
         @Override
@@ -163,8 +164,9 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
                 ingredients.set(k, Ingredient.fromNetwork(buffer));
             }
 
+            Ingredient tool = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            return new WorkspaceCraftingRecipe(recipeId, ingredients, result);
+            return new WorkspaceCraftingRecipe(recipeId, ingredients, tool, result);
         }
 
         @Override
@@ -177,8 +179,8 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
         }
     }
 
-    public record Result(@NotNull ResourceLocation id, @NotNull Map<Character, Ingredient> keyMap, List<String> bottom, List<String> middle, List<String> top, @NotNull Item result, @NotNull Advancement.Builder advancement,
-                         @NotNull ResourceLocation advancementId) implements FinishedRecipe {
+    public record Result(@NotNull ResourceLocation id, @NotNull Map<Character, Ingredient> keyMap, List<String> bottom, List<String> middle, List<String> top,
+                         Ingredient tool, @NotNull Item result, @NotNull Advancement.Builder advancement, @NotNull ResourceLocation advancementId) implements FinishedRecipe {
         @Override
         public void serializeRecipeData(@NotNull JsonObject pJson) {
             JsonObject keyObject = new JsonObject();
@@ -192,6 +194,7 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
 
             pJson.add("key", keyObject);
             resultObject.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
+            pJson.add("tool", tool.toJson());
             pJson.add("result", resultObject);
         }
 
@@ -245,18 +248,20 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
 
     public static class Builder implements RecipeBuilder {
         private final Item result;
+        private final Ingredient tool;
         private final List<String> bottomRows = Lists.newArrayList();
         private final List<String> middleRows = Lists.newArrayList();
         private final List<String> topRows = Lists.newArrayList();
         private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
         private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
-        protected Builder(ItemLike pResult) {
+        protected Builder(Ingredient tool, ItemLike pResult) {
+            this.tool = tool;
             result = pResult.asItem();
         }
 
-        public static Builder recipe(ItemLike pResult) {
-            return new Builder(pResult);
+        public static Builder recipe(TagKey<Item> tool, ItemLike pResult) {
+            return new Builder(Ingredient.of(tool), pResult);
         }
 
         public Builder define(Character pSymbol, TagKey<Item> pTag) {
@@ -313,7 +318,7 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
         public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, @NotNull ResourceLocation pRecipeId) {
             ensureValid(pRecipeId);
             advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
-            pFinishedRecipeConsumer.accept(new WorkspaceCraftingRecipe.Result(pRecipeId, key, bottomRows, middleRows, topRows, result, advancement, pRecipeId.withPrefix("recipes/workspace_crafting/")));
+            pFinishedRecipeConsumer.accept(new WorkspaceCraftingRecipe.Result(pRecipeId, key, bottomRows, middleRows, topRows, tool, result, advancement, pRecipeId.withPrefix("recipes/workspace_crafting/")));
         }
 
         private Builder pattern(String pPattern, List<String> list) {

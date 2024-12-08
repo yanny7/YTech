@@ -24,5 +24,8 @@
   },
   "result": {
     "item": "minecraft:composter"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

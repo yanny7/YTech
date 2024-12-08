@@ -24,5 +24,8 @@
   },
   "result": {
     "item": "ytech:bronze_anvil"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

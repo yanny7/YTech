@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:oak_drying_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

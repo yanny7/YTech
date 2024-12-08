@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "minecraft:furnace"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

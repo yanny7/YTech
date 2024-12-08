@@ -4,6 +4,7 @@ import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -146,7 +147,7 @@ public class MillstoneBlock extends Block implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechBlocks.MILLSTONE.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, YTechBlocks.MILLSTONE.get())
                 .define('W', ItemTags.LOGS)
                 .define('S', Items.SMOOTH_STONE)
                 .bottomPattern("SSS")

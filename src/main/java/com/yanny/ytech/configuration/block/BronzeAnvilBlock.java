@@ -192,7 +192,7 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     }
 
     public static void registerRecipe(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechBlocks.BRONZE_ANVIL.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, YTechBlocks.BRONZE_ANVIL.get())
                 .define('B', YTechItemTags.STORAGE_BLOCKS.get(MaterialType.BRONZE))
                 .bottomPattern(" B ")
                 .bottomPattern("BBB")

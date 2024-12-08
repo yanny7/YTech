@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:mangrove_tanning_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

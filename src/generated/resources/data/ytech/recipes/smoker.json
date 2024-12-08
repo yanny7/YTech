@@ -30,5 +30,8 @@
   },
   "result": {
     "item": "minecraft:smoker"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

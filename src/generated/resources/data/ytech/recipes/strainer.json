@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:strainer"
+  },
+  "tool": {
+    "tag": "ytech:sharp_flints"
   }
 }

@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:tool_rack"
+  },
+  "tool": {
+    "tag": "forge:hammers"
   }
 }

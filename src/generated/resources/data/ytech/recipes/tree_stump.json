@@ -27,5 +27,8 @@
   },
   "result": {
     "item": "ytech:tree_stump"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }
