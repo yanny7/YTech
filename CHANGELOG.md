@@ -7,6 +7,7 @@
 - Fixed missing item dropping on block destroy
 - Added custom tag for Crafting Workbench Tool
 - Fixed Bronze tier speed, rebalanced Tin tier items
+- Fixed Well Pulley item model
 
 ## [0.9.2]
 

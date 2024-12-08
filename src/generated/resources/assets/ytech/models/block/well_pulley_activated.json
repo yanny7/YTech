@@ -4,7 +4,14 @@
     {
       "faces": {
         "down": {
-          "texture": "minecraft:missingno"
+          "cullface": "down",
+          "texture": "#1",
+          "uv": [
+            6.0,
+            6.0,
+            10.0,
+            10.0
+          ]
         },
         "east": {
           "texture": "#0",
@@ -62,7 +69,14 @@
     {
       "faces": {
         "down": {
-          "texture": "minecraft:missingno"
+          "cullface": "down",
+          "texture": "#1",
+          "uv": [
+            6.0,
+            6.0,
+            10.0,
+            10.0
+          ]
         },
         "east": {
           "cullface": "east",
@@ -232,7 +246,14 @@
     {
       "faces": {
         "down": {
-          "texture": "minecraft:missingno"
+          "cullface": "down",
+          "texture": "#3",
+          "uv": [
+            2.0,
+            0.0,
+            4.0,
+            2.0
+          ]
         },
         "east": {
           "texture": "#3",

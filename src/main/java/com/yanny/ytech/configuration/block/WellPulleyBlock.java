@@ -269,7 +269,7 @@ public class WellPulleyBlock extends IrrigationBlock {
                     switch(direction) {
                         case NORTH, EAST, SOUTH -> faceBuilder.uvs(0, 0, 4, 16).texture("#0");
                         case WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0").cullface(direction);
-                        case UP -> faceBuilder.uvs(6, 6, 10, 10).texture("#1").cullface(direction);
+                        case UP, DOWN -> faceBuilder.uvs(6, 6, 10, 10).texture("#1").cullface(direction);
                     }
                 })
                 .from(0, 0, 6).to(4, 16, 10)
@@ -278,7 +278,7 @@ public class WellPulleyBlock extends IrrigationBlock {
                     switch(direction) {
                         case NORTH, SOUTH, WEST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0");
                         case EAST -> faceBuilder.uvs(0, 0, 4, 16).texture("#0").cullface(direction);
-                        case UP -> faceBuilder.uvs(6, 6, 10, 10).texture("#1").cullface(direction);
+                        case UP, DOWN -> faceBuilder.uvs(6, 6, 10, 10).texture("#1").cullface(direction);
                     }
                 })
                 .from(12, 0, 6).to(16, 16, 10)
@@ -301,6 +301,7 @@ public class WellPulleyBlock extends IrrigationBlock {
                     switch(direction) {
                         case NORTH, EAST, SOUTH, WEST -> faceBuilder.uvs(0, 1, 2, 16).texture("#3");
                         case UP -> faceBuilder.uvs(2, 0, 4, 2).texture("#3");
+                        case DOWN -> faceBuilder.uvs(2, 0, 4, 2).texture("#3").cullface(direction);
                     }
                 })
                 .from(7, 0, 7).to(9, 15, 9)
