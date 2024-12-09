@@ -8,6 +8,7 @@
 - Fixed Bronze tier speed, rebalanced Tin tier items
 - Fixed Well Pulley item model
 - Added Tool for Crafting Workspace recipe
+- Render fluid instead of filled bucket
 
 ## [0.9.2]
 

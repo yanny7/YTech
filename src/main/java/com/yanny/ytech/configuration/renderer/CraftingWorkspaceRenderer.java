@@ -62,6 +62,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                         if ((bitmask >> i & 1) == 1) {
                             int[] position = CraftingWorkspaceBlock.getPosition(i);
                             ItemStack itemStack = items.get(i);
+                            BlockState state = states.get(i);
 
                             if (position == null || itemStack.isEmpty()) {
                                 i++;
@@ -71,8 +72,15 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                             poseStack.pushPose();
                             poseStack.translate(x, y, z);
 
-                            if (itemStack.getItem() instanceof BlockItem blockItem) {
-                                BlockState state = states.get(i);
+                            if (!state.getFluidState().isEmpty()) {
+                                BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
+
+                                poseStack.translate(-x, -y, -z);
+                                poseStack.translate(-1, -1, -1);
+
+                                VertexConsumer vertexConsumer = new FluidVertexConsumer(buffer, state.getFluidState(), poseStack.last().pose(), poseStack.last().normal());
+                                Minecraft.getInstance().getBlockRenderer().renderLiquid(pos, FAKE_LEVEL, vertexConsumer, state, state.getFluidState());
+                            } else if (itemStack.getItem() instanceof BlockItem) {
                                 BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
 
                                 BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);

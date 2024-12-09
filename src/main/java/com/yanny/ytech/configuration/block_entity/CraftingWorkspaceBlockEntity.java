@@ -27,6 +27,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -75,11 +76,12 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
                 bitmask |= 1 << index;
 
                 if (!constructBlock(itemStack, pLevel, pPos, pPlayer, pHand, pHit)) {
-                    if (itemStack.getItem() instanceof BlockItem blockItem) {
-                        FAKE_LEVEL.setData(pPos, pLevel, itemList, blockStates);
+                    BlockHitResult hit = new BlockHitResult(pHit.getLocation(), pHit.getDirection(), fakePos, true);
 
+                    FAKE_LEVEL.setData(pPos, pLevel, itemList, blockStates);
+
+                    if (itemStack.getItem() instanceof BlockItem blockItem) {
                         Block block = blockItem.getBlock();
-                        BlockHitResult hit = new BlockHitResult(pHit.getLocation(), pHit.getDirection(), fakePos, true);
                         BlockState state = block.getStateForPlacement(new BlockPlaceContext(FAKE_LEVEL, pPlayer, pHand, itemStack, hit));
 
                         if (state == null) {
@@ -88,9 +90,13 @@ public class CraftingWorkspaceBlockEntity extends BlockEntity {
 
                         blockStates.set(index, state);
                         updateNeighbors(state, pos, fakePos);
-                        FAKE_LEVEL.clearData();
+                    } else if (itemStack.getItem() instanceof BucketItem bucket) {
+                        BlockState state = bucket.getFluid().defaultFluidState().createLegacyBlock();
+                        blockStates.set(index, state);
+                        updateNeighbors(state, pos, fakePos);
                     }
 
+                    FAKE_LEVEL.clearData();
                     itemList.set(index, itemStack.split(1));
                 } else {
                     return InteractionResult.CONSUME;
