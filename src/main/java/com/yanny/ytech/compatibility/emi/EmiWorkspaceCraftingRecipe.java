@@ -20,7 +20,7 @@ public class EmiWorkspaceCraftingRecipe extends BasicEmiRecipe {
     public static final EmiRecipeCategory CATEGORY = new EmiRecipeCategory(ref(YTechRecipeTypes.WORKSPACE_CRAFTING), WORKSTATION, new EmiTexture(TEXTURE, 96, 240, 16, 16));
 
     public EmiWorkspaceCraftingRecipe(WorkspaceCraftingRecipe recipe) {
-        super(CATEGORY, recipe.getId(), 154, 164);
+        super(CATEGORY, recipe.getId(), 118, 98);
         id = recipe.getId();
         inputs = recipe.recipeItems().stream().map(EmiIngredient::of).toList();
         catalysts = List.of(EmiIngredient.of(recipe.tool()));
@@ -29,21 +29,9 @@ public class EmiWorkspaceCraftingRecipe extends BasicEmiRecipe {
 
     @Override
     public void addWidgets(WidgetHolder widgetHolder) {
-        int i = 0;
-        int posX = 72;
-        int posY = 128;
-
-        for (int y = 0; y < 3; y++) {
-            for (int z = 2; z >= 0; z--) {
-                for (int x = 0; x < 3; x++) {
-                    widgetHolder.addSlot(inputs.get(i), posX - x * 18 - z * 18, posY + x * 9 - z * 9 - y * 55).customBackground(TEXTURE, 0, 256-18, 18, 18);
-                    i++;
-                }
-            }
-        }
-
-        widgetHolder.addTexture(EmiTexture.EMPTY_ARROW, 96, 74);
-        widgetHolder.addSlot(catalysts.get(0), 99, 98).catalyst(true);
-        widgetHolder.addSlot(outputs.get(0), 128, 69).large(true).recipeContext(this);
+        widgetHolder.add(new WorkspaceCraftingWidget(0, 0, 154, 164, inputs));
+        widgetHolder.addTexture(EmiTexture.EMPTY_ARROW, 59, 41);
+        widgetHolder.addSlot(catalysts.get(0), 61, 60).catalyst(true);
+        widgetHolder.addSlot(outputs.get(0), 91, 36).large(true).recipeContext(this);
     }
 }

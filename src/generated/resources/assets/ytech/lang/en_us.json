@@ -155,6 +155,7 @@
   "emi.smelting.temperature": "%s °C",
   "emi.smelting.time": "%s s",
   "emi.tanning.hit_count": "%s time(s)",
+  "emi.workspace_crafting.layer": "Layer %s",
   "entity.ytech.aurochs": "Aurochs",
   "entity.ytech.deer": "Deer",
   "entity.ytech.fowl": "Fowl",
