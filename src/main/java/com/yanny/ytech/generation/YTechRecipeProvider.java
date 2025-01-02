@@ -1679,7 +1679,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void registerStrainerRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.STRAINER.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.SHARP_FLINTS, YTechItems.STRAINER.get())
                 .define('L', ItemTags.LOGS)
                 .define('W', YTechItemTags.WOODEN_BOXES)
                 .bottomPattern("LLL")
@@ -1757,7 +1757,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void registerTreeStumpRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.TREE_STUMP.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.AXES.tag, YTechItems.TREE_STUMP.get())
                 .define('C', ItemTags.LOGS)
                 .define('S', Tags.Items.COBBLESTONES_NORMAL)
                 .bottomPattern("SSS")
@@ -1794,7 +1794,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcChestRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.CHEST)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.CHEST)
                 .define('C', ItemTags.PLANKS)
                 .define('R', YTechItemTags.RODS.get(IRON))
                 .define('B', ItemTags.WOODEN_BUTTONS)
@@ -1812,7 +1812,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcFurnaceRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.FURNACE)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.FURNACE)
                 .define('C', Tags.Items.COBBLESTONES_NORMAL)
                 .define('A', Items.CAMPFIRE)
                 .bottomPattern("CCC")
@@ -1829,7 +1829,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcCraftingTableRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.CRAFTING_TABLE)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.CRAFTING_TABLE)
                 .define('L', Items.LEATHER)
                 .define('P', ItemTags.PLANKS)
                 .bottomPattern("PPP")
@@ -1846,7 +1846,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcStonecutterRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.STONECUTTER)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.STONECUTTER)
                 .define('L', ItemTags.LOGS)
                 .define('P', Items.SMOOTH_STONE)
                 .define('S', YTechItemTags.SAW_BLADES.tag)
@@ -1864,7 +1864,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcBarrelRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.BARREL)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.BARREL)
                 .define('S', ItemTags.WOODEN_SLABS)
                 .define('P', ItemTags.PLANKS)
                 .bottomPattern("PPP")
@@ -1881,7 +1881,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcFletchingTableRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.FLETCHING_TABLE)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.FLETCHING_TABLE)
                 .define('T', Items.TARGET)
                 .define('P', ItemTags.PLANKS)
                 .bottomPattern("PPP")
@@ -1898,7 +1898,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcCartographyTableRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.CARTOGRAPHY_TABLE)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.CARTOGRAPHY_TABLE)
                 .define('P', ItemTags.PLANKS)
                 .define('M', Items.MAP)
                 .bottomPattern("PPP")
@@ -1915,7 +1915,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcSmithingTableRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.SMITHING_TABLE)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.SMITHING_TABLE)
                 .define('P', ItemTags.PLANKS)
                 .define('C', YTechItemTags.STORAGE_BLOCKS.get(IRON))
                 .bottomPattern("CPC")
@@ -1932,7 +1932,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcGrindstoneRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.GRINDSTONE)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.GRINDSTONE)
                 .define('L', ItemTags.LOGS)
                 .define('S', Items.SMOOTH_STONE)
                 .bottomPattern(" L ")
@@ -1949,7 +1949,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcLoomRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.LOOM)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.LOOM)
                 .define('P', ItemTags.PLANKS)
                 .define('S', Tags.Items.STRINGS)
                 .bottomPattern("P P")
@@ -1966,7 +1966,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcSmokerRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.SMOKER)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.SMOKER)
                 .define('L', ItemTags.LOGS)
                 .define('A', Items.CAMPFIRE)
                 .define('C', Tags.Items.COBBLESTONES_NORMAL)
@@ -1984,7 +1984,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcComposterRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(Items.COMPOSTER)
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, Items.COMPOSTER)
                 .define('L', ItemTags.PLANKS)
                 .bottomPattern("LLL")
                 .bottomPattern("LLL")
@@ -2000,7 +2000,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcWoodenBoxRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.WOODEN_BOX.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, YTechItems.WOODEN_BOX.get())
                 .define('L', ItemTags.PLANKS)
                 .bottomPattern("LLL")
                 .bottomPattern("LLL")
@@ -2016,7 +2016,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcToolRackRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.TOOL_RACK.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, YTechItems.TOOL_RACK.get())
                 .define('L', ItemTags.PLANKS)
                 .define('B', YTechItemTags.BOLTS.tag)
                 .bottomPattern("LLL")
@@ -2033,7 +2033,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private static void wcWellPulleyRecipe(RecipeOutput recipeConsumer) {
-        WorkspaceCraftingRecipe.Builder.recipe(YTechItems.WELL_PULLEY.get())
+        WorkspaceCraftingRecipe.Builder.recipe(YTechItemTags.HAMMERS.tag, YTechItems.WELL_PULLEY.get())
                 .define('L', ItemTags.LOGS)
                 .define('P', ItemTags.PLANKS)
                 .define('B', YTechItemTags.TERRACOTTA_BRICKS)

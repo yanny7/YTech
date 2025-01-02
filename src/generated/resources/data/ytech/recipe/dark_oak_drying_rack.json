@@ -28,5 +28,8 @@
   "result": {
     "count": 1,
     "id": "ytech:dark_oak_drying_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

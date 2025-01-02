@@ -28,5 +28,8 @@
   "result": {
     "count": 1,
     "id": "ytech:tree_stump"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

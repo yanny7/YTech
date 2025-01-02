@@ -28,5 +28,8 @@
   "result": {
     "count": 1,
     "id": "ytech:primitive_alloy_smelter"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }

@@ -31,5 +31,8 @@
   "result": {
     "count": 1,
     "id": "minecraft:chest"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }

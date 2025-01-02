@@ -28,5 +28,8 @@
   "result": {
     "count": 1,
     "id": "minecraft:fletching_table"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }

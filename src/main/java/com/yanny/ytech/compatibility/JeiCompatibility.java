@@ -30,7 +30,7 @@ public class JeiCompatibility implements IModPlugin {
         registration.addRecipeCategories(new AlloyingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new HammeringRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new PotteryRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new WorkspaceCraftingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new WorkspaceCraftingCategory(registration.getJeiHelpers()));
         registration.addRecipeCategories(new ChoppingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 

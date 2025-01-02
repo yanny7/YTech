@@ -25,5 +25,8 @@
   "result": {
     "count": 1,
     "id": "ytech:bronze_anvil"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }

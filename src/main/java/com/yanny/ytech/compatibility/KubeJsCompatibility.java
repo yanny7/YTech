@@ -122,13 +122,15 @@ public class KubeJsCompatibility implements KubeJSPlugin {
         private static final RecipeKey<List<String>> TOP_PATTERN = StringComponent.NON_EMPTY.asList().key("top", ComponentRole.INPUT);
         private static final RecipeKey<TinyMap<String, List<String>>> PATTERN = new MapRecipeComponent<>(StringComponent.NON_EMPTY, StringComponent.NON_EMPTY.asList(), true).key("pattern", ComponentRole.OTHER);
         private static final RecipeKey<TinyMap<Character, Ingredient>> KEY = MapRecipeComponent.INGREDIENT_PATTERN_KEY.key("key", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.INGREDIENT.key("tool", ComponentRole.INPUT).allowEmpty().optional(Ingredient.EMPTY).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, PATTERN, KEY)
-                .constructor(RESULT, PATTERN, KEY)
-                .constructor(new RecipeConstructor(RESULT, BOTTOM_PATTERN, MIDDLE_PATTERN, TOP_PATTERN, KEY) {
+                .constructor(RESULT, TOOL, PATTERN, KEY)
+                .constructor(new RecipeConstructor(RESULT, TOOL, BOTTOM_PATTERN, MIDDLE_PATTERN, TOP_PATTERN, KEY) {
                     @Override
                     public void setValues(Context cx, KubeRecipe recipe, RecipeSchemaType schemaType, ComponentValueMap from) {
                         recipe.setValue(RESULT, from.getValue(cx, recipe, RESULT));
                         recipe.setValue(KEY, from.getValue(cx, recipe, KEY));
+                        recipe.setValue(TOOL, from.getValue(cx, recipe, TOOL));
 
                         List<String> bottom = from.getValue(cx, recipe, BOTTOM_PATTERN);
                         List<String> middle = from.getValue(cx, recipe, MIDDLE_PATTERN);

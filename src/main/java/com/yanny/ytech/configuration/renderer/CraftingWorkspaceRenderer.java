@@ -6,12 +6,14 @@ import com.mojang.math.Axis;
 import com.yanny.ytech.configuration.block.CraftingWorkspaceBlock;
 import com.yanny.ytech.configuration.block_entity.CraftingWorkspaceBlockEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -30,6 +32,10 @@ import org.objenesis.instantiator.ObjectInstantiator;
 
 public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWorkspaceBlockEntity> {
     private static final FakeCraftingWorkspaceLevel FAKE_LEVEL;
+
+    private TextureAtlasSprite sprite;
+    private float r, g, b, a;
+    private float minU, minV, maxU, maxV;
 
     static {
         Objenesis objenesis = new ObjenesisStd();
@@ -62,6 +68,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                         if ((bitmask >> i & 1) == 1) {
                             int[] position = CraftingWorkspaceBlock.getPosition(i);
                             ItemStack itemStack = items.get(i);
+                            BlockState state = states.get(i);
 
                             if (position == null || itemStack.isEmpty()) {
                                 i++;
@@ -71,8 +78,15 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                             poseStack.pushPose();
                             poseStack.translate(x, y, z);
 
-                            if (itemStack.getItem() instanceof BlockItem blockItem) {
-                                BlockState state = states.get(i);
+                            if (!state.getFluidState().isEmpty()) {
+                                BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
+
+                                poseStack.translate(-x, -y, -z);
+                                poseStack.translate(-1, -1, -1);
+
+                                VertexConsumer vertexConsumer = buffer.getBuffer(ItemBlockRenderTypes.getRenderLayer(state.getFluidState()));
+                                Minecraft.getInstance().getBlockRenderer().renderLiquid(pos, FAKE_LEVEL, vertexConsumer, state, state.getFluidState());
+                            } else if (itemStack.getItem() instanceof BlockItem) {
                                 BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
 
                                 BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);

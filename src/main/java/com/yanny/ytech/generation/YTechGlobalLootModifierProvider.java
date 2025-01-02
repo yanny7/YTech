@@ -30,7 +30,7 @@ public class YTechGlobalLootModifierProvider extends GlobalLootModifierProvider 
     protected void start() {
         add("grass_drops_fibers", new AddItemModifier(
                 new LootItemCondition[] {
-                        LootItemRandomChanceCondition.randomChance(0.1f).build(),
+                        LootItemRandomChanceCondition.randomChance(0.75f).build(),
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(YTechItemTags.SHARP_FLINTS)).build(),
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.SHORT_GRASS).build()
                 },

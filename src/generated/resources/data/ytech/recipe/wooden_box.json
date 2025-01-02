@@ -25,5 +25,8 @@
   "result": {
     "count": 1,
     "id": "ytech:wooden_box"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }

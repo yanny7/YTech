@@ -25,5 +25,8 @@
   "result": {
     "count": 1,
     "id": "minecraft:composter"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }

@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Function;
 
-public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack result) implements Recipe<RecipeInput> {
+public record WorkspaceCraftingRecipe(PatternHolder patternHolder, Ingredient tool, ItemStack result) implements Recipe<RecipeInput> {
     @Override
     public boolean matches(@NotNull RecipeInput container, @NotNull Level level) {
         return patternHolder.matches(container);
@@ -81,6 +81,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         private static final MapCodec<WorkspaceCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(
                         PatternHolder.CODEC.forGetter((recipe) -> recipe.patternHolder),
+                        Ingredient.CODEC.fieldOf("tool").forGetter((recipe) -> recipe.tool),
                         ItemStack.STRICT_CODEC.fieldOf("result").forGetter((recipe) -> recipe.result)
                 ).apply(instance, WorkspaceCraftingRecipe::new)
         );
@@ -104,30 +105,34 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
         @NotNull
         private static WorkspaceCraftingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf buffer) {
             PatternHolder pattern = PatternHolder.STREAM_CODEC.decode(buffer);
+            Ingredient tool = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
-            return new WorkspaceCraftingRecipe(pattern, result);
+            return new WorkspaceCraftingRecipe(pattern, tool, result);
         }
 
         private static void toNetwork(@NotNull RegistryFriendlyByteBuf buffer, @NotNull WorkspaceCraftingRecipe recipe) {
             PatternHolder.STREAM_CODEC.encode(buffer, recipe.patternHolder);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tool);
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
         }
     }
 
     public static class Builder implements RecipeBuilder {
         private final Item result;
+        private final Ingredient tool;
         private final List<String> bottomRows = Lists.newArrayList();
         private final List<String> middleRows = Lists.newArrayList();
         private final List<String> topRows = Lists.newArrayList();
         private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
         private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-        protected Builder(ItemLike pResult) {
+        protected Builder(Ingredient tool, ItemLike pResult) {
+            this.tool = tool;
             result = pResult.asItem();
         }
 
-        public static Builder recipe(ItemLike pResult) {
-            return new Builder(pResult);
+        public static Builder recipe(TagKey<Item> tool, ItemLike pResult) {
+            return new Builder(Ingredient.of(tool), pResult);
         }
 
         public Builder define(Character pSymbol, TagKey<Item> pTag) {
@@ -188,7 +193,7 @@ public record WorkspaceCraftingRecipe(PatternHolder patternHolder, ItemStack res
             this.criteria.forEach(builder::addCriterion);
             finishedRecipeConsumer.accept(
                     recipeId,
-                    new WorkspaceCraftingRecipe(PatternHolder.of(key, bottomRows, middleRows, topRows), new ItemStack(result)),
+                    new WorkspaceCraftingRecipe(PatternHolder.of(key, bottomRows, middleRows, topRows), tool, new ItemStack(result)),
                     builder.build(recipeId.withPrefix("recipes/workspace_crafting/"))
             );
         }

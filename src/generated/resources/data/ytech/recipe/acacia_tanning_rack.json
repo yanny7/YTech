@@ -28,5 +28,8 @@
   "result": {
     "count": 1,
     "id": "ytech:acacia_tanning_rack"
+  },
+  "tool": {
+    "tag": "minecraft:axes"
   }
 }

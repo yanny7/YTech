@@ -28,5 +28,8 @@
   "result": {
     "count": 1,
     "id": "ytech:millstone"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }

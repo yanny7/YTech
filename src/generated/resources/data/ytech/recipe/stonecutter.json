@@ -31,5 +31,8 @@
   "result": {
     "count": 1,
     "id": "minecraft:stonecutter"
+  },
+  "tool": {
+    "tag": "c:hammers"
   }
 }
