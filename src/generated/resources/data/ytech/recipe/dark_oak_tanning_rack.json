@@ -24,5 +24,6 @@
   "result": {
     "count": 1,
     "id": "ytech:dark_oak_tanning_rack"
-  }
+  },
+  "tool": "#minecraft:axes"
 }

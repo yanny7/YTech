@@ -23,5 +23,6 @@
   "result": {
     "count": 1,
     "id": "ytech:wooden_box"
-  }
+  },
+  "tool": "#c:hammers"
 }

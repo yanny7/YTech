@@ -27,5 +27,6 @@
   "result": {
     "count": 1,
     "id": "ytech:well_pulley"
-  }
+  },
+  "tool": "#c:hammers"
 }

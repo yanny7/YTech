@@ -24,5 +24,6 @@
   "result": {
     "count": 1,
     "id": "minecraft:smithing_table"
-  }
+  },
+  "tool": "#c:hammers"
 }

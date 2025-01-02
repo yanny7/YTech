@@ -5,8 +5,13 @@
 - Added Strainer for obtaining Galena/Cassiterite
 - Removed generation of Galena/Cassiterite ores in world
 - Fixed missing item dropping on block destroy
-- Added custom tag for Crafting Workbench Tool
 - Added Jade support for 1.21.3
+- Fixed Bronze tier speed, rebalanced Tin tier items
+- Fixed Well Pulley item model
+- Added Tool for Crafting Workspace recipe
+- Render fluid instead of filled bucket
+- Improved JEI/EMI Crafting Workspace recipe rendering
+- Increased Grass Fibers drop rate
 
 ## [0.9.2]
 

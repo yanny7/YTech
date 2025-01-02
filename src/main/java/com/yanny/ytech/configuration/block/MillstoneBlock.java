@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Containers;

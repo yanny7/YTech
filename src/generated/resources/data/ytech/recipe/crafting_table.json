@@ -24,5 +24,6 @@
   "result": {
     "count": 1,
     "id": "minecraft:crafting_table"
-  }
+  },
+  "tool": "#c:hammers"
 }

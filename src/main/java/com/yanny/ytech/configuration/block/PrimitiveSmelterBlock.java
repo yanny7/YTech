@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PrimitiveSmelterBlockEntity;
 import com.yanny.ytech.registration.YTechBlocks;
+import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
