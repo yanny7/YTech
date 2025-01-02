@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import com.yanny.ytech.configuration.block.CraftingWorkspaceBlock;
 import com.yanny.ytech.configuration.block_entity.CraftingWorkspaceBlockEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
@@ -78,7 +77,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
                             poseStack.pushPose();
                             poseStack.translate(x, y, z);
 
-                            if (!state.getFluidState().isEmpty()) {
+                            /*if (!state.getFluidState().isEmpty()) {
                                 BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
 
                                 poseStack.translate(-x, -y, -z);
@@ -86,7 +85,7 @@ public class CraftingWorkspaceRenderer implements BlockEntityRenderer<CraftingWo
 
                                 VertexConsumer vertexConsumer = buffer.getBuffer(ItemBlockRenderTypes.getRenderLayer(state.getFluidState()));
                                 Minecraft.getInstance().getBlockRenderer().renderLiquid(pos, FAKE_LEVEL, vertexConsumer, state, state.getFluidState());
-                            } else if (itemStack.getItem() instanceof BlockItem) {
+                            } else */if (itemStack.getItem() instanceof BlockItem) {
                                 BlockPos pos = new BlockPos(x + 1, y + 1, z + 1);
 
                                 BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
