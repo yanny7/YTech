@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.WellPulleyBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,6 +43,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
@@ -87,11 +89,13 @@ public class WellPulleyBlock extends IrrigationBlock {
             aboveState = level.getBlockState(basePos.above());
         }
 
-        if (level.getBlockEntity(basePos) instanceof WellPulleyBlockEntity blockEntity) {
-            return blockEntity.onUse(level, aboveState, player);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<WellPulleyBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.WELL_PULLEY.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(level, aboveState, player);
         }
+
+        return InteractionResult.PASS;
     }
 
     @SuppressWarnings("deprecation")

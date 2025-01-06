@@ -45,6 +45,7 @@ import java.util.function.Consumer;
 public class CraftingWorkspaceBlock extends Block implements EntityBlock {
     public static final VoxelShape BOX = Shapes.box(0, 0, 0, 1/3.0, 1/3.0, 1/3.0);
     public static final Map<Integer, VoxelShape> SHAPES = new HashMap<>(27);
+
     private static final VoxelShape SHAPE_BASE = Shapes.box(0, 0, 0, 1, 1/16.0, 1);
     private static final Map<Integer, VoxelShape> SHAPE_CACHE = Collections.synchronizedMap(new HashMap<>());
 

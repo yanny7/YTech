@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.MillstoneBlockEntity;
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
@@ -35,6 +36,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class MillstoneBlock extends Block implements EntityBlock {
@@ -75,11 +77,13 @@ public class MillstoneBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                  @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof  MillstoneBlockEntity millstone) {
-            return millstone.onUse(level, pos, player, hand);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<MillstoneBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.MILLSTONE.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(level, pos, player, hand);
         }
+
+        return InteractionResult.PASS;
     }
 
     @SuppressWarnings("deprecation")
