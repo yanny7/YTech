@@ -14,6 +14,9 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.IntValue rainingFillAmount;
     private final ForgeConfigSpec.IntValue rainingFillPerNthTick;
     private final ForgeConfigSpec.BooleanValue validBlockForRaining;
+    private final ForgeConfigSpec.BooleanValue drippingFillAqueduct;
+    private final ForgeConfigSpec.IntValue drippingFillAmount;
+    private final ForgeConfigSpec.IntValue drippingFillPerNthTick;
     private final ForgeConfigSpec.IntValue valveFillAmount;
     private final ForgeConfigSpec.IntValue valveFillPerNthTick;
     private final ForgeConfigSpec.IntValue hydratorDrainAmount;
@@ -53,6 +56,12 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("rainingFillPerNthTick", 10, 1, Integer.MAX_VALUE);
         validBlockForRaining = builder.comment("If aqueduct must see sky and must be in valid biome where is raining when raining for filling")
                 .worldRestart().define("validBlockForRaining", true);
+        drippingFillAqueduct = builder.comment("If dripping should fill aqueduct")
+                .worldRestart().define("drippingFillAqueduct", true);
+        drippingFillAmount = builder.comment("Amount of which will be aqueduct filled per nth tick when dripping")
+                .worldRestart().defineInRange("drippingFillAmount", 1, 1, Integer.MAX_VALUE);
+        drippingFillPerNthTick = builder.comment("How often should be filled aqueduct when dripping (1 - every tick, 20 - every second)")
+                .worldRestart().defineInRange("drippingFillPerNthTick", 20, 1, Integer.MAX_VALUE);
         builder.pop();
         builder.push("valve");
         valveFillAmount = builder.comment("Amount of which will be aqueduct filled every nth tick thru valve")
@@ -141,6 +150,18 @@ public class YTechConfigSpec {
 
     public boolean isValidBlockForRaining() {
         return validBlockForRaining.get();
+    }
+
+    public boolean shouldDrippingFillAqueduct() {
+        return drippingFillAqueduct.get();
+    }
+
+    public int getDrippingFillAmount() {
+        return drippingFillAmount.get();
+    }
+
+    public int getDrippingFillPerNthTick() {
+        return drippingFillPerNthTick.get();
     }
 
     public int getFertilizerDuration() {

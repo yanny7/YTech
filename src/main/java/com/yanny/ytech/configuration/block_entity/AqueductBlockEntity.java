@@ -11,7 +11,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -65,6 +68,20 @@ public class AqueductBlockEntity extends IrrigationBlockEntity {
             Holder<Biome> biome = level.getBiome(worldPosition);
             return !YTechMod.CONFIGURATION.isValidBlockForRaining() || (level.canSeeSky(worldPosition.above())
                     && biome.get().getPrecipitationAt(worldPosition) == Biome.Precipitation.RAIN);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean validForDripping() {
+        if (level instanceof ServerLevel serverLevel) {
+            BlockPos pos = PointedDripstoneBlock.findStalactiteTipAboveCauldron(serverLevel, worldPosition);
+
+            if (pos != null) {
+                Fluid fluid = PointedDripstoneBlock.getCauldronFillFluidType(serverLevel, pos);
+                return fluid != Fluids.EMPTY && fluid.isSame(Fluids.WATER);
+            }
         }
 
         return false;

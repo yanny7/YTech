@@ -20,4 +20,8 @@ public interface IIrrigationBlockEntity extends INetworkBlockEntity {
     default boolean validForRainFilling() {
         return false;
     }
+
+    default boolean validForDripping() {
+        return false;
+    }
 }

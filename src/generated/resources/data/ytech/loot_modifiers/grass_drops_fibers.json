@@ -2,7 +2,7 @@
   "type": "ytech:add_item",
   "conditions": [
     {
-      "chance": 0.1,
+      "chance": 0.75,
       "condition": "minecraft:random_chance"
     },
     {

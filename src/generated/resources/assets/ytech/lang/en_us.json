@@ -708,6 +708,7 @@
   "text.ytech.hover.amphora3": "Right-click with empty hand while sneaking to extract stack",
   "text.ytech.hover.aqueduct1": "Can hold %smB of water",
   "text.ytech.hover.aqueduct2": "Raining generates %smB every %s tick(s), if visible to sky",
+  "text.ytech.hover.aqueduct3": "Dripping generates %smB every %s tick(s)",
   "text.ytech.hover.aqueduct_fertilizer1": "Hydrates soil similar to water source and applies random bonemeal effect when fertilizer is provided",
   "text.ytech.hover.aqueduct_fertilizer2": "Consumes %smB every %s tick(s)",
   "text.ytech.hover.aqueduct_hydrator1": "Hydrates soil similar to water source",
