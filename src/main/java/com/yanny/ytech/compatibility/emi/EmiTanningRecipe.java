@@ -1,7 +1,9 @@
 package com.yanny.ytech.compatibility.emi;
 
+import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
 import com.yanny.ytech.registration.YTechItemTags;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -19,7 +21,7 @@ import static com.yanny.ytech.compatibility.EmiCompatibility.ref;
 
 public class EmiTanningRecipe extends BasicEmiRecipe {
     public static final EmiIngredient WORKSTATION = EmiIngredient.of(YTechItemTags.TANNING_RACKS.tag);
-    public static final EmiRecipeCategory CATEGORY = new EmiRecipeCategory(ref(YTechRecipeTypes.TANNING), WORKSTATION, new EmiTexture(TEXTURE, 160, 240, 16, 16));
+    public static final EmiRecipeCategory CATEGORY = new EmiRecipeCategory(ref(YTechRecipeTypes.TANNING), EmiStack.of(YTechItems.TANNING_RACKS.get(MaterialType.OAK_WOOD).get()), new EmiTexture(TEXTURE, 160, 240, 16, 16));
 
     private final int hitCount;
 

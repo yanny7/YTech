@@ -1,7 +1,9 @@
 package com.yanny.ytech.compatibility.emi;
 
+import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.recipe.DryingRecipe;
 import com.yanny.ytech.registration.YTechItemTags;
+import com.yanny.ytech.registration.YTechItems;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -19,7 +21,7 @@ import static com.yanny.ytech.compatibility.EmiCompatibility.ref;
 
 public class EmiDryingRecipe extends BasicEmiRecipe {
     public static final EmiIngredient WORKSTATION = EmiIngredient.of(YTechItemTags.DRYING_RACKS.tag);
-    public static final EmiRecipeCategory CATEGORY = new EmiRecipeCategory(ref(YTechRecipeTypes.DRYING), WORKSTATION, new EmiTexture(TEXTURE, 176, 240, 16, 16));
+    public static final EmiRecipeCategory CATEGORY = new EmiRecipeCategory(ref(YTechRecipeTypes.DRYING), EmiStack.of(YTechItems.DRYING_RACKS.get(MaterialType.OAK_WOOD).get()), new EmiTexture(TEXTURE, 176, 240, 16, 16));
 
     private final int time;
 
