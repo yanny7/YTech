@@ -12,6 +12,7 @@
 - Improved JEI/EMI Crafting Workspace recipe rendering
 - Increased Grass Fibers drop rate
 - Dripping Pointed Dripstone above aqueduct generates water
+- Fixed missing armor durability
 
 ## [0.9.2]
 
