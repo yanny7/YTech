@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.10.0]
 
 - Added Strainer for obtaining Galena/Cassiterite
 - Removed generation of Galena/Cassiterite ores in world
