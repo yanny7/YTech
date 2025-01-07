@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.TreeStumpBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -23,6 +24,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class TreeStumpBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_BOTTOM = Shapes.box(0, 0, 0, 1, 4/16.0, 1);
@@ -49,11 +52,13 @@ public class TreeStumpBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                        @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof TreeStumpBlockEntity treeStumpBlockEntity) {
-            return treeStumpBlockEntity.onUse(state, level, pos, player, hand, hitResult);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<TreeStumpBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.TREE_STUMP.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(state, level, pos, player, hand, hitResult);
         }
+
+        return InteractionResult.PASS;
     }
 
     @Override

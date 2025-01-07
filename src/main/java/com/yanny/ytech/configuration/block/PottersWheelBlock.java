@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.PottersWheelBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,6 +30,8 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class PottersWheelBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.or(
@@ -63,11 +66,13 @@ public class PottersWheelBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                        @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof  PottersWheelBlockEntity pottersWheel) {
-            return pottersWheel.onUse(state, level, pos, player, hand);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<PottersWheelBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.POTTERS_WHEEL.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(state, level, pos, player, hand);
         }
+
+        return InteractionResult.PASS;
     }
 
     @Override

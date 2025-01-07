@@ -366,6 +366,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.chimney", "Increases temperature in smelter by %s °C");
         add("text.ytech.hover.aqueduct1", "Can hold %smB of water");
         add("text.ytech.hover.aqueduct2", "Raining generates %smB every %s tick(s), if visible to sky");
+        add("text.ytech.hover.aqueduct3", "Dripping generates %smB every %s tick(s)");
         add("text.ytech.hover.aqueduct_valve1", "Provides water from water source to aqueduct network");
         add("text.ytech.hover.aqueduct_valve2", "Generates %smB every %s tick(s)");
         add("text.ytech.hover.aqueduct_hydrator1", "Hydrates soil similar to water source");

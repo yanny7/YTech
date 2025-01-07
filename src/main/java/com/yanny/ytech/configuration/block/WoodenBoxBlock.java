@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.WoodenBoxBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,10 +33,13 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class WoodenBoxBlock extends Block implements EntityBlock {
     public static final VoxelShape BOX = Shapes.box(0, 0, 0, 1/4.0, 1/4.0, 1/4.0);
-    private static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 12/16.0, 1);
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    private static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 12/16.0, 1);
 
     public WoodenBoxBlock(Properties properties) {
         super(properties);
@@ -57,11 +61,13 @@ public class WoodenBoxBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                        @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof WoodenBoxBlockEntity WoodenBoxBlockEntity) {
-            return WoodenBoxBlockEntity.onUse(level, pos, player, hand, hitResult);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<WoodenBoxBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.WOODEN_BOX.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(level, pos, player, hand, hitResult);
         }
+
+        return InteractionResult.PASS;
     }
 
     @Override

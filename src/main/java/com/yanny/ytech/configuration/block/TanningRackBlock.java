@@ -3,6 +3,7 @@ package com.yanny.ytech.configuration.block;
 import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.TanningRackBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -30,6 +31,8 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class TanningRackBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.box(0, 0, 7/16.0, 1, 1, 9/16.0);
@@ -79,11 +82,13 @@ public class TanningRackBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                        @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof TanningRackBlockEntity tanningRack) {
-            return tanningRack.onUse(state, level, pos, player, hand, hitResult);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<TanningRackBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.TANNING_RACK.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(state, level, pos, player, hand, hitResult);
         }
+
+        return InteractionResult.PASS;
     }
 
     @Override

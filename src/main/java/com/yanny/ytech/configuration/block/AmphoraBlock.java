@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.AmphoraBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,6 +33,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
@@ -80,11 +83,13 @@ public class AmphoraBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                        @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof AmphoraBlockEntity amphoraBlockEntity) {
-            return amphoraBlockEntity.useItemOn(stack, level, pos, player, hand, hitResult);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<AmphoraBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.AMPHORA.get());
+
+        if (optional.isPresent()) {
+            return optional.get().useItemOn(stack, level, pos, player, hand, hitResult);
         }
+
+        return InteractionResult.PASS;
     }
 
     @Override

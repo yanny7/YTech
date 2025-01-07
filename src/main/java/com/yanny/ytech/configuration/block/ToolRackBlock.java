@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.ToolRackBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,12 +31,15 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class ToolRackBlock extends Block implements EntityBlock {
+    public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     private static final VoxelShape SHAPE_WEST = Shapes.box(0, 0, 0, 2/16.0, 1, 1);
     private static final VoxelShape SHAPE_EAST = Shapes.box(14/16.0, 0, 0, 1, 1, 1);
     private static final VoxelShape SHAPE_SOUTH = Shapes.box(0, 0, 0, 1, 1, 2/16.0);
     private static final VoxelShape SHAPE_NORTH = Shapes.box(0, 0, 14/16.0, 1, 1, 1);
-    public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public ToolRackBlock(Properties properties) {
         super(properties);
@@ -68,11 +72,13 @@ public class ToolRackBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                        @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof ToolRackBlockEntity toolRackBlockEntity) {
-            return toolRackBlockEntity.onUse(level, pos, player, hand, hitResult);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<ToolRackBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.TOOL_RACK.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(level, pos, player, hand, hitResult);
         }
+
+        return InteractionResult.PASS;
     }
 
     @Override

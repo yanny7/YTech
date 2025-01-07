@@ -20,6 +20,9 @@ public class YTechConfigSpec {
     private final ModConfigSpec.IntValue rainingFillAmount;
     private final ModConfigSpec.IntValue rainingFillPerNthTick;
     private final ModConfigSpec.BooleanValue validBlockForRaining;
+    private final ModConfigSpec.BooleanValue drippingFillAqueduct;
+    private final ModConfigSpec.IntValue drippingFillAmount;
+    private final ModConfigSpec.IntValue drippingFillPerNthTick;
     private final ModConfigSpec.IntValue valveFillAmount;
     private final ModConfigSpec.IntValue valveFillPerNthTick;
     private final ModConfigSpec.IntValue hydratorDrainAmount;
@@ -59,6 +62,12 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("rainingFillPerNthTick", 10, 1, Integer.MAX_VALUE);
         validBlockForRaining = builder.comment("If aqueduct must see sky and must be in valid biome where is raining when raining for filling")
                 .worldRestart().define("validBlockForRaining", true);
+        drippingFillAqueduct = builder.comment("If dripping should fill aqueduct")
+                .worldRestart().define("drippingFillAqueduct", true);
+        drippingFillAmount = builder.comment("Amount of which will be aqueduct filled per nth tick when dripping")
+                .worldRestart().defineInRange("drippingFillAmount", 1, 1, Integer.MAX_VALUE);
+        drippingFillPerNthTick = builder.comment("How often should be filled aqueduct when dripping (1 - every tick, 20 - every second)")
+                .worldRestart().defineInRange("drippingFillPerNthTick", 20, 1, Integer.MAX_VALUE);
         builder.pop();
         builder.push("valve");
         valveFillAmount = builder.comment("Amount of which will be aqueduct filled every nth tick thru valve")
@@ -147,6 +156,18 @@ public class YTechConfigSpec {
 
     public boolean isValidBlockForRaining() {
         return validBlockForRaining.get();
+    }
+
+    public boolean shouldDrippingFillAqueduct() {
+        return drippingFillAqueduct.get();
+    }
+
+    public int getDrippingFillAmount() {
+        return drippingFillAmount.get();
+    }
+
+    public int getDrippingFillPerNthTick() {
+        return drippingFillPerNthTick.get();
     }
 
     public int getFertilizerDuration() {
