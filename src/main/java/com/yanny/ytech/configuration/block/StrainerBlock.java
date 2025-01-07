@@ -30,7 +30,6 @@ public class StrainerBlock extends MachineBlock {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void randomTick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
         if (pLevel.getBlockEntity(pPos) instanceof StrainerBlockEntity blockEntity) {

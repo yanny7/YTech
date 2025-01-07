@@ -520,6 +520,11 @@ public class YTechItems {
                     tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct2",
                             CONFIGURATION.getRainingFillAmount(), CONFIGURATION.getRainingFillPerNthTick()).withStyle(DARK_GRAY));
                 }
+
+                if (CONFIGURATION.shouldDrippingFillAqueduct()) {
+                    tooltipComponents.add(Component.translatable("text.ytech.hover.aqueduct3",
+                            CONFIGURATION.getDrippingFillAmount(), CONFIGURATION.getDrippingFillPerNthTick()).withStyle(DARK_GRAY));
+                }
             }
         };
     }

@@ -48,7 +48,6 @@ public class AqueductValveBlock extends IrrigationBlock {
         return new AqueductValveBlockEntity(pos, blockState);
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public RenderShape getRenderShape(@NotNull BlockState blockState) {
@@ -97,7 +96,6 @@ public class AqueductValveBlock extends IrrigationBlock {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (level.getBlockEntity(pos) instanceof AqueductValveBlockEntity blockEntity) {

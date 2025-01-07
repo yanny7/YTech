@@ -11,6 +11,7 @@
 - Render fluid instead of filled bucket
 - Improved JEI/EMI Crafting Workspace recipe rendering
 - Increased Grass Fibers drop rate
+- Dripping Pointed Dripstone above aqueduct generates water
 
 ## [0.9.2]
 

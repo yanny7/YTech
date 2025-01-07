@@ -5,6 +5,7 @@ import com.yanny.ytech.configuration.MaterialType;
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.BronzeAnvilBlockEntity;
 import com.yanny.ytech.configuration.recipe.WorkspaceCraftingRecipe;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import com.yanny.ytech.registration.YTechItemTags;
 import net.minecraft.core.BlockPos;
@@ -39,6 +40,8 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
     private static final VoxelShape X_LEG1 = Block.box(3.0D, 4.0D, 4.0D, 13.0D, 5.0D, 12.0D);
@@ -64,11 +67,13 @@ public class BronzeAnvilBlock extends FallingBlock implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                               @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof BronzeAnvilBlockEntity anvil) {
-            return anvil.onUse(state, level, pos, player, hand, hitResult);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<BronzeAnvilBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.BRONZE_ANVIL.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(state, level, pos, player, hand, hitResult);
         }
+
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

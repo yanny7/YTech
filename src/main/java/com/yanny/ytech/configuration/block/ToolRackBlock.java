@@ -2,6 +2,7 @@ package com.yanny.ytech.configuration.block;
 
 import com.yanny.ytech.configuration.Utils;
 import com.yanny.ytech.configuration.block_entity.ToolRackBlockEntity;
+import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,12 +32,15 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class ToolRackBlock extends Block implements EntityBlock {
+    public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     private static final VoxelShape SHAPE_WEST = Shapes.box(0, 0, 0, 2/16.0, 1, 1);
     private static final VoxelShape SHAPE_EAST = Shapes.box(14/16.0, 0, 0, 1, 1, 1);
     private static final VoxelShape SHAPE_SOUTH = Shapes.box(0, 0, 0, 1, 1, 2/16.0);
     private static final VoxelShape SHAPE_NORTH = Shapes.box(0, 0, 14/16.0, 1, 1, 1);
-    public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public ToolRackBlock() {
         super(Properties.ofFullCopy(Blocks.OAK_PLANKS));
@@ -47,7 +51,6 @@ public class ToolRackBlock extends Block implements EntityBlock {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @NotNull
     @Override
     public VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
@@ -70,14 +73,15 @@ public class ToolRackBlock extends Block implements EntityBlock {
     @Override
     public ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
                                            @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof ToolRackBlockEntity toolRackBlockEntity) {
-            return toolRackBlockEntity.onUse(level, pos, player, hand, hitResult);
-        } else {
-            throw new IllegalStateException("Invalid holder type!");
+        Optional<ToolRackBlockEntity> optional = level.getBlockEntity(pos, YTechBlockEntityTypes.TOOL_RACK.get());
+
+        if (optional.isPresent()) {
+            return optional.get().onUse(level, pos, player, hand, hitResult);
         }
+
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
