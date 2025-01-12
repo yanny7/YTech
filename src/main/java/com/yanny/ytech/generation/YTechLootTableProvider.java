@@ -87,6 +87,7 @@ class YTechLootTableProvider extends LootTableProvider {
             dropSelf(YTechBlocks.PRIMITIVE_SMELTER);
             dropSelf(YTechBlocks.REINFORCED_BRICKS);
             dropSelf(YTechBlocks.REINFORCED_BRICK_CHIMNEY);
+            dropSelf(YTechBlocks.STRAINER);
             dropSelf(YTechBlocks.TERRACOTTA_BRICKS);
             registerSlabLootTable(YTechBlocks.TERRACOTTA_BRICK_SLAB);
             dropSelf(YTechBlocks.TERRACOTTA_BRICK_STAIRS);
@@ -129,6 +130,7 @@ class YTechLootTableProvider extends LootTableProvider {
                             YTechBlocks.PRIMITIVE_SMELTER,
                             YTechBlocks.REINFORCED_BRICKS,
                             YTechBlocks.REINFORCED_BRICK_CHIMNEY,
+                            YTechBlocks.STRAINER,
                             YTechBlocks.TERRACOTTA_BRICKS,
                             YTechBlocks.TERRACOTTA_BRICK_SLAB,
                             YTechBlocks.TERRACOTTA_BRICK_STAIRS,

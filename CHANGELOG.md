@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed Strainer doesn't drop self
+
 ## [0.10.0]
 
 - Added Strainer for obtaining Galena/Cassiterite
