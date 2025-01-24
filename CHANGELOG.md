@@ -1,5 +1,10 @@
 # YTech Changelog
 
+## [0.10.2]
+
+- Fixed crash when connecting to remote server
+- Fixed Crafting Workbench recipe tool
+
 ## [0.10.1]
 
 - Fixed Strainer doesn't drop self

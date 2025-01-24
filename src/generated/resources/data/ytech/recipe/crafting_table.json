@@ -30,6 +30,6 @@
     "id": "minecraft:crafting_table"
   },
   "tool": {
-    "tag": "c:hammers"
+    "tag": "ytech:sharp_flints"
   }
 }
