@@ -29,6 +29,6 @@
     "item": "minecraft:crafting_table"
   },
   "tool": {
-    "tag": "forge:hammers"
+    "tag": "ytech:sharp_flints"
   }
 }

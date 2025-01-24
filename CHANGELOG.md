@@ -3,6 +3,7 @@
 ## []
 
 - Fixed crash when connecting to remote server
+- Fixed Crafting Workbench recipe tool
 
 ## [0.10.1]
 
