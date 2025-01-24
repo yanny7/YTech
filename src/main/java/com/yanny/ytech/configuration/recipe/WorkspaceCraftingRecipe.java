@@ -175,6 +175,7 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
                 ingredient.toNetwork(buffer);
             }
 
+            recipe.tool.toNetwork(buffer);
             buffer.writeItem(recipe.result);
         }
     }

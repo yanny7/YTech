@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed crash when connecting to remote server
+
 ## [0.10.1]
 
 - Fixed Strainer doesn't drop self
