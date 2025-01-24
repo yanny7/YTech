@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.10.2]
 
 - Fixed crash when connecting to remote server
 - Fixed Crafting Workbench recipe tool
