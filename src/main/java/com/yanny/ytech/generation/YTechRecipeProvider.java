@@ -2121,7 +2121,7 @@ class YTechRecipeProvider extends RecipeProvider {
     }
 
     private void wcCraftingTableRecipe() {
-        WorkspaceCraftingRecipe.Builder.recipe(items, YTechItemTags.HAMMERS.tag, Items.CRAFTING_TABLE)
+        WorkspaceCraftingRecipe.Builder.recipe(items, YTechItemTags.SHARP_FLINTS, Items.CRAFTING_TABLE)
                 .define('L', Items.LEATHER)
                 .define('P', ItemTags.PLANKS)
                 .bottomPattern("PPP")
