@@ -256,7 +256,7 @@ public class WellPulleyBlock extends IrrigationBlock {
         builder.part().modelFile(top).rotationY(90).addModel().condition(WELL_PART, WellPulleyPart.TOP).condition(HORIZONTAL_FACING, Direction.EAST, Direction.WEST).condition(ACTIVATED, false).end();
         builder.part().modelFile(topActivated).addModel().condition(WELL_PART, WellPulleyPart.TOP).condition(HORIZONTAL_FACING, Direction.NORTH, Direction.SOUTH).condition(ACTIVATED, true).end();
         builder.part().modelFile(topActivated).rotationY(90).addModel().condition(WELL_PART, WellPulleyPart.TOP).condition(HORIZONTAL_FACING, Direction.EAST, Direction.WEST).condition(ACTIVATED, true).end();
-        PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(overlay).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(value, true).end());
+        PROPERTY_BY_DIRECTION.forEach((dir, value) -> builder.part().modelFile(overlay).rotationY(ANGLE_BY_DIRECTION.get(dir)).addModel().condition(WELL_PART, WellPulleyPart.BASE).condition(value, true).end());
 
         provider.itemModels().getBuilder(Utils.getPath(YTechBlocks.WELL_PULLEY)).parent(top);
     }
