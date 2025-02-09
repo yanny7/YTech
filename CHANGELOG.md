@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed Well Pulley model
+
 ## [0.10.2]
 
 - Fixed crash when connecting to remote server
