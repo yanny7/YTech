@@ -4,14 +4,17 @@ import com.yanny.ytech.compatibility.EmiCompatibility;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.ButtonWidget;
+import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class WorkspaceCraftingWidget extends Widget {
     private final int x, y;
@@ -19,6 +22,7 @@ public class WorkspaceCraftingWidget extends Widget {
     private final int height;
     private final List<EmiIngredient> ingredients;
     private final List<ButtonWidget> buttonWidgets;
+    private final Map<Integer, List<SlotWidget>> slotWidgets = new HashMap<>();
     private int layer = 0;
 
     public WorkspaceCraftingWidget(int x, int y, int width, int height, List<EmiIngredient> ingredients) {
@@ -31,6 +35,22 @@ public class WorkspaceCraftingWidget extends Widget {
                 new ButtonWidget(x + 64, y, 12, 10, 16, 0, EmiCompatibility.TEXTURE, () -> layer < 3, this::upClicked),
                 new ButtonWidget(x + 64, y + 10, 12, 10, 28, 0, EmiCompatibility.TEXTURE, () -> layer > 0, this::downClicked)
         );
+
+        for(int layer = 0; layer < 3; layer++) {
+            int i = layer * 9;
+
+            for (int px = 0; px < 3; px++) {
+                for (int pz = 0; pz < 3; pz++) {
+                    EmiIngredient ingredient = ingredients.get(i);
+
+                    if (!ingredient.isEmpty()) {
+                        slotWidgets.computeIfAbsent(layer, (k) -> new LinkedList<>()).add(new SlotWidget(ingredient, x + px * 18, y + 22 + pz * 18));
+                    }
+
+                    i++;
+                }
+            }
+        }
     }
 
     void upClicked(double mouseX, double mouseY, int button) {
@@ -60,29 +80,28 @@ public class WorkspaceCraftingWidget extends Widget {
             }
         }
 
+        if (layer > 0) {
+            for (SlotWidget slotWidget : slotWidgets.get(layer - 1)) {
+                if (slotWidget.getBounds().contains(mouseX, mouseY)) {
+                    return slotWidget.mouseClicked(mouseX, mouseY, button);
+                }
+            }
+        }
+
         return false;
     }
 
     @Override
     public List<ClientTooltipComponent> getTooltip(int mouseX, int mouseY) {
-        List<ClientTooltipComponent> list = new LinkedList<>();
-
         if (layer > 0) {
-            int i = (layer - 1) * 9;
-            for (int x = 0; x < 3; x++) {
-                for (int z = 0; z < 3; z++) {
-                    EmiIngredient ingredient = ingredients.get(i);
-
-                    if (!ingredient.isEmpty() && mouseX >= this.x + 1 + x * 18 && mouseX < this.x + 1 + (x + 1) * 18 && mouseY >= this.y + 22 + z * 18 && mouseY < this.y + 22 + (z + 1) * 18) {
-                        list.addAll(ingredient.getTooltip());
-                    }
-
-                    i++;
+            for (SlotWidget slotWidget : slotWidgets.get(layer - 1)) {
+                if (slotWidget.getBounds().contains(mouseX, mouseY)) {
+                    return slotWidget.getTooltip(mouseX, mouseY);
                 }
             }
         }
 
-        return list;
+        return List.of();
     }
 
     @Override
@@ -111,18 +130,8 @@ public class WorkspaceCraftingWidget extends Widget {
                 break;
             }
             case 1, 2, 3: {
-                i = (layer - 1) * 9;
-                for (int x = 0; x < 3; x++) {
-                    for (int z = 0; z < 3; z++) {
-                        EmiIngredient ingredient = ingredients.get(i);
-
-                        if (!ingredient.isEmpty()) {
-                            draw.blit(EmiCompatibility.TEXTURE, this.x + x * 18, this.y + 22 + z * 18, 18, 18, 40, 0, 18, 18, 256, 256);
-                            ingredient.render(draw, this.x + 1 + x * 18, this.y + 23 + z * 18, delta);
-                        }
-
-                        i++;
-                    }
+                for (SlotWidget slotWidget : slotWidgets.get(layer - 1)) {
+                    slotWidget.render(draw, mouseX, mouseY, delta);
                 }
 
                 draw.drawString(Minecraft.getInstance().font, Component.translatable("emi.workspace_crafting.layer", layer), this.x + 1, this.y + 1, 0, false);

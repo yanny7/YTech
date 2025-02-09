@@ -3,6 +3,7 @@
 ## []
 
 - Fixed Well Pulley model
+- Fixed Workspace Crafting recipe ingredients not clickable
 
 ## [0.10.2]
 

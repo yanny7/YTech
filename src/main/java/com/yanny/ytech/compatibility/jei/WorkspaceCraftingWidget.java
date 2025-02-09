@@ -116,6 +116,7 @@ public class WorkspaceCraftingWidget implements ISlottedRecipeWidget, IJeiGuiEve
     public void getTooltip(@NotNull ITooltipBuilder tooltip, double mouseX, double mouseY) {
         if (layer > 0) {
             int i = (layer - 1) * 9;
+
             for (int x = 0; x < 3; x++) {
                 for (int z = 0; z < 3; z++) {
                     IRecipeSlotDrawable ingredient = ingredients.get(i);
@@ -146,7 +147,26 @@ public class WorkspaceCraftingWidget implements ISlottedRecipeWidget, IJeiGuiEve
     @NotNull
     @Override
     public Optional<RecipeSlotUnderMouse> getSlotUnderMouse(double mouseX, double mouseY) {
-        return Optional.empty();
+        RecipeSlotUnderMouse slot = null;
+
+        if (layer > 0) {
+            int i = (layer - 1) * 9;
+
+            for (int x = 0; x < 3; x++) {
+                for (int z = 0; z < 3; z++) {
+                    IRecipeSlotDrawable ingredient = ingredients.get(i);
+
+                    if (!ingredient.isEmpty() && mouseX >= this.x + 1 + x * 18 && mouseX < this.x + 1 + (x + 1) * 18 && mouseY >= this.y + 22 + z * 18 && mouseY < this.y + 22 + (z + 1) * 18) {
+                        slot = new RecipeSlotUnderMouse(ingredient, this.x + 1 + x * 18, this.y + 22 + z * 18);
+                        break;
+                    }
+
+                    i++;
+                }
+            }
+        }
+
+        return Optional.ofNullable(slot);
     }
 
     @NotNull
