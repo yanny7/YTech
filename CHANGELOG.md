@@ -1,5 +1,10 @@
 # YTech Changelog
 
+## [0.10.3]
+
+- Fixed Well Pulley model
+- Fixed Workspace Crafting recipe ingredients not clickable
+
 ## [0.10.2]
 
 - Fixed crash when connecting to remote server
