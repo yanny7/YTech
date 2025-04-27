@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed Ingot Sand Mold not craftable using Brick
+
 ## [0.10.3]
 
 - Fixed Well Pulley model
