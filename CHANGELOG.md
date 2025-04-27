@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.10.4]
 
 - Fixed Ingot Sand Mold not craftable using Brick
 
