@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.10.5]
 
 - Fixed KubeJS crafting workspace recipe
 
