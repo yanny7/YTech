@@ -42,15 +42,18 @@ repositories {
         }
     }
     maven { // KubeJS
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/minecraft"
+        url "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
             includeGroup "dev.latvian.apps"
         }
     }
-    maven { // KubeJS (animated-gif-lib-for-java)
+
+    maven { // KubeJS
         url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
     }
     maven { // Objenesis
         url = "https://repo1.maven.org/maven2/"

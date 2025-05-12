@@ -123,7 +123,7 @@ public class KubeJsCompatibility implements KubeJSPlugin {
         private static final RecipeKey<TinyMap<String, List<String>>> PATTERN = new MapRecipeComponent<>(StringComponent.NON_EMPTY, StringComponent.NON_EMPTY.asList(), true).key("pattern", ComponentRole.OTHER);
         private static final RecipeKey<TinyMap<Character, Ingredient>> KEY = MapRecipeComponent.INGREDIENT_PATTERN_KEY.key("key", ComponentRole.INPUT);
         private static final RecipeKey<Ingredient> TOOL = IngredientComponent.INGREDIENT.key("tool", ComponentRole.INPUT).allowEmpty().optional(Ingredient.EMPTY).exclude().alwaysWrite();
-        private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, PATTERN, KEY)
+        private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, TOOL, PATTERN, KEY)
                 .constructor(RESULT, TOOL, PATTERN, KEY)
                 .constructor(new RecipeConstructor(RESULT, TOOL, BOTTOM_PATTERN, MIDDLE_PATTERN, TOP_PATTERN, KEY) {
                     @Override

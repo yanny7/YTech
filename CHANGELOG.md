@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed KubeJS crafting workspace recipe
+
 ## [0.10.4]
 
 - Fixed Ingot Sand Mold not craftable using Brick
