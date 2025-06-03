@@ -6,10 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
@@ -73,7 +70,7 @@ public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker
             level.blockEntityChanged(pos);
         };
 
-        if (progressHandler.tick(level, canProcess, getStep, onFinish)) {
+        if (progressHandler.tick(level, canProcess, getStep, onFinish, SimpleContainer::new)) {
             setChanged(level, pos, state);
         }
     }

@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed using recipes with same item and different tool doesn't work
+
 ## [0.10.3]
 
 - Fixed Well Pulley model

@@ -59,16 +59,16 @@ class SimpleProgressHandler<R extends Recipe<Container>> {
         }
     }
 
-    public boolean tick(@NotNull Level level, Function<R, Boolean> canProcess, Function<R, Float> recipeStepGetter, BiConsumer<Container, R> onFinish) {
+    public boolean tick(@NotNull Level level, Function<R, Boolean> canProcess, Function<R, Float> recipeStepGetter, BiConsumer<Container, R> onFinish,
+                        Function<ItemStack, Container> containerGetter) {
         if (!item.isEmpty()) {
-            Container container = new SimpleContainer(item);
+            Container container = containerGetter.apply(item);
             Optional<R> recipeHolder =  quickCheck.getRecipeFor(container, level);
 
             if (recipeHolder.isPresent()) {
                 R recipe = recipeHolder.get();
 
                 if (canProcess.apply(recipe)) {
-
                     progress += recipeStepGetter.apply(recipe);
 
                     if (progress >= total) {

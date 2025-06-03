@@ -30,7 +30,7 @@ import java.util.function.Consumer;
 public record ChoppingRecipe(ResourceLocation id, Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<Container> {
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
-        return ingredient.test(container.getItem(0));
+        return ingredient.test(container.getItem(0)) && (container.getContainerSize() == 1 || tool.test(container.getItem(1)));
     }
 
     @NotNull
