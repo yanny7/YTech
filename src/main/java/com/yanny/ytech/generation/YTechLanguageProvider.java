@@ -328,6 +328,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("emi.alloying.time", "%s s");
         add("emi.drying.time", "%s s");
         add("emi.smelting.time", "%s s");
+        add("emi.milling.chance", "%s%% +1");
         add("emi.alloying.temperature", "%s °C");
         add("emi.smelting.temperature", "%s °C");
         add("emi.chopping.hit_count", "%s time(s)");

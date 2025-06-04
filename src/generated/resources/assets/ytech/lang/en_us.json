@@ -152,6 +152,7 @@
   "emi.chopping.hit_count": "%s time(s)",
   "emi.drying.time": "%s s",
   "emi.hammering.hit_count": "%s time(s)",
+  "emi.milling.chance": "%s%% +1",
   "emi.smelting.temperature": "%s °C",
   "emi.smelting.time": "%s s",
   "emi.tanning.hit_count": "%s time(s)",

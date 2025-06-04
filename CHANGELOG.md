@@ -4,6 +4,7 @@
 
 - Fixed using recipes with same item and different tool doesn't work
 - Improved Fire Pit tooltip
+- Added information to JEI/EMI about bonus drop for milling recipes
 
 ## [0.10.3]
 
