@@ -3,6 +3,7 @@
 ## []
 
 - Fixed using recipes with same item and different tool doesn't work
+- Improved Fire Pit tooltip
 
 ## [0.10.3]
 
