@@ -19,7 +19,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,15 +30,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<SingleRecipeInput> {
+public record TanningRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<YTechRecipeInput> {
     @Override
-    public boolean matches(@NotNull SingleRecipeInput recipeInput, @NotNull Level level) {
-        return ingredient.test(recipeInput.getItem(0));
+    public boolean matches(@NotNull YTechRecipeInput recipeInput, @NotNull Level level) {
+        return ingredient.test(recipeInput.getItem(0)) && (recipeInput.size() == 1 || tool.test(recipeInput.getItem(1)));
     }
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull SingleRecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
+    public ItemStack assemble(@NotNull YTechRecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 

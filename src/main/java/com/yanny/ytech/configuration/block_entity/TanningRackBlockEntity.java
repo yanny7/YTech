@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.recipe.TanningRecipe;
+import com.yanny.ytech.configuration.recipe.YTechRecipeInput;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import com.yanny.ytech.registration.YTechSoundEvents;
@@ -17,7 +18,6 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +29,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class TanningRackBlockEntity extends BlockEntity {
-    private final SimpleProgressHandler<TanningRecipe> progressHandler;
+    private final SimpleProgressHandler<YTechRecipeInput, TanningRecipe> progressHandler;
 
     public TanningRackBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.TANNING_RACK.get(), pos, blockState);
@@ -50,17 +50,18 @@ public class TanningRackBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                if (!progressHandler.setupCrafting(level, holdingItemStack, TanningRecipe::hitCount)) {
-                    progressHandler.setupCrafting(level, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TanningRecipe::hitCount);
+                if (!progressHandler.setupCrafting(level, holdingItemStack, TanningRecipe::hitCount, YTechRecipeInput::new)) {
+                    progressHandler.setupCrafting(level, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TanningRecipe::hitCount, YTechRecipeInput::new);
                 }
             } else {
                 Function<TanningRecipe, Boolean> canProcess = (recipe) -> recipe.tool().isEmpty() || recipe.tool().test(holdingItemStack);
                 Function<TanningRecipe, Float> getStep = (recipe) -> 1F;
-                BiConsumer<SingleRecipeInput, TanningRecipe> onFinish = (container, recipe) -> {
+                BiConsumer<YTechRecipeInput, TanningRecipe> onFinish = (container, recipe) -> {
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
                 };
+                Function<ItemStack, YTechRecipeInput> getContainer = (item) -> new YTechRecipeInput(item, holdingItemStack);
 
-                if (!progressHandler.tick(level, canProcess, getStep, onFinish)) {
+                if (!progressHandler.tick(level, canProcess, getStep, onFinish, getContainer)) {
                     Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
                     progressHandler.clear();
                 } else {

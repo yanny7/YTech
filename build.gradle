@@ -197,9 +197,10 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
     // ForgeGradle
-    implementation "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
+    implementation "curse.maven:kubejs-238086:${kubejs_version}"
 
     // these two are unfortunately needed since fg.deobf doesn't respect transitive dependencies yet
+    implementation "curse.maven:rhino-416294:${rhino_version}"
     implementation "dev.architectury:architectury-neoforge:${architectury_version}"
 
     // EMI

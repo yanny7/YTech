@@ -29,7 +29,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker<FirePitBlockEntity> {
-    private final SimpleProgressHandler<CampfireCookingRecipe> progressHandler;
+    private final SimpleProgressHandler<SingleRecipeInput, CampfireCookingRecipe> progressHandler;
 
     public FirePitBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(YTechBlockEntityTypes.FIRE_PIT.get(), pPos, pBlockState);
@@ -50,7 +50,7 @@ public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                progressHandler.setupCrafting(level, holdingItemStack, AbstractCookingRecipe::getCookingTime);
+                progressHandler.setupCrafting(level, holdingItemStack, AbstractCookingRecipe::getCookingTime, SingleRecipeInput::new);
             } else {
                 Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
                 progressHandler.clear();
@@ -74,7 +74,7 @@ public class FirePitBlockEntity extends BlockEntity implements BlockEntityTicker
             level.blockEntityChanged(pos);
         };
 
-        if (progressHandler.tick(level, canProcess, getStep, onFinish)) {
+        if (progressHandler.tick(level, canProcess, getStep, onFinish, SingleRecipeInput::new)) {
             setChanged(level, pos, state);
         }
     }
