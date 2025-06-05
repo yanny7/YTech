@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [1.10.6]
 
 - Fixed using recipes with same item and different tool doesn't work
 - Improved Fire Pit tooltip
