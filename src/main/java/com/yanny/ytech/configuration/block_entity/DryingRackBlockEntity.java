@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTicker<DryingRackBlockEntity> {
-    private final SimpleProgressHandler<DryingRecipe> progressHandler;
+    private final SimpleProgressHandler<SingleRecipeInput, DryingRecipe> progressHandler;
 
     public DryingRackBlockEntity(BlockPos pos, BlockState blockState) {
         super(YTechBlockEntityTypes.DRYING_RACK.get(), pos, blockState);
@@ -53,7 +53,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                progressHandler.setupCrafting(serverLevel, holdingItemStack, DryingRecipe::dryingTime);
+                progressHandler.setupCrafting(serverLevel, holdingItemStack, DryingRecipe::dryingTime, SingleRecipeInput::new);
             } else {
                 Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
                 progressHandler.clear();
@@ -87,7 +87,7 @@ public class DryingRackBlockEntity extends BlockEntity implements BlockEntityTic
                 level.blockEntityChanged(pos);
             };
 
-            if (progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
+            if (progressHandler.tick(serverLevel, canProcess, getStep, onFinish, SingleRecipeInput::new)) {
                 setChanged(level, pos, state);
             }
         }

@@ -31,15 +31,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record ChoppingRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<SingleRecipeInput> {
+public record ChoppingRecipe(Ingredient ingredient, Ingredient tool, int hitCount, ItemStack result) implements Recipe<YTechRecipeInput> {
     @Override
-    public boolean matches(@NotNull SingleRecipeInput recipeInput, @NotNull Level level) {
-        return ingredient.test(recipeInput.getItem(0));
+    public boolean matches(@NotNull YTechRecipeInput recipeInput, @NotNull Level level) {
+        return ingredient.test(recipeInput.getItem(0)) && (recipeInput.size() == 1 || tool.test(recipeInput.getItem(1)));
     }
 
     @NotNull
     @Override
-    public ItemStack assemble(@NotNull SingleRecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
+    public ItemStack assemble(@NotNull YTechRecipeInput recipeInput, @NotNull HolderLookup.Provider provider) {
         return result.copy();
     }
 

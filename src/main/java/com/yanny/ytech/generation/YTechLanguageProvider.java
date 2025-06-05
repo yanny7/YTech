@@ -330,6 +330,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("emi.alloying.time", "%s s");
         add("emi.drying.time", "%s s");
         add("emi.smelting.time", "%s s");
+        add("emi.milling.chance", "%s%% +1");
         add("emi.alloying.temperature", "%s °C");
         add("emi.smelting.temperature", "%s °C");
         add("emi.chopping.hit_count", "%s time(s)");
@@ -380,7 +381,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.drying_rack2", "Doesn't work during rain");
         add("text.ytech.hover.millstone", "Use leashed animal on block as power source. Shift-right click with empty hand for disconnecting animal.");
         add("text.ytech.hover.fire_pit1", "Lit by right-click when holding sticks in both hands (40% chance)");
-        add("text.ytech.hover.fire_pit2", "Right-click with burnable item to increase level by floor(log10(burnTime))");
+        add("text.ytech.hover.fire_pit2", "Right-click with burnable item to increase level by formula: floor(log10(burnTime))");
         add("text.ytech.hover.fire_pit3", "Each random tick is level decreased by 1");
         add("text.ytech.hover.fire_pit4", "Rain have chance to extinguish fire (50% chance on random tick)");
         add("text.ytech.hover.pebble", "Drops from gravel (10% chance)");

@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
+class SimpleProgressHandler<P extends RecipeInput, R extends Recipe<P>> {
     private static final String TAG_ITEM = "Item";
     private static final String TAG_TIME = "Time";
     private static final String TAG_TOTAL_TIME = "TotalTime";
@@ -19,7 +19,7 @@ class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
     private ItemStack item = ItemStack.EMPTY;
     private float progress = 0;
     private int total = 0;
-    private final RecipeManager.CachedCheck<SingleRecipeInput, R> quickCheck;
+    private final RecipeManager.CachedCheck<P, R> quickCheck;
 
     public SimpleProgressHandler(RecipeType<R> recipeType) {
         quickCheck = RecipeManager.createCheck(recipeType);
@@ -43,8 +43,8 @@ class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
         item = ItemStack.EMPTY;
     }
 
-    public boolean setupCrafting(@NotNull ServerLevel level, ItemStack input, Function<R, Integer> recipeTimeGetter) {
-        Optional<RecipeHolder<R>> recipeHolder = quickCheck.getRecipeFor(new SingleRecipeInput(input), level);
+    public boolean setupCrafting(@NotNull ServerLevel level, ItemStack input, Function<R, Integer> recipeTimeGetter, Function<ItemStack, P> recipeInputGetter) {
+        Optional<RecipeHolder<R>> recipeHolder = quickCheck.getRecipeFor(recipeInputGetter.apply(input), level);
 
         if (recipeHolder.isPresent()) {
             total = recipeTimeGetter.apply(recipeHolder.get().value());
@@ -56,16 +56,16 @@ class SimpleProgressHandler<R extends Recipe<SingleRecipeInput>> {
         }
     }
 
-    public boolean tick(@NotNull ServerLevel level, Function<R, Boolean> canProcess, Function<R, Float> recipeStepGetter, BiConsumer<SingleRecipeInput, R> onFinish) {
+    public boolean tick(@NotNull ServerLevel level, Function<R, Boolean> canProcess, Function<R, Float> recipeStepGetter, BiConsumer<P, R> onFinish,
+                        Function<ItemStack, P> recipeInputGetter) {
         if (!item.isEmpty()) {
-            SingleRecipeInput recipeInput = new SingleRecipeInput(item);
+            P recipeInput = recipeInputGetter.apply(item);
             Optional<RecipeHolder<R>> recipeHolder =  quickCheck.getRecipeFor(recipeInput, level);
 
             if (recipeHolder.isPresent()) {
                 R recipe = recipeHolder.get().value();
 
                 if (canProcess.apply(recipe)) {
-
                     progress += recipeStepGetter.apply(recipe);
 
                     if (progress >= total) {

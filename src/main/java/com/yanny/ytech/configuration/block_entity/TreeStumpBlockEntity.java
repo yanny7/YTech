@@ -1,6 +1,7 @@
 package com.yanny.ytech.configuration.block_entity;
 
 import com.yanny.ytech.configuration.recipe.ChoppingRecipe;
+import com.yanny.ytech.configuration.recipe.YTechRecipeInput;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import com.yanny.ytech.registration.YTechSoundEvents;
@@ -18,7 +19,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,7 +30,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class TreeStumpBlockEntity extends BlockEntity {
-    private final SimpleProgressHandler<ChoppingRecipe> progressHandler;
+    private final SimpleProgressHandler<YTechRecipeInput, ChoppingRecipe> progressHandler;
 
     public TreeStumpBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(YTechBlockEntityTypes.TREE_STUMP.get(), pPos, pBlockState);
@@ -51,17 +51,18 @@ public class TreeStumpBlockEntity extends BlockEntity {
             ItemStack holdingItemStack = player.getItemInHand(hand);
 
             if (progressHandler.isEmpty()) {
-                if (!progressHandler.setupCrafting(serverLevel, holdingItemStack, ChoppingRecipe::hitCount)) {
-                    progressHandler.setupCrafting(serverLevel, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), ChoppingRecipe::hitCount);
+                if (!progressHandler.setupCrafting(serverLevel, holdingItemStack, ChoppingRecipe::hitCount, YTechRecipeInput::new)) {
+                    progressHandler.setupCrafting(serverLevel, player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), ChoppingRecipe::hitCount, YTechRecipeInput::new);
                 }
             } else {
                 Function<ChoppingRecipe, Boolean> canProcess = (recipe) -> recipe.tool().items().isEmpty() || recipe.tool().test(holdingItemStack);
                 Function<ChoppingRecipe, Float> getStep = (recipe) -> 1F;
-                BiConsumer<SingleRecipeInput, ChoppingRecipe> onFinish = (container, recipe) -> {
+                BiConsumer<YTechRecipeInput, ChoppingRecipe> onFinish = (container, recipe) -> {
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), recipe.assemble(container, level.registryAccess()));
                 };
+                Function<ItemStack, YTechRecipeInput> getContainer = (item) -> new YTechRecipeInput(item, holdingItemStack);
 
-                if (!progressHandler.tick(serverLevel, canProcess, getStep, onFinish)) {
+                if (!progressHandler.tick(serverLevel, canProcess, getStep, onFinish, getContainer)) {
                     Block.popResourceFromFace(level, pos, hitResult.getDirection(), progressHandler.getItem());
                     progressHandler.clear();
                 } else {

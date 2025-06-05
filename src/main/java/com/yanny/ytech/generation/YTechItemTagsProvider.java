@@ -201,6 +201,7 @@ class YTechItemTagsProvider extends ItemTagsProvider {
                 .addTag(YTechItemTags.SHEARS.tag);
         tag(Tags.Items.TOOLS_SPEAR)
                 .addTag(YTechItemTags.SPEARS.tag);
+        tag(Tags.Items.INGOTS).add(Items.BRICK);
     }
 
     private <E extends Enum<E> & IType> void typedTag(YTechItems.TypedItem<E> typedItem, YTechItemTags.TypedTag<E> typedTag) {

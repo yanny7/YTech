@@ -42,15 +42,18 @@ repositories {
         }
     }
     maven { // KubeJS
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/minecraft"
+        url "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
             includeGroup "dev.latvian.apps"
         }
     }
-    maven { // KubeJS (animated-gif-lib-for-java)
+
+    maven { // KubeJS
         url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
     }
     maven { // Objenesis
         url = "https://repo1.maven.org/maven2/"
@@ -194,9 +197,10 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
     // ForgeGradle
-    implementation "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
+    implementation "curse.maven:kubejs-238086:${kubejs_version}"
 
     // these two are unfortunately needed since fg.deobf doesn't respect transitive dependencies yet
+    implementation "curse.maven:rhino-416294:${rhino_version}"
     implementation "dev.architectury:architectury-neoforge:${architectury_version}"
 
     // EMI
