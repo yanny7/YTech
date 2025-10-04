@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [1.10.7]
 
 - Fixed crash in EMI workspace crafting widget rendering when empty layer
 
