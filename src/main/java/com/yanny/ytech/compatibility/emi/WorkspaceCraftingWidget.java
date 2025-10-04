@@ -39,12 +39,14 @@ public class WorkspaceCraftingWidget extends Widget {
         for(int layer = 0; layer < 3; layer++) {
             int i = layer * 9;
 
+            slotWidgets.computeIfAbsent(layer, (k) -> new LinkedList<>());
+
             for (int px = 0; px < 3; px++) {
                 for (int pz = 0; pz < 3; pz++) {
                     EmiIngredient ingredient = ingredients.get(i);
 
                     if (!ingredient.isEmpty()) {
-                        slotWidgets.computeIfAbsent(layer, (k) -> new LinkedList<>()).add(new SlotWidget(ingredient, x + px * 18, y + 22 + pz * 18));
+                        slotWidgets.get(layer).add(new SlotWidget(ingredient, x + px * 18, y + 22 + pz * 18));
                     }
 
                     i++;
