@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## [1.10.7]
+
+- Fixed crash in EMI workspace crafting widget rendering when empty layer
+
 ## [1.10.6]
 
 - Fixed using recipes with same item and different tool doesn't work
