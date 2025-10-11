@@ -25,6 +25,7 @@ public class YTechConfigSpec {
     private final ModConfigSpec.IntValue drippingFillPerNthTick;
     private final ModConfigSpec.IntValue valveFillAmount;
     private final ModConfigSpec.IntValue valveFillPerNthTick;
+    private final ModConfigSpec.IntValue valveChanceToDrainWater;
     private final ModConfigSpec.IntValue hydratorDrainAmount;
     private final ModConfigSpec.IntValue hydratorDrainPerNthTick;
     private final ModConfigSpec.IntValue fertilizerDuration;
@@ -32,10 +33,15 @@ public class YTechConfigSpec {
     private final ModConfigSpec.IntValue wellPulleyGeneration;
     private final ModConfigSpec.DoubleValue wetBiomeBonus;
     private final ModConfigSpec.DoubleValue dryBiomeBonus;
+    private final ModConfigSpec.DoubleValue foodExhaustionOnUse;
 
     private final ModConfigSpec.IntValue minBreedingGenerations;
     private final ModConfigSpec.DoubleValue domesticChance;
     private final ModConfigSpec.BooleanValue removeVanillaMobs;
+
+    private final ModConfigSpec.IntValue minSmelterTemperature;
+    private final ModConfigSpec.IntValue maxSmelterTemperature;
+    private final ModConfigSpec.IntValue temperaturePerChimney;
 
     public YTechConfigSpec(@NotNull ModConfigSpec.Builder builder) {
         builder.push("waterBehavior");
@@ -74,6 +80,8 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("valveFillAmount", 1, 1, Integer.MAX_VALUE);
         valveFillPerNthTick = builder.comment("How often should be filled aqueduct thru valve (1 - every tick, 20 - every second)")
                 .worldRestart().defineInRange("valveFillPerNthTick", 10, 1, Integer.MAX_VALUE);
+        valveChanceToDrainWater = builder.comment("Chance to drain water source (1 / n chance per random tick)")
+                .worldRestart().defineInRange("valveChanceToDrainWater", 1, 1, Integer.MAX_VALUE);
         builder.pop();
         builder.push("hydrator");
         hydratorDrainAmount = builder.comment("Amount of which will be aqueduct drained every nth tick thru hydrator")
@@ -94,6 +102,8 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("wetBiomeBonus", 2.0, Double.MIN_VALUE, Double.MAX_VALUE);
         dryBiomeBonus = builder.comment("Bonus for Well Pulley generation in dry biome")
                 .worldRestart().defineInRange("dryBiomeBonus", 0.5, Double.MIN_VALUE, Double.MAX_VALUE);
+        foodExhaustionOnUse = builder.comment("How much single use exhaust player")
+                .worldRestart().defineInRange("foodExhaustionOnUse", 0.5, 0, Double.MAX_VALUE);
         builder.pop();
         builder.pop();
         builder.push("wildAnimalsBreeding");
@@ -103,6 +113,14 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("domesticChance", 0.2, Double.MIN_NORMAL, 1.0);
         removeVanillaMobs = builder.comment("If remove vanilla mobs spawning (sheeps, cows, chickens and pigs)")
                 .worldRestart().define("removeVanillaMobs", true);
+        builder.pop();
+        builder.push("smeltery");
+        minSmelterTemperature = builder.comment("Base temperature of smeltery")
+                .worldRestart().defineInRange("minSmelterTemperature", 20, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        maxSmelterTemperature = builder.comment("Max temperature of smeltery without chimneys")
+                .worldRestart().defineInRange("maxSmelterTemperature", 900, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        temperaturePerChimney = builder.comment("How much chimney increase temperature in smeltery")
+                .worldRestart().defineInRange("temperaturePerChimney", 50, 1, Integer.MAX_VALUE);
         builder.pop();
     }
 
@@ -140,6 +158,10 @@ public class YTechConfigSpec {
 
     public int getValveFillPerNthTick() {
         return valveFillPerNthTick.get();
+    }
+
+    public int getValveChanceToDrainWater() {
+        return valveChanceToDrainWater.get();
     }
 
     public int getHydratorDrainAmount() {
@@ -190,6 +212,10 @@ public class YTechConfigSpec {
         return dryBiomeBonus.get();
     }
 
+    public double getFoodExhaustionOnUse() {
+        return foodExhaustionOnUse.get();
+    }
+
     public int getMinBreedingGenerations() {
         return minBreedingGenerations.get();
     }
@@ -200,5 +226,17 @@ public class YTechConfigSpec {
 
     public boolean removeVanillaMobs() {
         return removeVanillaMobs.get();
+    }
+
+    public int getMinSmelterTemperature() {
+        return minSmelterTemperature.get();
+    }
+
+    public int getMaxSmelterTemperature() {
+        return maxSmelterTemperature.get();
+    }
+
+    public int getTemperaturePerChimney() {
+        return temperaturePerChimney.get();
     }
 }

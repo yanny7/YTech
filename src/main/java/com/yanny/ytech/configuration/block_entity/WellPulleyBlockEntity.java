@@ -72,7 +72,7 @@ public class WellPulleyBlockEntity extends IrrigationBlockEntity {
 
             level.playSound(null, worldPosition, YTechSoundEvents.WELL_PULLEY_USE.get(), SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
             level.blockEntityChanged(worldPosition);
-            player.causeFoodExhaustion(0.5f);
+            player.causeFoodExhaustion((float) YTechMod.CONFIGURATION.getFoodExhaustionOnUse());
             return ItemInteractionResult.CONSUME;
         }
 

@@ -3,7 +3,6 @@ package com.yanny.ytech.registration;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.configuration.*;
 import com.yanny.ytech.configuration.block.AqueductBlock;
-import com.yanny.ytech.configuration.block_entity.AbstractPrimitiveMachineBlockEntity;
 import com.yanny.ytech.configuration.item.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -73,7 +72,7 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> AQUEDUCT_FERTILIZER = ITEMS.register("aqueduct_fertilizer", YTechItems::aqueductFertilizerBlockItem);
     public static final DeferredItem<BlockItem> AQUEDUCT_HYDRATOR = ITEMS.register("aqueduct_hydrator", YTechItems::aqueductHydratorBlockItem);
     public static final DeferredItem<BlockItem> AQUEDUCT_VALVE = ITEMS.register("aqueduct_valve", YTechItems::aqueductValveBlockItem);
-    public static final DeferredItem<BlockItem> BRICK_CHIMNEY = ITEMS.register("brick_chimney", () -> descriptionItem(YTechBlocks.BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))));
+    public static final DeferredItem<BlockItem> BRICK_CHIMNEY = ITEMS.register("brick_chimney", () -> descriptionItem(YTechBlocks.BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> BRONZE_ANVIL = ITEMS.registerSimpleBlockItem(YTechBlocks.BRONZE_ANVIL);
     public static final DeferredItem<BlockItem> CRAFTING_WORKSPACE = ITEMS.register("crafting_workspace", () -> descriptionItem(YTechBlocks.CRAFTING_WORKSPACE, List.of(Component.translatable("text.ytech.hover.crafting_workbench1").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench2").withStyle(DARK_GRAY), Component.translatable("text.ytech.hover.crafting_workbench3").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> FIRE_PIT = ITEMS.register("fire_pit", YTechItems::firePitBlockItem);
@@ -83,7 +82,7 @@ public class YTechItems {
     public static final DeferredItem<BlockItem> PRIMITIVE_ALLOY_SMELTER = ITEMS.register("primitive_alloy_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_ALLOY_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> PRIMITIVE_SMELTER = ITEMS.register("primitive_smelter", () -> descriptionItem(YTechBlocks.PRIMITIVE_SMELTER, List.of(Component.translatable("text.ytech.hover.primitive_smelter").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> REINFORCED_BRICKS = ITEMS.registerSimpleBlockItem(YTechBlocks.REINFORCED_BRICKS);
-    public static final DeferredItem<BlockItem> REINFORCED_BRICK_CHIMNEY = ITEMS.register("reinforced_brick_chimney", () -> descriptionItem(YTechBlocks.REINFORCED_BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney", AbstractPrimitiveMachineBlockEntity.TEMP_PER_CHIMNEY).withStyle(DARK_GRAY))));
+    public static final DeferredItem<BlockItem> REINFORCED_BRICK_CHIMNEY = ITEMS.register("reinforced_brick_chimney", () -> descriptionItem(YTechBlocks.REINFORCED_BRICK_CHIMNEY, List.of(Component.translatable("text.ytech.hover.chimney").withStyle(DARK_GRAY))));
     public static final DeferredItem<BlockItem> STRAINER = ITEMS.registerSimpleBlockItem(YTechBlocks.STRAINER);
     public static final DeferredItem<BlockItem> TERRACOTTA_BRICKS = ITEMS.registerSimpleBlockItem(YTechBlocks.TERRACOTTA_BRICKS);
     public static final DeferredItem<BlockItem> TERRACOTTA_BRICK_SLAB = ITEMS.registerSimpleBlockItem(YTechBlocks.TERRACOTTA_BRICK_SLAB);

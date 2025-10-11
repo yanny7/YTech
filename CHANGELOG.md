@@ -1,5 +1,15 @@
 # YTech Changelog
 
+## [1.10.8]
+
+- Configurable temperature for smeltery and chimney
+- Valve fills container only if aqueduct capacity has enough room to fill 
+- Configurable chance to consume water by Valve
+- Fixed Aqueduct doesn't have specified mineable tool
+- Configurable WellPulley player exhaustion on use
+- Fixed Valve working indefinitely when submerged
+- Fixed EMI Smelting recipe temperature misalignment
+
 ## [1.10.7]
 
 - Fixed crash in EMI workspace crafting widget rendering when empty layer
