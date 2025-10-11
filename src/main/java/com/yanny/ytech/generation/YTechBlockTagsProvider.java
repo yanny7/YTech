@@ -105,7 +105,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                         YTechBlocks.TERRACOTTA_BRICK_STAIRS.get(),
                         YTechBlocks.WELL_PULLEY.get()
                 )
-                .add(filteredMaterials(YTechBlocks.AQUEDUCTS, MaterialType.AQUEDUCT_MATERIALS))
+                .add(filteredMaterials(YTechBlocks.AQUEDUCTS, EnumSet.noneOf(MaterialType.class)))
                 .add(filteredMaterials(YTechBlocks.DEEPSLATE_ORES, MaterialType.VANILLA_METALS))
                 .add(filteredMaterials(YTechBlocks.NETHER_ORES, EnumSet.of(MaterialType.GOLD)))
                 .add(filteredMaterials(YTechBlocks.RAW_STORAGE_BLOCKS, MaterialType.VANILLA_METALS))

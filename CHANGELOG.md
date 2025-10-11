@@ -5,6 +5,7 @@
 - Configurable temperature for smeltery and chimney
 - Valve fills container only if aqueduct capacity has enough room to fill 
 - Configurable chance to consume water by Valve
+- Fixed Aqueduct doesn't have specified mineable tool
 
 ## [1.10.7]
 
