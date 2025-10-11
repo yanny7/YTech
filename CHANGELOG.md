@@ -7,6 +7,7 @@
 - Configurable chance to consume water by Valve
 - Fixed Aqueduct doesn't have specified mineable tool
 - Configurable WellPulley player exhaustion on use
+- Fixed Valve working indefinitely when submerged
 
 ## [1.10.7]
 

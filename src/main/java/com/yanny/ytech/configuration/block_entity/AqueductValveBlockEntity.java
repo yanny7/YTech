@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
@@ -119,7 +120,13 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
     private int calculateFlow(@NotNull ServerLevel level) {
         return getValidNeighbors().stream().anyMatch((pos) -> {
             BlockState blockState = level.getBlockState(pos);
-            return blockState.getBlock() == Blocks.WATER;
+
+            if (blockState.getBlock() == Blocks.WATER) {
+                FluidState fluidState = blockState.getFluidState();
+                return !fluidState.hasProperty(FlowingFluid.FALLING) || !fluidState.getValue(FlowingFluid.FALLING);
+            }
+
+            return false;
         }) ? YTechMod.CONFIGURATION.getValveFillAmount() : 0;
     }
 
