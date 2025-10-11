@@ -1,12 +1,12 @@
 package com.yanny.ytech.configuration.block_entity;
 
+import com.yanny.ytech.YTechMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -22,8 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEntity {
-    public static final int TEMP_PER_CHIMNEY = 50;
-    private static final RandomSource RANDOM = RandomSource.create(42L);
     private static final String TAG_ITEMS = "items";
     private static final String TAG_SMELTING_TIME = "smeltingTime";
     private static final String TAG_LEFT_SMELTING = "smeltingLeft";
@@ -32,8 +30,6 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     private static final String TAG_LEFT_BURNING = "burningLeft";
     private static final String TAG_TEMPERATURE = "temperature";
     private static final String TAG_NR_CHIMNEY = "nrChimney";
-    private static final int BASE_MAX_TEMPERATURE = 900;
-    private static final int BASE_MIN_TEMPERATURE = 20;
 
     private final RecipeType<?> recipeType;
     private int nrChimney = -1;
@@ -98,7 +94,7 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
         if (isBurning && (maxTemperature > temperature)) {
             temperature = Math.min(maxTemperature, temperature + 1);
         } else if (!isBurning || (maxTemperature < temperature)) {
-            temperature = Math.max(BASE_MIN_TEMPERATURE, temperature - 1);
+            temperature = Math.max(YTechMod.CONFIGURATION.getMinSmelterTemperature(), temperature - 1);
         }
 
         if (temperature != oldTemperature) {
@@ -112,8 +108,8 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
 
     @Override
     public void tickClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState blockState, @NotNull MachineBlockEntity blockEntity) {
-        if (blockState.getValue(BlockStateProperties.LIT) && RANDOM.nextInt(Math.max(Math.round(4 - nrChimney / 2f), 1)) == 0) {
-            for (int i = 0; i < RANDOM.nextInt(2) + 2; ++i) {
+        if (blockState.getValue(BlockStateProperties.LIT) && level.random.nextInt(Math.max(Math.round(4 - nrChimney / 2f), 1)) == 0) {
+            for (int i = 0; i < level.random.nextInt(2) + 2; ++i) {
                 makeParticles(level, pos, nrChimney);
             }
         }
@@ -277,15 +273,15 @@ public abstract class AbstractPrimitiveMachineBlockEntity extends MachineBlockEn
     }
 
     private int getMaxTemperature() {
-        return BASE_MAX_TEMPERATURE + nrChimney * TEMP_PER_CHIMNEY;
+        return YTechMod.CONFIGURATION.getMaxSmelterTemperature() + nrChimney * YTechMod.CONFIGURATION.getTemperaturePerChimney();
     }
 
     private static void makeParticles(@NotNull Level level, @NotNull BlockPos pos, int offset) {
         level.addAlwaysVisibleParticle(
                 ParticleTypes.CAMPFIRE_COSY_SMOKE, true,
-                pos.getX() + 0.5D + RANDOM.nextDouble() / 3.0D * (RANDOM.nextBoolean() ? 1 : -1),
-                pos.getY() + 0.5D + offset + RANDOM.nextDouble() + RANDOM.nextDouble(),
-                pos.getZ() + 0.5D + RANDOM.nextDouble() / 3.0D * (RANDOM.nextBoolean() ? 1 : -1),
+                pos.getX() + 0.5D + level.random.nextDouble() / 3.0D * (level.random.nextBoolean() ? 1 : -1),
+                pos.getY() + 0.5D + offset + level.random.nextDouble() + level.random.nextDouble(),
+                pos.getZ() + 0.5D + level.random.nextDouble() / 3.0D * (level.random.nextBoolean() ? 1 : -1),
                 0.0D, 0.07D + 0.02 * offset, 0.0D
         );
     }

@@ -362,7 +362,7 @@ class YTechLanguageProvider extends LanguageProvider {
         add("text.ytech.hover.amphora3", "Right-click with empty hand while sneaking to extract stack");
         add("text.ytech.hover.grass_fibers", "Obtainable by breaking grass with Sharp Flint (10% chance)");
         add("text.ytech.hover.primitive_smelter", "Increase temperature by adding chimneys");
-        add("text.ytech.hover.chimney", "Increases temperature in smelter by %s °C");
+        add("text.ytech.hover.chimney", "Increases temperature in smelter");
         add("text.ytech.hover.aqueduct1", "Can hold %smB of water");
         add("text.ytech.hover.aqueduct2", "Raining generates %smB every %s tick(s), if visible to sky");
         add("text.ytech.hover.aqueduct3", "Dripping generates %smB every %s tick(s)");

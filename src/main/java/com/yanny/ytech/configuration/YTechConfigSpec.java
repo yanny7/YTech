@@ -31,6 +31,10 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.DoubleValue domesticChance;
     private final ForgeConfigSpec.BooleanValue removeVanillaMobs;
 
+    private final ForgeConfigSpec.IntValue minSmelterTemperature;
+    private final ForgeConfigSpec.IntValue maxSmelterTemperature;
+    private final ForgeConfigSpec.IntValue temperaturePerChimney;
+
     public YTechConfigSpec(@NotNull ForgeConfigSpec.Builder builder) {
         builder.push("waterBehavior");
         finiteWaterSource = builder.comment("If water sources are finite")
@@ -97,6 +101,14 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("domesticChance", 0.2, Double.MIN_NORMAL, 1.0);
         removeVanillaMobs = builder.comment("If remove vanilla mobs spawning (sheeps, cows, chickens and pigs)")
                 .worldRestart().define("removeVanillaMobs", true);
+        builder.pop();
+        builder.push("smeltery");
+        minSmelterTemperature = builder.comment("Base temperature of smeltery")
+                .worldRestart().defineInRange("minSmelterTemperature", 20, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        maxSmelterTemperature = builder.comment("Max temperature of smeltery without chimneys")
+                .worldRestart().defineInRange("maxSmelterTemperature", 900, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        temperaturePerChimney = builder.comment("How much chimney increase temperature in smeltery")
+                .worldRestart().defineInRange("temperaturePerChimney", 50, 1, Integer.MAX_VALUE);
         builder.pop();
     }
 
@@ -194,5 +206,17 @@ public class YTechConfigSpec {
 
     public boolean removeVanillaMobs() {
         return removeVanillaMobs.get();
+    }
+
+    public int getMinSmelterTemperature() {
+        return minSmelterTemperature.get();
+    }
+
+    public int getMaxSmelterTemperature() {
+        return maxSmelterTemperature.get();
+    }
+
+    public int getTemperaturePerChimney() {
+        return temperaturePerChimney.get();
     }
 }
