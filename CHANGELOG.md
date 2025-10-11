@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [1.10.8]
 
 - Configurable temperature for smeltery and chimney
 - Valve fills container only if aqueduct capacity has enough room to fill 
