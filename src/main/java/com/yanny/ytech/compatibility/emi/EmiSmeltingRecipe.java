@@ -22,7 +22,7 @@ public class EmiSmeltingRecipe extends BasicEmiRecipe {
     public static final EmiRecipeCategory CATEGORY = new EmiRecipeCategory(ref(YTechRecipeTypes.SMELTING), WORKSTATION, new EmiTexture(TEXTURE, 144, 240, 16, 16));
 
     public static final EmiTexture EMPTY_TEMPERATURE = new EmiTexture(TEXTURE, 0, 0, 8, 38);
-    public static final EmiTexture FULL_TEMPERATURE = new EmiTexture(TEXTURE, 9, 0, 8, 38);
+    public static final EmiTexture FULL_TEMPERATURE = new EmiTexture(TEXTURE, 8, 0, 8, 38);
 
     private final int time;
     private final int temperature;

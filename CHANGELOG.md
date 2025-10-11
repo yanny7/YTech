@@ -8,6 +8,7 @@
 - Fixed Aqueduct doesn't have specified mineable tool
 - Configurable WellPulley player exhaustion on use
 - Fixed Valve working indefinitely when submerged
+- Fixed EMI Smelting recipe temperature misalignment
 
 ## [1.10.7]
 
