@@ -27,6 +27,7 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.IntValue wellPulleyGeneration;
     private final ForgeConfigSpec.DoubleValue wetBiomeBonus;
     private final ForgeConfigSpec.DoubleValue dryBiomeBonus;
+    private final ForgeConfigSpec.DoubleValue foodExhaustionOnUse;
 
     private final ForgeConfigSpec.IntValue minBreedingGenerations;
     private final ForgeConfigSpec.DoubleValue domesticChance;
@@ -95,6 +96,8 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("wetBiomeBonus", 2.0, Double.MIN_VALUE, Double.MAX_VALUE);
         dryBiomeBonus = builder.comment("Bonus for Well Pulley generation in dry biome")
                 .worldRestart().defineInRange("dryBiomeBonus", 0.5, Double.MIN_VALUE, Double.MAX_VALUE);
+        foodExhaustionOnUse = builder.comment("How much single use exhaust player")
+                .worldRestart().defineInRange("foodExhaustionOnUse", 0.5, 0, Double.MAX_VALUE);
         builder.pop();
         builder.pop();
         builder.push("wildAnimalsBreeding");
@@ -201,6 +204,10 @@ public class YTechConfigSpec {
 
     public double getWellPulleyDryBonus() {
         return dryBiomeBonus.get();
+    }
+
+    public double getFoodExhaustionOnUse() {
+        return foodExhaustionOnUse.get();
     }
 
     public int getMinBreedingGenerations() {
