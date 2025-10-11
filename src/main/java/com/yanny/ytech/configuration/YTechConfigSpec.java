@@ -19,6 +19,7 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.IntValue drippingFillPerNthTick;
     private final ForgeConfigSpec.IntValue valveFillAmount;
     private final ForgeConfigSpec.IntValue valveFillPerNthTick;
+    private final ForgeConfigSpec.IntValue valveChanceToDrainWater;
     private final ForgeConfigSpec.IntValue hydratorDrainAmount;
     private final ForgeConfigSpec.IntValue hydratorDrainPerNthTick;
     private final ForgeConfigSpec.IntValue fertilizerDuration;
@@ -72,6 +73,8 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("valveFillAmount", 1, 1, Integer.MAX_VALUE);
         valveFillPerNthTick = builder.comment("How often should be filled aqueduct thru valve (1 - every tick, 20 - every second)")
                 .worldRestart().defineInRange("valveFillPerNthTick", 10, 1, Integer.MAX_VALUE);
+        valveChanceToDrainWater = builder.comment("Chance to drain water source (1 / n chance per random tick)")
+                .worldRestart().defineInRange("valveChanceToDrainWater", 1, 1, Integer.MAX_VALUE);
         builder.pop();
         builder.push("hydrator");
         hydratorDrainAmount = builder.comment("Amount of which will be aqueduct drained every nth tick thru hydrator")
@@ -146,6 +149,10 @@ public class YTechConfigSpec {
 
     public int getValveFillPerNthTick() {
         return valveFillPerNthTick.get();
+    }
+
+    public int getValveChanceToDrainWater() {
+        return valveChanceToDrainWater.get();
     }
 
     public int getHydratorDrainAmount() {

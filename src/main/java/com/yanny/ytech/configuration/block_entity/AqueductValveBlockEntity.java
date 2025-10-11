@@ -83,7 +83,8 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
         if (flow > 0) {
             IrrigationServerNetwork network = YTechMod.IRRIGATION_PROPAGATOR.server().getNetwork(this);
 
-            if (network != null && network.getFluidHandler().getFluidAmount() < network.getFluidHandler().getCapacity()) {
+            if (network != null && level.random.nextInt(YTechMod.CONFIGURATION.getValveChanceToDrainWater()) == 0
+                    && network.getFluidHandler().getFluidAmount() + YTechMod.CONFIGURATION.getValveFillAmount() <= network.getFluidHandler().getCapacity()) {
                 Set<BlockPos> checkedBlocks = new HashSet<>();
 
                 for (BlockPos pos : getValidNeighbors()) {

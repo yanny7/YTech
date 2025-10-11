@@ -3,6 +3,8 @@
 ## []
 
 - Configurable temperature for smeltery and chimney
+- Valve fills container only if aqueduct capacity has enough room to fill 
+- Configurable chance to consume water by Valve
 
 ## [1.10.7]
 
