@@ -3,7 +3,7 @@
 ## []
 
 - Fixed Tree Stump missing mineable tool
-- 
+- Fixed recipes doesn't override getIngredients() method (KubeJS have problem with detecting original ingredients)
 
 ## [1.10.8]
 

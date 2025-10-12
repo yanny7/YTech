@@ -32,6 +32,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -142,6 +143,15 @@ public record WorkspaceCraftingRecipe(ResourceLocation id, NonNullList<Ingredien
     @Override
     public RecipeType<?> getType() {
         return YTechRecipeTypes.WORKSPACE_CRAFTING.get();
+    }
+
+    @NotNull
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        List<Ingredient> ingredients = new ArrayList<>(recipeItems.stream().toList());
+
+        ingredients.add(tool);
+        return NonNullList.of(Ingredient.EMPTY, ingredients.toArray(Ingredient[]::new));
     }
 
     public static class Serializer implements RecipeSerializer<WorkspaceCraftingRecipe> {

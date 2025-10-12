@@ -9,6 +9,7 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -68,6 +69,12 @@ public record AlloyingRecipe(ResourceLocation id, Ingredient ingredient1, int co
     @Override
     public RecipeType<?> getType() {
         return YTechRecipeTypes.ALLOYING.get();
+    }
+
+    @NotNull
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return NonNullList.of(Ingredient.EMPTY, ingredient1, ingredient2);
     }
 
     public int getInput1Count() {

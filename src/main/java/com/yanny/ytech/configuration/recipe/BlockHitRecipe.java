@@ -9,6 +9,7 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -66,6 +67,12 @@ public record BlockHitRecipe(ResourceLocation id, Ingredient ingredient, Ingredi
     @Override
     public RecipeType<?> getType() {
         return YTechRecipeTypes.BLOCK_HIT.get();
+    }
+
+    @NotNull
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return NonNullList.of(Ingredient.EMPTY, ingredient, block);
     }
 
     public static class Serializer implements RecipeSerializer<BlockHitRecipe> {
