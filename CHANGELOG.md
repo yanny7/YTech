@@ -1,11 +1,11 @@
 # YTech Changelog
 
-## []
+## [0.10.9]
 
 - Fixed Tree Stump missing mineable tool
 - Fixed recipes doesn't override getIngredients() method (KubeJS have problem with detecting original ingredients)
 
-## [1.10.8]
+## [0.10.8]
 
 - Configurable temperature for smeltery and chimney
 - Valve fills container only if aqueduct capacity has enough room to fill 
@@ -15,11 +15,11 @@
 - Fixed Valve working indefinitely when submerged
 - Fixed EMI Smelting recipe temperature misalignment
 
-## [1.10.7]
+## [0.10.7]
 
 - Fixed crash in EMI workspace crafting widget rendering when empty layer
 
-## [1.10.6]
+## [0.10.6]
 
 - Fixed using recipes with same item and different tool doesn't work
 - Improved Fire Pit tooltip
