@@ -1,5 +1,10 @@
 # YTech Changelog
 
+## []
+
+- Fixed Tree Stump missing mineable tool
+- 
+
 ## [1.10.8]
 
 - Configurable temperature for smeltery and chimney

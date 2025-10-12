@@ -122,6 +122,7 @@ class YTechBlockTagsProvider extends BlockTagsProvider {
                 .add(YTechBlocks.POTTERS_WHEEL.get())
                 .add(YTechBlocks.STRAINER.get())
                 .add(YTechBlocks.TOOL_RACK.get())
+                .add(YTechBlocks.TREE_STUMP.get())
                 .add(YTechBlocks.WOODEN_BOX.get());
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(
