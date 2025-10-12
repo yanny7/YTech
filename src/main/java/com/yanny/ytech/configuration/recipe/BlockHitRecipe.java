@@ -10,6 +10,7 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -60,6 +61,12 @@ public record BlockHitRecipe(Ingredient ingredient, Ingredient block, ItemStack 
     @Override
     public RecipeType<?> getType() {
         return YTechRecipeTypes.BLOCK_HIT.get();
+    }
+
+    @NotNull
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return NonNullList.of(Ingredient.EMPTY, ingredient, block);
     }
 
     public static class Serializer implements RecipeSerializer<BlockHitRecipe> {

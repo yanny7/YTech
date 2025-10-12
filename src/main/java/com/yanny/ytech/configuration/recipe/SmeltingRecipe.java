@@ -11,6 +11,7 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -61,6 +62,12 @@ public record SmeltingRecipe(Ingredient ingredient, int inputCount, Ingredient m
     @Override
     public RecipeType<?> getType() {
         return YTechRecipeTypes.SMELTING.get();
+    }
+
+    @NotNull
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return NonNullList.of(Ingredient.EMPTY, ingredient, mold);
     }
 
     public static class Serializer implements RecipeSerializer<SmeltingRecipe> {
