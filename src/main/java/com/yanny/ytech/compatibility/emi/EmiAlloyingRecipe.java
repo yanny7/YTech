@@ -30,7 +30,7 @@ public class EmiAlloyingRecipe extends BasicEmiRecipe {
 
     public EmiAlloyingRecipe(AlloyingRecipe recipe, ResourceLocation id) {
         super(CATEGORY, id, 112, 38);
-        inputs = List.of(EmiIngredient.of(recipe.ingredient1().ingredient()), EmiIngredient.of(recipe.ingredient2().ingredient()));
+        inputs = List.of(EmiIngredient.of(recipe.ingredient1().ingredient(), recipe.ingredient1().count()), EmiIngredient.of(recipe.ingredient2().ingredient(), recipe.ingredient2().count()));
         outputs = List.of(EmiStack.of(recipe.result()));
         time = recipe.smeltingTime();
         temperature = recipe.minTemperature();

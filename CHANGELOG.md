@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed amount of items not displayed for Alloying recipe in EMI
+
 ## [0.10.9]
 
 - Fixed Tree Stump missing mineable tool
