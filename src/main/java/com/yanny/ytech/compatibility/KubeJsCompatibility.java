@@ -3,15 +3,15 @@ package com.yanny.ytech.compatibility;
 import com.yanny.ytech.YTechMod;
 import com.yanny.ytech.registration.YTechRecipeTypes;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
-import dev.latvian.mods.kubejs.recipe.KubeRecipe;
 import dev.latvian.mods.kubejs.recipe.RecipeKey;
+import dev.latvian.mods.kubejs.recipe.RecipeScriptContext;
 import dev.latvian.mods.kubejs.recipe.component.*;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeConstructor;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaRegistry;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaType;
+import dev.latvian.mods.kubejs.util.IntBounds;
 import dev.latvian.mods.kubejs.util.TinyMap;
-import dev.latvian.mods.rhino.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -47,8 +47,8 @@ public class KubeJsCompatibility implements KubeJSPlugin {
 
     private static class AlloyingJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<SizedIngredient> INGREDIENT1 = SizedIngredientComponent.NESTED.key("ingredient1", ComponentRole.INPUT);
-        private static final RecipeKey<SizedIngredient> INGREDIENT2 = SizedIngredientComponent.NESTED.key("ingredient2", ComponentRole.INPUT);
+        private static final RecipeKey<SizedIngredient> INGREDIENT1 = SizedIngredientComponent.SIZED_INGREDIENT.key("ingredient1", ComponentRole.INPUT);
+        private static final RecipeKey<SizedIngredient> INGREDIENT2 = SizedIngredientComponent.SIZED_INGREDIENT.key("ingredient2", ComponentRole.INPUT);
         private static final RecipeKey<Integer> MIN_TEMPERATURE = NumberComponent.INT.key("minTemp", ComponentRole.OTHER).optional(1000).exclude().alwaysWrite();
         private static final RecipeKey<Integer> SMELTING_TIME = NumberComponent.INT.key("smeltingTime", ComponentRole.OTHER).optional(200).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT1, INGREDIENT2, MIN_TEMPERATURE, SMELTING_TIME);
@@ -56,37 +56,37 @@ public class KubeJsCompatibility implements KubeJSPlugin {
 
     private static class BlockHitJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
-        private static final RecipeKey<Ingredient> BLOCK = IngredientComponent.NON_EMPTY_INGREDIENT.key("block", ComponentRole.OTHER);
+        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.INGREDIENT.key("ingredient", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> BLOCK = IngredientComponent.INGREDIENT.key("block", ComponentRole.OTHER);
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, BLOCK);
     }
 
     private static class ChoppingJS {
         private static final RecipeKey<ItemStack> RESULT =  ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
-        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.NON_EMPTY_INGREDIENT.key("tool", ComponentRole.OTHER);
+        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.INGREDIENT.key("ingredient", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.INGREDIENT.key("tool", ComponentRole.OTHER);
         private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount", ComponentRole.OTHER).optional(3).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, TOOL, HIT_COUNT);
     }
 
     private static class DryingJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.INGREDIENT.key("ingredient", ComponentRole.INPUT);
         private static final RecipeKey<Integer> DRYING_TIME = NumberComponent.INT.key("dryingTime", ComponentRole.OTHER).optional(1200).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, DRYING_TIME);
     }
 
     private static class HammeringJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
-        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.INGREDIENT.key("tool", ComponentRole.INPUT).allowEmpty().optional(Ingredient.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.INGREDIENT.key("ingredient", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.OPTIONAL_INGREDIENT.key("tool", ComponentRole.INPUT).optional(Ingredient.EMPTY).exclude().alwaysWrite();
         private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount", ComponentRole.OTHER).optional(3).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, TOOL, HIT_COUNT);
     }
 
     private static class MillingJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.INGREDIENT.key("ingredient", ComponentRole.INPUT);
         private static final RecipeKey<Float> BONUS_CHANCE = NumberComponent.FLOAT.key("bonusChance", ComponentRole.OTHER).optional(0.5f).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, BONUS_CHANCE);
     }
@@ -99,9 +99,9 @@ public class KubeJsCompatibility implements KubeJSPlugin {
 
     private static class SmeltingJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.INGREDIENT.key("ingredient", ComponentRole.INPUT);
         private static final RecipeKey<Integer> INPUT_COUNT = NumberComponent.INT.key("inputCount", ComponentRole.OTHER).optional(1).exclude().alwaysWrite();
-        private static final RecipeKey<Ingredient> MOLD = IngredientComponent.INGREDIENT.key("mold", ComponentRole.INPUT).allowEmpty().optional(Ingredient.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<Ingredient> MOLD = IngredientComponent.OPTIONAL_INGREDIENT.key("mold", ComponentRole.INPUT).optional(Ingredient.EMPTY).exclude().alwaysWrite();
         private static final RecipeKey<Integer> MIN_TEMP = NumberComponent.INT.key("minTemp", ComponentRole.OTHER).optional(1000).exclude().alwaysWrite();
         private static final RecipeKey<Integer> SMELTING_TIME = NumberComponent.INT.key("smeltingTime", ComponentRole.OTHER).optional(200).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, INPUT_COUNT, MOLD, MIN_TEMP, SMELTING_TIME);
@@ -109,39 +109,39 @@ public class KubeJsCompatibility implements KubeJSPlugin {
 
     private static class TanningJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.NON_EMPTY_INGREDIENT.key("ingredient", ComponentRole.INPUT);
-        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.INGREDIENT.key("tool", ComponentRole.INPUT).allowEmpty().optional(Ingredient.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<Ingredient> INGREDIENT = IngredientComponent.INGREDIENT.key("ingredient", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.OPTIONAL_INGREDIENT.key("tool", ComponentRole.INPUT).optional(Ingredient.EMPTY).exclude().alwaysWrite();
         private static final RecipeKey<Integer> HIT_COUNT = NumberComponent.INT.key("hitCount", ComponentRole.OTHER).optional(5).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, INGREDIENT, TOOL, HIT_COUNT);
     }
 
     private static class WorkspaceCraftingJS {
         private static final RecipeKey<ItemStack> RESULT = ItemStackComponent.ITEM_STACK.key("result", ComponentRole.OUTPUT);
-        private static final RecipeKey<List<String>> BOTTOM_PATTERN = StringComponent.NON_EMPTY.asList().key("bottom", ComponentRole.INPUT);
-        private static final RecipeKey<List<String>> MIDDLE_PATTERN = StringComponent.NON_EMPTY.asList().key("middle", ComponentRole.INPUT);
-        private static final RecipeKey<List<String>> TOP_PATTERN = StringComponent.NON_EMPTY.asList().key("top", ComponentRole.INPUT);
-        private static final RecipeKey<TinyMap<String, List<String>>> PATTERN = new MapRecipeComponent<>(StringComponent.NON_EMPTY, StringComponent.NON_EMPTY.asList(), true).key("pattern", ComponentRole.OTHER);
-        private static final RecipeKey<TinyMap<Character, Ingredient>> KEY = MapRecipeComponent.INGREDIENT_PATTERN_KEY.key("key", ComponentRole.INPUT);
-        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.INGREDIENT.key("tool", ComponentRole.INPUT).allowEmpty().optional(Ingredient.EMPTY).exclude().alwaysWrite();
+        private static final RecipeKey<List<String>> BOTTOM_PATTERN = StringComponent.STRING.instance().asList().key("bottom", ComponentRole.INPUT);
+        private static final RecipeKey<List<String>> MIDDLE_PATTERN = StringComponent.STRING.instance().asList().key("middle", ComponentRole.INPUT);
+        private static final RecipeKey<List<String>> TOP_PATTERN = StringComponent.STRING.instance().asList().key("top", ComponentRole.INPUT);
+        private static final RecipeKey<TinyMap<String, List<String>>> PATTERN = new MapRecipeComponent<>(StringComponent.STRING.instance(), StringComponent.STRING.instance().asList(), IntBounds.DEFAULT, true).key("pattern", ComponentRole.OTHER);
+        private static final RecipeKey<TinyMap<Character, Ingredient>> KEY = new MapRecipeComponent<>(CharacterComponent.CHARACTER.instance(), IngredientComponent.INGREDIENT.instance(), IntBounds.DEFAULT, true).key("key", ComponentRole.INPUT);
+        private static final RecipeKey<Ingredient> TOOL = IngredientComponent.OPTIONAL_INGREDIENT.key("tool", ComponentRole.INPUT).optional(Ingredient.EMPTY).exclude().alwaysWrite();
         private static final RecipeSchema SCHEMA = new RecipeSchema(RESULT, TOOL, PATTERN, KEY)
                 .constructor(RESULT, TOOL, PATTERN, KEY)
                 .constructor(new RecipeConstructor(RESULT, TOOL, BOTTOM_PATTERN, MIDDLE_PATTERN, TOP_PATTERN, KEY) {
                     @Override
-                    public void setValues(Context cx, KubeRecipe recipe, RecipeSchemaType schemaType, ComponentValueMap from) {
-                        recipe.setValue(RESULT, from.getValue(cx, recipe, RESULT));
-                        recipe.setValue(KEY, from.getValue(cx, recipe, KEY));
-                        recipe.setValue(TOOL, from.getValue(cx, recipe, TOOL));
+                    public void setValues(RecipeScriptContext cx, RecipeSchemaType schemaType, ComponentValueMap from) {
+                        cx.recipe().setValue(RESULT, from.getValue(cx, RESULT));
+                        cx.recipe().setValue(KEY, from.getValue(cx, KEY));
+                        cx.recipe().setValue(TOOL, from.getValue(cx, TOOL));
 
-                        List<String> bottom = from.getValue(cx, recipe, BOTTOM_PATTERN);
-                        List<String> middle = from.getValue(cx, recipe, MIDDLE_PATTERN);
-                        List<String> top = from.getValue(cx, recipe, TOP_PATTERN);
+                        List<String> bottom = from.getValue(cx, BOTTOM_PATTERN);
+                        List<String> middle = from.getValue(cx, MIDDLE_PATTERN);
+                        List<String> top = from.getValue(cx, TOP_PATTERN);
                         Map<String, List<String>> pattern = Map.of(
                                 "bottom", bottom,
                                 "middle", middle,
                                 "top", top
                         );
 
-                        recipe.setValue(PATTERN, TinyMap.ofMap(pattern));
+                        cx.recipe().setValue(PATTERN, TinyMap.ofMap(pattern));
 
                         if (!pattern.containsKey("bottom")) {
                             throw new IllegalStateException("Pattern is missing bottom part!");
