@@ -1,8 +1,9 @@
 # YTech Changelog
 
-## []
+## [0.10.10]
 
 - Fixed amount of items not displayed for Alloying recipe in EMI
+- Updated for KubeJS 2102.7.2 compatibility
 
 ## [0.10.9]
 
