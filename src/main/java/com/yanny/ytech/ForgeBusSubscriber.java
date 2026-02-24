@@ -23,7 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
@@ -33,8 +32,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.client.event.RenderHighlightEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -47,8 +46,6 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
-
-import java.util.Objects;
 
 @EventBusSubscriber(modid = YTechMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ForgeBusSubscriber {
@@ -229,17 +226,18 @@ public class ForgeBusSubscriber {
         }
     }
 
-    private static void setBlockRequireValidTool(@NotNull Block block) {
-        try {
-            BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "defaultBlockState"); // defaultBlockState
+    @SubscribeEvent
+    public static void onTagsUpdated(TagsUpdatedEvent event) {
+        if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED) {
+            BuiltInRegistries.BLOCK.getTag(YTechBlockTags.REQUIRE_VALID_TOOL).ifPresent((h) -> {
+                h.stream().map(Holder::value).forEach(ForgeBusSubscriber::setBlockRequireValidTool);
+            });
+        }
+    }
 
-            if (blockState != null) {
-                ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "requiresCorrectToolForDrops"); // requiresCorrectToolForDrops
-            }
-
-            LOGGER.info("Set requiresCorrectToolForDrops on {}", Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block)));
-        } catch (Exception e) {
-            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block {}: {}", Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block)), e.getMessage());
+    public static void setBlockRequireValidTool(@NotNull Block block) {
+        for (BlockState state : block.stateDefinition.states) {
+            state.requiresCorrectToolForDrops = true;
         }
     }
 }

@@ -1,5 +1,10 @@
 # YTech Changelog
 
+## [0.10.11]
+
+- Fixed desynced required tool on MP
+- Fixed requiresCorrectToolForDrops not set for non-default block states
+
 ## [0.10.10]
 
 - Fixed amount of items not displayed for Alloying recipe in EMI
