@@ -3,6 +3,7 @@
 ## []
 
 - Fixed desynced required tool on MP
+- Fixed requiresCorrectToolForDrops not set for non-default block states
 
 ## [0.10.9]
 

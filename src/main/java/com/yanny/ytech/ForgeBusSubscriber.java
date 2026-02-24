@@ -21,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
@@ -44,7 +43,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -237,16 +235,8 @@ public class ForgeBusSubscriber {
     }
 
     public static void setBlockRequireValidTool(@NotNull Block block) {
-        try {
-            BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "f_49786_"); // defaultBlockState
-
-            if (blockState != null) {
-                ObfuscationReflectionHelper.setPrivateValue(BlockBehaviour.BlockStateBase.class, blockState, Boolean.TRUE, "f_60600_"); // requiresCorrectToolForDrops
-            }
-
-            LOGGER.info("Set requiresCorrectToolForDrops on {}", Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)));
-        } catch (Exception e) {
-            LOGGER.warn("Unable to set requiresCorrectToolForDrops on block {}: {}", Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)), e.getMessage());
+        for (BlockState state : block.stateDefinition.states) {
+            state.requiresCorrectToolForDrops = true;
         }
     }
 }
