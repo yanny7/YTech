@@ -30,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -226,7 +227,16 @@ public class ForgeBusSubscriber {
         }
     }
 
-    private static void setBlockRequireValidTool(@NotNull Block block) {
+    @SubscribeEvent
+    public static void onTagsUpdated(TagsUpdatedEvent event) {
+        if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED) {
+            Objects.requireNonNull(ForgeRegistries.BLOCKS.tags())
+                    .getTag(YTechBlockTags.REQUIRE_VALID_TOOL)
+                    .forEach(ForgeBusSubscriber::setBlockRequireValidTool);
+        }
+    }
+
+    public static void setBlockRequireValidTool(@NotNull Block block) {
         try {
             BlockState blockState = ObfuscationReflectionHelper.getPrivateValue(Block.class, block, "f_49786_"); // defaultBlockState
 

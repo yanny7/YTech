@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed desynced required tool on MP
+
 ## [0.10.9]
 
 - Fixed Tree Stump missing mineable tool
