@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.10.11]
 
 - Fixed desynced required tool on MP
 - Fixed requiresCorrectToolForDrops not set for non-default block states
