@@ -1,6 +1,6 @@
 # YTech Changelog
 
-## []
+## [0.10.12]
 
 - Fixed crash related to aqueduct
 
