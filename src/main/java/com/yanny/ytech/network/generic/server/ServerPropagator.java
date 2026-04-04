@@ -32,7 +32,11 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
 
     public void add(@NotNull O blockEntity) {
         if (blockEntity.getLevel() instanceof ServerLevel level) {
-            levelMap.get(NetworkUtils.getLevelId(level)).add(blockEntity);
+            ResourceLocation levelId = NetworkUtils.getLevelId(level);
+
+            if (levelMap.containsKey(levelId)) {
+                levelMap.get(levelId).add(blockEntity);
+            }
         } else {
             LOGGER.warn("[{}][add] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
         }
@@ -40,7 +44,11 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
 
     public void changed(@NotNull O blockEntity) {
         if (blockEntity.getLevel() instanceof ServerLevel level) {
-            levelMap.get(NetworkUtils.getLevelId(level)).update(blockEntity);
+            ResourceLocation levelId = NetworkUtils.getLevelId(level);
+
+            if (levelMap.containsKey(levelId)) {
+                levelMap.get(levelId).update(blockEntity);
+            }
         } else {
             LOGGER.warn("[{}][changed] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
         }
@@ -48,7 +56,11 @@ public class ServerPropagator<N extends ServerNetwork<N, O>, O extends INetworkB
 
     public void remove(@NotNull O blockEntity) {
         if (blockEntity.getLevel() instanceof ServerLevel level) {
-            levelMap.get(NetworkUtils.getLevelId(level)).remove(blockEntity);
+            ResourceLocation levelId = NetworkUtils.getLevelId(level);
+
+            if (levelMap.containsKey(levelId)) {
+                levelMap.get(levelId).remove(blockEntity);
+            }
         } else {
             LOGGER.warn("[{}][remove] Invalid ServerLevel reference: {}", networkName, blockEntity.getLevel());
         }

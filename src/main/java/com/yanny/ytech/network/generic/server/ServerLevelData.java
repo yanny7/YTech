@@ -15,6 +15,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
             if (networkId >= 0) {
                 resultNetwork = networkMap.get(networkId);
 
-                if (!resultNetwork.canAttach(blockEntity)) {
+                if (resultNetwork != null && !resultNetwork.canAttach(blockEntity)) {
                     LOGGER.warn("[{}] Can't attach block {} to network at {}", networkName, blockEntity, blockEntity.getBlockPos());
                     level.destroyBlock(blockEntity.getBlockPos(), true);
                     return;
@@ -137,9 +138,12 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                 }
             }
 
-            resultNetwork.addBlockEntity(blockEntity);
+            if (resultNetwork != null) {
+                resultNetwork.addBlockEntity(blockEntity);
+                resultNetwork.setDirty();
+            }
+
             setDirty();
-            resultNetwork.setDirty();
         } else {
             LOGGER.warn("[{}][add] Invalid level: {}", networkName, blockEntity.getLevel());
         }
@@ -173,7 +177,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
                 LOGGER.warn("[{}] UPDATE: Can't get network for block {} at {}", networkName, blockEntity, blockEntity.getBlockPos());
             }
         } else {
-            LOGGER.warn("[{}][add] Invalid level: {}", networkName, blockEntity.getLevel());
+            LOGGER.warn("[{}][update] Invalid level: {}", networkName, blockEntity.getLevel());
         }
     }
 
@@ -211,12 +215,16 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
         return networkMap;
     }
 
+    @Nullable
     public T getNetwork(@NotNull O blockEntity) {
         return networkMap.get(blockEntity.getNetworkId());
     }
 
     private void onChange(int networkId) {
-        networkMap.get(networkId).setDirty();
+        if (networkMap.containsKey(networkId)) {
+            networkMap.get(networkId).setDirty();
+        }
+
         setDirty();
     }
 
@@ -238,10 +246,11 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
             }
         }
 
-        LOGGER.error("[{}] Network keys overflow!", networkName);
+        LOGGER.error("[{}][getUniqueId] Network keys overflow!", networkName);
         throw new IllegalStateException("Can't generate new ID for network!");
     }
 
+    @NotNull
     private List<Integer> getUniqueIds(int count) {
         List<Integer> result = new ArrayList<>();
 
@@ -255,7 +264,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
             }
         }
 
-        LOGGER.error("[{}] Network keys overflow!", networkName);
+        LOGGER.error("[{}][getUniqueIds] Network keys overflow!", networkName);
         throw new IllegalStateException("Can't generate new ID for network!");
     }
 
@@ -275,6 +284,7 @@ public class ServerLevelData<T extends ServerNetwork<T, O>, O extends INetworkBl
         }
     }
 
+    @NotNull
     private static <T> Predicate<T> distinctByKey(@NotNull Function<? super T, ?> keyExtractor) {
         return t -> ConcurrentHashMap.newKeySet().add(keyExtractor.apply(t));
     }

@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## []
+
+- Fixed crash related to aqueduct
+
 ## [0.10.11]
 
 - Fixed desynced required tool on MP
