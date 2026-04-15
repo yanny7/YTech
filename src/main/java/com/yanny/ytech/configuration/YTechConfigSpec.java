@@ -1,15 +1,14 @@
 package com.yanny.ytech.configuration;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class YTechConfigSpec {
+    private static final List<String> WATER_BIOMES = List.of("#minecraft:is_river", "#minecraft:is_ocean", "#minecraft:is_deep_ocean");
+
     private final ModConfigSpec.BooleanValue noDryingDuringRain;
     private final ModConfigSpec.BooleanValue finiteWaterSource;
     private final ModConfigSpec.BooleanValue cropsNeedWateredFarmland;
@@ -26,6 +25,7 @@ public class YTechConfigSpec {
     private final ModConfigSpec.IntValue valveFillAmount;
     private final ModConfigSpec.IntValue valveFillPerNthTick;
     private final ModConfigSpec.IntValue valveChanceToDrainWater;
+    private final ModConfigSpec.ConfigValue<List<? extends String>> valveInfiniteWaterBiomes;
     private final ModConfigSpec.IntValue hydratorDrainAmount;
     private final ModConfigSpec.IntValue hydratorDrainPerNthTick;
     private final ModConfigSpec.IntValue fertilizerDuration;
@@ -82,6 +82,8 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("valveFillPerNthTick", 10, 1, Integer.MAX_VALUE);
         valveChanceToDrainWater = builder.comment("Chance to drain water source (1 / n chance per random tick)")
                 .worldRestart().defineInRange("valveChanceToDrainWater", 1, 1, Integer.MAX_VALUE);
+        valveInfiniteWaterBiomes = builder.comment("List of biomes or #biome_tags where valve doesn't destroy water source.")
+                .worldRestart().defineList("valveInfiniteWaterBiomes", WATER_BIOMES, YTechConfigSpec::isResourceKeyOrTag);
         builder.pop();
         builder.push("hydrator");
         hydratorDrainAmount = builder.comment("Amount of which will be aqueduct drained every nth tick thru hydrator")
@@ -238,5 +240,20 @@ public class YTechConfigSpec {
 
     public int getTemperaturePerChimney() {
         return temperaturePerChimney.get();
+    }
+
+    public List<String> getValveInfiniteWaterBiomes() {
+        //noinspection unchecked
+        return (List<String>) valveInfiniteWaterBiomes.get();
+    }
+
+    private static boolean isResourceKeyOrTag(Object obj) {
+        if (obj instanceof String str) {
+            String path = str.startsWith("#") ? str.substring(1) : str;
+
+            return ResourceLocation.tryParse(path) != null;
+        }
+
+        return false;
     }
 }

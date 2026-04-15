@@ -1,5 +1,9 @@
 # YTech Changelog
 
+## [0.10.13]
+
+- Configurable list of biomes where valve doesn't consume water source
+
 ## [0.10.12]
 
 - Fixed crash related to aqueduct

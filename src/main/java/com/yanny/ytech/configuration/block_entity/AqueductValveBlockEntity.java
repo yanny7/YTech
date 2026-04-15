@@ -7,9 +7,14 @@ import com.yanny.ytech.network.irrigation.NetworkType;
 import com.yanny.ytech.registration.YTechBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class AqueductValveBlockEntity extends IrrigationBlockEntity {
@@ -102,6 +108,25 @@ public class AqueductValveBlockEntity extends IrrigationBlockEntity {
                     BlockPos waterPos = fluidState.isSource() ? pos : findWaterSource(0, level, pos, checkedBlocks);
 
                     if (waterPos != null) {
+                        List<String> biomes = YTechMod.CONFIGURATION.getValveInfiniteWaterBiomes();
+                        Holder<Biome> currentBiome = level.getBiome(waterPos);
+
+                        for (String biome : biomes) {
+                            if (biome.startsWith("#")) {
+                                TagKey<Biome> tagKey = TagKey.create(Registries.BIOME, ResourceLocation.parse(biome.substring(1)));
+
+                                if (currentBiome.is(tagKey)) {
+                                    return;
+                                }
+                            } else {
+                                ResourceLocation location = ResourceLocation.parse(biome);
+
+                                if (currentBiome.is(location)) {
+                                    return;
+                                }
+                            }
+                        }
+
                         BlockState waterBlockState = level.getBlockState(waterPos);
 
                         if (waterBlockState.is(Blocks.WATER)) {
