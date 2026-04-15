@@ -1,9 +1,14 @@
 package com.yanny.ytech.configuration;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class YTechConfigSpec {
+    private static final List<String> WATER_BIOMES = List.of("#minecraft:is_river", "#minecraft:is_ocean", "#minecraft:is_deep_ocean");
+
     private final ForgeConfigSpec.BooleanValue noDryingDuringRain;
     private final ForgeConfigSpec.BooleanValue finiteWaterSource;
     private final ForgeConfigSpec.BooleanValue cropsNeedWateredFarmland;
@@ -20,6 +25,7 @@ public class YTechConfigSpec {
     private final ForgeConfigSpec.IntValue valveFillAmount;
     private final ForgeConfigSpec.IntValue valveFillPerNthTick;
     private final ForgeConfigSpec.IntValue valveChanceToDrainWater;
+    private final ForgeConfigSpec.ConfigValue<List<? extends String>> valveInfiniteWaterBiomes;
     private final ForgeConfigSpec.IntValue hydratorDrainAmount;
     private final ForgeConfigSpec.IntValue hydratorDrainPerNthTick;
     private final ForgeConfigSpec.IntValue fertilizerDuration;
@@ -76,6 +82,8 @@ public class YTechConfigSpec {
                 .worldRestart().defineInRange("valveFillPerNthTick", 10, 1, Integer.MAX_VALUE);
         valveChanceToDrainWater = builder.comment("Chance to drain water source (1 / n chance per random tick)")
                 .worldRestart().defineInRange("valveChanceToDrainWater", 1, 1, Integer.MAX_VALUE);
+        valveInfiniteWaterBiomes = builder.comment("List of biomes or #biome_tags where valve doesn't destroy water source.")
+                .worldRestart().defineList("valveInfiniteWaterBiomes", WATER_BIOMES, YTechConfigSpec::isResourceKeyOrTag);
         builder.pop();
         builder.push("hydrator");
         hydratorDrainAmount = builder.comment("Amount of which will be aqueduct drained every nth tick thru hydrator")
@@ -232,5 +240,18 @@ public class YTechConfigSpec {
 
     public int getTemperaturePerChimney() {
         return temperaturePerChimney.get();
+    }
+
+    public List<String> getValveInfiniteWaterBiomes() {
+        //noinspection unchecked
+        return (List<String>) valveInfiniteWaterBiomes.get();
+    }
+
+    private static boolean isResourceKeyOrTag(Object obj) {
+        if (obj instanceof String str) {
+            return str.startsWith("#") ? ResourceLocation.isValidResourceLocation(str.substring(1)) : ResourceLocation.isValidResourceLocation(str);
+        }
+
+        return false;
     }
 }
